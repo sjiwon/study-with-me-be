@@ -73,3 +73,10 @@ cloud:
 slack:
   webhook:
     url: ${SLACK_WEBHOOK_URL}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    display-request-duration: true
+    operations-sorter: method
+    tags-sorter: alpha
