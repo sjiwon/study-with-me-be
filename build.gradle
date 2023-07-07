@@ -1,113 +1,131 @@
+buildscript {
+    ext {
+        queryDslVersion = "5.0.0"
+    }
+}
+
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.1.1'
-	id 'io.spring.dependency-management' version '1.1.0'
-	id "org.asciidoctor.jvm.convert" version "3.3.2"
+    id 'java'
+    id 'org.springframework.boot' version '3.1.1'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 group = 'com.kgu'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '17'
+    sourceCompatibility = '17'
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-	asciidoctorExt
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    asciidoctorExt
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 ext {
-	set('snippetsDir', file("build/generated-snippets"))
+    set('snippetsDir', file("build/generated-snippets"))
 }
 
 dependencies {
-	// JPA & DB
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	runtimeOnly 'com.mysql:mysql-connector-j' // local & prod
-	runtimeOnly 'com.h2database:h2' // test
+    // JPA & DB
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'com.mysql:mysql-connector-j' // local & prod
+    runtimeOnly 'com.h2database:h2' // test
 
 	// Querydsl
-	implementation 'com.querydsl:querydsl-jpa'
-	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jpa"
-	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
-	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
-	// Spring Web
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    // Spring Web
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
-	// Mail
-	implementation 'org.springframework.boot:spring-boot-starter-mail'
+    // Mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 
-	// Amazon S3 (NCP Object Storage)
-	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.450'
+    // Amazon S3 (NCP Object Storage)
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.450'
 
-	// JWT
-	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    // JWT
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
-	// Lombok
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-	testCompileOnly 'org.projectlombok:lombok'
-	testAnnotationProcessor 'org.projectlombok:lombok'
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 
-	// Slack API
-	implementation 'com.slack.api:slack-api-client:1.29.2'
+    // Slack API
+    implementation 'com.slack.api:slack-api-client:1.29.2'
 
-	// test
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    // test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-	// Spring Rest Docs (With MockMvc)
-	asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
-	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    // Spring Rest Docs (With MockMvc)
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 }
 
 tasks.named('test') {
-	outputs.dir snippetsDir
-	useJUnitPlatform()
+    outputs.dir snippetsDir
+    useJUnitPlatform()
 }
 
-// delete QueryDsl QType
+// QueryDsl QClass Generated Position
+def qTypeGeneratedPosition = 'src/main/generated'
+
+tasks.withType(JavaCompile).configureEach {
+    options.getGeneratedSourceOutputDirectory().set(file(qTypeGeneratedPosition))
+}
+
+// add QueryDsl QClass to Java Source Set
+sourceSets {
+    main.java.srcDirs += [qTypeGeneratedPosition]
+}
+
+// delete QueryDsl QClass
 clean {
-	delete file('src/main/generated')
+    delete file(qTypeGeneratedPosition)
 }
 
-// REST Docs Ascii doc
+// REST Docs
 asciidoctor {
-	inputs.dir snippetsDir
-	configurations 'asciidoctorExt'
-	dependsOn test
-	baseDirFollowsSourceFile()
+    inputs.dir snippetsDir
+    configurations 'asciidoctorExt'
+    dependsOn test
+    baseDirFollowsSourceFile()
 }
 
 asciidoctor.doFirst {
-	delete file('src/main/resources/static/docs/*')
+    delete file('src/main/resources/static/docs/*')
 }
 
 bootJar {
-	dependsOn asciidoctor
+    dependsOn asciidoctor
 
-	copy {
-		from "${asciidoctor.outputDir}"
-		into file("src/main/resources/static/docs")
-	}
+    copy {
+        from "${asciidoctor.outputDir}"
+        into file("src/main/resources/static/docs")
+    }
 
-	copy {
-		from file("src/main/resources/static")
-		into file("build/resources/main/static")
-	}
+    copy {
+        from file("src/main/resources/static")
+        into file("build/resources/main/static")
+    }
 
-	archivesBaseName = 'StudyWithMe'
-	archiveFileName = 'StudyWithMe.jar'
-	archiveVersion = "0.0.1"
+    archivesBaseName = 'StudyWithMe'
+    archiveFileName = 'StudyWithMe.jar'
+    archiveVersion = "0.0.1"
 }
