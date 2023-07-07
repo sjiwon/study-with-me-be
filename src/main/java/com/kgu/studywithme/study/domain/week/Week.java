@@ -7,12 +7,12 @@ import com.kgu.studywithme.study.domain.week.attachment.Attachment;
 import com.kgu.studywithme.study.domain.week.attachment.UploadAttachment;
 import com.kgu.studywithme.study.domain.week.submit.Submit;
 import com.kgu.studywithme.study.domain.week.submit.UploadAssignment;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.CollectionUtils;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 

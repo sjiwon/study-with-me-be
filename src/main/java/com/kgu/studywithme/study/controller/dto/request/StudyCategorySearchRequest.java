@@ -1,9 +1,8 @@
 package com.kgu.studywithme.study.controller.dto.request;
 
 import com.kgu.studywithme.study.utils.validator.ValidSearchSortType;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record StudyCategorySearchRequest(
         @NotNull(message = "카테고리는 필수입니다.")

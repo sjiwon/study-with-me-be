@@ -1,12 +1,12 @@
 package com.kgu.studywithme.upload.utils.validator;
 
+import jakarta.validation.ConstraintValidatorContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.ConstraintValidatorContext;
 import java.io.IOException;
 
 import static com.kgu.studywithme.common.utils.FileMockingUtils.createSingleMockMultipartFile;

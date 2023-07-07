@@ -2,12 +2,12 @@ package com.kgu.studywithme.global.interceptor;
 
 import com.kgu.studywithme.auth.utils.AuthorizationExtractor;
 import com.kgu.studywithme.auth.utils.JwtTokenProvider;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @RequiredArgsConstructor

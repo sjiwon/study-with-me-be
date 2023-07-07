@@ -4,11 +4,10 @@ import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.global.aop.CheckStudyHost;
 import com.kgu.studywithme.study.controller.dto.request.NoticeRequest;
 import com.kgu.studywithme.study.service.notice.NoticeService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor

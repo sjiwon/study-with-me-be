@@ -11,7 +11,7 @@ HTTP Request
 include::{snippets}/UploadImageApi/Weekly/Failure/Case1/http-request.adoc[]
 include::{snippets}/UploadImageApi/Weekly/Failure/Case1/request-headers.adoc[]
 include::{snippets}/UploadImageApi/Weekly/Failure/Case1/request-parts.adoc[]
-include::{snippets}/UploadImageApi/Weekly/Failure/Case1/request-parameters.adoc[]
+include::{snippets}/UploadImageApi/Weekly/Failure/Case1/query-parameters.adoc[]
 
 HTTP Response
 include::{snippets}/UploadImageApi/Weekly/Failure/Case1/response-body.adoc[]
@@ -21,7 +21,7 @@ HTTP Request
 include::{snippets}/UploadImageApi/Weekly/Failure/Case2/http-request.adoc[]
 include::{snippets}/UploadImageApi/Weekly/Failure/Case2/request-headers.adoc[]
 include::{snippets}/UploadImageApi/Weekly/Failure/Case2/request-parts.adoc[]
-include::{snippets}/UploadImageApi/Weekly/Failure/Case2/request-parameters.adoc[]
+include::{snippets}/UploadImageApi/Weekly/Failure/Case2/query-parameters.adoc[]
 
 HTTP Response
 include::{snippets}/UploadImageApi/Weekly/Failure/Case2/response-body.adoc[]
@@ -31,7 +31,7 @@ HTTP Request
 include::{snippets}/UploadImageApi/Weekly/Success/http-request.adoc[]
 include::{snippets}/UploadImageApi/Weekly/Success/request-headers.adoc[]
 include::{snippets}/UploadImageApi/Weekly/Success/request-parts.adoc[]
-include::{snippets}/UploadImageApi/Weekly/Success/request-parameters.adoc[]
+include::{snippets}/UploadImageApi/Weekly/Success/query-parameters.adoc[]
 
 HTTP Response
 include::{snippets}/UploadImageApi/Weekly/Success/response-body.adoc[]
@@ -43,7 +43,7 @@ HTTP Request
 include::{snippets}/UploadImageApi/Description/Failure/http-request.adoc[]
 include::{snippets}/UploadImageApi/Description/Failure/request-headers.adoc[]
 include::{snippets}/UploadImageApi/Description/Failure/request-parts.adoc[]
-include::{snippets}/UploadImageApi/Description/Failure/request-parameters.adoc[]
+include::{snippets}/UploadImageApi/Description/Failure/query-parameters.adoc[]
 
 HTTP Response
 include::{snippets}/UploadImageApi/Description/Failure/response-body.adoc[]
@@ -53,7 +53,7 @@ HTTP Request
 include::{snippets}/UploadImageApi/Description/Success/http-request.adoc[]
 include::{snippets}/UploadImageApi/Description/Success/request-headers.adoc[]
 include::{snippets}/UploadImageApi/Description/Success/request-parts.adoc[]
-include::{snippets}/UploadImageApi/Description/Success/request-parameters.adoc[]
+include::{snippets}/UploadImageApi/Description/Success/query-parameters.adoc[]
 
 HTTP Response
 include::{snippets}/UploadImageApi/Description/Success/response-body.adoc[]

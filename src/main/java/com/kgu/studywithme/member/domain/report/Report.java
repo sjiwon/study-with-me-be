@@ -1,11 +1,10 @@
 package com.kgu.studywithme.member.domain.report;
 
 import com.kgu.studywithme.global.BaseEntity;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 
 import static com.kgu.studywithme.member.domain.report.ReportStatus.*;
 

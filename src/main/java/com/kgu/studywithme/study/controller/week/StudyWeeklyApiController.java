@@ -6,11 +6,10 @@ import com.kgu.studywithme.global.aop.CheckStudyParticipant;
 import com.kgu.studywithme.study.controller.dto.request.StudyWeeklyRequest;
 import com.kgu.studywithme.study.controller.dto.request.WeeklyAssignmentSubmitRequest;
 import com.kgu.studywithme.study.service.week.StudyWeeklyService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 

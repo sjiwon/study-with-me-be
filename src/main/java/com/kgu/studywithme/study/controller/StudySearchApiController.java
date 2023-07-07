@@ -7,14 +7,13 @@ import com.kgu.studywithme.study.service.StudySearchService;
 import com.kgu.studywithme.study.service.dto.response.DefaultStudyResponse;
 import com.kgu.studywithme.study.utils.StudyCategoryCondition;
 import com.kgu.studywithme.study.utils.StudyRecommendCondition;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
 
 import static com.kgu.studywithme.study.utils.PagingConstants.getDefaultPageRequest;
 

@@ -1,7 +1,8 @@
 package com.kgu.studywithme.member.utils.validator;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+
 import java.util.List;
 
 public class ValidGenderValidator implements ConstraintValidator<ValidGender, String> {

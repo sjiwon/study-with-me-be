@@ -79,12 +79,12 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                     .file((MockMultipartFile) files3)
                     .file((MockMultipartFile) files4)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .param("title", request.title())
-                    .param("content", request.content())
-                    .param("startDate", request.startDate().format(DATE_TIME_FORMATTER))
-                    .param("endDate", request.endDate().format(DATE_TIME_FORMATTER))
-                    .param("assignmentExists", String.valueOf(request.assignmentExists()))
-                    .param("autoAttendance", String.valueOf(request.autoAttendance()));
+                    .queryParam("title", request.title())
+                    .queryParam("content", request.content())
+                    .queryParam("startDate", request.startDate().format(DATE_TIME_FORMATTER))
+                    .queryParam("endDate", request.endDate().format(DATE_TIME_FORMATTER))
+                    .queryParam("assignmentExists", String.valueOf(request.assignmentExists()))
+                    .queryParam("autoAttendance", String.valueOf(request.autoAttendance()));
 
             // then
             final StudyErrorCode expectedError = StudyErrorCode.MEMBER_IS_NOT_HOST;
@@ -111,7 +111,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                             partWithName("files").description("스터디 해당 주차에 대한 첨부파일")
                                                     .optional()
                                     ),
-                                    requestParameters(
+                                    queryParameters(
                                             parameterWithName("title").description("스터디 주차 제목"),
                                             parameterWithName("content").description("스터디 주차 내용"),
                                             parameterWithName("startDate").description("스터디 주차 시작 날짜"),
@@ -144,12 +144,12 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                     .file((MockMultipartFile) files3)
                     .file((MockMultipartFile) files4)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .param("title", request.title())
-                    .param("content", request.content())
-                    .param("startDate", request.startDate().format(DATE_TIME_FORMATTER))
-                    .param("endDate", request.endDate().format(DATE_TIME_FORMATTER))
-                    .param("assignmentExists", String.valueOf(request.assignmentExists()))
-                    .param("autoAttendance", String.valueOf(request.autoAttendance()));
+                    .queryParam("title", request.title())
+                    .queryParam("content", request.content())
+                    .queryParam("startDate", request.startDate().format(DATE_TIME_FORMATTER))
+                    .queryParam("endDate", request.endDate().format(DATE_TIME_FORMATTER))
+                    .queryParam("assignmentExists", String.valueOf(request.assignmentExists()))
+                    .queryParam("autoAttendance", String.valueOf(request.autoAttendance()));
 
             // then
             final StudyErrorCode expectedError = StudyErrorCode.ALREADY_WEEK_CREATED;
@@ -176,7 +176,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                             partWithName("files").description("스터디 해당 주차에 대한 첨부파일")
                                                     .optional()
                                     ),
-                                    requestParameters(
+                                    queryParameters(
                                             parameterWithName("title").description("스터디 주차 제목"),
                                             parameterWithName("content").description("스터디 주차 내용"),
                                             parameterWithName("startDate").description("스터디 주차 시작 날짜"),
@@ -206,12 +206,12 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                     .file((MockMultipartFile) files3)
                     .file((MockMultipartFile) files4)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .param("title", request.title())
-                    .param("content", request.content())
-                    .param("startDate", request.startDate().format(DATE_TIME_FORMATTER))
-                    .param("endDate", request.endDate().format(DATE_TIME_FORMATTER))
-                    .param("assignmentExists", String.valueOf(request.assignmentExists()))
-                    .param("autoAttendance", String.valueOf(request.autoAttendance()));
+                    .queryParam("title", request.title())
+                    .queryParam("content", request.content())
+                    .queryParam("startDate", request.startDate().format(DATE_TIME_FORMATTER))
+                    .queryParam("endDate", request.endDate().format(DATE_TIME_FORMATTER))
+                    .queryParam("assignmentExists", String.valueOf(request.assignmentExists()))
+                    .queryParam("autoAttendance", String.valueOf(request.autoAttendance()));
 
             // then
             mockMvc.perform(requestBuilder)
@@ -229,7 +229,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                             partWithName("files").description("스터디 해당 주차에 대한 첨부파일")
                                                     .optional()
                                     ),
-                                    requestParameters(
+                                    queryParameters(
                                             parameterWithName("title").description("스터디 주차 제목"),
                                             parameterWithName("content").description("스터디 주차 내용"),
                                             parameterWithName("startDate").description("스터디 주차 시작 날짜"),
@@ -287,12 +287,12 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                     .file((MockMultipartFile) files3)
                     .file((MockMultipartFile) files4)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .param("title", request.title())
-                    .param("content", request.content())
-                    .param("startDate", request.startDate().format(DATE_TIME_FORMATTER))
-                    .param("endDate", request.endDate().format(DATE_TIME_FORMATTER))
-                    .param("assignmentExists", String.valueOf(request.assignmentExists()))
-                    .param("autoAttendance", String.valueOf(request.autoAttendance()));
+                    .queryParam("title", request.title())
+                    .queryParam("content", request.content())
+                    .queryParam("startDate", request.startDate().format(DATE_TIME_FORMATTER))
+                    .queryParam("endDate", request.endDate().format(DATE_TIME_FORMATTER))
+                    .queryParam("assignmentExists", String.valueOf(request.assignmentExists()))
+                    .queryParam("autoAttendance", String.valueOf(request.autoAttendance()));
 
             // then
             final StudyErrorCode expectedError = StudyErrorCode.MEMBER_IS_NOT_HOST;
@@ -320,7 +320,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                             partWithName("files").description("스터디 해당 주차에 대한 첨부파일")
                                                     .optional()
                                     ),
-                                    requestParameters(
+                                    queryParameters(
                                             parameterWithName("title").description("스터디 주차 제목"),
                                             parameterWithName("content").description("스터디 주차 내용"),
                                             parameterWithName("startDate").description("스터디 주차 시작 날짜"),
@@ -353,12 +353,12 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                     .file((MockMultipartFile) files3)
                     .file((MockMultipartFile) files4)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .param("title", request.title())
-                    .param("content", request.content())
-                    .param("startDate", request.startDate().format(DATE_TIME_FORMATTER))
-                    .param("endDate", request.endDate().format(DATE_TIME_FORMATTER))
-                    .param("assignmentExists", String.valueOf(request.assignmentExists()))
-                    .param("autoAttendance", String.valueOf(request.autoAttendance()));
+                    .queryParam("title", request.title())
+                    .queryParam("content", request.content())
+                    .queryParam("startDate", request.startDate().format(DATE_TIME_FORMATTER))
+                    .queryParam("endDate", request.endDate().format(DATE_TIME_FORMATTER))
+                    .queryParam("assignmentExists", String.valueOf(request.assignmentExists()))
+                    .queryParam("autoAttendance", String.valueOf(request.autoAttendance()));
 
             // then
             mockMvc.perform(requestBuilder)
@@ -377,7 +377,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                             partWithName("files").description("스터디 해당 주차에 대한 첨부파일")
                                                     .optional()
                                     ),
-                                    requestParameters(
+                                    queryParameters(
                                             parameterWithName("title").description("스터디 주차 제목"),
                                             parameterWithName("content").description("스터디 주차 내용"),
                                             parameterWithName("startDate").description("스터디 주차 시작 날짜"),
@@ -547,7 +547,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                     .multipart(BASE_URL, STUDY_ID, WEEK)
                     .file((MockMultipartFile) file)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .param("type", "file");
+                    .queryParam("type", "file");
 
             // then
             final StudyErrorCode expectedError = StudyErrorCode.MEMBER_IS_NOT_PARTICIPANT;
@@ -575,7 +575,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                             partWithName("file").description("제출할 파일")
                                                     .optional()
                                     ),
-                                    requestParameters(
+                                    queryParameters(
                                             parameterWithName("type").description("과제 제출 타입")
                                                     .attributes(constraint("file=파일 / link=링크")),
                                             parameterWithName("link").description("제출할 링크")
@@ -600,7 +600,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL, STUDY_ID, WEEK)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .param("type", "file");
+                    .queryParam("type", "file");
 
             // then
             final StudyErrorCode expectedError = StudyErrorCode.MISSING_SUBMISSION;
@@ -628,7 +628,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                             partWithName("file").description("제출할 파일")
                                                     .optional()
                                     ),
-                                    requestParameters(
+                                    queryParameters(
                                             parameterWithName("type").description("과제 제출 타입")
                                                     .attributes(constraint("file=파일 / link=링크")),
                                             parameterWithName("link").description("제출할 링크")
@@ -654,8 +654,8 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                     .multipart(BASE_URL, STUDY_ID, WEEK)
                     .file((MockMultipartFile) file)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .param("type", "file")
-                    .param("link", "https://notion.so");
+                    .queryParam("type", "file")
+                    .queryParam("link", "https://notion.so");
 
             // then
             final StudyErrorCode expectedError = StudyErrorCode.DUPLICATE_SUBMISSION;
@@ -683,7 +683,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                             partWithName("file").description("제출할 파일")
                                                     .optional()
                                     ),
-                                    requestParameters(
+                                    queryParameters(
                                             parameterWithName("type").description("과제 제출 타입")
                                                     .attributes(constraint("file=파일 / link=링크")),
                                             parameterWithName("link").description("제출할 링크")
@@ -706,7 +706,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                     .multipart(BASE_URL, STUDY_ID, WEEK)
                     .file((MockMultipartFile) file)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .param("type", "file");
+                    .queryParam("type", "file");
 
             // then
             mockMvc.perform(requestBuilder)
@@ -725,7 +725,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                             partWithName("file").description("제출할 파일")
                                                     .optional()
                                     ),
-                                    requestParameters(
+                                    queryParameters(
                                             parameterWithName("type").description("과제 제출 타입")
                                                     .attributes(constraint("file=파일 / link=링크")),
                                             parameterWithName("link").description("제출할 링크")
@@ -746,8 +746,8 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL, STUDY_ID, WEEK)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .param("type", "link")
-                    .param("link", "https://notion.so");
+                    .queryParam("type", "link")
+                    .queryParam("link", "https://notion.so");
 
             // then
             mockMvc.perform(requestBuilder)
@@ -766,7 +766,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                             partWithName("file").description("제출할 파일")
                                                     .optional()
                                     ),
-                                    requestParameters(
+                                    queryParameters(
                                             parameterWithName("type").description("과제 제출 타입")
                                                     .attributes(constraint("file=파일 / link=링크")),
                                             parameterWithName("link").description("제출할 링크")
@@ -806,8 +806,8 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL, STUDY_ID, WEEK)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .param("type", "link")
-                    .param("link", "https://notion.so");
+                    .queryParam("type", "link")
+                    .queryParam("link", "https://notion.so");
 
             // then
             final StudyErrorCode expectedError = StudyErrorCode.MEMBER_IS_NOT_PARTICIPANT;
@@ -835,7 +835,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                             partWithName("file").description("제출할 파일")
                                                     .optional()
                                     ),
-                                    requestParameters(
+                                    queryParameters(
                                             parameterWithName("type").description("과제 제출 타입")
                                                     .attributes(constraint("file=파일 / link=링크")),
                                             parameterWithName("link").description("제출할 링크")
@@ -860,7 +860,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL, STUDY_ID, WEEK)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .param("type", "file");
+                    .queryParam("type", "file");
 
             // then
             final StudyErrorCode expectedError = StudyErrorCode.MISSING_SUBMISSION;
@@ -888,7 +888,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                             partWithName("file").description("제출할 파일")
                                                     .optional()
                                     ),
-                                    requestParameters(
+                                    queryParameters(
                                             parameterWithName("type").description("과제 제출 타입")
                                                     .attributes(constraint("file=파일 / link=링크")),
                                             parameterWithName("link").description("제출할 링크")
@@ -914,8 +914,8 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                     .multipart(BASE_URL, STUDY_ID, WEEK)
                     .file((MockMultipartFile) file)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .param("type", "file")
-                    .param("link", "https://notion.so");
+                    .queryParam("type", "file")
+                    .queryParam("link", "https://notion.so");
 
             // then
             final StudyErrorCode expectedError = StudyErrorCode.DUPLICATE_SUBMISSION;
@@ -943,7 +943,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                             partWithName("file").description("제출할 파일")
                                                     .optional()
                                     ),
-                                    requestParameters(
+                                    queryParameters(
                                             parameterWithName("type").description("과제 제출 타입")
                                                     .attributes(constraint("file=파일 / link=링크")),
                                             parameterWithName("link").description("제출할 링크")
@@ -965,8 +965,8 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL, STUDY_ID, WEEK)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .param("type", "link")
-                    .param("link", "https://notion.so");
+                    .queryParam("type", "link")
+                    .queryParam("link", "https://notion.so");
 
             // then
             mockMvc.perform(requestBuilder)
@@ -985,7 +985,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                             partWithName("file").description("제출할 파일")
                                                     .optional()
                                     ),
-                                    requestParameters(
+                                    queryParameters(
                                             parameterWithName("type").description("과제 제출 타입")
                                                     .attributes(constraint("file=파일 / link=링크")),
                                             parameterWithName("link").description("제출할 링크")

@@ -6,12 +6,11 @@ import com.kgu.studywithme.member.controller.dto.request.MemberReportRequest;
 import com.kgu.studywithme.member.controller.dto.request.MemberUpdateRequest;
 import com.kgu.studywithme.member.controller.dto.request.SignUpRequest;
 import com.kgu.studywithme.member.service.MemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor

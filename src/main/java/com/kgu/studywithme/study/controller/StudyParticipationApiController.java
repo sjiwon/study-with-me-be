@@ -5,11 +5,10 @@ import com.kgu.studywithme.global.aop.CheckStudyHost;
 import com.kgu.studywithme.global.aop.CheckStudyParticipant;
 import com.kgu.studywithme.study.controller.dto.request.ParticipationRejectRequest;
 import com.kgu.studywithme.study.service.ParticipationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor

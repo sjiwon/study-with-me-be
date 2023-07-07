@@ -8,7 +8,7 @@
 == 카테고리에 따른 스터디 리스트 조회
 HTTP Request
 include::{snippets}/StudyApi/Search/Category/http-request.adoc[]
-include::{snippets}/StudyApi/Search/Category/request-parameters.adoc[]
+include::{snippets}/StudyApi/Search/Category/query-parameters.adoc[]
 
 HTTP Response
 include::{snippets}/StudyApi/Search/Category/response-body.adoc[]
@@ -18,7 +18,7 @@ include::{snippets}/StudyApi/Search/Category/response-fields.adoc[]
 HTTP Request
 include::{snippets}/StudyApi/Search/Recommend/http-request.adoc[]
 include::{snippets}/StudyApi/Search/Recommend/request-headers.adoc[]
-include::{snippets}/StudyApi/Search/Recommend/request-parameters.adoc[]
+include::{snippets}/StudyApi/Search/Recommend/query-parameters.adoc[]
 
 HTTP Response
 include::{snippets}/StudyApi/Search/Recommend/response-body.adoc[]

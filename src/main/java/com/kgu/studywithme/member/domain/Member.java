@@ -6,11 +6,11 @@ import com.kgu.studywithme.member.domain.interest.Interest;
 import com.kgu.studywithme.member.domain.review.PeerReview;
 import com.kgu.studywithme.member.domain.review.PeerReviews;
 import com.kgu.studywithme.study.domain.attendance.AttendanceStatus;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,11 +1,11 @@
 package com.kgu.studywithme.study.utils.validator;
 
+import jakarta.validation.ConstraintValidatorContext;
+import jakarta.validation.Payload;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import javax.validation.ConstraintValidatorContext;
-import javax.validation.Payload;
 import java.lang.annotation.Annotation;
 import java.util.Set;
 
@@ -61,7 +61,7 @@ class ValidHashtagCountValidatorTest {
         context = mock(ConstraintValidatorContext.class);
         builder = mock(ConstraintValidatorContext.ConstraintViolationBuilder.class);
     }
-    
+
     @Test
     @DisplayName("해시태그 개수가 허용하는 최소치[1개]미만이면 validator를 통과하지 못한다")
     void underflowHashtags() {
@@ -70,7 +70,7 @@ class ValidHashtagCountValidatorTest {
 
         given(context.buildConstraintViolationWithTemplate(anyString())).willReturn(builder);
         given(builder.addConstraintViolation()).willReturn(context);
-        
+
         // when
         boolean actual = validator.isValid(hashtags, context);
 
@@ -80,7 +80,7 @@ class ValidHashtagCountValidatorTest {
         verify(builder).addConstraintViolation();
         assertThat(actual).isFalse();
     }
-    
+
     @Test
     @DisplayName("해시태그 개수가 허용하는 최대치[5개]를 초과하면 validator를 통과하지 못한다")
     void overflowHashtags() {
@@ -89,26 +89,26 @@ class ValidHashtagCountValidatorTest {
 
         given(context.buildConstraintViolationWithTemplate(anyString())).willReturn(builder);
         given(builder.addConstraintViolation()).willReturn(context);
-        
+
         // when
         boolean actual = validator.isValid(hashtags, context);
-        
+
         // then
         verify(context).disableDefaultConstraintViolation();
         verify(context).buildConstraintViolationWithTemplate("스터디는 최대 5개의 해시태그를 가질 수 있습니다.");
         verify(builder).addConstraintViolation();
         assertThat(actual).isFalse();
     }
-    
+
     @Test
     @DisplayName("해시태그 개수가 1개 ~ 5개 사이면 validator를 통과한다")
     void success() {
         // given
         final Set<String> hashtags = Set.of("A", "B", "C", "D", "E");
-        
+
         // when
         boolean actual = validator.isValid(hashtags, context);
-        
+
         // then
         assertThat(actual).isTrue();
     }

@@ -17,11 +17,11 @@ import com.kgu.studywithme.study.domain.week.Week;
 import com.kgu.studywithme.study.domain.week.Weekly;
 import com.kgu.studywithme.study.domain.week.attachment.UploadAttachment;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;

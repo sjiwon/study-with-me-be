@@ -1,10 +1,10 @@
 package com.kgu.studywithme.auth.utils;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;

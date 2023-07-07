@@ -2,13 +2,12 @@ package com.kgu.studywithme.member.domain;
 
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
-
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
