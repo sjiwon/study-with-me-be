@@ -3,11 +3,11 @@ package com.kgu.studywithme.member.controller.dto.request;
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.member.domain.*;
 import com.kgu.studywithme.member.utils.validator.ValidGender;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;

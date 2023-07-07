@@ -27,7 +27,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -73,7 +73,7 @@ class OAuthApiControllerTest extends ControllerTest {
                                     "OAuthApi/Access",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
-                                    requestParameters(
+                                    queryParameters(
                                             parameterWithName("redirectUrl").description("Authorization Code와 함께 redirect될 URI")
                                     ),
                                     responseFields(
@@ -122,7 +122,7 @@ class OAuthApiControllerTest extends ControllerTest {
                                     "OAuthApi/Login/Failure",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
-                                    requestParameters(
+                                    queryParameters(
                                             parameterWithName("authorizationCode").description("Authorization Code"),
                                             parameterWithName("redirectUrl").description("redirectUrl")
                                                     .attributes(constraint("Authorization Code 요청 시 redirectUrl과 반드시 동일한 값"))
@@ -169,7 +169,7 @@ class OAuthApiControllerTest extends ControllerTest {
                                     "OAuthApi/Login/Success",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
-                                    requestParameters(
+                                    queryParameters(
                                             parameterWithName("authorizationCode").description("Authorization Code"),
                                             parameterWithName("redirectUrl").description("redirectUrl")
                                                     .attributes(constraint("Authorization Code 요청 시 redirectUrl과 반드시 동일한 값"))

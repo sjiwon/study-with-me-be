@@ -2,11 +2,10 @@ package com.kgu.studywithme.member.domain.review;
 
 import com.kgu.studywithme.global.BaseEntity;
 import com.kgu.studywithme.member.domain.Member;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

@@ -1,9 +1,8 @@
 package com.kgu.studywithme.study.controller.dto.request;
 
 import com.kgu.studywithme.study.utils.validator.ValidUploadType;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.constraints.NotBlank;
 
 public record WeeklyAssignmentSubmitRequest(
         @ValidUploadType

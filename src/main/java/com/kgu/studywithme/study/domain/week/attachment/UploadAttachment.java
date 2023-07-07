@@ -1,11 +1,10 @@
 package com.kgu.studywithme.study.domain.week.attachment;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

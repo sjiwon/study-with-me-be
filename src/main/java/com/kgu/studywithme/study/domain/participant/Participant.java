@@ -3,12 +3,11 @@ package com.kgu.studywithme.study.domain.participant;
 import com.kgu.studywithme.global.BaseEntity;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.Study;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 
 import static com.kgu.studywithme.study.domain.participant.ParticipantStatus.APPLY;
 

@@ -1,10 +1,9 @@
 package com.kgu.studywithme.member.utils.validator;
 
+import jakarta.validation.ConstraintValidatorContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import javax.validation.ConstraintValidatorContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -20,20 +19,20 @@ class ValidGenderValidatorTest {
         validator = new ValidGenderValidator();
         context = mock(ConstraintValidatorContext.class);
     }
-    
+
     @Test
     @DisplayName("허용하지 않는 성별이 들어오면 validator를 통과하지 못한다")
     void notAllowedGender() {
         // given
         final String unknown = "unknown";
-        
+
         // when
         boolean actual = validator.isValid(unknown, context);
 
         // then
         assertThat(actual).isFalse();
     }
-    
+
     @Test
     @DisplayName("허용하는 성별이 들어오면 validator를 통과한다")
     void allowedGender() {

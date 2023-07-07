@@ -1,11 +1,10 @@
 package com.kgu.studywithme.study.domain.hashtag;
 
 import com.kgu.studywithme.study.domain.Study;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

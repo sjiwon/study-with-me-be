@@ -2,11 +2,10 @@ package com.kgu.studywithme.study.domain.attendance;
 
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.Study;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 
 import static com.kgu.studywithme.study.domain.attendance.AttendanceStatus.ATTENDANCE;
 

@@ -1,9 +1,9 @@
 package com.kgu.studywithme.upload.utils.validator;
 
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import java.util.List;
 
 public class ValidImageExtensionValidator implements ConstraintValidator<ValidImageExtension, MultipartFile> {

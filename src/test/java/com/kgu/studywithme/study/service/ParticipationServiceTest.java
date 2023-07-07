@@ -8,6 +8,8 @@ import com.kgu.studywithme.study.event.StudyApprovedEvent;
 import com.kgu.studywithme.study.event.StudyGraduatedEvent;
 import com.kgu.studywithme.study.event.StudyRejectedEvent;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -17,8 +19,6 @@ import org.springframework.test.context.event.ApplicationEvents;
 import org.springframework.test.context.event.RecordApplicationEvents;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 import static com.kgu.studywithme.fixture.MemberFixture.*;

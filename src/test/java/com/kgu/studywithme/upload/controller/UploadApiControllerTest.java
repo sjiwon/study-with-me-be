@@ -50,7 +50,7 @@ class UploadApiControllerTest extends ControllerTest {
                     .multipart(BASE_URL)
                     .file((MockMultipartFile) file)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .param("type", "weekly");
+                    .queryParam("type", "weekly");
 
             // then
             final GlobalErrorCode expectedError = GlobalErrorCode.VALIDATION_ERROR;
@@ -74,7 +74,7 @@ class UploadApiControllerTest extends ControllerTest {
                                     requestParts(
                                             partWithName("file").description("글에 포함되는 이미지")
                                     ),
-                                    requestParameters(
+                                    queryParameters(
                                             parameterWithName("type").description("이미지 업로드 타입")
                                                     .attributes(constraint("주차 이미지 = weekly / 생성 시 설명 이미지 = description"))
                                     ),
@@ -99,7 +99,7 @@ class UploadApiControllerTest extends ControllerTest {
                     .multipart(BASE_URL)
                     .file((MockMultipartFile) file)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .param("type", "weekly");
+                    .queryParam("type", "weekly");
 
             // then
             final UploadErrorCode expectedError = UploadErrorCode.FILE_IS_EMPTY;
@@ -122,7 +122,7 @@ class UploadApiControllerTest extends ControllerTest {
                                     requestParts(
                                             partWithName("file").description("글에 포함되는 이미지")
                                     ),
-                                    requestParameters(
+                                    queryParameters(
                                             parameterWithName("type").description("이미지 업로드 타입")
                                                     .attributes(constraint("주차 이미지 = weekly / 생성 시 설명 이미지 = description"))
                                     ),
@@ -150,7 +150,7 @@ class UploadApiControllerTest extends ControllerTest {
                     .multipart(BASE_URL)
                     .file((MockMultipartFile) file)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .param("type", "weekly");
+                    .queryParam("type", "weekly");
 
             // then
             mockMvc.perform(requestBuilder)
@@ -168,7 +168,7 @@ class UploadApiControllerTest extends ControllerTest {
                                     requestParts(
                                             partWithName("file").description("글에 포함되는 이미지")
                                     ),
-                                    requestParameters(
+                                    queryParameters(
                                             parameterWithName("type").description("이미지 업로드 타입")
                                                     .attributes(constraint("주차 이미지 = weekly / 생성 시 설명 이미지 = description"))
                                     ),
@@ -202,7 +202,7 @@ class UploadApiControllerTest extends ControllerTest {
                     .multipart(BASE_URL)
                     .file((MockMultipartFile) file)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .param("type", "description");
+                    .queryParam("type", "description");
 
             // then
             final UploadErrorCode expectedError = UploadErrorCode.FILE_IS_EMPTY;
@@ -225,7 +225,7 @@ class UploadApiControllerTest extends ControllerTest {
                                     requestParts(
                                             partWithName("file").description("글에 포함되는 이미지")
                                     ),
-                                    requestParameters(
+                                    queryParameters(
                                             parameterWithName("type").description("이미지 업로드 타입")
                                                     .attributes(constraint("주차 이미지 = weekly / 생성 시 설명 이미지 = description"))
                                     ),
@@ -253,7 +253,7 @@ class UploadApiControllerTest extends ControllerTest {
                     .multipart(BASE_URL)
                     .file((MockMultipartFile) file)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .param("type", "description");
+                    .queryParam("type", "description");
 
             // then
             mockMvc.perform(requestBuilder)
@@ -271,7 +271,7 @@ class UploadApiControllerTest extends ControllerTest {
                                     requestParts(
                                             partWithName("file").description("글에 포함되는 이미지")
                                     ),
-                                    requestParameters(
+                                    queryParameters(
                                             parameterWithName("type").description("이미지 업로드 타입")
                                                     .attributes(constraint("주차 이미지 = weekly / 생성 시 설명 이미지 = description"))
                                     ),

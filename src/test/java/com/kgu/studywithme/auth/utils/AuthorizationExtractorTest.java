@@ -1,10 +1,10 @@
 package com.kgu.studywithme.auth.utils;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
@@ -22,13 +22,13 @@ class AuthorizationExtractorTest {
     void setUp() {
         request = mock(HttpServletRequest.class);
     }
-    
+
     @Test
     @DisplayName("HTTP Request Message의 Authorization Header에 토큰이 없다면 Optional 빈 값을 응답한다")
     void emptyToken() {
         // given
         given(request.getHeader(AUTHORIZATION)).willReturn(null);
-        
+
         // when
         Optional<String> token = AuthorizationExtractor.extractToken(request);
 
@@ -48,7 +48,7 @@ class AuthorizationExtractorTest {
         // then
         assertThat(token).isEmpty();
     }
-    
+
     @Test
     @DisplayName("HTTP Request Message의 Authorization Header에 토큰이 있다면 Optional로 감싸서 응답한다")
     void tokenExists() {

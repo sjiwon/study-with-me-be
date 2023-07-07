@@ -1,7 +1,7 @@
 package com.kgu.studywithme.member.controller.dto.request;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public record MemberReviewRequest(
         @NotBlank(message = "리뷰 내용은 필수입니다.")

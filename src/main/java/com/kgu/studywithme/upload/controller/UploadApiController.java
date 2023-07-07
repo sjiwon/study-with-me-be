@@ -4,14 +4,13 @@ import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.global.dto.SimpleResponseWrapper;
 import com.kgu.studywithme.upload.controller.dto.request.ImageUploadRequest;
 import com.kgu.studywithme.upload.utils.FileUploader;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
 
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 

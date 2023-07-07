@@ -32,7 +32,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("Study [Controller Layer] -> StudySearchApiController 테스트")
@@ -72,7 +72,7 @@ class StudySearchApiControllerTest extends ControllerTest {
                                     "StudyApi/Search/Category",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
-                                    requestParameters(
+                                    queryParameters(
                                             parameterWithName("category").description("카테고리 ID"),
                                             parameterWithName("sort").description("정렬 기준")
                                                     .attributes(constraint("date=최신순 / favorite=찜 / review=리뷰")),
@@ -145,7 +145,7 @@ class StudySearchApiControllerTest extends ControllerTest {
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
-                                    requestParameters(
+                                    queryParameters(
                                             parameterWithName("sort").description("정렬 기준")
                                                     .attributes(constraint("date=최신순 / favorite=찜 / review=리뷰")),
                                             parameterWithName("page").description("현재 페이지")

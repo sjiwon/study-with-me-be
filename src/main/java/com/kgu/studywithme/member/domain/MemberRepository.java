@@ -19,7 +19,7 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberSim
 
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("UPDATE Member m" +
-            " SET m.score = m.score.value - 5" +
+            " SET m.score.value = m.score.value - 5" +
             " WHERE m.id IN :absenceParticipantIds")
     void applyAbsenceScore(@Param("absenceParticipantIds") Set<Long> absenceParticipantIds);
 
