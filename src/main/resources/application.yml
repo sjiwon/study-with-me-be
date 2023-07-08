@@ -78,5 +78,5 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
     display-request-duration: true
-    operations-sorter: method
+    operations-sorter: alpha
     tags-sorter: alpha
