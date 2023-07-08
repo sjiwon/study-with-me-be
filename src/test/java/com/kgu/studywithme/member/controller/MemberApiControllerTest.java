@@ -148,8 +148,7 @@ class MemberApiControllerTest extends ControllerTest {
         @DisplayName("사용자 정보를 수정한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(MEMBER_ID);
+            mockingToken(true, MEMBER_ID);
             doNothing()
                     .when(memberService)
                     .update(any(), any());
@@ -203,8 +202,7 @@ class MemberApiControllerTest extends ControllerTest {
         @DisplayName("이전에 신고한 내역이 처리되지 않고 접수상태로 남아있다면 중복 신고를 하지 못한다")
         void throwExceptionByPreviousReportIsStillPending() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(REPORTER_ID);
+            mockingToken(true, REPORTER_ID);
             doThrow(StudyWithMeException.type(MemberErrorCode.PREVIOUS_REPORT_IS_STILL_PENDING))
                     .when(memberService)
                     .report(anyLong(), anyLong(), anyString());
@@ -250,8 +248,7 @@ class MemberApiControllerTest extends ControllerTest {
         @DisplayName("사용자 신고에 성공한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(REPORTER_ID);
+            mockingToken(true, REPORTER_ID);
             given(memberService.report(any(), any(), any())).willReturn(1L);
 
             // when

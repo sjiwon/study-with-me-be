@@ -19,7 +19,6 @@ import java.util.UUID;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -195,8 +194,7 @@ class OAuthApiControllerTest extends ControllerTest {
         @DisplayName("로그아웃에 성공한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(1L);
+            mockingToken(true, 1L);
 
             // when
             MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders

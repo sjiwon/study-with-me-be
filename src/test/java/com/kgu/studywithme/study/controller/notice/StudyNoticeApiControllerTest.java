@@ -49,8 +49,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
         @DisplayName("팀장이 아니라면 공지사항을 등록할 수 없다")
         void throwExceptionByMemberIsNotHost() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(ANONYMOUS_ID);
+            mockingToken(true, ANONYMOUS_ID);
 
             // when
             final NoticeRequest request = new NoticeRequest(
@@ -97,8 +96,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
         @DisplayName("공지사항 등록에 성공한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
             given(noticeService.register(any(), anyString(), anyString())).willReturn(1L);
 
             // when
@@ -152,8 +150,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
         @DisplayName("팀장이 아니라면 공지사항을 삭제할 수 없다")
         void throwExceptionByMemberIsNotHost() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(ANONYMOUS_ID);
+            mockingToken(true, ANONYMOUS_ID);
 
             // when
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -191,8 +188,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
         @DisplayName("작성자가 아니라면 공지사항을 삭제할 수 없다")
         void throwExceptionByMemberIsNotWriter() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(MemberErrorCode.MEMBER_IS_NOT_WRITER))
                     .when(noticeService)
                     .remove(any(), any());
@@ -233,8 +229,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
         @DisplayName("공지사항 삭제에 성공한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
             doNothing()
                     .when(noticeService)
                     .remove(any(), any());
@@ -281,8 +276,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
         @DisplayName("팀장이 아니라면 공지사항을 수정할 수 없다")
         void throwExceptionByMemberIsNotHost() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(ANONYMOUS_ID);
+            mockingToken(true, ANONYMOUS_ID);
 
             // when
             final NoticeRequest request = new NoticeRequest(
@@ -330,8 +324,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
         @DisplayName("작성자가 아니라면 공지사항을 수정할 수 없다")
         void throwExceptionByMemberIsNotWriter() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(MemberErrorCode.MEMBER_IS_NOT_WRITER))
                     .when(noticeService)
                     .update(any(), any(), any(), any());
@@ -382,8 +375,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
         @DisplayName("공지사항 수정에 성공한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
             doNothing()
                     .when(noticeService)
                     .update(any(), any(), any(), any());

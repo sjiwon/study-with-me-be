@@ -12,7 +12,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
@@ -36,8 +35,7 @@ class FavoriteApiControllerTest extends ControllerTest {
         @DisplayName("이미 찜 등록된 스터디를 찜할 수 없다")
         void throwExceptionByAlreadyFavoriteMarked() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(MEMBER_ID);
+            mockingToken(true, MEMBER_ID);
             doThrow(StudyWithMeException.type(FavoriteErrorCode.ALREADY_FAVORITE_MARKED))
                     .when(favoriteManageService)
                     .like(any(), any());
@@ -77,8 +75,7 @@ class FavoriteApiControllerTest extends ControllerTest {
         @DisplayName("찜 등록에 성공한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(MEMBER_ID);
+            mockingToken(true, MEMBER_ID);
             given(favoriteManageService.like(any(), any())).willReturn(1L);
 
             // when
@@ -114,8 +111,7 @@ class FavoriteApiControllerTest extends ControllerTest {
         @DisplayName("찜 등록이 되지 않은 스터디를 취소할 수 없다")
         void throwExceptionByNotFavoriteMarked() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(MEMBER_ID);
+            mockingToken(true, MEMBER_ID);
             doThrow(StudyWithMeException.type(FavoriteErrorCode.NOT_FAVORITE_MARKED))
                     .when(favoriteManageService)
                     .cancel(any(), any());
@@ -155,8 +151,7 @@ class FavoriteApiControllerTest extends ControllerTest {
         @DisplayName("찜 취소에 성공한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(MEMBER_ID);
+            mockingToken(true, MEMBER_ID);
             doNothing()
                     .when(favoriteManageService)
                     .cancel(any(), any());

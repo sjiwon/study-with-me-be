@@ -24,8 +24,6 @@ import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static com.kgu.studywithme.fixture.WeekFixture.STUDY_WEEKLY_1;
 import static com.kgu.studywithme.study.controller.utils.StudyWeeklyRequestUtils.createWeekWithAssignmentRequest;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -67,8 +65,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
         @DisplayName("팀장이 아니라면 스터디 주차를 생성할 수 없다")
         void throwExceptionByMemberIsNotHost() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(ANONYMOUS_ID);
+            mockingToken(true, ANONYMOUS_ID);
 
             // when
             final StudyWeeklyRequest request = createWeekWithAssignmentRequest(STUDY_WEEKLY_1, files, true);
@@ -129,8 +126,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
         @DisplayName("이미 해당 주차가 등록되었다면 중복으로 등록할 수 없다")
         void throwExceptionByAlreadyWeekCreated() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyErrorCode.ALREADY_WEEK_CREATED))
                     .when(studyWeeklyService)
                     .createWeek(any(), any());
@@ -194,8 +190,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
         @DisplayName("스터디 주차를 생성한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
 
             // when
             final StudyWeeklyRequest request = createWeekWithAssignmentRequest(STUDY_WEEKLY_1, files, true);
@@ -275,8 +270,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
         @DisplayName("팀장이 아니라면 스터디 주차를 수정할 수 없다")
         void throwExceptionByMemberIsNotHost() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(ANONYMOUS_ID);
+            mockingToken(true, ANONYMOUS_ID);
 
             // when
             final StudyWeeklyRequest request = createWeekWithAssignmentRequest(STUDY_WEEKLY_1, files, true);
@@ -338,8 +332,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
         @DisplayName("스터디 주차를 수정한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
             doNothing()
                     .when(studyWeeklyService)
                     .updateWeek(any(), any(), any());
@@ -410,8 +403,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
         @DisplayName("팀장이 아니라면 스터디 주차를 삭제할 수 없다")
         void throwExceptionByMemberIsNotHost() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(ANONYMOUS_ID);
+            mockingToken(true, ANONYMOUS_ID);
 
             // when
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -449,8 +441,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
         @DisplayName("가장 최신 주차가 아님에 따라 주차를 삭제할 수 없다")
         void throwExceptionByWeekIsNotLatest() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyErrorCode.WEEK_IS_NOT_LATEST))
                     .when(studyWeeklyService)
                     .deleteWeek(any(), any());
@@ -491,8 +482,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
         @DisplayName("스터디 주차를 삭제한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
 
             // when
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -539,8 +529,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
         @DisplayName("스터디 참여자가 아니라면 스터디 주차별 과제를 제출할 수 없다")
         void throwExceptionByMemberIsNotHost() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(ANONYMOUS_ID);
+            mockingToken(true, ANONYMOUS_ID);
 
             // when
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -590,8 +579,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
         @DisplayName("과제 제출물을 업로드 하지 않으면 예외가 발생한다")
         void throwExceptionByMissingSubmission() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyErrorCode.MISSING_SUBMISSION))
                     .when(studyWeeklyService)
                     .submitAssignment(any(), any(), any(), any(), any(), any());
@@ -643,8 +631,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
         @DisplayName("링크 + 파일을 둘다 업로드하면 예외가 발생한다")
         void throwExceptionByDuplicateSubmission() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyErrorCode.DUPLICATE_SUBMISSION))
                     .when(studyWeeklyService)
                     .submitAssignment(any(), any(), any(), any(), any(), any());
@@ -698,8 +685,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
         @DisplayName("스터디 주차별 과제를 제출한다 - 파일")
         void successWithLink() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
 
             // when
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -739,8 +725,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
         @DisplayName("스터디 주차별 과제를 제출한다 - 링크")
         void successWithFile() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
 
             // when
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -799,8 +784,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
         @DisplayName("스터디 참여자가 아니라면 제출한 과제를 수정할 수 없다")
         void throwExceptionByMemberIsNotHost() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(ANONYMOUS_ID);
+            mockingToken(true, ANONYMOUS_ID);
 
             // when
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -850,8 +834,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
         @DisplayName("과제 제출물을 업로드 하지 않으면 예외가 발생한다")
         void throwExceptionByMissingSubmission() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyErrorCode.MISSING_SUBMISSION))
                     .when(studyWeeklyService)
                     .editSubmittedAssignment(any(), any(), any(), any(), any(), any());
@@ -903,8 +886,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
         @DisplayName("링크 + 파일을 둘다 업로드하면 예외가 발생한다")
         void throwExceptionByDuplicateSubmission() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyErrorCode.DUPLICATE_SUBMISSION))
                     .when(studyWeeklyService)
                     .editSubmittedAssignment(any(), any(), any(), any(), any(), any());
@@ -958,8 +940,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
         @DisplayName("제출한 과제를 수정한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
 
             // when
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders

@@ -14,8 +14,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -42,8 +40,7 @@ class StudyReviewApiControllerTest extends ControllerTest {
         @DisplayName("졸업자가 아니면 리뷰를 작성할 수 없다")
         void throwExceptionByMemberIsNotGraduated() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(ANONYMOUS_ID);
+            mockingToken(true, ANONYMOUS_ID);
             doThrow(StudyWithMeException.type(StudyErrorCode.MEMBER_IS_NOT_GRADUATED))
                     .when(studyReviewService)
                     .write(any(), any(), any());
@@ -89,8 +86,7 @@ class StudyReviewApiControllerTest extends ControllerTest {
         @DisplayName("리뷰 작성에 성공한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(MEMBER_ID);
+            mockingToken(true, MEMBER_ID);
             doNothing()
                     .when(studyReviewService)
                     .write(any(), any(), any());
@@ -136,8 +132,7 @@ class StudyReviewApiControllerTest extends ControllerTest {
         @DisplayName("작성자가 아니면 리뷰를 삭제할 수 없다")
         void throwExceptionByMemberIsNotWriter() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(ANONYMOUS_ID);
+            mockingToken(true, ANONYMOUS_ID);
             doThrow(StudyWithMeException.type(MemberErrorCode.MEMBER_IS_NOT_WRITER))
                     .when(studyReviewService)
                     .remove(any(), any());
@@ -178,8 +173,7 @@ class StudyReviewApiControllerTest extends ControllerTest {
         @DisplayName("리뷰 삭제에 성공한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(WRITER_ID);
+            mockingToken(true, WRITER_ID);
             doNothing()
                     .when(studyReviewService)
                     .remove(any(), any());
@@ -220,8 +214,7 @@ class StudyReviewApiControllerTest extends ControllerTest {
         @DisplayName("작성자가 아니면 리뷰를 수정할 수 없다")
         void throwExceptionByMemberIsNotWriter() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(ANONYMOUS_ID);
+            mockingToken(true, ANONYMOUS_ID);
             doThrow(StudyWithMeException.type(MemberErrorCode.MEMBER_IS_NOT_WRITER))
                     .when(studyReviewService)
                     .update(any(), any(), any());
@@ -268,8 +261,7 @@ class StudyReviewApiControllerTest extends ControllerTest {
         @DisplayName("리뷰 수정에 성공한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(WRITER_ID);
+            mockingToken(true, WRITER_ID);
             doNothing()
                     .when(studyReviewService)
                     .update(any(), any(), any());
