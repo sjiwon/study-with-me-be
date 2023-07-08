@@ -1,5 +1,7 @@
 package com.kgu.studywithme.global.config;
 
+import com.kgu.studywithme.auth.utils.ExtractPayload;
+import com.kgu.studywithme.auth.utils.ExtractToken;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -8,6 +10,7 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
+import org.springdoc.core.utils.SpringDocUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -37,6 +40,15 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
         }
 )
 public class SwaggerConfiguration {
+    static {
+        SpringDocUtils
+                .getConfig()
+                .addAnnotationsToIgnore(
+                        ExtractToken.class,
+                        ExtractPayload.class
+                );
+    }
+
     @Bean
     public GroupedOpenApi studyWithMeApi() {
         return GroupedOpenApi.builder()
