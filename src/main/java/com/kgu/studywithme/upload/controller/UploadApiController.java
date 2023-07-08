@@ -25,9 +25,11 @@ public class UploadApiController {
 
     @Operation(summary = "이미지 업로드 EndPoint")
     @PostMapping(value = "/image", consumes = MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<SimpleResponseWrapper<String>> uploadImage(@ExtractPayload Long memberId,
-                                                                     @ModelAttribute @Valid ImageUploadRequest request) {
-        String imageUploadLink = request.type().equals("weekly")
+    public ResponseEntity<SimpleResponseWrapper<String>> uploadImage(
+            @ExtractPayload final Long memberId,
+            @ModelAttribute @Valid final ImageUploadRequest request
+    ) {
+        final String imageUploadLink = request.type().equals("weekly")
                 ? uploader.uploadWeeklyImage(request.file())
                 : uploader.uploadStudyDescriptionImage(request.file());
 

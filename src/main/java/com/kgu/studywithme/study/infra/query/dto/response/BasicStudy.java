@@ -30,9 +30,18 @@ public class BasicStudy {
     private List<Long> favoriteMarkingMembers;
 
     @QueryProjection
-    public BasicStudy(Long id, StudyName name, Description description, Category category,
-                      StudyThumbnail thumbnail, StudyType type, RecruitmentStatus recruitmentStatus,
-                      int currentMembers, Capacity capacity, LocalDateTime registerDate) {
+    public BasicStudy(
+            final Long id,
+            final StudyName name,
+            final Description description,
+            final Category category,
+            final StudyThumbnail thumbnail,
+            final StudyType type,
+            final RecruitmentStatus recruitmentStatus,
+            final int currentMembers,
+            final Capacity capacity,
+            final LocalDateTime registerDate
+    ) {
         this.id = id;
         this.name = name.getValue();
         this.description = description.getValue();
@@ -46,11 +55,11 @@ public class BasicStudy {
         this.registerDate = registerDate;
     }
 
-    public void applyHashtags(List<String> hashtags) {
+    public void applyHashtags(final List<String> hashtags) {
         this.hashtags = hashtags;
     }
 
-    public void applyFavoriteMarkingMembers(List<Long> favoriteMarkingMembers) {
+    public void applyFavoriteMarkingMembers(final List<Long> favoriteMarkingMembers) {
         this.favoriteMarkingMembers = favoriteMarkingMembers;
     }
 }

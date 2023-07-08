@@ -33,21 +33,28 @@ public class Participant extends BaseEntity {
     private Member member;
 
     @Builder
-    private Participant(Study study, Member member, ParticipantStatus status) {
+    private Participant(
+            final Study study,
+            final Member member,
+            final ParticipantStatus status
+    ) {
         this.study = study;
         this.member = member;
         this.status = status;
     }
 
-    public static Participant applyInStudy(Study study, Member member) {
+    public static Participant applyInStudy(
+            final Study study,
+            final Member member
+    ) {
         return new Participant(study, member, APPLY);
     }
 
-    public boolean isSameMember(Member other) {
+    public boolean isSameMember(final Member other) {
         return this.member.isSameMember(other);
     }
 
-    public void updateStatus(ParticipantStatus status) {
+    public void updateStatus(final ParticipantStatus status) {
         this.status = status;
     }
 }

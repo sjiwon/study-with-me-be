@@ -7,7 +7,11 @@ public record MemberInfo(
         String nickname,
         String email
 ) {
-    public MemberInfo(Member member) {
-        this(member.getId(), member.getNicknameValue(), member.getEmailValue());
+    public MemberInfo(final Member member) {
+        this(
+                member.getId(),
+                member.getNicknameValue(),
+                member.getEmailValue()
+        );
     }
 }

@@ -21,29 +21,42 @@ public class AttendanceService {
     private final MemberFindService memberFindService;
 
     @Transactional
-    public void manualCheckAttendance(Long studyId, Long memberId, Integer week, AttendanceStatus status) {
+    public void manualCheckAttendance(
+            final Long studyId,
+            final Long memberId,
+            final Integer week,
+            final AttendanceStatus status
+    ) {
         validateUpdateStatusIsNotNonAttendance(status);
 
-        Attendance attendance = getParticipantAttendance(studyId, memberId, week);
+        final Attendance attendance = getParticipantAttendance(studyId, memberId, week);
         final AttendanceStatus previousStatus = attendance.getStatus();
 
         attendance.updateAttendanceStatus(status);
         applyMemberScore(memberId, previousStatus, status);
     }
 
-    private Attendance getParticipantAttendance(Long studyId, Long memberId, Integer week) {
+    private Attendance getParticipantAttendance(
+            final Long studyId,
+            final Long memberId,
+            final Integer week
+    ) {
         return attendanceRepository.findByStudyIdAndParticipantIdAndWeek(studyId, memberId, week)
                 .orElseThrow(() -> StudyWithMeException.type(StudyErrorCode.ATTENDANCE_NOT_FOUND));
     }
 
-    private void validateUpdateStatusIsNotNonAttendance(AttendanceStatus status) {
+    private void validateUpdateStatusIsNotNonAttendance(final AttendanceStatus status) {
         if (status == NON_ATTENDANCE) {
             throw StudyWithMeException.type(StudyErrorCode.CANNOT_UPDATE_TO_NON_ATTENDANCE);
         }
     }
 
-    private void applyMemberScore(Long memberId, AttendanceStatus previous, AttendanceStatus current) {
-        Member member = memberFindService.findById(memberId);
+    private void applyMemberScore(
+            final Long memberId,
+            final AttendanceStatus previous,
+            final AttendanceStatus current
+    ) {
+        final Member member = memberFindService.findById(memberId);
 
         if (previous == NON_ATTENDANCE) {
             member.applyScoreByAttendanceStatus(current);
@@ -52,7 +65,10 @@ public class AttendanceService {
         }
     }
 
-    private boolean isStatusChanged(AttendanceStatus previous, AttendanceStatus current) {
+    private boolean isStatusChanged(
+            final AttendanceStatus previous,
+            final AttendanceStatus current
+    ) {
         return previous != current;
     }
 }

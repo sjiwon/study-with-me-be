@@ -8,5 +8,6 @@ import org.springframework.data.domain.Slice;
 
 public interface StudyCategoryQueryRepository {
     Slice<BasicStudy> findStudyByCategory(StudyCategoryCondition condition, Pageable pageable);
+
     Slice<BasicStudy> findStudyByRecommend(StudyRecommendCondition condition, Pageable pageable);
 }

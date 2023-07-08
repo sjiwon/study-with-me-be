@@ -43,14 +43,18 @@ public class StudyAttendanceScheduler {
         memberRepository.applyAbsenceScore(absenceParticipantIds);
     }
 
-    private Set<Long> extractNonAttendanceParticipantIds(List<BasicAttendance> attendances, Long studyId, int week) {
+    private Set<Long> extractNonAttendanceParticipantIds(
+            final List<BasicAttendance> attendances,
+            final Long studyId,
+            final int week
+    ) {
         return attendances.stream()
                 .filter(attendance -> attendance.studyId().equals(studyId) && attendance.week() == week)
                 .map(BasicAttendance::participantId)
                 .collect(Collectors.toSet());
     }
 
-    private boolean hasCandidates(Set<Long> participantIds) {
+    private boolean hasCandidates(final Set<Long> participantIds) {
         return !CollectionUtils.isEmpty(participantIds);
     }
 }

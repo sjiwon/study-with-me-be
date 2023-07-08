@@ -4,5 +4,7 @@ import com.kgu.studywithme.study.infra.query.dto.response.StudyApplicantInformat
 
 import java.util.List;
 
-public record StudyApplicant(List<StudyApplicantInformation> applicants) {
+public record StudyApplicant(
+        List<StudyApplicantInformation> applicants
+) {
 }

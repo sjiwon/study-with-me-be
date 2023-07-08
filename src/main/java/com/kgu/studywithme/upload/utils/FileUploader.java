@@ -28,46 +28,51 @@ public class FileUploader {
     private final AmazonS3 amazonS3;
     private final String bucket;
 
-    public FileUploader(AmazonS3 amazonS3,
-                        @Value("${cloud.ncp.storage.bucket}") String bucket) {
+    public FileUploader(
+            final AmazonS3 amazonS3,
+            @Value("${cloud.ncp.storage.bucket}") final String bucket
+    ) {
         this.amazonS3 = amazonS3;
         this.bucket = bucket;
     }
 
     // 스터디 생성 시 설명 내부 이미지 업로드
-    public String uploadStudyDescriptionImage(MultipartFile file) {
+    public String uploadStudyDescriptionImage(final MultipartFile file) {
         validateFileExists(file);
         return uploadFile(DESCRIPTION, file);
     }
 
     // Weekly 글 내부 이미지 업로드
-    public String uploadWeeklyImage(MultipartFile file) {
+    public String uploadWeeklyImage(final MultipartFile file) {
         validateFileExists(file);
         return uploadFile(IMAGE, file);
     }
 
     // Weekly 글 첨부파일 업로드
-    public String uploadWeeklyAttachment(MultipartFile file) {
+    public String uploadWeeklyAttachment(final MultipartFile file) {
         validateFileExists(file);
         return uploadFile(ATTACHMENT, file);
     }
 
     // Weekly 과제 제출
-    public String uploadWeeklySubmit(MultipartFile file) {
+    public String uploadWeeklySubmit(final MultipartFile file) {
         validateFileExists(file);
         return uploadFile(SUBMIT, file);
     }
 
-    private void validateFileExists(MultipartFile file) {
+    private void validateFileExists(final MultipartFile file) {
         if (file == null || file.isEmpty()) {
             throw StudyWithMeException.type(UploadErrorCode.FILE_IS_EMPTY);
         }
     }
 
-    private String uploadFile(String type, MultipartFile file) {
-        String fileName = createFileNameByType(type, file.getOriginalFilename());
+    private String uploadFile(
+            final String type,
+            final MultipartFile file
+    ) {
+        final String fileName = createFileNameByType(type, file.getOriginalFilename());
 
-        ObjectMetadata objectMetadata = new ObjectMetadata();
+        final ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentType(file.getContentType());
         objectMetadata.setContentLength(file.getSize());
 
@@ -84,8 +89,11 @@ public class FileUploader {
         return amazonS3.getUrl(bucket, fileName).toString();
     }
 
-    private String createFileNameByType(String type, String originalFileName) {
-        String fileName = UUID.randomUUID() + extractFileExtension(originalFileName);
+    private String createFileNameByType(
+            final String type,
+            final String originalFileName
+    ) {
+        final String fileName = UUID.randomUUID() + extractFileExtension(originalFileName);
 
         return switch (type) {
             case DESCRIPTION -> String.format(STUDY_DESCRIPTIONS, fileName);
@@ -95,7 +103,7 @@ public class FileUploader {
         };
     }
 
-    private String extractFileExtension(String fileName) {
+    private String extractFileExtension(final String fileName) {
         return fileName.substring(fileName.lastIndexOf("."));
     }
 }

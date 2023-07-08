@@ -39,23 +39,37 @@ public class Notice extends BaseEntity {
     @OneToMany(mappedBy = "notice", cascade = CascadeType.PERSIST)
     private List<Comment> comments = new ArrayList<>();
 
-    private Notice(Study study, String title, String content) {
+    private Notice(
+            final Study study,
+            final String title,
+            final String content
+    ) {
         this.study = study;
         this.writer = study.getHost();
         this.title = title;
         this.content = content;
     }
 
-    public static Notice writeNotice(Study study, String title, String content) {
+    public static Notice writeNotice(
+            final Study study,
+            final String title,
+            final String content
+    ) {
         return new Notice(study, title, content);
     }
 
-    public void updateNoticeInformation(String title, String content) {
+    public void updateNoticeInformation(
+            final String title,
+            final String content
+    ) {
         this.title = title;
         this.content = content;
     }
 
-    public void addComment(Member writer, String content) {
+    public void addComment(
+            final Member writer,
+            final String content
+    ) {
         comments.add(Comment.writeComment(this, writer, content));
     }
 }

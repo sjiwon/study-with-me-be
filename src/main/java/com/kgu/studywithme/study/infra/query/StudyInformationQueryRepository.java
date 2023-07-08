@@ -10,9 +10,14 @@ import java.util.List;
 
 public interface StudyInformationQueryRepository {
     int getGraduatedParticipantCountByStudyId(Long studyId);
+
     List<ReviewInformation> findReviewByStudyId(Long studyId);
+
     List<NoticeInformation> findNoticeWithCommentsByStudyId(Long studyId);
+
     List<StudyApplicantInformation> findApplicantByStudyId(Long studyId);
+
     List<AttendanceInformation> findAttendanceByStudyId(Long studyId);
+
     List<Week> findWeeklyByStudyId(Long studyId);
 }

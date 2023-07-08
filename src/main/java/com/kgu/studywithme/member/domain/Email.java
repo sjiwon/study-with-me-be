@@ -21,26 +21,26 @@ public class Email {
     @Column(name = "email", nullable = false, unique = true, updatable = false)
     private String value;
 
-    private Email(String value) {
+    private Email(final String value) {
         this.value = value;
     }
 
-    public static Email from(String value) {
+    public static Email from(final String value) {
         validateEmailPattern(value);
         return new Email(value);
     }
 
-    private static void validateEmailPattern(String value) {
+    private static void validateEmailPattern(final String value) {
         if (isNotValidPattern(value)) {
             throw StudyWithMeException.type(MemberErrorCode.INVALID_EMAIL_FORMAT);
         }
     }
 
-    private static boolean isNotValidPattern(String email) {
+    private static boolean isNotValidPattern(final String email) {
         return !EMAIL_MATCHER.matcher(email).matches();
     }
 
-    public boolean isSameEmail(Email email) {
+    public boolean isSameEmail(final Email email) {
         return this.value.equals(email.getValue());
     }
 }

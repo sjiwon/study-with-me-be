@@ -9,7 +9,10 @@ import java.util.List;
 
 public interface MemberSimpleQueryRepository {
     boolean isReportReceived(Long reporteeId, Long reporterId);
+
     List<StudyAttendanceMetadata> findStudyAttendanceMetadataByMemberId(Long memberId);
+
     Long getAttendanceCount(Long studyId, Long memberId, AttendanceStatus status);
+
     List<AttendanceRatio> findAttendanceRatioByMemberId(Long memberId);
 }

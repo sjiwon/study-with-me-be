@@ -18,7 +18,14 @@ public class CommentInformation {
     private final StudyMember writer;
 
     @QueryProjection
-    public CommentInformation(Long id, Long noticeId, String content, LocalDateTime writeDate, Long writerId, Nickname writerNickname) {
+    public CommentInformation(
+            final Long id,
+            final Long noticeId,
+            final String content,
+            final LocalDateTime writeDate,
+            final Long writerId,
+            final Nickname writerNickname
+    ) {
         this.id = id;
         this.noticeId = noticeId;
         this.content = content;

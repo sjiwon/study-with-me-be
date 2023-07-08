@@ -9,11 +9,18 @@ import com.kgu.studywithme.study.domain.week.submit.Submit;
 import java.util.List;
 
 public record WeeklySummary(
-        Long id, String title, String content, int week, Period period, StudyMember creator,
-        boolean assignmentExists, boolean autoAttendance,
-        List<UploadAttachment> attachments, List<WeeklySubmitSummary> submits
+        Long id,
+        String title,
+        String content,
+        int week,
+        Period period,
+        StudyMember creator,
+        boolean assignmentExists,
+        boolean autoAttendance,
+        List<UploadAttachment> attachments,
+        List<WeeklySubmitSummary> submits
 ) {
-    public WeeklySummary(Week week) {
+    public WeeklySummary(final Week week) {
         this(
                 week.getId(),
                 week.getTitle(),
@@ -28,13 +35,13 @@ public record WeeklySummary(
         );
     }
 
-    private static List<UploadAttachment> transformAttachments(List<Attachment> attachments) {
+    private static List<UploadAttachment> transformAttachments(final List<Attachment> attachments) {
         return attachments.stream()
                 .map(Attachment::getUploadAttachment)
                 .toList();
     }
 
-    private static List<WeeklySubmitSummary> transformSubmits(List<Submit> submits) {
+    private static List<WeeklySubmitSummary> transformSubmits(final List<Submit> submits) {
         return submits.stream()
                 .map(WeeklySubmitSummary::new)
                 .toList();

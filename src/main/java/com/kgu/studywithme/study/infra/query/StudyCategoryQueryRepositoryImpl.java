@@ -42,7 +42,10 @@ public class StudyCategoryQueryRepositoryImpl implements StudyCategoryQueryRepos
     private final JPAQueryFactory query;
 
     @Override
-    public Slice<BasicStudy> findStudyByCategory(StudyCategoryCondition condition, Pageable pageable) {
+    public Slice<BasicStudy> findStudyByCategory(
+            final StudyCategoryCondition condition,
+            final Pageable pageable
+    ) {
         JPAQuery<BasicStudy> fetchQuery = query
                 .select(assembleStudyProjections())
                 .from(study)
@@ -75,7 +78,10 @@ public class StudyCategoryQueryRepositoryImpl implements StudyCategoryQueryRepos
     }
 
     @Override
-    public Slice<BasicStudy> findStudyByRecommend(StudyRecommendCondition condition, Pageable pageable) {
+    public Slice<BasicStudy> findStudyByRecommend(
+            final StudyRecommendCondition condition,
+            final Pageable pageable
+    ) {
         List<Category> memberInterests = query
                 .select(interest.category)
                 .from(interest)
@@ -119,18 +125,25 @@ public class StudyCategoryQueryRepositoryImpl implements StudyCategoryQueryRepos
 
     public static ConstructorExpression<BasicStudy> assembleStudyProjections() {
         return new QBasicStudy(
-                study.id, study.name, study.description, study.category, study.thumbnail, study.type, study.recruitmentStatus,
+                study.id,
+                study.name,
+                study.description,
+                study.category,
+                study.thumbnail,
+                study.type,
+                study.recruitmentStatus,
                 select(participant.count().intValue())
                         .from(participant)
                         .where(
                                 participant.study.id.eq(study.id),
                                 participant.status.eq(APPROVE)
                         ),
-                study.participants.capacity, study.createdAt
+                study.participants.capacity,
+                study.createdAt
         );
     }
 
-    private List<OrderSpecifier<?>> orderBySortType(String sort) {
+    private List<OrderSpecifier<?>> orderBySortType(final String sort) {
         List<OrderSpecifier<?>> orderBy = new LinkedList<>();
 
         switch (sort) {
@@ -142,7 +155,10 @@ public class StudyCategoryQueryRepositoryImpl implements StudyCategoryQueryRepos
         return orderBy;
     }
 
-    private List<BasicStudy> makeFetchQueryResult(JPAQuery<BasicStudy> fetchQuery, String sort) {
+    private List<BasicStudy> makeFetchQueryResult(
+            final JPAQuery<BasicStudy> fetchQuery,
+            final String sort
+    ) {
         List<BasicStudy> result = addJoinBySortOption(fetchQuery, sort);
         List<Long> studyIds = result.stream()
                 .map(BasicStudy::getId)
@@ -153,7 +169,10 @@ public class StudyCategoryQueryRepositoryImpl implements StudyCategoryQueryRepos
         return result;
     }
 
-    private List<BasicStudy> addJoinBySortOption(JPAQuery<BasicStudy> fetchQuery, String sort) {
+    private List<BasicStudy> addJoinBySortOption(
+            final JPAQuery<BasicStudy> fetchQuery,
+            final String sort
+    ) {
         return switch (sort) {
             case SORT_FAVORITE -> fetchQuery
                     .leftJoin(favorite).on(favorite.studyId.eq(study.id))
@@ -165,7 +184,10 @@ public class StudyCategoryQueryRepositoryImpl implements StudyCategoryQueryRepos
         };
     }
 
-    private void applyStudyHashtags(List<Long> studyIds, List<BasicStudy> result) {
+    private void applyStudyHashtags(
+            final List<Long> studyIds,
+            final List<BasicStudy> result
+    ) {
         List<BasicHashtag> hashtags = query
                 .select(new QBasicHashtag(study.id, hashtag.name))
                 .from(hashtag)
@@ -176,7 +198,10 @@ public class StudyCategoryQueryRepositoryImpl implements StudyCategoryQueryRepos
         result.forEach(study -> study.applyHashtags(collectHashtags(hashtags, study)));
     }
 
-    private List<String> collectHashtags(List<BasicHashtag> hashtags, BasicStudy study) {
+    private List<String> collectHashtags(
+            final List<BasicHashtag> hashtags,
+            final BasicStudy study
+    ) {
         return hashtags
                 .stream()
                 .filter(hashtag -> hashtag.studyId().equals(study.getId()))
@@ -184,7 +209,10 @@ public class StudyCategoryQueryRepositoryImpl implements StudyCategoryQueryRepos
                 .toList();
     }
 
-    private void applyStudyFavoriteMarkingMembers(List<Long> studyIds, List<BasicStudy> result) {
+    private void applyStudyFavoriteMarkingMembers(
+            final List<Long> studyIds,
+            final List<BasicStudy> result
+    ) {
         List<Favorite> favorites = query
                 .select(favorite)
                 .from(favorite)
@@ -194,7 +222,10 @@ public class StudyCategoryQueryRepositoryImpl implements StudyCategoryQueryRepos
         result.forEach(study -> study.applyFavoriteMarkingMembers(collectFavoriteMarkingMembers(favorites, study)));
     }
 
-    private List<Long> collectFavoriteMarkingMembers(List<Favorite> favorites, BasicStudy study) {
+    private List<Long> collectFavoriteMarkingMembers(
+            final List<Favorite> favorites,
+            final BasicStudy study
+    ) {
         return favorites
                 .stream()
                 .filter(favorite -> favorite.getStudyId().equals(study.getId()))
@@ -203,7 +234,11 @@ public class StudyCategoryQueryRepositoryImpl implements StudyCategoryQueryRepos
 
     }
 
-    private boolean validateHasNext(Pageable pageable, int contentSize, Long totalCount) {
+    private boolean validateHasNext(
+            final Pageable pageable,
+            final int contentSize,
+            final Long totalCount
+    ) {
         if (contentSize == pageable.getPageSize()) {
             return (long) contentSize * (pageable.getPageNumber() + 1) != totalCount;
         }
@@ -211,11 +246,11 @@ public class StudyCategoryQueryRepositoryImpl implements StudyCategoryQueryRepos
         return false;
     }
 
-    private BooleanExpression categoryEq(Category category) {
+    private BooleanExpression categoryEq(final Category category) {
         return (category != null) ? study.category.eq(category) : null;
     }
 
-    private BooleanExpression studyType(String type) {
+    private BooleanExpression studyType(final String type) {
         if (!hasText(type)) {
             return null;
         }
@@ -223,15 +258,15 @@ public class StudyCategoryQueryRepositoryImpl implements StudyCategoryQueryRepos
         return "online".equals(type) ? study.type.eq(ONLINE) : study.type.eq(OFFLINE);
     }
 
-    private BooleanExpression studyCategoryIn(List<Category> memberInterests) {
+    private BooleanExpression studyCategoryIn(final List<Category> memberInterests) {
         return (memberInterests != null) ? study.category.in(memberInterests) : null;
     }
 
-    private BooleanExpression studyLocationProvinceEq(String province) {
+    private BooleanExpression studyLocationProvinceEq(final String province) {
         return hasText(province) ? study.location.province.eq(province) : null;
     }
 
-    private BooleanExpression studyLocationCityEq(String city) {
+    private BooleanExpression studyLocationCityEq(final String city) {
         return hasText(city) ? study.location.city.eq(city) : null;
     }
 
@@ -239,7 +274,7 @@ public class StudyCategoryQueryRepositoryImpl implements StudyCategoryQueryRepos
         return study.closed.eq(false);
     }
 
-    private boolean hasText(String str) {
+    private boolean hasText(final String str) {
         return StringUtils.hasText(str);
     }
 }

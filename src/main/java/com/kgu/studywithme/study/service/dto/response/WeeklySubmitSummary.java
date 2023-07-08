@@ -8,7 +8,7 @@ public record WeeklySubmitSummary(
         String submitFileName,
         String submitLink
 ) {
-    public WeeklySubmitSummary(Submit submit) {
+    public WeeklySubmitSummary(final Submit submit) {
         this(
                 new StudyMember(submit.getParticipant()),
                 submit.getUploadAssignment().getType().getDescription(),

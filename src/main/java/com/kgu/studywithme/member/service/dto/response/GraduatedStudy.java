@@ -4,5 +4,7 @@ import com.kgu.studywithme.study.infra.query.dto.response.SimpleGraduatedStudy;
 
 import java.util.List;
 
-public record GraduatedStudy(List<SimpleGraduatedStudy> result) {
+public record GraduatedStudy(
+        List<SimpleGraduatedStudy> result
+) {
 }

@@ -26,20 +26,26 @@ public class StudyService {
     private final MemberFindService memberFindService;
 
     @Transactional
-    public Long register(Long hostId, StudyRegisterRequest request) {
+    public Long register(
+            final Long hostId,
+            final StudyRegisterRequest request
+    ) {
         validateUniqueNameForCreate(request.name());
 
-        Member host = memberFindService.findById(hostId);
-        Study study = buildStudy(request, host);
+        final Member host = memberFindService.findById(hostId);
+        final Study study = buildStudy(request, host);
 
         return studyRepository.save(study).getId();
     }
 
-    private void validateUniqueNameForCreate(String name) {
+    private void validateUniqueNameForCreate(final String name) {
         studyValidator.validateUniqueNameForCreate(StudyName.from(name));
     }
 
-    private Study buildStudy(StudyRegisterRequest request, Member host) {
+    private Study buildStudy(
+            final StudyRegisterRequest request,
+            final Member host
+    ) {
         if (request.type().equals(ONLINE.getBrief())) {
             return Study.createOnlineStudy(
                     host,
@@ -67,10 +73,14 @@ public class StudyService {
     }
 
     @Transactional
-    public void update(Long studyId, Long hostId, StudyUpdateRequest request) {
+    public void update(
+            final Long studyId,
+            final Long hostId,
+            final StudyUpdateRequest request
+    ) {
         validateUniqueNameForUpdate(request.name(), studyId);
 
-        Study study = studyFindService.findByIdAndHostId(studyId, hostId);
+        final Study study = studyFindService.findByIdAndHostId(studyId, hostId);
         study.update(
                 StudyName.from(request.name()),
                 Description.from(request.description()),
@@ -86,13 +96,16 @@ public class StudyService {
         );
     }
 
-    private void validateUniqueNameForUpdate(String name, Long studyId) {
+    private void validateUniqueNameForUpdate(
+            final String name,
+            final Long studyId
+    ) {
         studyValidator.validateUniqueNameForUpdate(StudyName.from(name), studyId);
     }
 
     @Transactional
-    public void close(Long studyId) {
-        Study study = studyFindService.findById(studyId);
+    public void close(final Long studyId) {
+        final Study study = studyFindService.findById(studyId);
         study.close();
     }
 }

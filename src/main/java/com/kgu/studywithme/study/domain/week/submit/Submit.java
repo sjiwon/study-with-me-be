@@ -28,17 +28,25 @@ public class Submit extends BaseEntity {
     @JoinColumn(name = "participant_id", referencedColumnName = "id", nullable = false)
     private Member participant;
 
-    private Submit(Week week, Member participant, UploadAssignment uploadAssignment) {
+    private Submit(
+            final Week week,
+            final Member participant,
+            final UploadAssignment uploadAssignment
+    ) {
         this.week = week;
         this.participant = participant;
         this.uploadAssignment = uploadAssignment;
     }
 
-    public static Submit submitAssignment(Week week, Member participant, UploadAssignment uploadAssignment) {
+    public static Submit submitAssignment(
+            final Week week,
+            final Member participant,
+            final UploadAssignment uploadAssignment
+    ) {
         return new Submit(week, participant, uploadAssignment);
     }
 
-    public void editUpload(UploadAssignment uploadAssignment) {
+    public void editUpload(final UploadAssignment uploadAssignment) {
         this.uploadAssignment = uploadAssignment;
     }
 }

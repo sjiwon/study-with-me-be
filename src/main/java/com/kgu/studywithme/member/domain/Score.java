@@ -23,11 +23,11 @@ public class Score {
     @Column(name = "score", nullable = false)
     private int value;
 
-    private Score(int value) {
+    private Score(final int value) {
         this.value = value < MINIMUM ? MINIMUM : Math.min(value, MAXIMUM);
     }
 
-    public static Score from(int value) {
+    public static Score from(final int value) {
         return new Score(value);
     }
 

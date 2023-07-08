@@ -9,7 +9,7 @@ public interface PagingConstants {
     String SORT_FAVORITE = "favorite";
     String SORT_REVIEW = "review";
 
-    static Pageable getDefaultPageRequest(int page) {
+    static Pageable getDefaultPageRequest(final int page) {
         return PageRequest.of(page, SLICE_PER_PAGE);
     }
 }

@@ -12,7 +12,7 @@ public record ParticipantInformation(
         int score,
         int age
 ) {
-    public ParticipantInformation(Member member) {
+    public ParticipantInformation(final Member member) {
         this(
                 member.getId(),
                 member.getNicknameValue(),
@@ -22,7 +22,7 @@ public record ParticipantInformation(
         );
     }
 
-    private static int getMemberAge(LocalDate birth) {
+    private static int getMemberAge(final LocalDate birth) {
         return Period.between(birth, LocalDate.now()).getYears();
     }
 }

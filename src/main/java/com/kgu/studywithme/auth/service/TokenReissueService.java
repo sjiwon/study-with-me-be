@@ -15,15 +15,18 @@ public class TokenReissueService {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional
-    public TokenResponse reissueTokens(Long memberId, String refreshToken) {
+    public TokenResponse reissueTokens(
+            final Long memberId,
+            final String refreshToken
+    ) {
         // 사용자가 보유하고 있는 Refresh Token인지
         if (!tokenManager.isRefreshTokenExists(memberId, refreshToken)) {
             throw StudyWithMeException.type(AuthErrorCode.AUTH_INVALID_TOKEN);
         }
 
         // Access Token & Refresh Token 발급
-        String newAccessToken = jwtTokenProvider.createAccessToken(memberId);
-        String newRefreshToken = jwtTokenProvider.createRefreshToken(memberId);
+        final String newAccessToken = jwtTokenProvider.createAccessToken(memberId);
+        final String newRefreshToken = jwtTokenProvider.createRefreshToken(memberId);
 
         // RTR 정책에 의해 memberId에 해당하는 사용자가 보유하고 있는 Refresh Token 업데이트
         tokenManager.reissueRefreshTokenByRtrPolicy(memberId, newRefreshToken);

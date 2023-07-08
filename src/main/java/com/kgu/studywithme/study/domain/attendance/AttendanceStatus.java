@@ -17,7 +17,7 @@ public enum AttendanceStatus {
 
     private final String description;
 
-    public static AttendanceStatus fromDescription(String description) {
+    public static AttendanceStatus fromDescription(final String description) {
         return Arrays.stream(values())
                 .filter(status -> status.getDescription().equals(description))
                 .findFirst()

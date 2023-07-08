@@ -24,18 +24,18 @@ public class Reviews {
         return new Reviews();
     }
 
-    public void writeReview(Review review) {
+    public void writeReview(final Review review) {
         validateFirstReview(review.getWriter());
         reviews.add(review);
     }
 
-    private void validateFirstReview(Member writer) {
+    private void validateFirstReview(final Member writer) {
         if (isAlreadyWritten(writer)) {
             throw StudyWithMeException.type(StudyErrorCode.ALREADY_REVIEW_WRITTEN);
         }
     }
 
-    private boolean isAlreadyWritten(Member writer) {
+    private boolean isAlreadyWritten(final Member writer) {
         return reviews.stream()
                 .anyMatch(review -> review.getWriter().isSameMember(writer));
     }

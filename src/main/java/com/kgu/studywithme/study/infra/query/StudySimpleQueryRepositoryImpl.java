@@ -30,9 +30,16 @@ public class StudySimpleQueryRepositoryImpl implements StudySimpleQueryRepositor
     private static final QMember host = new QMember("host");
 
     @Override
-    public List<SimpleStudy> findApplyStudyByMemberId(Long memberId) {
+    public List<SimpleStudy> findApplyStudyByMemberId(final Long memberId) {
         return query
-                .selectDistinct(new QSimpleStudy(study.id, study.name, study.category, study.thumbnail))
+                .selectDistinct(
+                        new QSimpleStudy(
+                                study.id,
+                                study.name,
+                                study.category,
+                                study.thumbnail
+                        )
+                )
                 .from(study)
                 .innerJoin(participant).on(participant.study.id.eq(study.id))
                 .where(
@@ -45,9 +52,16 @@ public class StudySimpleQueryRepositoryImpl implements StudySimpleQueryRepositor
     }
 
     @Override
-    public List<SimpleStudy> findParticipateStudyByMemberId(Long memberId) {
+    public List<SimpleStudy> findParticipateStudyByMemberId(final Long memberId) {
         return query
-                .selectDistinct(new QSimpleStudy(study.id, study.name, study.category, study.thumbnail))
+                .selectDistinct(
+                        new QSimpleStudy(
+                                study.id,
+                                study.name,
+                                study.category,
+                                study.thumbnail
+                        )
+                )
                 .from(study)
                 .innerJoin(study.participants.host, host)
                 .leftJoin(participant).on(participant.study.id.eq(study.id))
@@ -60,9 +74,16 @@ public class StudySimpleQueryRepositoryImpl implements StudySimpleQueryRepositor
     }
 
     @Override
-    public List<SimpleStudy> findFavoriteStudyByMemberId(Long memberId) {
+    public List<SimpleStudy> findFavoriteStudyByMemberId(final Long memberId) {
         return query
-                .selectDistinct(new QSimpleStudy(study.id, study.name, study.category, study.thumbnail))
+                .selectDistinct(
+                        new QSimpleStudy(
+                                study.id,
+                                study.name,
+                                study.category,
+                                study.thumbnail
+                        )
+                )
                 .from(study)
                 .innerJoin(favorite).on(favorite.studyId.eq(study.id))
                 .where(favorite.memberId.eq(memberId))
@@ -71,12 +92,20 @@ public class StudySimpleQueryRepositoryImpl implements StudySimpleQueryRepositor
     }
 
     @Override
-    public List<SimpleGraduatedStudy> findGraduatedStudyByMemberId(Long memberId) {
+    public List<SimpleGraduatedStudy> findGraduatedStudyByMemberId(final Long memberId) {
         return query
-                .selectDistinct(new QSimpleGraduatedStudy(
-                        study.id, study.name, study.category, study.thumbnail,
-                        review.id, review.content, review.createdAt, review.modifiedAt
-                ))
+                .selectDistinct(
+                        new QSimpleGraduatedStudy(
+                                study.id,
+                                study.name,
+                                study.category,
+                                study.thumbnail,
+                                review.id,
+                                review.content,
+                                review.createdAt,
+                                review.modifiedAt
+                        )
+                )
                 .from(study)
                 .innerJoin(participant).on(participant.study.id.eq(study.id))
                 .leftJoin(review).on(review.study.id.eq(study.id))
@@ -91,7 +120,12 @@ public class StudySimpleQueryRepositoryImpl implements StudySimpleQueryRepositor
         QWeek weekly = new QWeek("week");
 
         return query
-                .select(new QBasicWeekly(weekly.study.id, weekly.week))
+                .select(
+                        new QBasicWeekly(
+                                weekly.study.id,
+                                weekly.week
+                        )
+                )
                 .from(weekly)
                 .where(
                         weekly.autoAttendance.eq(true),
@@ -104,7 +138,13 @@ public class StudySimpleQueryRepositoryImpl implements StudySimpleQueryRepositor
     @Override
     public List<BasicAttendance> findNonAttendanceInformation() {
         return query
-                .select(new QBasicAttendance(attendance.study.id, attendance.week, attendance.participant.id))
+                .select(
+                        new QBasicAttendance(
+                                attendance.study.id,
+                                attendance.week,
+                                attendance.participant.id
+                        )
+                )
                 .from(attendance)
                 .where(attendance.status.eq(NON_ATTENDANCE))
                 .orderBy(attendance.study.id.asc())
@@ -112,7 +152,10 @@ public class StudySimpleQueryRepositoryImpl implements StudySimpleQueryRepositor
     }
 
     @Override
-    public boolean isStudyParticipant(Long studyId, Long memberId) {
+    public boolean isStudyParticipant(
+            final Long studyId,
+            final Long memberId
+    ) {
         List<Long> participantIds = query
                 .select(participant.member.id)
                 .from(participant)
@@ -125,7 +168,10 @@ public class StudySimpleQueryRepositoryImpl implements StudySimpleQueryRepositor
         return isStudyHost(studyId, memberId) || isMemberInParticipant(memberId, participantIds);
     }
 
-    private boolean isStudyHost(Long studyId, Long memberId) {
+    private boolean isStudyHost(
+            final Long studyId,
+            final Long memberId
+    ) {
         return query
                 .select(study.id)
                 .from(study)
@@ -137,12 +183,15 @@ public class StudySimpleQueryRepositoryImpl implements StudySimpleQueryRepositor
                 .size() == 1;
     }
 
-    private boolean isMemberInParticipant(Long memberId, List<Long> participantIds) {
+    private boolean isMemberInParticipant(
+            final Long memberId,
+            final List<Long> participantIds
+    ) {
         return participantIds.contains(memberId);
     }
 
     @Override
-    public int getNextWeek(Long studyId) {
+    public int getNextWeek(final Long studyId) {
         QWeek weekly = new QWeek("week");
 
         List<Integer> weeks = query
@@ -156,7 +205,10 @@ public class StudySimpleQueryRepositoryImpl implements StudySimpleQueryRepositor
     }
 
     @Override
-    public boolean isLatestWeek(Long studyId, Integer week) {
+    public boolean isLatestWeek(
+            final Long studyId,
+            final Integer week
+    ) {
         QWeek weekly = new QWeek("week");
 
         List<Integer> weeks = query
@@ -175,7 +227,10 @@ public class StudySimpleQueryRepositoryImpl implements StudySimpleQueryRepositor
 
     @Override
     @Modifying(flushAutomatically = true, clearAutomatically = true)
-    public void deleteSpecificWeek(Long studyId, Integer week) {
+    public void deleteSpecificWeek(
+            final Long studyId,
+            final Integer week
+    ) {
         QWeek weekly = new QWeek("week");
 
         Long weekId = query
@@ -209,19 +264,19 @@ public class StudySimpleQueryRepositoryImpl implements StudySimpleQueryRepositor
         }
     }
 
-    private BooleanExpression participateStatusEq(ParticipantStatus status) {
+    private BooleanExpression participateStatusEq(final ParticipantStatus status) {
         return (status != null) ? participant.status.eq(status) : null;
     }
 
-    private BooleanExpression participantIdEqAndApproveStatus(Long memberId) {
+    private BooleanExpression participantIdEqAndApproveStatus(final Long memberId) {
         return (memberId != null) ? participant.member.id.eq(memberId).and(participateStatusEq(APPROVE)) : null;
     }
 
-    private BooleanExpression memberIdEq(Long memberId) {
+    private BooleanExpression memberIdEq(final Long memberId) {
         return (memberId != null) ? participant.member.id.eq(memberId) : null;
     }
 
-    private BooleanExpression hostIdEq(Long memberId) {
+    private BooleanExpression hostIdEq(final Long memberId) {
         return (memberId != null) ? study.participants.host.id.eq(memberId) : null;
     }
 

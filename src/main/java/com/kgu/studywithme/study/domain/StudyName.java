@@ -21,25 +21,25 @@ public class StudyName {
         this.value = value;
     }
 
-    public static StudyName from(String value) {
+    public static StudyName from(final String value) {
         validateNameIsNotBlank(value);
         validateLengthIsInRange(value);
         return new StudyName(value);
     }
 
-    private static void validateNameIsNotBlank(String value) {
+    private static void validateNameIsNotBlank(final String value) {
         if (value.isBlank()) {
             throw StudyWithMeException.type(StudyErrorCode.NAME_IS_BLANK);
         }
     }
 
-    private static void validateLengthIsInRange(String value) {
+    private static void validateLengthIsInRange(final String value) {
         if (isLengthOutOfRange(value)) {
             throw StudyWithMeException.type(StudyErrorCode.NAME_LENGTH_OUT_OF_RANGE);
         }
     }
 
-    private static boolean isLengthOutOfRange(String name) {
+    private static boolean isLengthOutOfRange(final String name) {
         return MAXIMUM_LENGTH < name.length();
     }
 }

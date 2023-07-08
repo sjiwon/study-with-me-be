@@ -13,7 +13,10 @@ public class CheckStudyHostAspect {
     private final StudyValidator studyValidator;
 
     @Before("@annotation(com.kgu.studywithme.global.aop.CheckStudyHost) && args(hostId, studyId, ..)")
-    public void checkParticipant(Long hostId, Long studyId) {
+    public void checkParticipant(
+            final Long hostId,
+            final Long studyId
+    ) {
         studyValidator.validateHost(studyId, hostId);
     }
 }

@@ -24,43 +24,61 @@ public class NoticeCommentService {
     private final StudyValidator studyValidator;
 
     @Transactional
-    public void register(Long noticeId, Long memberId, String content) {
-        Notice notice = findNoticeById(noticeId);
-        Member writer = memberFindService.findById(memberId);
+    public void register(
+            final Long noticeId,
+            final Long memberId,
+            final String content
+    ) {
+        final Notice notice = findNoticeById(noticeId);
+        final Member writer = memberFindService.findById(memberId);
         validateWriterIsParticipant(notice, writer);
 
         notice.addComment(writer, content);
     }
 
-    public Notice findNoticeById(Long noticeId) {
+    public Notice findNoticeById(final Long noticeId) {
         return noticeRepository.findByIdWithStudy(noticeId)
                 .orElseThrow(() -> StudyWithMeException.type(StudyErrorCode.NOTICE_NOT_FOUND));
     }
 
-    private void validateWriterIsParticipant(Notice notice, Member writer) {
-        Study study = notice.getStudy();
+    private void validateWriterIsParticipant(
+            final Notice notice,
+            final Member writer
+    ) {
+        final Study study = notice.getStudy();
         study.validateMemberIsParticipant(writer);
     }
 
     @Transactional
-    public void remove(Long commentId, Long memberId) {
+    public void remove(
+            final Long commentId,
+            final Long memberId
+    ) {
         validateCommentWriter(commentId, memberId);
         commentRepository.deleteById(commentId);
     }
 
     @Transactional
-    public void update(Long commentId, Long memberId, String content) {
+    public void update(
+            final Long commentId,
+            final Long memberId,
+            final String content
+    ) {
         validateCommentWriter(commentId, memberId);
-        Comment comment = findCommentById(commentId);
+
+        final Comment comment = findCommentById(commentId);
         comment.updateComment(content);
     }
 
-    private Comment findCommentById(Long commentId) {
+    private Comment findCommentById(final Long commentId) {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> StudyWithMeException.type(StudyErrorCode.COMMENT_NOT_FOUND));
     }
 
-    private void validateCommentWriter(Long commentId, Long memberId) {
+    private void validateCommentWriter(
+            final Long commentId,
+            final Long memberId
+    ) {
         studyValidator.validateCommentWriter(commentId, memberId);
     }
 }

@@ -17,13 +17,19 @@ import org.springframework.transaction.annotation.Transactional;
 public class StudySearchService {
     private final StudyRepository studyRepository;
 
-    public DefaultStudyResponse findStudyByCategory(StudyCategoryCondition condition, Pageable pageable) {
-        Slice<BasicStudy> result = studyRepository.findStudyByCategory(condition, pageable);
+    public DefaultStudyResponse findStudyByCategory(
+            final StudyCategoryCondition condition,
+            final Pageable pageable
+    ) {
+        final Slice<BasicStudy> result = studyRepository.findStudyByCategory(condition, pageable);
         return new DefaultStudyResponse(result.getContent(), result.hasNext());
     }
 
-    public DefaultStudyResponse findStudyByRecommend(StudyRecommendCondition condition, Pageable pageable) {
-        Slice<BasicStudy> result = studyRepository.findStudyByRecommend(condition, pageable);
+    public DefaultStudyResponse findStudyByRecommend(
+            final StudyRecommendCondition condition,
+            final Pageable pageable
+    ) {
+        final Slice<BasicStudy> result = studyRepository.findStudyByRecommend(condition, pageable);
         return new DefaultStudyResponse(result.getContent(), result.hasNext());
     }
 }

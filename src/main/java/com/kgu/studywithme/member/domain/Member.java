@@ -59,8 +59,17 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<Interest> interests = new ArrayList<>();
 
-    private Member(String name, Nickname nickname, Email email, LocalDate birth, String phone,
-                   Gender gender, Region region, boolean emailOptIn, Set<Category> interests) {
+    private Member(
+            final String name,
+            final Nickname nickname,
+            final Email email,
+            final LocalDate birth,
+            final String phone,
+            final Gender gender,
+            final Region region,
+            final boolean emailOptIn,
+            final Set<Category> interests
+    ) {
         this.name = name;
         this.nickname = nickname;
         this.email = email;
@@ -74,12 +83,28 @@ public class Member extends BaseEntity {
         applyInterests(interests);
     }
 
-    public static Member createMember(String name, Nickname nickname, Email email, LocalDate birth, String phone,
-                                      Gender gender, Region region, boolean emailOptIn, Set<Category> interests) {
+    public static Member createMember(
+            final String name,
+            final Nickname nickname,
+            final Email email,
+            final LocalDate birth,
+            final String phone,
+            final Gender gender,
+            final Region region,
+            final boolean emailOptIn,
+            final Set<Category> interests
+    ) {
         return new Member(name, nickname, email, birth, phone, gender, region, emailOptIn, interests);
     }
 
-    public void update(String nickname, String phone, String province, String city, boolean emailOptIn, Set<Category> interests) {
+    public void update(
+            final String nickname,
+            final String phone,
+            final String province,
+            final String city,
+            final boolean emailOptIn,
+            final Set<Category> interests
+    ) {
         this.nickname = this.nickname.update(nickname);
         this.phone = phone;
         this.region = this.region.update(province, city);
@@ -87,7 +112,7 @@ public class Member extends BaseEntity {
         applyInterests(interests);
     }
 
-    public void applyInterests(Set<Category> interests) {
+    public void applyInterests(final Set<Category> interests) {
         this.interests.clear();
         this.interests.addAll(
                 interests.stream()
@@ -96,15 +121,18 @@ public class Member extends BaseEntity {
         );
     }
 
-    public boolean isSameMember(Member member) {
+    public boolean isSameMember(final Member member) {
         return this.email.isSameEmail(member.getEmail());
     }
 
-    public void applyPeerReview(Member reviewer, String content) {
+    public void applyPeerReview(
+            final Member reviewer,
+            final String content
+    ) {
         peerReviews.writeReview(PeerReview.doReview(this, reviewer, content));
     }
 
-    public void applyScoreByAttendanceStatus(AttendanceStatus status) {
+    public void applyScoreByAttendanceStatus(final AttendanceStatus status) {
         switch (status) {
             case ATTENDANCE -> this.score = this.score.applyAttendance();
             case LATE -> this.score = this.score.applyLate();
@@ -112,7 +140,10 @@ public class Member extends BaseEntity {
         }
     }
 
-    public void applyScoreByAttendanceStatus(AttendanceStatus previous, AttendanceStatus current) {
+    public void applyScoreByAttendanceStatus(
+            final AttendanceStatus previous,
+            final AttendanceStatus current
+    ) {
         switch (previous) {
             case ATTENDANCE -> updateAttenceToCurrent(current);
             case LATE -> updateLateToCurrent(current);
@@ -120,21 +151,21 @@ public class Member extends BaseEntity {
         }
     }
 
-    private void updateAttenceToCurrent(AttendanceStatus current) {
+    private void updateAttenceToCurrent(final AttendanceStatus current) {
         switch (current) {
             case LATE -> this.score = this.score.updateAttendanceToLate();
             case ABSENCE -> this.score = this.score.updateAttendanceToAbsence();
         }
     }
 
-    private void updateLateToCurrent(AttendanceStatus current) {
+    private void updateLateToCurrent(final AttendanceStatus current) {
         switch (current) {
             case ATTENDANCE -> this.score = this.score.updateLateToAttendance();
             case ABSENCE -> this.score = this.score.updateLateToAbsence();
         }
     }
 
-    private void updateAbsenceToCurrent(AttendanceStatus current) {
+    private void updateAbsenceToCurrent(final AttendanceStatus current) {
         switch (current) {
             case ATTENDANCE -> this.score = this.score.updateAbsenceToAttendance();
             case LATE -> this.score = this.score.updateAbsenceToLate();

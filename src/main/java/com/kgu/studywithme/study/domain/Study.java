@@ -89,8 +89,18 @@ public class Study extends BaseEntity {
     @OneToMany(mappedBy = "study", cascade = CascadeType.PERSIST)
     private List<Attendance> attendances = new ArrayList<>();
 
-    private Study(Member host, StudyName name, Description description, Capacity capacity, Category category, StudyThumbnail thumbnail,
-                  StudyType type, StudyLocation location, int minimumAttendanceForGraduation, Set<String> hashtags) {
+    private Study(
+            final Member host,
+            final StudyName name,
+            final Description description,
+            final Capacity capacity,
+            final Category category,
+            final StudyThumbnail thumbnail,
+            final StudyType type,
+            final StudyLocation location,
+            final int minimumAttendanceForGraduation,
+            final Set<String> hashtags
+    ) {
         this.name = name;
         this.description = description;
         this.category = category;
@@ -106,18 +116,68 @@ public class Study extends BaseEntity {
         applyHashtags(hashtags);
     }
 
-    public static Study createOnlineStudy(Member host, StudyName name, Description description, Capacity capacity, Category category,
-                                          StudyThumbnail thumbnail, int minimumAttendanceForGraduation, Set<String> hashtags) {
-        return new Study(host, name, description, capacity, category, thumbnail, ONLINE, null, minimumAttendanceForGraduation, hashtags);
+    public static Study createOnlineStudy(
+            final Member host,
+            final StudyName name,
+            final Description description,
+            final Capacity capacity,
+            final Category category,
+            final StudyThumbnail thumbnail,
+            final int minimumAttendanceForGraduation,
+            final Set<String> hashtags
+    ) {
+        return new Study(
+                host,
+                name,
+                description,
+                capacity,
+                category,
+                thumbnail,
+                ONLINE,
+                null,
+                minimumAttendanceForGraduation,
+                hashtags
+        );
     }
 
-    public static Study createOfflineStudy(Member host, StudyName name, Description description, Capacity capacity, Category category,
-                                           StudyThumbnail thumbnail, StudyLocation location, int minimumAttendanceForGraduation, Set<String> hashtags) {
-        return new Study(host, name, description, capacity, category, thumbnail, OFFLINE, location, minimumAttendanceForGraduation, hashtags);
+    public static Study createOfflineStudy(
+            final Member host,
+            final StudyName name,
+            final Description description,
+            final Capacity capacity,
+            final Category category,
+            final StudyThumbnail thumbnail,
+            final StudyLocation location,
+            final int minimumAttendanceForGraduation,
+            final Set<String> hashtags
+    ) {
+        return new Study(
+                host,
+                name,
+                description,
+                capacity,
+                category,
+                thumbnail,
+                OFFLINE,
+                location,
+                minimumAttendanceForGraduation,
+                hashtags
+        );
     }
 
-    public void update(StudyName name, Description description, int capacity, Category category, StudyThumbnail thumbnail, StudyType type,
-                       String province, String city, RecruitmentStatus recruitmentStatus, int minimumAttendanceForGraduation, Set<String> hashtags) {
+    public void update(
+            final StudyName name,
+            final Description description,
+            final int capacity,
+            final Category category,
+            final StudyThumbnail thumbnail,
+            final StudyType type,
+            final String province,
+            final String city,
+            final RecruitmentStatus recruitmentStatus,
+            final int minimumAttendanceForGraduation,
+            final Set<String> hashtags
+    ) {
         this.name = name;
         this.description = description;
         this.participants.updateCapacity(capacity);
@@ -130,7 +190,7 @@ public class Study extends BaseEntity {
         applyHashtags(hashtags);
     }
 
-    public void applyHashtags(Set<String> hashtags) {
+    public void applyHashtags(final Set<String> hashtags) {
         this.hashtags.clear();
         this.hashtags.addAll(
                 hashtags.stream()
@@ -147,64 +207,112 @@ public class Study extends BaseEntity {
         this.closed = true;
     }
 
-    public void addNotice(String title, String content) {
+    public void addNotice(
+            final String title,
+            final String content
+    ) {
         notices.add(Notice.writeNotice(this, title, content));
     }
 
-    public void recordAttendance(Member participant, int week, AttendanceStatus status) {
+    public void recordAttendance(
+            final Member participant,
+            final int week,
+            final AttendanceStatus status
+    ) {
         validateMemberIsParticipant(participant);
-        attendances.add(Attendance.recordAttendance(this, participant, week, status));
+        attendances.add(
+                Attendance.recordAttendance(
+                        this,
+                        participant,
+                        week,
+                        status
+                )
+        );
     }
 
-    public void createWeek(String title, String content, int week, Period period, List<UploadAttachment> attachments) {
-        weekly.registerWeek(Week.createWeek(this, title, content, week, period, attachments));
+    public void createWeek(
+            final String title,
+            final String content,
+            final int week,
+            final Period period,
+            final List<UploadAttachment> attachments
+    ) {
+        weekly.registerWeek(
+                Week.createWeek(
+                        this,
+                        title,
+                        content,
+                        week,
+                        period,
+                        attachments
+                )
+        );
     }
 
-    public void createWeekWithAssignment(String title, String content, int week, Period period,
-                                         boolean autoAttendance, List<UploadAttachment> attachments) {
-        weekly.registerWeek(Week.createWeekWithAssignment(this, title, content, week, period, autoAttendance, attachments));
+    public void createWeekWithAssignment(
+            final String title,
+            final String content,
+            final int week,
+            final Period period,
+            final boolean autoAttendance,
+            final List<UploadAttachment> attachments
+    ) {
+        weekly.registerWeek(
+                Week.createWeekWithAssignment(
+                        this,
+                        title,
+                        content,
+                        week,
+                        period,
+                        autoAttendance,
+                        attachments
+                )
+        );
     }
 
-    public void validateMemberIsParticipant(Member participant) {
+    public void validateMemberIsParticipant(final Member participant) {
         participants.validateMemberIsParticipant(participant);
     }
 
-    public void writeReview(Member writer, String content) {
+    public void writeReview(
+            final Member writer,
+            final String content
+    ) {
         validateMemberIsStudyGraduate(writer);
         reviews.writeReview(Review.writeReview(this, writer, content));
     }
 
-    private void validateMemberIsStudyGraduate(Member writer) {
+    private void validateMemberIsStudyGraduate(final Member writer) {
         participants.validateMemberIsStudyGraduate(writer);
     }
 
-    public void delegateStudyHostAuthority(Member newHost) {
+    public void delegateStudyHostAuthority(final Member newHost) {
         validateStudyIsProceeding();
         participants.delegateStudyHostAuthority(this, newHost);
         graduationPolicy = graduationPolicy.resetUpdateChanceForDelegatingStudyHost();
     }
 
-    public void applyParticipation(Member member) {
+    public void applyParticipation(final Member member) {
         validateRecruitmentIsProceeding();
         participants.apply(this, member);
     }
 
-    public void approveParticipation(Member member) {
+    public void approveParticipation(final Member member) {
         validateStudyIsProceeding();
         participants.approve(member);
     }
 
-    public void rejectParticipation(Member member) {
+    public void rejectParticipation(final Member member) {
         validateStudyIsProceeding();
         participants.reject(member);
     }
 
-    public void cancelParticipation(Member participant) {
+    public void cancelParticipation(final Member participant) {
         validateStudyIsProceeding();
         participants.cancel(participant);
     }
 
-    public void graduateParticipant(Member participant) {
+    public void graduateParticipant(final Member participant) {
         validateStudyIsProceeding();
         participants.graduate(participant);
     }
@@ -230,11 +338,11 @@ public class Study extends BaseEntity {
         return recruitmentStatus == COMPLETE;
     }
 
-    public void validateMemberIsApplier(Member member) {
+    public void validateMemberIsApplier(final Member member) {
         participants.validateMemberIsApplier(member);
     }
 
-    public boolean isGraduationRequirementsFulfilled(int value) {
+    public boolean isGraduationRequirementsFulfilled(final int value) {
         return graduationPolicy.isGraduationRequirementsFulfilled(value);
     }
 

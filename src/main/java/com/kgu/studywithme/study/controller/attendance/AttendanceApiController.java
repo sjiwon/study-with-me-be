@@ -22,10 +22,12 @@ public class AttendanceApiController {
     @Operation(summary = "스터디 출석 정보 수정 EndPoint")
     @CheckStudyHost
     @PatchMapping
-    public ResponseEntity<Void> manualCheckAttendance(@ExtractPayload Long hostId,
-                                                      @PathVariable Long studyId,
-                                                      @PathVariable Long memberId,
-                                                      @RequestBody @Valid AttendanceRequest request) {
+    public ResponseEntity<Void> manualCheckAttendance(
+            @ExtractPayload final Long hostId,
+            @PathVariable final Long studyId,
+            @PathVariable final Long memberId,
+            @RequestBody @Valid final AttendanceRequest request
+    ) {
         attendanceService.manualCheckAttendance(studyId, memberId, request.week(), AttendanceStatus.fromDescription(request.status()));
         return ResponseEntity.noContent().build();
     }

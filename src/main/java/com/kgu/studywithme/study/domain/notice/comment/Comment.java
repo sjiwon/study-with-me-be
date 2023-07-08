@@ -29,17 +29,25 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "writer_id", referencedColumnName = "id", nullable = false)
     private Member writer;
 
-    private Comment(Notice notice, Member writer, String content) {
+    private Comment(
+            final Notice notice,
+            final Member writer,
+            final String content
+    ) {
         this.notice = notice;
         this.writer = writer;
         this.content = content;
     }
 
-    public static Comment writeComment(Notice notice, Member writer, String content) {
+    public static Comment writeComment(
+            final Notice notice,
+            final Member writer,
+            final String content
+    ) {
         return new Comment(notice, writer, content);
     }
 
-    public void updateComment(String content) {
+    public void updateComment(final String content) {
         this.content = content;
     }
 }

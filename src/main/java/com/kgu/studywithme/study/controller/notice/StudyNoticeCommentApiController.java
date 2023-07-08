@@ -19,28 +19,34 @@ public class StudyNoticeCommentApiController {
 
     @Operation(summary = "스터디 공지사항 댓글 등록 EndPoint")
     @PostMapping("/comment")
-    public ResponseEntity<Void> register(@ExtractPayload Long memberId,
-                                         @PathVariable Long noticeId,
-                                         @RequestBody @Valid NoticeCommentRequest request) {
+    public ResponseEntity<Void> register(
+            @ExtractPayload final Long memberId,
+            @PathVariable final Long noticeId,
+            @RequestBody @Valid final NoticeCommentRequest request
+    ) {
         noticeCommentService.register(noticeId, memberId, request.content());
         return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "스터디 공지사항 댓글 삭제 EndPoint")
     @DeleteMapping("/comments/{commentId}")
-    public ResponseEntity<Void> remove(@ExtractPayload Long memberId,
-                                       @PathVariable Long noticeId,
-                                       @PathVariable Long commentId) {
+    public ResponseEntity<Void> remove(
+            @ExtractPayload final Long memberId,
+            @PathVariable final Long noticeId,
+            @PathVariable final Long commentId
+    ) {
         noticeCommentService.remove(commentId, memberId);
         return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "스터디 공지사항 댓글 수정 EndPoint")
     @PutMapping("/comments/{commentId}")
-    public ResponseEntity<Void> update(@ExtractPayload Long memberId,
-                                       @PathVariable Long noticeId,
-                                       @PathVariable Long commentId,
-                                       @RequestBody @Valid NoticeCommentRequest request) {
+    public ResponseEntity<Void> update(
+            @ExtractPayload final Long memberId,
+            @PathVariable final Long noticeId,
+            @PathVariable final Long commentId,
+            @RequestBody @Valid final NoticeCommentRequest request
+    ) {
         noticeCommentService.update(commentId, memberId, request.content());
         return ResponseEntity.noContent().build();
     }

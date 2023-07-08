@@ -28,7 +28,7 @@ public class StudyInformationQueryRepositoryImpl implements StudyInformationQuer
     private final JPAQueryFactory query;
 
     @Override
-    public int getGraduatedParticipantCountByStudyId(Long studyId) {
+    public int getGraduatedParticipantCountByStudyId(final Long studyId) {
         return query
                 .select(participant.id)
                 .from(participant)
@@ -38,9 +38,17 @@ public class StudyInformationQueryRepositoryImpl implements StudyInformationQuer
     }
 
     @Override
-    public List<ReviewInformation> findReviewByStudyId(Long studyId) {
+    public List<ReviewInformation> findReviewByStudyId(final Long studyId) {
         return query
-                .select(new QReviewInformation(review.id, review.content, review.modifiedAt, member.id, member.nickname))
+                .select(
+                        new QReviewInformation(
+                                review.id,
+                                review.content,
+                                review.modifiedAt,
+                                member.id,
+                                member.nickname
+                        )
+                )
                 .from(review)
                 .innerJoin(review.writer, member)
                 .where(review.study.id.eq(studyId))
@@ -49,12 +57,19 @@ public class StudyInformationQueryRepositoryImpl implements StudyInformationQuer
     }
 
     @Override
-    public List<NoticeInformation> findNoticeWithCommentsByStudyId(Long studyId) {
+    public List<NoticeInformation> findNoticeWithCommentsByStudyId(final Long studyId) {
         List<NoticeInformation> noticeResult = query
-                .select(new QNoticeInformation(
-                        notice.id, notice.title, notice.content, notice.createdAt, notice.modifiedAt,
-                        member.id, member.nickname
-                ))
+                .select(
+                        new QNoticeInformation(
+                                notice.id,
+                                notice.title,
+                                notice.content,
+                                notice.createdAt,
+                                notice.modifiedAt,
+                                member.id,
+                                member.nickname
+                        )
+                )
                 .from(notice)
                 .innerJoin(notice.writer, member)
                 .where(notice.study.id.eq(studyId))
@@ -65,12 +80,18 @@ public class StudyInformationQueryRepositoryImpl implements StudyInformationQuer
         return noticeResult;
     }
 
-    private void applyCommentsInNotice(List<NoticeInformation> noticeResult) {
+    private void applyCommentsInNotice(final List<NoticeInformation> noticeResult) {
         List<CommentInformation> commentResult = query
-                .select(new QCommentInformation(
-                        comment.id, comment.notice.id, comment.content, comment.modifiedAt,
-                        member.id, member.nickname
-                ))
+                .select(
+                        new QCommentInformation(
+                                comment.id,
+                                comment.notice.id,
+                                comment.content,
+                                comment.modifiedAt,
+                                member.id,
+                                member.nickname
+                        )
+                )
                 .from(comment)
                 .innerJoin(comment.writer, member)
                 .orderBy(comment.id.asc())
@@ -84,9 +105,16 @@ public class StudyInformationQueryRepositoryImpl implements StudyInformationQuer
     }
 
     @Override
-    public List<StudyApplicantInformation> findApplicantByStudyId(Long studyId) {
+    public List<StudyApplicantInformation> findApplicantByStudyId(final Long studyId) {
         return query
-                .select(new QStudyApplicantInformation(member.id, member.nickname, member.score, participant.createdAt))
+                .select(
+                        new QStudyApplicantInformation(
+                                member.id,
+                                member.nickname,
+                                member.score,
+                                participant.createdAt
+                        )
+                )
                 .from(participant)
                 .innerJoin(participant.member, member)
                 .where(studyIdEq(studyId), applyStatus())
@@ -95,7 +123,7 @@ public class StudyInformationQueryRepositoryImpl implements StudyInformationQuer
     }
 
     @Override
-    public List<AttendanceInformation> findAttendanceByStudyId(Long studyId) {
+    public List<AttendanceInformation> findAttendanceByStudyId(final Long studyId) {
         Long hostId = query
                 .select(study.participants.host.id)
                 .from(study)
@@ -116,7 +144,14 @@ public class StudyInformationQueryRepositoryImpl implements StudyInformationQuer
                 .toList();
 
         return query
-                .select(new QAttendanceInformation(member.id, member.nickname, attendance.week, attendance.status))
+                .select(
+                        new QAttendanceInformation(
+                                member.id,
+                                member.nickname,
+                                attendance.week,
+                                attendance.status
+                        )
+                )
                 .from(attendance)
                 .innerJoin(attendance.participant, member)
                 .where(
@@ -128,7 +163,7 @@ public class StudyInformationQueryRepositoryImpl implements StudyInformationQuer
     }
 
     @Override
-    public List<Week> findWeeklyByStudyId(Long studyId) {
+    public List<Week> findWeeklyByStudyId(final Long studyId) {
         QWeek weekly = new QWeek("week");
 
         return query
@@ -141,7 +176,7 @@ public class StudyInformationQueryRepositoryImpl implements StudyInformationQuer
                 .fetch();
     }
 
-    private BooleanExpression studyIdEq(Long studyId) {
+    private BooleanExpression studyIdEq(final Long studyId) {
         return participant.study.id.eq(studyId);
     }
 

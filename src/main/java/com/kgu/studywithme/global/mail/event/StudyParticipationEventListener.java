@@ -19,21 +19,34 @@ public class StudyParticipationEventListener {
     @Async("emailAsyncExecutor")
     @EventListener
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void sendParticipationApproveMail(StudyApprovedEvent event) throws Exception {
-        emailSender.sendParticipationApproveMail(event.email(), event.nickname(), event.studyName());
+    public void sendParticipationApproveMail(final StudyApprovedEvent event) throws Exception {
+        emailSender.sendParticipationApproveMail(
+                event.email(),
+                event.nickname(),
+                event.studyName()
+        );
     }
 
     @Async("emailAsyncExecutor")
     @EventListener
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void sendParticipationRejectMail(StudyRejectedEvent event) throws Exception {
-        emailSender.sendParticipationRejectMail(event.email(), event.nickname(), event.studyName(), event.reason());
+    public void sendParticipationRejectMail(final StudyRejectedEvent event) throws Exception {
+        emailSender.sendParticipationRejectMail(
+                event.email(),
+                event.nickname(),
+                event.studyName(),
+                event.reason()
+        );
     }
 
     @Async("emailAsyncExecutor")
     @EventListener
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void sendStudyCertificateMail(StudyGraduatedEvent event) throws Exception {
-        emailSender.sendStudyCertificateMail(event.email(), event.nickname(), event.studyName());
+    public void sendStudyCertificateMail(final StudyGraduatedEvent event) throws Exception {
+        emailSender.sendStudyCertificateMail(
+                event.email(),
+                event.nickname(),
+                event.studyName()
+        );
     }
 }

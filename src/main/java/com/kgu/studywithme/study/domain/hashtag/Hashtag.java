@@ -22,12 +22,18 @@ public class Hashtag {
     @JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false)
     private Study study;
 
-    private Hashtag(Study study, String name) {
+    private Hashtag(
+            final Study study,
+            final String name
+    ) {
         this.study = study;
         this.name = name;
     }
 
-    public static Hashtag applyHashtag(Study study, String name) {
+    public static Hashtag applyHashtag(
+            final Study study,
+            final String name
+    ) {
         return new Hashtag(study, name);
     }
 }

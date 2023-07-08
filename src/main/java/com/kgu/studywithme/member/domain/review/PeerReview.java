@@ -27,17 +27,25 @@ public class PeerReview extends BaseEntity {
     @JoinColumn(name = "reviewer_id", referencedColumnName = "id", nullable = false)
     private Member reviewer;
 
-    private PeerReview(Member reviewee, Member reviewer, String content) {
+    private PeerReview(
+            final Member reviewee,
+            final Member reviewer,
+            final String content
+    ) {
         this.reviewee = reviewee;
         this.reviewer = reviewer;
         this.content = content;
     }
 
-    public static PeerReview doReview(Member reviewee, Member reviewer, String content) {
+    public static PeerReview doReview(
+            final Member reviewee,
+            final Member reviewer,
+            final String content
+    ) {
         return new PeerReview(reviewee, reviewer, content);
     }
 
-    public void updateReview(String content) {
+    public void updateReview(final String content) {
         this.content = content;
     }
 }

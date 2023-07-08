@@ -43,26 +43,39 @@ public class StudyWeeklyService {
     private final FileUploader uploader;
 
     @Transactional
-    public void createWeek(Long studyId, StudyWeeklyRequest request) {
-        Study study = studyFindService.findById(studyId);
-        List<UploadAttachment> attachments = createUploadAttachments(request.files());
-        int nextWeek = studyRepository.getNextWeek(study.getId());
+    public void createWeek(
+            final Long studyId,
+            final StudyWeeklyRequest request
+    ) {
+        final Study study = studyFindService.findById(studyId);
+        final List<UploadAttachment> attachments = createUploadAttachments(request.files());
+        final int nextWeek = studyRepository.getNextWeek(study.getId());
 
         createWeekBasedOnAssignmentExistence(study, nextWeek, attachments, request);
         processAttendance(study, nextWeek);
     }
 
-    private List<UploadAttachment> createUploadAttachments(List<MultipartFile> files) {
+    private List<UploadAttachment> createUploadAttachments(final List<MultipartFile> files) {
         if (CollectionUtils.isEmpty(files)) {
             return List.of();
         }
 
         return files.stream()
-                .map(file -> UploadAttachment.of(file.getOriginalFilename(), uploader.uploadWeeklyAttachment(file)))
+                .map(file ->
+                        UploadAttachment.of(
+                                file.getOriginalFilename(),
+                                uploader.uploadWeeklyAttachment(file)
+                        )
+                )
                 .toList();
     }
 
-    private void createWeekBasedOnAssignmentExistence(Study study, Integer week, List<UploadAttachment> attachments, StudyWeeklyRequest request) {
+    private void createWeekBasedOnAssignmentExistence(
+            final Study study,
+            final Integer week,
+            final List<UploadAttachment> attachments,
+            final StudyWeeklyRequest request
+    ) {
         if (request.assignmentExists()) {
             study.createWeekWithAssignment(
                     request.title(),
@@ -83,15 +96,22 @@ public class StudyWeeklyService {
         }
     }
 
-    private void processAttendance(Study study, Integer week) {
+    private void processAttendance(
+            final Study study,
+            final Integer week
+    ) {
         study.getApproveParticipants()
                 .forEach(participant -> study.recordAttendance(participant, week, NON_ATTENDANCE));
     }
 
     @Transactional
-    public void updateWeek(Long studyId, Integer week, StudyWeeklyRequest request) {
-        Week specificWeek = getSpecificWeek(studyId, week);
-        List<UploadAttachment> attachments = createUploadAttachments(request.files());
+    public void updateWeek(
+            final Long studyId,
+            final Integer week,
+            final StudyWeeklyRequest request
+    ) {
+        final Week specificWeek = getSpecificWeek(studyId, week);
+        final List<UploadAttachment> attachments = createUploadAttachments(request.files());
 
         specificWeek.update(
                 request.title(),
@@ -104,29 +124,45 @@ public class StudyWeeklyService {
     }
 
     @Transactional
-    public void deleteWeek(Long studyId, Integer week) {
+    public void deleteWeek(
+            final Long studyId,
+            final Integer week
+    ) {
         validateLatestWeek(studyId, week);
         studyRepository.deleteSpecificWeek(studyId, week);
     }
 
-    private void validateLatestWeek(Long studyId, Integer week) {
+    private void validateLatestWeek(
+            final Long studyId,
+            final Integer week
+    ) {
         if (!studyRepository.isLatestWeek(studyId, week)) {
             throw StudyWithMeException.type(StudyErrorCode.WEEK_IS_NOT_LATEST);
         }
     }
 
     @Transactional
-    public void submitAssignment(Long participantId, Long studyId, Integer week, String type, MultipartFile file, String link) {
+    public void submitAssignment(
+            final Long participantId,
+            final Long studyId,
+            final Integer week,
+            final String type,
+            final MultipartFile file,
+            final String link
+    ) {
         validateAssignmentSubmissionExists(file, link);
 
-        Week specificWeek = getSpecificWeek(studyId, week);
-        Member participant = memberFindService.findById(participantId);
+        final Week specificWeek = getSpecificWeek(studyId, week);
+        final Member participant = memberFindService.findById(participantId);
 
         handleAssignmentSubmission(specificWeek, participant, type, file, link);
         processAttendanceBasedOnAutoAttendanceFlag(specificWeek, participant, studyId);
     }
 
-    private void validateAssignmentSubmissionExists(MultipartFile file, String link) {
+    private void validateAssignmentSubmissionExists(
+            final MultipartFile file,
+            final String link
+    ) {
         if (file == null && link == null) {
             throw StudyWithMeException.type(StudyErrorCode.MISSING_SUBMISSION);
         }
@@ -136,23 +172,40 @@ public class StudyWeeklyService {
         }
     }
 
-    private Week getSpecificWeek(Long studyId, Integer week) {
+    private Week getSpecificWeek(
+            final Long studyId,
+            final Integer week
+    ) {
         return weekRepository.findByStudyIdAndWeek(studyId, week)
                 .orElseThrow(() -> StudyWithMeException.type(StudyErrorCode.WEEK_NOT_FOUND));
     }
 
-    private void handleAssignmentSubmission(Week week, Member participant, String type, MultipartFile file, String link) {
-        UploadAssignment uploadAssignment = createUpload(type, file, link);
+    private void handleAssignmentSubmission(
+            final Week week,
+            final Member participant,
+            final String type,
+            final MultipartFile file,
+            final String link
+    ) {
+        final UploadAssignment uploadAssignment = createUpload(type, file, link);
         week.submitAssignment(participant, uploadAssignment);
     }
 
-    private UploadAssignment createUpload(String type, MultipartFile file, String link) {
+    private UploadAssignment createUpload(
+            final String type,
+            final MultipartFile file,
+            final String link
+    ) {
         return type.equals("file")
                 ? UploadAssignment.withFile(file.getOriginalFilename(), uploader.uploadWeeklySubmit(file))
                 : UploadAssignment.withLink(link);
     }
 
-    private void processAttendanceBasedOnAutoAttendanceFlag(Week week, Member participant, Long studyId) {
+    private void processAttendanceBasedOnAutoAttendanceFlag(
+            final Week week,
+            final Member participant,
+            final Long studyId
+    ) {
         if (week.isAutoAttendance()) {
             final LocalDateTime now = LocalDateTime.now();
             final Period period = week.getPeriod();
@@ -165,14 +218,22 @@ public class StudyWeeklyService {
         }
     }
 
-    private void applyAttendanceStatusAndMemberScore(Member participant, int week, Long studyId) {
-        Attendance attendance = getParticipantAttendance(studyId, participant.getId(), week);
+    private void applyAttendanceStatusAndMemberScore(
+            final Member participant,
+            final int week,
+            final Long studyId
+    ) {
+        final Attendance attendance = getParticipantAttendance(studyId, participant.getId(), week);
         attendance.updateAttendanceStatus(ATTENDANCE);
         participant.applyScoreByAttendanceStatus(ATTENDANCE);
     }
 
-    private void applyLateStatusAndMemberScore(Member participant, int week, Long studyId) {
-        Attendance attendance = getParticipantAttendance(studyId, participant.getId(), week);
+    private void applyLateStatusAndMemberScore(
+            final Member participant,
+            final int week,
+            final Long studyId
+    ) {
+        final Attendance attendance = getParticipantAttendance(studyId, participant.getId(), week);
         final AttendanceStatus previousStatus = attendance.getStatus();
 
         attendance.updateAttendanceStatus(LATE);
@@ -183,28 +244,46 @@ public class StudyWeeklyService {
         }
     }
 
-    private Attendance getParticipantAttendance(Long studyId, Long memberId, Integer week) {
+    private Attendance getParticipantAttendance(
+            final Long studyId,
+            final Long memberId,
+            final Integer week
+    ) {
         return attendanceRepository.findByStudyIdAndParticipantIdAndWeek(studyId, memberId, week)
                 .orElseThrow(() -> StudyWithMeException.type(StudyErrorCode.ATTENDANCE_NOT_FOUND));
     }
 
     @Transactional
-    public void editSubmittedAssignment(Long participantId, Long studyId, Integer week, String type, MultipartFile file, String link) {
+    public void editSubmittedAssignment(
+            final Long participantId,
+            final Long studyId,
+            final Integer week,
+            final String type,
+            final MultipartFile file,
+            final String link
+    ) {
         validateAssignmentSubmissionExists(file, link);
 
-        Submit submit = getParticipantSubmit(participantId, week);
-        UploadAssignment newUploadAssignment = createUpload(type, file, link);
+        final Submit submit = getParticipantSubmit(participantId, week);
+        final UploadAssignment newUploadAssignment = createUpload(type, file, link);
         submit.editUpload(newUploadAssignment);
 
         validateSubmitTimeAndApplyLateSubmissionPenalty(submit.getWeek(), submit.getParticipant(), studyId);
     }
 
-    private Submit getParticipantSubmit(Long participantId, Integer week) {
+    private Submit getParticipantSubmit(
+            final Long participantId,
+            final Integer week
+    ) {
         return submitRepository.findByParticipantIdAndWeek(participantId, week)
                 .orElseThrow(() -> StudyWithMeException.type(StudyErrorCode.SUBMIT_NOT_FOUND));
     }
 
-    private void validateSubmitTimeAndApplyLateSubmissionPenalty(Week week, Member participant, Long studyId) {
+    private void validateSubmitTimeAndApplyLateSubmissionPenalty(
+            final Week week,
+            final Member participant,
+            final Long studyId
+    ) {
         final LocalDateTime now = LocalDateTime.now();
         final Period period = week.getPeriod();
 

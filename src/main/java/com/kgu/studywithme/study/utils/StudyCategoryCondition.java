@@ -10,7 +10,13 @@ public record StudyCategoryCondition(
         String province,
         String city
 ) {
-    public StudyCategoryCondition(StudyCategorySearchRequest request) {
-        this(Category.from(request.category()), request.sort(), request.type(), request.province(), request.city());
+    public StudyCategoryCondition(final StudyCategorySearchRequest request) {
+        this(
+                Category.from(request.category()),
+                request.sort(),
+                request.type(),
+                request.province(),
+                request.city()
+        );
     }
 }

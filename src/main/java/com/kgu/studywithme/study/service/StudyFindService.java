@@ -14,27 +14,33 @@ import org.springframework.transaction.annotation.Transactional;
 public class StudyFindService {
     private final StudyRepository studyRepository;
 
-    public Study findById(Long studyId) {
+    public Study findById(final Long studyId) {
         return studyRepository.findById(studyId)
                 .orElseThrow(() -> StudyWithMeException.type(StudyErrorCode.STUDY_NOT_FOUND));
     }
 
-    public Study findByIdWithParticipants(Long studyId) {
+    public Study findByIdWithParticipants(final Long studyId) {
         return studyRepository.findByIdWithParticipants(studyId)
                 .orElseThrow(() -> StudyWithMeException.type(StudyErrorCode.STUDY_NOT_FOUND));
     }
 
-    public Study findByIdWithHost(Long studyId) {
+    public Study findByIdWithHost(final Long studyId) {
         return studyRepository.findByIdWithHost(studyId)
                 .orElseThrow(() -> StudyWithMeException.type(StudyErrorCode.STUDY_NOT_FOUND));
     }
 
-    public Study findByIdAndHostId(Long studyId, Long hostId) {
+    public Study findByIdAndHostId(
+            final Long studyId,
+            final Long hostId
+    ) {
         return studyRepository.findByIdAndHostId(studyId, hostId)
                 .orElseThrow(() -> StudyWithMeException.type(StudyErrorCode.STUDY_NOT_FOUND));
     }
 
-    public Study findByIdAndHostIdWithParticipants(Long studyId, Long hostId) {
+    public Study findByIdAndHostIdWithParticipants(
+            final Long studyId,
+            final Long hostId
+    ) {
         return studyRepository.findByIdAndHostIdWithParticipants(studyId, hostId)
                 .orElseThrow(() -> StudyWithMeException.type(StudyErrorCode.STUDY_NOT_FOUND));
     }

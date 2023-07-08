@@ -24,18 +24,18 @@ public class PeerReviews {
         return new PeerReviews();
     }
 
-    public void writeReview(PeerReview review) {
+    public void writeReview(final PeerReview review) {
         validateFirstReview(review.getReviewer());
         peerReviews.add(review);
     }
 
-    private void validateFirstReview(Member reviewer) {
+    private void validateFirstReview(final Member reviewer) {
         if (isAlreadyReview(reviewer)) {
             throw StudyWithMeException.type(MemberErrorCode.ALREADY_REVIEW);
         }
     }
 
-    private boolean isAlreadyReview(Member reviewer) {
+    private boolean isAlreadyReview(final Member reviewer) {
         return peerReviews.stream()
                 .anyMatch(review -> review.getReviewer().isSameMember(reviewer));
     }

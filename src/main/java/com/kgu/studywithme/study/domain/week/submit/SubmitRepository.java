@@ -12,6 +12,8 @@ public interface SubmitRepository extends JpaRepository<Submit, Long> {
             " JOIN FETCH s.week w" +
             " JOIN FETCH s.participant p" +
             " WHERE p.id = :participantId AND w.week = :week")
-    Optional<Submit> findByParticipantIdAndWeek(@Param("participantId") Long participantId,
-                                                @Param("week") Integer week);
+    Optional<Submit> findByParticipantIdAndWeek(
+            @Param("participantId") Long participantId,
+            @Param("week") Integer week
+    );
 }

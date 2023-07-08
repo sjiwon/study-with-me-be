@@ -13,7 +13,10 @@ public interface TokenRepository extends JpaRepository<Token, Long> {
     @Query("UPDATE Token t" +
             " SET t.refreshToken = :refreshToken" +
             " WHERE t.memberId = :memberId")
-    void reissueRefreshTokenByRtrPolicy(@Param("memberId") Long memberId, @Param("refreshToken") String newRefreshToken);
+    void reissueRefreshTokenByRtrPolicy(
+            @Param("memberId") Long memberId,
+            @Param("refreshToken") String newRefreshToken
+    );
 
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("DELETE FROM Token t WHERE t.memberId = :memberId")
@@ -21,5 +24,6 @@ public interface TokenRepository extends JpaRepository<Token, Long> {
 
     // Query Method
     Optional<Token> findByMemberId(Long memberId);
+
     boolean existsByMemberIdAndRefreshToken(Long memberId, String refreshToken);
 }

@@ -54,7 +54,7 @@ public enum StudyThumbnail {
     private final String imageName;
     private final String background;
 
-    public static StudyThumbnail from(String imageName) {
+    public static StudyThumbnail from(final String imageName) {
         return Arrays.stream(values())
                 .filter(thumbnail -> thumbnail.imageName.equals(imageName))
                 .findFirst()

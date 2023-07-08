@@ -21,43 +21,61 @@ public class StudyValidator {
     private final CommentRepository commentRepository;
     private final ReviewRepository reviewRepository;
 
-    public void validateUniqueNameForCreate(StudyName name) {
+    public void validateUniqueNameForCreate(final StudyName name) {
         if (studyRepository.existsByName(name)) {
             throw StudyWithMeException.type(StudyErrorCode.DUPLICATE_NAME);
         }
     }
 
-    public void validateUniqueNameForUpdate(StudyName name, Long studyId) {
+    public void validateUniqueNameForUpdate(
+            final StudyName name,
+            final Long studyId
+    ) {
         if (studyRepository.existsByNameAndIdNot(name, studyId)) {
             throw StudyWithMeException.type(StudyErrorCode.DUPLICATE_NAME);
         }
     }
 
-    public void validateHost(Long studyId, Long memberId) {
+    public void validateHost(
+            final Long studyId,
+            final Long memberId
+    ) {
         if (!studyRepository.existsByIdAndParticipantsHostId(studyId, memberId)) {
             throw StudyWithMeException.type(StudyErrorCode.MEMBER_IS_NOT_HOST);
         }
     }
 
-    public void validateStudyParticipant(Long studyId, Long memberId) {
+    public void validateStudyParticipant(
+            final Long studyId,
+            final Long memberId
+    ) {
         if (!studyRepository.isStudyParticipant(studyId, memberId)) {
             throw StudyWithMeException.type(StudyErrorCode.MEMBER_IS_NOT_PARTICIPANT);
         }
     }
 
-    public void validateNoticeWriter(Long noticeId, Long memberId) {
+    public void validateNoticeWriter(
+            final Long noticeId,
+            final Long memberId
+    ) {
         if (!noticeRepository.existsByIdAndWriterId(noticeId, memberId)) {
             throw StudyWithMeException.type(MemberErrorCode.MEMBER_IS_NOT_WRITER);
         }
     }
 
-    public void validateCommentWriter(Long commentId, Long memberId) {
+    public void validateCommentWriter(
+            final Long commentId,
+            final Long memberId
+    ) {
         if (!commentRepository.existsByIdAndWriterId(commentId, memberId)) {
             throw StudyWithMeException.type(MemberErrorCode.MEMBER_IS_NOT_WRITER);
         }
     }
 
-    public void validateReviewWriter(Long reviewId, Long memberId) {
+    public void validateReviewWriter(
+            final Long reviewId,
+            final Long memberId
+    ) {
         if (!reviewRepository.existsByIdAndWriterId(reviewId, memberId)) {
             throw StudyWithMeException.type(MemberErrorCode.MEMBER_IS_NOT_WRITER);
         }
