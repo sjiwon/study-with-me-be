@@ -5,18 +5,22 @@ import com.kgu.studywithme.global.aop.CheckStudyHost;
 import com.kgu.studywithme.study.controller.dto.request.StudyRegisterRequest;
 import com.kgu.studywithme.study.controller.dto.request.StudyUpdateRequest;
 import com.kgu.studywithme.study.service.StudyService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+@Tag(name = "4-1. 스터디 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class StudyApiController {
     private final StudyService studyService;
 
+    @Operation(summary = "스터디 생성 EndPoint")
     @PostMapping("/study")
     public ResponseEntity<Void> register(@ExtractPayload Long hostId,
                                          @RequestBody @Valid StudyRegisterRequest request) {
@@ -26,6 +30,7 @@ public class StudyApiController {
                 .build();
     }
 
+    @Operation(summary = "스터디 수정 EndPoint")
     @CheckStudyHost
     @PatchMapping("/studies/{studyId}")
     public ResponseEntity<Void> update(@ExtractPayload Long hostId,
@@ -35,6 +40,7 @@ public class StudyApiController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "스터디 종료 EndPoint")
     @CheckStudyHost
     @DeleteMapping("/studies/{studyId}")
     public ResponseEntity<Void> close(@ExtractPayload Long hostId,

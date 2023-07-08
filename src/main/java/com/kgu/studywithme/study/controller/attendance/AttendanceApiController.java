@@ -5,17 +5,21 @@ import com.kgu.studywithme.global.aop.CheckStudyHost;
 import com.kgu.studywithme.study.controller.dto.request.AttendanceRequest;
 import com.kgu.studywithme.study.domain.attendance.AttendanceStatus;
 import com.kgu.studywithme.study.service.attendance.AttendanceService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "4-5. 스터디 출석 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/studies/{studyId}/attendance/{memberId}")
 public class AttendanceApiController {
     private final AttendanceService attendanceService;
 
+    @Operation(summary = "스터디 출석 정보 수정 EndPoint")
     @CheckStudyHost
     @PatchMapping
     public ResponseEntity<Void> manualCheckAttendance(@ExtractPayload Long hostId,

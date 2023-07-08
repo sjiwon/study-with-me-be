@@ -6,18 +6,22 @@ import com.kgu.studywithme.member.controller.dto.request.MemberReportRequest;
 import com.kgu.studywithme.member.controller.dto.request.MemberUpdateRequest;
 import com.kgu.studywithme.member.controller.dto.request.SignUpRequest;
 import com.kgu.studywithme.member.service.MemberService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+@Tag(name = "3-1. 사용자 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class MemberApiController {
     private final MemberService memberService;
 
+    @Operation(summary = "회원가입 EndPoint")
     @PostMapping("/member")
     public ResponseEntity<Void> signUp(@RequestBody @Valid SignUpRequest request) {
         Long savedMemberId = memberService.signUp(request.toEntity());
@@ -26,6 +30,7 @@ public class MemberApiController {
                 .build();
     }
 
+    @Operation(summary = "사용자 정보 수정 EndPoint")
     @CheckMemberIdentity
     @PatchMapping("/members/{memberId}")
     public ResponseEntity<Void> update(@ExtractPayload Long payloadId,
@@ -35,6 +40,7 @@ public class MemberApiController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "사용자 신고 EndPoint")
     @PostMapping("/members/{reporteeId}/report")
     public ResponseEntity<Void> report(@ExtractPayload Long reporterId,
                                        @PathVariable Long reporteeId,

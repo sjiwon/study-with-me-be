@@ -16,7 +16,7 @@ public class AsyncConfiguration {
     private static final String EMAIL_ASYNC_THREAD_NAME_PREFIX = "Asynchronous Mail Sender Thread-";
 
     @Bean(name = "emailAsyncExecutor")
-    public Executor getEmailAsyncExecutor() {
+    public Executor emailAsyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(CORE_POOL_SIZE);
         executor.setMaxPoolSize(MAX_POOL_SIZE);
