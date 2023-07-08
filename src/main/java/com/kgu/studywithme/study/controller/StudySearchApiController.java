@@ -28,18 +28,24 @@ public class StudySearchApiController {
 
     @Operation(summary = "카테고리 기반 스터디 조회 EndPoint")
     @GetMapping
-    public ResponseEntity<DefaultStudyResponse> findStudyByCategory(@ModelAttribute @Valid StudyCategorySearchRequest request) {
-        StudyCategoryCondition condition = new StudyCategoryCondition(request);
-        DefaultStudyResponse result = studySearchService.findStudyByCategory(condition, getDefaultPageRequest(request.page()));
+    public ResponseEntity<DefaultStudyResponse> findStudyByCategory(
+            @ModelAttribute @Valid final StudyCategorySearchRequest request
+    ) {
+        final StudyCategoryCondition condition = new StudyCategoryCondition(request);
+        final DefaultStudyResponse result = studySearchService.findStudyByCategory(condition, getDefaultPageRequest(request.page()));
+
         return ResponseEntity.ok(result);
     }
 
     @Operation(summary = "사용자 관심사 기반 스터디 조회 EndPoint")
     @GetMapping("/recommend")
-    public ResponseEntity<DefaultStudyResponse> findStudyByRecommend(@ExtractPayload Long memberId,
-                                                                     @ModelAttribute @Valid StudyRecommendSearchRequest request) {
-        StudyRecommendCondition condition = new StudyRecommendCondition(memberId, request);
-        DefaultStudyResponse result = studySearchService.findStudyByRecommend(condition, getDefaultPageRequest(request.page()));
+    public ResponseEntity<DefaultStudyResponse> findStudyByRecommend(
+            @ExtractPayload final Long memberId,
+            @ModelAttribute @Valid final StudyRecommendSearchRequest request
+    ) {
+        final StudyRecommendCondition condition = new StudyRecommendCondition(memberId, request);
+        final DefaultStudyResponse result = studySearchService.findStudyByRecommend(condition, getDefaultPageRequest(request.page()));
+
         return ResponseEntity.ok(result);
     }
 }

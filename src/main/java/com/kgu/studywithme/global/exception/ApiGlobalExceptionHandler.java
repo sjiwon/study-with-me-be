@@ -40,8 +40,10 @@ public class ApiGlobalExceptionHandler {
     private final ObjectMapper objectMapper;
     private final String slackWebhookUrl;
 
-    public ApiGlobalExceptionHandler(ObjectMapper objectMapper,
-                                     @Value("${slack.webhook.url}") String slackWebhookUrl) {
+    public ApiGlobalExceptionHandler(
+            final ObjectMapper objectMapper,
+            @Value("${slack.webhook.url}") final String slackWebhookUrl
+    ) {
         this.objectMapper = objectMapper;
         this.slackWebhookUrl = slackWebhookUrl;
     }

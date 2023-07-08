@@ -21,8 +21,11 @@ public class TokenReissueApiController {
 
     @Operation(summary = "RefreshToken을 통한 토큰 재발급 EndPoint")
     @PostMapping
-    public ResponseEntity<TokenResponse> reissueTokens(@ExtractPayload Long memberId, @ExtractToken String refreshToken) {
-        TokenResponse tokenResponse = tokenReissueService.reissueTokens(memberId, refreshToken);
+    public ResponseEntity<TokenResponse> reissueTokens(
+            @ExtractPayload final Long memberId,
+            @ExtractToken final String refreshToken
+    ) {
+        final TokenResponse tokenResponse = tokenReissueService.reissueTokens(memberId, refreshToken);
         return ResponseEntity.ok(tokenResponse);
     }
 }

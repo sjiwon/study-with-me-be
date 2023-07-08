@@ -33,18 +33,28 @@ public class Attendance {
     @JoinColumn(name = "participant_id", referencedColumnName = "id", nullable = false)
     private Member participant;
 
-    private Attendance(Study study, Member participant, int week, AttendanceStatus status) {
+    private Attendance(
+            final Study study,
+            final Member participant,
+            final int week,
+            final AttendanceStatus status
+    ) {
         this.study = study;
         this.participant = participant;
         this.week = week;
         this.status = status;
     }
 
-    public static Attendance recordAttendance(Study study, Member participant, int week, AttendanceStatus status) {
+    public static Attendance recordAttendance(
+            final Study study,
+            final Member participant,
+            final int week,
+            final AttendanceStatus status
+    ) {
         return new Attendance(study, participant, week, status);
     }
 
-    public void updateAttendanceStatus(AttendanceStatus status) {
+    public void updateAttendanceStatus(final AttendanceStatus status) {
         this.status = status;
     }
 

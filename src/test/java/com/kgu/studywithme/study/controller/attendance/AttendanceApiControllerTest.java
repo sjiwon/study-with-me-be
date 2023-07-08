@@ -16,8 +16,6 @@ import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static com.kgu.studywithme.study.domain.attendance.AttendanceStatus.ATTENDANCE;
 import static com.kgu.studywithme.study.domain.attendance.AttendanceStatus.NON_ATTENDANCE;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -51,8 +49,7 @@ class AttendanceApiControllerTest extends ControllerTest {
         @DisplayName("팀장이 아니라면 수동으로 출석 정보를 변경할 수 없다")
         void throwExceptionByMemberIsNotHost() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(PARTICIPANT_ID);
+            mockingToken(true, PARTICIPANT_ID);
 
             // when
             final AttendanceRequest request = new AttendanceRequest(1, ATTENDANCE.getDescription());
@@ -97,8 +94,7 @@ class AttendanceApiControllerTest extends ControllerTest {
         @DisplayName("해당 주차에 미출석 정보가 존재하지 않는다면 출석 체크를 진행할 수 없다")
         void throwExceptionByAttendanceNotFound() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyErrorCode.ATTENDANCE_NOT_FOUND))
                     .when(attendanceService)
                     .manualCheckAttendance(any(), any(), any(), any());
@@ -146,8 +142,7 @@ class AttendanceApiControllerTest extends ControllerTest {
         @DisplayName("미출석 상태로 출석 체크를 진행할 수 없다")
         void throwExceptionByCannotUpdateToNonAttendance() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyErrorCode.CANNOT_UPDATE_TO_NON_ATTENDANCE))
                     .when(attendanceService)
                     .manualCheckAttendance(any(), any(), any(), any());
@@ -195,8 +190,7 @@ class AttendanceApiControllerTest extends ControllerTest {
         @DisplayName("수동 출석 체크에 성공한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
             doNothing()
                     .when(attendanceService)
                     .manualCheckAttendance(any(), any(), any(), any());

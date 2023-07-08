@@ -20,16 +20,19 @@ public class GraduationPolicy {
     @Column(name = "policy_update_chance", nullable = false)
     private int updateChance;
 
-    private GraduationPolicy(int minimumAttendance, int updateChance) {
+    private GraduationPolicy(
+            final int minimumAttendance,
+            final int updateChance
+    ) {
         this.minimumAttendance = minimumAttendance;
         this.updateChance = updateChance;
     }
 
-    public static GraduationPolicy initPolicy(int minimumAttendance) {
+    public static GraduationPolicy initPolicy(final int minimumAttendance) {
         return new GraduationPolicy(minimumAttendance, DEFAULT_UPDATE_CHANGE);
     }
 
-    public GraduationPolicy update(int minimumAttendance) {
+    public GraduationPolicy update(final int minimumAttendance) {
         if (this.minimumAttendance == minimumAttendance) {
             return new GraduationPolicy(minimumAttendance, updateChance);
         }
@@ -48,7 +51,7 @@ public class GraduationPolicy {
         return new GraduationPolicy(minimumAttendance, DEFAULT_UPDATE_CHANGE);
     }
 
-    public boolean isGraduationRequirementsFulfilled(int value) {
+    public boolean isGraduationRequirementsFulfilled(final int value) {
         return minimumAttendance <= value;
     }
 }

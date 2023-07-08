@@ -19,28 +19,34 @@ public class StudyReviewApiController {
 
     @Operation(summary = "스터디 리뷰 등록 EndPoint")
     @PostMapping("/review")
-    public ResponseEntity<Void> write(@ExtractPayload Long memberId,
-                                      @PathVariable Long studyId,
-                                      @RequestBody @Valid ReviewRequest request) {
+    public ResponseEntity<Void> write(
+            @ExtractPayload final Long memberId,
+            @PathVariable final Long studyId,
+            @RequestBody @Valid final ReviewRequest request
+    ) {
         studyReviewService.write(studyId, memberId, request.content());
         return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "스터디 리뷰 삭제 EndPoint")
     @DeleteMapping("/reviews/{reviewId}")
-    public ResponseEntity<Void> remove(@ExtractPayload Long memberId,
-                                       @PathVariable Long studyId,
-                                       @PathVariable Long reviewId) {
+    public ResponseEntity<Void> remove(
+            @ExtractPayload final Long memberId,
+            @PathVariable final Long studyId,
+            @PathVariable final Long reviewId
+    ) {
         studyReviewService.remove(reviewId, memberId);
         return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "스터디 리뷰 수정 EndPoint")
     @PatchMapping("/reviews/{reviewId}")
-    public ResponseEntity<Void> update(@ExtractPayload Long memberId,
-                                       @PathVariable Long studyId,
-                                       @PathVariable Long reviewId,
-                                       @RequestBody @Valid ReviewRequest request) {
+    public ResponseEntity<Void> update(
+            @ExtractPayload final Long memberId,
+            @PathVariable final Long studyId,
+            @PathVariable final Long reviewId,
+            @RequestBody @Valid final ReviewRequest request
+    ) {
         studyReviewService.update(reviewId, memberId, request.content());
         return ResponseEntity.noContent().build();
     }

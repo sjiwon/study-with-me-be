@@ -6,7 +6,10 @@ public record CategoryResponse(
         Long id,
         String name
 ) {
-    public CategoryResponse(Category category) {
-        this(category.getId(), category.getName());
+    public CategoryResponse(final Category category) {
+        this(
+                category.getId(),
+                category.getName()
+        );
     }
 }

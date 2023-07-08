@@ -21,12 +21,18 @@ public class Favorite extends BaseEntity {
     @Column(name = "member_id", nullable = false)
     private Long memberId;
 
-    private Favorite(Long studyId, Long memberId) {
+    private Favorite(
+            final Long studyId,
+            final Long memberId
+    ) {
         this.studyId = studyId;
         this.memberId = memberId;
     }
 
-    public static Favorite favoriteMarking(Long studyId, Long memberId) {
+    public static Favorite favoriteMarking(
+            final Long studyId,
+            final Long memberId
+    ) {
         return new Favorite(studyId, memberId);
     }
 }

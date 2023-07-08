@@ -22,33 +22,32 @@ public class StudyInformationService {
     private final StudyFindService studyFindService;
     private final StudyRepository studyRepository;
 
-    public StudyInformation getInformation(Long studyId) {
-        Study study = studyFindService.findByIdWithParticipants(studyId);
+    public StudyInformation getInformation(final Long studyId) {
+        final Study study = studyFindService.findByIdWithParticipants(studyId);
         return new StudyInformation(study);
     }
 
-    public ReviewAssembler getReviews(Long studyId) {
-        int graduateCount = studyRepository.getGraduatedParticipantCountByStudyId(studyId);
-        List<ReviewInformation> reviews = studyRepository.findReviewByStudyId(studyId);
+    public ReviewAssembler getReviews(final Long studyId) {
+        final int graduateCount = studyRepository.getGraduatedParticipantCountByStudyId(studyId);
+        final List<ReviewInformation> reviews = studyRepository.findReviewByStudyId(studyId);
 
         return new ReviewAssembler(graduateCount, reviews);
     }
 
-    public NoticeAssembler getNotices(Long studyId) {
-        List<NoticeInformation> result = studyRepository.findNoticeWithCommentsByStudyId(studyId);
+    public NoticeAssembler getNotices(final Long studyId) {
+        final List<NoticeInformation> result = studyRepository.findNoticeWithCommentsByStudyId(studyId);
         return new NoticeAssembler(result);
     }
 
-    public StudyApplicant getApplicants(Long studyId) {
-        List<StudyApplicantInformation> result = studyRepository.findApplicantByStudyId(studyId);
+    public StudyApplicant getApplicants(final Long studyId) {
+        final List<StudyApplicantInformation> result = studyRepository.findApplicantByStudyId(studyId);
         return new StudyApplicant(result);
     }
 
-    public StudyParticipant getApproveParticipants(Long studyId) {
-        Study study = studyFindService.findByIdWithParticipants(studyId);
-
-        StudyMember host = new StudyMember(study.getHost());
-        List<StudyMember> participants = study.getApproveParticipantsWithoutHost()
+    public StudyParticipant getApproveParticipants(final Long studyId) {
+        final Study study = studyFindService.findByIdWithParticipants(studyId);
+        final StudyMember host = new StudyMember(study.getHost());
+        final List<StudyMember> participants = study.getApproveParticipantsWithoutHost()
                 .stream()
                 .map(StudyMember::new)
                 .toList();
@@ -56,17 +55,22 @@ public class StudyInformationService {
         return new StudyParticipant(host, participants);
     }
 
-    public AttendanceAssmbler getAttendances(Long studyId) {
-        List<AttendanceInformation> result = studyRepository.findAttendanceByStudyId(studyId);
-
-        List<StudyMemberAttendanceResult> attendanceResults = result.stream()
+    public AttendanceAssmbler getAttendances(final Long studyId) {
+        final List<AttendanceInformation> result = studyRepository.findAttendanceByStudyId(studyId);
+        final List<StudyMemberAttendanceResult> attendanceResults = result.stream()
                 .collect(Collectors.groupingBy(AttendanceInformation::getParticipant))
                 .entrySet().stream()
                 .map(entry ->
                         new StudyMemberAttendanceResult(
                                 entry.getKey(),
-                                entry.getValue().stream()
-                                        .map(info -> new AttendanceSummary(info.getWeek(), info.getAttendanceStatus()))
+                                entry.getValue()
+                                        .stream()
+                                        .map(info ->
+                                                new AttendanceSummary(
+                                                        info.getWeek(),
+                                                        info.getAttendanceStatus()
+                                                )
+                                        )
                                         .toList()
                         )
                 )
@@ -75,10 +79,9 @@ public class StudyInformationService {
         return new AttendanceAssmbler(attendanceResults);
     }
 
-    public WeeklyAssembler getWeeks(Long studyId) {
-        List<Week> weeks = studyRepository.findWeeklyByStudyId(studyId);
-
-        List<WeeklySummary> result = weeks.stream()
+    public WeeklyAssembler getWeeks(final Long studyId) {
+        final List<Week> weeks = studyRepository.findWeeklyByStudyId(studyId);
+        final List<WeeklySummary> result = weeks.stream()
                 .map(WeeklySummary::new)
                 .toList();
 

@@ -58,8 +58,16 @@ public class Week extends BaseEntity {
     @OneToMany(mappedBy = "week", cascade = CascadeType.PERSIST)
     private List<Submit> submits = new ArrayList<>();
 
-    private Week(Study study, String title, String content, int week, Period period,
-                 boolean assignmentExists, boolean autoAttendance, List<UploadAttachment> attachments) {
+    private Week(
+            final Study study,
+            final String title,
+            final String content,
+            final int week,
+            final Period period,
+            final boolean assignmentExists,
+            final boolean autoAttendance,
+            final List<UploadAttachment> attachments
+    ) {
         this.study = study;
         this.creator = study.getHost();
         this.title = title;
@@ -71,18 +79,37 @@ public class Week extends BaseEntity {
         applyAttachments(attachments);
     }
 
-    public static Week createWeek(Study study, String title, String content,
-                                  int week, Period period, List<UploadAttachment> attachments) {
+    public static Week createWeek(
+            final Study study,
+            final String title,
+            final String content,
+            final int week,
+            final Period period,
+            final List<UploadAttachment> attachments
+    ) {
         return new Week(study, title, content, week, period, false, false, attachments);
     }
 
-    public static Week createWeekWithAssignment(Study study, String title, String content, int week, Period period,
-                                                boolean autoAttendance, List<UploadAttachment> attachments) {
+    public static Week createWeekWithAssignment(
+            final Study study,
+            final String title,
+            final String content,
+            final int week,
+            final Period period,
+            final boolean autoAttendance,
+            final List<UploadAttachment> attachments
+    ) {
         return new Week(study, title, content, week, period, true, autoAttendance, attachments);
     }
 
-    public void update(String title, String content, Period period,
-                       boolean assignmentExists, boolean autoAttendance, List<UploadAttachment> attachments) {
+    public void update(
+            final String title,
+            final String content,
+            final Period period,
+            final boolean assignmentExists,
+            final boolean autoAttendance,
+            final List<UploadAttachment> attachments
+    ) {
         this.title = title;
         this.content = content;
         this.period = period;
@@ -91,7 +118,7 @@ public class Week extends BaseEntity {
         applyAttachments(attachments);
     }
 
-    private void applyAttachments(List<UploadAttachment> attachments) {
+    private void applyAttachments(final List<UploadAttachment> attachments) {
         this.attachments.clear();
 
         if (!CollectionUtils.isEmpty(attachments)) {
@@ -103,7 +130,10 @@ public class Week extends BaseEntity {
         }
     }
 
-    public void submitAssignment(Member participant, UploadAssignment uploadAssignment) {
+    public void submitAssignment(
+            final Member participant,
+            final UploadAssignment uploadAssignment
+    ) {
         submits.add(Submit.submitAssignment(this, participant, uploadAssignment));
     }
 }

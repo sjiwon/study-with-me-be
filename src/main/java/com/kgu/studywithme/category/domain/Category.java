@@ -21,7 +21,7 @@ public enum Category {
     private final long id;
     private final String name;
 
-    public static Category from(long id) {
+    public static Category from(final long id) {
         return Arrays.stream(values())
                 .filter(category -> category.id == id)
                 .findFirst()

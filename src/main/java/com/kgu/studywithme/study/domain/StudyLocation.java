@@ -19,23 +19,32 @@ public class StudyLocation {
     @Column(name = "city")
     private String city;
 
-    private StudyLocation(String province, String city) {
+    private StudyLocation(
+            final String province,
+            final String city
+    ) {
         this.province = province;
         this.city = city;
     }
 
-    public static StudyLocation of(String province, String city) {
+    public static StudyLocation of(
+            final String province,
+            final String city
+    ) {
         validateProvinceAndCityIsNotEmpty(province, city);
         return new StudyLocation(province, city);
     }
 
-    private static void validateProvinceAndCityIsNotEmpty(String province, String city) {
+    private static void validateProvinceAndCityIsNotEmpty(
+            final String province,
+            final String city
+    ) {
         if (isEmptyText(province) || isEmptyText(city)) {
             throw StudyWithMeException.type(StudyErrorCode.STUDY_LOCATION_IS_BLANK);
         }
     }
 
-    private static boolean isEmptyText(String str) {
+    private static boolean isEmptyText(final String str) {
         return !StringUtils.hasText(str);
     }
 }

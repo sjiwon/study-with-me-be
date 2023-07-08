@@ -17,7 +17,13 @@ public class ReviewInformation {
     private final StudyMember reviewer;
 
     @QueryProjection
-    public ReviewInformation(Long id, String content, LocalDateTime reviewDate, Long reviewerId, Nickname reviewerNickname) {
+    public ReviewInformation(
+            final Long id,
+            final String content,
+            final LocalDateTime reviewDate,
+            final Long reviewerId,
+            final Nickname reviewerNickname
+    ) {
         this.id = id;
         this.content = content;
         this.reviewDate = reviewDate;

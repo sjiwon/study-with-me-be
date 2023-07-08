@@ -30,7 +30,6 @@ import static com.kgu.studywithme.fixture.WeekFixture.*;
 import static com.kgu.studywithme.study.domain.attendance.AttendanceStatus.*;
 import static com.kgu.studywithme.study.domain.week.submit.UploadType.FILE;
 import static com.kgu.studywithme.study.domain.week.submit.UploadType.LINK;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -197,8 +196,7 @@ class StudyInformationApiControllerTest extends ControllerTest {
         @DisplayName("스터디 참여자가 아니면 스터디 공지사항 조회에 실패한다")
         void throwExceptionByMemberIsNotParticipant() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(ANONYMOUS_ID);
+            mockingToken(true, ANONYMOUS_ID);
 
             // when
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -235,8 +233,7 @@ class StudyInformationApiControllerTest extends ControllerTest {
         @DisplayName("스터디 공지사항 조회에 성공한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
 
             NoticeAssembler response = generateStudyNotices(5);
             given(studyInformationService.getNotices(STUDY_ID)).willReturn(response);
@@ -296,8 +293,7 @@ class StudyInformationApiControllerTest extends ControllerTest {
         @DisplayName("팀장이 아니라면 스터디 신청자 정보를 조회할 수 없다")
         void throwExceptionByMemberIsNotHost() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(PARTICIPANT_ID);
+            mockingToken(true, PARTICIPANT_ID);
 
             // when
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -334,8 +330,7 @@ class StudyInformationApiControllerTest extends ControllerTest {
         @DisplayName("스터디 신청자 정보를 조회한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
 
             StudyApplicant response = new StudyApplicant(
                     List.of(
@@ -387,8 +382,7 @@ class StudyInformationApiControllerTest extends ControllerTest {
         @DisplayName("스터디 신청자 정보를 조회한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
 
             StudyParticipant response = new StudyParticipant(
                     new StudyMember(1L, "팀장"),
@@ -447,8 +441,7 @@ class StudyInformationApiControllerTest extends ControllerTest {
         @DisplayName("스터디 참여자가 아니라면 스터디 사용자별 출석 정보를 조회할 수 없다")
         void throwExceptionByMemberIsNotParticipant() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(ANONYMOUS_ID);
+            mockingToken(true, ANONYMOUS_ID);
 
             // when
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -485,8 +478,7 @@ class StudyInformationApiControllerTest extends ControllerTest {
         @DisplayName("스터디 사용자별 출석 정보를 조회한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
 
             AttendanceAssmbler response = generateStudyAttendances();
             given(studyInformationService.getAttendances(STUDY_ID)).willReturn(response);
@@ -537,8 +529,7 @@ class StudyInformationApiControllerTest extends ControllerTest {
         @DisplayName("스터디 참여자가 아니라면 스터디 주차별 정보를 조회할 수 없다")
         void throwExceptionByMemberIsNotParticipant() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(ANONYMOUS_ID);
+            mockingToken(true, ANONYMOUS_ID);
 
             // when
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -575,8 +566,7 @@ class StudyInformationApiControllerTest extends ControllerTest {
         @DisplayName("스터디 주차별 정보를 조회한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
 
             WeeklyAssembler response = generateStudyWeeks();
             given(studyInformationService.getWeeks(STUDY_ID)).willReturn(response);

@@ -8,10 +8,19 @@ import java.time.LocalDate;
 import java.util.List;
 
 public record MemberInformation(
-        Long id, String name, String nickname, String email, LocalDate birth, String phone,
-        String gender, Region region, int score, boolean isEmailOptIn, List<String> interests
+        Long id,
+        String name,
+        String nickname,
+        String email,
+        LocalDate birth,
+        String phone,
+        String gender,
+        Region region,
+        int score,
+        boolean isEmailOptIn,
+        List<String> interests
 ) {
-    public MemberInformation(Member member) {
+    public MemberInformation(final Member member) {
         this(
                 member.getId(),
                 member.getName(),
@@ -27,7 +36,7 @@ public record MemberInformation(
         );
     }
 
-    private static List<String> translateInterests(Member member) {
+    private static List<String> translateInterests(final Member member) {
         return member.getInterests()
                 .stream()
                 .map(Category::getName)

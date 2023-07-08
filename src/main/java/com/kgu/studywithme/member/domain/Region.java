@@ -19,28 +19,40 @@ public class Region {
     @Column(name = "city", nullable = false)
     private String city;
 
-    private Region(String province, String city) {
+    private Region(
+            final String province,
+            final String city
+    ) {
         this.province = province;
         this.city = city;
     }
 
-    public static Region of(String province, String city) {
+    public static Region of(
+            final String province,
+            final String city
+    ) {
         validateProvinceAndCityIsNotEmpty(province, city);
         return new Region(province, city);
     }
 
-    public Region update(String province, String city) {
+    public Region update(
+            final String province,
+            final String city
+    ) {
         validateProvinceAndCityIsNotEmpty(province, city);
         return new Region(province, city);
     }
 
-    private static void validateProvinceAndCityIsNotEmpty(String province, String city) {
+    private static void validateProvinceAndCityIsNotEmpty(
+            final String province,
+            final String city
+    ) {
         if (isEmptyText(province) || isEmptyText(city)) {
             throw StudyWithMeException.type(MemberErrorCode.REGION_IS_BLANK);
         }
     }
 
-    private static boolean isEmptyText(String str) {
+    private static boolean isEmptyText(final String str) {
         return !StringUtils.hasText(str);
     }
 }

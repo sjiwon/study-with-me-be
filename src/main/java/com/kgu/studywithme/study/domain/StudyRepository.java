@@ -9,8 +9,11 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface StudyRepository extends JpaRepository<Study, Long>,
-        StudySimpleQueryRepository, StudyCategoryQueryRepository, StudyInformationQueryRepository {
+public interface StudyRepository extends
+        JpaRepository<Study, Long>,
+        StudySimpleQueryRepository,
+        StudyCategoryQueryRepository,
+        StudyInformationQueryRepository {
     // @Query
     @Query("SELECT s" +
             " FROM Study s" +
@@ -24,7 +27,10 @@ public interface StudyRepository extends JpaRepository<Study, Long>,
             " JOIN FETCH s.participants.host" +
             " LEFT JOIN FETCH s.participants.participants" +
             " WHERE s.id = :studyId AND s.participants.host.id = :hostId")
-    Optional<Study> findByIdAndHostIdWithParticipants(@Param("studyId") Long studyId, @Param("hostId") Long hostId);
+    Optional<Study> findByIdAndHostIdWithParticipants(
+            @Param("studyId") Long studyId,
+            @Param("hostId") Long hostId
+    );
 
     @Query("SELECT s" +
             " FROM Study s" +
@@ -35,10 +41,15 @@ public interface StudyRepository extends JpaRepository<Study, Long>,
     @Query("SELECT s" +
             " FROM Study s" +
             " WHERE s.id = :studyId AND s.participants.host.id = :hostId")
-    Optional<Study> findByIdAndHostId(@Param("studyId") Long studyId, @Param("hostId") Long hostId);
+    Optional<Study> findByIdAndHostId(
+            @Param("studyId") Long studyId,
+            @Param("hostId") Long hostId
+    );
 
     // Query Method
     boolean existsByName(StudyName name);
+
     boolean existsByNameAndIdNot(StudyName name, Long studyId);
+
     boolean existsByIdAndParticipantsHostId(Long studyId, Long hostId);
 }

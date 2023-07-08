@@ -17,14 +17,20 @@ public class FavoriteApiController {
 
     @Operation(summary = "스터디 찜 등록 EndPoint")
     @PostMapping
-    public ResponseEntity<Void> like(@ExtractPayload Long memberId, @PathVariable Long studyId) {
+    public ResponseEntity<Void> like(
+            @ExtractPayload final Long memberId,
+            @PathVariable final Long studyId
+    ) {
         favoriteManageService.like(studyId, memberId);
         return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "스터디 찜 등록 취소 EndPoint")
     @DeleteMapping
-    public ResponseEntity<Void> cancel(@ExtractPayload Long memberId, @PathVariable Long studyId) {
+    public ResponseEntity<Void> cancel(
+            @ExtractPayload final Long memberId,
+            @PathVariable final Long studyId
+    ) {
         favoriteManageService.cancel(studyId, memberId);
         return ResponseEntity.noContent().build();
     }

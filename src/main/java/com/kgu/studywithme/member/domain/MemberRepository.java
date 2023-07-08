@@ -9,7 +9,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 import java.util.Set;
 
-public interface MemberRepository extends JpaRepository<Member, Long>, MemberSimpleQueryRepository {
+public interface MemberRepository extends
+        JpaRepository<Member, Long>,
+        MemberSimpleQueryRepository {
     // @Query
     @Query("SELECT m" +
             " FROM Member m" +
@@ -25,9 +27,14 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberSim
 
     // Query Method
     Optional<Member> findByEmail(Email email);
+
     boolean existsByEmail(Email email);
+
     boolean existsByNickname(Nickname nickname);
+
     boolean existsByIdNotAndNickname(Long memberId, Nickname nickname);
+
     boolean existsByPhone(String phone);
+
     boolean existsByIdNotAndPhone(Long memberId, String phone);
 }

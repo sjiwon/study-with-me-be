@@ -25,7 +25,6 @@ import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static com.kgu.studywithme.study.domain.RecruitmentStatus.IN_PROGRESS;
 import static com.kgu.studywithme.study.utils.PagingConstants.SORT_DATE;
 import static com.kgu.studywithme.study.utils.PagingConstants.getDefaultPageRequest;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -52,7 +51,6 @@ class StudySearchApiControllerTest extends ControllerTest {
             // given
             final Category category = PROGRAMMING;
             StudyCategoryCondition condition = new StudyCategoryCondition(category, SORT, TYPE, null, null);
-
             DefaultStudyResponse response = new DefaultStudyResponse(generateCategoryResult(8), true);
             given(studySearchService.findStudyByCategory(condition, PAGE)).willReturn(response);
 
@@ -121,10 +119,9 @@ class StudySearchApiControllerTest extends ControllerTest {
         @DisplayName("사용자의 관심사에 따른 스터디 리스트를 조회한다 [언어 / 면접 / 프로그래밍]")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(MEMBER_ID);
-            StudyRecommendCondition condition = new StudyRecommendCondition(MEMBER_ID, SORT, TYPE, null, null);
+            mockingToken(true, MEMBER_ID);
 
+            StudyRecommendCondition condition = new StudyRecommendCondition(MEMBER_ID, SORT, TYPE, null, null);
             DefaultStudyResponse response = new DefaultStudyResponse(generateRecommendResult(8), true);
             given(studySearchService.findStudyByRecommend(condition, PAGE)).willReturn(response);
 

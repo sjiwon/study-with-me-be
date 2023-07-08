@@ -19,18 +19,22 @@ public class MemberReviewApiController {
 
     @Operation(summary = "피어리뷰 작성 EndPoint")
     @PostMapping
-    public ResponseEntity<Void> writeReview(@ExtractPayload Long reviewerId,
-                                            @PathVariable Long revieweeId,
-                                            @RequestBody @Valid MemberReviewRequest request) {
+    public ResponseEntity<Void> writeReview(
+            @ExtractPayload final Long reviewerId,
+            @PathVariable final Long revieweeId,
+            @RequestBody @Valid final MemberReviewRequest request
+    ) {
         memberReviewService.writeReview(revieweeId, reviewerId, request.content());
         return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "피어리뷰 수정 EndPoint")
     @PatchMapping
-    public ResponseEntity<Void> updateReview(@ExtractPayload Long reviewerId,
-                                             @PathVariable Long revieweeId,
-                                             @RequestBody @Valid MemberReviewRequest request) {
+    public ResponseEntity<Void> updateReview(
+            @ExtractPayload final Long reviewerId,
+            @PathVariable final Long revieweeId,
+            @RequestBody @Valid final MemberReviewRequest request
+    ) {
         memberReviewService.updateReview(revieweeId, reviewerId, request.content());
         return ResponseEntity.noContent().build();
     }

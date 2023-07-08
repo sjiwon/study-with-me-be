@@ -15,7 +15,12 @@ public class AttendanceInformation {
     private final String attendanceStatus;
 
     @QueryProjection
-    public AttendanceInformation(Long id, Nickname nickname, int week, AttendanceStatus attendanceStatus) {
+    public AttendanceInformation(
+            final Long id,
+            final Nickname nickname,
+            final int week,
+            final AttendanceStatus attendanceStatus
+    ) {
         this.participant = new StudyMember(id, nickname.getValue());
         this.week = week;
         this.attendanceStatus = attendanceStatus.getDescription();

@@ -29,7 +29,10 @@ public class GoogleOAuthConnector implements OAuthConnector {
     private static final String BEARER_TYPE = "Bearer";
 
     @Override
-    public OAuthTokenResponse getToken(String code, String redirectUri) {
+    public OAuthTokenResponse getToken(
+            final String code,
+            final String redirectUri
+    ) {
         HttpHeaders headers = createTokenRequestHeader();
         MultiValueMap<String, String> params = applyTokenRequestParams(code, redirectUri);
 
@@ -43,7 +46,10 @@ public class GoogleOAuthConnector implements OAuthConnector {
         return headers;
     }
 
-    private MultiValueMap<String, String> applyTokenRequestParams(String code, String redirectUri) {
+    private MultiValueMap<String, String> applyTokenRequestParams(
+            final String code,
+            final String redirectUri
+    ) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", properties.getGrantType());
         params.add("client_id", properties.getClientId());
@@ -53,7 +59,9 @@ public class GoogleOAuthConnector implements OAuthConnector {
         return params;
     }
 
-    private ResponseEntity<GoogleTokenResponse> fetchGoogleToken(HttpEntity<MultiValueMap<String, String>> request) {
+    private ResponseEntity<GoogleTokenResponse> fetchGoogleToken(
+            final HttpEntity<MultiValueMap<String, String>> request
+    ) {
         try {
             return restTemplate.postForEntity(properties.getTokenUrl(), request, GoogleTokenResponse.class);
         } catch (RestClientException e) {
@@ -62,19 +70,19 @@ public class GoogleOAuthConnector implements OAuthConnector {
     }
 
     @Override
-    public OAuthUserResponse getUserInfo(String accessToken) {
+    public OAuthUserResponse getUserInfo(final String accessToken) {
         HttpHeaders headers = createUserInfoRequestHeader(accessToken);
         HttpEntity<Void> request = new HttpEntity<>(headers);
         return fetchGoogleUserInfo(request).getBody();
     }
 
-    private HttpHeaders createUserInfoRequestHeader(String accessToken) {
+    private HttpHeaders createUserInfoRequestHeader(final String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.set(AUTHORIZATION, String.join(" ", BEARER_TYPE, accessToken));
         return headers;
     }
 
-    private ResponseEntity<GoogleUserResponse> fetchGoogleUserInfo(HttpEntity<Void> request) {
+    private ResponseEntity<GoogleUserResponse> fetchGoogleUserInfo(final HttpEntity<Void> request) {
         try {
             return restTemplate.exchange(properties.getUserInfoUrl(), GET, request, GoogleUserResponse.class);
         } catch (RestClientException e) {

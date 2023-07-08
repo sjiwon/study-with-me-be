@@ -26,7 +26,6 @@ import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.fixture.StudyFixture.*;
 import static com.kgu.studywithme.study.domain.attendance.AttendanceStatus.*;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -49,8 +48,7 @@ class MemberInformationApiControllerTest extends ControllerTest {
         @DisplayName("사용자 기본 정보를 조회한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(MEMBER_ID);
+            mockingToken(true, MEMBER_ID);
 
             MemberInformation response = generateMemberInformationResponse();
             given(memberInformationService.getInformation(MEMBER_ID)).willReturn(response);
@@ -101,8 +99,7 @@ class MemberInformationApiControllerTest extends ControllerTest {
         @DisplayName("Private한 사용자 정보는 타인이 조회할 수 없다 (Token PayloadId != PathVariable memberId)")
         void throwExceptionByInvalidPermission() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(MEMBER_ID + 10000L);
+            mockingToken(true, MEMBER_ID + 10000L);
 
             // when
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -139,8 +136,7 @@ class MemberInformationApiControllerTest extends ControllerTest {
         @DisplayName("사용자가 신청한 스터디 리스트를 조회한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(MEMBER_ID);
+            mockingToken(true, MEMBER_ID);
 
             RelatedStudy response = generateRelatedStudyResponse();
             given(memberInformationService.getApplyStudy(MEMBER_ID)).willReturn(response);
@@ -184,8 +180,7 @@ class MemberInformationApiControllerTest extends ControllerTest {
         @DisplayName("Private한 사용자 정보는 타인이 조회할 수 없다 (Token PayloadId != PathVariable memberId)")
         void throwExceptionByInvalidPermission() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(MEMBER_ID + 10000L);
+            mockingToken(true, MEMBER_ID + 10000L);
 
             // when
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -222,8 +217,7 @@ class MemberInformationApiControllerTest extends ControllerTest {
         @DisplayName("사용자가 찜한 스터디 리스트를 조회한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(MEMBER_ID);
+            mockingToken(true, MEMBER_ID);
 
             RelatedStudy response = generateRelatedStudyResponse();
             given(memberInformationService.getFavoriteStudy(MEMBER_ID)).willReturn(response);
@@ -267,8 +261,7 @@ class MemberInformationApiControllerTest extends ControllerTest {
         @DisplayName("사용자가 참여중인 스터디 리스트를 조회한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(MEMBER_ID);
+            mockingToken(true, MEMBER_ID);
 
             RelatedStudy response = generateRelatedStudyResponse();
             given(memberInformationService.getParticipateStudy(MEMBER_ID)).willReturn(response);
@@ -312,8 +305,7 @@ class MemberInformationApiControllerTest extends ControllerTest {
         @DisplayName("사용자가 졸업한 스터디 리스트를 조회한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(MEMBER_ID);
+            mockingToken(true, MEMBER_ID);
 
             GraduatedStudy response = generateGraduatedStudyResponse();
             given(memberInformationService.getGraduatedStudy(MEMBER_ID)).willReturn(response);
@@ -367,8 +359,7 @@ class MemberInformationApiControllerTest extends ControllerTest {
         @DisplayName("사용자에 대한 피어리뷰 조회에 성공한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(1L);
+            mockingToken(true, MEMBER_ID);
 
             PeerReviewAssembler response = generatePeerReviewAssembler();
             given(memberInformationService.getPeerReviews(MEMBER_ID)).willReturn(response);
@@ -408,8 +399,7 @@ class MemberInformationApiControllerTest extends ControllerTest {
         @DisplayName("사용자의 출석률 조회에 성공한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(1L);
+            mockingToken(true, MEMBER_ID);
 
             AttendanceRatioAssembler response = generateAttendanceRatio();
             given(memberInformationService.getAttendanceRatio(MEMBER_ID)).willReturn(response);

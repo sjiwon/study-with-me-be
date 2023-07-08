@@ -17,7 +17,12 @@ public class StudyApplicantInformation {
     private final LocalDateTime applyDate;
 
     @QueryProjection
-    public StudyApplicantInformation(Long id, Nickname nickname, Score score, LocalDateTime applyDate) {
+    public StudyApplicantInformation(
+            final Long id,
+            final Nickname nickname,
+            final Score score,
+            final LocalDateTime applyDate
+    ) {
         this.id = id;
         this.nickname = nickname.getValue();
         this.score = score.getValue();

@@ -20,23 +20,32 @@ public class Period {
     @Column(name = "end_date", nullable = false)
     private LocalDateTime endDate;
 
-    private Period(LocalDateTime startDate, LocalDateTime endDate) {
+    private Period(
+            final LocalDateTime startDate,
+            final LocalDateTime endDate
+    ) {
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
-    public static Period of(LocalDateTime startDate, LocalDateTime endDate) {
+    public static Period of(
+            final LocalDateTime startDate,
+            final LocalDateTime endDate
+    ) {
         validateStartIsBeforeEnd(startDate, endDate);
         return new Period(startDate, endDate);
     }
 
-    private static void validateStartIsBeforeEnd(LocalDateTime startDate, LocalDateTime endDate) {
+    private static void validateStartIsBeforeEnd(
+            final LocalDateTime startDate,
+            final LocalDateTime endDate
+    ) {
         if (startDate.isAfter(endDate)) {
             throw StudyWithMeException.type(StudyErrorCode.PERIOD_START_DATE_MUST_BE_BEFORE_END_DATE);
         }
     }
 
-    public boolean isDateWithInRange(LocalDateTime time) {
+    public boolean isDateWithInRange(final LocalDateTime time) {
         return startDate.isBefore(time) && endDate.isAfter(time);
     }
 }

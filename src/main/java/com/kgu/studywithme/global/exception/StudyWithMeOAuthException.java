@@ -7,7 +7,7 @@ import lombok.Getter;
 public class StudyWithMeOAuthException extends RuntimeException {
     private final OAuthUserResponse response;
 
-    public StudyWithMeOAuthException(OAuthUserResponse response) {
+    public StudyWithMeOAuthException(final OAuthUserResponse response) {
         super();
         this.response = response;
     }

@@ -28,26 +28,36 @@ public class ParticipationService {
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
-    public void apply(Long studyId, Long memberId) {
-        Study study = studyFindService.findByIdWithParticipants(studyId);
-        Member member = memberFindService.findById(memberId);
+    public void apply(
+            final Long studyId,
+            final Long memberId
+    ) {
+        final Study study = studyFindService.findByIdWithParticipants(studyId);
+        final Member member = memberFindService.findById(memberId);
 
         study.applyParticipation(member);
     }
 
     @Transactional
-    public void applyCancel(Long studyId, Long applierId) {
-        Study study = studyFindService.findByIdWithParticipants(studyId);
-        Member applier = memberFindService.findById(applierId);
+    public void applyCancel(
+            final Long studyId,
+            final Long applierId
+    ) {
+        final Study study = studyFindService.findByIdWithParticipants(studyId);
+        final Member applier = memberFindService.findById(applierId);
         study.validateMemberIsApplier(applier);
 
         participantRepository.deleteParticipantAssociatedMember(study, applier);
     }
 
     @Transactional
-    public void approve(Long studyId, Long applierId, Long hostId) {
-        Study study = studyFindService.findByIdAndHostIdWithParticipants(studyId, hostId);
-        Member applier = memberFindService.findById(applierId);
+    public void approve(
+            final Long studyId,
+            final Long applierId,
+            final Long hostId
+    ) {
+        final Study study = studyFindService.findByIdAndHostIdWithParticipants(studyId, hostId);
+        final Member applier = memberFindService.findById(applierId);
 
         study.approveParticipation(applier);
 
@@ -63,9 +73,14 @@ public class ParticipationService {
     }
 
     @Transactional
-    public void reject(Long studyId, Long applierId, Long hostId, String reason) {
-        Study study = studyFindService.findByIdAndHostIdWithParticipants(studyId, hostId);
-        Member applier = memberFindService.findById(applierId);
+    public void reject(
+            final Long studyId,
+            final Long applierId,
+            final Long hostId,
+            final String reason
+    ) {
+        final Study study = studyFindService.findByIdAndHostIdWithParticipants(studyId, hostId);
+        final Member applier = memberFindService.findById(applierId);
 
         study.rejectParticipation(applier);
 
@@ -82,26 +97,36 @@ public class ParticipationService {
     }
 
     @Transactional
-    public void cancel(Long studyId, Long participantId) {
-        Study study = studyFindService.findByIdWithParticipants(studyId);
-        Member participant = memberFindService.findById(participantId);
+    public void cancel(
+            final Long studyId,
+            final Long participantId
+    ) {
+        final Study study = studyFindService.findByIdWithParticipants(studyId);
+        final Member participant = memberFindService.findById(participantId);
 
         study.cancelParticipation(participant);
     }
 
     @Transactional
-    public void delegateAuthority(Long studyId, Long participantId, Long hostId) {
-        Study study = studyFindService.findByIdAndHostIdWithParticipants(studyId, hostId);
-        Member newHost = memberFindService.findById(participantId);
+    public void delegateAuthority(
+            final Long studyId,
+            final Long participantId,
+            final Long hostId
+    ) {
+        final Study study = studyFindService.findByIdAndHostIdWithParticipants(studyId, hostId);
+        final Member newHost = memberFindService.findById(participantId);
 
         study.delegateStudyHostAuthority(newHost);
         participantRepository.deleteParticipantAssociatedMember(study, newHost);
     }
 
     @Transactional
-    public void graduate(Long studyId, Long participantId) {
-        Study study = studyFindService.findByIdWithParticipants(studyId);
-        Member participant = memberFindService.findById(participantId);
+    public void graduate(
+            final Long studyId,
+            final Long participantId
+    ) {
+        final Study study = studyFindService.findByIdWithParticipants(studyId);
+        final Member participant = memberFindService.findById(participantId);
         validateGraduationRequirements(study, participantId);
 
         study.graduateParticipant(participant);
@@ -117,8 +142,12 @@ public class ParticipationService {
         }
     }
 
-    private void validateGraduationRequirements(Study study, Long memberId) {
-        int attendanceCount = memberRepository.getAttendanceCount(study.getId(), memberId, ATTENDANCE).intValue();
+    private void validateGraduationRequirements(
+            final Study study,
+            final Long memberId
+    ) {
+        final int attendanceCount
+                = memberRepository.getAttendanceCount(study.getId(), memberId, ATTENDANCE).intValue();
 
         if (!study.isGraduationRequirementsFulfilled(attendanceCount)) {
             throw StudyWithMeException.type(StudyErrorCode.GRADUATION_REQUIREMENTS_NOT_FULFILLED);

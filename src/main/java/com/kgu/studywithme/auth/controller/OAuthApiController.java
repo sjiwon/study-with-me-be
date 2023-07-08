@@ -21,21 +21,24 @@ public class OAuthApiController {
 
     @Operation(summary = "Google OAuth 인증을 위한 URL을 받는 EndPoint")
     @GetMapping(value = "/access", params = {"redirectUrl"})
-    public ResponseEntity<SimpleResponseWrapper<String>> access(@RequestParam String redirectUrl) {
-        String link = oAuthUri.generate(redirectUrl);
+    public ResponseEntity<SimpleResponseWrapper<String>> access(@RequestParam final String redirectUrl) {
+        final String link = oAuthUri.generate(redirectUrl);
         return ResponseEntity.ok(new SimpleResponseWrapper<>(link));
     }
 
     @Operation(summary = "Authorization Code를 통해서 Google OAuth Server에 인증을 위한 EndPoint")
     @GetMapping(value = "/login", params = {"authorizationCode", "redirectUrl"})
-    public ResponseEntity<LoginResponse> login(@RequestParam String authorizationCode, @RequestParam String redirectUrl) {
-        LoginResponse response = oAuthService.login(authorizationCode, redirectUrl);
+    public ResponseEntity<LoginResponse> login(
+            @RequestParam final String authorizationCode,
+            @RequestParam final String redirectUrl
+    ) {
+        final LoginResponse response = oAuthService.login(authorizationCode, redirectUrl);
         return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "로그아웃 EndPoint")
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(@ExtractPayload Long memberId) {
+    public ResponseEntity<Void> logout(@ExtractPayload final Long memberId) {
         oAuthService.logout(memberId);
         return ResponseEntity.noContent().build();
     }

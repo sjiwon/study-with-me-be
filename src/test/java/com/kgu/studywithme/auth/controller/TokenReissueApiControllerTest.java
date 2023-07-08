@@ -3,7 +3,6 @@ package com.kgu.studywithme.auth.controller;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.auth.service.dto.response.TokenResponse;
 import com.kgu.studywithme.common.ControllerTest;
-import com.kgu.studywithme.global.exception.StudyWithMeException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -11,10 +10,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static com.kgu.studywithme.common.utils.TokenUtils.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -33,9 +29,7 @@ class TokenReissueApiControllerTest extends ControllerTest {
         @DisplayName("만료된 RefreshToken으로 인해 토큰 재발급에 실패한다")
         void expiredRefreshToken() throws Exception {
             // given
-            doThrow(StudyWithMeException.type(AuthErrorCode.AUTH_EXPIRED_TOKEN))
-                    .when(jwtTokenProvider)
-                    .isTokenValid(any());
+            mockingTokenWithExpiredException();
 
             // when
             MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -69,9 +63,7 @@ class TokenReissueApiControllerTest extends ControllerTest {
         @DisplayName("이미 사용했거나 조작된 RefreshToken이면 토큰 재발급에 실패한다")
         void invalidRefreshToken() throws Exception {
             // given
-            doThrow(StudyWithMeException.type(AuthErrorCode.AUTH_INVALID_TOKEN))
-                    .when(jwtTokenProvider)
-                    .isTokenValid(any());
+            mockingTokenWithInvalidException();
 
             // when
             MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -106,8 +98,7 @@ class TokenReissueApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             final Long memberId = 1L;
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(memberId);
+            mockingToken(true, memberId);
 
             TokenResponse response = createTokenResponse();
             given(tokenReissueService.reissueTokens(memberId, REFRESH_TOKEN)).willReturn(response);

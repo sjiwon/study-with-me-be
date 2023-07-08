@@ -7,12 +7,24 @@ import com.kgu.studywithme.study.domain.StudyLocation;
 import java.util.List;
 
 public record StudyInformation(
-        Long id, String name, String description, String category, String thumbnail, String thumbnailBackground, String type,
-        StudyLocation location, String recruitmentStatus, int currentMembers, int maxMembers, List<String> hashtags,
-        int minimumAttendanceForGraduation, int remainingOpportunityToUpdateGraduationPolicy,
-        List<ParticipantInformation> participants, StudyMember host
+        Long id,
+        String name,
+        String description,
+        String category,
+        String thumbnail,
+        String thumbnailBackground,
+        String type,
+        StudyLocation location,
+        String recruitmentStatus,
+        int currentMembers,
+        int maxMembers,
+        List<String> hashtags,
+        int minimumAttendanceForGraduation,
+        int remainingOpportunityToUpdateGraduationPolicy,
+        List<ParticipantInformation> participants,
+        StudyMember host
 ) {
-    public StudyInformation(Study study) {
+    public StudyInformation(final Study study) {
         this(
                 study.getId(),
                 study.getNameValue(),
@@ -33,7 +45,9 @@ public record StudyInformation(
         );
     }
 
-    private static List<ParticipantInformation> assemblingParticipantsInformation(List<Member> approveParticipants) {
+    private static List<ParticipantInformation> assemblingParticipantsInformation(
+            final List<Member> approveParticipants
+    ) {
         return approveParticipants.stream()
                 .map(ParticipantInformation::new)
                 .toList();

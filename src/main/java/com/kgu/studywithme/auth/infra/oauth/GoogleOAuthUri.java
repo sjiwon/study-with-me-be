@@ -9,7 +9,7 @@ public class GoogleOAuthUri implements OAuthUri {
     private final OAuthProperties properties;
 
     @Override
-    public String generate(String redirectUri) {
+    public String generate(final String redirectUri) {
         return properties.getAuthUrl() + "?"
                 + "response_type=code&"
                 + "client_id=" + properties.getClientId() + "&"

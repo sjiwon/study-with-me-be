@@ -24,12 +24,18 @@ public class Interest {
     @JoinColumn(name = "member_id", referencedColumnName = "id", nullable = false)
     private Member member;
 
-    private Interest(Member member, Category category) {
+    private Interest(
+            final Member member,
+            final Category category
+    ) {
         this.member = member;
         this.category = category;
     }
 
-    public static Interest applyInterest(Member member, Category category) {
+    public static Interest applyInterest(
+            final Member member,
+            final Category category
+    ) {
         return new Interest(member, category);
     }
 }

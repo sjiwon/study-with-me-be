@@ -18,7 +18,6 @@ import static com.kgu.studywithme.common.utils.FileMockingUtils.createSingleMock
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -41,8 +40,7 @@ class UploadApiControllerTest extends ControllerTest {
         @DisplayName("허용하는 이미지 확장자[jpg, jpeg, png, gif]가 아니면 업로드가 불가능하다")
         void throwExceptionByNotAllowedExtension() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(MEMBER_ID);
+            mockingToken(true, MEMBER_ID);
 
             // when
             final MultipartFile file = createSingleMockMultipartFile("hello5.webp", "image/webp");
@@ -87,8 +85,7 @@ class UploadApiControllerTest extends ControllerTest {
         @DisplayName("이미지를 전송하지 않거나 크기가 0인 이미지면 업로드를 실패한다")
         void throwExceptionByFileIsEmpty() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(MEMBER_ID);
+            mockingToken(true, MEMBER_ID);
             doThrow(StudyWithMeException.type(UploadErrorCode.FILE_IS_EMPTY))
                     .when(uploader)
                     .uploadWeeklyImage(any());
@@ -135,8 +132,7 @@ class UploadApiControllerTest extends ControllerTest {
         @DisplayName("이미지 업로드를 성공한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(MEMBER_ID);
+            mockingToken(true, MEMBER_ID);
 
             final String uploadLink = String.format(
                     "https://kr.object.ncloudstorage.com/bucket/images/%s.png",
@@ -190,8 +186,7 @@ class UploadApiControllerTest extends ControllerTest {
         @DisplayName("이미지를 전송하지 않거나 크기가 0인 이미지면 업로드를 실패한다")
         void throwExceptionByFileIsEmpty() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(MEMBER_ID);
+            mockingToken(true, MEMBER_ID);
             doThrow(StudyWithMeException.type(UploadErrorCode.FILE_IS_EMPTY))
                     .when(uploader)
                     .uploadStudyDescriptionImage(any());
@@ -238,8 +233,7 @@ class UploadApiControllerTest extends ControllerTest {
         @DisplayName("이미지 업로드를 성공한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(MEMBER_ID);
+            mockingToken(true, MEMBER_ID);
 
             final String uploadLink = String.format(
                     "https://kr.object.ncloudstorage.com/bucket/descriptions/%s.png",

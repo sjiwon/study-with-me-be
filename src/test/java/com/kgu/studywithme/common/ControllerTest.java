@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kgu.studywithme.auth.controller.OAuthApiController;
 import com.kgu.studywithme.auth.controller.TokenReissueApiController;
+import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.auth.infra.oauth.OAuthUri;
 import com.kgu.studywithme.auth.service.OAuthService;
 import com.kgu.studywithme.auth.service.TokenReissueService;
@@ -52,6 +53,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -91,7 +95,7 @@ public abstract class ControllerTest {
     protected MockMvc mockMvc;
 
     @MockBean
-    protected JwtTokenProvider jwtTokenProvider;
+    private JwtTokenProvider jwtTokenProvider;
 
     // common & internal
     @Autowired
@@ -203,6 +207,23 @@ public abstract class ControllerTest {
 
     protected String convertObjectToJson(Object data) throws JsonProcessingException {
         return objectMapper.writeValueAsString(data);
+    }
+
+    protected void mockingToken(boolean isValid, Long payloadId) {
+        given(jwtTokenProvider.isTokenValid(anyString())).willReturn(isValid);
+        given(jwtTokenProvider.getId(anyString())).willReturn(payloadId);
+    }
+
+    protected void mockingTokenWithExpiredException() {
+        doThrow(StudyWithMeException.type(AuthErrorCode.AUTH_EXPIRED_TOKEN))
+                .when(jwtTokenProvider)
+                .isTokenValid(any());
+    }
+
+    protected void mockingTokenWithInvalidException() {
+        doThrow(StudyWithMeException.type(AuthErrorCode.AUTH_INVALID_TOKEN))
+                .when(jwtTokenProvider)
+                .isTokenValid(any());
     }
 
     protected void mockingForStudyParticipant(Long studyId, Long memberId, boolean isValid) {

@@ -21,8 +21,15 @@ public class NoticeInformation {
     private List<CommentInformation> comments;
 
     @QueryProjection
-    public NoticeInformation(Long id, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt,
-                             Long writerId, Nickname writerNickname) {
+    public NoticeInformation(
+            final Long id,
+            final String title,
+            final String content,
+            final LocalDateTime createdAt,
+            final LocalDateTime modifiedAt,
+            final Long writerId,
+            final Nickname writerNickname
+    ) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -31,7 +38,7 @@ public class NoticeInformation {
         this.writer = new StudyMember(writerId, writerNickname.getValue());
     }
 
-    public void applyComments(List<CommentInformation> comments) {
+    public void applyComments(final List<CommentInformation> comments) {
         this.comments = comments;
     }
 }

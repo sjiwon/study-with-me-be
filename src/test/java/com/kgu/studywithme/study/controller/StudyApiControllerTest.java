@@ -23,7 +23,6 @@ import static com.kgu.studywithme.study.controller.utils.StudyRegisterRequestUti
 import static com.kgu.studywithme.study.controller.utils.StudyUpdateRequestUtils.createOfflineStudyUpdateRequest;
 import static com.kgu.studywithme.study.controller.utils.StudyUpdateRequestUtils.createOnlineStudyUpdateRequest;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
@@ -49,8 +48,7 @@ class StudyApiControllerTest extends ControllerTest {
         @DisplayName("스터디 해시태그 개수가 0개면 스터디를 생성할 수 없다 [최소 1개]")
         void throwExceptionByHashtagCountUnderflow() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
 
             // when
             final StudyRegisterRequest request = createOnlineStudyRegisterRequest(Set.of());
@@ -106,8 +104,7 @@ class StudyApiControllerTest extends ControllerTest {
         @DisplayName("스터디 해시태그 개수가 5개를 초과하면 스터디를 생성할 수 없다 [최대 5개]")
         void throwExceptionByHashtagCountOverflow() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
 
             // when
             final StudyRegisterRequest request = createOnlineStudyRegisterRequest(Set.of("A", "B", "C", "D", "E", "F"));
@@ -163,8 +160,7 @@ class StudyApiControllerTest extends ControllerTest {
         @DisplayName("다른 스터디가 사용하고 있는 스터디명으로 생성할 수 없다")
         void throwExceptionByDuplicateName() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyErrorCode.DUPLICATE_NAME))
                     .when(studyService)
                     .register(any(), any());
@@ -222,8 +218,7 @@ class StudyApiControllerTest extends ControllerTest {
         @DisplayName("스터디 생성에 성공한다 - 온라인")
         void successOnline() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
             given(studyService.register(any(), any())).willReturn(1L);
 
             // when
@@ -272,8 +267,7 @@ class StudyApiControllerTest extends ControllerTest {
         @DisplayName("스터디 생성에 성공한다 - 오프라인")
         void successOffline() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
             given(studyService.register(any(), any())).willReturn(1L);
 
             // when
@@ -337,8 +331,7 @@ class StudyApiControllerTest extends ControllerTest {
         @DisplayName("스터디 팀장이 아니라면 정보를 수정할 수 없다")
         void throwExceptionByMemberIsNotHost() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(ANONYMOUS_ID);
+            mockingToken(true, ANONYMOUS_ID);
 
             // when
             final StudyUpdateRequest request = createOnlineStudyUpdateRequest(5, Set.of("A", "B", "C"));
@@ -398,8 +391,7 @@ class StudyApiControllerTest extends ControllerTest {
         @DisplayName("스터디 해시태그 개수가 0개면 스터디 정보를 수정할 수 없다 [최소 1개]")
         void throwExceptionByHashtagCountUnderflow() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
 
             // when
             final StudyUpdateRequest request = createOnlineStudyUpdateRequest(5, Set.of());
@@ -460,8 +452,7 @@ class StudyApiControllerTest extends ControllerTest {
         @DisplayName("스터디 해시태그 개수가 5개를 초과하면 스터디 정보를 수정할 수 없다 [최대 5개]")
         void throwExceptionByHashtagCountOverflow() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
 
             // when
             final StudyUpdateRequest request = createOnlineStudyUpdateRequest(5, Set.of("A", "B", "C", "D", "E", "F"));
@@ -522,8 +513,7 @@ class StudyApiControllerTest extends ControllerTest {
         @DisplayName("다른 스터디가 사용하고 있는 스터디명으로 정보를 수정할 수 없다")
         void throwExceptionByDuplicateName() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyErrorCode.DUPLICATE_NAME))
                     .when(studyService)
                     .update(any(), any(), any());
@@ -586,8 +576,7 @@ class StudyApiControllerTest extends ControllerTest {
         @DisplayName("최대 수용인원을 현재 스터디 인원보다 적게 설정할 수 없다")
         void throwExceptionByCapacityCannotBeLessThanParticipants() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyErrorCode.CAPACITY_CANNOT_BE_LESS_THAN_PARTICIPANTS))
                     .when(studyService)
                     .update(any(), any(), any());
@@ -650,8 +639,7 @@ class StudyApiControllerTest extends ControllerTest {
         @DisplayName("졸업 요건 수정 기회가 남아있지 않음에 따라 스터디 정보를 수정할 수 없다")
         void throwExceptionByNoChangeToUpdateGraduationPolicy() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyErrorCode.NO_CHANGE_TO_UPDATE_GRADUATION_POLICY))
                     .when(studyService)
                     .update(any(), any(), any());
@@ -714,8 +702,7 @@ class StudyApiControllerTest extends ControllerTest {
         @DisplayName("정보 수정에 성공한다 - 온라인")
         void successOnline() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
             doNothing()
                     .when(studyService)
                     .update(any(), any(), any());
@@ -768,8 +755,7 @@ class StudyApiControllerTest extends ControllerTest {
         @DisplayName("정보 수정에 성공한다 - 오프라인")
         void successOffline() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
             doNothing()
                     .when(studyService)
                     .update(any(), any(), any());
@@ -837,8 +823,7 @@ class StudyApiControllerTest extends ControllerTest {
         @DisplayName("스터디 팀장이 아니라면 스터디를 종료할 수 없다")
         void throwExceptionByMemberIsNotHost() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(ANONYMOUS_ID);
+            mockingToken(true, ANONYMOUS_ID);
 
             // when
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -875,8 +860,7 @@ class StudyApiControllerTest extends ControllerTest {
         @DisplayName("스터디를 종료한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(HOST_ID);
+            mockingToken(true, HOST_ID);
 
             // when
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders

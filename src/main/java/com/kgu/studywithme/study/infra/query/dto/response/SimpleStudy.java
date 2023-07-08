@@ -15,7 +15,12 @@ public class SimpleStudy {
     private final String thumbnailBackground;
 
     @QueryProjection
-    public SimpleStudy(Long id, StudyName name, Category category, StudyThumbnail thumbnail) {
+    public SimpleStudy(
+            final Long id,
+            final StudyName name,
+            final Category category,
+            final StudyThumbnail thumbnail
+    ) {
         this.id = id;
         this.name = name.getValue();
         this.category = category.getName();

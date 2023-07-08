@@ -22,12 +22,18 @@ public class Attachment {
     @JoinColumn(name = "week_id", referencedColumnName = "id", nullable = false)
     private Week week;
 
-    private Attachment(Week week, UploadAttachment uploadAttachment) {
+    private Attachment(
+            final Week week,
+            final UploadAttachment uploadAttachment
+    ) {
         this.week = week;
         this.uploadAttachment = uploadAttachment;
     }
 
-    public static Attachment addAttachmentFile(Week week, UploadAttachment uploadAttachment) {
+    public static Attachment addAttachmentFile(
+            final Week week,
+            final UploadAttachment uploadAttachment
+    ) {
         return new Attachment(week, uploadAttachment);
     }
 }

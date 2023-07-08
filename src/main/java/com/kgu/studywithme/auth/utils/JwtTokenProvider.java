@@ -19,30 +19,35 @@ public class JwtTokenProvider {
     private final long accessTokenValidityInMilliseconds;
     private final long refreshTokenValidityInMilliseconds;
 
-    public JwtTokenProvider(@Value("${jwt.secret-key}") final String secretKey,
-                            @Value("${jwt.access-token-validity}") final long accessTokenValidityInMilliseconds,
-                            @Value("${jwt.refresh-token-validity}") final long refreshTokenValidityInMilliseconds) {
+    public JwtTokenProvider(
+            @Value("${jwt.secret-key}") final String secretKey,
+            @Value("${jwt.access-token-validity}") final long accessTokenValidityInMilliseconds,
+            @Value("${jwt.refresh-token-validity}") final long refreshTokenValidityInMilliseconds
+    ) {
         this.secretKey = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
         this.accessTokenValidityInMilliseconds = accessTokenValidityInMilliseconds;
         this.refreshTokenValidityInMilliseconds = refreshTokenValidityInMilliseconds;
     }
 
-    public String createAccessToken(Long memberId) {
+    public String createAccessToken(final Long memberId) {
         return createToken(memberId, accessTokenValidityInMilliseconds);
     }
 
-    public String createRefreshToken(Long memberId) {
+    public String createRefreshToken(final Long memberId) {
         return createToken(memberId, refreshTokenValidityInMilliseconds);
     }
 
-    private String createToken(Long memberId, long validityInMilliseconds) {
+    private String createToken(
+            final Long memberId,
+            final long validityInMilliseconds
+    ) {
         // Payload
-        Claims claims = Jwts.claims();
+        final Claims claims = Jwts.claims();
         claims.put("id", memberId);
 
         // Expires At
-        ZonedDateTime now = ZonedDateTime.now();
-        ZonedDateTime tokenValidity = now.plusSeconds(validityInMilliseconds);
+        final ZonedDateTime now = ZonedDateTime.now();
+        final ZonedDateTime tokenValidity = now.plusSeconds(validityInMilliseconds);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -52,24 +57,24 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public Long getId(String token) {
+    public Long getId(final String token) {
         return getClaims(token)
                 .getBody()
                 .get("id", Long.class);
     }
 
-    private Jws<Claims> getClaims(String token) {
+    private Jws<Claims> getClaims(final String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
                 .parseClaimsJws(token);
     }
 
-    public boolean isTokenValid(String token) {
+    public boolean isTokenValid(final String token) {
         try {
-            Jws<Claims> claims = getClaims(token);
-            Date expiredDate = claims.getBody().getExpiration();
-            Date now = new Date();
+            final Jws<Claims> claims = getClaims(token);
+            final Date expiredDate = claims.getBody().getExpiration();
+            final Date now = new Date();
             return expiredDate.after(now);
         } catch (ExpiredJwtException e) {
             throw StudyWithMeException.type(AuthErrorCode.AUTH_EXPIRED_TOKEN);

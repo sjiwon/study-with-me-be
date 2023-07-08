@@ -24,7 +24,10 @@ public class MemberSimpleQueryRepositoryImpl implements MemberSimpleQueryReposit
     private final JPAQueryFactory query;
 
     @Override
-    public boolean isReportReceived(Long reporteeId, Long reporterId) {
+    public boolean isReportReceived(
+            final Long reporteeId,
+            final Long reporterId
+    ) {
         ReportStatus status = query
                 .select(report.status)
                 .from(report)
@@ -38,9 +41,14 @@ public class MemberSimpleQueryRepositoryImpl implements MemberSimpleQueryReposit
     }
 
     @Override
-    public List<StudyAttendanceMetadata> findStudyAttendanceMetadataByMemberId(Long memberId) {
+    public List<StudyAttendanceMetadata> findStudyAttendanceMetadataByMemberId(final Long memberId) {
         return query
-                .select(new QStudyAttendanceMetadata(attendance.study.id, attendance.week))
+                .select(
+                        new QStudyAttendanceMetadata(
+                                attendance.study.id,
+                                attendance.week
+                        )
+                )
                 .from(attendance)
                 .where(participantIdEq(memberId))
                 .orderBy(attendance.study.id.asc())
@@ -48,7 +56,11 @@ public class MemberSimpleQueryRepositoryImpl implements MemberSimpleQueryReposit
     }
 
     @Override
-    public Long getAttendanceCount(Long studyId, Long memberId, AttendanceStatus status) {
+    public Long getAttendanceCount(
+            final Long studyId,
+            final Long memberId,
+            final AttendanceStatus status
+    ) {
         return query
                 .select(attendance.count())
                 .from(attendance)
@@ -61,9 +73,14 @@ public class MemberSimpleQueryRepositoryImpl implements MemberSimpleQueryReposit
     }
 
     @Override
-    public List<AttendanceRatio> findAttendanceRatioByMemberId(Long memberId) {
+    public List<AttendanceRatio> findAttendanceRatioByMemberId(final Long memberId) {
         List<AttendanceRatio> fetchResult = query
-                .select(new QAttendanceRatio(attendance.status, attendance.count().intValue()))
+                .select(
+                        new QAttendanceRatio(
+                                attendance.status,
+                                attendance.count().intValue()
+                        )
+                )
                 .from(attendance)
                 .where(participantIdEq(memberId))
                 .groupBy(attendance.status)
@@ -72,7 +89,7 @@ public class MemberSimpleQueryRepositoryImpl implements MemberSimpleQueryReposit
         return includeMissingAttendanceStatus(fetchResult);
     }
 
-    private List<AttendanceRatio> includeMissingAttendanceStatus(List<AttendanceRatio> fetchResult) {
+    private List<AttendanceRatio> includeMissingAttendanceStatus(final List<AttendanceRatio> fetchResult) {
         List<AttendanceRatio> result = new ArrayList<>();
 
         for (AttendanceStatus status : AttendanceStatus.getAttendanceStatuses()) {
@@ -87,7 +104,7 @@ public class MemberSimpleQueryRepositoryImpl implements MemberSimpleQueryReposit
         return result;
     }
 
-    private BooleanExpression participantIdEq(Long memberId) {
+    private BooleanExpression participantIdEq(final Long memberId) {
         return attendance.participant.id.eq(memberId);
     }
 }

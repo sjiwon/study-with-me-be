@@ -13,8 +13,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -40,8 +38,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
         @DisplayName("해당 사용자에 대해 두 번이상 피어리뷰를 남길 수 없다")
         void throwExceptionByAlreadyReview() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(REVIEWER_ID);
+            mockingToken(true, REVIEWER_ID);
             doThrow(StudyWithMeException.type(MemberErrorCode.ALREADY_REVIEW))
                     .when(memberReviewService)
                     .writeReview(any(), any(), any());
@@ -87,8 +84,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
         @DisplayName("본인에게 피어리뷰를 남길 수 없다")
         void throwExceptionBySelfReviewNotAllowed() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(REVIEWEE_ID);
+            mockingToken(true, REVIEWEE_ID);
             doThrow(StudyWithMeException.type(MemberErrorCode.SELF_REVIEW_NOT_ALLOWED))
                     .when(memberReviewService)
                     .writeReview(any(), any(), any());
@@ -134,8 +130,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
         @DisplayName("함께 스터디를 진행한 기록이 없다면 피어리뷰를 남길 수 없다")
         void throwExceptionByCommonStudyRecordNotFound() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(REVIEWER_ID);
+            mockingToken(true, REVIEWER_ID);
             doThrow(StudyWithMeException.type(MemberErrorCode.COMMON_STUDY_RECORD_NOT_FOUND))
                     .when(memberReviewService)
                     .writeReview(any(), any(), any());
@@ -181,8 +176,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
         @DisplayName("피어리뷰 등록을 성공한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(REVIEWER_ID);
+            mockingToken(true, REVIEWER_ID);
             doNothing()
                     .when(memberReviewService)
                     .writeReview(any(), any(), any());
@@ -214,6 +208,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
                     );
         }
     }
+
     @Nested
     @DisplayName("사용자 피어리뷰 수정 API [PATCH /api/members/{revieweeId}/review] - AccessToken 필수")
     class updateReview {
@@ -225,8 +220,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
         @DisplayName("피어리뷰 기록이 존재하지 않는다면 수정을 할 수 없다")
         void throwExceptionByPeerReviewNotFound() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(REVIEWER_ID);
+            mockingToken(true, REVIEWER_ID);
             doThrow(StudyWithMeException.type(MemberErrorCode.PEER_REVIEW_NOT_FOUND))
                     .when(memberReviewService)
                     .updateReview(any(), any(), any());
@@ -272,8 +266,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
         @DisplayName("피어리뷰 수정에 성공한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(REVIEWER_ID);
+            mockingToken(true, REVIEWER_ID);
             doNothing()
                     .when(memberReviewService)
                     .updateReview(any(), any(), any());

@@ -25,20 +25,23 @@ public class MemberService {
     private final ReportRepository reportRepository;
 
     @Transactional
-    public Long signUp(Member member) {
+    public Long signUp(final Member member) {
         validateUniqueFields(member);
         return memberRepository.save(member).getId();
     }
 
-    private void validateUniqueFields(Member member) {
+    private void validateUniqueFields(final Member member) {
         memberValidator.validateEmail(member.getEmail());
         memberValidator.validateNickname(member.getNickname());
         memberValidator.validatePhone(member.getPhone());
     }
 
     @Transactional
-    public void update(Long memberId, MemberUpdateRequest request) {
-        Member member = memberFindService.findById(memberId);
+    public void update(
+            final Long memberId,
+            final MemberUpdateRequest request
+    ) {
+        final Member member = memberFindService.findById(memberId);
         validateUniqueFieldsForModify(member, Nickname.from(request.nickname()), request.phone());
 
         member.update(
@@ -54,20 +57,31 @@ public class MemberService {
         );
     }
 
-    private void validateUniqueFieldsForModify(Member member, Nickname nickname, String phone) {
+    private void validateUniqueFieldsForModify(
+            final Member member,
+            final Nickname nickname,
+            final String phone
+    ) {
         memberValidator.validateNicknameForModify(member.getId(), nickname);
         memberValidator.validatePhoneForModify(member.getId(), phone);
     }
 
     @Transactional
-    public Long report(Long reporteeId, Long reporterId, String reason) {
+    public Long report(
+            final Long reporteeId,
+            final Long reporterId,
+            final String reason
+    ) {
         validatePreviousReportIsStillPending(reporteeId, reporterId);
 
-        Report report = Report.createReportWithReason(reporteeId, reporterId, reason);
+        final Report report = Report.createReportWithReason(reporteeId, reporterId, reason);
         return reportRepository.save(report).getId();
     }
 
-    private void validatePreviousReportIsStillPending(Long reporteeId, Long reporterId) {
+    private void validatePreviousReportIsStillPending(
+            final Long reporteeId,
+            final Long reporterId
+    ) {
         if (memberRepository.isReportReceived(reporteeId, reporterId)) {
             throw StudyWithMeException.type(MemberErrorCode.PREVIOUS_REPORT_IS_STILL_PENDING);
         }

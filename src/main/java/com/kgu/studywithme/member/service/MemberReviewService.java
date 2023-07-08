@@ -22,43 +22,64 @@ public class MemberReviewService {
     private final PeerReviewRepository peerReviewRepository;
 
     @Transactional
-    public void writeReview(Long revieweeId, Long reviewerId, String content) {
+    public void writeReview(
+            final Long revieweeId,
+            final Long reviewerId,
+            final String content
+    ) {
         validateSelfReviewNotAllowed(revieweeId, reviewerId);
         validateColleague(revieweeId, reviewerId);
 
-        Member reviewee = memberFindService.findById(revieweeId);
-        Member reviewer = memberFindService.findById(reviewerId);
+        final Member reviewee = memberFindService.findById(revieweeId);
+        final Member reviewer = memberFindService.findById(reviewerId);
 
         reviewee.applyPeerReview(reviewer, content);
     }
 
-    private void validateSelfReviewNotAllowed(Long revieweeId, Long reviewerId) {
+    private void validateSelfReviewNotAllowed(
+            final Long revieweeId,
+            final Long reviewerId
+    ) {
         if (revieweeId.equals(reviewerId)) {
             throw StudyWithMeException.type(MemberErrorCode.SELF_REVIEW_NOT_ALLOWED);
         }
     }
 
-    private void validateColleague(Long revieweeId, Long reviewerId) {
-        List<StudyAttendanceMetadata> revieweeMetadata = memberRepository.findStudyAttendanceMetadataByMemberId(revieweeId);
-        List<StudyAttendanceMetadata> reviewerMetadata = memberRepository.findStudyAttendanceMetadataByMemberId(reviewerId);
+    private void validateColleague(
+            final Long revieweeId,
+            final Long reviewerId
+    ) {
+        final List<StudyAttendanceMetadata> revieweeMetadata
+                = memberRepository.findStudyAttendanceMetadataByMemberId(revieweeId);
+        final List<StudyAttendanceMetadata> reviewerMetadata
+                = memberRepository.findStudyAttendanceMetadataByMemberId(reviewerId);
 
-        boolean hasCommonMetadata = revieweeMetadata.stream()
-                .anyMatch(revieweeData ->
-                        reviewerMetadata.stream()
-                                .anyMatch(reviewerData -> hasCommonMetadata(revieweeData, reviewerData))
-                );
+        final boolean hasCommonMetadata =
+                revieweeMetadata
+                        .stream()
+                        .anyMatch(revieweeData ->
+                                reviewerMetadata.stream()
+                                        .anyMatch(reviewerData -> hasCommonMetadata(revieweeData, reviewerData))
+                        );
 
         if (!hasCommonMetadata) {
             throw StudyWithMeException.type(MemberErrorCode.COMMON_STUDY_RECORD_NOT_FOUND);
         }
     }
 
-    private boolean hasCommonMetadata(StudyAttendanceMetadata revieweeData, StudyAttendanceMetadata reviewerData) {
+    private boolean hasCommonMetadata(
+            final StudyAttendanceMetadata revieweeData,
+            final StudyAttendanceMetadata reviewerData
+    ) {
         return revieweeData.studyId().equals(reviewerData.studyId()) && revieweeData.week() == reviewerData.week();
     }
 
     @Transactional
-    public void updateReview(Long revieweeId, Long reviewerId, String content) {
+    public void updateReview(
+            final Long revieweeId,
+            final Long reviewerId,
+            final String content
+    ) {
         PeerReview peerReview = peerReviewRepository.findByRevieweeIdAndReviewerId(revieweeId, reviewerId)
                 .orElseThrow(() -> StudyWithMeException.type(MemberErrorCode.PEER_REVIEW_NOT_FOUND));
         peerReview.updateReview(content);

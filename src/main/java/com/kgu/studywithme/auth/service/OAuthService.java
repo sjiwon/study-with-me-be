@@ -24,13 +24,18 @@ public class OAuthService {
     private final OAuthConnector oAuthConnector;
 
     @Transactional
-    public LoginResponse login(String code, String redirectUrl) {
-        GoogleTokenResponse tokenResponse = (GoogleTokenResponse) oAuthConnector.getToken(code, redirectUrl);
-        GoogleUserResponse userInfo = (GoogleUserResponse) oAuthConnector.getUserInfo(tokenResponse.accessToken());
+    public LoginResponse login(
+            final String code,
+            final String redirectUrl
+    ) {
+        final GoogleTokenResponse tokenResponse =
+                (GoogleTokenResponse) oAuthConnector.getToken(code, redirectUrl);
+        final GoogleUserResponse userInfo =
+                (GoogleUserResponse) oAuthConnector.getUserInfo(tokenResponse.accessToken());
 
-        Member member = findMemberOrException(userInfo);
-        String accessToken = jwtTokenProvider.createAccessToken(member.getId());
-        String refreshToken = jwtTokenProvider.createRefreshToken(member.getId());
+        final Member member = findMemberOrException(userInfo);
+        final String accessToken = jwtTokenProvider.createAccessToken(member.getId());
+        final String refreshToken = jwtTokenProvider.createRefreshToken(member.getId());
         tokenManager.synchronizeRefreshToken(member.getId(), refreshToken); // sync RefreshToken
 
         return new LoginResponse(
@@ -40,13 +45,13 @@ public class OAuthService {
         );
     }
 
-    private Member findMemberOrException(GoogleUserResponse userInfo) {
+    private Member findMemberOrException(final GoogleUserResponse userInfo) {
         return memberRepository.findByEmail(Email.from(userInfo.email()))
                 .orElseThrow(() -> new StudyWithMeOAuthException(userInfo));
     }
 
     @Transactional
-    public void logout(Long memberId) {
+    public void logout(final Long memberId) {
         tokenManager.deleteRefreshTokenByMemberId(memberId);
     }
 }

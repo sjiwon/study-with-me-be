@@ -15,31 +15,37 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberValidator {
     private final MemberRepository memberRepository;
 
-    public void validateEmail(Email email) {
+    public void validateEmail(final Email email) {
         if (memberRepository.existsByEmail(email)) {
             throw StudyWithMeException.type(MemberErrorCode.DUPLICATE_EMAIL);
         }
     }
 
-    public void validateNickname(Nickname nickname) {
+    public void validateNickname(final Nickname nickname) {
         if (memberRepository.existsByNickname(nickname)) {
             throw StudyWithMeException.type(MemberErrorCode.DUPLICATE_NICKNAME);
         }
     }
 
-    public void validateNicknameForModify(Long memberId, Nickname nickname) {
+    public void validateNicknameForModify(
+            final Long memberId,
+            final Nickname nickname
+    ) {
         if (memberRepository.existsByIdNotAndNickname(memberId, nickname)) {
             throw StudyWithMeException.type(MemberErrorCode.DUPLICATE_NICKNAME);
         }
     }
 
-    public void validatePhone(String phone) {
+    public void validatePhone(final String phone) {
         if (memberRepository.existsByPhone(phone)) {
             throw StudyWithMeException.type(MemberErrorCode.DUPLICATE_PHONE);
         }
     }
 
-    public void validatePhoneForModify(Long memberId, String phone) {
+    public void validatePhoneForModify(
+            final Long memberId,
+            final String phone
+    ) {
         if (memberRepository.existsByIdNotAndPhone(memberId, phone)) {
             throw StudyWithMeException.type(MemberErrorCode.DUPLICATE_PHONE);
         }

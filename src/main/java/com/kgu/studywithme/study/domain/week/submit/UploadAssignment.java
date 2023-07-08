@@ -25,17 +25,24 @@ public class UploadAssignment {
     @Column(name = "upload_type", nullable = false)
     private UploadType type;
 
-    private UploadAssignment(String uploadFileName, String link, UploadType type) {
+    private UploadAssignment(
+            final String uploadFileName,
+            final String link,
+            final UploadType type
+    ) {
         this.uploadFileName = uploadFileName;
         this.link = link;
         this.type = type;
     }
 
-    public static UploadAssignment withLink(String link) {
+    public static UploadAssignment withLink(final String link) {
         return new UploadAssignment(null, link, LINK);
     }
 
-    public static UploadAssignment withFile(String uploadFileName, String link) {
+    public static UploadAssignment withFile(
+            final String uploadFileName,
+            final String link
+    ) {
         return new UploadAssignment(uploadFileName, link, FILE);
     }
 }

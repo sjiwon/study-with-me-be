@@ -14,8 +14,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -42,8 +40,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
         @DisplayName("스터디 참여자가 아니면 공지사항에 댓글을 등록할 수 없다")
         void throwExceptionByMemberIsNotParticipant() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(ANONYMOUS_ID);
+            mockingToken(true, ANONYMOUS_ID);
             doThrow(StudyWithMeException.type(StudyErrorCode.MEMBER_IS_NOT_PARTICIPANT))
                     .when(commentService)
                     .register(any(), any(), any());
@@ -89,8 +86,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
         @DisplayName("공지사항에 대한 댓글 등록에 성공한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(PARTICIPANT_ID);
+            mockingToken(true, PARTICIPANT_ID);
             doNothing()
                     .when(commentService)
                     .register(any(), any(), any());
@@ -136,8 +132,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
         @DisplayName("작성자가 아니라면 댓글을 삭제할 수 없다")
         void throwExceptionByMemberIsNotWriter() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(ANONYMOUS_ID);
+            mockingToken(true, ANONYMOUS_ID);
             doThrow(StudyWithMeException.type(MemberErrorCode.MEMBER_IS_NOT_WRITER))
                     .when(commentService)
                     .remove(any(), any());
@@ -178,8 +173,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
         @DisplayName("공지사항에 등록한 댓글 삭제에 성공한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(PARTICIPANT_ID);
+            mockingToken(true, PARTICIPANT_ID);
             doNothing()
                     .when(commentService)
                     .remove(any(), any());
@@ -220,8 +214,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
         @DisplayName("작성자가 아니라면 댓글을 수정할 수 없다")
         void throwExceptionByMemberIsNotWriter() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(ANONYMOUS_ID);
+            mockingToken(true, ANONYMOUS_ID);
             doThrow(StudyWithMeException.type(MemberErrorCode.MEMBER_IS_NOT_WRITER))
                     .when(commentService)
                     .update(any(), any(), any());
@@ -269,8 +262,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
         @DisplayName("공지사항에 대한 댓글 수정에 성공한다")
         void success() throws Exception {
             // given
-            given(jwtTokenProvider.isTokenValid(anyString())).willReturn(true);
-            given(jwtTokenProvider.getId(anyString())).willReturn(PARTICIPANT_ID);
+            mockingToken(true, PARTICIPANT_ID);
             doNothing()
                     .when(commentService)
                     .update(any(), any(), any());

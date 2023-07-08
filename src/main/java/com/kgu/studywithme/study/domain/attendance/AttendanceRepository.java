@@ -14,10 +14,12 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
     @Query("UPDATE Attendance a" +
             " SET a.status = :status" +
             " WHERE a.study.id = :studyId AND a.week = :week AND a.participant.id IN :participantIds")
-    void updateParticipantStatus(@Param("studyId") Long studyId,
-                                 @Param("week") int week,
-                                 @Param("participantIds") Set<Long> participantIds,
-                                 @Param("status") AttendanceStatus status);
+    void updateParticipantStatus(
+            @Param("studyId") Long studyId,
+            @Param("week") int week,
+            @Param("participantIds") Set<Long> participantIds,
+            @Param("status") AttendanceStatus status
+    );
 
     // Query Method
     Optional<Attendance> findByStudyIdAndParticipantIdAndWeek(Long studyId, Long participantId, int week);

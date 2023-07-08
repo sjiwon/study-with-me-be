@@ -6,7 +6,10 @@ public record StudyMember(
         Long id,
         String nickname
 ) {
-    public StudyMember(Member member) {
-        this(member.getId(), member.getNicknameValue());
+    public StudyMember(final Member member) {
+        this(
+                member.getId(),
+                member.getNicknameValue()
+        );
     }
 }

@@ -21,9 +21,11 @@ public class StudyNoticeApiController {
     @Operation(summary = "스터디 공지사항 등록 EndPoint")
     @CheckStudyHost
     @PostMapping("/notice")
-    public ResponseEntity<Void> register(@ExtractPayload Long hostId,
-                                         @PathVariable Long studyId,
-                                         @RequestBody @Valid NoticeRequest request) {
+    public ResponseEntity<Void> register(
+            @ExtractPayload final Long hostId,
+            @PathVariable final Long studyId,
+            @RequestBody @Valid final NoticeRequest request
+    ) {
         noticeService.register(studyId, request.title(), request.content());
         return ResponseEntity.noContent().build();
     }
@@ -31,9 +33,11 @@ public class StudyNoticeApiController {
     @Operation(summary = "스터디 공지사항 삭제 EndPoint")
     @CheckStudyHost
     @DeleteMapping("/notices/{noticeId}")
-    public ResponseEntity<Void> remove(@ExtractPayload Long hostId,
-                                       @PathVariable Long studyId,
-                                       @PathVariable Long noticeId) {
+    public ResponseEntity<Void> remove(
+            @ExtractPayload final Long hostId,
+            @PathVariable final Long studyId,
+            @PathVariable final Long noticeId
+    ) {
         noticeService.remove(noticeId, hostId);
         return ResponseEntity.noContent().build();
     }
@@ -41,10 +45,12 @@ public class StudyNoticeApiController {
     @Operation(summary = "스터디 공지사항 수정 EndPoint")
     @CheckStudyHost
     @PatchMapping("/notices/{noticeId}")
-    public ResponseEntity<Void> update(@ExtractPayload Long hostId,
-                                       @PathVariable Long studyId,
-                                       @PathVariable Long noticeId,
-                                       @RequestBody @Valid NoticeRequest request) {
+    public ResponseEntity<Void> update(
+            @ExtractPayload final Long hostId,
+            @PathVariable final Long studyId,
+            @PathVariable final Long noticeId,
+            @RequestBody @Valid final NoticeRequest request
+    ) {
         noticeService.update(noticeId, hostId, request.title(), request.content());
         return ResponseEntity.noContent().build();
     }

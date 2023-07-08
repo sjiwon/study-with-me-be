@@ -23,18 +23,18 @@ public class Weekly {
         return new Weekly();
     }
 
-    public void registerWeek(Week week) {
+    public void registerWeek(final Week week) {
         validateUniqueWeek(week.getWeek());
         weeks.add(week);
     }
 
-    private void validateUniqueWeek(int week) {
+    private void validateUniqueWeek(final int week) {
         if (isAlreadyExistsPerWeek(week)) {
             throw StudyWithMeException.type(StudyErrorCode.ALREADY_WEEK_CREATED);
         }
     }
 
-    private boolean isAlreadyExistsPerWeek(int week) {
+    private boolean isAlreadyExistsPerWeek(final int week) {
         return weeks.stream()
                 .anyMatch(weekInfo -> weekInfo.getWeek() == week);
     }

@@ -22,20 +22,29 @@ public class StudyApiController {
 
     @Operation(summary = "스터디 생성 EndPoint")
     @PostMapping("/study")
-    public ResponseEntity<Void> register(@ExtractPayload Long hostId,
-                                         @RequestBody @Valid StudyRegisterRequest request) {
-        Long savedStudyId = studyService.register(hostId, request);
+    public ResponseEntity<Void> register(
+            @ExtractPayload final Long hostId,
+            @RequestBody @Valid final StudyRegisterRequest request
+    ) {
+        final Long savedStudyId = studyService.register(hostId, request);
+
         return ResponseEntity
-                .created(UriComponentsBuilder.fromPath("/api/studies/{id}").build(savedStudyId))
+                .created(
+                        UriComponentsBuilder
+                                .fromPath("/api/studies/{id}")
+                                .build(savedStudyId)
+                )
                 .build();
     }
 
     @Operation(summary = "스터디 수정 EndPoint")
     @CheckStudyHost
     @PatchMapping("/studies/{studyId}")
-    public ResponseEntity<Void> update(@ExtractPayload Long hostId,
-                                       @PathVariable Long studyId,
-                                       @RequestBody @Valid StudyUpdateRequest request) {
+    public ResponseEntity<Void> update(
+            @ExtractPayload final Long hostId,
+            @PathVariable final Long studyId,
+            @RequestBody @Valid final StudyUpdateRequest request
+    ) {
         studyService.update(studyId, hostId, request);
         return ResponseEntity.noContent().build();
     }
@@ -43,8 +52,10 @@ public class StudyApiController {
     @Operation(summary = "스터디 종료 EndPoint")
     @CheckStudyHost
     @DeleteMapping("/studies/{studyId}")
-    public ResponseEntity<Void> close(@ExtractPayload Long hostId,
-                                      @PathVariable Long studyId) {
+    public ResponseEntity<Void> close(
+            @ExtractPayload final Long hostId,
+            @PathVariable final Long studyId
+    ) {
         studyService.close(studyId);
         return ResponseEntity.noContent().build();
     }

@@ -17,16 +17,16 @@ public class Description {
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String value;
 
-    private Description(String value) {
+    private Description(final String value) {
         this.value = value;
     }
 
-    public static Description from(String value) {
+    public static Description from(final String value) {
         validateDescriptionIsNotBlank(value);
         return new Description(value);
     }
 
-    private static void validateDescriptionIsNotBlank(String value) {
+    private static void validateDescriptionIsNotBlank(final String value) {
         if (value.isBlank()) {
             throw StudyWithMeException.type(StudyErrorCode.DESCRIPTION_IS_BLANK);
         }

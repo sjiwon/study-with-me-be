@@ -21,8 +21,14 @@ public class SimpleGraduatedStudy {
 
     @QueryProjection
     public SimpleGraduatedStudy(
-            Long id, StudyName name, Category category, StudyThumbnail thumbnail,
-            Long reviewId, String content, LocalDateTime writtenDate, LocalDateTime lastModifiedDate
+            final Long id,
+            final StudyName name,
+            final Category category,
+            final StudyThumbnail thumbnail,
+            final Long reviewId,
+            final String content,
+            final LocalDateTime writtenDate,
+            final LocalDateTime lastModifiedDate
     ) {
         this.id = id;
         this.name = name.getValue();

@@ -28,21 +28,29 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "writer_id", referencedColumnName = "id", nullable = false)
     private Member writer;
 
-    private Review(Study study, Member writer, String content) {
+    private Review(
+            final Study study,
+            final Member writer,
+            final String content
+    ) {
         this.study = study;
         this.writer = writer;
         this.content = content;
     }
 
-    public static Review writeReview(Study study, Member writer, String content) {
+    public static Review writeReview(
+            final Study study,
+            final Member writer,
+            final String content
+    ) {
         return new Review(study, writer, content);
     }
 
-    public boolean isSameMember(Member other) {
+    public boolean isSameMember(final Member other) {
         return this.writer.isSameMember(other);
     }
 
-    public void updateReview(String content) {
+    public void updateReview(final String content) {
         this.content = content;
     }
 }
