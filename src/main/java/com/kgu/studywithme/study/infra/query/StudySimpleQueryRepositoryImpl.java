@@ -5,12 +5,10 @@ import com.kgu.studywithme.study.domain.participant.ParticipantStatus;
 import com.kgu.studywithme.study.domain.week.QWeek;
 import com.kgu.studywithme.study.infra.query.dto.response.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -124,13 +122,23 @@ public class StudySimpleQueryRepositoryImpl implements StudySimpleQueryRepositor
                 )
                 .fetch();
 
-        Long count = query
-                .select(study.count())
-                .from(study)
-                .where(hostIdEq(memberId).or(isMemberInParticipant(memberId, participantIds)))
-                .fetchOne();
+        return isStudyHost(studyId, memberId) || isMemberInParticipant(memberId, participantIds);
+    }
 
-        return count > 0;
+    private boolean isStudyHost(Long studyId, Long memberId) {
+        return query
+                .select(study.id)
+                .from(study)
+                .where(
+                        study.id.eq(studyId),
+                        hostIdEq(memberId)
+                )
+                .fetch()
+                .size() == 1;
+    }
+
+    private boolean isMemberInParticipant(Long memberId, List<Long> participantIds) {
+        return participantIds.contains(memberId);
     }
 
     @Override
@@ -215,10 +223,6 @@ public class StudySimpleQueryRepositoryImpl implements StudySimpleQueryRepositor
 
     private BooleanExpression hostIdEq(Long memberId) {
         return (memberId != null) ? study.participants.host.id.eq(memberId) : null;
-    }
-
-    private BooleanExpression isMemberInParticipant(Long memberId, List<Long> participantIds) {
-        return !CollectionUtils.isEmpty(participantIds) ? Expressions.asNumber(memberId).in(participantIds) : null;
     }
 
     private BooleanExpression studyIsNotClosed() {
