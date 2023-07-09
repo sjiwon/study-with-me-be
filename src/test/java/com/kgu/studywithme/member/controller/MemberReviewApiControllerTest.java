@@ -274,7 +274,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
             // when
             final MemberReviewRequest request = new MemberReviewRequest("스터디에 참여를 잘해요");
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .post(BASE_URL, REVIEWEE_ID)
+                    .patch(BASE_URL, REVIEWEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(request));
