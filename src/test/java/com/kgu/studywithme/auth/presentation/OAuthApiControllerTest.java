@@ -1,4 +1,4 @@
-package com.kgu.studywithme.auth.controller;
+package com.kgu.studywithme.auth.presentation;
 
 import com.kgu.studywithme.auth.application.dto.response.LoginResponse;
 import com.kgu.studywithme.auth.infrastructure.oauth.OAuthProperties;
