@@ -1,4 +1,4 @@
-package com.kgu.studywithme.favorite.controller;
+package com.kgu.studywithme.favorite.presentation;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.favorite.application.FavoriteManageService;
