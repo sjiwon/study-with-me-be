@@ -41,6 +41,16 @@ jobs:
         with:
           files: '**/build/test-results/test/TEST-*.xml'
 
+      - name: JaCoCo 테스트 커버리지를 PR에 코멘트로 등록한다
+        id: jacoco
+        uses: madrapps/jacoco-report@v1.3
+        with:
+          title: 📝 테스트 커버리지 리포트입니다
+          paths: ${{ github.workspace }}/build/reports/jacoco/test/jacocoTestReport.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+          min-coverage-overall: 80
+          min-coverage-changed-files: 80
+
       - name: 테스트 실패 시, 실패한 코드 라인에 Check 코멘트를 등록한다
         uses: mikepenz/action-junit-report@v3
         if: always()
