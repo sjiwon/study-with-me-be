@@ -1,4 +1,4 @@
-package com.kgu.studywithme.favorite.service;
+package com.kgu.studywithme.favorite.application;
 
 import com.kgu.studywithme.common.ServiceTest;
 import com.kgu.studywithme.favorite.domain.Favorite;
@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Favorite [Service Layer] -> FavoriteManageService 테스트")
+@DisplayName("Favorite [Application Layer] -> FavoriteManageService 테스트")
 class FavoriteManageServiceTest extends ServiceTest {
     @Autowired
     private FavoriteManageService favoriteManageService;

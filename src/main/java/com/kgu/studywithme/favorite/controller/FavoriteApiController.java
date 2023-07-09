@@ -1,7 +1,7 @@
 package com.kgu.studywithme.favorite.controller;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
-import com.kgu.studywithme.favorite.service.FavoriteManageService;
+import com.kgu.studywithme.favorite.application.FavoriteManageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

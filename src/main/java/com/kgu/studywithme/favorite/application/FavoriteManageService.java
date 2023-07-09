@@ -1,4 +1,4 @@
-package com.kgu.studywithme.favorite.service;
+package com.kgu.studywithme.favorite.application;
 
 import com.kgu.studywithme.favorite.domain.Favorite;
 import com.kgu.studywithme.favorite.domain.FavoriteRepository;
