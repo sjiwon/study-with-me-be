@@ -1,9 +1,9 @@
-package com.kgu.studywithme.member.controller;
+package com.kgu.studywithme.member.presentation;
 
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.controller.dto.request.MemberReviewRequest;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
+import com.kgu.studywithme.member.presentation.dto.request.MemberReviewRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

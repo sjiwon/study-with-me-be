@@ -2,13 +2,13 @@ package com.kgu.studywithme.member.application;
 
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.controller.dto.request.MemberUpdateRequest;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.member.domain.Nickname;
 import com.kgu.studywithme.member.domain.report.Report;
 import com.kgu.studywithme.member.domain.report.ReportRepository;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
+import com.kgu.studywithme.member.presentation.dto.request.MemberUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

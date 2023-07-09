@@ -1,4 +1,4 @@
-package com.kgu.studywithme.member.controller.dto.request;
+package com.kgu.studywithme.member.presentation.dto.request;
 
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.member.domain.*;

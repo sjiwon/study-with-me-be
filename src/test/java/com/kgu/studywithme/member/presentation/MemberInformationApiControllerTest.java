@@ -1,4 +1,4 @@
-package com.kgu.studywithme.member.controller;
+package com.kgu.studywithme.member.presentation;
 
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.common.ControllerTest;

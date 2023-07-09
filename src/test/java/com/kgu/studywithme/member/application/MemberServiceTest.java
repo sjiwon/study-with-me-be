@@ -2,13 +2,13 @@ package com.kgu.studywithme.member.application;
 
 import com.kgu.studywithme.common.ServiceTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.controller.dto.request.MemberUpdateRequest;
 import com.kgu.studywithme.member.domain.Email;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.Nickname;
 import com.kgu.studywithme.member.domain.Region;
 import com.kgu.studywithme.member.domain.report.Report;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
+import com.kgu.studywithme.member.presentation.dto.request.MemberUpdateRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

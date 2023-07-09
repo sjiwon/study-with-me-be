@@ -1,8 +1,8 @@
-package com.kgu.studywithme.member.controller;
+package com.kgu.studywithme.member.presentation;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.member.application.MemberReviewService;
-import com.kgu.studywithme.member.controller.dto.request.MemberReviewRequest;
+import com.kgu.studywithme.member.presentation.dto.request.MemberReviewRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

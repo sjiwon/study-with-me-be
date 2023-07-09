@@ -1,11 +1,11 @@
-package com.kgu.studywithme.member.controller;
+package com.kgu.studywithme.member.presentation;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.global.aop.CheckMemberIdentity;
 import com.kgu.studywithme.member.application.MemberService;
-import com.kgu.studywithme.member.controller.dto.request.MemberReportRequest;
-import com.kgu.studywithme.member.controller.dto.request.MemberUpdateRequest;
-import com.kgu.studywithme.member.controller.dto.request.SignUpRequest;
+import com.kgu.studywithme.member.presentation.dto.request.MemberReportRequest;
+import com.kgu.studywithme.member.presentation.dto.request.MemberUpdateRequest;
+import com.kgu.studywithme.member.presentation.dto.request.SignUpRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
