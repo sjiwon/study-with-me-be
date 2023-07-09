@@ -1,7 +1,7 @@
 package com.kgu.studywithme.auth.controller;
 
-import com.kgu.studywithme.auth.infra.oauth.OAuthProperties;
-import com.kgu.studywithme.auth.infra.oauth.dto.response.GoogleUserResponse;
+import com.kgu.studywithme.auth.infrastructure.oauth.OAuthProperties;
+import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleUserResponse;
 import com.kgu.studywithme.auth.service.dto.response.LoginResponse;
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.global.exception.StudyWithMeOAuthException;

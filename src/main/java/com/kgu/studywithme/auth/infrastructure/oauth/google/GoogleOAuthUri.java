@@ -1,5 +1,7 @@
-package com.kgu.studywithme.auth.infra.oauth;
+package com.kgu.studywithme.auth.infrastructure.oauth.google;
 
+import com.kgu.studywithme.auth.infrastructure.oauth.OAuthProperties;
+import com.kgu.studywithme.auth.infrastructure.oauth.OAuthUri;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -2,7 +2,7 @@ package com.kgu.studywithme.global.exception;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kgu.studywithme.auth.infra.oauth.dto.response.OAuthUserResponse;
+import com.kgu.studywithme.auth.infrastructure.oauth.OAuthUserResponse;
 import com.slack.api.Slack;
 import com.slack.api.model.Attachment;
 import com.slack.api.model.Field;

@@ -1,4 +1,4 @@
-package com.kgu.studywithme.auth.infra.oauth;
+package com.kgu.studywithme.auth.infrastructure.oauth;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,10 +1,10 @@
 package com.kgu.studywithme.auth.service;
 
 import com.kgu.studywithme.auth.domain.Token;
-import com.kgu.studywithme.auth.infra.oauth.OAuthConnector;
-import com.kgu.studywithme.auth.infra.oauth.OAuthProperties;
-import com.kgu.studywithme.auth.infra.oauth.dto.response.GoogleTokenResponse;
-import com.kgu.studywithme.auth.infra.oauth.dto.response.GoogleUserResponse;
+import com.kgu.studywithme.auth.infrastructure.oauth.OAuthConnector;
+import com.kgu.studywithme.auth.infrastructure.oauth.OAuthProperties;
+import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleTokenResponse;
+import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleUserResponse;
 import com.kgu.studywithme.auth.service.dto.response.LoginResponse;
 import com.kgu.studywithme.common.ServiceTest;
 import com.kgu.studywithme.global.exception.StudyWithMeOAuthException;

@@ -1,6 +1,7 @@
-package com.kgu.studywithme.auth.infra.oauth.dto.response;
+package com.kgu.studywithme.auth.infrastructure.oauth.google.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.kgu.studywithme.auth.infrastructure.oauth.OAuthTokenResponse;
 
 public record GoogleTokenResponse(
         @JsonProperty("token_type") String tokenType,

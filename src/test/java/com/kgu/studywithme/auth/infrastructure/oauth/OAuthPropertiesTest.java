@@ -1,4 +1,4 @@
-package com.kgu.studywithme.auth.infra.oauth;
+package com.kgu.studywithme.auth.infrastructure.oauth;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

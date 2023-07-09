@@ -1,6 +1,6 @@
 package com.kgu.studywithme.fixture;
 
-import com.kgu.studywithme.auth.infra.oauth.dto.response.GoogleUserResponse;
+import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleUserResponse;
 import com.kgu.studywithme.auth.service.dto.response.LoginResponse;
 import com.kgu.studywithme.auth.service.dto.response.MemberInfo;
 import com.kgu.studywithme.category.domain.Category;

@@ -1,6 +1,6 @@
 package com.kgu.studywithme.auth.controller;
 
-import com.kgu.studywithme.auth.infra.oauth.OAuthUri;
+import com.kgu.studywithme.auth.infrastructure.oauth.OAuthUri;
 import com.kgu.studywithme.auth.service.OAuthService;
 import com.kgu.studywithme.auth.service.dto.response.LoginResponse;
 import com.kgu.studywithme.auth.utils.ExtractPayload;

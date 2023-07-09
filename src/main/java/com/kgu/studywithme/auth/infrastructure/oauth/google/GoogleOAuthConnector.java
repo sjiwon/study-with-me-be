@@ -1,10 +1,12 @@
-package com.kgu.studywithme.auth.infra.oauth;
+package com.kgu.studywithme.auth.infrastructure.oauth.google;
 
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
-import com.kgu.studywithme.auth.infra.oauth.dto.response.GoogleTokenResponse;
-import com.kgu.studywithme.auth.infra.oauth.dto.response.GoogleUserResponse;
-import com.kgu.studywithme.auth.infra.oauth.dto.response.OAuthTokenResponse;
-import com.kgu.studywithme.auth.infra.oauth.dto.response.OAuthUserResponse;
+import com.kgu.studywithme.auth.infrastructure.oauth.OAuthConnector;
+import com.kgu.studywithme.auth.infrastructure.oauth.OAuthProperties;
+import com.kgu.studywithme.auth.infrastructure.oauth.OAuthTokenResponse;
+import com.kgu.studywithme.auth.infrastructure.oauth.OAuthUserResponse;
+import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleTokenResponse;
+import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleUserResponse;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
