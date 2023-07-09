@@ -1,8 +1,8 @@
 package com.kgu.studywithme.study.service;
 
 import com.kgu.studywithme.category.domain.Category;
+import com.kgu.studywithme.member.application.MemberFindService;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.service.MemberFindService;
 import com.kgu.studywithme.study.controller.dto.request.StudyRegisterRequest;
 import com.kgu.studywithme.study.controller.dto.request.StudyUpdateRequest;
 import com.kgu.studywithme.study.domain.*;

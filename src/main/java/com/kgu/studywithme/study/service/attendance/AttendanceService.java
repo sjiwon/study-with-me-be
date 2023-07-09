@@ -1,8 +1,8 @@
 package com.kgu.studywithme.study.service.attendance;
 
 import com.kgu.studywithme.global.exception.StudyWithMeException;
+import com.kgu.studywithme.member.application.MemberFindService;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.service.MemberFindService;
 import com.kgu.studywithme.study.domain.attendance.Attendance;
 import com.kgu.studywithme.study.domain.attendance.AttendanceRepository;
 import com.kgu.studywithme.study.domain.attendance.AttendanceStatus;

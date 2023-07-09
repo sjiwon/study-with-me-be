@@ -1,14 +1,14 @@
-package com.kgu.studywithme.member.service;
+package com.kgu.studywithme.member.application;
 
 import com.kgu.studywithme.common.ServiceTest;
 import com.kgu.studywithme.favorite.domain.Favorite;
+import com.kgu.studywithme.member.application.dto.response.GraduatedStudy;
+import com.kgu.studywithme.member.application.dto.response.MemberInformation;
+import com.kgu.studywithme.member.application.dto.response.PeerReviewAssembler;
+import com.kgu.studywithme.member.application.dto.response.RelatedStudy;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.review.PeerReview;
 import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.AttendanceRatio;
-import com.kgu.studywithme.member.service.dto.response.GraduatedStudy;
-import com.kgu.studywithme.member.service.dto.response.MemberInformation;
-import com.kgu.studywithme.member.service.dto.response.PeerReviewAssembler;
-import com.kgu.studywithme.member.service.dto.response.RelatedStudy;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.study.domain.attendance.AttendanceStatus;
 import com.kgu.studywithme.study.infra.query.dto.response.SimpleGraduatedStudy;

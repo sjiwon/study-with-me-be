@@ -2,9 +2,9 @@ package com.kgu.studywithme.member.controller;
 
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.common.ControllerTest;
+import com.kgu.studywithme.member.application.dto.response.*;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.AttendanceRatio;
-import com.kgu.studywithme.member.service.dto.response.*;
 import com.kgu.studywithme.study.domain.StudyName;
 import com.kgu.studywithme.study.infra.query.dto.response.SimpleGraduatedStudy;
 import com.kgu.studywithme.study.infra.query.dto.response.SimpleStudy;

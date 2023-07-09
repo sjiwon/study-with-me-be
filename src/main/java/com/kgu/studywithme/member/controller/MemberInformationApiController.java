@@ -2,8 +2,8 @@ package com.kgu.studywithme.member.controller;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.global.aop.CheckMemberIdentity;
-import com.kgu.studywithme.member.service.MemberInformationService;
-import com.kgu.studywithme.member.service.dto.response.*;
+import com.kgu.studywithme.member.application.MemberInformationService;
+import com.kgu.studywithme.member.application.dto.response.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

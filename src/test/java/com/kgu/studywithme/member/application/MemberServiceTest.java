@@ -1,4 +1,4 @@
-package com.kgu.studywithme.member.service;
+package com.kgu.studywithme.member.application;
 
 import com.kgu.studywithme.common.ServiceTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;

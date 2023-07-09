@@ -1,4 +1,4 @@
-package com.kgu.studywithme.member.service;
+package com.kgu.studywithme.member.application;
 
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.global.exception.StudyWithMeException;

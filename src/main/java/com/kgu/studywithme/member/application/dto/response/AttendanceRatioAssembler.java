@@ -1,4 +1,4 @@
-package com.kgu.studywithme.member.service.dto.response;
+package com.kgu.studywithme.member.application.dto.response;
 
 import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.AttendanceRatio;
 
