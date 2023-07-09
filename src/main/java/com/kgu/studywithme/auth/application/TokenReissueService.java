@@ -1,7 +1,7 @@
-package com.kgu.studywithme.auth.service;
+package com.kgu.studywithme.auth.application;
 
+import com.kgu.studywithme.auth.application.dto.response.TokenResponse;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
-import com.kgu.studywithme.auth.service.dto.response.TokenResponse;
 import com.kgu.studywithme.auth.utils.JwtTokenProvider;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import lombok.RequiredArgsConstructor;

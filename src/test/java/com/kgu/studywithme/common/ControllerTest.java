@@ -2,12 +2,12 @@ package com.kgu.studywithme.common;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kgu.studywithme.auth.application.OAuthService;
+import com.kgu.studywithme.auth.application.TokenReissueService;
 import com.kgu.studywithme.auth.controller.OAuthApiController;
 import com.kgu.studywithme.auth.controller.TokenReissueApiController;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.auth.infrastructure.oauth.OAuthUri;
-import com.kgu.studywithme.auth.service.OAuthService;
-import com.kgu.studywithme.auth.service.TokenReissueService;
 import com.kgu.studywithme.auth.utils.JwtTokenProvider;
 import com.kgu.studywithme.category.controller.CategoryApiController;
 import com.kgu.studywithme.category.service.CategoryService;

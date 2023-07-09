@@ -1,4 +1,4 @@
-package com.kgu.studywithme.auth.service.dto.response;
+package com.kgu.studywithme.auth.application.dto.response;
 
 public record TokenResponse(
         String accessToken,

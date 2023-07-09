@@ -1,8 +1,8 @@
 package com.kgu.studywithme.auth.controller;
 
+import com.kgu.studywithme.auth.application.dto.response.LoginResponse;
 import com.kgu.studywithme.auth.infrastructure.oauth.OAuthProperties;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleUserResponse;
-import com.kgu.studywithme.auth.service.dto.response.LoginResponse;
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.global.exception.StudyWithMeOAuthException;
 import org.junit.jupiter.api.BeforeEach;

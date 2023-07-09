@@ -1,7 +1,7 @@
 package com.kgu.studywithme.common.utils;
 
+import com.kgu.studywithme.auth.application.dto.response.TokenResponse;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleTokenResponse;
-import com.kgu.studywithme.auth.service.dto.response.TokenResponse;
 
 public class TokenUtils {
     public static final String BEARER_TOKEN = "Bearer";

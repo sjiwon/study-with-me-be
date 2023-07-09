@@ -1,7 +1,7 @@
 package com.kgu.studywithme.auth.controller;
 
-import com.kgu.studywithme.auth.service.TokenReissueService;
-import com.kgu.studywithme.auth.service.dto.response.TokenResponse;
+import com.kgu.studywithme.auth.application.TokenReissueService;
+import com.kgu.studywithme.auth.application.dto.response.TokenResponse;
 import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.auth.utils.ExtractToken;
 import io.swagger.v3.oas.annotations.Operation;

@@ -1,4 +1,4 @@
-package com.kgu.studywithme.auth.service;
+package com.kgu.studywithme.auth.application;
 
 import com.kgu.studywithme.auth.domain.Token;
 import com.kgu.studywithme.auth.domain.TokenRepository;

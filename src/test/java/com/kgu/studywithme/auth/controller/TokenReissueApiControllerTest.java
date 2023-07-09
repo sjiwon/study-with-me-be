@@ -1,7 +1,7 @@
 package com.kgu.studywithme.auth.controller;
 
+import com.kgu.studywithme.auth.application.dto.response.TokenResponse;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
-import com.kgu.studywithme.auth.service.dto.response.TokenResponse;
 import com.kgu.studywithme.common.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

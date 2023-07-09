@@ -1,10 +1,10 @@
-package com.kgu.studywithme.auth.service;
+package com.kgu.studywithme.auth.application;
 
+import com.kgu.studywithme.auth.application.dto.response.LoginResponse;
+import com.kgu.studywithme.auth.application.dto.response.MemberInfo;
 import com.kgu.studywithme.auth.infrastructure.oauth.OAuthConnector;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleTokenResponse;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleUserResponse;
-import com.kgu.studywithme.auth.service.dto.response.LoginResponse;
-import com.kgu.studywithme.auth.service.dto.response.MemberInfo;
 import com.kgu.studywithme.auth.utils.JwtTokenProvider;
 import com.kgu.studywithme.global.exception.StudyWithMeOAuthException;
 import com.kgu.studywithme.member.domain.Email;

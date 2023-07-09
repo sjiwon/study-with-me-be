@@ -1,8 +1,8 @@
 package com.kgu.studywithme.fixture;
 
+import com.kgu.studywithme.auth.application.dto.response.LoginResponse;
+import com.kgu.studywithme.auth.application.dto.response.MemberInfo;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleUserResponse;
-import com.kgu.studywithme.auth.service.dto.response.LoginResponse;
-import com.kgu.studywithme.auth.service.dto.response.MemberInfo;
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.member.domain.*;
 import lombok.Getter;
