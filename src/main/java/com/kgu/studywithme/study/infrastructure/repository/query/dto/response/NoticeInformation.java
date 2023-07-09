@@ -1,7 +1,7 @@
 package com.kgu.studywithme.study.infrastructure.repository.query.dto.response;
 
 import com.kgu.studywithme.member.domain.Nickname;
-import com.kgu.studywithme.study.service.dto.response.StudyMember;
+import com.kgu.studywithme.study.application.dto.response.StudyMember;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

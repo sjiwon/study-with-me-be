@@ -1,6 +1,6 @@
 package com.kgu.studywithme.global.aop;
 
-import com.kgu.studywithme.study.service.StudyValidator;
+import com.kgu.studywithme.study.application.StudyValidator;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;

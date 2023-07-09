@@ -2,8 +2,8 @@ package com.kgu.studywithme.study.controller.notice;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.global.aop.CheckStudyHost;
+import com.kgu.studywithme.study.application.notice.NoticeService;
 import com.kgu.studywithme.study.controller.dto.request.NoticeRequest;
-import com.kgu.studywithme.study.service.notice.NoticeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

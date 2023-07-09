@@ -1,8 +1,8 @@
 package com.kgu.studywithme.study.controller;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
+import com.kgu.studywithme.study.application.StudyReviewService;
 import com.kgu.studywithme.study.controller.dto.request.ReviewRequest;
-import com.kgu.studywithme.study.service.StudyReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

@@ -2,13 +2,13 @@ package com.kgu.studywithme.study.controller;
 
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.member.domain.Member;
+import com.kgu.studywithme.study.application.dto.response.*;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
 import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.CommentInformation;
 import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.NoticeInformation;
 import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.ReviewInformation;
 import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.StudyApplicantInformation;
-import com.kgu.studywithme.study.service.dto.response.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

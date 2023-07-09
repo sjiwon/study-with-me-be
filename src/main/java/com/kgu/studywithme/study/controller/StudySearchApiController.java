@@ -1,10 +1,10 @@
 package com.kgu.studywithme.study.controller;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
+import com.kgu.studywithme.study.application.StudySearchService;
+import com.kgu.studywithme.study.application.dto.response.DefaultStudyResponse;
 import com.kgu.studywithme.study.controller.dto.request.StudyCategorySearchRequest;
 import com.kgu.studywithme.study.controller.dto.request.StudyRecommendSearchRequest;
-import com.kgu.studywithme.study.service.StudySearchService;
-import com.kgu.studywithme.study.service.dto.response.DefaultStudyResponse;
 import com.kgu.studywithme.study.utils.StudyCategoryCondition;
 import com.kgu.studywithme.study.utils.StudyRecommendCondition;
 import io.swagger.v3.oas.annotations.Operation;
