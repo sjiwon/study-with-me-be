@@ -1,6 +1,6 @@
 package com.kgu.studywithme.study.service.dto.response;
 
-import com.kgu.studywithme.study.infra.query.dto.response.StudyApplicantInformation;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.StudyApplicantInformation;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.kgu.studywithme.study.infra.query.dto.response;
+package com.kgu.studywithme.study.infrastructure.repository.query.dto.response;
 
 import java.time.LocalDateTime;
 

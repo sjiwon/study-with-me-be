@@ -1,9 +1,16 @@
-package com.kgu.studywithme.study.infra.query;
+package com.kgu.studywithme.study.infrastructure.repository.query;
 
 import com.kgu.studywithme.member.domain.QMember;
 import com.kgu.studywithme.study.domain.participant.ParticipantStatus;
 import com.kgu.studywithme.study.domain.week.QWeek;
-import com.kgu.studywithme.study.infra.query.dto.response.*;
+import com.kgu.studywithme.study.infrastructure.query.dto.response.QBasicAttendance;
+import com.kgu.studywithme.study.infrastructure.query.dto.response.QBasicWeekly;
+import com.kgu.studywithme.study.infrastructure.query.dto.response.QSimpleGraduatedStudy;
+import com.kgu.studywithme.study.infrastructure.query.dto.response.QSimpleStudy;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.BasicAttendance;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.BasicWeekly;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.SimpleGraduatedStudy;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.SimpleStudy;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;

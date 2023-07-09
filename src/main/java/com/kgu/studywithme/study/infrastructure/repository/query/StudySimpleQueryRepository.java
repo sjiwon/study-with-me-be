@@ -1,9 +1,9 @@
-package com.kgu.studywithme.study.infra.query;
+package com.kgu.studywithme.study.infrastructure.repository.query;
 
-import com.kgu.studywithme.study.infra.query.dto.response.BasicAttendance;
-import com.kgu.studywithme.study.infra.query.dto.response.BasicWeekly;
-import com.kgu.studywithme.study.infra.query.dto.response.SimpleGraduatedStudy;
-import com.kgu.studywithme.study.infra.query.dto.response.SimpleStudy;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.BasicAttendance;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.BasicWeekly;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.SimpleGraduatedStudy;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.SimpleStudy;
 
 import java.util.List;
 

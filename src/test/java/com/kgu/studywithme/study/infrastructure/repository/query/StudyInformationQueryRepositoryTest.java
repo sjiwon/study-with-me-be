@@ -1,4 +1,4 @@
-package com.kgu.studywithme.study.infra.query;
+package com.kgu.studywithme.study.infrastructure.repository.query;
 
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.fixture.WeekFixture;
@@ -17,7 +17,7 @@ import com.kgu.studywithme.study.domain.week.attachment.Attachment;
 import com.kgu.studywithme.study.domain.week.attachment.UploadAttachment;
 import com.kgu.studywithme.study.domain.week.submit.Submit;
 import com.kgu.studywithme.study.domain.week.submit.UploadAssignment;
-import com.kgu.studywithme.study.infra.query.dto.response.*;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

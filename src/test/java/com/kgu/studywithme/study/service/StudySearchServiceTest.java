@@ -5,7 +5,7 @@ import com.kgu.studywithme.favorite.domain.Favorite;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.study.domain.StudyType;
-import com.kgu.studywithme.study.infra.query.dto.response.BasicStudy;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.BasicStudy;
 import com.kgu.studywithme.study.service.dto.response.DefaultStudyResponse;
 import com.kgu.studywithme.study.utils.StudyCategoryCondition;
 import com.kgu.studywithme.study.utils.StudyRecommendCondition;

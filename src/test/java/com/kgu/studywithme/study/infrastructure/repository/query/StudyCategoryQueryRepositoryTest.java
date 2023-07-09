@@ -1,4 +1,4 @@
-package com.kgu.studywithme.study.infra.query;
+package com.kgu.studywithme.study.infrastructure.repository.query;
 
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.favorite.domain.Favorite;
@@ -8,7 +8,7 @@ import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.study.domain.StudyRepository;
 import com.kgu.studywithme.study.domain.StudyType;
-import com.kgu.studywithme.study.infra.query.dto.response.BasicStudy;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.BasicStudy;
 import com.kgu.studywithme.study.utils.StudyCategoryCondition;
 import com.kgu.studywithme.study.utils.StudyRecommendCondition;
 import org.junit.jupiter.api.BeforeEach;

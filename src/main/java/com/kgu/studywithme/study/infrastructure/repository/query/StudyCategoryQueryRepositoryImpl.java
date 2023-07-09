@@ -1,11 +1,11 @@
-package com.kgu.studywithme.study.infra.query;
+package com.kgu.studywithme.study.infrastructure.repository.query;
 
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.favorite.domain.Favorite;
-import com.kgu.studywithme.study.infra.query.dto.response.BasicHashtag;
-import com.kgu.studywithme.study.infra.query.dto.response.BasicStudy;
-import com.kgu.studywithme.study.infra.query.dto.response.QBasicHashtag;
-import com.kgu.studywithme.study.infra.query.dto.response.QBasicStudy;
+import com.kgu.studywithme.study.infrastructure.query.dto.response.QBasicHashtag;
+import com.kgu.studywithme.study.infrastructure.query.dto.response.QBasicStudy;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.BasicHashtag;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.BasicStudy;
 import com.kgu.studywithme.study.utils.StudyCategoryCondition;
 import com.kgu.studywithme.study.utils.StudyRecommendCondition;
 import com.querydsl.core.types.ConstructorExpression;

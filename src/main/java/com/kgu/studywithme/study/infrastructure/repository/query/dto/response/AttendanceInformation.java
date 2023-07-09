@@ -1,4 +1,4 @@
-package com.kgu.studywithme.study.infra.query.dto.response;
+package com.kgu.studywithme.study.infrastructure.repository.query.dto.response;
 
 import com.kgu.studywithme.member.domain.Nickname;
 import com.kgu.studywithme.study.domain.attendance.AttendanceStatus;

@@ -1,4 +1,4 @@
-package com.kgu.studywithme.study.infra.query;
+package com.kgu.studywithme.study.infrastructure.repository.query;
 
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.favorite.domain.Favorite;
@@ -12,10 +12,10 @@ import com.kgu.studywithme.study.domain.attendance.AttendanceRepository;
 import com.kgu.studywithme.study.domain.week.Period;
 import com.kgu.studywithme.study.domain.week.Week;
 import com.kgu.studywithme.study.domain.week.WeekRepository;
-import com.kgu.studywithme.study.infra.query.dto.response.BasicAttendance;
-import com.kgu.studywithme.study.infra.query.dto.response.BasicWeekly;
-import com.kgu.studywithme.study.infra.query.dto.response.SimpleGraduatedStudy;
-import com.kgu.studywithme.study.infra.query.dto.response.SimpleStudy;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.BasicAttendance;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.BasicWeekly;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.SimpleGraduatedStudy;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.SimpleStudy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,8 +1,8 @@
 package com.kgu.studywithme.study.domain;
 
-import com.kgu.studywithme.study.infra.query.StudyCategoryQueryRepository;
-import com.kgu.studywithme.study.infra.query.StudyInformationQueryRepository;
-import com.kgu.studywithme.study.infra.query.StudySimpleQueryRepository;
+import com.kgu.studywithme.study.infrastructure.repository.query.StudyCategoryQueryRepository;
+import com.kgu.studywithme.study.infrastructure.repository.query.StudyInformationQueryRepository;
+import com.kgu.studywithme.study.infrastructure.repository.query.StudySimpleQueryRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

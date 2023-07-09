@@ -1,10 +1,10 @@
-package com.kgu.studywithme.study.infra.query;
+package com.kgu.studywithme.study.infrastructure.repository.query;
 
 import com.kgu.studywithme.study.domain.week.Week;
-import com.kgu.studywithme.study.infra.query.dto.response.AttendanceInformation;
-import com.kgu.studywithme.study.infra.query.dto.response.NoticeInformation;
-import com.kgu.studywithme.study.infra.query.dto.response.ReviewInformation;
-import com.kgu.studywithme.study.infra.query.dto.response.StudyApplicantInformation;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.AttendanceInformation;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.NoticeInformation;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.ReviewInformation;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.StudyApplicantInformation;
 
 import java.util.List;
 
