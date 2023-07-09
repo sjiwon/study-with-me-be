@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Auth [Service Layer] -> TokenReissueService 테스트")
+@DisplayName("Auth [Application Layer] -> TokenReissueService 테스트")
 class TokenReissueServiceTest extends ServiceTest {
     @Autowired
     private TokenReissueService tokenReissueService;

@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.given;
 
-@DisplayName("Auth [Infra Layer] -> OAuthUri 테스트")
+@DisplayName("Auth [Infrastructure Layer] -> OAuthUri 테스트")
 class GoogleOAuthUriTest extends InfraTest {
     private OAuthUri oAuthUri;
 

@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
-@DisplayName("Auth [Service Layer] -> OAuthService 테스트")
+@DisplayName("Auth [Application Layer] -> OAuthService 테스트")
 class OAuthServiceTest extends ServiceTest {
     @Autowired
     private OAuthService oAuthService;

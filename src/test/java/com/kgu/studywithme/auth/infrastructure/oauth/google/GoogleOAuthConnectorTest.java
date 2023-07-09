@@ -28,7 +28,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 
-@DisplayName("Auth [Infra Layer] -> GoogleOAuthConnector 테스트")
+@DisplayName("Auth [Infrastructure Layer] -> GoogleOAuthConnector 테스트")
 class GoogleOAuthConnectorTest extends InfraTest {
     private OAuthConnector oAuthConnector;
 

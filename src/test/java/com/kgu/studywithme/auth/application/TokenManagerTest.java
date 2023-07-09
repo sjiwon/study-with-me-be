@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Auth [Service Layer] -> TokenManager 테스트")
+@DisplayName("Auth [Application Layer] -> TokenManager 테스트")
 class TokenManagerTest extends ServiceTest {
     @Autowired
     private TokenManager tokenManager;

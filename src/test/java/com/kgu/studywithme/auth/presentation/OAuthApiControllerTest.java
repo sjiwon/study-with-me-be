@@ -30,7 +30,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("Auth [Controller Layer] -> OAuthApiController 테스트")
+@DisplayName("Auth [Presentation Layer] -> OAuthApiController 테스트")
 class OAuthApiControllerTest extends ControllerTest {
     @MockBean
     private OAuthProperties properties;
