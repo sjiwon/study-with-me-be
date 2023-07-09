@@ -1,4 +1,4 @@
-package com.kgu.studywithme.category.controller;
+package com.kgu.studywithme.category.presentation;
 
 import com.kgu.studywithme.category.application.CategoryService;
 import com.kgu.studywithme.category.application.dto.response.CategoryResponse;

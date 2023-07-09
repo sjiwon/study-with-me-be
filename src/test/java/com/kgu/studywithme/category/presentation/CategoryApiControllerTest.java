@@ -1,4 +1,4 @@
-package com.kgu.studywithme.category.controller;
+package com.kgu.studywithme.category.presentation;
 
 import com.kgu.studywithme.category.application.dto.response.CategoryResponse;
 import com.kgu.studywithme.common.ControllerTest;
@@ -18,7 +18,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("Category [Controller Layer] -> CategoryApiController 테스트")
+@DisplayName("Category [Presentation Layer] -> CategoryApiController 테스트")
 class CategoryApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("전체 스터디 카테고리 조회 API [GET /api/categories]")

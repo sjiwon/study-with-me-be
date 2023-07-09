@@ -10,7 +10,7 @@ import com.kgu.studywithme.auth.presentation.OAuthApiController;
 import com.kgu.studywithme.auth.presentation.TokenReissueApiController;
 import com.kgu.studywithme.auth.utils.JwtTokenProvider;
 import com.kgu.studywithme.category.application.CategoryService;
-import com.kgu.studywithme.category.controller.CategoryApiController;
+import com.kgu.studywithme.category.presentation.CategoryApiController;
 import com.kgu.studywithme.common.config.TestAopConfiguration;
 import com.kgu.studywithme.favorite.controller.FavoriteApiController;
 import com.kgu.studywithme.favorite.service.FavoriteManageService;
