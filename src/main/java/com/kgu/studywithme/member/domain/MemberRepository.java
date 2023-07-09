@@ -1,6 +1,6 @@
 package com.kgu.studywithme.member.domain;
 
-import com.kgu.studywithme.member.infra.query.MemberSimpleQueryRepository;
+import com.kgu.studywithme.member.infrastructure.repository.query.MemberSimpleQueryRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

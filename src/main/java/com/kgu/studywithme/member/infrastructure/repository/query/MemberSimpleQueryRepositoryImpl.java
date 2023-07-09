@@ -1,10 +1,10 @@
-package com.kgu.studywithme.member.infra.query;
+package com.kgu.studywithme.member.infrastructure.repository.query;
 
 import com.kgu.studywithme.member.domain.report.ReportStatus;
-import com.kgu.studywithme.member.infra.query.dto.response.AttendanceRatio;
-import com.kgu.studywithme.member.infra.query.dto.response.QAttendanceRatio;
-import com.kgu.studywithme.member.infra.query.dto.response.QStudyAttendanceMetadata;
-import com.kgu.studywithme.member.infra.query.dto.response.StudyAttendanceMetadata;
+import com.kgu.studywithme.member.infrastructure.query.dto.response.QAttendanceRatio;
+import com.kgu.studywithme.member.infrastructure.query.dto.response.QStudyAttendanceMetadata;
+import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.AttendanceRatio;
+import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.StudyAttendanceMetadata;
 import com.kgu.studywithme.study.domain.attendance.AttendanceStatus;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;

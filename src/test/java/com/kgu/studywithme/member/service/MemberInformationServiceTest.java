@@ -4,7 +4,7 @@ import com.kgu.studywithme.common.ServiceTest;
 import com.kgu.studywithme.favorite.domain.Favorite;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.review.PeerReview;
-import com.kgu.studywithme.member.infra.query.dto.response.AttendanceRatio;
+import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.AttendanceRatio;
 import com.kgu.studywithme.member.service.dto.response.GraduatedStudy;
 import com.kgu.studywithme.member.service.dto.response.MemberInformation;
 import com.kgu.studywithme.member.service.dto.response.PeerReviewAssembler;

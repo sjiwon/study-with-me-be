@@ -6,7 +6,7 @@ import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.member.domain.review.PeerReview;
 import com.kgu.studywithme.member.domain.review.PeerReviewRepository;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
-import com.kgu.studywithme.member.infra.query.dto.response.StudyAttendanceMetadata;
+import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.StudyAttendanceMetadata;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
