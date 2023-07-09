@@ -1,7 +1,7 @@
 package com.kgu.studywithme.category.controller;
 
-import com.kgu.studywithme.category.service.CategoryService;
-import com.kgu.studywithme.category.service.dto.response.CategoryResponse;
+import com.kgu.studywithme.category.application.CategoryService;
+import com.kgu.studywithme.category.application.dto.response.CategoryResponse;
 import com.kgu.studywithme.global.dto.SimpleResponseWrapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

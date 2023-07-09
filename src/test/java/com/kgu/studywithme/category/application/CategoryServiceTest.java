@@ -1,6 +1,6 @@
-package com.kgu.studywithme.category.service;
+package com.kgu.studywithme.category.application;
 
-import com.kgu.studywithme.category.service.dto.response.CategoryResponse;
+import com.kgu.studywithme.category.application.dto.response.CategoryResponse;
 import com.kgu.studywithme.common.ServiceTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ import static com.kgu.studywithme.category.domain.Category.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Category [Service Layer] -> CategoryService 테스트")
+@DisplayName("Category [Application Layer] -> CategoryService 테스트")
 class CategoryServiceTest extends ServiceTest {
     @Autowired
     private CategoryService categoryService;

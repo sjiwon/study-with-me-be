@@ -1,4 +1,4 @@
-package com.kgu.studywithme.category.service.dto.response;
+package com.kgu.studywithme.category.application.dto.response;
 
 import com.kgu.studywithme.category.domain.Category;
 

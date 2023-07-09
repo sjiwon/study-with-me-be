@@ -1,6 +1,6 @@
 package com.kgu.studywithme.category.controller;
 
-import com.kgu.studywithme.category.service.dto.response.CategoryResponse;
+import com.kgu.studywithme.category.application.dto.response.CategoryResponse;
 import com.kgu.studywithme.common.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

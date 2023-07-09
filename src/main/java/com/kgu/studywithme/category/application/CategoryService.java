@@ -1,7 +1,7 @@
-package com.kgu.studywithme.category.service;
+package com.kgu.studywithme.category.application;
 
+import com.kgu.studywithme.category.application.dto.response.CategoryResponse;
 import com.kgu.studywithme.category.domain.Category;
-import com.kgu.studywithme.category.service.dto.response.CategoryResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
