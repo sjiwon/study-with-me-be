@@ -1,7 +1,7 @@
 package com.kgu.studywithme.study.utils;
 
 import com.kgu.studywithme.category.domain.Category;
-import com.kgu.studywithme.study.controller.dto.request.StudyCategorySearchRequest;
+import com.kgu.studywithme.study.presentation.dto.request.StudyCategorySearchRequest;
 
 public record StudyCategoryCondition(
         Category category,

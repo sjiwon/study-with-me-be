@@ -1,6 +1,6 @@
 package com.kgu.studywithme.study.utils;
 
-import com.kgu.studywithme.study.controller.dto.request.StudyRecommendSearchRequest;
+import com.kgu.studywithme.study.presentation.dto.request.StudyRecommendSearchRequest;
 
 public record StudyRecommendCondition(
         Long memberId,
