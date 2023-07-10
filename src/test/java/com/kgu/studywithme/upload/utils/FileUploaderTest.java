@@ -3,7 +3,7 @@ package com.kgu.studywithme.upload.utils;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
-import com.kgu.studywithme.common.InfraTest;
+import com.kgu.studywithme.common.InfrastructureTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.upload.exception.UploadErrorCode;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +26,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @DisplayName("Upload [Utils] -> FileUploader 테스트")
-class FileUploaderTest extends InfraTest {
+class FileUploaderTest extends InfrastructureTest {
     private FileUploader uploader;
 
     @Mock

@@ -2,7 +2,7 @@ package com.kgu.studywithme.auth.infrastructure.oauth.google;
 
 import com.kgu.studywithme.auth.infrastructure.oauth.OAuthProperties;
 import com.kgu.studywithme.auth.infrastructure.oauth.OAuthUri;
-import com.kgu.studywithme.common.InfraTest;
+import com.kgu.studywithme.common.InfrastructureTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.given;
 
 @DisplayName("Auth [Infrastructure Layer] -> OAuthUri 테스트")
-class GoogleOAuthUriTest extends InfraTest {
+class GoogleOAuthUriTest extends InfrastructureTest {
     private OAuthUri oAuthUri;
 
     @Mock
