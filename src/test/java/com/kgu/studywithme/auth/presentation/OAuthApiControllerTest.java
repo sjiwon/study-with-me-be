@@ -3,6 +3,7 @@ package com.kgu.studywithme.auth.presentation;
 import com.kgu.studywithme.auth.application.dto.response.LoginResponse;
 import com.kgu.studywithme.auth.infrastructure.oauth.OAuthProperties;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleUserResponse;
+import com.kgu.studywithme.auth.presentation.dto.request.OAuthLoginRequest;
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.global.exception.StudyWithMeOAuthException;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,9 +23,9 @@ import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -84,7 +85,7 @@ class OAuthApiControllerTest extends ControllerTest {
     }
 
     @Nested
-    @DisplayName("Google OAuth 인증 API [GET /api/oauth/login]")
+    @DisplayName("Google OAuth 로그인 API [POST /api/oauth/login]")
     class oAuthLogin {
         private static final String BASE_URL = "/api/oauth/login";
         private static final String AUTHORIZATION_CODE = UUID.randomUUID().toString().replaceAll("-", "").repeat(2);
@@ -100,10 +101,12 @@ class OAuthApiControllerTest extends ControllerTest {
                     .login(AUTHORIZATION_CODE, REDIRECT_URL);
 
             // when
+            final OAuthLoginRequest request
+                    = new OAuthLoginRequest(AUTHORIZATION_CODE, REDIRECT_URL);
             MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                    .get(BASE_URL)
-                    .param("authorizationCode", AUTHORIZATION_CODE)
-                    .param("redirectUrl", REDIRECT_URL);
+                    .post(BASE_URL)
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJson(request));
 
             // then
             mockMvc.perform(requestBuilder)
@@ -121,9 +124,9 @@ class OAuthApiControllerTest extends ControllerTest {
                                     "OAuthApi/Login/Failure",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
-                                    queryParameters(
-                                            parameterWithName("authorizationCode").description("Authorization Code"),
-                                            parameterWithName("redirectUrl").description("redirectUrl")
+                                    requestFields(
+                                            fieldWithPath("authorizationCode").description("Authorization Code"),
+                                            fieldWithPath("redirectUrl").description("redirectUrl")
                                                     .attributes(constraint("Authorization Code 요청 시 redirectUrl과 반드시 동일한 값"))
                                     ),
                                     responseFields(
@@ -143,10 +146,12 @@ class OAuthApiControllerTest extends ControllerTest {
             given(oAuthService.login(AUTHORIZATION_CODE, REDIRECT_URL)).willReturn(response);
 
             // when
+            final OAuthLoginRequest request
+                    = new OAuthLoginRequest(AUTHORIZATION_CODE, REDIRECT_URL);
             MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                    .get(BASE_URL)
-                    .param("authorizationCode", AUTHORIZATION_CODE)
-                    .param("redirectUrl", REDIRECT_URL);
+                    .post(BASE_URL)
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJson(request));
 
             // then
             mockMvc.perform(requestBuilder)
@@ -168,9 +173,9 @@ class OAuthApiControllerTest extends ControllerTest {
                                     "OAuthApi/Login/Success",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
-                                    queryParameters(
-                                            parameterWithName("authorizationCode").description("Authorization Code"),
-                                            parameterWithName("redirectUrl").description("redirectUrl")
+                                    requestFields(
+                                            fieldWithPath("authorizationCode").description("Authorization Code"),
+                                            fieldWithPath("redirectUrl").description("redirectUrl")
                                                     .attributes(constraint("Authorization Code 요청 시 redirectUrl과 반드시 동일한 값"))
                                     ),
                                     responseFields(

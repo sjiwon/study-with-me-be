@@ -3,10 +3,12 @@ package com.kgu.studywithme.auth.presentation;
 import com.kgu.studywithme.auth.application.OAuthService;
 import com.kgu.studywithme.auth.application.dto.response.LoginResponse;
 import com.kgu.studywithme.auth.infrastructure.oauth.OAuthUri;
+import com.kgu.studywithme.auth.presentation.dto.request.OAuthLoginRequest;
 import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.global.dto.SimpleResponseWrapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,12 +29,9 @@ public class OAuthApiController {
     }
 
     @Operation(summary = "Authorization Code를 통해서 Google OAuth Server에 인증을 위한 EndPoint")
-    @GetMapping(value = "/login", params = {"authorizationCode", "redirectUrl"})
-    public ResponseEntity<LoginResponse> login(
-            @RequestParam final String authorizationCode,
-            @RequestParam final String redirectUrl
-    ) {
-        final LoginResponse response = oAuthService.login(authorizationCode, redirectUrl);
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@RequestBody @Valid final OAuthLoginRequest request) {
+        final LoginResponse response = oAuthService.login(request.authorizationCode(), request.redirectUrl());
         return ResponseEntity.ok(response);
     }
 
