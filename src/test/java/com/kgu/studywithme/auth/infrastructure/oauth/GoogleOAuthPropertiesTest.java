@@ -1,5 +1,6 @@
 package com.kgu.studywithme.auth.infrastructure.oauth;
 
+import com.kgu.studywithme.auth.infrastructure.oauth.google.GoogleOAuthProperties;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +10,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @SpringBootTest
-@DisplayName("Auth [Infrastructure Layer] -> OAuthProperties 테스트")
-class OAuthPropertiesTest {
+@DisplayName("Auth [Infrastructure Layer] -> GoogleOAuthProperties 테스트")
+class GoogleOAuthPropertiesTest {
     @Autowired
-    private OAuthProperties properties;
+    private GoogleOAuthProperties properties;
 
     @Test
     @DisplayName("Google OAuth Properties가 yml에 있는 값을 제대로 읽어내는지 확인한다")

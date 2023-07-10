@@ -2,7 +2,6 @@ package com.kgu.studywithme.auth.infrastructure.oauth.google;
 
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.auth.infrastructure.oauth.OAuthConnector;
-import com.kgu.studywithme.auth.infrastructure.oauth.OAuthProperties;
 import com.kgu.studywithme.auth.infrastructure.oauth.OAuthTokenResponse;
 import com.kgu.studywithme.auth.infrastructure.oauth.OAuthUserResponse;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleTokenResponse;
@@ -25,7 +24,7 @@ import static org.springframework.http.HttpMethod.GET;
 @Component
 @RequiredArgsConstructor
 public class GoogleOAuthConnector implements OAuthConnector {
-    private final OAuthProperties properties;
+    private final GoogleOAuthProperties properties;
     private final RestTemplate restTemplate;
 
     private static final String BEARER_TYPE = "Bearer";

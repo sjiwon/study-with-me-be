@@ -1,6 +1,5 @@
 package com.kgu.studywithme.auth.infrastructure.oauth.google;
 
-import com.kgu.studywithme.auth.infrastructure.oauth.OAuthProperties;
 import com.kgu.studywithme.auth.infrastructure.oauth.OAuthUri;
 import com.kgu.studywithme.common.InfrastructureTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +20,7 @@ class GoogleOAuthUriTest extends InfrastructureTest {
     private OAuthUri oAuthUri;
 
     @Mock
-    private OAuthProperties properties;
+    private GoogleOAuthProperties properties;
 
     @BeforeEach
     void setUp() {

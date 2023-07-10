@@ -1,4 +1,4 @@
-package com.kgu.studywithme.auth.infrastructure.oauth;
+package com.kgu.studywithme.auth.infrastructure.oauth.google;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Getter
 @Component
-public class OAuthProperties {
+public class GoogleOAuthProperties {
     private final String grantType;
     private final String clientId;
     private final String clientSecret;
@@ -18,7 +18,7 @@ public class OAuthProperties {
     private final String tokenUrl;
     private final String userInfoUrl;
 
-    public OAuthProperties(
+    public GoogleOAuthProperties(
             @Value("${oauth2.google.grant-type}") final String grantType,
             @Value("${oauth2.google.client-id}") final String clientId,
             @Value("${oauth2.google.client-secret}") final String clientSecret,
