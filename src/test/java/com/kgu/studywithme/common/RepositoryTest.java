@@ -6,5 +6,5 @@ import org.springframework.context.annotation.Import;
 
 @DataJpaTest
 @Import(QueryDslConfiguration.class)
-public class RepositoryTest {
+public abstract class RepositoryTest {
 }

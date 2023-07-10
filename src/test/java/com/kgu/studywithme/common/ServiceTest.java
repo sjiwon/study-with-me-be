@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @Transactional
-public class ServiceTest {
+public abstract class ServiceTest {
     @Autowired
     private DatabaseCleaner databaseCleaner;
 
