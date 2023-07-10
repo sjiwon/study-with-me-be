@@ -1,4 +1,4 @@
-package com.kgu.studywithme.upload.controller.dto.request;
+package com.kgu.studywithme.upload.presentation.dto.request;
 
 import com.kgu.studywithme.upload.utils.validator.ValidImageExtension;
 import com.kgu.studywithme.upload.utils.validator.ValidImageUploadType;

@@ -1,8 +1,8 @@
-package com.kgu.studywithme.upload.controller;
+package com.kgu.studywithme.upload.presentation;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.global.dto.SimpleResponseWrapper;
-import com.kgu.studywithme.upload.controller.dto.request.ImageUploadRequest;
+import com.kgu.studywithme.upload.presentation.dto.request.ImageUploadRequest;
 import com.kgu.studywithme.upload.utils.FileUploader;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

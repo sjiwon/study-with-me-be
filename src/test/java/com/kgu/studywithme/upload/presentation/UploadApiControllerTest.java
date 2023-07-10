@@ -1,4 +1,4 @@
-package com.kgu.studywithme.upload.controller;
+package com.kgu.studywithme.upload.presentation;
 
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.global.exception.GlobalErrorCode;
