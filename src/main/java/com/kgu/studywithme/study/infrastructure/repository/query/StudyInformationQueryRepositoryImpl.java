@@ -2,7 +2,6 @@ package com.kgu.studywithme.study.infrastructure.repository.query;
 
 import com.kgu.studywithme.study.domain.week.QWeek;
 import com.kgu.studywithme.study.domain.week.Week;
-import com.kgu.studywithme.study.infrastructure.query.dto.response.*;
 import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
