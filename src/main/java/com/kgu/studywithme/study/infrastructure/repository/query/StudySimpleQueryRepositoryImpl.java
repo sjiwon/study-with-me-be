@@ -1,5 +1,6 @@
 package com.kgu.studywithme.study.infrastructure.repository.query;
 
+import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.member.domain.QMember;
 import com.kgu.studywithme.study.domain.participant.ParticipantStatus;
 import com.kgu.studywithme.study.domain.week.QWeek;
@@ -8,7 +9,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,7 +23,7 @@ import static com.kgu.studywithme.study.domain.review.QReview.review;
 import static com.kgu.studywithme.study.domain.week.attachment.QAttachment.attachment;
 import static com.kgu.studywithme.study.domain.week.submit.QSubmit.submit;
 
-@Transactional(readOnly = true)
+@StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
 public class StudySimpleQueryRepositoryImpl implements StudySimpleQueryRepository {
     private final JPAQueryFactory query;

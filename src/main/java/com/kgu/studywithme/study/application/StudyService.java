@@ -1,6 +1,8 @@
 package com.kgu.studywithme.study.application;
 
 import com.kgu.studywithme.category.domain.Category;
+import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
+import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.member.application.MemberFindService;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.*;
@@ -9,7 +11,6 @@ import com.kgu.studywithme.study.presentation.dto.request.StudyRegisterRequest;
 import com.kgu.studywithme.study.presentation.dto.request.StudyUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import static com.kgu.studywithme.study.domain.RecruitmentStatus.COMPLETE;
 import static com.kgu.studywithme.study.domain.RecruitmentStatus.IN_PROGRESS;
@@ -17,7 +18,7 @@ import static com.kgu.studywithme.study.domain.StudyType.OFFLINE;
 import static com.kgu.studywithme.study.domain.StudyType.ONLINE;
 
 @Service
-@Transactional(readOnly = true)
+@StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
 public class StudyService {
     private final StudyValidator studyValidator;
@@ -25,7 +26,7 @@ public class StudyService {
     private final StudyFindService studyFindService;
     private final MemberFindService memberFindService;
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public Long register(
             final Long hostId,
             final StudyRegisterRequest request
@@ -72,7 +73,7 @@ public class StudyService {
         }
     }
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void update(
             final Long studyId,
             final Long hostId,
@@ -103,7 +104,7 @@ public class StudyService {
         studyValidator.validateUniqueNameForUpdate(StudyName.from(name), studyId);
     }
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void close(final Long studyId) {
         final Study study = studyFindService.findById(studyId);
         study.close();

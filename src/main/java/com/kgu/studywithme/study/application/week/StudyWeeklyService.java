@@ -1,5 +1,7 @@
 package com.kgu.studywithme.study.application.week;
 
+import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
+import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.application.MemberFindService;
 import com.kgu.studywithme.member.domain.Member;
@@ -21,7 +23,6 @@ import com.kgu.studywithme.study.presentation.dto.request.StudyWeeklyRequest;
 import com.kgu.studywithme.upload.utils.FileUploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,7 +32,7 @@ import java.util.List;
 import static com.kgu.studywithme.study.domain.attendance.AttendanceStatus.*;
 
 @Service
-@Transactional(readOnly = true)
+@StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
 public class StudyWeeklyService {
     private final StudyFindService studyFindService;
@@ -42,7 +43,7 @@ public class StudyWeeklyService {
     private final SubmitRepository submitRepository;
     private final FileUploader uploader;
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void createWeek(
             final Long studyId,
             final StudyWeeklyRequest request
@@ -104,7 +105,7 @@ public class StudyWeeklyService {
                 .forEach(participant -> study.recordAttendance(participant, week, NON_ATTENDANCE));
     }
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void updateWeek(
             final Long studyId,
             final Integer week,
@@ -123,7 +124,7 @@ public class StudyWeeklyService {
         );
     }
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void deleteWeek(
             final Long studyId,
             final Integer week
@@ -141,7 +142,7 @@ public class StudyWeeklyService {
         }
     }
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void submitAssignment(
             final Long participantId,
             final Long studyId,
@@ -253,7 +254,7 @@ public class StudyWeeklyService {
                 .orElseThrow(() -> StudyWithMeException.type(StudyErrorCode.ATTENDANCE_NOT_FOUND));
     }
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void editSubmittedAssignment(
             final Long participantId,
             final Long studyId,

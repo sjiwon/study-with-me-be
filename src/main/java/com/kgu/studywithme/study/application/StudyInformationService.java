@@ -1,5 +1,6 @@
 package com.kgu.studywithme.study.application;
 
+import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.study.application.dto.response.*;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.study.domain.StudyRepository;
@@ -10,13 +11,12 @@ import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.Re
 import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.StudyApplicantInformation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional(readOnly = true)
+@StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
 public class StudyInformationService {
     private final StudyFindService studyFindService;

@@ -1,5 +1,7 @@
 package com.kgu.studywithme.study.application.attendance;
 
+import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
+import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.application.MemberFindService;
 import com.kgu.studywithme.member.domain.Member;
@@ -9,18 +11,17 @@ import com.kgu.studywithme.study.domain.attendance.AttendanceStatus;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import static com.kgu.studywithme.study.domain.attendance.AttendanceStatus.NON_ATTENDANCE;
 
 @Service
-@Transactional(readOnly = true)
+@StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
 public class AttendanceService {
     private final AttendanceRepository attendanceRepository;
     private final MemberFindService memberFindService;
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void manualCheckAttendance(
             final Long studyId,
             final Long memberId,

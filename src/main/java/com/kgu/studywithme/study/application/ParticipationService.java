@@ -1,5 +1,7 @@
 package com.kgu.studywithme.study.application;
 
+import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
+import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.application.MemberFindService;
 import com.kgu.studywithme.member.domain.Member;
@@ -13,12 +15,11 @@ import com.kgu.studywithme.study.exception.StudyErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import static com.kgu.studywithme.study.domain.attendance.AttendanceStatus.ATTENDANCE;
 
 @Service
-@Transactional(readOnly = true)
+@StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
 public class ParticipationService {
     private final StudyFindService studyFindService;
@@ -27,7 +28,7 @@ public class ParticipationService {
     private final ParticipantRepository participantRepository;
     private final ApplicationEventPublisher eventPublisher;
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void apply(
             final Long studyId,
             final Long memberId
@@ -38,7 +39,7 @@ public class ParticipationService {
         study.applyParticipation(member);
     }
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void applyCancel(
             final Long studyId,
             final Long applierId
@@ -50,7 +51,7 @@ public class ParticipationService {
         participantRepository.deleteParticipantAssociatedMember(study, applier);
     }
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void approve(
             final Long studyId,
             final Long applierId,
@@ -72,7 +73,7 @@ public class ParticipationService {
         }
     }
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void reject(
             final Long studyId,
             final Long applierId,
@@ -96,7 +97,7 @@ public class ParticipationService {
         }
     }
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void cancel(
             final Long studyId,
             final Long participantId
@@ -107,7 +108,7 @@ public class ParticipationService {
         study.cancelParticipation(participant);
     }
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void delegateAuthority(
             final Long studyId,
             final Long participantId,
@@ -120,7 +121,7 @@ public class ParticipationService {
         participantRepository.deleteParticipantAssociatedMember(study, newHost);
     }
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void graduate(
             final Long studyId,
             final Long participantId

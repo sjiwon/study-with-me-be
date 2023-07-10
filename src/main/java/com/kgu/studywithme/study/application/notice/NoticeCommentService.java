@@ -1,5 +1,7 @@
 package com.kgu.studywithme.study.application.notice;
 
+import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
+import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.application.MemberFindService;
 import com.kgu.studywithme.member.domain.Member;
@@ -12,10 +14,9 @@ import com.kgu.studywithme.study.domain.notice.comment.CommentRepository;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
+@StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
 public class NoticeCommentService {
     private final NoticeRepository noticeRepository;
@@ -23,7 +24,7 @@ public class NoticeCommentService {
     private final MemberFindService memberFindService;
     private final StudyValidator studyValidator;
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void register(
             final Long noticeId,
             final Long memberId,
@@ -49,7 +50,7 @@ public class NoticeCommentService {
         study.validateMemberIsParticipant(writer);
     }
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void remove(
             final Long commentId,
             final Long memberId
@@ -58,7 +59,7 @@ public class NoticeCommentService {
         commentRepository.deleteById(commentId);
     }
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void update(
             final Long commentId,
             final Long memberId,

@@ -2,6 +2,7 @@ package com.kgu.studywithme.study.infrastructure.repository.query;
 
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.favorite.domain.Favorite;
+import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.BasicHashtag;
 import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.BasicStudy;
 import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.QBasicHashtag;
@@ -17,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.LinkedList;
@@ -36,7 +36,7 @@ import static com.kgu.studywithme.study.utils.PagingConstants.SORT_FAVORITE;
 import static com.kgu.studywithme.study.utils.PagingConstants.SORT_REVIEW;
 import static com.querydsl.jpa.JPAExpressions.select;
 
-@Transactional(readOnly = true)
+@StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
 public class StudyCategoryQueryRepositoryImpl implements StudyCategoryQueryRepository {
     private final JPAQueryFactory query;

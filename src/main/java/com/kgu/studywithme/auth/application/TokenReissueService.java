@@ -3,10 +3,10 @@ package com.kgu.studywithme.auth.application;
 import com.kgu.studywithme.auth.application.dto.response.TokenResponse;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.auth.utils.JwtTokenProvider;
+import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -14,7 +14,7 @@ public class TokenReissueService {
     private final TokenManager tokenManager;
     private final JwtTokenProvider jwtTokenProvider;
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public TokenResponse reissueTokens(
             final Long memberId,
             final String refreshToken

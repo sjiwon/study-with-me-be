@@ -1,5 +1,7 @@
 package com.kgu.studywithme.member.application;
 
+import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
+import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
@@ -9,19 +11,18 @@ import com.kgu.studywithme.member.exception.MemberErrorCode;
 import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.StudyAttendanceMetadata;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
+@StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
 public class MemberReviewService {
     private final MemberFindService memberFindService;
     private final MemberRepository memberRepository;
     private final PeerReviewRepository peerReviewRepository;
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void writeReview(
             final Long revieweeId,
             final Long reviewerId,
@@ -74,7 +75,7 @@ public class MemberReviewService {
         return revieweeData.studyId().equals(reviewerData.studyId()) && revieweeData.week() == reviewerData.week();
     }
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void updateReview(
             final Long revieweeId,
             final Long reviewerId,

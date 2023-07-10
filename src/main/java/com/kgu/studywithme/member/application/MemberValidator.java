@@ -1,5 +1,6 @@
 package com.kgu.studywithme.member.application;
 
+import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Email;
 import com.kgu.studywithme.member.domain.MemberRepository;
@@ -7,10 +8,9 @@ import com.kgu.studywithme.member.domain.Nickname;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
+@StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
 public class MemberValidator {
     private final MemberRepository memberRepository;

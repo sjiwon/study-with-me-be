@@ -1,5 +1,7 @@
 package com.kgu.studywithme.study.application;
 
+import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
+import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.application.MemberFindService;
 import com.kgu.studywithme.member.domain.Member;
@@ -9,10 +11,9 @@ import com.kgu.studywithme.study.domain.review.ReviewRepository;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
+@StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
 public class StudyReviewService {
     private final ReviewRepository reviewRepository;
@@ -20,7 +21,7 @@ public class StudyReviewService {
     private final MemberFindService memberFindService;
     private final StudyValidator studyValidator;
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void write(
             final Long studyId,
             final Long memberId,
@@ -32,7 +33,7 @@ public class StudyReviewService {
         study.writeReview(member, content);
     }
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void remove(
             final Long reviewId,
             final Long memberId
@@ -41,7 +42,7 @@ public class StudyReviewService {
         reviewRepository.deleteById(reviewId);
     }
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void update(
             final Long reviewId,
             final Long memberId,

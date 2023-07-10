@@ -2,17 +2,18 @@ package com.kgu.studywithme.auth.application;
 
 import com.kgu.studywithme.auth.domain.Token;
 import com.kgu.studywithme.auth.domain.TokenRepository;
+import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
+import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
+@StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
 public class TokenManager {
     private final TokenRepository tokenRepository;
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void synchronizeRefreshToken(
             final Long memberId,
             final String refreshToken
@@ -24,7 +25,7 @@ public class TokenManager {
                 );
     }
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void reissueRefreshTokenByRtrPolicy(
             final Long memberId,
             final String newRefreshToken
@@ -32,7 +33,7 @@ public class TokenManager {
         tokenRepository.reissueRefreshTokenByRtrPolicy(memberId, newRefreshToken);
     }
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void deleteRefreshTokenByMemberId(final Long memberId) {
         tokenRepository.deleteByMemberId(memberId);
     }

@@ -1,5 +1,7 @@
 package com.kgu.studywithme.study.application.notice;
 
+import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
+import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.study.application.StudyFindService;
 import com.kgu.studywithme.study.application.StudyValidator;
@@ -10,10 +12,9 @@ import com.kgu.studywithme.study.domain.notice.comment.CommentRepository;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
+@StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
 public class NoticeService {
     private final NoticeRepository noticeRepository;
@@ -21,7 +22,7 @@ public class NoticeService {
     private final StudyFindService studyFindService;
     private final StudyValidator studyValidator;
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public Long register(
             final Long studyId,
             final String title,
@@ -33,7 +34,7 @@ public class NoticeService {
         return noticeRepository.save(notice).getId();
     }
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void remove(
             final Long noticeId,
             final Long hostId
@@ -44,7 +45,7 @@ public class NoticeService {
         noticeRepository.deleteById(noticeId);
     }
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void update(
             final Long noticeId,
             final Long hostId,

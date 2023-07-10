@@ -1,12 +1,12 @@
 package com.kgu.studywithme.study.infrastructure.repository.query;
 
+import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.study.domain.week.QWeek;
 import com.kgu.studywithme.study.domain.week.Week;
 import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
@@ -22,7 +22,7 @@ import static com.kgu.studywithme.study.domain.participant.QParticipant.particip
 import static com.kgu.studywithme.study.domain.review.QReview.review;
 import static com.kgu.studywithme.study.domain.week.submit.QSubmit.submit;
 
-@Transactional(readOnly = true)
+@StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
 public class StudyInformationQueryRepositoryImpl implements StudyInformationQueryRepository {
     private final JPAQueryFactory query;

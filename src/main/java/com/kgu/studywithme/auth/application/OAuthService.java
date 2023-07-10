@@ -6,16 +6,17 @@ import com.kgu.studywithme.auth.infrastructure.oauth.OAuthConnector;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleTokenResponse;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleUserResponse;
 import com.kgu.studywithme.auth.utils.JwtTokenProvider;
+import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
+import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeOAuthException;
 import com.kgu.studywithme.member.domain.Email;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
+@StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
 public class OAuthService {
     private final MemberRepository memberRepository;
@@ -23,7 +24,7 @@ public class OAuthService {
     private final TokenManager tokenManager;
     private final OAuthConnector oAuthConnector;
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public LoginResponse login(
             final String code,
             final String redirectUrl
@@ -50,7 +51,7 @@ public class OAuthService {
                 .orElseThrow(() -> new StudyWithMeOAuthException(userInfo));
     }
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void logout(final Long memberId) {
         tokenManager.deleteRefreshTokenByMemberId(memberId);
     }

@@ -3,18 +3,19 @@ package com.kgu.studywithme.favorite.application;
 import com.kgu.studywithme.favorite.domain.Favorite;
 import com.kgu.studywithme.favorite.domain.FavoriteRepository;
 import com.kgu.studywithme.favorite.exception.FavoriteErrorCode;
+import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
+import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
+@StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
 public class FavoriteManageService {
     private final FavoriteRepository favoriteRepository;
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public Long like(
             final Long studyId,
             final Long memberId
@@ -34,7 +35,7 @@ public class FavoriteManageService {
         }
     }
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void cancel(
             final Long studyId,
             final Long memberId

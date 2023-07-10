@@ -1,6 +1,8 @@
 package com.kgu.studywithme.member.application;
 
 import com.kgu.studywithme.category.domain.Category;
+import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
+import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
@@ -11,12 +13,11 @@ import com.kgu.studywithme.member.exception.MemberErrorCode;
 import com.kgu.studywithme.member.presentation.dto.request.MemberUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.Collectors;
 
 @Service
-@Transactional(readOnly = true)
+@StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberValidator memberValidator;
@@ -24,7 +25,7 @@ public class MemberService {
     private final MemberFindService memberFindService;
     private final ReportRepository reportRepository;
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public Long signUp(final Member member) {
         validateUniqueFields(member);
         return memberRepository.save(member).getId();
@@ -36,7 +37,7 @@ public class MemberService {
         memberValidator.validatePhone(member.getPhone());
     }
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void update(
             final Long memberId,
             final MemberUpdateRequest request
@@ -66,7 +67,7 @@ public class MemberService {
         memberValidator.validatePhoneForModify(member.getId(), phone);
     }
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public Long report(
             final Long reporteeId,
             final Long reporterId,
