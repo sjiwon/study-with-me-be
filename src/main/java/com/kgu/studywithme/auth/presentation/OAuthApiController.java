@@ -2,6 +2,7 @@ package com.kgu.studywithme.auth.presentation;
 
 import com.kgu.studywithme.auth.application.OAuthService;
 import com.kgu.studywithme.auth.application.dto.response.LoginResponse;
+import com.kgu.studywithme.auth.application.usecase.command.OAuthLoginUseCase;
 import com.kgu.studywithme.auth.application.usecase.query.QueryOAuthLinkUseCase;
 import com.kgu.studywithme.auth.presentation.dto.request.OAuthLoginRequest;
 import com.kgu.studywithme.auth.utils.ExtractPayload;
@@ -20,9 +21,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/oauth")
 public class OAuthApiController {
     private final QueryOAuthLinkUseCase queryOAuthLinkUseCase;
+    private final OAuthLoginUseCase oAuthLoginUseCase;
     private final OAuthService oAuthService;
 
-    @Operation(summary = "Google OAuth 인증을 위한 URL을 받는 EndPoint")
+    @Operation(summary = "Provider별 OAuth 인증을 위한 URL을 받는 EndPoint")
     @GetMapping(value = "/access/{provider}", params = {"redirectUrl"})
     public ResponseEntity<SimpleResponseWrapper<String>> access(
             @PathVariable final String provider,
@@ -37,10 +39,19 @@ public class OAuthApiController {
         return ResponseEntity.ok(new SimpleResponseWrapper<>(oAuthLink));
     }
 
-    @Operation(summary = "Authorization Code를 통해서 Google OAuth Server에 인증을 위한 EndPoint")
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody @Valid final OAuthLoginRequest request) {
-        final LoginResponse response = oAuthService.login(request.authorizationCode(), request.redirectUrl());
+    @Operation(summary = "Authorization Code를 통해서 Provider별 인증을 위한 EndPoint")
+    @PostMapping("/login/{provider}")
+    public ResponseEntity<LoginResponse> login(
+            @PathVariable final String provider,
+            @RequestBody @Valid final OAuthLoginRequest request
+    ) {
+        final LoginResponse response = oAuthLoginUseCase.login(
+                new OAuthLoginUseCase.Command(
+                        OAuthProvider.of(provider),
+                        request.authorizationCode(),
+                        request.redirectUrl()
+                )
+        );
         return ResponseEntity.ok(response);
     }
 

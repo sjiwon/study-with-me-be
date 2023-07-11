@@ -37,19 +37,19 @@ class OAuthApiControllerTest extends ControllerTest {
     @MockBean
     private GoogleOAuthProperties properties;
 
-    @BeforeEach
-    void setUp() {
-        given(properties.getAuthUrl()).willReturn("https://accounts.google.com/o/oauth2/v2/auth");
-        given(properties.getClientId()).willReturn("client_id");
-        given(properties.getScope()).willReturn(Set.of("openid", "profile", "email"));
-    }
-
     @Nested
     @DisplayName("OAuth Authorization Code 요청을 위한 URI 조회 API [GET /api/oauth/access/{provider}]")
     class getAuthorizationCodeForAccessGoogle {
         private static final String BASE_URL = "/api/oauth/access/{provider}";
         private static final String PROVIDER_GOOGLE = "google";
         private static final String REDIRECT_URL = "http://localhost:3000";
+
+        @BeforeEach
+        void setUp() {
+            given(properties.getAuthUrl()).willReturn("https://accounts.google.com/o/oauth2/v2/auth");
+            given(properties.getClientId()).willReturn("client_id");
+            given(properties.getScope()).willReturn(Set.of("openid", "profile", "email"));
+        }
 
         @Test
         @DisplayName("Google OAuth Authorization Code 요청을 위한 URI를 생성한다")
@@ -91,9 +91,10 @@ class OAuthApiControllerTest extends ControllerTest {
     }
 
     @Nested
-    @DisplayName("OAuth 로그인 API [POST /api/oauth/login]")
+    @DisplayName("OAuth 로그인 API [POST /api/oauth/login/{provider}]")
     class oAuthLogin {
-        private static final String BASE_URL = "/api/oauth/login";
+        private static final String BASE_URL = "/api/oauth/login/{provider}";
+        private static final String PROVIDER_GOOGLE = "google";
         private static final String AUTHORIZATION_CODE = UUID.randomUUID().toString().replaceAll("-", "").repeat(2);
         private static final String REDIRECT_URL = "http://localhost:3000";
 
@@ -103,14 +104,14 @@ class OAuthApiControllerTest extends ControllerTest {
             // given
             GoogleUserResponse googleUserResponse = JIWON.toGoogleUserResponse();
             doThrow(new StudyWithMeOAuthException(googleUserResponse))
-                    .when(oAuthService)
-                    .login(AUTHORIZATION_CODE, REDIRECT_URL);
+                    .when(oAuthLoginUseCase)
+                    .login(any());
 
             // when
             final OAuthLoginRequest request
                     = new OAuthLoginRequest(AUTHORIZATION_CODE, REDIRECT_URL);
-            MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                    .post(BASE_URL)
+            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+                    .post(BASE_URL, PROVIDER_GOOGLE)
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(request));
 
@@ -119,11 +120,11 @@ class OAuthApiControllerTest extends ControllerTest {
                     .andExpectAll(
                             status().isUnauthorized(),
                             jsonPath("$.name").exists(),
-                            jsonPath("$.name").value(googleUserResponse.name()),
+                            jsonPath("$.name").value(googleUserResponse.getName()),
                             jsonPath("$.email").exists(),
-                            jsonPath("$.email").value(googleUserResponse.email()),
-                            jsonPath("$.picture").exists(),
-                            jsonPath("$.picture").value(googleUserResponse.picture())
+                            jsonPath("$.email").value(googleUserResponse.getEmail()),
+                            jsonPath("$.profileImage").exists(),
+                            jsonPath("$.profileImage").value(googleUserResponse.getProfileImage())
                     )
                     .andDo(
                             document(
@@ -138,7 +139,7 @@ class OAuthApiControllerTest extends ControllerTest {
                                     responseFields(
                                             fieldWithPath("name").description("회원가입 진행 시 이름 기본값 [Read-Only]"),
                                             fieldWithPath("email").description("회원가입 진행 시 이메일 기본값 [Read-Only]"),
-                                            fieldWithPath("picture").description("회원가입 진행 시 구글 프로필 이미지 기본값 [Read-Only]")
+                                            fieldWithPath("profileImage").description("회원가입 진행 시 구글 프로필 이미지 기본값 [Read-Only]")
                                     )
                             )
                     );
@@ -149,13 +150,13 @@ class OAuthApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             LoginResponse response = JIWON.toLoginResponse();
-            given(oAuthService.login(AUTHORIZATION_CODE, REDIRECT_URL)).willReturn(response);
+            given(oAuthLoginUseCase.login(any())).willReturn(response);
 
             // when
             final OAuthLoginRequest request
                     = new OAuthLoginRequest(AUTHORIZATION_CODE, REDIRECT_URL);
-            MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                    .post(BASE_URL)
+            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+                    .post(BASE_URL, PROVIDER_GOOGLE)
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(request));
 

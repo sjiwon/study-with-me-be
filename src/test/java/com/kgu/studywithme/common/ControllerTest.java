@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kgu.studywithme.auth.application.OAuthService;
 import com.kgu.studywithme.auth.application.TokenReissueService;
+import com.kgu.studywithme.auth.application.usecase.command.OAuthLoginUseCase;
 import com.kgu.studywithme.auth.application.usecase.query.QueryOAuthLinkUseCase;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.auth.presentation.OAuthApiController;
@@ -107,6 +108,9 @@ public abstract class ControllerTest {
     // auth
     @MockBean
     protected QueryOAuthLinkUseCase queryOAuthLinkUseCase;
+
+    @MockBean
+    protected OAuthLoginUseCase oAuthLoginUseCase;
 
     @MockBean
     protected OAuthService oAuthService;
