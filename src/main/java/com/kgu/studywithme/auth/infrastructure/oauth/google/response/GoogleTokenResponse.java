@@ -10,4 +10,8 @@ public record GoogleTokenResponse(
         @JsonProperty("scope") String scope,
         @JsonProperty("expires_in") Integer expiresIn
 ) implements OAuthTokenResponse {
+    @Override
+    public String getAccessToken() {
+        return accessToken;
+    }
 }

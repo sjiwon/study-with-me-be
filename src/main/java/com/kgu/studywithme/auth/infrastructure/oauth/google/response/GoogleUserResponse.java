@@ -7,4 +7,18 @@ public record GoogleUserResponse(
         String email,
         String picture
 ) implements OAuthUserResponse {
+    @Override
+    public String getEmail() {
+        return email;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getProfile() {
+        return picture;
+    }
 }
