@@ -1,12 +1,14 @@
 package com.kgu.studywithme.auth.infrastructure.oauth.google.response;
 
 import com.kgu.studywithme.auth.infrastructure.oauth.OAuthUserResponse;
+import lombok.RequiredArgsConstructor;
 
-public record GoogleUserResponse(
-        String name,
-        String email,
-        String picture
-) implements OAuthUserResponse {
+@RequiredArgsConstructor
+public class GoogleUserResponse implements OAuthUserResponse {
+    private final String name;
+    private final String email;
+    private final String picture;
+
     @Override
     public String getEmail() {
         return email;
@@ -18,7 +20,7 @@ public record GoogleUserResponse(
     }
 
     @Override
-    public String getProfile() {
+    public String getProfileImage() {
         return picture;
     }
 }

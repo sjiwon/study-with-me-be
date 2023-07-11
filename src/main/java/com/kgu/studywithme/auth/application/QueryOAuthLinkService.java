@@ -15,7 +15,7 @@ public class QueryOAuthLinkService implements QueryOAuthLinkUseCase {
     private final List<OAuthUri> oAuthUris;
 
     @Override
-    public String createOAuthLink(Query query) {
+    public String createOAuthLink(final Query query) {
         OAuthUri findSpecificOAuthUri = oAuthUris.stream()
                 .filter(oAuthUri -> oAuthUri.isSupported(query.provider()))
                 .findFirst()

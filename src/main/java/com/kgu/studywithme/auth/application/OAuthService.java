@@ -47,7 +47,7 @@ public class OAuthService {
     }
 
     private Member findMemberOrException(final GoogleUserResponse userInfo) {
-        return memberRepository.findByEmail(Email.from(userInfo.email()))
+        return memberRepository.findByEmail(Email.from(userInfo.getEmail()))
                 .orElseThrow(() -> new StudyWithMeOAuthException(userInfo));
     }
 
