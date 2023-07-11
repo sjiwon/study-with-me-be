@@ -47,7 +47,7 @@ public class OAuthLoginService implements OAuthLoginUseCase {
         );
     }
 
-    private OAuthConnector getOAuthConnectorByProvider(OAuthProvider provider) {
+    private OAuthConnector getOAuthConnectorByProvider(final OAuthProvider provider) {
         return oAuthConnectors.stream()
                 .filter(oAuthConnector -> oAuthConnector.isSupported(provider))
                 .findFirst()

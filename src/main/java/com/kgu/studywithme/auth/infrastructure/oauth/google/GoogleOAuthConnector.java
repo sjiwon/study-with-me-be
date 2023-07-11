@@ -26,10 +26,10 @@ import static org.springframework.http.HttpMethod.GET;
 @Component
 @RequiredArgsConstructor
 public class GoogleOAuthConnector implements OAuthConnector {
+    private static final String BEARER_TYPE = "Bearer";
+
     private final GoogleOAuthProperties properties;
     private final RestTemplate restTemplate;
-
-    private static final String BEARER_TYPE = "Bearer";
 
     @Override
     public boolean isSupported(OAuthProvider provider) {
