@@ -6,6 +6,7 @@ import com.kgu.studywithme.auth.infrastructure.oauth.OAuthTokenResponse;
 import com.kgu.studywithme.auth.infrastructure.oauth.OAuthUserResponse;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleTokenResponse;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleUserResponse;
+import com.kgu.studywithme.auth.utils.OAuthProvider;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -18,6 +19,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import static com.kgu.studywithme.auth.utils.OAuthProvider.GOOGLE;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpMethod.GET;
 
@@ -28,6 +30,11 @@ public class GoogleOAuthConnector implements OAuthConnector {
     private final RestTemplate restTemplate;
 
     private static final String BEARER_TYPE = "Bearer";
+
+    @Override
+    public boolean isSupported(OAuthProvider provider) {
+        return provider == GOOGLE;
+    }
 
     @Override
     public OAuthTokenResponse getToken(
