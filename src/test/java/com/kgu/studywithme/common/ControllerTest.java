@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kgu.studywithme.auth.application.OAuthService;
 import com.kgu.studywithme.auth.application.TokenReissueService;
+import com.kgu.studywithme.auth.application.usecase.query.QueryOAuthLinkUseCase;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
-import com.kgu.studywithme.auth.infrastructure.oauth.OAuthUri;
 import com.kgu.studywithme.auth.presentation.OAuthApiController;
 import com.kgu.studywithme.auth.presentation.TokenReissueApiController;
 import com.kgu.studywithme.auth.utils.JwtTokenProvider;
@@ -106,7 +106,7 @@ public abstract class ControllerTest {
 
     // auth
     @MockBean
-    protected OAuthUri oAuthUri;
+    protected QueryOAuthLinkUseCase queryOAuthLinkUseCase;
 
     @MockBean
     protected OAuthService oAuthService;

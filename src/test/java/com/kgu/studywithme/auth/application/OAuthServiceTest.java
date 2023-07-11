@@ -3,7 +3,7 @@ package com.kgu.studywithme.auth.application;
 import com.kgu.studywithme.auth.application.dto.response.LoginResponse;
 import com.kgu.studywithme.auth.domain.Token;
 import com.kgu.studywithme.auth.infrastructure.oauth.OAuthConnector;
-import com.kgu.studywithme.auth.infrastructure.oauth.OAuthProperties;
+import com.kgu.studywithme.auth.infrastructure.oauth.google.GoogleOAuthProperties;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleTokenResponse;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleUserResponse;
 import com.kgu.studywithme.common.ServiceTest;
@@ -31,7 +31,7 @@ class OAuthServiceTest extends ServiceTest {
     private OAuthService oAuthService;
 
     @Autowired
-    private OAuthProperties properties;
+    private GoogleOAuthProperties properties;
 
     @MockBean
     private OAuthConnector oAuthConnector;

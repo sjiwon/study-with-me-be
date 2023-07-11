@@ -1,7 +1,7 @@
 package com.kgu.studywithme.auth.presentation;
 
 import com.kgu.studywithme.auth.application.dto.response.LoginResponse;
-import com.kgu.studywithme.auth.infrastructure.oauth.OAuthProperties;
+import com.kgu.studywithme.auth.infrastructure.oauth.google.GoogleOAuthProperties;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleUserResponse;
 import com.kgu.studywithme.auth.presentation.dto.request.OAuthLoginRequest;
 import com.kgu.studywithme.common.ControllerTest;
@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -20,21 +21,21 @@ import java.util.UUID;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("Auth [Presentation Layer] -> OAuthApiController 테스트")
 class OAuthApiControllerTest extends ControllerTest {
     @MockBean
-    private OAuthProperties properties;
+    private GoogleOAuthProperties properties;
 
     @BeforeEach
     void setUp() {
@@ -44,21 +45,22 @@ class OAuthApiControllerTest extends ControllerTest {
     }
 
     @Nested
-    @DisplayName("Google OAuth Authorization Code 요청을 위한 URI 조회 API [GET /api/oauth/access]")
+    @DisplayName("OAuth Authorization Code 요청을 위한 URI 조회 API [GET /api/oauth/access/{provider}]")
     class getAuthorizationCodeForAccessGoogle {
-        private static final String BASE_URL = "/api/oauth/access";
+        private static final String BASE_URL = "/api/oauth/access/{provider}";
+        private static final String PROVIDER_GOOGLE = "google";
         private static final String REDIRECT_URL = "http://localhost:3000";
 
         @Test
-        @DisplayName("Authorization Code 요청을 위한 URI를 생성한다")
-        void success() throws Exception {
+        @DisplayName("Google OAuth Authorization Code 요청을 위한 URI를 생성한다")
+        void googleSuccess() throws Exception {
             // given
             String authorizationCodeRequestUri = generateAuthorizationCodeRequestUri(REDIRECT_URL);
-            given(oAuthUri.generate(REDIRECT_URL)).willReturn(authorizationCodeRequestUri);
+            given(queryOAuthLinkUseCase.createOAuthLink(any())).willReturn(authorizationCodeRequestUri);
 
             // when
-            MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                    .get(BASE_URL)
+            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+                    .get(BASE_URL, PROVIDER_GOOGLE)
                     .param("redirectUrl", REDIRECT_URL);
 
             // then
@@ -73,6 +75,10 @@ class OAuthApiControllerTest extends ControllerTest {
                                     "OAuthApi/Access",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
+                                    pathParameters(
+                                            parameterWithName("provider").description("OAuth Provider")
+                                                    .attributes(constraint("google / kakao / ..."))
+                                    ),
                                     queryParameters(
                                             parameterWithName("redirectUrl").description("Authorization Code와 함께 redirect될 URI")
                                     ),
@@ -85,7 +91,7 @@ class OAuthApiControllerTest extends ControllerTest {
     }
 
     @Nested
-    @DisplayName("Google OAuth 로그인 API [POST /api/oauth/login]")
+    @DisplayName("OAuth 로그인 API [POST /api/oauth/login]")
     class oAuthLogin {
         private static final String BASE_URL = "/api/oauth/login";
         private static final String AUTHORIZATION_CODE = UUID.randomUUID().toString().replaceAll("-", "").repeat(2);
