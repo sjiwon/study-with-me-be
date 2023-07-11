@@ -13,7 +13,7 @@ public class GoogleOAuthUri implements OAuthUri {
     private final GoogleOAuthProperties properties;
 
     @Override
-    public boolean isSupported(OAuthProvider provider) {
+    public boolean isSupported(final OAuthProvider provider) {
         return provider == GOOGLE;
     }
 
