@@ -32,8 +32,8 @@ import com.kgu.studywithme.study.presentation.attendance.AttendanceApiController
 import com.kgu.studywithme.study.presentation.notice.StudyNoticeApiController;
 import com.kgu.studywithme.study.presentation.notice.StudyNoticeCommentApiController;
 import com.kgu.studywithme.study.presentation.week.StudyWeeklyApiController;
+import com.kgu.studywithme.upload.application.FileUploader;
 import com.kgu.studywithme.upload.presentation.UploadApiController;
-import com.kgu.studywithme.upload.utils.FileUploader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

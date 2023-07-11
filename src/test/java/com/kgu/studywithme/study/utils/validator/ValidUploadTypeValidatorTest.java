@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.mock;
 
-@DisplayName("Study [Validator] -> ValidUploadTypeValidator 테스트")
+@DisplayName("Study [Util] -> ValidUploadTypeValidator 테스트")
 class ValidUploadTypeValidatorTest {
     private ValidUploadTypeValidator validator;
     private ConstraintValidatorContext context;

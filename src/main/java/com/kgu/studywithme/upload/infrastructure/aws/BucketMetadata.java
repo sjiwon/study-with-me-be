@@ -1,4 +1,4 @@
-package com.kgu.studywithme.upload.utils;
+package com.kgu.studywithme.upload.infrastructure.aws;
 
 public interface BucketMetadata {
     /**

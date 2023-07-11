@@ -1,4 +1,4 @@
-package com.kgu.studywithme.upload.utils;
+package com.kgu.studywithme.upload.application;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
-import static com.kgu.studywithme.upload.utils.BucketMetadata.*;
+import static com.kgu.studywithme.upload.infrastructure.aws.BucketMetadata.*;
 
 @Slf4j
 @Component

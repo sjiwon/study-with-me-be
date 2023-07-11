@@ -1,4 +1,4 @@
-package com.kgu.studywithme.upload.utils;
+package com.kgu.studywithme.upload.infrastructure.aws;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;

@@ -19,7 +19,7 @@ import com.kgu.studywithme.study.domain.week.submit.SubmitRepository;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
 import com.kgu.studywithme.study.presentation.dto.request.StudyWeeklyRequest;
 import com.kgu.studywithme.study.presentation.utils.StudyWeeklyRequestUtils;
-import com.kgu.studywithme.upload.utils.FileUploader;
+import com.kgu.studywithme.upload.application.FileUploader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -46,7 +46,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.given;
 
-@DisplayName("Study [Service Layer] -> StudyWeeklyService 테스트")
+@DisplayName("Study [Application Layer] -> StudyWeeklyService 테스트")
 class StudyWeeklyServiceTest extends ServiceTest {
     @Autowired
     private StudyWeeklyService studyWeeklyService;

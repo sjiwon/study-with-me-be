@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Study [Service Layer] -> StudyFindService 테스트")
+@DisplayName("Study [Application Layer] -> StudyFindService 테스트")
 class StudyFindServiceTest extends ServiceTest {
     @Autowired
     private StudyFindService studyFindService;

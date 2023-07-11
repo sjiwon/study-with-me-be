@@ -1,9 +1,9 @@
-package com.kgu.studywithme.upload.utils;
+package com.kgu.studywithme.upload.application;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
-import com.kgu.studywithme.common.InfrastructureTest;
+import com.kgu.studywithme.common.ServiceTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.upload.exception.UploadErrorCode;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,12 +26,14 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
-@DisplayName("Upload [Utils] -> FileUploader 테스트")
-class FileUploaderTest extends InfrastructureTest {
+@DisplayName("Upload [Application layer] -> FileUploader 테스트")
+class FileUploaderTest extends ServiceTest {
+    @Autowired
     private FileUploader uploader;
 
     @Mock
     private AmazonS3 amazonS3;
+
     private static final String BUCKET = "bucket";
     private static final String IMAGE = "images";
     private static final String ATTACHMENT = "attachments";

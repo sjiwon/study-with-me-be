@@ -28,7 +28,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("Upload [Controller Layer] -> UploadApiController 테스트")
+@DisplayName("Upload [Presentation layer] -> UploadApiController 테스트")
 class UploadApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("Weekly 설명 내부 이미지 업로드 API [POST /api/image] - AccessToken 필수")

@@ -1,6 +1,5 @@
-package com.kgu.studywithme.auth.infrastructure.oauth;
+package com.kgu.studywithme.auth.infrastructure.oauth.google;
 
-import com.kgu.studywithme.auth.infrastructure.oauth.google.GoogleOAuthProperties;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

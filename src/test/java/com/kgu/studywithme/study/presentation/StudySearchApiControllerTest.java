@@ -34,7 +34,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("Study [Controller Layer] -> StudySearchApiController 테스트")
+@DisplayName("Study [Presentation layer] -> StudySearchApiController 테스트")
 class StudySearchApiControllerTest extends ControllerTest {
     private static final String SORT = SORT_DATE;
     private static final Pageable PAGE = getDefaultPageRequest(0);

@@ -36,7 +36,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("Member [Controller Layer] -> MemberInformationApiController 테스트")
+@DisplayName("Member [Presentation layer] -> MemberInformationApiController 테스트")
 class MemberInformationApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("사용자 기본 정보 조회 API [GET /api/members/{memberId}]")

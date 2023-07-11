@@ -36,7 +36,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("Study [Controller Layer] -> StudyApiController 테스트")
+@DisplayName("Study [Presentation layer] -> StudyApiController 테스트")
 class StudyApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("스터디 생성 API [POST /api/study] - AccessToken 필수")

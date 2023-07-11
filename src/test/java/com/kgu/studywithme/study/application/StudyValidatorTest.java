@@ -22,7 +22,7 @@ import static com.kgu.studywithme.fixture.StudyFixture.TOEIC;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-@DisplayName("Study [Service Layer] -> StudyValidator 테스트")
+@DisplayName("Study [Application Layer] -> StudyValidator 테스트")
 class StudyValidatorTest extends ServiceTest {
     @Autowired
     private StudyValidator studyValidator;

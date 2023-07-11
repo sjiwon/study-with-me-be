@@ -1,4 +1,4 @@
-package com.kgu.studywithme.upload.utils;
+package com.kgu.studywithme.upload.infrastructure.aws;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @SpringBootTest
-@DisplayName("Upload [Utils] -> AmazonS3Properties 테스트")
+@DisplayName("Upload [Infrastructure Layer] -> AmazonS3Properties 테스트")
 class AmazonS3PropertiesTest {
     @Autowired
     private AmazonS3Properties properties;

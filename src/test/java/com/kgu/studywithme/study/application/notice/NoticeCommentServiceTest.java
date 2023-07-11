@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Study [Service Layer] -> NoticeCommentService 테스트")
+@DisplayName("Study [Application Layer] -> NoticeCommentService 테스트")
 class NoticeCommentServiceTest extends ServiceTest {
     @Autowired
     private NoticeCommentService noticeCommentService;

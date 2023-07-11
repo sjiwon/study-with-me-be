@@ -28,7 +28,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("Study [Controller Layer] -> AttendanceApiController 테스트")
+@DisplayName("Study [Presentation layer] -> AttendanceApiController 테스트")
 class AttendanceApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("수동 출석 API [PATCH /api/studies/{studyId}/attendance/{memberId}] - AccessToken 필수")

@@ -32,7 +32,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("Study [Controller Layer] -> StudyWeeklyApiController 테스트")
+@DisplayName("Study [Presentation layer] -> StudyWeeklyApiController 테스트")
 class StudyWeeklyApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("스터디 주차 생성 API [POST /api/studies/{studyId}/week] - AccessToken 필수")

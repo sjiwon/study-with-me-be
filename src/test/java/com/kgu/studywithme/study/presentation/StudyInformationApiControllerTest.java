@@ -40,7 +40,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("Study [Controller Layer] -> StudyInformationApiController 테스트")
+@DisplayName("Study [Presentation layer] -> StudyInformationApiController 테스트")
 class StudyInformationApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("스터디 기본 정보 조회 API [GET /api/studies/{studyId}]")

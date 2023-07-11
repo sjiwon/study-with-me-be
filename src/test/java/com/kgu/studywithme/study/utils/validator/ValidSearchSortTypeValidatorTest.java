@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.mock;
 
-@DisplayName("Study [Validator] -> ValidSearchSortTypeValidator 테스트")
+@DisplayName("Study [Util] -> ValidSearchSortTypeValidator 테스트")
 class ValidSearchSortTypeValidatorTest {
     private ValidSearchSortTypeValidator validator;
     private ConstraintValidatorContext context;

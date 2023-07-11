@@ -30,7 +30,7 @@ import static com.kgu.studywithme.study.domain.attendance.AttendanceStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Study [Service Layer] -> StudyInformationService 테스트")
+@DisplayName("Study [Application Layer] -> StudyInformationService 테스트")
 class StudyInformationServiceTest extends ServiceTest {
     @Autowired
     private StudyInformationService studyInformationService;
