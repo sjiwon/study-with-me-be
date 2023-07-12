@@ -1,23 +1,19 @@
-package com.kgu.studywithme.auth.application;
+package com.kgu.studywithme.auth.infrastructure.token;
 
 import com.kgu.studywithme.auth.domain.Token;
 import com.kgu.studywithme.auth.domain.TokenRepository;
-import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
-@Service
-@StudyWithMeReadOnlyTransactional
+@Repository
 @RequiredArgsConstructor
-public class TokenManager {
+public class RdbTokenPersistenceAdapter implements TokenPersistenceAdapter {
     private final TokenRepository tokenRepository;
 
     @StudyWithMeWritableTransactional
-    public void synchronizeRefreshToken(
-            final Long memberId,
-            final String refreshToken
-    ) {
+    @Override
+    public void synchronizeRefreshToken(Long memberId, String refreshToken) {
         tokenRepository.findByMemberId(memberId)
                 .ifPresentOrElse(
                         token -> token.updateRefreshToken(refreshToken),
@@ -26,22 +22,19 @@ public class TokenManager {
     }
 
     @StudyWithMeWritableTransactional
-    public void reissueRefreshTokenByRtrPolicy(
-            final Long memberId,
-            final String newRefreshToken
-    ) {
-        tokenRepository.reissueRefreshTokenByRtrPolicy(memberId, newRefreshToken);
+    @Override
+    public void reissueRefreshTokenByRtrPolicy(Long memberId, String refreshToken) {
+        tokenRepository.reissueRefreshTokenByRtrPolicy(memberId, refreshToken);
     }
 
     @StudyWithMeWritableTransactional
-    public void deleteRefreshTokenByMemberId(final Long memberId) {
+    @Override
+    public void deleteRefreshTokenByMemberId(Long memberId) {
         tokenRepository.deleteByMemberId(memberId);
     }
 
-    public boolean isRefreshTokenExists(
-            final Long memberId,
-            final String refreshToken
-    ) {
+    @Override
+    public boolean isRefreshTokenExists(Long memberId, String refreshToken) {
         return tokenRepository.existsByMemberIdAndRefreshToken(memberId, refreshToken);
     }
 }

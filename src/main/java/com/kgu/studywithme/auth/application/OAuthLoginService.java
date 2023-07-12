@@ -7,6 +7,7 @@ import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.auth.infrastructure.oauth.OAuthConnector;
 import com.kgu.studywithme.auth.infrastructure.oauth.OAuthTokenResponse;
 import com.kgu.studywithme.auth.infrastructure.oauth.OAuthUserResponse;
+import com.kgu.studywithme.auth.infrastructure.token.TokenPersistenceAdapter;
 import com.kgu.studywithme.auth.utils.JwtTokenProvider;
 import com.kgu.studywithme.auth.utils.OAuthProvider;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
@@ -27,7 +28,7 @@ public class OAuthLoginService implements OAuthLoginUseCase {
     private final List<OAuthConnector> oAuthConnectors;
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
-    private final TokenManager tokenManager;
+    private final TokenPersistenceAdapter tokenPersistenceAdapter;
 
     @Override
     public LoginResponse login(final Command command) {
@@ -38,7 +39,7 @@ public class OAuthLoginService implements OAuthLoginUseCase {
         final Member member = findMemberOrException(userInfo);
         final String accessToken = jwtTokenProvider.createAccessToken(member.getId());
         final String refreshToken = jwtTokenProvider.createRefreshToken(member.getId());
-        tokenManager.synchronizeRefreshToken(member.getId(), refreshToken); // sync RefreshToken
+        tokenPersistenceAdapter.synchronizeRefreshToken(member.getId(), refreshToken); // sync RefreshToken
 
         return new LoginResponse(
                 new MemberInfo(member),
