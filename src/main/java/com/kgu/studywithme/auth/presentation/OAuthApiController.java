@@ -1,7 +1,7 @@
 package com.kgu.studywithme.auth.presentation;
 
-import com.kgu.studywithme.auth.application.OAuthService;
 import com.kgu.studywithme.auth.application.dto.response.LoginResponse;
+import com.kgu.studywithme.auth.application.usecase.command.LogoutUseCase;
 import com.kgu.studywithme.auth.application.usecase.command.OAuthLoginUseCase;
 import com.kgu.studywithme.auth.application.usecase.query.QueryOAuthLinkUseCase;
 import com.kgu.studywithme.auth.presentation.dto.request.OAuthLoginRequest;
@@ -15,14 +15,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "1-1. 로그인(OAuth) API")
+@Tag(name = "1-1. OAuth 인증 관련 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/oauth")
 public class OAuthApiController {
     private final QueryOAuthLinkUseCase queryOAuthLinkUseCase;
     private final OAuthLoginUseCase oAuthLoginUseCase;
-    private final OAuthService oAuthService;
+    private final LogoutUseCase logoutUseCase;
 
     @Operation(summary = "Provider별 OAuth 인증을 위한 URL을 받는 EndPoint")
     @GetMapping(value = "/access/{provider}", params = {"redirectUrl"})
@@ -58,7 +58,7 @@ public class OAuthApiController {
     @Operation(summary = "로그아웃 EndPoint")
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(@ExtractPayload final Long memberId) {
-        oAuthService.logout(memberId);
+        logoutUseCase.logout(new LogoutUseCase.Command(memberId));
         return ResponseEntity.noContent().build();
     }
 }
