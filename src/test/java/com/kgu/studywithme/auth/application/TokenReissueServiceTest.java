@@ -1,6 +1,7 @@
 package com.kgu.studywithme.auth.application;
 
 import com.kgu.studywithme.auth.application.dto.response.TokenResponse;
+import com.kgu.studywithme.auth.application.usecase.command.TokenReissueUseCase;
 import com.kgu.studywithme.auth.domain.Token;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.common.ServiceTest;
@@ -35,7 +36,9 @@ class TokenReissueServiceTest extends ServiceTest {
         @DisplayName("RefreshToken이 유효하지 않으면 토큰 재발급에 실패한다")
         void throwExceptionByInvalidRefreshToken() {
             // when - then
-            assertThatThrownBy(() -> tokenReissueService.reissueTokens(MEMBER_ID, refreshToken))
+            assertThatThrownBy(() -> tokenReissueService.reissueTokens(
+                    new TokenReissueUseCase.Command(MEMBER_ID, refreshToken)
+            ))
                     .isInstanceOf(StudyWithMeException.class)
                     .hasMessage(AuthErrorCode.AUTH_INVALID_TOKEN.getMessage());
         }
@@ -47,7 +50,9 @@ class TokenReissueServiceTest extends ServiceTest {
             tokenRepository.save(Token.issueRefreshToken(MEMBER_ID, refreshToken));
 
             // when
-            TokenResponse response = tokenReissueService.reissueTokens(MEMBER_ID, refreshToken);
+            TokenResponse response = tokenReissueService.reissueTokens(
+                    new TokenReissueUseCase.Command(MEMBER_ID, refreshToken)
+            );
 
             // then
             assertAll(

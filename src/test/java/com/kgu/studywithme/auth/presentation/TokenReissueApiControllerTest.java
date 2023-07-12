@@ -10,6 +10,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static com.kgu.studywithme.common.utils.TokenUtils.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -101,7 +102,7 @@ class TokenReissueApiControllerTest extends ControllerTest {
             mockingToken(true, memberId);
 
             TokenResponse response = createTokenResponse();
-            given(tokenReissueService.reissueTokens(memberId, REFRESH_TOKEN)).willReturn(response);
+            given(tokenReissueUseCase.reissueTokens(any())).willReturn(response);
 
             // when
             MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
