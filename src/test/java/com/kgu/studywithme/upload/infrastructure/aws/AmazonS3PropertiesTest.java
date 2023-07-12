@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @SpringBootTest
-@DisplayName("Upload [Infrastructure Layer] -> AmazonS3Properties 테스트")
+@DisplayName("Upload -> AmazonS3Properties 테스트")
 class AmazonS3PropertiesTest {
     @Autowired
     private AmazonS3Properties properties;

@@ -12,7 +12,7 @@ import static com.kgu.studywithme.common.utils.TokenUtils.REFRESH_TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Auth [Repository Layer] -> TokenRepository 테스트")
+@DisplayName("Auth -> TokenRepository 테스트")
 class TokenRepositoryTest extends RepositoryTest {
     @Autowired
     private TokenRepository tokenRepository;

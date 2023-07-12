@@ -22,7 +22,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("Favorite [Presentation Layer] -> FavoriteApiController 테스트")
+@DisplayName("Favorite -> FavoriteApiController 테스트")
 class FavoriteApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("찜 등록 API [POST /api/studies/{studyId}/like] - AccessToken 필수")

@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-@DisplayName("Member [Application Layer] -> MemberReviewService 테스트")
+@DisplayName("Member -> MemberReviewService 테스트")
 class MemberReviewServiceTest extends ServiceTest {
     @Autowired
     private MemberReviewService memberReviewService;

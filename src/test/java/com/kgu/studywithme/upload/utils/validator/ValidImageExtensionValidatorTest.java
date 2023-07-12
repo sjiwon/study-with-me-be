@@ -16,7 +16,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-@DisplayName("Upload [Util] -> ValidImageExtensionValidator 테스트")
+@DisplayName("Upload -> ValidImageExtensionValidator 테스트")
 class ValidImageExtensionValidatorTest {
     private ValidImageExtensionValidator validator;
     private ConstraintValidatorContext context;

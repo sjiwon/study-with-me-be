@@ -26,7 +26,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("Study [Presentation layer] -> StudyNoticeCommentApiController 테스트")
+@DisplayName("Study -> StudyNoticeCommentApiController 테스트")
 class StudyNoticeCommentApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("공지사항 댓글 등록 API [POST /api/notices/{noticeId}/comment] - AccessToken 필수")

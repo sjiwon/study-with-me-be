@@ -14,7 +14,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
-@DisplayName("Auth [Utils] -> AuthorizationExtractor 테스트")
+@DisplayName("Auth -> AuthorizationExtractor 테스트")
 class AuthorizationExtractorTest {
     private HttpServletRequest request;
 

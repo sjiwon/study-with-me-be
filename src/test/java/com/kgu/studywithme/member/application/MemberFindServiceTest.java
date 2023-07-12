@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Member [Application Layer] -> MemberFindService 테스트")
+@DisplayName("Member -> MemberFindService 테스트")
 class MemberFindServiceTest extends ServiceTest {
     @Autowired
     private MemberFindService memberFindService;

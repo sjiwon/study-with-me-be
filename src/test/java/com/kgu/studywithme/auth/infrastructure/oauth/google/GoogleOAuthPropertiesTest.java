@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @SpringBootTest
-@DisplayName("Auth [Infrastructure Layer] -> GoogleOAuthProperties 테스트")
+@DisplayName("Auth -> GoogleOAuthProperties 테스트")
 class GoogleOAuthPropertiesTest {
     @Autowired
     private GoogleOAuthProperties properties;

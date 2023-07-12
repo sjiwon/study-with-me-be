@@ -17,7 +17,7 @@ import static com.kgu.studywithme.fixture.StudyFixture.TOEIC;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Favorite [Repository Layer] -> FavoriteRepository 테스트")
+@DisplayName("Favorite -> FavoriteRepository 테스트")
 class FavoriteRepositoryTest extends RepositoryTest {
     @Autowired
     private FavoriteRepository favoriteRepository;

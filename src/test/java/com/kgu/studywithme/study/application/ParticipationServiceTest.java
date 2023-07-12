@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @RecordApplicationEvents
-@DisplayName("Study [Application Layer] -> ParticipationService 테스트")
+@DisplayName("Study -> ParticipationService 테스트")
 class ParticipationServiceTest extends ServiceTest {
     @Autowired
     private ParticipationService participationService;

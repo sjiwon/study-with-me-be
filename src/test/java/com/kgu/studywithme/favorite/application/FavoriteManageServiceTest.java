@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Favorite [Application Layer] -> FavoriteManageService 테스트")
+@DisplayName("Favorite -> FavoriteManageService 테스트")
 class FavoriteManageServiceTest extends ServiceTest {
     @Autowired
     private FavoriteManageService favoriteManageService;

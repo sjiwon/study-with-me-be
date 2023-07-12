@@ -32,7 +32,7 @@ import static com.kgu.studywithme.study.utils.PagingConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Study [Repository Layer] -> StudyCategoryQueryRepository 테스트")
+@DisplayName("Study -> StudyCategoryQueryRepository 테스트")
 class StudyCategoryQueryRepositoryTest extends RepositoryTest {
     @Autowired
     private StudyRepository studyRepository;

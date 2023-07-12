@@ -18,7 +18,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("Category [Presentation Layer] -> CategoryApiController 테스트")
+@DisplayName("Category -> CategoryApiController 테스트")
 class CategoryApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("전체 스터디 카테고리 조회 API [GET /api/categories]")

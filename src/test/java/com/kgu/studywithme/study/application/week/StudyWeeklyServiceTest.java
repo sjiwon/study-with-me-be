@@ -46,7 +46,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.given;
 
-@DisplayName("Study [Application Layer] -> StudyWeeklyService 테스트")
+@DisplayName("Study -> StudyWeeklyService 테스트")
 class StudyWeeklyServiceTest extends ServiceTest {
     @Autowired
     private StudyWeeklyService studyWeeklyService;

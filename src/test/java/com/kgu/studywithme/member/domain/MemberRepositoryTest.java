@@ -14,7 +14,7 @@ import static com.kgu.studywithme.fixture.MemberFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Member [Repository Layer] -> MemberRepository 테스트")
+@DisplayName("Member -> MemberRepository 테스트")
 class MemberRepositoryTest extends RepositoryTest {
     @Autowired
     private MemberRepository memberRepository;

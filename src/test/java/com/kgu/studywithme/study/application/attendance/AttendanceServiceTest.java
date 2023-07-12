@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Study [Application Layer] -> AttendanceService 테스트")
+@DisplayName("Study -> AttendanceService 테스트")
 class AttendanceServiceTest extends ServiceTest {
     @Autowired
     private AttendanceService attendanceService;

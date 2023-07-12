@@ -29,7 +29,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("Study [Presentation layer] -> StudyNoticeApiController 테스트")
+@DisplayName("Study -> StudyNoticeApiController 테스트")
 class StudyNoticeApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("공지사항 등록 API [POST /api/studies/{studyId}/notice] - AccessToken 필수")

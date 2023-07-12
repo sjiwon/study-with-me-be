@@ -15,7 +15,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-@DisplayName("Study [Util] -> ValidHashtagCountValidator 테스트")
+@DisplayName("Study -> ValidHashtagCountValidator 테스트")
 class ValidHashtagCountValidatorTest {
     private ValidHashtagCountValidator validator;
     private ConstraintValidatorContext context;

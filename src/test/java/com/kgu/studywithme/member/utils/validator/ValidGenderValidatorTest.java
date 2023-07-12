@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.mock;
 
-@DisplayName("Member [Util] -> ValidGenderValidator 테스트")
+@DisplayName("Member -> ValidGenderValidator 테스트")
 class ValidGenderValidatorTest {
     private ValidGenderValidator validator;
     private ConstraintValidatorContext context;

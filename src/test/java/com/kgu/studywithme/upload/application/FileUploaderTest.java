@@ -26,7 +26,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
-@DisplayName("Upload [Application layer] -> FileUploader 테스트")
+@DisplayName("Upload -> FileUploader 테스트")
 class FileUploaderTest extends ServiceTest {
     @Autowired
     private FileUploader uploader;

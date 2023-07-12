@@ -19,7 +19,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("Auth [Presentation Layer] -> TokenReissueApiController 테스트")
+@DisplayName("Auth -> TokenReissueApiController 테스트")
 class TokenReissueApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("토큰 재발급 API [POST /api/token/reissue] - RefreshToken 필수")

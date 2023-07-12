@@ -27,7 +27,7 @@ import static com.kgu.studywithme.study.utils.PagingConstants.getDefaultPageRequ
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Study [Application Layer] -> StudySearchService 테스트")
+@DisplayName("Study -> StudySearchService 테스트")
 class StudySearchServiceTest extends ServiceTest {
     @Autowired
     private StudySearchService studySearchService;

@@ -15,7 +15,7 @@ import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-@DisplayName("Member [Application Layer] -> MemberValidator 테스트")
+@DisplayName("Member -> MemberValidator 테스트")
 class MemberValidatorTest extends ServiceTest {
     @Autowired
     private MemberValidator memberValidator;

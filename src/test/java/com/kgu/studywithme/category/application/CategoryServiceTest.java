@@ -12,7 +12,7 @@ import static com.kgu.studywithme.category.domain.Category.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Category [Application Layer] -> CategoryService 테스트")
+@DisplayName("Category -> CategoryService 테스트")
 class CategoryServiceTest extends ServiceTest {
     @Autowired
     private CategoryService categoryService;

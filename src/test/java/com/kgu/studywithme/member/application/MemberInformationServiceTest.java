@@ -28,7 +28,7 @@ import static com.kgu.studywithme.study.domain.attendance.AttendanceStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Member [Application Layer] -> MemberInformationService 테스트")
+@DisplayName("Member -> MemberInformationService 테스트")
 class MemberInformationServiceTest extends ServiceTest {
     @Autowired
     private MemberInformationService memberInformationService;

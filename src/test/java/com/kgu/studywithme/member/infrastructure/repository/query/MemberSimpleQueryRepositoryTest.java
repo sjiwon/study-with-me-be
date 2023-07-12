@@ -25,7 +25,7 @@ import static com.kgu.studywithme.study.domain.attendance.AttendanceStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Member [Repository Layer] -> MemberSimpleQueryRepository 테스트")
+@DisplayName("Member -> MemberSimpleQueryRepository 테스트")
 class MemberSimpleQueryRepositoryTest extends RepositoryTest {
     @Autowired
     private MemberRepository memberRepository;

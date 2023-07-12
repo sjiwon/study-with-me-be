@@ -33,7 +33,7 @@ import static com.kgu.studywithme.study.domain.attendance.AttendanceStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Study [Repository Layer] -> StudyInformationQueryRepository 테스트")
+@DisplayName("Study -> StudyInformationQueryRepository 테스트")
 class StudyInformationQueryRepositoryTest extends RepositoryTest {
     @Autowired
     private StudyRepository studyRepository;

@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Auth [Application Layer] -> QueryOAuthLinkService 테스트")
+@DisplayName("Auth -> QueryOAuthLinkService 테스트")
 class QueryOAuthLinkServiceTest extends ServiceTest {
     @Autowired
     private QueryOAuthLinkService queryOAuthLinkService;
