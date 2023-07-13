@@ -10,7 +10,7 @@ import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.auth.presentation.OAuthApiController;
 import com.kgu.studywithme.auth.presentation.TokenReissueApiController;
 import com.kgu.studywithme.auth.utils.JwtTokenProvider;
-import com.kgu.studywithme.category.application.CategoryService;
+import com.kgu.studywithme.category.application.usecase.query.QueryAllCategoriesUseCase;
 import com.kgu.studywithme.category.presentation.CategoryApiController;
 import com.kgu.studywithme.common.config.TestAopConfiguration;
 import com.kgu.studywithme.favorite.application.FavoriteManageService;
@@ -120,7 +120,7 @@ public abstract class ControllerTest {
 
     // category & favorite
     @MockBean
-    protected CategoryService categoryService;
+    protected QueryAllCategoriesUseCase queryAllCategoriesUseCase;
 
     @MockBean
     protected FavoriteManageService favoriteManageService;

@@ -1,19 +1,17 @@
-package com.kgu.studywithme.category.application;
+package com.kgu.studywithme.category.application.service;
 
 import com.kgu.studywithme.category.application.dto.response.CategoryResponse;
+import com.kgu.studywithme.category.application.usecase.query.QueryAllCategoriesUseCase;
 import com.kgu.studywithme.category.domain.Category;
-import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Service
-@StudyWithMeReadOnlyTransactional
-@RequiredArgsConstructor
-public class CategoryService {
-    public List<CategoryResponse> findAll() {
+public class QueryAllCategoriesService implements QueryAllCategoriesUseCase {
+    @Override
+    public List<CategoryResponse> findAllCategories() {
         return Arrays.stream(Category.values())
                 .map(CategoryResponse::new)
                 .toList();
