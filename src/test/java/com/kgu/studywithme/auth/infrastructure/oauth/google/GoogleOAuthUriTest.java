@@ -10,7 +10,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@SpringBootTest
+@SpringBootTest(classes = {GoogleOAuthUri.class, GoogleOAuthProperties.class})
 @DisplayName("Auth -> GoogleOAuthUri 테스트")
 class GoogleOAuthUriTest {
     @Autowired

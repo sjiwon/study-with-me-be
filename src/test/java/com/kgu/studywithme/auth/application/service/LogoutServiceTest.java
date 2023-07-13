@@ -1,36 +1,31 @@
 package com.kgu.studywithme.auth.application.service;
 
 import com.kgu.studywithme.auth.application.usecase.command.LogoutUseCase;
-import com.kgu.studywithme.auth.domain.Token;
-import com.kgu.studywithme.common.ServiceTest;
-import com.kgu.studywithme.member.domain.Member;
+import com.kgu.studywithme.auth.infrastructure.token.TokenPersistenceAdapter;
+import com.kgu.studywithme.common.UseCaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
-import java.util.Optional;
-
-import static com.kgu.studywithme.common.utils.TokenUtils.REFRESH_TOKEN;
-import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @DisplayName("Auth -> LogoutService 테스트")
-class LogoutServiceTest extends ServiceTest {
-    @Autowired
+class LogoutServiceTest extends UseCaseTest {
+    @InjectMocks
     private LogoutService logoutService;
+
+    @Mock
+    private TokenPersistenceAdapter tokenPersistenceAdapter;
 
     @Test
     @DisplayName("로그아웃을 진행하면 사용자에게 발급되었던 RefreshToken이 Persistence Store(RDB / Redis / ...)에서 삭제된다")
     void logout() {
-        // given
-        final Member member = memberRepository.save(JIWON.toMember());
-        tokenRepository.save(Token.issueRefreshToken(member.getId(), REFRESH_TOKEN));
-
         // when
-        logoutService.logout(new LogoutUseCase.Command(member.getId()));
+        logoutService.logout(new LogoutUseCase.Command(1L));
 
         // then
-        Optional<Token> findToken = tokenRepository.findByMemberId(member.getId());
-        assertThat(findToken).isEmpty();
+        verify(tokenPersistenceAdapter, times(1)).deleteRefreshTokenByMemberId(1L);
     }
 }

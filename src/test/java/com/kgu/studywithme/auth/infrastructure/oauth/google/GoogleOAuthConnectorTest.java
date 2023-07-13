@@ -26,7 +26,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 
-@SpringBootTest
+@SpringBootTest(classes = {GoogleOAuthConnector.class, GoogleOAuthProperties.class})
 @DisplayName("Auth -> GoogleOAuthConnector 테스트")
 class GoogleOAuthConnectorTest {
     @Autowired

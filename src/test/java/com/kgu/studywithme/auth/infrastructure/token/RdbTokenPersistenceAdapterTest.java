@@ -13,8 +13,8 @@ import static com.kgu.studywithme.common.utils.TokenUtils.REFRESH_TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Auth -> RdbTokenPersistenceAdapter 테스트")
 @Import(RdbTokenPersistenceAdapter.class)
+@DisplayName("Auth -> RdbTokenPersistenceAdapter 테스트")
 class RdbTokenPersistenceAdapterTest extends RepositoryTest {
     @Autowired
     private RdbTokenPersistenceAdapter rdbTokenPersistenceAdapter;
