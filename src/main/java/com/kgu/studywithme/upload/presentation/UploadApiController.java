@@ -33,6 +33,6 @@ public class UploadApiController {
                 ? uploader.uploadWeeklyImage(request.file())
                 : uploader.uploadStudyDescriptionImage(request.file());
 
-        return ResponseEntity.ok(new SimpleResponseWrapper<>(imageUploadLink));
+        return ResponseEntity.ok(SimpleResponseWrapper.of(imageUploadLink));
     }
 }

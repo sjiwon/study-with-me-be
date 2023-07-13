@@ -36,7 +36,7 @@ public class OAuthApiController {
                         redirectUrl
                 )
         );
-        return ResponseEntity.ok(new SimpleResponseWrapper<>(oAuthLink));
+        return ResponseEntity.ok(SimpleResponseWrapper.of(oAuthLink));
     }
 
     @Operation(summary = "Authorization Code를 통해서 Provider별 인증을 위한 EndPoint")
