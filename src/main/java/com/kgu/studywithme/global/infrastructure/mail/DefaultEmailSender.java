@@ -1,5 +1,6 @@
-package com.kgu.studywithme.global.mail.utils;
+package com.kgu.studywithme.global.infrastructure.mail;
 
+import com.kgu.studywithme.global.infrastructure.mail.utils.EmailMetadata;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,8 +12,6 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.time.LocalDate;
-
-import static com.kgu.studywithme.global.mail.utils.EmailMetadata.*;
 
 @Component
 public class DefaultEmailSender implements EmailSender {
@@ -39,9 +38,9 @@ public class DefaultEmailSender implements EmailSender {
         context.setVariable("nickname", nickname);
         context.setVariable("studyName", studyName);
 
-        final String mailBody = templateEngine.process(APPROVE_TEMPLATE, context);
+        final String mailBody = templateEngine.process(EmailMetadata.APPROVE_TEMPLATE, context);
         sendMail(
-                PARTICIPATION_SUBJECT,
+                EmailMetadata.PARTICIPATION_SUBJECT,
                 applierEmail,
                 mailBody,
                 new ClassPathResource("static/images/top.png")
@@ -59,9 +58,9 @@ public class DefaultEmailSender implements EmailSender {
         context.setVariable("studyName", studyName);
         context.setVariable("reason", reason);
 
-        final String mailBody = templateEngine.process(REJECT_TEMPLATE, context);
+        final String mailBody = templateEngine.process(EmailMetadata.REJECT_TEMPLATE, context);
         sendMail(
-                PARTICIPATION_SUBJECT,
+                EmailMetadata.PARTICIPATION_SUBJECT,
                 applierEmail,
                 mailBody,
                 new ClassPathResource("static/images/top.png")
@@ -76,11 +75,11 @@ public class DefaultEmailSender implements EmailSender {
         final Context context = new Context();
         context.setVariable("nickname", nickname);
         context.setVariable("studyName", studyName);
-        context.setVariable("completionDate", LocalDate.now().format(DATE_TIME_FORMATTER));
+        context.setVariable("completionDate", LocalDate.now().format(EmailMetadata.DATE_TIME_FORMATTER));
 
-        final String mailBody = templateEngine.process(CERTIFICATE_TEMPLATE, context);
+        final String mailBody = templateEngine.process(EmailMetadata.CERTIFICATE_TEMPLATE, context);
         sendMail(
-                COMPLETION_SUBJECT,
+                EmailMetadata.COMPLETION_SUBJECT,
                 participantEmail,
                 mailBody,
                 new ClassPathResource("static/images/stamp.png")

@@ -1,6 +1,6 @@
-package com.kgu.studywithme.global.mail.event;
+package com.kgu.studywithme.global.infrastructure.mail.event;
 
-import com.kgu.studywithme.global.mail.utils.EmailSender;
+import com.kgu.studywithme.global.infrastructure.mail.EmailSender;
 import com.kgu.studywithme.study.event.StudyApprovedEvent;
 import com.kgu.studywithme.study.event.StudyGraduatedEvent;
 import com.kgu.studywithme.study.event.StudyRejectedEvent;

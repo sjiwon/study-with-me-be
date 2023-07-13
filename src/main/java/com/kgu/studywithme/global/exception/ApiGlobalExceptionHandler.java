@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.kgu.studywithme.global.slack.SlackMetadata.*;
+import static com.kgu.studywithme.global.infrastructure.slack.SlackMetadata.*;
 import static com.slack.api.webhook.WebhookPayloads.payload;
 
 @Slf4j

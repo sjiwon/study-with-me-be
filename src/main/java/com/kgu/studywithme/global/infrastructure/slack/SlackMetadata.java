@@ -1,4 +1,4 @@
-package com.kgu.studywithme.global.slack;
+package com.kgu.studywithme.global.infrastructure.slack;
 
 public interface SlackMetadata {
     String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS";
