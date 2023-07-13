@@ -11,11 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "member_review")
-public class PeerReview extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class PeerReview extends BaseEntity<PeerReview> {
     @Column(name = "content", nullable = false)
     private String content;
 

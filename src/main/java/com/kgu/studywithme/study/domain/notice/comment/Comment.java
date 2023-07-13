@@ -12,11 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "study_notice_comment")
-public class Comment extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Comment extends BaseEntity<Comment> {
     @Lob
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;

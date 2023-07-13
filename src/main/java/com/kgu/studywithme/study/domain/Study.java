@@ -35,11 +35,7 @@ import static com.kgu.studywithme.study.domain.StudyType.ONLINE;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "study")
-public class Study extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Study extends BaseEntity<Study> {
     @Embedded
     private StudyName name;
 

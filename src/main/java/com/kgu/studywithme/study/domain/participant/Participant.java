@@ -15,11 +15,7 @@ import static com.kgu.studywithme.study.domain.participant.ParticipantStatus.APP
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "study_participant")
-public class Participant extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Participant extends BaseEntity<Participant> {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private ParticipantStatus status;

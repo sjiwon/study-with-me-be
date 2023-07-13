@@ -20,11 +20,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "study_week")
-public class Week extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Week extends BaseEntity<Week> {
     @Column(name = "title", nullable = false)
     private String title;
 

@@ -12,11 +12,7 @@ import static com.kgu.studywithme.member.domain.report.ReportStatus.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "member_report")
-public class Report extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Report extends BaseEntity<Report> {
     @Column(name = "reportee_id", nullable = false)
     private Long reporteeId;
 

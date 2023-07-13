@@ -16,11 +16,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "study_notice")
-public class Notice extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Notice extends BaseEntity<Notice> {
     @Column(name = "title", nullable = false)
     private String title;
 
