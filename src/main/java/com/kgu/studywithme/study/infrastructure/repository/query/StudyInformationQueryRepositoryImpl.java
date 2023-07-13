@@ -44,7 +44,7 @@ public class StudyInformationQueryRepositoryImpl implements StudyInformationQuer
                         new QReviewInformation(
                                 review.id,
                                 review.content,
-                                review.modifiedAt,
+                                review.lastModifiedAt,
                                 member.id,
                                 member.nickname
                         )
@@ -65,7 +65,7 @@ public class StudyInformationQueryRepositoryImpl implements StudyInformationQuer
                                 notice.title,
                                 notice.content,
                                 notice.createdAt,
-                                notice.modifiedAt,
+                                notice.lastModifiedAt,
                                 member.id,
                                 member.nickname
                         )
@@ -87,7 +87,7 @@ public class StudyInformationQueryRepositoryImpl implements StudyInformationQuer
                                 comment.id,
                                 comment.notice.id,
                                 comment.content,
-                                comment.modifiedAt,
+                                comment.lastModifiedAt,
                                 member.id,
                                 member.nickname
                         )

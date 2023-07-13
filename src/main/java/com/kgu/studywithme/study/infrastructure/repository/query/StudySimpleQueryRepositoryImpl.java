@@ -103,7 +103,7 @@ public class StudySimpleQueryRepositoryImpl implements StudySimpleQueryRepositor
                                 review.id,
                                 review.content,
                                 review.createdAt,
-                                review.modifiedAt
+                                review.lastModifiedAt
                         )
                 )
                 .from(study)
