@@ -1,28 +1,26 @@
-package com.kgu.studywithme.favorite.application;
+package com.kgu.studywithme.favorite.application.service;
 
+import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeCancellationUseCase;
+import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeMarkingUseCase;
 import com.kgu.studywithme.favorite.domain.Favorite;
 import com.kgu.studywithme.favorite.domain.FavoriteRepository;
 import com.kgu.studywithme.favorite.exception.FavoriteErrorCode;
-import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@StudyWithMeReadOnlyTransactional
+@StudyWithMeWritableTransactional
 @RequiredArgsConstructor
-public class FavoriteManageService {
+public class FavoriteManager implements StudyLikeMarkingUseCase, StudyLikeCancellationUseCase {
     private final FavoriteRepository favoriteRepository;
 
-    @StudyWithMeWritableTransactional
-    public Long like(
-            final Long studyId,
-            final Long memberId
-    ) {
-        validateLike(studyId, memberId);
+    @Override
+    public Long likeMarking(final StudyLikeMarkingUseCase.Command command) {
+        validateLike(command.studyId(), command.memberId());
 
-        final Favorite favoriteStudy = Favorite.favoriteMarking(studyId, memberId);
+        final Favorite favoriteStudy = Favorite.favoriteMarking(command.studyId(), command.memberId());
         return favoriteRepository.save(favoriteStudy).getId();
     }
 
@@ -35,13 +33,10 @@ public class FavoriteManageService {
         }
     }
 
-    @StudyWithMeWritableTransactional
-    public void cancel(
-            final Long studyId,
-            final Long memberId
-    ) {
-        validateCancel(studyId, memberId);
-        favoriteRepository.deleteByStudyIdAndMemberId(studyId, memberId);
+    @Override
+    public void likeCancellation(final StudyLikeCancellationUseCase.Command command) {
+        validateCancel(command.studyId(), command.memberId());
+        favoriteRepository.deleteByStudyIdAndMemberId(command.studyId(), command.memberId());
     }
 
     private void validateCancel(

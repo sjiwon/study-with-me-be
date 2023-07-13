@@ -13,7 +13,8 @@ import com.kgu.studywithme.auth.utils.JwtTokenProvider;
 import com.kgu.studywithme.category.application.usecase.query.QueryAllCategoriesUseCase;
 import com.kgu.studywithme.category.presentation.CategoryApiController;
 import com.kgu.studywithme.common.config.TestAopConfiguration;
-import com.kgu.studywithme.favorite.application.FavoriteManageService;
+import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeCancellationUseCase;
+import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeMarkingUseCase;
 import com.kgu.studywithme.favorite.presentation.FavoriteApiController;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.application.MemberInformationService;
@@ -123,7 +124,10 @@ public abstract class ControllerTest {
     protected QueryAllCategoriesUseCase queryAllCategoriesUseCase;
 
     @MockBean
-    protected FavoriteManageService favoriteManageService;
+    protected StudyLikeMarkingUseCase studyLikeMarkingUseCase;
+
+    @MockBean
+    protected StudyLikeCancellationUseCase studyLikeCancellationUseCase;
 
     // member
     @MockBean
