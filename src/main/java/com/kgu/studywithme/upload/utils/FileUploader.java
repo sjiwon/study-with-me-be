@@ -1,4 +1,4 @@
-package com.kgu.studywithme.upload.application;
+package com.kgu.studywithme.upload.utils;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -82,7 +82,7 @@ public class FileUploader {
                             .withCannedAcl(CannedAccessControlList.PublicRead)
             );
         } catch (IOException e) {
-            log.error("S3 파일 업로드에 실패했습니다. {}", e.getMessage());
+            log.error("S3 파일 업로드에 실패했습니다. {}", e.getMessage(), e);
             throw StudyWithMeException.type(UploadErrorCode.S3_UPLOAD_FAILURE);
         }
 

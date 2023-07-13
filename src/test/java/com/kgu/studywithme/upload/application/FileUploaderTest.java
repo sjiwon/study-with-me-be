@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.model.PutObjectResult;
 import com.kgu.studywithme.common.ServiceTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.upload.exception.UploadErrorCode;
+import com.kgu.studywithme.upload.utils.FileUploader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

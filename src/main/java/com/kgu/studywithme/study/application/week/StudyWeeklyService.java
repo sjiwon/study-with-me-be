@@ -20,7 +20,7 @@ import com.kgu.studywithme.study.domain.week.submit.SubmitRepository;
 import com.kgu.studywithme.study.domain.week.submit.UploadAssignment;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
 import com.kgu.studywithme.study.presentation.dto.request.StudyWeeklyRequest;
-import com.kgu.studywithme.upload.application.FileUploader;
+import com.kgu.studywithme.upload.utils.FileUploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;

@@ -19,7 +19,7 @@ import com.kgu.studywithme.study.domain.week.submit.SubmitRepository;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
 import com.kgu.studywithme.study.presentation.dto.request.StudyWeeklyRequest;
 import com.kgu.studywithme.study.presentation.utils.StudyWeeklyRequestUtils;
-import com.kgu.studywithme.upload.application.FileUploader;
+import com.kgu.studywithme.upload.utils.FileUploader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
