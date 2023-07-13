@@ -1,4 +1,4 @@
-package com.kgu.studywithme.auth.application;
+package com.kgu.studywithme.auth.application.service;
 
 import com.kgu.studywithme.auth.application.usecase.query.QueryOAuthLinkUseCase;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;

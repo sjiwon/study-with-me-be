@@ -95,12 +95,12 @@ public abstract class ControllerTest {
     @Autowired
     protected MockMvc mockMvc;
 
-    @MockBean
-    private JwtTokenProvider jwtTokenProvider;
-
     // common & internal
     @Autowired
     private ObjectMapper objectMapper;
+
+    @MockBean
+    private JwtTokenProvider jwtTokenProvider;
 
     @MockBean
     private StudyValidator studyValidator;

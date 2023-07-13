@@ -1,4 +1,4 @@
-package com.kgu.studywithme.auth.application;
+package com.kgu.studywithme.auth.application.service;
 
 import com.kgu.studywithme.auth.application.usecase.command.LogoutUseCase;
 import com.kgu.studywithme.auth.domain.Token;
@@ -20,7 +20,7 @@ class LogoutServiceTest extends ServiceTest {
     private LogoutService logoutService;
 
     @Test
-    @DisplayName("로그아웃을 진행하면 사용자에게 발급되었던 RefreshToken이 DB에서 삭제된다")
+    @DisplayName("로그아웃을 진행하면 사용자에게 발급되었던 RefreshToken이 Persistence Store(RDB / Redis / ...)에서 삭제된다")
     void logout() {
         // given
         final Member member = memberRepository.save(JIWON.toMember());

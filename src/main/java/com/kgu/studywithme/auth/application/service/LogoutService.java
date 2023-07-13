@@ -1,4 +1,4 @@
-package com.kgu.studywithme.auth.application;
+package com.kgu.studywithme.auth.application.service;
 
 import com.kgu.studywithme.auth.application.usecase.command.LogoutUseCase;
 import com.kgu.studywithme.auth.infrastructure.token.TokenPersistenceAdapter;
