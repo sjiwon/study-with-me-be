@@ -74,7 +74,7 @@ class UploadApiControllerTest extends ControllerTest {
                                     ),
                                     queryParameters(
                                             parameterWithName("type").description("이미지 업로드 타입")
-                                                    .attributes(constraint("주차 이미지 = weekly / 생성 시 설명 이미지 = description"))
+                                                    .attributes(constraint("주차별 이미지 = weekly / 스터디 설명 이미지 = description"))
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -87,8 +87,8 @@ class UploadApiControllerTest extends ControllerTest {
             // given
             mockingToken(true, MEMBER_ID);
             doThrow(StudyWithMeException.type(UploadErrorCode.FILE_IS_EMPTY))
-                    .when(uploader)
-                    .uploadWeeklyImage(any());
+                    .when(uploadWeeklyImageUseCase)
+                    .upload(any());
 
             // when
             final MultipartFile file = new MockMultipartFile("file", new byte[0]);
@@ -121,7 +121,7 @@ class UploadApiControllerTest extends ControllerTest {
                                     ),
                                     queryParameters(
                                             parameterWithName("type").description("이미지 업로드 타입")
-                                                    .attributes(constraint("주차 이미지 = weekly / 생성 시 설명 이미지 = description"))
+                                                    .attributes(constraint("주차별 이미지 = weekly / 스터디 설명 이미지 = description"))
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -138,7 +138,7 @@ class UploadApiControllerTest extends ControllerTest {
                     "https://kr.object.ncloudstorage.com/bucket/images/%s.png",
                     UUID.randomUUID()
             );
-            given(uploader.uploadWeeklyImage(any())).willReturn(uploadLink);
+            given(uploadWeeklyImageUseCase.upload(any())).willReturn(uploadLink);
 
             // when
             final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");
@@ -166,7 +166,7 @@ class UploadApiControllerTest extends ControllerTest {
                                     ),
                                     queryParameters(
                                             parameterWithName("type").description("이미지 업로드 타입")
-                                                    .attributes(constraint("주차 이미지 = weekly / 생성 시 설명 이미지 = description"))
+                                                    .attributes(constraint("주차별 이미지 = weekly / 스터디 설명 이미지 = description"))
                                     ),
                                     responseFields(
                                             fieldWithPath("result").description("업로드된 이미지 링크")
@@ -188,8 +188,8 @@ class UploadApiControllerTest extends ControllerTest {
             // given
             mockingToken(true, MEMBER_ID);
             doThrow(StudyWithMeException.type(UploadErrorCode.FILE_IS_EMPTY))
-                    .when(uploader)
-                    .uploadStudyDescriptionImage(any());
+                    .when(uploadStudyDescriptionImageUseCase)
+                    .upload(any());
 
             // when
             final MultipartFile file = new MockMultipartFile("file", new byte[0]);
@@ -222,7 +222,7 @@ class UploadApiControllerTest extends ControllerTest {
                                     ),
                                     queryParameters(
                                             parameterWithName("type").description("이미지 업로드 타입")
-                                                    .attributes(constraint("주차 이미지 = weekly / 생성 시 설명 이미지 = description"))
+                                                    .attributes(constraint("주차별 이미지 = weekly / 스터디 설명 이미지 = description"))
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -239,7 +239,7 @@ class UploadApiControllerTest extends ControllerTest {
                     "https://kr.object.ncloudstorage.com/bucket/descriptions/%s.png",
                     UUID.randomUUID()
             );
-            given(uploader.uploadStudyDescriptionImage(any())).willReturn(uploadLink);
+            given(uploadStudyDescriptionImageUseCase.upload(any())).willReturn(uploadLink);
 
             // when
             final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");
@@ -267,7 +267,7 @@ class UploadApiControllerTest extends ControllerTest {
                                     ),
                                     queryParameters(
                                             parameterWithName("type").description("이미지 업로드 타입")
-                                                    .attributes(constraint("주차 이미지 = weekly / 생성 시 설명 이미지 = description"))
+                                                    .attributes(constraint("주차별 이미지 = weekly / 스터디 설명 이미지 = description"))
                                     ),
                                     responseFields(
                                             fieldWithPath("result").description("업로드된 이미지 링크")

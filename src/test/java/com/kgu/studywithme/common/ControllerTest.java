@@ -34,8 +34,9 @@ import com.kgu.studywithme.study.presentation.attendance.AttendanceApiController
 import com.kgu.studywithme.study.presentation.notice.StudyNoticeApiController;
 import com.kgu.studywithme.study.presentation.notice.StudyNoticeCommentApiController;
 import com.kgu.studywithme.study.presentation.week.StudyWeeklyApiController;
+import com.kgu.studywithme.upload.application.usecase.command.UploadStudyDescriptionImageUseCase;
+import com.kgu.studywithme.upload.application.usecase.command.UploadWeeklyImageUseCase;
 import com.kgu.studywithme.upload.presentation.UploadApiController;
-import com.kgu.studywithme.upload.utils.FileUploader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -169,7 +170,10 @@ public abstract class ControllerTest {
 
     // upload
     @MockBean
-    protected FileUploader uploader;
+    protected UploadWeeklyImageUseCase uploadWeeklyImageUseCase;
+
+    @MockBean
+    protected UploadStudyDescriptionImageUseCase uploadStudyDescriptionImageUseCase;
 
     @BeforeEach
     void setUp(WebApplicationContext context, RestDocumentationContextProvider provider) {
