@@ -51,7 +51,7 @@ public class ApiGlobalExceptionHandler {
     @ExceptionHandler(StudyWithMeException.class)
     public ResponseEntity<ErrorResponse> studyWithMeException(StudyWithMeException exception) {
         ErrorCode code = exception.getCode();
-        logging(code);
+        logging(code, exception);
 
         return ResponseEntity
                 .status(code.getStatus())
@@ -71,7 +71,7 @@ public class ApiGlobalExceptionHandler {
      */
     @ExceptionHandler(UnsatisfiedServletRequestParameterException.class)
     public ResponseEntity<ErrorResponse> unsatisfiedServletRequestParameterException(UnsatisfiedServletRequestParameterException e) {
-        return convert(GlobalErrorCode.VALIDATION_ERROR);
+        return convert(GlobalErrorCode.VALIDATION_ERROR, e);
     }
 
     /**
@@ -80,7 +80,7 @@ public class ApiGlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> methodArgumentNotValidException(MethodArgumentNotValidException e) throws JsonProcessingException {
         List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
-        return convert(GlobalErrorCode.VALIDATION_ERROR, extractErrorMessage(fieldErrors));
+        return convert(GlobalErrorCode.VALIDATION_ERROR, extractErrorMessage(fieldErrors), e);
     }
 
     /**
@@ -89,7 +89,7 @@ public class ApiGlobalExceptionHandler {
     @ExceptionHandler(BindException.class)
     public ResponseEntity<ErrorResponse> bindException(BindException e) throws JsonProcessingException {
         List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
-        return convert(GlobalErrorCode.VALIDATION_ERROR, extractErrorMessage(fieldErrors));
+        return convert(GlobalErrorCode.VALIDATION_ERROR, extractErrorMessage(fieldErrors), e);
     }
 
     private String extractErrorMessage(List<FieldError> fieldErrors) throws JsonProcessingException {
@@ -107,25 +107,33 @@ public class ApiGlobalExceptionHandler {
     /**
      * 존재하지 않는 Endpoint 전용 ExceptionHandler
      */
-    @ExceptionHandler({NoHandlerFoundException.class, MethodArgumentTypeMismatchException.class})
-    public ResponseEntity<ErrorResponse> noHandlerFoundException() {
-        return convert(GlobalErrorCode.NOT_SUPPORTED_URI_ERROR);
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<ErrorResponse> noHandlerFoundException(NoHandlerFoundException e) {
+        return convert(GlobalErrorCode.NOT_SUPPORTED_URI_ERROR, e);
+    }
+
+    /**
+     * Method Argument Exception 전용 ExceptionHandler
+     */
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorResponse> methodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+        return convert(GlobalErrorCode.NOT_SUPPORTED_URI_ERROR, e);
     }
 
     /**
      * HTTP Request Method 오류 전용 ExceptionHandler
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<ErrorResponse> httpRequestMethodNotSupportedException() {
-        return convert(GlobalErrorCode.NOT_SUPPORTED_METHOD_ERROR);
+    public ResponseEntity<ErrorResponse> httpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+        return convert(GlobalErrorCode.NOT_SUPPORTED_METHOD_ERROR, e);
     }
 
     /**
      * MediaType 전용 ExceptionHandler
      */
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-    public ResponseEntity<ErrorResponse> httpMediaTypeNotSupportedException() {
-        return convert(GlobalErrorCode.NOT_SUPPORTED_MEDIA_TYPE_ERROR);
+    public ResponseEntity<ErrorResponse> httpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException e) {
+        return convert(GlobalErrorCode.NOT_SUPPORTED_MEDIA_TYPE_ERROR, e);
     }
 
     /**
@@ -134,7 +142,7 @@ public class ApiGlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorResponse> handleAnyException(RuntimeException e, HttpServletRequest request) {
         sendSlackAlertErrorLog(e, request);
-        return convert(GlobalErrorCode.INTERNAL_SERVER_ERROR);
+        return convert(GlobalErrorCode.INTERNAL_SERVER_ERROR, e);
     }
 
     /**
@@ -145,33 +153,33 @@ public class ApiGlobalExceptionHandler {
         sendSlackAlertErrorLog(e, request);
 
         ErrorCode code = GlobalErrorCode.INTERNAL_SERVER_ERROR;
-        logging(code, e.getMessage());
+        logging(code, e.getMessage(), e);
 
         return ResponseEntity
                 .status(code.getStatus())
                 .body(ErrorResponse.from(code));
     }
 
-    private ResponseEntity<ErrorResponse> convert(ErrorCode code) {
-        logging(code);
+    private ResponseEntity<ErrorResponse> convert(ErrorCode code, Exception e) {
+        logging(code, e);
         return ResponseEntity
                 .status(code.getStatus())
                 .body(ErrorResponse.from(code));
     }
 
-    private ResponseEntity<ErrorResponse> convert(ErrorCode code, String message) {
-        logging(code, message);
+    private ResponseEntity<ErrorResponse> convert(ErrorCode code, String message, Exception e) {
+        logging(code, message, e);
         return ResponseEntity
                 .status(code.getStatus())
                 .body(ErrorResponse.of(code, message));
     }
 
-    private void logging(ErrorCode code) {
-        log.warn("{} | {} | {}", code.getStatus(), code.getErrorCode(), code.getMessage());
+    private void logging(ErrorCode code, Exception e) {
+        log.warn("{} | {} | {}", code.getStatus(), code.getErrorCode(), code.getMessage(), e);
     }
 
-    private void logging(ErrorCode code, String message) {
-        log.warn("{} | {} | {}", code.getStatus(), code.getErrorCode(), message);
+    private void logging(ErrorCode code, String message, Exception e) {
+        log.warn("{} | {} | {}", code.getStatus(), code.getErrorCode(), message, e);
     }
 
     public void sendSlackAlertErrorLog(Exception e, HttpServletRequest request) {
