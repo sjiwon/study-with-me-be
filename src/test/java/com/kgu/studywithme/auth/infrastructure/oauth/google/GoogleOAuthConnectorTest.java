@@ -71,11 +71,11 @@ class GoogleOAuthConnectorTest {
 
             // then
             assertAll(
-                    () -> assertThat(result.tokenType()).isEqualTo(BEARER_TOKEN),
-                    () -> assertThat(result.idToken()).isEqualTo(ID_TOKEN),
-                    () -> assertThat(result.accessToken()).isEqualTo(ACCESS_TOKEN),
-                    () -> assertThat(result.scope()).isEqualTo(SCOPE),
-                    () -> assertThat(result.expiresIn()).isEqualTo(EXPIRES_IN)
+                    () -> assertThat(result.getTokenType()).isEqualTo(BEARER_TOKEN),
+                    () -> assertThat(result.getIdToken()).isEqualTo(ID_TOKEN),
+                    () -> assertThat(result.getAccessToken()).isEqualTo(ACCESS_TOKEN),
+                    () -> assertThat(result.getScope()).isEqualTo(SCOPE),
+                    () -> assertThat(result.getExpiresIn()).isEqualTo(EXPIRES_IN)
             );
         }
     }
