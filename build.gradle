@@ -74,6 +74,10 @@ dependencies {
     // Slack API
     implementation 'com.slack.api:slack-api-client:1.29.2'
 
+    // guava
+    implementation 'com.google.guava:guava:32.1.1-jre'
+
+
     // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
