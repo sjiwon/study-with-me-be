@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Study 도메인 {StudyThumbnail Enum} 테스트")
+@DisplayName("Study -> 도메인 [StudyThumbnail VO] 테스트")
 class StudyThumbnailTest {
     @Test
     @DisplayName("특정 스터디 썸네일을 조회한다")

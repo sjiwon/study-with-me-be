@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Member 도메인 테스트")
+@DisplayName("Member -> 도메인 [Member] 테스트")
 class MemberTest {
     @Test
     @DisplayName("Member를 생성한다")

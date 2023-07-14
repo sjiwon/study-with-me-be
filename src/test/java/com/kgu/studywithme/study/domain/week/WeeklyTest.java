@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Study-Week 도메인 {Weekly VO} 테스트")
+@DisplayName("Study/Week -> 도메인 [Weekly VO] 테스트")
 class WeeklyTest {
     private static final Member HOST = JIWON.toMember();
     private static final Study STUDY = SPRING.toOnlineStudy(HOST);

@@ -9,7 +9,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@DisplayName("Member 도메인 {Nickname VO} 테스트")
+@DisplayName("Member -> 도메인 [Nickname VO] 테스트")
 class NicknameTest {
     @ParameterizedTest(name = "{index}: {0}")
     @ValueSource(strings = {"한", "!@#hello", "Hello World", "일이삼사오육칠팔구십십일"})

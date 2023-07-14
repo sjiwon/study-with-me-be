@@ -12,7 +12,7 @@ import static com.kgu.studywithme.study.domain.attendance.AttendanceStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Study-Attendance 도메인 테스트")
+@DisplayName("Study/Attendance -> 도메인 [Attendance] 테스트")
 class AttendanceTest {
     private static final Member HOST = JIWON.toMember();
     private static final Member PARTICIPANT = GHOST.toMember();

@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-@DisplayName("Study 도메인 테스트")
+@DisplayName("Study -> 도메인 [Study] 테스트")
 class StudyTest {
     private static final Member HOST = JIWON.toMember();
 

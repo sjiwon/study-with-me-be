@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@DisplayName("Study-Participant 도메인 {Capacity VO} 테스트")
+@DisplayName("Study/Participant -> 도메인 [Capacity VO] 테스트")
 class CapacityTest {
     @ParameterizedTest(name = "{index}: {0}")
     @ValueSource(ints = {-1, 0, 1, 11})

@@ -14,7 +14,7 @@ import static com.kgu.studywithme.fixture.MemberFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Member -> PeerReviewRepository 테스트")
+@DisplayName("Member/Review -> PeerReviewRepository 테스트")
 public class PeerReviewRepositoryTest extends RepositoryTest {
     @Autowired
     private PeerReviewRepository peerReviewRepository;

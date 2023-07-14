@@ -16,7 +16,7 @@ import static com.kgu.studywithme.fixture.StudyFixture.SPRING;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Study -> ReviewRepository 테스트")
+@DisplayName("Study/Review -> ReviewRepository 테스트")
 class ReviewRepositoryTest extends RepositoryTest {
     @Autowired
     private ReviewRepository reviewRepository;

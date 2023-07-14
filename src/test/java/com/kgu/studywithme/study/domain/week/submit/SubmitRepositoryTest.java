@@ -21,7 +21,7 @@ import static com.kgu.studywithme.fixture.WeekFixture.STUDY_WEEKLY_1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Study -> SubmitRepository 테스트")
+@DisplayName("Study/Week/Submit -> SubmitRepository 테스트")
 class SubmitRepositoryTest extends RepositoryTest {
     @Autowired
     private SubmitRepository submitRepository;

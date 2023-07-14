@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Study-Week-Attachment 도메인 {UploadAttachment VO} 테스트")
+@DisplayName("Study/Week/Attachment -> 도메인 [UploadAttachment VO] 테스트")
 class UploadAttachmentTest {
     @Test
     @DisplayName("주차에 대한 첨부파일을 업로드한다")

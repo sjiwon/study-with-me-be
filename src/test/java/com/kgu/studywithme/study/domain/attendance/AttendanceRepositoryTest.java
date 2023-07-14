@@ -20,7 +20,7 @@ import static com.kgu.studywithme.study.domain.attendance.AttendanceStatus.NON_A
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Study -> AttendanceRepository 테스트")
+@DisplayName("Study/Attendance -> AttendanceRepository 테스트")
 public class AttendanceRepositoryTest extends RepositoryTest {
     @Autowired
     private AttendanceRepository attendanceRepository;

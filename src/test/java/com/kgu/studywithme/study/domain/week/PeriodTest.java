@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Study-Week 도메인 {Period VO} 테스트")
+@DisplayName("Study/Week -> 도메인 [Period VO] 테스트")
 class PeriodTest {
     @Test
     @DisplayName("시작일이 종료일보다 늦는다면 Period 생성에 실패한다")

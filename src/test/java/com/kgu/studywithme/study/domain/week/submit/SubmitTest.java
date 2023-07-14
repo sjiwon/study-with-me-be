@@ -14,7 +14,7 @@ import static com.kgu.studywithme.study.domain.week.submit.UploadType.LINK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Study-Week-Submit 도메인 테스트")
+@DisplayName("Study/Week/Submit -> 도메인 [Submit] 테스트")
 class SubmitTest {
     private static final Member HOST = JIWON.toMember();
     private static final Study STUDY = SPRING.toOnlineStudy(HOST);

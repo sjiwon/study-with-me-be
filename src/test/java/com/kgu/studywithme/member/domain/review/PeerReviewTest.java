@@ -9,7 +9,7 @@ import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Member-PeerReview 도메인 테스트")
+@DisplayName("Member/Review -> 도메인 [PeerReview] 테스트")
 class PeerReviewTest {
     @Test
     @DisplayName("사용자 리뷰를 작성한다")

@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@DisplayName("Study 도메인 {StudyName VO} 테스트")
+@DisplayName("Study -> 도메인 [StudyName VO] 테스트")
 class StudyNameTest {
     @ParameterizedTest(name = "{index}: {0}")
     @ValueSource(strings = {"a", "aaaaaaaaaaaaaaaaaaaa"})

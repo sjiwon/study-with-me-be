@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Study 도메인 {StudyLocation VO} 테스트")
+@DisplayName("Study -> 도메인 [StudyLocation VO] 테스트")
 class StudyLocationTest {
     @ParameterizedTest(name = "{index}: {0} - {1}")
     @MethodSource("invalidLocation")

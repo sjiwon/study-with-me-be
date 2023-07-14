@@ -12,7 +12,7 @@ import static com.kgu.studywithme.fixture.WeekFixture.STUDY_WEEKLY_1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Study-Week-Attachment 도메인 테스트")
+@DisplayName("Study/Week/Attachment -> 도메인 [Attachment] 테스트")
 class AttachmentTest {
     private static final Member HOST = JIWON.toMember();
     private static final Study STUDY = SPRING.toOnlineStudy(HOST);

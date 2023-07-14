@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@DisplayName("Study 도메인 {Description VO} 테스트")
+@DisplayName("Study -> 도메인 [Description VO] 테스트")
 class DescriptionTest {
     @Test
     @DisplayName("Description이 공백이면 생성에 실패한다")

@@ -21,7 +21,7 @@ import static com.kgu.studywithme.fixture.WeekFixture.STUDY_WEEKLY_5;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Study-Week 도메인 테스트")
+@DisplayName("Study/Week -> 도메인 [Week] 테스트")
 class WeekTest {
     private static final Member HOST = JIWON.toMember();
     private static final Member PARTICIPANT = GHOST.toMember();

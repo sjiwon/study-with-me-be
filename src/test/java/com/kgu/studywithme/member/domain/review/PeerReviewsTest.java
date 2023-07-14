@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Member-PeerReview 도메인 {PeerReviews VO} 테스트")
+@DisplayName("Member/Review -> 도메인 [PeerReviews VO] 테스트")
 class PeerReviewsTest {
     private static final Member REVIEWEE = JIWON.toMember();
     private static final Member REVIEWER = GHOST.toMember();

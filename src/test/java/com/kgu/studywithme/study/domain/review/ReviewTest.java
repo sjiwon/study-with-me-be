@@ -16,7 +16,7 @@ import static com.kgu.studywithme.fixture.StudyFixture.SPRING;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Study-Review 도메인 테스트")
+@DisplayName("Study/Review -> 도메인 [Review] 테스트")
 class ReviewTest {
     @Test
     @DisplayName("스터디에 대한 리뷰를 작성한다")

@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Study 도메인 {GraduationPolicy VO} 테스트")
+@DisplayName("Study -> 도메인 [GraduationPolicy VO] 테스트")
 class GraduationPolicyTest {
     @Test
     @DisplayName("GraduationPolicy를 생성한다")

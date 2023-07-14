@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("Member 도메인 {Score VO} 테스트")
+@DisplayName("Member -> 도메인 [Score VO] 테스트")
 class ScoreTest {
     @Test
     @DisplayName("Score를 생성한다")

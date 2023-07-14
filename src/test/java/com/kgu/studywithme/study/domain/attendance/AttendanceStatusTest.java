@@ -9,7 +9,7 @@ import static com.kgu.studywithme.study.domain.attendance.AttendanceStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Study-Attendance 도메인 {AttendanceStatus Enum} 테스트")
+@DisplayName("Study/Attendance -> 도메인 [AttendanceStatus VO] 테스트")
 class AttendanceStatusTest {
     @Test
     @DisplayName("Description으로 AttendanceStatus를 조회한다")

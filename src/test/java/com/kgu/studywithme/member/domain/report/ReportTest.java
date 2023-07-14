@@ -7,7 +7,7 @@ import static com.kgu.studywithme.member.domain.report.ReportStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Member-Report 도메인 테스트")
+@DisplayName("Member/Report -> 도메인 [Report] 테스트")
 class ReportTest {
     private static final String REASON = "무단 결석을 10회나 했어요. 계정 정지시켜주세요.";
 

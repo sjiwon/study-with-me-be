@@ -21,6 +21,7 @@ public enum MemberErrorCode implements ErrorCode {
     SELF_REVIEW_NOT_ALLOWED(HttpStatus.CONFLICT, "MEMBER_011", "본인에게 피어리뷰를 남길 수 없습니다."),
     COMMON_STUDY_RECORD_NOT_FOUND(HttpStatus.CONFLICT, "MEMBER_012", "함께 스터디를 진행한 기록이 없습니다."),
     PEER_REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER_013", "작성한 피어리뷰를 찾을 수 없습니다."),
+    INVALID_GENDER(HttpStatus.BAD_REQUEST, "MEMBER_014", "유효하지 않은 성별입니다."),
     ;
 
     private final HttpStatus status;

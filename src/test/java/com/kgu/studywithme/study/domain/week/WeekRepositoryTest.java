@@ -18,7 +18,7 @@ import static com.kgu.studywithme.fixture.WeekFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Study -> WeekRepository 테스트")
+@DisplayName("Study/Week -> WeekRepository 테스트")
 class WeekRepositoryTest extends RepositoryTest {
     @Autowired
     private WeekRepository weekRepository;
