@@ -1,8 +1,5 @@
 package com.kgu.studywithme.member.presentation.dto.request;
 
-import com.kgu.studywithme.category.domain.Category;
-import com.kgu.studywithme.member.domain.*;
-import com.kgu.studywithme.member.utils.validator.ValidGender;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -10,10 +7,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.Set;
-import java.util.stream.Collectors;
-
-import static com.kgu.studywithme.member.domain.Gender.FEMALE;
-import static com.kgu.studywithme.member.domain.Gender.MALE;
 
 public record SignUpRequest(
         @NotBlank(message = "이름은 필수입니다.")
@@ -32,7 +25,6 @@ public record SignUpRequest(
         @NotBlank(message = "전화번호는 필수입니다.")
         String phone,
 
-        @ValidGender
         @NotBlank(message = "성별은 필수입니다.")
         String gender,
 
@@ -48,27 +40,4 @@ public record SignUpRequest(
         @NotEmpty(message = "관심사는 하나 이상 등록해야 합니다.")
         Set<Long> categories
 ) {
-    public Member toEntity() {
-        return Member.createMember(
-                name,
-                Nickname.from(nickname),
-                Email.from(email),
-                birth,
-                phone,
-                convertStringToGender(),
-                Region.of(province, city),
-                emailOptIn,
-                convertStringToCategory()
-        );
-    }
-
-    private Gender convertStringToGender() {
-        return gender.equalsIgnoreCase("M") ? MALE : FEMALE;
-    }
-
-    private Set<Category> convertStringToCategory() {
-        return categories.stream()
-                .map(Category::from)
-                .collect(Collectors.toSet());
-    }
 }
