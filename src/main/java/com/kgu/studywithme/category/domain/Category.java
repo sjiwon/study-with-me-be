@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -31,7 +30,7 @@ public enum Category {
                 .orElseThrow(() -> StudyWithMeException.type(CategoryErrorCode.CATEGORY_NOT_EXIST));
     }
 
-    public static Set<Category> of(final List<Long> ids) {
+    public static Set<Category> of(final Set<Long> ids) {
         return ids.stream()
                 .map(Category::from)
                 .collect(Collectors.toSet());

@@ -6,7 +6,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 import java.util.Set;
 
 import static com.kgu.studywithme.category.domain.Category.*;
@@ -61,10 +60,10 @@ class CategoryTest {
         @DisplayName("카테고리들을 조회한다")
         void findSpecificCategory() {
             // given
-            final List<Long> ids = List.of(1L, 2L, 3L);
+            final Set<Long> ids = Set.of(1L, 2L, 3L);
 
             // when
-            final Set<Category> result = of(ids);
+            final Set<Category> result = Category.of(ids);
 
             // then
             assertThat(result).containsExactlyInAnyOrder(LANGUAGE, INTERVIEW, PROGRAMMING);
@@ -74,7 +73,7 @@ class CategoryTest {
         @DisplayName("없는 카테고리를 조회하면 예외가 발생한다")
         void throwExceptionByfindAnonymousCategory() {
             // given
-            final List<Long> ids = List.of(1L, 2L, 3L, 100000L);
+            final Set<Long> ids = Set.of(1L, 2L, 3L, 100000L);
 
             // when - then
             assertThatThrownBy(() -> Category.of(ids))
