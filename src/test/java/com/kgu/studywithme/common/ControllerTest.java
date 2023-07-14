@@ -21,6 +21,7 @@ import com.kgu.studywithme.member.application.MemberInformationService;
 import com.kgu.studywithme.member.application.MemberReviewService;
 import com.kgu.studywithme.member.application.MemberService;
 import com.kgu.studywithme.member.application.usecase.command.MemberRegistrationUseCase;
+import com.kgu.studywithme.member.application.usecase.command.MemberUpdateUseCase;
 import com.kgu.studywithme.member.presentation.MemberApiController;
 import com.kgu.studywithme.member.presentation.MemberInformationApiController;
 import com.kgu.studywithme.member.presentation.MemberReviewApiController;
@@ -134,6 +135,9 @@ public abstract class ControllerTest {
     // member
     @MockBean
     protected MemberRegistrationUseCase memberRegistrationUseCase;
+
+    @MockBean
+    protected MemberUpdateUseCase memberUpdateUseCase;
 
     @MockBean
     protected MemberService memberService;

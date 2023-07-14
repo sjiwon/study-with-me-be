@@ -150,8 +150,8 @@ class MemberApiControllerTest extends ControllerTest {
             // given
             mockingToken(true, MEMBER_ID);
             doNothing()
-                    .when(memberService)
-                    .update(any(), any());
+                    .when(memberUpdateUseCase)
+                    .update(any());
 
             // when
             final MemberUpdateRequest request = new MemberUpdateRequest(
@@ -183,7 +183,7 @@ class MemberApiControllerTest extends ControllerTest {
                                             fieldWithPath("province").description("거주지 [경기도, 강원도, ...]"),
                                             fieldWithPath("city").description("거주지 [안양시, 수원시, ...]"),
                                             fieldWithPath("emailOptIn").description("이메일 수신 동의 여부"),
-                                            fieldWithPath("categories").description("관심사 Enum ID")
+                                            fieldWithPath("interests").description("관심사 Enum ID")
                                                     .attributes(constraint("스터디 카테고리 ID 한정"))
                                     )
                             )

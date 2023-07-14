@@ -5,6 +5,7 @@ import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.global.aop.CheckMemberIdentity;
 import com.kgu.studywithme.member.application.MemberService;
 import com.kgu.studywithme.member.application.usecase.command.MemberRegistrationUseCase;
+import com.kgu.studywithme.member.application.usecase.command.MemberUpdateUseCase;
 import com.kgu.studywithme.member.domain.Email;
 import com.kgu.studywithme.member.domain.Gender;
 import com.kgu.studywithme.member.domain.Nickname;
@@ -20,12 +21,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-@Tag(name = "3-1. 사용자 API")
+@Tag(name = "3-1. 사용자 기본 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class MemberApiController {
     private final MemberRegistrationUseCase memberRegistrationUseCase;
+    private final MemberUpdateUseCase memberUpdateUseCase;
     private final MemberService memberService;
 
     @Operation(summary = "회원가입 EndPoint")
@@ -62,7 +64,17 @@ public class MemberApiController {
             @PathVariable final Long memberId,
             @RequestBody @Valid final MemberUpdateRequest request
     ) {
-        memberService.update(memberId, request);
+        memberUpdateUseCase.update(
+                new MemberUpdateUseCase.Command(
+                        memberId,
+                        request.nickname(),
+                        request.phone(),
+                        request.province(),
+                        request.city(),
+                        request.emailOptIn(),
+                        Category.of(request.interests())
+                )
+        );
         return ResponseEntity.noContent().build();
     }
 
