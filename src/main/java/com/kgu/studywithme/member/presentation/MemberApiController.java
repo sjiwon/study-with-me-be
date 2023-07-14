@@ -3,8 +3,8 @@ package com.kgu.studywithme.member.presentation;
 import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.global.aop.CheckMemberIdentity;
-import com.kgu.studywithme.member.application.MemberService;
 import com.kgu.studywithme.member.application.usecase.command.MemberRegistrationUseCase;
+import com.kgu.studywithme.member.application.usecase.command.MemberReportUseCase;
 import com.kgu.studywithme.member.application.usecase.command.MemberUpdateUseCase;
 import com.kgu.studywithme.member.domain.Email;
 import com.kgu.studywithme.member.domain.Gender;
@@ -28,7 +28,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class MemberApiController {
     private final MemberRegistrationUseCase memberRegistrationUseCase;
     private final MemberUpdateUseCase memberUpdateUseCase;
-    private final MemberService memberService;
+    private final MemberReportUseCase memberReportUseCase;
 
     @Operation(summary = "회원가입 EndPoint")
     @PostMapping("/member")
@@ -85,7 +85,7 @@ public class MemberApiController {
             @PathVariable final Long reporteeId,
             @RequestBody @Valid final MemberReportRequest request
     ) {
-        memberService.report(reporteeId, reporterId, request.reason());
+        memberReportUseCase.report(new MemberReportUseCase.Command(reporterId, reporteeId, request.reason()));
         return ResponseEntity.noContent().build();
     }
 }

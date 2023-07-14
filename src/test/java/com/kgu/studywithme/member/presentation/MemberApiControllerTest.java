@@ -19,7 +19,7 @@ import static com.kgu.studywithme.category.domain.Category.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
@@ -204,8 +204,8 @@ class MemberApiControllerTest extends ControllerTest {
             // given
             mockingToken(true, REPORTER_ID);
             doThrow(StudyWithMeException.type(MemberErrorCode.PREVIOUS_REPORT_IS_STILL_PENDING))
-                    .when(memberService)
-                    .report(anyLong(), anyLong(), anyString());
+                    .when(memberReportUseCase)
+                    .report(any());
 
             // when
             final MemberReportRequest request = new MemberReportRequest("참여를 안해요");
@@ -249,7 +249,7 @@ class MemberApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, REPORTER_ID);
-            given(memberService.report(any(), any(), any())).willReturn(1L);
+            given(memberReportUseCase.report(any())).willReturn(1L);
 
             // when
             final MemberReportRequest request = new MemberReportRequest("참여를 안해요");
