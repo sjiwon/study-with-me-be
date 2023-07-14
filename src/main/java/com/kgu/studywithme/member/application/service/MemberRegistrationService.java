@@ -17,7 +17,7 @@ public class MemberRegistrationService implements MemberRegistrationUseCase {
     private final MemberRepository memberRepository;
 
     @Override
-    public Long registration(Command command) {
+    public Long registration(final Command command) {
         validateEmailIsUnique(command.email());
         validateNicknameIsUnique(command.nickname());
         validatePhoneIsUnique(command.phone());
