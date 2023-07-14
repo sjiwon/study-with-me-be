@@ -34,6 +34,7 @@ public class Nickname {
 
     public Nickname update(final String value) {
         validateNicknamePattern(value);
+        validateNicknameIsSameAsBefore(value);
         return new Nickname(value);
     }
 
@@ -45,5 +46,11 @@ public class Nickname {
 
     private static boolean isInvalidPattern(final String nickname) {
         return !NICKNAME_MATCHER.matcher(nickname).matches();
+    }
+
+    private void validateNicknameIsSameAsBefore(String value) {
+        if (this.value.equals(value)) {
+            throw StudyWithMeException.type(MemberErrorCode.NICKNAME_SAME_AS_BEFORE);
+        }
     }
 }
