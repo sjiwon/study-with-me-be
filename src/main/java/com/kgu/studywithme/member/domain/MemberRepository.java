@@ -32,8 +32,6 @@ public interface MemberRepository extends
 
     boolean existsByNickname(Nickname nickname);
 
-    boolean existsByIdNotAndNickname(Long memberId, Nickname nickname);
-
     boolean existsByPhone(String phone);
 
     boolean existsByIdNotAndPhone(Long memberId, String phone);

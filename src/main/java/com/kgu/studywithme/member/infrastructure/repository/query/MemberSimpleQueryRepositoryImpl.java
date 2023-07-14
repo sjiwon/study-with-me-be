@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.kgu.studywithme.member.domain.QMember.member;
 import static com.kgu.studywithme.member.domain.report.QReport.report;
 import static com.kgu.studywithme.member.domain.report.ReportStatus.RECEIVE;
 import static com.kgu.studywithme.study.domain.attendance.QAttendance.attendance;
@@ -22,6 +23,18 @@ import static com.kgu.studywithme.study.domain.attendance.QAttendance.attendance
 @RequiredArgsConstructor
 public class MemberSimpleQueryRepositoryImpl implements MemberSimpleQueryRepository {
     private final JPAQueryFactory query;
+
+    @Override
+    public boolean isNicknameIsUsedByOther(Long memberId, String nickname) {
+        return query
+                .select(member.id)
+                .from(member)
+                .where(
+                        member.id.ne(memberId),
+                        member.nickname.value.eq(nickname)
+                )
+                .fetchFirst() != null;
+    }
 
     @Override
     public boolean isReportReceived(

@@ -79,23 +79,6 @@ class MemberRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    @DisplayName("다른 사람이 해당 닉네임을 사용하고 있는지 확인한다")
-    void existsByIdNotAndNickname() {
-        // given
-        final Nickname nickname = member.getNickname();
-
-        // when
-        boolean actual1 = memberRepository.existsByIdNotAndNickname(member.getId(), nickname);
-        boolean actual2 = memberRepository.existsByIdNotAndNickname(participants[0].getId(), nickname);
-
-        // then
-        assertAll(
-                () -> assertThat(actual1).isFalse(),
-                () -> assertThat(actual2).isTrue()
-        );
-    }
-
-    @Test
     @DisplayName("전화번호에 해당하는 사용자가 존재하는지 확인한다")
     void existsByPhone() {
         // given
