@@ -23,6 +23,6 @@ public record MemberUpdateRequest(
         Boolean emailOptIn,
 
         @NotEmpty(message = "관심사는 하나 이상 등록해야 합니다.")
-        Set<Long> categories
+        Set<Long> interests
 ) {
 }
