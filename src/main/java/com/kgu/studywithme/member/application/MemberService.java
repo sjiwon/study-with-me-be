@@ -26,18 +26,6 @@ public class MemberService {
     private final ReportRepository reportRepository;
 
     @StudyWithMeWritableTransactional
-    public Long signUp(final Member member) {
-        validateUniqueFields(member);
-        return memberRepository.save(member).getId();
-    }
-
-    private void validateUniqueFields(final Member member) {
-        memberValidator.validateEmail(member.getEmail());
-        memberValidator.validateNickname(member.getNickname());
-        memberValidator.validatePhone(member.getPhone());
-    }
-
-    @StudyWithMeWritableTransactional
     public void update(
             final Long memberId,
             final MemberUpdateRequest request

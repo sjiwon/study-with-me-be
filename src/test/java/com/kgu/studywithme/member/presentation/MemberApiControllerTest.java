@@ -45,8 +45,8 @@ class MemberApiControllerTest extends ControllerTest {
         void throwExceptionByDuplicateNickname() throws Exception {
             // given
             doThrow(StudyWithMeException.type(MemberErrorCode.DUPLICATE_NICKNAME))
-                    .when(memberService)
-                    .signUp(any());
+                    .when(memberRegistrationUseCase)
+                    .registration(any());
 
             // when
             final SignUpRequest request = createSignUpRequest();
@@ -81,11 +81,11 @@ class MemberApiControllerTest extends ControllerTest {
                                             fieldWithPath("birth").description("생년월일"),
                                             fieldWithPath("phone").description("전화번호"),
                                             fieldWithPath("gender").description("성별")
-                                                    .attributes(constraint("남성 = m or M / 여성 = f or F")),
+                                                    .attributes(constraint("남성[M] / 여성[F]")),
                                             fieldWithPath("province").description("거주지 [경기도, 강원도, ...]"),
                                             fieldWithPath("city").description("거주지 [안양시, 수원시, ...]"),
                                             fieldWithPath("emailOptIn").description("이메일 수신 동의 여부"),
-                                            fieldWithPath("categories").description("관심사 Enum ID")
+                                            fieldWithPath("interests[]").description("관심사 Enum ID")
                                                     .attributes(constraint("스터디 카테고리 ID 한정"))
                                     ),
                                     getExceptionResponseFiels()
@@ -97,7 +97,7 @@ class MemberApiControllerTest extends ControllerTest {
         @DisplayName("회원가입에 성공한다")
         void success() throws Exception {
             // given
-            given(memberService.signUp(any())).willReturn(1L);
+            given(memberRegistrationUseCase.registration(any())).willReturn(1L);
 
             // when
             final SignUpRequest request = createSignUpRequest();
@@ -126,11 +126,11 @@ class MemberApiControllerTest extends ControllerTest {
                                             fieldWithPath("birth").description("생년월일"),
                                             fieldWithPath("phone").description("전화번호"),
                                             fieldWithPath("gender").description("성별")
-                                                    .attributes(constraint("남성 = m or M / 여성 = f or F")),
+                                                    .attributes(constraint("남성[M] / 여성[F]")),
                                             fieldWithPath("province").description("거주지 [경기도, 강원도, ...]"),
                                             fieldWithPath("city").description("거주지 [안양시, 수원시, ...]"),
                                             fieldWithPath("emailOptIn").description("이메일 수신 동의 여부"),
-                                            fieldWithPath("categories").description("관심사 Enum ID")
+                                            fieldWithPath("interests[]").description("관심사 Enum ID")
                                                     .attributes(constraint("스터디 카테고리 ID 한정"))
                                     )
                             )

@@ -1,8 +1,14 @@
 package com.kgu.studywithme.member.presentation;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
+import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.global.aop.CheckMemberIdentity;
 import com.kgu.studywithme.member.application.MemberService;
+import com.kgu.studywithme.member.application.usecase.command.MemberRegistrationUseCase;
+import com.kgu.studywithme.member.domain.Email;
+import com.kgu.studywithme.member.domain.Gender;
+import com.kgu.studywithme.member.domain.Nickname;
+import com.kgu.studywithme.member.domain.Region;
 import com.kgu.studywithme.member.presentation.dto.request.MemberReportRequest;
 import com.kgu.studywithme.member.presentation.dto.request.MemberUpdateRequest;
 import com.kgu.studywithme.member.presentation.dto.request.SignUpRequest;
@@ -19,12 +25,25 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class MemberApiController {
+    private final MemberRegistrationUseCase memberRegistrationUseCase;
     private final MemberService memberService;
 
     @Operation(summary = "회원가입 EndPoint")
     @PostMapping("/member")
     public ResponseEntity<Void> signUp(@RequestBody @Valid final SignUpRequest request) {
-        final Long savedMemberId = memberService.signUp(request.toEntity());
+        final Long savedMemberId = memberRegistrationUseCase.registration(
+                new MemberRegistrationUseCase.Command(
+                        request.name(),
+                        Nickname.from(request.nickname()),
+                        Email.from(request.email()),
+                        request.birth(),
+                        request.phone(),
+                        Gender.from(request.gender()),
+                        Region.of(request.province(), request.city()),
+                        request.emailOptIn(),
+                        Category.of(request.interests())
+                )
+        );
 
         return ResponseEntity
                 .created(

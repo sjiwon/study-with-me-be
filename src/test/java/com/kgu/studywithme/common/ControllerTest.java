@@ -20,6 +20,7 @@ import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.application.MemberInformationService;
 import com.kgu.studywithme.member.application.MemberReviewService;
 import com.kgu.studywithme.member.application.MemberService;
+import com.kgu.studywithme.member.application.usecase.command.MemberRegistrationUseCase;
 import com.kgu.studywithme.member.presentation.MemberApiController;
 import com.kgu.studywithme.member.presentation.MemberInformationApiController;
 import com.kgu.studywithme.member.presentation.MemberReviewApiController;
@@ -131,6 +132,9 @@ public abstract class ControllerTest {
     protected StudyLikeCancellationUseCase studyLikeCancellationUseCase;
 
     // member
+    @MockBean
+    protected MemberRegistrationUseCase memberRegistrationUseCase;
+
     @MockBean
     protected MemberService memberService;
 
