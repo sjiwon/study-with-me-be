@@ -46,14 +46,14 @@ class TokenReissueServiceTest extends UseCaseTest {
             given(tokenPersistenceAdapter.isRefreshTokenExists(any(), any())).willReturn(false);
 
             // when - then
+            assertThatThrownBy(() -> tokenReissueService.reissueTokens(command))
+                    .isInstanceOf(StudyWithMeException.class)
+                    .hasMessage(AuthErrorCode.AUTH_INVALID_TOKEN.getMessage());
+
             verify(jwtTokenProvider, times(0)).createAccessToken(1L);
             verify(jwtTokenProvider, times(0)).createRefreshToken(1L);
             verify(tokenPersistenceAdapter, times(0))
                     .reissueRefreshTokenByRtrPolicy(1L, REFRESH_TOKEN);
-
-            assertThatThrownBy(() -> tokenReissueService.reissueTokens(command))
-                    .isInstanceOf(StudyWithMeException.class)
-                    .hasMessage(AuthErrorCode.AUTH_INVALID_TOKEN.getMessage());
         }
 
         @Test

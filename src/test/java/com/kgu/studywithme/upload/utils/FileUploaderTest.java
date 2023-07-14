@@ -1,18 +1,17 @@
-package com.kgu.studywithme.upload.application;
+package com.kgu.studywithme.upload.utils;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
-import com.kgu.studywithme.common.ServiceTest;
+import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.upload.exception.UploadErrorCode;
-import com.kgu.studywithme.upload.utils.FileUploader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,8 +27,8 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @DisplayName("Upload -> FileUploader 테스트")
-class FileUploaderTest extends ServiceTest {
-    @Autowired
+class FileUploaderTest extends UseCaseTest {
+    @InjectMocks
     private FileUploader uploader;
 
     @Mock

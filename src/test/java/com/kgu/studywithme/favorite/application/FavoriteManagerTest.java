@@ -47,10 +47,11 @@ class FavoriteManagerTest extends UseCaseTest {
             given(favoriteRepository.existsByStudyIdAndMemberId(STUDY_ID, MEMBER_ID)).willReturn(true);
 
             // when - then
-            verify(favoriteRepository, times(0)).save(any());
             assertThatThrownBy(() -> favoriteManager.likeMarking(command))
                     .isInstanceOf(StudyWithMeException.class)
                     .hasMessage(FavoriteErrorCode.ALREADY_FAVORITE_MARKED.getMessage());
+
+            verify(favoriteRepository, times(0)).save(any());
         }
 
         @Test
@@ -84,11 +85,12 @@ class FavoriteManagerTest extends UseCaseTest {
             given(favoriteRepository.existsByStudyIdAndMemberId(STUDY_ID, MEMBER_ID)).willReturn(false);
 
             // when - then
-            verify(favoriteRepository, times(0))
-                    .deleteByStudyIdAndMemberId(STUDY_ID, MEMBER_ID);
             assertThatThrownBy(() -> favoriteManager.likeCancellation(command))
                     .isInstanceOf(StudyWithMeException.class)
                     .hasMessage(FavoriteErrorCode.NOT_FAVORITE_MARKED.getMessage());
+
+            verify(favoriteRepository, times(0))
+                    .deleteByStudyIdAndMemberId(STUDY_ID, MEMBER_ID);
         }
 
         @Test
