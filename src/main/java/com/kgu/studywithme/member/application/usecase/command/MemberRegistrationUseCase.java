@@ -18,7 +18,7 @@ public interface MemberRegistrationUseCase {
             Gender gender,
             Region region,
             boolean emailOptIn,
-            Set<Category> categories
+            Set<Category> interests
     ) {
         public Member toEntity() {
             return Member.createMember(
@@ -30,7 +30,7 @@ public interface MemberRegistrationUseCase {
                     gender,
                     region,
                     emailOptIn,
-                    categories
+                    interests
             );
         }
     }
