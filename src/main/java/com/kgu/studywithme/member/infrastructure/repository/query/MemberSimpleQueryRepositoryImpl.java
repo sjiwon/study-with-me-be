@@ -38,15 +38,15 @@ public class MemberSimpleQueryRepositoryImpl implements MemberSimpleQueryReposit
 
     @Override
     public boolean isReportReceived(
-            final Long reporteeId,
-            final Long reporterId
+            final Long reporterId,
+            final Long reporteeId
     ) {
         ReportStatus status = query
                 .select(report.status)
                 .from(report)
                 .where(
-                        report.reporteeId.eq(reporteeId),
-                        report.reporterId.eq(reporterId)
+                        report.reporterId.eq(reporterId),
+                        report.reporteeId.eq(reporteeId)
                 )
                 .fetchOne();
 

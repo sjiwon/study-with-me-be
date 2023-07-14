@@ -13,11 +13,11 @@ import static com.kgu.studywithme.member.domain.report.ReportStatus.*;
 @Entity
 @Table(name = "member_report")
 public class Report extends BaseEntity<Report> {
-    @Column(name = "reportee_id", nullable = false)
-    private Long reporteeId;
-
     @Column(name = "reporter_id", nullable = false)
     private Long reporterId;
+
+    @Column(name = "reportee_id", nullable = false)
+    private Long reporteeId;
 
     @Lob
     @Column(name = "reason", nullable = false, columnDefinition = "TEXT")
@@ -28,22 +28,22 @@ public class Report extends BaseEntity<Report> {
     private ReportStatus status;
 
     private Report(
-            final Long reporteeId,
             final Long reporterId,
+            final Long reporteeId,
             final String reason
     ) {
-        this.reporteeId = reporteeId;
         this.reporterId = reporterId;
+        this.reporteeId = reporteeId;
         this.reason = reason;
         this.status = RECEIVE;
     }
 
     public static Report createReportWithReason(
-            final Long reporteeId,
             final Long reporterId,
+            final Long reporteeId,
             final String reason
     ) {
-        return new Report(reporteeId, reporterId, reason);
+        return new Report(reporterId, reporteeId, reason);
     }
 
     public void approveReport() {

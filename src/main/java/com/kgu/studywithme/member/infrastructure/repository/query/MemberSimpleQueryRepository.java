@@ -10,7 +10,7 @@ import java.util.List;
 public interface MemberSimpleQueryRepository {
     boolean isNicknameIsUsedByOther(Long memberId, String nickname);
 
-    boolean isReportReceived(Long reporteeId, Long reporterId);
+    boolean isReportReceived(Long reporterId, Long reporteeId);
 
     List<StudyAttendanceMetadata> findStudyAttendanceMetadataByMemberId(Long memberId);
 
