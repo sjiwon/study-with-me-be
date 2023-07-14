@@ -54,10 +54,10 @@ class MemberRegistrationServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberErrorCode.DUPLICATE_EMAIL.getMessage());
 
-        verify(memberRepository, times(1)).existsByEmail(command.email());
-        verify(memberRepository, times(0)).existsByNickname(command.nickname());
-        verify(memberRepository, times(0)).existsByPhone(command.phone());
-        verify(memberRepository, times(0)).save(member);
+        verify(memberRepository, times(1)).existsByEmail(any());
+        verify(memberRepository, times(0)).existsByNickname(any());
+        verify(memberRepository, times(0)).existsByPhone(any());
+        verify(memberRepository, times(0)).save(any());
     }
 
     @Test
