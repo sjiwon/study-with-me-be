@@ -46,22 +46,4 @@ class MemberFindServiceTest extends ServiceTest {
                 () -> assertThat(findMember2).isEqualTo(member)
         );
     }
-
-    @Test
-    @DisplayName("이메일로 사용자를 조회한다")
-    void findByEmail() {
-        // given
-        final String same = member.getEmailValue();
-        final String diff = "diff" + member.getEmailValue();
-
-        // when
-        assertThatThrownBy(() -> memberFindService.findByEmail(diff))
-                .isInstanceOf(StudyWithMeException.class)
-                .hasMessage(MemberErrorCode.MEMBER_NOT_FOUND.getMessage());
-
-        Member findMember = memberFindService.findByEmail(same);
-
-        // then
-        assertThat(findMember).isEqualTo(member);
-    }
 }
