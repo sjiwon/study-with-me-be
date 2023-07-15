@@ -36,7 +36,7 @@ public class MemberUpdateService implements MemberUpdateUseCase {
             final Long memberId,
             final String nickname
     ) {
-        if (memberRepository.isNicknameIsUsedByOther(memberId, nickname)) {
+        if (memberRepository.isNicknameUsedByOther(memberId, nickname)) {
             throw StudyWithMeException.type(MemberErrorCode.DUPLICATE_NICKNAME);
         }
     }
@@ -45,7 +45,7 @@ public class MemberUpdateService implements MemberUpdateUseCase {
             final Long memberId,
             final String phone
     ) {
-        if (memberRepository.existsByIdNotAndPhone(memberId, phone)) {
+        if (memberRepository.isPhoneUsedByOther(memberId, phone)) {
             throw StudyWithMeException.type(MemberErrorCode.DUPLICATE_PHONE);
         }
     }

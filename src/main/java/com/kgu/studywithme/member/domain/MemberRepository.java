@@ -1,5 +1,6 @@
 package com.kgu.studywithme.member.domain;
 
+import com.kgu.studywithme.member.infrastructure.repository.query.MemberDuplicateCheckQueryRepository;
 import com.kgu.studywithme.member.infrastructure.repository.query.MemberSimpleQueryRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -11,14 +12,9 @@ import java.util.Set;
 
 public interface MemberRepository extends
         JpaRepository<Member, Long>,
+        MemberDuplicateCheckQueryRepository,
         MemberSimpleQueryRepository {
     // @Query
-    @Query("SELECT m" +
-            " FROM Member m" +
-            " JOIN FETCH m.interests" +
-            " WHERE m.id = :memberId")
-    Optional<Member> findByIdWithInterests(@Param("memberId") Long memberId);
-
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("UPDATE Member m" +
             " SET m.score.value = m.score.value - 5" +
@@ -27,12 +23,4 @@ public interface MemberRepository extends
 
     // Query Method
     Optional<Member> findByEmail(Email email);
-
-    boolean existsByEmail(Email email);
-
-    boolean existsByNickname(Nickname nickname);
-
-    boolean existsByPhone(String phone);
-
-    boolean existsByIdNotAndPhone(Long memberId, String phone);
 }

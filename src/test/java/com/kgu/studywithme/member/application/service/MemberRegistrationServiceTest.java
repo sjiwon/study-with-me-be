@@ -47,16 +47,16 @@ class MemberRegistrationServiceTest extends UseCaseTest {
     @DisplayName("이미 사용하고 있는 이메일이면 회원가입에 실패한다")
     void throwExceptionByDuplicateEmail() {
         // given
-        given(memberRepository.existsByEmail(any())).willReturn(true);
+        given(memberRepository.isEmailExists(any())).willReturn(true);
 
         // when - then
         assertThatThrownBy(() -> memberRegistrationService.registration(command))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberErrorCode.DUPLICATE_EMAIL.getMessage());
 
-        verify(memberRepository, times(1)).existsByEmail(any());
-        verify(memberRepository, times(0)).existsByNickname(any());
-        verify(memberRepository, times(0)).existsByPhone(any());
+        verify(memberRepository, times(1)).isEmailExists(any());
+        verify(memberRepository, times(0)).isNicknameExists(any());
+        verify(memberRepository, times(0)).isPhoneExists(any());
         verify(memberRepository, times(0)).save(any());
     }
 
@@ -64,17 +64,17 @@ class MemberRegistrationServiceTest extends UseCaseTest {
     @DisplayName("이미 사용하고 있는 닉네임이면 회원가입에 실패한다")
     void throwExceptionByDuplicateNickname() {
         // given
-        given(memberRepository.existsByEmail(any())).willReturn(false);
-        given(memberRepository.existsByNickname(any())).willReturn(true);
+        given(memberRepository.isEmailExists(any())).willReturn(false);
+        given(memberRepository.isNicknameExists(any())).willReturn(true);
 
         // when - then
         assertThatThrownBy(() -> memberRegistrationService.registration(command))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberErrorCode.DUPLICATE_NICKNAME.getMessage());
 
-        verify(memberRepository, times(1)).existsByEmail(any());
-        verify(memberRepository, times(1)).existsByNickname(any());
-        verify(memberRepository, times(0)).existsByPhone(any());
+        verify(memberRepository, times(1)).isEmailExists(any());
+        verify(memberRepository, times(1)).isNicknameExists(any());
+        verify(memberRepository, times(0)).isPhoneExists(any());
         verify(memberRepository, times(0)).save(any());
     }
 
@@ -82,18 +82,18 @@ class MemberRegistrationServiceTest extends UseCaseTest {
     @DisplayName("이미 사용하고 있는 전화번호면 회원가입에 실패한다")
     void throwExceptionByDuplicatePhone() {
         // given
-        given(memberRepository.existsByEmail(any())).willReturn(false);
-        given(memberRepository.existsByNickname(any())).willReturn(false);
-        given(memberRepository.existsByPhone(any())).willReturn(true);
+        given(memberRepository.isEmailExists(any())).willReturn(false);
+        given(memberRepository.isNicknameExists(any())).willReturn(false);
+        given(memberRepository.isPhoneExists(any())).willReturn(true);
 
         // when - then
         assertThatThrownBy(() -> memberRegistrationService.registration(command))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberErrorCode.DUPLICATE_PHONE.getMessage());
 
-        verify(memberRepository, times(1)).existsByEmail(any());
-        verify(memberRepository, times(1)).existsByNickname(any());
-        verify(memberRepository, times(1)).existsByPhone(any());
+        verify(memberRepository, times(1)).isEmailExists(any());
+        verify(memberRepository, times(1)).isNicknameExists(any());
+        verify(memberRepository, times(1)).isPhoneExists(any());
         verify(memberRepository, times(0)).save(any());
     }
 
@@ -101,18 +101,18 @@ class MemberRegistrationServiceTest extends UseCaseTest {
     @DisplayName("모든 중복 검사를 통과한다면 회원가입에 성공한다")
     void success() {
         // given
-        given(memberRepository.existsByEmail(any())).willReturn(false);
-        given(memberRepository.existsByNickname(any())).willReturn(false);
-        given(memberRepository.existsByPhone(any())).willReturn(false);
+        given(memberRepository.isEmailExists(any())).willReturn(false);
+        given(memberRepository.isNicknameExists(any())).willReturn(false);
+        given(memberRepository.isPhoneExists(any())).willReturn(false);
         given(memberRepository.save(any())).willReturn(member);
 
         // when
         Long savedMemberId = memberRegistrationService.registration(command);
 
         // then
-        verify(memberRepository, times(1)).existsByEmail(any());
-        verify(memberRepository, times(1)).existsByNickname(any());
-        verify(memberRepository, times(1)).existsByPhone(any());
+        verify(memberRepository, times(1)).isEmailExists(any());
+        verify(memberRepository, times(1)).isNicknameExists(any());
+        verify(memberRepository, times(1)).isPhoneExists(any());
         verify(memberRepository, times(1)).save(any());
         assertThat(savedMemberId).isEqualTo(member.getId());
     }

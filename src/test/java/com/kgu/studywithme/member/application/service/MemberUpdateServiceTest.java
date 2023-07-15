@@ -52,15 +52,15 @@ class MemberUpdateServiceTest extends UseCaseTest {
     void throwExceptionByDuplicateNickname() {
         // given
         given(queryMemberByIdService.findById(any())).willReturn(member);
-        given(memberRepository.isNicknameIsUsedByOther(any(), any())).willReturn(true);
+        given(memberRepository.isNicknameUsedByOther(any(), any())).willReturn(true);
 
         // when - then
         assertThatThrownBy(() -> memberUpdateService.update(command))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberErrorCode.DUPLICATE_NICKNAME.getMessage());
 
-        verify(memberRepository, times(1)).isNicknameIsUsedByOther(any(), any());
-        verify(memberRepository, times(0)).existsByIdNotAndPhone(any(), any());
+        verify(memberRepository, times(1)).isNicknameUsedByOther(any(), any());
+        verify(memberRepository, times(0)).isPhoneUsedByOther(any(), any());
     }
 
     @Test
@@ -68,16 +68,16 @@ class MemberUpdateServiceTest extends UseCaseTest {
     void throwExceptionByDuplicatePhone() {
         // given
         given(queryMemberByIdService.findById(any())).willReturn(member);
-        given(memberRepository.isNicknameIsUsedByOther(any(), any())).willReturn(false);
-        given(memberRepository.existsByIdNotAndPhone(any(), any())).willReturn(true);
+        given(memberRepository.isNicknameUsedByOther(any(), any())).willReturn(false);
+        given(memberRepository.isPhoneUsedByOther(any(), any())).willReturn(true);
 
         // when - then
         assertThatThrownBy(() -> memberUpdateService.update(command))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberErrorCode.DUPLICATE_PHONE.getMessage());
 
-        verify(memberRepository, times(1)).isNicknameIsUsedByOther(any(), any());
-        verify(memberRepository, times(1)).existsByIdNotAndPhone(any(), any());
+        verify(memberRepository, times(1)).isNicknameUsedByOther(any(), any());
+        verify(memberRepository, times(1)).isPhoneUsedByOther(any(), any());
     }
 
     @Test
@@ -85,15 +85,15 @@ class MemberUpdateServiceTest extends UseCaseTest {
     void success() {
         // given
         given(queryMemberByIdService.findById(any())).willReturn(member);
-        given(memberRepository.isNicknameIsUsedByOther(any(), any())).willReturn(false);
-        given(memberRepository.existsByIdNotAndPhone(any(), any())).willReturn(false);
+        given(memberRepository.isNicknameUsedByOther(any(), any())).willReturn(false);
+        given(memberRepository.isPhoneUsedByOther(any(), any())).willReturn(false);
 
         // when
         memberUpdateService.update(command);
 
         // then
-        verify(memberRepository, times(1)).isNicknameIsUsedByOther(any(), any());
-        verify(memberRepository, times(1)).existsByIdNotAndPhone(any(), any());
+        verify(memberRepository, times(1)).isNicknameUsedByOther(any(), any());
+        verify(memberRepository, times(1)).isPhoneUsedByOther(any(), any());
 
         assertAll(
                 () -> assertThat(member.getNicknameValue()).isEqualTo(command.nickname()),

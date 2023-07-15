@@ -56,20 +56,6 @@ class MemberSimpleQueryRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    @DisplayName("다른 사람이 해당 닉네임을 사용하고 있는지 확인한다")
-    void isNicknameIsUsedByOther() {
-        // when
-        boolean actual1 = memberRepository.isNicknameIsUsedByOther(host.getId(), host.getNicknameValue());
-        boolean actual2 = memberRepository.isNicknameIsUsedByOther(participant.getId(), host.getNicknameValue());
-
-        // then
-        assertAll(
-                () -> assertThat(actual1).isFalse(),
-                () -> assertThat(actual2).isTrue()
-        );
-    }
-
-    @Test
     @DisplayName("특정 사용자에 대한 신고가 접수 상태인지 확인한다")
     void isReportReceived() {
         // given

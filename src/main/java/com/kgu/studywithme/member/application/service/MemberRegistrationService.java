@@ -26,19 +26,19 @@ public class MemberRegistrationService implements MemberRegistrationUseCase {
     }
 
     private void validateEmailIsUnique(final Email email) {
-        if (memberRepository.existsByEmail(email)) {
+        if (memberRepository.isEmailExists(email.getValue())) {
             throw StudyWithMeException.type(MemberErrorCode.DUPLICATE_EMAIL);
         }
     }
 
     private void validateNicknameIsUnique(final Nickname nickname) {
-        if (memberRepository.existsByNickname(nickname)) {
+        if (memberRepository.isNicknameExists(nickname.getValue())) {
             throw StudyWithMeException.type(MemberErrorCode.DUPLICATE_NICKNAME);
         }
     }
 
     public void validatePhoneIsUnique(final String phone) {
-        if (memberRepository.existsByPhone(phone)) {
+        if (memberRepository.isPhoneExists(phone)) {
             throw StudyWithMeException.type(MemberErrorCode.DUPLICATE_PHONE);
         }
     }
