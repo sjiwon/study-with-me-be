@@ -29,7 +29,7 @@ public class MemberReportService implements MemberReportUseCase {
             final Long reporterId,
             final Long reporteeId
     ) {
-        if (memberRepository.isReportReceived(reporterId, reporteeId)) {
+        if (memberRepository.isReportStillPending(reporterId, reporteeId)) {
             throw StudyWithMeException.type(MemberErrorCode.PREVIOUS_REPORT_IS_STILL_PENDING);
         }
     }

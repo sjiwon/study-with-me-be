@@ -45,14 +45,15 @@ class MemberReportServiceTest extends UseCaseTest {
     @DisplayName("이전에 신고한 내역이 여전히 처리중이라면 중복 신고를 하지 못한다")
     void throwExceptionByPreviousReportIsStillPending() {
         // given
-        given(memberRepository.isReportReceived(any(), any())).willReturn(true);
+        given(memberRepository.isReportStillPending(any(), any())).willReturn(true);
 
         // when - then
         assertThatThrownBy(() -> memberReportService.report(command))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberErrorCode.PREVIOUS_REPORT_IS_STILL_PENDING.getMessage());
 
-        verify(memberRepository, times(1)).isReportReceived(memberA.getId(), memberB.getId());
+        verify(memberRepository, times(1))
+                .isReportStillPending(memberA.getId(), memberB.getId());
         verify(reportRepository, times(0)).save(any());
     }
 
@@ -60,7 +61,7 @@ class MemberReportServiceTest extends UseCaseTest {
     @DisplayName("사용자 신고에 성공한다")
     void success() {
         // given
-        given(memberRepository.isReportReceived(any(), any())).willReturn(false);
+        given(memberRepository.isReportStillPending(any(), any())).willReturn(false);
 
         final Report report = Report
                 .createReportWithReason(memberA.getId(), memberB.getId(), "report...")
@@ -71,7 +72,8 @@ class MemberReportServiceTest extends UseCaseTest {
         Long reportId = memberReportService.report(command);
 
         // then
-        verify(memberRepository, times(1)).isReportReceived(memberA.getId(), memberB.getId());
+        verify(memberRepository, times(1))
+                .isReportStillPending(memberA.getId(), memberB.getId());
         verify(reportRepository, times(1)).save(any());
         assertThat(reportId).isEqualTo(report.getId());
     }

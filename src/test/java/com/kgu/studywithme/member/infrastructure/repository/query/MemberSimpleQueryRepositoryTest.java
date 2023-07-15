@@ -3,8 +3,6 @@ package com.kgu.studywithme.member.infrastructure.repository.query;
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
-import com.kgu.studywithme.member.domain.report.Report;
-import com.kgu.studywithme.member.domain.report.ReportRepository;
 import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.AttendanceRatio;
 import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.StudyAttendanceMetadata;
 import com.kgu.studywithme.study.domain.Study;
@@ -31,9 +29,6 @@ class MemberSimpleQueryRepositoryTest extends RepositoryTest {
     private MemberRepository memberRepository;
 
     @Autowired
-    private ReportRepository reportRepository;
-
-    @Autowired
     private StudyRepository studyRepository;
 
     private Member host;
@@ -53,24 +48,6 @@ class MemberSimpleQueryRepositoryTest extends RepositoryTest {
         study2 = studyRepository.save(JPA.toOnlineStudy(host));
         study2.applyParticipation(participant);
         study2.approveParticipation(participant);
-    }
-
-    @Test
-    @DisplayName("특정 사용자에 대한 신고가 접수 상태인지 확인한다")
-    void isReportReceived() {
-        // given
-        Report report = reportRepository.save(Report.createReportWithReason(host.getId(), participant.getId(), "스터디를 대충합니다."));
-
-        // 1. 신고 접수
-        assertThat(memberRepository.isReportReceived(host.getId(), participant.getId())).isTrue();
-
-        // 2. 신고 승인
-        report.approveReport();
-        assertThat(memberRepository.isReportReceived(host.getId(), participant.getId())).isFalse();
-
-        // 3. 신고 거부
-        report.rejectReport();
-        assertThat(memberRepository.isReportReceived(host.getId(), participant.getId())).isFalse();
     }
 
     @Test

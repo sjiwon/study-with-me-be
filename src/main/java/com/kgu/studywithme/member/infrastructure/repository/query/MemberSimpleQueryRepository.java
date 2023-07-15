@@ -8,8 +8,6 @@ import com.kgu.studywithme.study.domain.attendance.AttendanceStatus;
 import java.util.List;
 
 public interface MemberSimpleQueryRepository {
-    boolean isReportReceived(Long reporterId, Long reporteeId);
-
     List<StudyAttendanceMetadata> findStudyAttendanceMetadataByMemberId(Long memberId);
 
     Long getAttendanceCount(Long studyId, Long memberId, AttendanceStatus status);

@@ -1,6 +1,7 @@
 package com.kgu.studywithme.member.domain;
 
 import com.kgu.studywithme.member.infrastructure.repository.query.MemberDuplicateCheckQueryRepository;
+import com.kgu.studywithme.member.infrastructure.repository.query.MemberReportHandlingQueryRepository;
 import com.kgu.studywithme.member.infrastructure.repository.query.MemberSimpleQueryRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -13,6 +14,7 @@ import java.util.Set;
 public interface MemberRepository extends
         JpaRepository<Member, Long>,
         MemberDuplicateCheckQueryRepository,
+        MemberReportHandlingQueryRepository,
         MemberSimpleQueryRepository {
     // @Query
     @Modifying(flushAutomatically = true, clearAutomatically = true)
