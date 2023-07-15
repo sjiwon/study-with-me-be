@@ -3,7 +3,7 @@ package com.kgu.studywithme.study.application;
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.application.MemberFindService;
+import com.kgu.studywithme.member.application.service.QueryMemberByIdService;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.study.domain.Study;
@@ -23,7 +23,7 @@ import static com.kgu.studywithme.study.domain.attendance.AttendanceStatus.ATTEN
 @RequiredArgsConstructor
 public class ParticipationService {
     private final StudyFindService studyFindService;
-    private final MemberFindService memberFindService;
+    private final QueryMemberByIdService queryMemberByIdService;
     private final MemberRepository memberRepository;
     private final ParticipantRepository participantRepository;
     private final ApplicationEventPublisher eventPublisher;
@@ -34,7 +34,7 @@ public class ParticipationService {
             final Long memberId
     ) {
         final Study study = studyFindService.findByIdWithParticipants(studyId);
-        final Member member = memberFindService.findById(memberId);
+        final Member member = queryMemberByIdService.findById(memberId);
 
         study.applyParticipation(member);
     }
@@ -45,7 +45,7 @@ public class ParticipationService {
             final Long applierId
     ) {
         final Study study = studyFindService.findByIdWithParticipants(studyId);
-        final Member applier = memberFindService.findById(applierId);
+        final Member applier = queryMemberByIdService.findById(applierId);
         study.validateMemberIsApplier(applier);
 
         participantRepository.deleteParticipantAssociatedMember(study, applier);
@@ -58,7 +58,7 @@ public class ParticipationService {
             final Long hostId
     ) {
         final Study study = studyFindService.findByIdAndHostIdWithParticipants(studyId, hostId);
-        final Member applier = memberFindService.findById(applierId);
+        final Member applier = queryMemberByIdService.findById(applierId);
 
         study.approveParticipation(applier);
 
@@ -81,7 +81,7 @@ public class ParticipationService {
             final String reason
     ) {
         final Study study = studyFindService.findByIdAndHostIdWithParticipants(studyId, hostId);
-        final Member applier = memberFindService.findById(applierId);
+        final Member applier = queryMemberByIdService.findById(applierId);
 
         study.rejectParticipation(applier);
 
@@ -103,7 +103,7 @@ public class ParticipationService {
             final Long participantId
     ) {
         final Study study = studyFindService.findByIdWithParticipants(studyId);
-        final Member participant = memberFindService.findById(participantId);
+        final Member participant = queryMemberByIdService.findById(participantId);
 
         study.cancelParticipation(participant);
     }
@@ -115,7 +115,7 @@ public class ParticipationService {
             final Long hostId
     ) {
         final Study study = studyFindService.findByIdAndHostIdWithParticipants(studyId, hostId);
-        final Member newHost = memberFindService.findById(participantId);
+        final Member newHost = queryMemberByIdService.findById(participantId);
 
         study.delegateStudyHostAuthority(newHost);
         participantRepository.deleteParticipantAssociatedMember(study, newHost);
@@ -127,7 +127,7 @@ public class ParticipationService {
             final Long participantId
     ) {
         final Study study = studyFindService.findByIdWithParticipants(studyId);
-        final Member participant = memberFindService.findById(participantId);
+        final Member participant = queryMemberByIdService.findById(participantId);
         validateGraduationRequirements(study, participantId);
 
         study.graduateParticipant(participant);

@@ -2,7 +2,6 @@ package com.kgu.studywithme.member.application.service;
 
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.application.MemberFindService;
 import com.kgu.studywithme.member.application.usecase.command.MemberUpdateUseCase;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
@@ -30,7 +29,7 @@ class MemberUpdateServiceTest extends UseCaseTest {
     private MemberUpdateService memberUpdateService;
 
     @Mock
-    private MemberFindService memberFindService;
+    private QueryMemberByIdService queryMemberByIdService;
 
     @Mock
     private MemberRepository memberRepository;
@@ -52,7 +51,7 @@ class MemberUpdateServiceTest extends UseCaseTest {
     @DisplayName("다른 사람이 사용하고 있는 닉네임으로 수정할 수 없다")
     void throwExceptionByDuplicateNickname() {
         // given
-        given(memberFindService.findById(any())).willReturn(member);
+        given(queryMemberByIdService.findById(any())).willReturn(member);
         given(memberRepository.isNicknameIsUsedByOther(any(), any())).willReturn(true);
 
         // when - then
@@ -68,7 +67,7 @@ class MemberUpdateServiceTest extends UseCaseTest {
     @DisplayName("다른 사람이 사용하고 있는 전화번호로 수정할 수 없다")
     void throwExceptionByDuplicatePhone() {
         // given
-        given(memberFindService.findById(any())).willReturn(member);
+        given(queryMemberByIdService.findById(any())).willReturn(member);
         given(memberRepository.isNicknameIsUsedByOther(any(), any())).willReturn(false);
         given(memberRepository.existsByIdNotAndPhone(any(), any())).willReturn(true);
 
@@ -85,7 +84,7 @@ class MemberUpdateServiceTest extends UseCaseTest {
     @DisplayName("사용자 정보를 수정한다")
     void success() {
         // given
-        given(memberFindService.findById(any())).willReturn(member);
+        given(queryMemberByIdService.findById(any())).willReturn(member);
         given(memberRepository.isNicknameIsUsedByOther(any(), any())).willReturn(false);
         given(memberRepository.existsByIdNotAndPhone(any(), any())).willReturn(false);
 

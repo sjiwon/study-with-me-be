@@ -3,7 +3,7 @@ package com.kgu.studywithme.study.application.week;
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.application.MemberFindService;
+import com.kgu.studywithme.member.application.service.QueryMemberByIdService;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.application.StudyFindService;
 import com.kgu.studywithme.study.domain.Study;
@@ -37,7 +37,7 @@ import static com.kgu.studywithme.study.domain.attendance.AttendanceStatus.*;
 public class StudyWeeklyService {
     private final StudyFindService studyFindService;
     private final StudyRepository studyRepository;
-    private final MemberFindService memberFindService;
+    private final QueryMemberByIdService queryMemberByIdService;
     private final WeekRepository weekRepository;
     private final AttendanceRepository attendanceRepository;
     private final SubmitRepository submitRepository;
@@ -154,7 +154,7 @@ public class StudyWeeklyService {
         validateAssignmentSubmissionExists(file, link);
 
         final Week specificWeek = getSpecificWeek(studyId, week);
-        final Member participant = memberFindService.findById(participantId);
+        final Member participant = queryMemberByIdService.findById(participantId);
 
         handleAssignmentSubmission(specificWeek, participant, type, file, link);
         processAttendanceBasedOnAutoAttendanceFlag(specificWeek, participant, studyId);

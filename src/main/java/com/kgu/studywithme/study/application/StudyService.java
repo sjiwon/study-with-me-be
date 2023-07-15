@@ -3,7 +3,7 @@ package com.kgu.studywithme.study.application;
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
-import com.kgu.studywithme.member.application.MemberFindService;
+import com.kgu.studywithme.member.application.service.QueryMemberByIdService;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.*;
 import com.kgu.studywithme.study.domain.participant.Capacity;
@@ -24,7 +24,7 @@ public class StudyService {
     private final StudyValidator studyValidator;
     private final StudyRepository studyRepository;
     private final StudyFindService studyFindService;
-    private final MemberFindService memberFindService;
+    private final QueryMemberByIdService queryMemberByIdService;
 
     @StudyWithMeWritableTransactional
     public Long register(
@@ -33,7 +33,7 @@ public class StudyService {
     ) {
         validateUniqueNameForCreate(request.name());
 
-        final Member host = memberFindService.findById(hostId);
+        final Member host = queryMemberByIdService.findById(hostId);
         final Study study = buildStudy(request, host);
 
         return studyRepository.save(study).getId();

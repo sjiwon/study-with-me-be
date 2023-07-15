@@ -1,4 +1,4 @@
-package com.kgu.studywithme.member.application;
+package com.kgu.studywithme.member.application.service;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
@@ -11,16 +11,11 @@ import org.springframework.stereotype.Service;
 @Service
 @StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
-public class MemberFindService {
+public class QueryMemberByIdService {
     private final MemberRepository memberRepository;
 
     public Member findById(final Long memberId) {
         return memberRepository.findById(memberId)
-                .orElseThrow(() -> StudyWithMeException.type(MemberErrorCode.MEMBER_NOT_FOUND));
-    }
-
-    public Member findByIdWithInterests(final Long memberId) {
-        return memberRepository.findByIdWithInterests(memberId)
                 .orElseThrow(() -> StudyWithMeException.type(MemberErrorCode.MEMBER_NOT_FOUND));
     }
 }

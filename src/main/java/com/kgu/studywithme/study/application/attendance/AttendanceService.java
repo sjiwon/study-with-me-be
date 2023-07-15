@@ -3,7 +3,7 @@ package com.kgu.studywithme.study.application.attendance;
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.application.MemberFindService;
+import com.kgu.studywithme.member.application.service.QueryMemberByIdService;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.attendance.Attendance;
 import com.kgu.studywithme.study.domain.attendance.AttendanceRepository;
@@ -19,7 +19,7 @@ import static com.kgu.studywithme.study.domain.attendance.AttendanceStatus.NON_A
 @RequiredArgsConstructor
 public class AttendanceService {
     private final AttendanceRepository attendanceRepository;
-    private final MemberFindService memberFindService;
+    private final QueryMemberByIdService queryMemberByIdService;
 
     @StudyWithMeWritableTransactional
     public void manualCheckAttendance(
@@ -57,7 +57,7 @@ public class AttendanceService {
             final AttendanceStatus previous,
             final AttendanceStatus current
     ) {
-        final Member member = memberFindService.findById(memberId);
+        final Member member = queryMemberByIdService.findById(memberId);
 
         if (previous == NON_ATTENDANCE) {
             member.applyScoreByAttendanceStatus(current);

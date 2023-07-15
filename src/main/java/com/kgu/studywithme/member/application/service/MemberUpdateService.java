@@ -2,7 +2,6 @@ package com.kgu.studywithme.member.application.service;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.application.MemberFindService;
 import com.kgu.studywithme.member.application.usecase.command.MemberUpdateUseCase;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
@@ -14,12 +13,12 @@ import org.springframework.stereotype.Service;
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class MemberUpdateService implements MemberUpdateUseCase {
-    private final MemberFindService memberFindService;
+    private final QueryMemberByIdService queryMemberByIdService;
     private final MemberRepository memberRepository;
 
     @Override
     public void update(final Command command) {
-        final Member member = memberFindService.findById(command.memberId());
+        final Member member = queryMemberByIdService.findById(command.memberId());
         validateNicknameIsUnique(command.memberId(), command.nickname());
         validatePhoneIsUnique(command.memberId(), command.phone());
 

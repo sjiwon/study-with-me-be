@@ -3,7 +3,7 @@ package com.kgu.studywithme.study.application;
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.application.MemberFindService;
+import com.kgu.studywithme.member.application.service.QueryMemberByIdService;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.study.domain.review.Review;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class StudyReviewService {
     private final ReviewRepository reviewRepository;
     private final StudyFindService studyFindService;
-    private final MemberFindService memberFindService;
+    private final QueryMemberByIdService queryMemberByIdService;
     private final StudyValidator studyValidator;
 
     @StudyWithMeWritableTransactional
@@ -28,7 +28,7 @@ public class StudyReviewService {
             final String content
     ) {
         final Study study = studyFindService.findByIdWithParticipants(studyId);
-        final Member member = memberFindService.findById(memberId);
+        final Member member = queryMemberByIdService.findById(memberId);
 
         study.writeReview(member, content);
     }

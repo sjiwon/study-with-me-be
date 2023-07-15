@@ -2,6 +2,7 @@ package com.kgu.studywithme.member.application;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.member.application.dto.response.*;
+import com.kgu.studywithme.member.application.service.QueryMemberByIdService;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.member.domain.review.PeerReviewRepository;
@@ -18,13 +19,13 @@ import java.util.List;
 @StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
 public class MemberInformationService {
-    private final MemberFindService memberFindService;
+    private final QueryMemberByIdService queryMemberByIdService;
     private final MemberRepository memberRepository;
     private final StudyRepository studyRepository;
     private final PeerReviewRepository peerReviewRepository;
 
     public MemberInformation getInformation(final Long memberId) {
-        final Member member = memberFindService.findByIdWithInterests(memberId);
+        final Member member = queryMemberByIdService.findById(memberId);
         return new MemberInformation(member);
     }
 

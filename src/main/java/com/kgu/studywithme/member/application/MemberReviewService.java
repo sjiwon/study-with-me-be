@@ -3,6 +3,7 @@ package com.kgu.studywithme.member.application;
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
+import com.kgu.studywithme.member.application.service.QueryMemberByIdService;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.member.domain.review.PeerReview;
@@ -18,7 +19,7 @@ import java.util.List;
 @StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
 public class MemberReviewService {
-    private final MemberFindService memberFindService;
+    private final QueryMemberByIdService queryMemberByIdService;
     private final MemberRepository memberRepository;
     private final PeerReviewRepository peerReviewRepository;
 
@@ -31,8 +32,8 @@ public class MemberReviewService {
         validateSelfReviewNotAllowed(revieweeId, reviewerId);
         validateColleague(revieweeId, reviewerId);
 
-        final Member reviewee = memberFindService.findById(revieweeId);
-        final Member reviewer = memberFindService.findById(reviewerId);
+        final Member reviewee = queryMemberByIdService.findById(revieweeId);
+        final Member reviewer = queryMemberByIdService.findById(reviewerId);
 
         reviewee.applyPeerReview(reviewer, content);
     }
