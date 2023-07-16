@@ -2,7 +2,7 @@ package com.kgu.studywithme.member.application.service;
 
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.application.usecase.command.MemberUpdateUseCase;
+import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
@@ -23,10 +23,10 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@DisplayName("Member -> MemberUpdateService 테스트")
-class MemberUpdateServiceTest extends UseCaseTest {
+@DisplayName("Member -> UpdateMemberService 테스트")
+class UpdateMemberServiceTest extends UseCaseTest {
     @InjectMocks
-    private MemberUpdateService memberUpdateService;
+    private UpdateMemberService memberUpdateService;
 
     @Mock
     private QueryMemberByIdService queryMemberByIdService;
@@ -36,8 +36,8 @@ class MemberUpdateServiceTest extends UseCaseTest {
 
     private final Member member = JIWON.toMember().apply(1L, LocalDateTime.now());
 
-    private final MemberUpdateUseCase.Command command =
-            new MemberUpdateUseCase.Command(
+    private final UpdateMemberUseCase.Command command =
+            new UpdateMemberUseCase.Command(
                     member.getId(),
                     GHOST.getNickname(),
                     "01013572468",

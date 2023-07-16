@@ -150,7 +150,7 @@ class MemberApiControllerTest extends ControllerTest {
             // given
             mockingToken(true, MEMBER_ID);
             doNothing()
-                    .when(memberUpdateUseCase)
+                    .when(updateMemberUseCase)
                     .update(any());
 
             // when

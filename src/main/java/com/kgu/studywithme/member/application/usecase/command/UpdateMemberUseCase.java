@@ -4,7 +4,7 @@ import com.kgu.studywithme.category.domain.Category;
 
 import java.util.Set;
 
-public interface MemberUpdateUseCase {
+public interface UpdateMemberUseCase {
     void update(Command command);
 
     record Command(

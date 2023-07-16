@@ -5,7 +5,7 @@ import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.global.aop.CheckMemberIdentity;
 import com.kgu.studywithme.member.application.usecase.command.MemberRegistrationUseCase;
 import com.kgu.studywithme.member.application.usecase.command.MemberReportUseCase;
-import com.kgu.studywithme.member.application.usecase.command.MemberUpdateUseCase;
+import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
 import com.kgu.studywithme.member.domain.Email;
 import com.kgu.studywithme.member.domain.Gender;
 import com.kgu.studywithme.member.domain.Nickname;
@@ -27,7 +27,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequestMapping("/api")
 public class MemberApiController {
     private final MemberRegistrationUseCase memberRegistrationUseCase;
-    private final MemberUpdateUseCase memberUpdateUseCase;
+    private final UpdateMemberUseCase updateMemberUseCase;
     private final MemberReportUseCase memberReportUseCase;
 
     @Operation(summary = "회원가입 EndPoint")
@@ -64,8 +64,8 @@ public class MemberApiController {
             @PathVariable final Long memberId,
             @RequestBody @Valid final MemberUpdateRequest request
     ) {
-        memberUpdateUseCase.update(
-                new MemberUpdateUseCase.Command(
+        updateMemberUseCase.update(
+                new UpdateMemberUseCase.Command(
                         memberId,
                         request.nickname(),
                         request.phone(),
