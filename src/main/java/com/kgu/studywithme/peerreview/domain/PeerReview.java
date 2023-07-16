@@ -43,4 +43,8 @@ public class PeerReview extends BaseEntity<PeerReview> {
     public void updateReview(final String content) {
         this.content = content;
     }
+
+    public boolean isReviewSame(final String updateContent) {
+        return this.content.equals(updateContent);
+    }
 }

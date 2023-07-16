@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("PeerReview -> 도메인 [PeerReview] 테스트")
 class PeerReviewTest {
@@ -19,5 +20,22 @@ class PeerReviewTest {
 
         // then
         assertThat(peerReview.getContent()).isEqualTo(update);
+    }
+
+    @Test
+    @DisplayName("동일한 리뷰 내용인지 확인한다")
+    void isReviewSame() {
+        // given
+        final PeerReview peerReview = PeerReview.doReview(1L, 2L, "Good!!");
+
+        // when
+        boolean actual1 = peerReview.isReviewSame("Good!!");
+        boolean actual2 = peerReview.isReviewSame("Bad..");
+
+        // then
+        assertAll(
+                () -> assertThat(actual1).isTrue(),
+                () -> assertThat(actual2).isFalse()
+        );
     }
 }

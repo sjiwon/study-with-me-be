@@ -1,9 +1,9 @@
 package com.kgu.studywithme.peerreview.presentation;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
-import com.kgu.studywithme.member.application.MemberReviewService;
+import com.kgu.studywithme.peerreview.application.usecase.command.UpdatePeerReviewUseCase;
 import com.kgu.studywithme.peerreview.application.usecase.command.WritePeerReviewUseCase;
-import com.kgu.studywithme.peerreview.presentation.dto.request.MemberReviewRequest;
+import com.kgu.studywithme.peerreview.presentation.dto.request.UpdatePeerReviewRequest;
 import com.kgu.studywithme.peerreview.presentation.dto.request.WritePeerReviewRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/members/{revieweeId}/review")
 public class MemberReviewApiController {
     private final WritePeerReviewUseCase writePeerReviewUseCase;
-    private final MemberReviewService memberReviewService;
+    private final UpdatePeerReviewUseCase updatePeerReviewUseCase;
 
     @Operation(summary = "피어리뷰 작성 EndPoint")
     @PostMapping
@@ -38,9 +38,11 @@ public class MemberReviewApiController {
     public ResponseEntity<Void> updateReview(
             @ExtractPayload final Long reviewerId,
             @PathVariable final Long revieweeId,
-            @RequestBody @Valid final MemberReviewRequest request
+            @RequestBody @Valid final UpdatePeerReviewRequest request
     ) {
-        memberReviewService.updateReview(revieweeId, reviewerId, request.content());
+        updatePeerReviewUseCase.updatePeerReview(
+                new UpdatePeerReviewUseCase.Command(reviewerId, revieweeId, request.content())
+        );
         return ResponseEntity.noContent().build();
     }
 }

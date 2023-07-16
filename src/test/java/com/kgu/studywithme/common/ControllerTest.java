@@ -18,12 +18,12 @@ import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeMarking
 import com.kgu.studywithme.favorite.presentation.FavoriteApiController;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.application.MemberInformationService;
-import com.kgu.studywithme.member.application.MemberReviewService;
 import com.kgu.studywithme.member.application.usecase.command.RegistrationMemberUseCase;
 import com.kgu.studywithme.member.application.usecase.command.ReportMemberUseCase;
 import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
 import com.kgu.studywithme.member.presentation.MemberApiController;
 import com.kgu.studywithme.member.presentation.MemberInformationApiController;
+import com.kgu.studywithme.peerreview.application.usecase.command.UpdatePeerReviewUseCase;
 import com.kgu.studywithme.peerreview.application.usecase.command.WritePeerReviewUseCase;
 import com.kgu.studywithme.peerreview.presentation.MemberReviewApiController;
 import com.kgu.studywithme.study.application.*;
@@ -146,12 +146,12 @@ public abstract class ControllerTest {
     @MockBean
     protected MemberInformationService memberInformationService;
 
-    @MockBean
-    protected MemberReviewService memberReviewService;
-
     // PeerReview
     @MockBean
     protected WritePeerReviewUseCase writePeerReviewUseCase;
+
+    @MockBean
+    protected UpdatePeerReviewUseCase updatePeerReviewUseCase;
 
     // Study
     @MockBean
