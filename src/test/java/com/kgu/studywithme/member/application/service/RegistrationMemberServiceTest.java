@@ -2,7 +2,7 @@ package com.kgu.studywithme.member.application.service;
 
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.application.usecase.command.MemberRegistrationUseCase;
+import com.kgu.studywithme.member.application.usecase.command.RegistrationMemberUseCase;
 import com.kgu.studywithme.member.domain.*;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
 import org.junit.jupiter.api.DisplayName;
@@ -20,16 +20,16 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@DisplayName("Member -> MemberRegistrationService 테스트")
-class MemberRegistrationServiceTest extends UseCaseTest {
+@DisplayName("Member -> RegistrationMemberService 테스트")
+class RegistrationMemberServiceTest extends UseCaseTest {
     @InjectMocks
-    private MemberRegistrationService memberRegistrationService;
+    private RegistrationMemberService memberRegistrationService;
 
     @Mock
     private MemberRepository memberRepository;
 
-    private final MemberRegistrationUseCase.Command command =
-            new MemberRegistrationUseCase.Command(
+    private final RegistrationMemberUseCase.Command command =
+            new RegistrationMemberUseCase.Command(
                     JIWON.getName(),
                     Nickname.from(JIWON.getNickname()),
                     Email.from(JIWON.getEmail()),
@@ -41,7 +41,7 @@ class MemberRegistrationServiceTest extends UseCaseTest {
                     JIWON.getInterests()
             );
 
-    private final Member member = command.toEntity().apply(1L, LocalDateTime.now());
+    private final Member member = command.toDomain().apply(1L, LocalDateTime.now());
 
     @Test
     @DisplayName("이미 사용하고 있는 이메일이면 회원가입에 실패한다")

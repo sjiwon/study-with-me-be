@@ -2,7 +2,7 @@ package com.kgu.studywithme.member.application.service;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.application.usecase.command.MemberRegistrationUseCase;
+import com.kgu.studywithme.member.application.usecase.command.RegistrationMemberUseCase;
 import com.kgu.studywithme.member.domain.Email;
 import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.member.domain.Nickname;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
-public class MemberRegistrationService implements MemberRegistrationUseCase {
+public class RegistrationMemberService implements RegistrationMemberUseCase {
     private final MemberRepository memberRepository;
 
     @Override
@@ -22,7 +22,7 @@ public class MemberRegistrationService implements MemberRegistrationUseCase {
         validateNicknameIsUnique(command.nickname());
         validatePhoneIsUnique(command.phone());
 
-        return memberRepository.save(command.toEntity()).getId();
+        return memberRepository.save(command.toDomain()).getId();
     }
 
     private void validateEmailIsUnique(final Email email) {

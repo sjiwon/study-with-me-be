@@ -45,7 +45,7 @@ class MemberApiControllerTest extends ControllerTest {
         void throwExceptionByDuplicateNickname() throws Exception {
             // given
             doThrow(StudyWithMeException.type(MemberErrorCode.DUPLICATE_NICKNAME))
-                    .when(memberRegistrationUseCase)
+                    .when(registrationMemberUseCase)
                     .registration(any());
 
             // when
@@ -97,7 +97,7 @@ class MemberApiControllerTest extends ControllerTest {
         @DisplayName("회원가입에 성공한다")
         void success() throws Exception {
             // given
-            given(memberRegistrationUseCase.registration(any())).willReturn(1L);
+            given(registrationMemberUseCase.registration(any())).willReturn(1L);
 
             // when
             final SignUpRequest request = createSignUpRequest();

@@ -6,7 +6,7 @@ import com.kgu.studywithme.member.domain.*;
 import java.time.LocalDate;
 import java.util.Set;
 
-public interface MemberRegistrationUseCase {
+public interface RegistrationMemberUseCase {
     Long registration(Command command);
 
     record Command(
@@ -20,7 +20,7 @@ public interface MemberRegistrationUseCase {
             boolean emailOptIn,
             Set<Category> interests
     ) {
-        public Member toEntity() {
+        public Member toDomain() {
             return Member.createMember(
                     name,
                     nickname,

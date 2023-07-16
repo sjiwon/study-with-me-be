@@ -3,8 +3,8 @@ package com.kgu.studywithme.member.presentation;
 import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.global.aop.CheckMemberIdentity;
-import com.kgu.studywithme.member.application.usecase.command.MemberRegistrationUseCase;
 import com.kgu.studywithme.member.application.usecase.command.MemberReportUseCase;
+import com.kgu.studywithme.member.application.usecase.command.RegistrationMemberUseCase;
 import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
 import com.kgu.studywithme.member.domain.Email;
 import com.kgu.studywithme.member.domain.Gender;
@@ -26,15 +26,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class MemberApiController {
-    private final MemberRegistrationUseCase memberRegistrationUseCase;
+    private final RegistrationMemberUseCase registrationMemberUseCase;
     private final UpdateMemberUseCase updateMemberUseCase;
     private final MemberReportUseCase memberReportUseCase;
 
     @Operation(summary = "회원가입 EndPoint")
     @PostMapping("/member")
     public ResponseEntity<Void> signUp(@RequestBody @Valid final SignUpRequest request) {
-        final Long savedMemberId = memberRegistrationUseCase.registration(
-                new MemberRegistrationUseCase.Command(
+        final Long savedMemberId = registrationMemberUseCase.registration(
+                new RegistrationMemberUseCase.Command(
                         request.name(),
                         Nickname.from(request.nickname()),
                         Email.from(request.email()),
