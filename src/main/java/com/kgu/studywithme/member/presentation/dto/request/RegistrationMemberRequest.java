@@ -8,7 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 import java.util.Set;
 
-public record SignUpRequest(
+public record RegistrationMemberRequest(
         @NotBlank(message = "이름은 필수입니다.")
         String name,
 

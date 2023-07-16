@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.Set;
 
-public record MemberUpdateRequest(
+public record UpdateMemberRequest(
         @NotBlank(message = "닉네임은 필수입니다.")
         String nickname,
 

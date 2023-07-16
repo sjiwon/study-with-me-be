@@ -24,7 +24,7 @@ import com.kgu.studywithme.member.application.usecase.command.ReportMemberUseCas
 import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
 import com.kgu.studywithme.member.presentation.MemberApiController;
 import com.kgu.studywithme.member.presentation.MemberInformationApiController;
-import com.kgu.studywithme.member.presentation.MemberReviewApiController;
+import com.kgu.studywithme.peerreview.presentation.MemberReviewApiController;
 import com.kgu.studywithme.study.application.*;
 import com.kgu.studywithme.study.application.attendance.AttendanceService;
 import com.kgu.studywithme.study.application.notice.NoticeCommentService;

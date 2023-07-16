@@ -3,9 +3,9 @@ package com.kgu.studywithme.member.presentation;
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
-import com.kgu.studywithme.member.presentation.dto.request.MemberReportRequest;
-import com.kgu.studywithme.member.presentation.dto.request.MemberUpdateRequest;
-import com.kgu.studywithme.member.presentation.dto.request.SignUpRequest;
+import com.kgu.studywithme.member.presentation.dto.request.RegistrationMemberRequest;
+import com.kgu.studywithme.member.presentation.dto.request.ReportMemberRequest;
+import com.kgu.studywithme.member.presentation.dto.request.UpdateMemberRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -49,7 +49,7 @@ class MemberApiControllerTest extends ControllerTest {
                     .registration(any());
 
             // when
-            final SignUpRequest request = createSignUpRequest();
+            final RegistrationMemberRequest request = createRegistrationMemberRequest();
             MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
                     .contentType(APPLICATION_JSON)
@@ -100,7 +100,7 @@ class MemberApiControllerTest extends ControllerTest {
             given(registrationMemberUseCase.registration(any())).willReturn(1L);
 
             // when
-            final SignUpRequest request = createSignUpRequest();
+            final RegistrationMemberRequest request = createRegistrationMemberRequest();
             MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
                     .contentType(APPLICATION_JSON)
@@ -154,7 +154,7 @@ class MemberApiControllerTest extends ControllerTest {
                     .update(any());
 
             // when
-            final MemberUpdateRequest request = new MemberUpdateRequest(
+            final UpdateMemberRequest request = new UpdateMemberRequest(
                     "updateNick",
                     "01012300593",
                     "경기도",
@@ -208,7 +208,7 @@ class MemberApiControllerTest extends ControllerTest {
                     .report(any());
 
             // when
-            final MemberReportRequest request = new MemberReportRequest("참여를 안해요");
+            final ReportMemberRequest request = new ReportMemberRequest("참여를 안해요");
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, REPORTEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
@@ -252,7 +252,7 @@ class MemberApiControllerTest extends ControllerTest {
             given(reportMemberUseCase.report(any())).willReturn(1L);
 
             // when
-            final MemberReportRequest request = new MemberReportRequest("참여를 안해요");
+            final ReportMemberRequest request = new ReportMemberRequest("참여를 안해요");
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, REPORTEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
@@ -279,8 +279,8 @@ class MemberApiControllerTest extends ControllerTest {
         }
     }
 
-    private SignUpRequest createSignUpRequest() {
-        return new SignUpRequest(
+    private RegistrationMemberRequest createRegistrationMemberRequest() {
+        return new RegistrationMemberRequest(
                 JIWON.getName(),
                 JIWON.getNickname(),
                 JIWON.getEmail(),
