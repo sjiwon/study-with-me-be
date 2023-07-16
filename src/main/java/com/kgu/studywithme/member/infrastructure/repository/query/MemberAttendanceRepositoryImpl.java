@@ -3,28 +3,54 @@ package com.kgu.studywithme.member.infrastructure.repository.query;
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.AttendanceRatio;
 import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.QAttendanceRatio;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.QStudyAttendanceMetadata;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.StudyAttendanceMetadata;
+import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.QStudyParticipateWeeks;
+import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.StudyParticipateWeeks;
 import com.kgu.studywithme.study.domain.attendance.AttendanceStatus;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.kgu.studywithme.study.domain.attendance.QAttendance.attendance;
 
 @StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
-public class MemberSimpleQueryRepositoryImpl implements MemberSimpleQueryRepository {
+public class MemberAttendanceRepositoryImpl implements MemberAttendanceRepository {
     private final JPAQueryFactory query;
 
     @Override
-    public List<StudyAttendanceMetadata> findStudyAttendanceMetadataByMemberId(final Long memberId) {
+    public List<AttendanceRatio> findAttendanceRatioByMemberId(final Long memberId) {
+        List<AttendanceRatio> fetchResult = query
+                .select(
+                        new QAttendanceRatio(
+                                attendance.status,
+                                attendance.count().intValue()
+                        )
+                )
+                .from(attendance)
+                .where(participantIdEq(memberId))
+                .groupBy(attendance.status)
+                .fetch();
+
+        return includeMissingAttendanceStatus(fetchResult);
+    }
+
+    private List<AttendanceRatio> includeMissingAttendanceStatus(final List<AttendanceRatio> fetchResult) {
+        return AttendanceStatus.getAttendanceStatuses()
+                .stream()
+                .map(status -> fetchResult.stream()
+                        .filter(ratio -> ratio.status() == status)
+                        .findFirst()
+                        .orElse(new AttendanceRatio(status, 0))
+                ).toList();
+    }
+
+    @Override
+    public List<StudyParticipateWeeks> findParticipateWeeksInStudyByMemberId(final Long memberId) {
         return query
                 .select(
-                        new QStudyAttendanceMetadata(
+                        new QStudyParticipateWeeks(
                                 attendance.study.id,
                                 attendance.week
                         )
@@ -52,39 +78,7 @@ public class MemberSimpleQueryRepositoryImpl implements MemberSimpleQueryReposit
                 .fetchOne();
     }
 
-    @Override
-    public List<AttendanceRatio> findAttendanceRatioByMemberId(final Long memberId) {
-        List<AttendanceRatio> fetchResult = query
-                .select(
-                        new QAttendanceRatio(
-                                attendance.status,
-                                attendance.count().intValue()
-                        )
-                )
-                .from(attendance)
-                .where(participantIdEq(memberId))
-                .groupBy(attendance.status)
-                .fetch();
-
-        return includeMissingAttendanceStatus(fetchResult);
-    }
-
-    private List<AttendanceRatio> includeMissingAttendanceStatus(final List<AttendanceRatio> fetchResult) {
-        List<AttendanceRatio> result = new ArrayList<>();
-
-        for (AttendanceStatus status : AttendanceStatus.getAttendanceStatuses()) {
-            AttendanceRatio specificAttendanceRatio = fetchResult.stream()
-                    .filter(ratio -> ratio.status() == status)
-                    .findFirst()
-                    .orElse(new AttendanceRatio(status, 0));
-
-            result.add(specificAttendanceRatio);
-        }
-
-        return result;
-    }
-
     private BooleanExpression participantIdEq(final Long memberId) {
-        return attendance.participant.id.eq(memberId);
+        return (memberId != null) ? attendance.participant.id.eq(memberId) : null;
     }
 }

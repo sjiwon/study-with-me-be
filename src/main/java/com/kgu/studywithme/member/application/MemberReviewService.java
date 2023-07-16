@@ -9,7 +9,7 @@ import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.member.domain.review.PeerReview;
 import com.kgu.studywithme.member.domain.review.PeerReviewRepository;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.StudyAttendanceMetadata;
+import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.StudyParticipateWeeks;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -51,10 +51,10 @@ public class MemberReviewService {
             final Long revieweeId,
             final Long reviewerId
     ) {
-        final List<StudyAttendanceMetadata> revieweeMetadata
-                = memberRepository.findStudyAttendanceMetadataByMemberId(revieweeId);
-        final List<StudyAttendanceMetadata> reviewerMetadata
-                = memberRepository.findStudyAttendanceMetadataByMemberId(reviewerId);
+        final List<StudyParticipateWeeks> revieweeMetadata
+                = memberRepository.findParticipateWeeksInStudyByMemberId(revieweeId);
+        final List<StudyParticipateWeeks> reviewerMetadata
+                = memberRepository.findParticipateWeeksInStudyByMemberId(reviewerId);
 
         final boolean hasCommonMetadata =
                 revieweeMetadata
@@ -70,8 +70,8 @@ public class MemberReviewService {
     }
 
     private boolean hasCommonMetadata(
-            final StudyAttendanceMetadata revieweeData,
-            final StudyAttendanceMetadata reviewerData
+            final StudyParticipateWeeks revieweeData,
+            final StudyParticipateWeeks reviewerData
     ) {
         return revieweeData.studyId().equals(reviewerData.studyId()) && revieweeData.week() == reviewerData.week();
     }

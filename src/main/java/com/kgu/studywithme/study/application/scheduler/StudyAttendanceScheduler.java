@@ -40,7 +40,7 @@ public class StudyAttendanceScheduler {
                 attendanceRepository.updateParticipantStatus(studyId, specificWeek, participantIds, ABSENCE);
             }
         });
-        memberRepository.applyAbsenceScore(absenceParticipantIds);
+        memberRepository.applyScoreToAbsenceParticipant(absenceParticipantIds);
     }
 
     private Set<Long> extractNonAttendanceParticipantIds(
