@@ -1,6 +1,6 @@
 package com.kgu.studywithme.member.infrastructure.repository.query;
 
-public interface MemberDuplicateCheckQueryRepository {
+public interface MemberDuplicateCheckRepository {
     boolean isEmailExists(String email);
 
     boolean isNicknameExists(String nickname);

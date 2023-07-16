@@ -10,7 +10,7 @@ import static com.kgu.studywithme.member.domain.report.ReportStatus.RECEIVE;
 
 @StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
-public class MemberReportHandlingQueryRepositoryImpl implements MemberReportHandlingQueryRepository {
+public class MemberReportHandlingRepositoryImpl implements MemberReportHandlingRepository {
     private final JPAQueryFactory query;
 
     @Override

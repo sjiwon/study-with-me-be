@@ -13,8 +13,8 @@ import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Member -> MemberDuplicateCheckQueryRepository 테스트")
-class MemberDuplicateCheckQueryRepositoryTest extends RepositoryTest {
+@DisplayName("Member -> MemberDuplicateCheckRepository 테스트")
+class MemberDuplicateCheckRepositoryTest extends RepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
 

@@ -14,8 +14,8 @@ import static com.kgu.studywithme.fixture.MemberFixture.GHOST;
 import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("Member -> MemberReportHandlingQueryRepository 테스트")
-class MemberReportHandlingQueryRepositoryTest extends RepositoryTest {
+@DisplayName("Member -> MemberReportHandlingRepository 테스트")
+class MemberReportHandlingRepositoryTest extends RepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
 

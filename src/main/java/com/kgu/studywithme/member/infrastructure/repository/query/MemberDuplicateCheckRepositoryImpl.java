@@ -8,7 +8,7 @@ import static com.kgu.studywithme.member.domain.QMember.member;
 
 @StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
-public class MemberDuplicateCheckQueryRepositoryImpl implements MemberDuplicateCheckQueryRepository {
+public class MemberDuplicateCheckRepositoryImpl implements MemberDuplicateCheckRepository {
     private final JPAQueryFactory query;
 
     @Override
