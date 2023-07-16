@@ -1,9 +1,6 @@
 package com.kgu.studywithme.member.domain;
 
 import com.kgu.studywithme.category.domain.Category;
-import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.domain.review.PeerReview;
-import com.kgu.studywithme.member.exception.MemberErrorCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -15,7 +12,6 @@ import static com.kgu.studywithme.category.domain.Category.*;
 import static com.kgu.studywithme.fixture.MemberFixture.*;
 import static com.kgu.studywithme.study.domain.attendance.AttendanceStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("Member -> 도메인 [Member] 테스트")
@@ -105,73 +101,8 @@ class MemberTest {
     }
 
     @Nested
-    @DisplayName("스터디 피어 리뷰 작성")
-    class applyPeerReview {
-        private Member reviewee1;
-        private Member reviewee2;
-        private Member reviewer1;
-        private Member reviewer2;
-
-        @BeforeEach
-        void setUp() {
-            // 리뷰 받는 사람
-            reviewee1 = JIWON.toMember();
-            reviewee2 = GHOST.toMember();
-
-            // 리뷰 작성하는 사람
-            reviewer1 = DUMMY1.toMember();
-            reviewer2 = DUMMY2.toMember();
-        }
-
-        @Test
-        @DisplayName("이미 리뷰를 작성했다면 중복으로 작성할 수 없다")
-        void failureByAlreadyReview() {
-            // given
-            reviewee1.applyPeerReview(reviewer1, "좋은 팀원이에요.");
-
-            // when - then
-            assertThatThrownBy(() -> reviewee1.applyPeerReview(reviewer1, "열심히 안해요."))
-                    .isInstanceOf(StudyWithMeException.class)
-                    .hasMessage(MemberErrorCode.ALREADY_REVIEW.getMessage());
-        }
-
-        @Test
-        @DisplayName("피어 리뷰 작성에 성공한다")
-        void success() {
-            // when
-            /* reviewer1 -> reviewee1 */
-            reviewee1.applyPeerReview(reviewer1, "좋은 팀원이에요.");
-
-            /* reviewer1, reviewer2 -> reviewee2 */
-            reviewee2.applyPeerReview(reviewer1, "열심히 안해요.");
-            reviewee2.applyPeerReview(reviewer2, "열심히 안해요.");
-
-            // then
-            assertAll(
-                    // reviewee1
-                    () -> assertThat(reviewee1.getPeerReviews()).hasSize(1),
-                    () -> assertThat(reviewee1.getPeerReviews())
-                            .map(PeerReview::getReviewer)
-                            .containsExactlyInAnyOrder(reviewer1),
-                    () -> assertThat(reviewee1.getPeerReviews())
-                            .map(PeerReview::getContent)
-                            .containsExactlyInAnyOrder("좋은 팀원이에요."),
-
-                    // reviewee2
-                    () -> assertThat(reviewee2.getPeerReviews()).hasSize(2),
-                    () -> assertThat(reviewee2.getPeerReviews())
-                            .map(PeerReview::getReviewer)
-                            .containsExactlyInAnyOrder(reviewer1, reviewer2),
-                    () -> assertThat(reviewee2.getPeerReviews())
-                            .map(PeerReview::getContent)
-                            .containsExactlyInAnyOrder("열심히 안해요.", "열심히 안해요.")
-            );
-        }
-    }
-
-    @Nested
     @DisplayName("사용자 점수 업데이트")
-    class updateScore{
+    class updateScore {
         private Member member;
 
         @BeforeEach

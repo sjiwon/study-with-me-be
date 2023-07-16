@@ -3,8 +3,6 @@ package com.kgu.studywithme.member.domain;
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.global.BaseEntity;
 import com.kgu.studywithme.member.domain.interest.Interest;
-import com.kgu.studywithme.member.domain.review.PeerReview;
-import com.kgu.studywithme.member.domain.review.PeerReviews;
 import com.kgu.studywithme.study.domain.attendance.AttendanceStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -49,9 +47,6 @@ public class Member extends BaseEntity<Member> {
     @Column(name = "is_email_opt_in", nullable = false)
     private boolean emailOptIn;
 
-    @Embedded
-    private PeerReviews peerReviews;
-
     @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<Interest> interests = new ArrayList<>();
 
@@ -75,7 +70,6 @@ public class Member extends BaseEntity<Member> {
         this.region = region;
         this.score = Score.initScore();
         this.emailOptIn = emailOptIn;
-        this.peerReviews = PeerReviews.createPeerReviewsPage();
         applyInterests(interests);
     }
 
@@ -119,13 +113,6 @@ public class Member extends BaseEntity<Member> {
 
     public boolean isSameMember(final Member member) {
         return this.email.isSameEmail(member.getEmail());
-    }
-
-    public void applyPeerReview(
-            final Member reviewer,
-            final String content
-    ) {
-        peerReviews.writeReview(PeerReview.doReview(this, reviewer, content));
     }
 
     public void applyScoreByAttendanceStatus(final AttendanceStatus status) {
@@ -187,10 +174,6 @@ public class Member extends BaseEntity<Member> {
 
     public int getScore() {
         return score.getValue();
-    }
-
-    public List<PeerReview> getPeerReviews() {
-        return peerReviews.getPeerReviews();
     }
 
     public List<Category> getInterests() {
