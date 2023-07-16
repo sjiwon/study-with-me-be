@@ -19,13 +19,14 @@ import com.kgu.studywithme.favorite.presentation.FavoriteApiController;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.application.MemberInformationService;
 import com.kgu.studywithme.member.application.usecase.command.RegistrationMemberUseCase;
-import com.kgu.studywithme.member.application.usecase.command.ReportMemberUseCase;
 import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
 import com.kgu.studywithme.member.presentation.MemberApiController;
 import com.kgu.studywithme.member.presentation.MemberInformationApiController;
 import com.kgu.studywithme.peerreview.application.usecase.command.UpdatePeerReviewUseCase;
 import com.kgu.studywithme.peerreview.application.usecase.command.WritePeerReviewUseCase;
 import com.kgu.studywithme.peerreview.presentation.MemberReviewApiController;
+import com.kgu.studywithme.report.application.usecase.command.ReportMemberUseCase;
+import com.kgu.studywithme.report.presentation.MemberReportApiController;
 import com.kgu.studywithme.study.application.*;
 import com.kgu.studywithme.study.application.attendance.AttendanceService;
 import com.kgu.studywithme.study.application.notice.NoticeCommentService;
@@ -74,22 +75,28 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @WebMvcTest({
-        // auth
+        // Auth
         OAuthApiController.class, TokenReissueApiController.class,
 
-        // category & favorite
+        // Category & Favorite
         CategoryApiController.class, FavoriteApiController.class,
 
-        // member
-        MemberApiController.class, MemberInformationApiController.class, MemberReviewApiController.class,
+        // Member
+        MemberApiController.class, MemberInformationApiController.class,
 
-        // study
+        // Review
+        MemberReviewApiController.class,
+
+        // Report
+        MemberReportApiController.class,
+
+        // Study
         StudyApiController.class, StudyInformationApiController.class, StudyParticipationApiController.class,
         StudyReviewApiController.class, StudySearchApiController.class,
         StudyNoticeApiController.class, StudyNoticeCommentApiController.class,
         AttendanceApiController.class, StudyWeeklyApiController.class,
 
-        // upload
+        // Upload
         UploadApiController.class,
 })
 @ExtendWith(RestDocumentationExtension.class)
@@ -141,9 +148,6 @@ public abstract class ControllerTest {
     protected UpdateMemberUseCase updateMemberUseCase;
 
     @MockBean
-    protected ReportMemberUseCase reportMemberUseCase;
-
-    @MockBean
     protected MemberInformationService memberInformationService;
 
     // PeerReview
@@ -152,6 +156,10 @@ public abstract class ControllerTest {
 
     @MockBean
     protected UpdatePeerReviewUseCase updatePeerReviewUseCase;
+
+    // Report
+    @MockBean
+    protected ReportMemberUseCase reportMemberUseCase;
 
     // Study
     @MockBean

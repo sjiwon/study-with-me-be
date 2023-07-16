@@ -16,7 +16,6 @@ public enum MemberErrorCode implements ErrorCode {
     DUPLICATE_PHONE(HttpStatus.CONFLICT, "MEMBER_006", "이미 사용중인 전화번호입니다."),
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER_007", "사용자 정보를 찾을 수 없습니다."),
     MEMBER_IS_NOT_WRITER(HttpStatus.CONFLICT, "MEMBER_008", "작성자가 아닙니다."),
-    PREVIOUS_REPORT_IS_STILL_PENDING(HttpStatus.CONFLICT, "MEMBER_010", "해당 사용자에 대해서 이전에 신고하신 내역이 처리중입니다."),
     INVALID_GENDER(HttpStatus.BAD_REQUEST, "MEMBER_014", "유효하지 않은 성별입니다."),
     NICKNAME_SAME_AS_BEFORE(HttpStatus.CONFLICT, "MEMBER_015", "이전과 동일한 닉네임으로 수정할 수 없습니다."),
     ;

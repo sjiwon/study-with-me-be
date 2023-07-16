@@ -4,14 +4,12 @@ import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.global.aop.CheckMemberIdentity;
 import com.kgu.studywithme.member.application.usecase.command.RegistrationMemberUseCase;
-import com.kgu.studywithme.member.application.usecase.command.ReportMemberUseCase;
 import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
 import com.kgu.studywithme.member.domain.Email;
 import com.kgu.studywithme.member.domain.Gender;
 import com.kgu.studywithme.member.domain.Nickname;
 import com.kgu.studywithme.member.domain.Region;
 import com.kgu.studywithme.member.presentation.dto.request.RegistrationMemberRequest;
-import com.kgu.studywithme.member.presentation.dto.request.ReportMemberRequest;
 import com.kgu.studywithme.member.presentation.dto.request.UpdateMemberRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,14 +19,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-@Tag(name = "3-1. 사용자 기본 API")
+@Tag(name = "3-1. 사용자 회원가입/정보 수정 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class MemberApiController {
     private final RegistrationMemberUseCase registrationMemberUseCase;
     private final UpdateMemberUseCase updateMemberUseCase;
-    private final ReportMemberUseCase reportMemberUseCase;
 
     @Operation(summary = "회원가입 EndPoint")
     @PostMapping("/member")
@@ -75,17 +72,6 @@ public class MemberApiController {
                         Category.of(request.interests())
                 )
         );
-        return ResponseEntity.noContent().build();
-    }
-
-    @Operation(summary = "사용자 신고 EndPoint")
-    @PostMapping("/members/{reporteeId}/report")
-    public ResponseEntity<Void> report(
-            @ExtractPayload final Long reporterId,
-            @PathVariable final Long reporteeId,
-            @RequestBody @Valid final ReportMemberRequest request
-    ) {
-        reportMemberUseCase.report(new ReportMemberUseCase.Command(reporterId, reporteeId, request.reason()));
         return ResponseEntity.noContent().build();
     }
 }

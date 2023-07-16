@@ -1,4 +1,4 @@
-package com.kgu.studywithme.member.presentation.dto.request;
+package com.kgu.studywithme.report.presentation.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 

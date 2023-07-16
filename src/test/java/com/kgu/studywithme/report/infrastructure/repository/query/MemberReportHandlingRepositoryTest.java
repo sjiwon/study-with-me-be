@@ -1,10 +1,10 @@
-package com.kgu.studywithme.member.infrastructure.repository.query;
+package com.kgu.studywithme.report.infrastructure.repository.query;
 
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
-import com.kgu.studywithme.member.domain.report.Report;
-import com.kgu.studywithme.member.domain.report.ReportRepository;
+import com.kgu.studywithme.report.domain.Report;
+import com.kgu.studywithme.report.domain.ReportRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import static com.kgu.studywithme.fixture.MemberFixture.GHOST;
 import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("Member -> MemberReportHandlingRepository 테스트")
+@DisplayName("Report -> MemberReportHandlingRepository 테스트")
 class MemberReportHandlingRepositoryTest extends RepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
@@ -44,14 +44,14 @@ class MemberReportHandlingRepositoryTest extends RepositoryTest {
         );
 
         // 1. 신고 접수
-        assertThat(memberRepository.isReportStillPending(memberA.getId(), memberB.getId())).isTrue();
+        assertThat(reportRepository.isReportStillPending(memberA.getId(), memberB.getId())).isTrue();
 
         // 2. 신고 승인
         report.approveReport();
-        assertThat(memberRepository.isReportStillPending(memberA.getId(), memberB.getId())).isFalse();
+        assertThat(reportRepository.isReportStillPending(memberA.getId(), memberB.getId())).isFalse();
 
         // 3. 신고 거부
         report.rejectReport();
-        assertThat(memberRepository.isReportStillPending(memberA.getId(), memberB.getId())).isFalse();
+        assertThat(reportRepository.isReportStillPending(memberA.getId(), memberB.getId())).isFalse();
     }
 }

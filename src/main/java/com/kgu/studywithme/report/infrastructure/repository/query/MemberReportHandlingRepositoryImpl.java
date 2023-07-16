@@ -1,12 +1,12 @@
-package com.kgu.studywithme.member.infrastructure.repository.query;
+package com.kgu.studywithme.report.infrastructure.repository.query;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
-import com.kgu.studywithme.member.domain.report.ReportStatus;
+import com.kgu.studywithme.report.domain.ReportStatus;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
-import static com.kgu.studywithme.member.domain.report.QReport.report;
-import static com.kgu.studywithme.member.domain.report.ReportStatus.RECEIVE;
+import static com.kgu.studywithme.report.domain.QReport.report;
+import static com.kgu.studywithme.report.domain.ReportStatus.RECEIVE;
 
 @StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor

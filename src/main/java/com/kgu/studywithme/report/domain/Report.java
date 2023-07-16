@@ -1,4 +1,4 @@
-package com.kgu.studywithme.member.domain.report;
+package com.kgu.studywithme.report.domain;
 
 import com.kgu.studywithme.global.BaseEntity;
 import jakarta.persistence.*;
@@ -6,7 +6,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import static com.kgu.studywithme.member.domain.report.ReportStatus.*;
+import static com.kgu.studywithme.report.domain.ReportStatus.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

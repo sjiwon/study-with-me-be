@@ -1,4 +1,4 @@
-package com.kgu.studywithme.member.domain.report;
+package com.kgu.studywithme.report.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

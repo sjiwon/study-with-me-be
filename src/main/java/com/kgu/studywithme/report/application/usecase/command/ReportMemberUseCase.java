@@ -1,4 +1,4 @@
-package com.kgu.studywithme.member.application.usecase.command;
+package com.kgu.studywithme.report.application.usecase.command;
 
 public interface ReportMemberUseCase {
     Long report(Command command);

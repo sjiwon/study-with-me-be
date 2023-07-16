@@ -1,12 +1,11 @@
-package com.kgu.studywithme.member.application.service;
+package com.kgu.studywithme.report.application.service;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.application.usecase.command.ReportMemberUseCase;
-import com.kgu.studywithme.member.domain.MemberRepository;
-import com.kgu.studywithme.member.domain.report.Report;
-import com.kgu.studywithme.member.domain.report.ReportRepository;
-import com.kgu.studywithme.member.exception.MemberErrorCode;
+import com.kgu.studywithme.report.application.usecase.command.ReportMemberUseCase;
+import com.kgu.studywithme.report.domain.Report;
+import com.kgu.studywithme.report.domain.ReportRepository;
+import com.kgu.studywithme.report.exception.ReportErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class ReportMemberService implements ReportMemberUseCase {
-    private final MemberRepository memberRepository;
     private final ReportRepository reportRepository;
 
     @Override
@@ -29,8 +27,8 @@ public class ReportMemberService implements ReportMemberUseCase {
             final Long reporterId,
             final Long reporteeId
     ) {
-        if (memberRepository.isReportStillPending(reporterId, reporteeId)) {
-            throw StudyWithMeException.type(MemberErrorCode.PREVIOUS_REPORT_IS_STILL_PENDING);
+        if (reportRepository.isReportStillPending(reporterId, reporteeId)) {
+            throw StudyWithMeException.type(ReportErrorCode.PREVIOUS_REPORT_IS_STILL_PENDING);
         }
     }
 }

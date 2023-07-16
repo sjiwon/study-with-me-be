@@ -1,13 +1,13 @@
-package com.kgu.studywithme.member.domain.report;
+package com.kgu.studywithme.report.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.kgu.studywithme.member.domain.report.ReportStatus.*;
+import static com.kgu.studywithme.report.domain.ReportStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Member/Report -> 도메인 [Report] 테스트")
+@DisplayName("Report -> 도메인 [Report] 테스트")
 class ReportTest {
     private static final String REASON = "무단 결석을 10회나 했어요. 계정 정지시켜주세요.";
 

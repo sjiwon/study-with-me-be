@@ -27,7 +27,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("Member -> MemberReviewApiController 테스트")
+@DisplayName("PeerReview -> MemberReviewApiController 테스트")
 class MemberReviewApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("사용자 피어리뷰 작성 API [POST /api/members/{revieweeId}/review] - AccessToken 필수")
