@@ -7,8 +7,8 @@ import com.kgu.studywithme.member.application.dto.response.MemberInformation;
 import com.kgu.studywithme.member.application.dto.response.PeerReviewAssembler;
 import com.kgu.studywithme.member.application.dto.response.RelatedStudy;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.domain.review.PeerReview;
 import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.AttendanceRatio;
+import com.kgu.studywithme.peerreview.domain.PeerReview;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.study.domain.attendance.AttendanceStatus;
 import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.SimpleGraduatedStudy;
@@ -148,8 +148,12 @@ class MemberInformationServiceTest extends ServiceTest {
     @DisplayName("사용자의 피어리뷰를 조회한다")
     void getPeerReviews() {
         // given
-        peerReviewRepository.save(PeerReview.doReview(host, member, "host는 최고다."));
-        peerReviewRepository.save(PeerReview.doReview(member, host, "member는 최고다."));
+        peerReviewRepository.saveAll(
+                List.of(
+                        PeerReview.doReview(host.getId(), member.getId(), "member는 최고다."),
+                        PeerReview.doReview(member.getId(), host.getId(), "host는 최고다.")
+                )
+        );
 
         // when
         PeerReviewAssembler hostReview = memberInformationService.getPeerReviews(host.getId());

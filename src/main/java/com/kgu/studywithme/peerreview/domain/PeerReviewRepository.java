@@ -1,4 +1,4 @@
-package com.kgu.studywithme.member.domain.review;
+package com.kgu.studywithme.peerreview.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,9 +11,9 @@ public interface PeerReviewRepository extends JpaRepository<PeerReview, Long> {
     // @Query
     @Query("SELECT p.content" +
             " FROM PeerReview p" +
-            " WHERE p.reviewee.id = :memberId")
-    List<String> findPeerReviewByMemberId(@Param("memberId") Long memberId);
+            " WHERE p.revieweeId = :revieweeId")
+    List<String> findAllReviewContentByRevieweeId(@Param("revieweeId") Long revieweeId);
 
     // Query Method
-    Optional<PeerReview> findByRevieweeIdAndReviewerId(Long revieweeId, Long reviewerId);
+    Optional<PeerReview> findByReviewerIdAndRevieweeId(Long reviewerId, Long revieweeId);
 }
