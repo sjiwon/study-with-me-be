@@ -16,4 +16,6 @@ public interface PeerReviewRepository extends JpaRepository<PeerReview, Long> {
 
     // Query Method
     Optional<PeerReview> findByReviewerIdAndRevieweeId(Long reviewerId, Long revieweeId);
+
+    boolean existsByReviewerIdAndRevieweeId(Long reviewerId, Long revieweeId);
 }

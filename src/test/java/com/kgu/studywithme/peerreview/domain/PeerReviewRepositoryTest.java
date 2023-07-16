@@ -71,6 +71,29 @@ public class PeerReviewRepositoryTest extends RepositoryTest {
         assertThatPeerReviewMatch();
     }
 
+    @Test
+    @DisplayName("Reviewer - Reviewee간 피어리뷰 레코드가 존재하는지 확인한다")
+    void existsByReviewerIdAndRevieweeId() {
+        // given
+        doReview(reviewers[1], reviewers[3]);
+
+        // when
+        boolean actual1 = peerReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[0].getId(), reviewee.getId());
+        boolean actual2 = peerReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[1].getId(), reviewee.getId());
+        boolean actual3 = peerReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[2].getId(), reviewee.getId());
+        boolean actual4 = peerReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[3].getId(), reviewee.getId());
+        boolean actual5 = peerReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[4].getId(), reviewee.getId());
+
+        // then
+        assertAll(
+                () -> assertThat(actual1).isFalse(),
+                () -> assertThat(actual2).isTrue(),
+                () -> assertThat(actual3).isFalse(),
+                () -> assertThat(actual4).isTrue(),
+                () -> assertThat(actual5).isFalse()
+        );
+    }
+
     private void doReview(Member... reviewers) {
         Arrays.stream(reviewers)
                 .forEach(reviewer ->

@@ -1,9 +1,11 @@
-package com.kgu.studywithme.member.presentation;
+package com.kgu.studywithme.peerreview.presentation;
 
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
-import com.kgu.studywithme.member.presentation.dto.request.MemberReviewRequest;
+import com.kgu.studywithme.peerreview.exception.PeerReviewErrorCode;
+import com.kgu.studywithme.peerreview.presentation.dto.request.MemberReviewRequest;
+import com.kgu.studywithme.peerreview.presentation.dto.request.WritePeerReviewRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -13,6 +15,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -28,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("Member -> MemberReviewApiController 테스트")
 class MemberReviewApiControllerTest extends ControllerTest {
     @Nested
-    @DisplayName("사용자 피어리뷰 등록 API [POST /api/members/{revieweeId}/review] - AccessToken 필수")
+    @DisplayName("사용자 피어리뷰 작성 API [POST /api/members/{revieweeId}/review] - AccessToken 필수")
     class writeReview {
         private static final String BASE_URL = "/api/members/{revieweeId}/review";
         private static final Long REVIEWEE_ID = 1L;
@@ -39,12 +42,12 @@ class MemberReviewApiControllerTest extends ControllerTest {
         void throwExceptionByAlreadyReview() throws Exception {
             // given
             mockingToken(true, REVIEWER_ID);
-            doThrow(StudyWithMeException.type(MemberErrorCode.ALREADY_REVIEW))
-                    .when(memberReviewService)
-                    .writeReview(any(), any(), any());
+            doThrow(StudyWithMeException.type(PeerReviewErrorCode.ALREADY_REVIEW))
+                    .when(writePeerReviewUseCase)
+                    .writePeerReview(any());
 
             // when
-            final MemberReviewRequest request = new MemberReviewRequest("스터디에 참여를 잘해요");
+            final WritePeerReviewRequest request = new WritePeerReviewRequest("스터디에 참여를 잘해요");
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, REVIEWEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
@@ -52,7 +55,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
                     .content(convertObjectToJson(request));
 
             // then
-            final MemberErrorCode expectedError = MemberErrorCode.ALREADY_REVIEW;
+            final PeerReviewErrorCode expectedError = PeerReviewErrorCode.ALREADY_REVIEW;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
                             status().isConflict(),
@@ -85,12 +88,12 @@ class MemberReviewApiControllerTest extends ControllerTest {
         void throwExceptionBySelfReviewNotAllowed() throws Exception {
             // given
             mockingToken(true, REVIEWEE_ID);
-            doThrow(StudyWithMeException.type(MemberErrorCode.SELF_REVIEW_NOT_ALLOWED))
-                    .when(memberReviewService)
-                    .writeReview(any(), any(), any());
+            doThrow(StudyWithMeException.type(PeerReviewErrorCode.SELF_REVIEW_NOT_ALLOWED))
+                    .when(writePeerReviewUseCase)
+                    .writePeerReview(any());
 
             // when
-            final MemberReviewRequest request = new MemberReviewRequest("스터디에 참여를 잘해요");
+            final WritePeerReviewRequest request = new WritePeerReviewRequest("스터디에 참여를 잘해요");
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, REVIEWEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
@@ -98,10 +101,10 @@ class MemberReviewApiControllerTest extends ControllerTest {
                     .content(convertObjectToJson(request));
 
             // then
-            final MemberErrorCode expectedError = MemberErrorCode.SELF_REVIEW_NOT_ALLOWED;
+            final PeerReviewErrorCode expectedError = PeerReviewErrorCode.SELF_REVIEW_NOT_ALLOWED;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
-                            status().isConflict(),
+                            status().isBadRequest(),
                             jsonPath("$.status").exists(),
                             jsonPath("$.status").value(expectedError.getStatus().value()),
                             jsonPath("$.errorCode").exists(),
@@ -131,12 +134,12 @@ class MemberReviewApiControllerTest extends ControllerTest {
         void throwExceptionByCommonStudyRecordNotFound() throws Exception {
             // given
             mockingToken(true, REVIEWER_ID);
-            doThrow(StudyWithMeException.type(MemberErrorCode.COMMON_STUDY_RECORD_NOT_FOUND))
-                    .when(memberReviewService)
-                    .writeReview(any(), any(), any());
+            doThrow(StudyWithMeException.type(PeerReviewErrorCode.COMMON_STUDY_RECORD_NOT_FOUND))
+                    .when(writePeerReviewUseCase)
+                    .writePeerReview(any());
 
             // when
-            final MemberReviewRequest request = new MemberReviewRequest("스터디에 참여를 잘해요");
+            final WritePeerReviewRequest request = new WritePeerReviewRequest("스터디에 참여를 잘해요");
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, REVIEWEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
@@ -144,7 +147,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
                     .content(convertObjectToJson(request));
 
             // then
-            final MemberErrorCode expectedError = MemberErrorCode.COMMON_STUDY_RECORD_NOT_FOUND;
+            final PeerReviewErrorCode expectedError = PeerReviewErrorCode.COMMON_STUDY_RECORD_NOT_FOUND;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
                             status().isConflict(),
@@ -177,12 +180,10 @@ class MemberReviewApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, REVIEWER_ID);
-            doNothing()
-                    .when(memberReviewService)
-                    .writeReview(any(), any(), any());
+            given(writePeerReviewUseCase.writePeerReview(any())).willReturn(1L);
 
             // when
-            final MemberReviewRequest request = new MemberReviewRequest("스터디에 참여를 잘해요");
+            final WritePeerReviewRequest request = new WritePeerReviewRequest("스터디에 참여를 잘해요");
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, REVIEWEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))

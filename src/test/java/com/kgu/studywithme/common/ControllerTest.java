@@ -24,6 +24,7 @@ import com.kgu.studywithme.member.application.usecase.command.ReportMemberUseCas
 import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
 import com.kgu.studywithme.member.presentation.MemberApiController;
 import com.kgu.studywithme.member.presentation.MemberInformationApiController;
+import com.kgu.studywithme.peerreview.application.usecase.command.WritePeerReviewUseCase;
 import com.kgu.studywithme.peerreview.presentation.MemberReviewApiController;
 import com.kgu.studywithme.study.application.*;
 import com.kgu.studywithme.study.application.attendance.AttendanceService;
@@ -109,7 +110,7 @@ public abstract class ControllerTest {
     @MockBean
     private StudyValidator studyValidator;
 
-    // auth
+    // Auth
     @MockBean
     protected QueryOAuthLinkUseCase queryOAuthLinkUseCase;
 
@@ -122,7 +123,7 @@ public abstract class ControllerTest {
     @MockBean
     protected TokenReissueUseCase tokenReissueUseCase;
 
-    // category & favorite
+    // Category & Favorite
     @MockBean
     protected QueryAllCategoriesUseCase queryAllCategoriesUseCase;
 
@@ -132,7 +133,7 @@ public abstract class ControllerTest {
     @MockBean
     protected StudyLikeCancellationUseCase studyLikeCancellationUseCase;
 
-    // member
+    // Member
     @MockBean
     protected RegistrationMemberUseCase registrationMemberUseCase;
 
@@ -148,7 +149,11 @@ public abstract class ControllerTest {
     @MockBean
     protected MemberReviewService memberReviewService;
 
-    // study
+    // PeerReview
+    @MockBean
+    protected WritePeerReviewUseCase writePeerReviewUseCase;
+
+    // Study
     @MockBean
     protected StudyService studyService;
 
@@ -176,7 +181,7 @@ public abstract class ControllerTest {
     @MockBean
     protected StudyWeeklyService studyWeeklyService;
 
-    // upload
+    // Upload
     @MockBean
     protected UploadWeeklyImageUseCase uploadWeeklyImageUseCase;
 

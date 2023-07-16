@@ -3,78 +3,17 @@ package com.kgu.studywithme.member.application;
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.application.service.QueryMemberByIdService;
-import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.domain.MemberRepository;
-import com.kgu.studywithme.member.domain.review.PeerReview;
-import com.kgu.studywithme.member.domain.review.PeerReviewRepository;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.StudyParticipateWeeks;
+import com.kgu.studywithme.peerreview.domain.PeerReview;
+import com.kgu.studywithme.peerreview.domain.PeerReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
 public class MemberReviewService {
-    private final QueryMemberByIdService queryMemberByIdService;
-    private final MemberRepository memberRepository;
     private final PeerReviewRepository peerReviewRepository;
-
-    @StudyWithMeWritableTransactional
-    public void writeReview(
-            final Long revieweeId,
-            final Long reviewerId,
-            final String content
-    ) {
-        validateSelfReviewNotAllowed(revieweeId, reviewerId);
-        validateColleague(revieweeId, reviewerId);
-
-        final Member reviewee = queryMemberByIdService.findById(revieweeId);
-        final Member reviewer = queryMemberByIdService.findById(reviewerId);
-
-        reviewee.applyPeerReview(reviewer, content);
-    }
-
-    private void validateSelfReviewNotAllowed(
-            final Long revieweeId,
-            final Long reviewerId
-    ) {
-        if (revieweeId.equals(reviewerId)) {
-            throw StudyWithMeException.type(MemberErrorCode.SELF_REVIEW_NOT_ALLOWED);
-        }
-    }
-
-    private void validateColleague(
-            final Long revieweeId,
-            final Long reviewerId
-    ) {
-        final List<StudyParticipateWeeks> revieweeMetadata
-                = memberRepository.findParticipateWeeksInStudyByMemberId(revieweeId);
-        final List<StudyParticipateWeeks> reviewerMetadata
-                = memberRepository.findParticipateWeeksInStudyByMemberId(reviewerId);
-
-        final boolean hasCommonMetadata =
-                revieweeMetadata
-                        .stream()
-                        .anyMatch(revieweeData ->
-                                reviewerMetadata.stream()
-                                        .anyMatch(reviewerData -> hasCommonMetadata(revieweeData, reviewerData))
-                        );
-
-        if (!hasCommonMetadata) {
-            throw StudyWithMeException.type(MemberErrorCode.COMMON_STUDY_RECORD_NOT_FOUND);
-        }
-    }
-
-    private boolean hasCommonMetadata(
-            final StudyParticipateWeeks revieweeData,
-            final StudyParticipateWeeks reviewerData
-    ) {
-        return revieweeData.studyId().equals(reviewerData.studyId()) && revieweeData.week() == reviewerData.week();
-    }
 
     @StudyWithMeWritableTransactional
     public void updateReview(
@@ -82,7 +21,7 @@ public class MemberReviewService {
             final Long reviewerId,
             final String content
     ) {
-        PeerReview peerReview = peerReviewRepository.findByRevieweeIdAndReviewerId(revieweeId, reviewerId)
+        PeerReview peerReview = peerReviewRepository.findByReviewerIdAndRevieweeId(reviewerId, revieweeId)
                 .orElseThrow(() -> StudyWithMeException.type(MemberErrorCode.PEER_REVIEW_NOT_FOUND));
         peerReview.updateReview(content);
     }

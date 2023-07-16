@@ -1,8 +1,10 @@
-package com.kgu.studywithme.member.presentation;
+package com.kgu.studywithme.peerreview.presentation;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.member.application.MemberReviewService;
-import com.kgu.studywithme.member.presentation.dto.request.MemberReviewRequest;
+import com.kgu.studywithme.peerreview.application.usecase.command.WritePeerReviewUseCase;
+import com.kgu.studywithme.peerreview.presentation.dto.request.MemberReviewRequest;
+import com.kgu.studywithme.peerreview.presentation.dto.request.WritePeerReviewRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/members/{revieweeId}/review")
 public class MemberReviewApiController {
+    private final WritePeerReviewUseCase writePeerReviewUseCase;
     private final MemberReviewService memberReviewService;
 
     @Operation(summary = "피어리뷰 작성 EndPoint")
@@ -22,9 +25,11 @@ public class MemberReviewApiController {
     public ResponseEntity<Void> writeReview(
             @ExtractPayload final Long reviewerId,
             @PathVariable final Long revieweeId,
-            @RequestBody @Valid final MemberReviewRequest request
+            @RequestBody @Valid final WritePeerReviewRequest request
     ) {
-        memberReviewService.writeReview(revieweeId, reviewerId, request.content());
+        writePeerReviewUseCase.writePeerReview(
+                new WritePeerReviewUseCase.Command(reviewerId, revieweeId, request.content())
+        );
         return ResponseEntity.noContent().build();
     }
 
