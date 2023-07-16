@@ -1,6 +1,6 @@
 package com.kgu.studywithme.member.application.usecase.command;
 
-public interface MemberReportUseCase {
+public interface ReportMemberUseCase {
     Long report(Command command);
 
     record Command(

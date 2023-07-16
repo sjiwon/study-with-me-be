@@ -204,7 +204,7 @@ class MemberApiControllerTest extends ControllerTest {
             // given
             mockingToken(true, REPORTER_ID);
             doThrow(StudyWithMeException.type(MemberErrorCode.PREVIOUS_REPORT_IS_STILL_PENDING))
-                    .when(memberReportUseCase)
+                    .when(reportMemberUseCase)
                     .report(any());
 
             // when
@@ -249,7 +249,7 @@ class MemberApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, REPORTER_ID);
-            given(memberReportUseCase.report(any())).willReturn(1L);
+            given(reportMemberUseCase.report(any())).willReturn(1L);
 
             // when
             final MemberReportRequest request = new MemberReportRequest("참여를 안해요");

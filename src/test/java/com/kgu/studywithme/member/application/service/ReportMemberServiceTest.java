@@ -2,7 +2,7 @@ package com.kgu.studywithme.member.application.service;
 
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.application.usecase.command.MemberReportUseCase;
+import com.kgu.studywithme.member.application.usecase.command.ReportMemberUseCase;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.member.domain.report.Report;
@@ -24,10 +24,10 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@DisplayName("Member -> MemberReportService 테스트")
-class MemberReportServiceTest extends UseCaseTest {
+@DisplayName("Member -> ReportMemberService 테스트")
+class ReportMemberServiceTest extends UseCaseTest {
     @InjectMocks
-    private MemberReportService memberReportService;
+    private ReportMemberService memberReportService;
 
     @Mock
     private MemberRepository memberRepository;
@@ -38,8 +38,8 @@ class MemberReportServiceTest extends UseCaseTest {
     private final Member memberA = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Member memberB = GHOST.toMember().apply(2L, LocalDateTime.now());
 
-    private final MemberReportUseCase.Command command =
-            new MemberReportUseCase.Command(memberA.getId(), memberB.getId(), "report...");
+    private final ReportMemberUseCase.Command command =
+            new ReportMemberUseCase.Command(memberA.getId(), memberB.getId(), "report...");
 
     @Test
     @DisplayName("이전에 신고한 내역이 여전히 처리중이라면 중복 신고를 하지 못한다")

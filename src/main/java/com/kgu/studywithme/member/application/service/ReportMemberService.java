@@ -2,7 +2,7 @@ package com.kgu.studywithme.member.application.service;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.application.usecase.command.MemberReportUseCase;
+import com.kgu.studywithme.member.application.usecase.command.ReportMemberUseCase;
 import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.member.domain.report.Report;
 import com.kgu.studywithme.member.domain.report.ReportRepository;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
-public class MemberReportService implements MemberReportUseCase {
+public class ReportMemberService implements ReportMemberUseCase {
     private final MemberRepository memberRepository;
     private final ReportRepository reportRepository;
 
