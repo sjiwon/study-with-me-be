@@ -17,19 +17,19 @@ DROP TABLE IF EXISTS member;
 
 CREATE TABLE IF NOT EXISTS member
 (
-    id              BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name            VARCHAR(100) NOT NULL,
-    nickname        VARCHAR(100) NOT NULL UNIQUE,
-    email           VARCHAR(150) NOT NULL UNIQUE,
-    birth           DATE         NOT NULL,
-    phone           VARCHAR(13)  NOT NULL UNIQUE,
-    gender          VARCHAR(6)   NOT NULL,
-    province        VARCHAR(100) NOT NULL,
-    city            VARCHAR(100) NOT NULL,
-    score           INT          NOT NULL,
-    is_email_opt_in TINYINT(1)   NOT NULL,
-    created_at      DATETIME     NOT NULL,
-    modified_at     DATETIME     NOT NULL
+    id               BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name             VARCHAR(100) NOT NULL,
+    nickname         VARCHAR(100) NOT NULL UNIQUE,
+    email            VARCHAR(150) NOT NULL UNIQUE,
+    birth            DATE         NOT NULL,
+    phone            VARCHAR(13)  NOT NULL UNIQUE,
+    gender           VARCHAR(6)   NOT NULL,
+    province         VARCHAR(100) NOT NULL,
+    city             VARCHAR(100) NOT NULL,
+    score            INT          NOT NULL,
+    is_email_opt_in  TINYINT(1)   NOT NULL,
+    created_at       DATETIME     NOT NULL,
+    last_modified_at DATETIME     NOT NULL
 ) ENGINE = INNODB
   DEFAULT CHARSET = utf8mb4;
 
@@ -43,24 +43,24 @@ CREATE TABLE IF NOT EXISTS member_interest
 
 CREATE TABLE IF NOT EXISTS member_report
 (
-    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
-    reportee_id BIGINT      NOT NULL,
-    reporter_id BIGINT      NOT NULL,
-    reason      TEXT        NOT NULL,
-    status      VARCHAR(10) NOT NULL,
-    created_at  DATETIME    NOT NULL,
-    modified_at DATETIME    NOT NULL
+    id               BIGINT AUTO_INCREMENT PRIMARY KEY,
+    reportee_id      BIGINT      NOT NULL,
+    reporter_id      BIGINT      NOT NULL,
+    reason           TEXT        NOT NULL,
+    status           VARCHAR(10) NOT NULL,
+    created_at       DATETIME    NOT NULL,
+    last_modified_at DATETIME    NOT NULL
 ) ENGINE = INNODB
   DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE IF NOT EXISTS member_review
 (
-    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
-    reviewee_id BIGINT       NOT NULL,
-    reviewer_id BIGINT       NOT NULL,
-    content     VARCHAR(255) NOT NULL,
-    created_at  DATETIME     NOT NULL,
-    modified_at DATETIME     NOT NULL
+    id               BIGINT AUTO_INCREMENT PRIMARY KEY,
+    reviewee_id      BIGINT       NOT NULL,
+    reviewer_id      BIGINT       NOT NULL,
+    content          VARCHAR(255) NOT NULL,
+    created_at       DATETIME     NOT NULL,
+    last_modified_at DATETIME     NOT NULL
 ) ENGINE = INNODB
   DEFAULT CHARSET = utf8mb4;
 
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS study
     minimum_attendance   INT          NOT NULL,
     policy_update_chance INT          NOT NULL,
     created_at           DATETIME     NOT NULL,
-    modified_at          DATETIME     NOT NULL
+    last_modified_at     DATETIME     NOT NULL
 ) ENGINE = INNODB
   DEFAULT CHARSET = utf8mb4;
 
@@ -106,7 +106,7 @@ CREATE TABLE IF NOT EXISTS study_week
     is_assignment_exists TINYINT(1)   NOT NULL,
     is_auto_attendance   TINYINT(1)   NOT NULL,
     created_at           DATETIME     NOT NULL,
-    modified_at          DATETIME     NOT NULL
+    last_modified_at     DATETIME     NOT NULL
 ) ENGINE = INNODB
   DEFAULT CHARSET = utf8mb4;
 
@@ -128,7 +128,7 @@ CREATE TABLE IF NOT EXISTS study_assignment_submit
     upload_file_name VARCHAR(200),
     link             VARCHAR(255) NOT NULL,
     created_at       DATETIME     NOT NULL,
-    modified_at      DATETIME     NOT NULL
+    last_modified_at DATETIME     NOT NULL
 ) ENGINE = INNODB
   DEFAULT CHARSET = utf8mb4;
 
@@ -152,56 +152,56 @@ CREATE TABLE IF NOT EXISTS study_hashtag
 
 CREATE TABLE IF NOT EXISTS study_notice
 (
-    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
-    study_id    BIGINT       NOT NULL,
-    writer_id   BIGINT       NOT NULL,
-    title       VARCHAR(100) NOT NULL,
-    content     TEXT         NOT NULL,
-    created_at  DATETIME     NOT NULL,
-    modified_at DATETIME     NOT NULL
+    id               BIGINT AUTO_INCREMENT PRIMARY KEY,
+    study_id         BIGINT       NOT NULL,
+    writer_id        BIGINT       NOT NULL,
+    title            VARCHAR(100) NOT NULL,
+    content          TEXT         NOT NULL,
+    created_at       DATETIME     NOT NULL,
+    last_modified_at DATETIME     NOT NULL
 ) ENGINE = INNODB
   DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE IF NOT EXISTS study_notice_comment
 (
-    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
-    notice_id   BIGINT   NOT NULL,
-    writer_id   BIGINT   NOT NULL,
-    content     TEXT     NOT NULL,
-    created_at  DATETIME NOT NULL,
-    modified_at DATETIME NOT NULL
+    id               BIGINT AUTO_INCREMENT PRIMARY KEY,
+    notice_id        BIGINT   NOT NULL,
+    writer_id        BIGINT   NOT NULL,
+    content          TEXT     NOT NULL,
+    created_at       DATETIME NOT NULL,
+    last_modified_at DATETIME NOT NULL
 ) ENGINE = INNODB
   DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE IF NOT EXISTS study_participant
 (
-    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
-    study_id    BIGINT      NOT NULL,
-    member_id   BIGINT      NOT NULL,
-    status      VARCHAR(10) NOT NULL,
-    created_at  DATETIME    NOT NULL,
-    modified_at DATETIME    NOT NULL
+    id               BIGINT AUTO_INCREMENT PRIMARY KEY,
+    study_id         BIGINT      NOT NULL,
+    member_id        BIGINT      NOT NULL,
+    status           VARCHAR(10) NOT NULL,
+    created_at       DATETIME    NOT NULL,
+    last_modified_at DATETIME    NOT NULL
 ) ENGINE = INNODB
   DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE IF NOT EXISTS study_review
 (
-    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
-    study_id    BIGINT       NOT NULL,
-    writer_id   BIGINT       NOT NULL,
-    content     VARCHAR(255) NOT NULL,
-    created_at  DATETIME     NOT NULL,
-    modified_at DATETIME     NOT NULL
+    id               BIGINT AUTO_INCREMENT PRIMARY KEY,
+    study_id         BIGINT       NOT NULL,
+    writer_id        BIGINT       NOT NULL,
+    content          VARCHAR(255) NOT NULL,
+    created_at       DATETIME     NOT NULL,
+    last_modified_at DATETIME     NOT NULL
 ) ENGINE = INNODB
   DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE IF NOT EXISTS favorite
 (
-    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
-    member_id   BIGINT   NOT NULL,
-    study_id    BIGINT   NOT NULL,
-    created_at  DATETIME NOT NULL,
-    modified_at DATETIME NOT NULL
+    id               BIGINT AUTO_INCREMENT PRIMARY KEY,
+    member_id        BIGINT   NOT NULL,
+    study_id         BIGINT   NOT NULL,
+    created_at       DATETIME NOT NULL,
+    last_modified_at DATETIME NOT NULL
 ) ENGINE = INNODB
   DEFAULT CHARSET = utf8mb4;
 

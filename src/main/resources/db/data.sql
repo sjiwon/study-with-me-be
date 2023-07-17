@@ -1,4 +1,4 @@
-INSERT INTO member(id, name, nickname, email, birth, phone, gender, province, city, score, is_email_opt_in, created_at, modified_at)
+INSERT INTO member(id, name, nickname, email, birth, phone, gender, province, city, score, is_email_opt_in, created_at, last_modified_at)
 VALUES
     (1, '서지원', '서지원123', 'sjiwon4491@gmail.com', '2000-01-18', '010-1234-5678', 'MALE', '경기도', '안양시', 90, 1, NOW(), NOW()),
     (2, '양채린', '양채린123', 'keukkeu464@gmail.com', '2001-01-18', '010-4321-1234', 'FEMALE', '경기도', '용인시', 90, 1, NOW(), NOW()),
@@ -195,7 +195,7 @@ VALUES
 
 
 
-INSERT INTO member_review (reviewee_id, reviewer_id, content, created_at, modified_at)
+INSERT INTO member_review (reviewee_id, reviewer_id, content, created_at, last_modified_at)
 VALUES
     (1, 8, '스터디 활동에 적극적으로 참여했습니다.', NOW(), NOW()),
     (1, 19, '다른 멤버들을 훌륭하게 이끌었어요.', NOW(), NOW()),
@@ -306,7 +306,7 @@ VALUES
 
 
 
-INSERT INTO study (id, host_id, name, description, category, image, study_type, province, city, recruitment_status, capacity, is_closed, minimum_attendance, policy_update_chance, created_at, modified_at)
+INSERT INTO study (id, host_id, name, description, category, image, study_type, province, city, recruitment_status, capacity, is_closed, minimum_attendance, policy_update_chance, created_at, last_modified_at)
 VALUES
     (1, 1, 'Spring World', '<p>스프링 스터디입니다.</p><p>열심히 참여하실분 환영해요</p>', 'PROGRAMMING', 'IMAGE_PROGRAMMING_002', 'ONLINE', null, null, 'IN_PROGRESS', 7, 0, 20, 3, NOW(), NOW()),
     (2, 2, 'Interview World', '<p>카카오 기술 면접 오프라인 스터디입니다.</p>', 'INTERVIEW', 'IMAGE_INTERVIEW_004', 'OFFLINE', '경기도', '성남시', 'IN_PROGRESS', 6, 0, 10, 3, NOW(), NOW()),
@@ -395,7 +395,7 @@ VALUES
 
 
 
-INSERT INTO study_week (id, study_id, creator_id, week, title, content, start_date, end_date, is_assignment_exists, is_auto_attendance, created_at, modified_at)
+INSERT INTO study_week (id, study_id, creator_id, week, title, content, start_date, end_date, is_assignment_exists, is_auto_attendance, created_at, last_modified_at)
 VALUES
     (1, 1, 1, 1, 'Week 1', '<p>아래 링크에서 이번주 과제를 확인하세요</p><a href="https://www.notion.so/2023-efb0f1490e4746ea899456da70a6fc22">링크</a>', '2023-05-30 09:42:17', '2023-06-05 09:42:17', 0, 0, '2023-06-06 09:42:17', '2023-06-06 09:42:17'),
     (2, 1, 1, 2, 'Week 2', '<p>아래 링크에서 이번주 과제를 확인하세요</p><a href="https://www.notion.so/2023-efb0f1490e4746ea899456da70a6fc22">링크</a>', '2023-06-05 09:42:17', '2023-06-12 09:42:17', 0, 0, '2023-06-06 09:42:17', '2023-06-06 09:42:17'),
@@ -494,7 +494,7 @@ VALUES
 
 
 
-INSERT INTO study_assignment_submit (id, week_id, participant_id, upload_type, upload_file_name, link, created_at, modified_at)
+INSERT INTO study_assignment_submit (id, week_id, participant_id, upload_type, upload_file_name, link, created_at, last_modified_at)
 VALUES
     (1, 1, 1, 'FILE', 'hello3.png', 'https://kr.object.ncloudstorage.com/study-with-me-upload/submits/0754f61e-b400-47b7-bd5c-6f7c0b8ab088.pdf', '2023-06-06 09:42:17', '2023-06-06 09:42:17'),
     (2, 1, 3, 'FILE', 'hello3.png', 'https://kr.object.ncloudstorage.com/study-with-me-upload/submits/0754f61e-b400-47b7-bd5c-6f7c0b8ab088.pdf', '2023-06-06 09:42:17', '2023-06-06 09:42:17'),
@@ -724,7 +724,7 @@ VALUES
 
 
 
-INSERT INTO study_notice (id, study_id, writer_id, title, content, created_at, modified_at)
+INSERT INTO study_notice (id, study_id, writer_id, title, content, created_at, last_modified_at)
 VALUES
     (1, 1, 1, '스프링 스터디 첫번째 공지사항입니다.', 'Hello world', '2023-06-06 09:42:17', '2023-06-06 09:42:17'),
     (2, 1, 1, '스프링 스터디 두번째 공지사항입니다.', 'Hello world', '2023-06-06 09:42:17', '2023-06-06 09:42:17'),
@@ -762,7 +762,7 @@ VALUES
 
 
 
-INSERT INTO study_notice_comment (id, notice_id, writer_id, content, created_at, modified_at)
+INSERT INTO study_notice_comment (id, notice_id, writer_id, content, created_at, last_modified_at)
 VALUES
     (1, 4, 2, '확인 댓글 남기세요~~', '2023-06-06 09:42:17', '2023-06-06 09:42:17'),
     (2, 4, 1, '네 확인했습니다!', '2023-06-06 09:42:17', '2023-06-06 09:42:17'),
@@ -778,7 +778,7 @@ VALUES
 
 
 
-INSERT INTO study_participant (id, study_id, member_id, status, created_at, modified_at)
+INSERT INTO study_participant (id, study_id, member_id, status, created_at, last_modified_at)
 VALUES
     (1, 1, 2, 'APPROVE', NOW(), NOW()),
     (2, 1, 3, 'APPROVE', NOW(), NOW()),
@@ -1106,7 +1106,7 @@ VALUES
 
 
 
-INSERT INTO study_review (id, study_id, writer_id, content, created_at, modified_at)
+INSERT INTO study_review (id, study_id, writer_id, content, created_at, last_modified_at)
 VALUES
     (1, 2, 5, '스터디가 체계적이에요', '2023-06-06 09:42:17', '2023-06-06 09:42:17'),
     (2, 82, 1, '팀장이 좋아요', '2023-06-11 14:07:12', '2023-06-11 14:07:12'),
@@ -1129,7 +1129,7 @@ VALUES
 
 
 
-INSERT INTO favorite(member_id, study_id, created_at, modified_at)
+INSERT INTO favorite(member_id, study_id, created_at, last_modified_at)
 VALUES
     (1, 7, NOW(), NOW()),
     (1, 13, NOW(), NOW()),
