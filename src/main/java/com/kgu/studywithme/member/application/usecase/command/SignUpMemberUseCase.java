@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 public interface SignUpMemberUseCase {
-    Long signUp(Command command);
+    Long signUp(final Command command);
 
     record Command(
             String name,

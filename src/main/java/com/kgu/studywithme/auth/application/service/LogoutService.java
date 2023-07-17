@@ -13,7 +13,7 @@ public class LogoutService implements LogoutUseCase {
     private final TokenPersistenceAdapter tokenPersistenceAdapter;
 
     @Override
-    public void logout(Command command) {
+    public void logout(final Command command) {
         tokenPersistenceAdapter.deleteRefreshTokenByMemberId(command.memberId());
     }
 }

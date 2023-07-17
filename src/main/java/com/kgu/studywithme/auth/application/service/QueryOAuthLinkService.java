@@ -16,7 +16,7 @@ public class QueryOAuthLinkService implements QueryOAuthLinkUseCase {
 
     @Override
     public String createOAuthLink(final Query query) {
-        OAuthUri findSpecificOAuthUri = oAuthUris.stream()
+        final OAuthUri findSpecificOAuthUri = oAuthUris.stream()
                 .filter(oAuthUri -> oAuthUri.isSupported(query.provider()))
                 .findFirst()
                 .orElseThrow(() -> StudyWithMeException.type(AuthErrorCode.INVALID_OAUTH_PROVIDER));

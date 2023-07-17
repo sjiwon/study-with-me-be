@@ -4,7 +4,7 @@ import com.kgu.studywithme.auth.application.dto.response.LoginResponse;
 import com.kgu.studywithme.auth.utils.OAuthProvider;
 
 public interface OAuthLoginUseCase {
-    LoginResponse login(Command command);
+    LoginResponse login(final Command command);
 
     record Command(
             OAuthProvider provider,

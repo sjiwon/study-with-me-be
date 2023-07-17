@@ -1,7 +1,7 @@
 package com.kgu.studywithme.memberreview.application.usecase.command;
 
 public interface UpdateMemberReviewUseCase {
-    void updateMemberReview(Command command);
+    void updateMemberReview(final Command command);
 
     record Command(
             Long reviewerId,
