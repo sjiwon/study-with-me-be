@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
 public class GraduationPolicy {
-    private static final int DEFAULT_UPDATE_CHANGE = 3;
+    private static final int DEFAULT_UPDATE_CHANCE = 3;
 
     @Column(name = "minimum_attendance", nullable = false)
     private int minimumAttendance;
@@ -29,7 +29,7 @@ public class GraduationPolicy {
     }
 
     public static GraduationPolicy initPolicy(final int minimumAttendance) {
-        return new GraduationPolicy(minimumAttendance, DEFAULT_UPDATE_CHANGE);
+        return new GraduationPolicy(minimumAttendance, DEFAULT_UPDATE_CHANCE);
     }
 
     public GraduationPolicy update(final int minimumAttendance) {
@@ -48,7 +48,7 @@ public class GraduationPolicy {
     }
 
     public GraduationPolicy resetUpdateChanceForDelegatingStudyHost() {
-        return new GraduationPolicy(minimumAttendance, DEFAULT_UPDATE_CHANGE);
+        return new GraduationPolicy(minimumAttendance, DEFAULT_UPDATE_CHANCE);
     }
 
     public boolean isGraduationRequirementsFulfilled(final int value) {
