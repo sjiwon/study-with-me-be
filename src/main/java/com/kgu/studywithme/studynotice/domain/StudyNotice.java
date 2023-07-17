@@ -66,4 +66,8 @@ public class StudyNotice extends BaseEntity<StudyNotice> {
     ) {
         comments.add(StudyNoticeComment.writeComment(this, writerId, content));
     }
+
+    public boolean isWriter(final Long memberId) {
+        return this.writerId.equals(memberId);
+    }
 }
