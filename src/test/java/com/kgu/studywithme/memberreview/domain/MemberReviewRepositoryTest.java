@@ -1,4 +1,4 @@
-package com.kgu.studywithme.peerreview.domain;
+package com.kgu.studywithme.memberreview.domain;
 
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.member.domain.Member;
@@ -15,10 +15,10 @@ import static com.kgu.studywithme.fixture.MemberFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("PeerReview -> PeerReviewRepository 테스트")
-public class PeerReviewRepositoryTest extends RepositoryTest {
+@DisplayName("MemberReview -> MemberReviewRepository 테스트")
+public class MemberReviewRepositoryTest extends RepositoryTest {
     @Autowired
-    private PeerReviewRepository peerReviewRepository;
+    private MemberReviewRepository memberReviewRepository;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -37,12 +37,12 @@ public class PeerReviewRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    @DisplayName("사용자가 받은 PeerReview를 조회한다")
+    @DisplayName("사용자가 받은 리뷰를 조회한다")
     void findAllReviewContentByRevieweeId() {
         /* 3명 피어리뷰 */
         doReview(reviewers[0], reviewers[1], reviewers[2]);
 
-        List<String> result1 = peerReviewRepository.findAllReviewContentByRevieweeId(reviewee.getId());
+        List<String> result1 = memberReviewRepository.findAllReviewContentByRevieweeId(reviewee.getId());
         assertThat(result1).hasSize(3);
         assertThat(result1).containsExactly(
                 "BEST! - " + reviewers[0].getId(),
@@ -53,7 +53,7 @@ public class PeerReviewRepositoryTest extends RepositoryTest {
         /* 추가 2명 피어리뷰 */
         doReview(reviewers[3], reviewers[4]);
 
-        List<String> result2 = peerReviewRepository.findAllReviewContentByRevieweeId(reviewee.getId());
+        List<String> result2 = memberReviewRepository.findAllReviewContentByRevieweeId(reviewee.getId());
         assertThat(result2).hasSize(5);
         assertThat(result2).containsExactly(
                 "BEST! - " + reviewers[0].getId(),
@@ -68,21 +68,21 @@ public class PeerReviewRepositoryTest extends RepositoryTest {
     @DisplayName("리뷰 대상자 ID와 리뷰 작성자 ID로 리뷰를 조회한다")
     void findByReviewerIdAndRevieweeId() {
         doReview(reviewers[0], reviewers[1], reviewers[2], reviewers[3], reviewers[4]);
-        assertThatPeerReviewMatch();
+        assertThatMemberReviewMatch();
     }
 
     @Test
-    @DisplayName("Reviewer - Reviewee간 피어리뷰 레코드가 존재하는지 확인한다")
+    @DisplayName("Reviewer - Reviewee간 리뷰 레코드가 존재하는지 확인한다")
     void existsByReviewerIdAndRevieweeId() {
         // given
         doReview(reviewers[1], reviewers[3]);
 
         // when
-        boolean actual1 = peerReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[0].getId(), reviewee.getId());
-        boolean actual2 = peerReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[1].getId(), reviewee.getId());
-        boolean actual3 = peerReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[2].getId(), reviewee.getId());
-        boolean actual4 = peerReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[3].getId(), reviewee.getId());
-        boolean actual5 = peerReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[4].getId(), reviewee.getId());
+        boolean actual1 = memberReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[0].getId(), reviewee.getId());
+        boolean actual2 = memberReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[1].getId(), reviewee.getId());
+        boolean actual3 = memberReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[2].getId(), reviewee.getId());
+        boolean actual4 = memberReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[3].getId(), reviewee.getId());
+        boolean actual5 = memberReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[4].getId(), reviewee.getId());
 
         // then
         assertAll(
@@ -97,8 +97,8 @@ public class PeerReviewRepositoryTest extends RepositoryTest {
     private void doReview(Member... reviewers) {
         Arrays.stream(reviewers)
                 .forEach(reviewer ->
-                        peerReviewRepository.save(
-                                PeerReview.doReview(
+                        memberReviewRepository.save(
+                                MemberReview.doReview(
                                         reviewer.getId(),
                                         reviewee.getId(),
                                         "BEST! - " + reviewer.getId()
@@ -107,20 +107,20 @@ public class PeerReviewRepositoryTest extends RepositoryTest {
                 );
     }
 
-    private void assertThatPeerReviewMatch() {
+    private void assertThatMemberReviewMatch() {
         for (Member reviewer : reviewers) {
-            PeerReview peerReview = getPeerReview(reviewer.getId(), reviewee.getId());
+            MemberReview memberReview = getMemberReview(reviewer.getId(), reviewee.getId());
 
             assertAll(
-                    () -> assertThat(peerReview.getReviewerId()).isEqualTo(reviewer.getId()),
-                    () -> assertThat(peerReview.getRevieweeId()).isEqualTo(reviewee.getId()),
-                    () -> assertThat(peerReview.getContent()).isEqualTo("BEST! - " + reviewer.getId())
+                    () -> assertThat(memberReview.getReviewerId()).isEqualTo(reviewer.getId()),
+                    () -> assertThat(memberReview.getRevieweeId()).isEqualTo(reviewee.getId()),
+                    () -> assertThat(memberReview.getContent()).isEqualTo("BEST! - " + reviewer.getId())
             );
         }
     }
 
-    private PeerReview getPeerReview(Long reviewerId, Long revieweeId) {
-        return peerReviewRepository.findByReviewerIdAndRevieweeId(reviewerId, revieweeId)
+    private MemberReview getMemberReview(Long reviewerId, Long revieweeId) {
+        return memberReviewRepository.findByReviewerIdAndRevieweeId(reviewerId, revieweeId)
                 .orElseThrow();
     }
 }

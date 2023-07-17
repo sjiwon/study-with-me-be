@@ -1,13 +1,13 @@
-package com.kgu.studywithme.peerreview.application.service;
+package com.kgu.studywithme.memberreview.application.service;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.StudyParticipateWeeks;
-import com.kgu.studywithme.peerreview.application.usecase.command.WritePeerReviewUseCase;
-import com.kgu.studywithme.peerreview.domain.PeerReview;
-import com.kgu.studywithme.peerreview.domain.PeerReviewRepository;
-import com.kgu.studywithme.peerreview.exception.PeerReviewErrorCode;
+import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberReviewUseCase;
+import com.kgu.studywithme.memberreview.domain.MemberReview;
+import com.kgu.studywithme.memberreview.domain.MemberReviewRepository;
+import com.kgu.studywithme.memberreview.exception.MemberReviewErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,18 +16,18 @@ import java.util.List;
 @Service
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
-public class WritePeerReviewService implements WritePeerReviewUseCase {
-    private final PeerReviewRepository peerReviewRepository;
+public class WriteMemberReviewService implements WriteMemberReviewUseCase {
+    private final MemberReviewRepository memberReviewRepository;
     private final MemberRepository memberRepository;
 
     @Override
-    public Long writePeerReview(final Command command) {
+    public Long writeMemberReview(final Command command) {
         validateSelfReview(command.reviewerId(), command.revieweeId());
         validateColleague(command.reviewerId(), command.revieweeId());
         validateAlreadyReviewed(command.reviewerId(), command.revieweeId());
 
-        final PeerReview peerReview = PeerReview.doReview(command.reviewerId(), command.revieweeId(), command.content());
-        return peerReviewRepository.save(peerReview).getId();
+        final MemberReview memberReview = MemberReview.doReview(command.reviewerId(), command.revieweeId(), command.content());
+        return memberReviewRepository.save(memberReview).getId();
     }
 
     private void validateSelfReview(
@@ -35,7 +35,7 @@ public class WritePeerReviewService implements WritePeerReviewUseCase {
             final Long revieweeId
     ) {
         if (reviewerId.equals(revieweeId)) {
-            throw StudyWithMeException.type(PeerReviewErrorCode.SELF_REVIEW_NOT_ALLOWED);
+            throw StudyWithMeException.type(MemberReviewErrorCode.SELF_REVIEW_NOT_ALLOWED);
         }
     }
 
@@ -56,7 +56,7 @@ public class WritePeerReviewService implements WritePeerReviewUseCase {
                         );
 
         if (!hasCommonMetadata) {
-            throw StudyWithMeException.type(PeerReviewErrorCode.COMMON_STUDY_RECORD_NOT_FOUND);
+            throw StudyWithMeException.type(MemberReviewErrorCode.COMMON_STUDY_RECORD_NOT_FOUND);
         }
     }
 
@@ -72,8 +72,8 @@ public class WritePeerReviewService implements WritePeerReviewUseCase {
             final Long reviewerId,
             final Long revieweeId
     ) {
-        if (peerReviewRepository.existsByReviewerIdAndRevieweeId(reviewerId, revieweeId)) {
-            throw StudyWithMeException.type(PeerReviewErrorCode.ALREADY_REVIEW);
+        if (memberReviewRepository.existsByReviewerIdAndRevieweeId(reviewerId, revieweeId)) {
+            throw StudyWithMeException.type(MemberReviewErrorCode.ALREADY_REVIEW);
         }
     }
 }

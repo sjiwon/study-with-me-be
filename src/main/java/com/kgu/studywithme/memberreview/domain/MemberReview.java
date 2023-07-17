@@ -1,4 +1,4 @@
-package com.kgu.studywithme.peerreview.domain;
+package com.kgu.studywithme.memberreview.domain;
 
 import com.kgu.studywithme.global.BaseEntity;
 import jakarta.persistence.Column;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "member_review")
-public class PeerReview extends BaseEntity<PeerReview> {
+public class MemberReview extends BaseEntity<MemberReview> {
     @Column(name = "reviewer_id", nullable = false)
     private Long reviewerId;
 
@@ -22,7 +22,7 @@ public class PeerReview extends BaseEntity<PeerReview> {
     @Column(name = "content", nullable = false)
     private String content;
 
-    private PeerReview(
+    private MemberReview(
             final Long reviewerId,
             final Long revieweeId,
             final String content
@@ -32,12 +32,12 @@ public class PeerReview extends BaseEntity<PeerReview> {
         this.content = content;
     }
 
-    public static PeerReview doReview(
+    public static MemberReview doReview(
             final Long reviewerId,
             final Long revieweeId,
             final String content
     ) {
-        return new PeerReview(reviewerId, revieweeId, content);
+        return new MemberReview(reviewerId, revieweeId, content);
     }
 
     public void updateReview(final String content) {

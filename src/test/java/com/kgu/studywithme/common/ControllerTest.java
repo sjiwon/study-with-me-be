@@ -24,9 +24,9 @@ import com.kgu.studywithme.member.presentation.MemberApiController;
 import com.kgu.studywithme.member.presentation.MemberInformationApiController;
 import com.kgu.studywithme.memberreport.application.usecase.command.ReportMemberUseCase;
 import com.kgu.studywithme.memberreport.presentation.MemberReportApiController;
-import com.kgu.studywithme.peerreview.application.usecase.command.UpdatePeerReviewUseCase;
-import com.kgu.studywithme.peerreview.application.usecase.command.WritePeerReviewUseCase;
-import com.kgu.studywithme.peerreview.presentation.MemberReviewApiController;
+import com.kgu.studywithme.memberreview.application.usecase.command.UpdateMemberReviewUseCase;
+import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberReviewUseCase;
+import com.kgu.studywithme.memberreview.presentation.MemberReviewApiController;
 import com.kgu.studywithme.study.application.*;
 import com.kgu.studywithme.study.application.attendance.AttendanceService;
 import com.kgu.studywithme.study.application.notice.NoticeCommentService;
@@ -150,14 +150,14 @@ public abstract class ControllerTest {
     @MockBean
     protected MemberInformationService memberInformationService;
 
-    // PeerReview
+    // MemberReview
     @MockBean
-    protected WritePeerReviewUseCase writePeerReviewUseCase;
+    protected WriteMemberReviewUseCase writeMemberReviewUseCase;
 
     @MockBean
-    protected UpdatePeerReviewUseCase updatePeerReviewUseCase;
+    protected UpdateMemberReviewUseCase updateMemberReviewUseCase;
 
-    // Report
+    // MemberReport
     @MockBean
     protected ReportMemberUseCase reportMemberUseCase;
 

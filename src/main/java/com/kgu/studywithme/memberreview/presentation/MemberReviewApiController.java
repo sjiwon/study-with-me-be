@@ -1,10 +1,10 @@
-package com.kgu.studywithme.peerreview.presentation;
+package com.kgu.studywithme.memberreview.presentation;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
-import com.kgu.studywithme.peerreview.application.usecase.command.UpdatePeerReviewUseCase;
-import com.kgu.studywithme.peerreview.application.usecase.command.WritePeerReviewUseCase;
-import com.kgu.studywithme.peerreview.presentation.dto.request.UpdatePeerReviewRequest;
-import com.kgu.studywithme.peerreview.presentation.dto.request.WritePeerReviewRequest;
+import com.kgu.studywithme.memberreview.application.usecase.command.UpdateMemberReviewUseCase;
+import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberReviewUseCase;
+import com.kgu.studywithme.memberreview.presentation.dto.request.UpdateMemberReviewRequest;
+import com.kgu.studywithme.memberreview.presentation.dto.request.WriteMemberReviewRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -17,18 +17,18 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/members/{revieweeId}/review")
 public class MemberReviewApiController {
-    private final WritePeerReviewUseCase writePeerReviewUseCase;
-    private final UpdatePeerReviewUseCase updatePeerReviewUseCase;
+    private final WriteMemberReviewUseCase writeMemberReviewUseCase;
+    private final UpdateMemberReviewUseCase updateMemberReviewUseCase;
 
     @Operation(summary = "피어리뷰 작성 EndPoint")
     @PostMapping
     public ResponseEntity<Void> writeReview(
             @ExtractPayload final Long reviewerId,
             @PathVariable final Long revieweeId,
-            @RequestBody @Valid final WritePeerReviewRequest request
+            @RequestBody @Valid final WriteMemberReviewRequest request
     ) {
-        writePeerReviewUseCase.writePeerReview(
-                new WritePeerReviewUseCase.Command(reviewerId, revieweeId, request.content())
+        writeMemberReviewUseCase.writeMemberReview(
+                new WriteMemberReviewUseCase.Command(reviewerId, revieweeId, request.content())
         );
         return ResponseEntity.noContent().build();
     }
@@ -38,10 +38,10 @@ public class MemberReviewApiController {
     public ResponseEntity<Void> updateReview(
             @ExtractPayload final Long reviewerId,
             @PathVariable final Long revieweeId,
-            @RequestBody @Valid final UpdatePeerReviewRequest request
+            @RequestBody @Valid final UpdateMemberReviewRequest request
     ) {
-        updatePeerReviewUseCase.updatePeerReview(
-                new UpdatePeerReviewUseCase.Command(reviewerId, revieweeId, request.content())
+        updateMemberReviewUseCase.updateMemberReview(
+                new UpdateMemberReviewUseCase.Command(reviewerId, revieweeId, request.content())
         );
         return ResponseEntity.noContent().build();
     }

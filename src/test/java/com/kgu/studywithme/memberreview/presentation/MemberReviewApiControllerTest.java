@@ -1,10 +1,10 @@
-package com.kgu.studywithme.peerreview.presentation;
+package com.kgu.studywithme.memberreview.presentation;
 
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.peerreview.exception.PeerReviewErrorCode;
-import com.kgu.studywithme.peerreview.presentation.dto.request.UpdatePeerReviewRequest;
-import com.kgu.studywithme.peerreview.presentation.dto.request.WritePeerReviewRequest;
+import com.kgu.studywithme.memberreview.exception.MemberReviewErrorCode;
+import com.kgu.studywithme.memberreview.presentation.dto.request.UpdateMemberReviewRequest;
+import com.kgu.studywithme.memberreview.presentation.dto.request.WriteMemberReviewRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -27,72 +27,26 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("PeerReview -> MemberReviewApiController 테스트")
+@DisplayName("MemberReview -> MemberReviewApiController 테스트")
 class MemberReviewApiControllerTest extends ControllerTest {
     @Nested
-    @DisplayName("사용자 피어리뷰 작성 API [POST /api/members/{revieweeId}/review] - AccessToken 필수")
-    class writeReview {
+    @DisplayName("사용자 리뷰 작성 API [POST /api/members/{revieweeId}/review] - AccessToken 필수")
+    class writeMemberReview {
         private static final String BASE_URL = "/api/members/{revieweeId}/review";
         private static final Long REVIEWEE_ID = 1L;
         private static final Long REVIEWER_ID = 2L;
 
         @Test
-        @DisplayName("해당 사용자에 대해 두 번이상 피어리뷰를 남길 수 없다")
-        void throwExceptionByAlreadyReview() throws Exception {
-            // given
-            mockingToken(true, REVIEWER_ID);
-            doThrow(StudyWithMeException.type(PeerReviewErrorCode.ALREADY_REVIEW))
-                    .when(writePeerReviewUseCase)
-                    .writePeerReview(any());
-
-            // when
-            final WritePeerReviewRequest request = new WritePeerReviewRequest("스터디에 참여를 잘해요");
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .post(BASE_URL, REVIEWEE_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
-
-            // then
-            final PeerReviewErrorCode expectedError = PeerReviewErrorCode.ALREADY_REVIEW;
-            mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isConflict(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
-                    )
-                    .andDo(
-                            document(
-                                    "MemberApi/PeerReview/Write/Failure/Case1",
-                                    getDocumentRequest(),
-                                    getDocumentResponse(),
-                                    getHeaderWithAccessToken(),
-                                    pathParameters(
-                                            parameterWithName("revieweeId").description("피어리뷰 등록 대상자 ID(PK)")
-                                    ),
-                                    requestFields(
-                                            fieldWithPath("content").description("리뷰 내용")
-                                    ),
-                                    getExceptionResponseFiels()
-                            )
-                    );
-        }
-
-        @Test
-        @DisplayName("본인에게 피어리뷰를 남길 수 없다")
+        @DisplayName("본인에게 리뷰를 남길 수 없다")
         void throwExceptionBySelfReviewNotAllowed() throws Exception {
             // given
             mockingToken(true, REVIEWEE_ID);
-            doThrow(StudyWithMeException.type(PeerReviewErrorCode.SELF_REVIEW_NOT_ALLOWED))
-                    .when(writePeerReviewUseCase)
-                    .writePeerReview(any());
+            doThrow(StudyWithMeException.type(MemberReviewErrorCode.SELF_REVIEW_NOT_ALLOWED))
+                    .when(writeMemberReviewUseCase)
+                    .writeMemberReview(any());
 
             // when
-            final WritePeerReviewRequest request = new WritePeerReviewRequest("스터디에 참여를 잘해요");
+            final WriteMemberReviewRequest request = new WriteMemberReviewRequest("스터디에 참여를 잘해요");
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, REVIEWEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
@@ -100,7 +54,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
                     .content(convertObjectToJson(request));
 
             // then
-            final PeerReviewErrorCode expectedError = PeerReviewErrorCode.SELF_REVIEW_NOT_ALLOWED;
+            final MemberReviewErrorCode expectedError = MemberReviewErrorCode.SELF_REVIEW_NOT_ALLOWED;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
                             status().isBadRequest(),
@@ -113,12 +67,12 @@ class MemberReviewApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "MemberApi/PeerReview/Write/Failure/Case2",
+                                    "MemberApi/Review/Write/Failure/Case1",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("revieweeId").description("피어리뷰 등록 대상자 ID(PK)")
+                                            parameterWithName("revieweeId").description("리뷰 작성 대상자 ID(PK)")
                                     ),
                                     requestFields(
                                             fieldWithPath("content").description("리뷰 내용")
@@ -129,16 +83,16 @@ class MemberReviewApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("함께 스터디를 진행한 기록이 없다면 피어리뷰를 남길 수 없다")
+        @DisplayName("함께 스터디를 진행한 기록이 없다면 리뷰를 남길 수 없다")
         void throwExceptionByCommonStudyRecordNotFound() throws Exception {
             // given
             mockingToken(true, REVIEWER_ID);
-            doThrow(StudyWithMeException.type(PeerReviewErrorCode.COMMON_STUDY_RECORD_NOT_FOUND))
-                    .when(writePeerReviewUseCase)
-                    .writePeerReview(any());
+            doThrow(StudyWithMeException.type(MemberReviewErrorCode.COMMON_STUDY_RECORD_NOT_FOUND))
+                    .when(writeMemberReviewUseCase)
+                    .writeMemberReview(any());
 
             // when
-            final WritePeerReviewRequest request = new WritePeerReviewRequest("스터디에 참여를 잘해요");
+            final WriteMemberReviewRequest request = new WriteMemberReviewRequest("스터디에 참여를 잘해요");
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, REVIEWEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
@@ -146,7 +100,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
                     .content(convertObjectToJson(request));
 
             // then
-            final PeerReviewErrorCode expectedError = PeerReviewErrorCode.COMMON_STUDY_RECORD_NOT_FOUND;
+            final MemberReviewErrorCode expectedError = MemberReviewErrorCode.COMMON_STUDY_RECORD_NOT_FOUND;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
                             status().isConflict(),
@@ -159,12 +113,12 @@ class MemberReviewApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "MemberApi/PeerReview/Write/Failure/Case3",
+                                    "MemberApi/Review/Write/Failure/Case2",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("revieweeId").description("피어리뷰 등록 대상자 ID(PK)")
+                                            parameterWithName("revieweeId").description("리뷰 작성 대상자 ID(PK)")
                                     ),
                                     requestFields(
                                             fieldWithPath("content").description("리뷰 내용")
@@ -175,14 +129,60 @@ class MemberReviewApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("피어리뷰 등록을 성공한다")
+        @DisplayName("해당 사용자에 대해 2번 이상 리뷰를 남길 수 없다")
+        void throwExceptionByAlreadyReview() throws Exception {
+            // given
+            mockingToken(true, REVIEWER_ID);
+            doThrow(StudyWithMeException.type(MemberReviewErrorCode.ALREADY_REVIEW))
+                    .when(writeMemberReviewUseCase)
+                    .writeMemberReview(any());
+
+            // when
+            final WriteMemberReviewRequest request = new WriteMemberReviewRequest("스터디에 참여를 잘해요");
+            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+                    .post(BASE_URL, REVIEWEE_ID)
+                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJson(request));
+
+            // then
+            final MemberReviewErrorCode expectedError = MemberReviewErrorCode.ALREADY_REVIEW;
+            mockMvc.perform(requestBuilder)
+                    .andExpectAll(
+                            status().isConflict(),
+                            jsonPath("$.status").exists(),
+                            jsonPath("$.status").value(expectedError.getStatus().value()),
+                            jsonPath("$.errorCode").exists(),
+                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
+                            jsonPath("$.message").exists(),
+                            jsonPath("$.message").value(expectedError.getMessage())
+                    )
+                    .andDo(
+                            document(
+                                    "MemberApi/Review/Write/Failure/Case3",
+                                    getDocumentRequest(),
+                                    getDocumentResponse(),
+                                    getHeaderWithAccessToken(),
+                                    pathParameters(
+                                            parameterWithName("revieweeId").description("리뷰 작성 대상자 ID(PK)")
+                                    ),
+                                    requestFields(
+                                            fieldWithPath("content").description("리뷰 내용")
+                                    ),
+                                    getExceptionResponseFiels()
+                            )
+                    );
+        }
+
+        @Test
+        @DisplayName("리뷰 작성에 성공한다")
         void success() throws Exception {
             // given
             mockingToken(true, REVIEWER_ID);
-            given(writePeerReviewUseCase.writePeerReview(any())).willReturn(1L);
+            given(writeMemberReviewUseCase.writeMemberReview(any())).willReturn(1L);
 
             // when
-            final WritePeerReviewRequest request = new WritePeerReviewRequest("스터디에 참여를 잘해요");
+            final WriteMemberReviewRequest request = new WriteMemberReviewRequest("스터디에 참여를 잘해요");
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, REVIEWEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
@@ -194,12 +194,12 @@ class MemberReviewApiControllerTest extends ControllerTest {
                     .andExpect(status().isNoContent())
                     .andDo(
                             document(
-                                    "MemberApi/PeerReview/Write/Success",
+                                    "MemberApi/Review/Write/Success",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("revieweeId").description("피어리뷰 등록 대상자 ID(PK)")
+                                            parameterWithName("revieweeId").description("리뷰 작성 대상자 ID(PK)")
                                     ),
                                     requestFields(
                                             fieldWithPath("content").description("리뷰 내용")
@@ -210,23 +210,23 @@ class MemberReviewApiControllerTest extends ControllerTest {
     }
 
     @Nested
-    @DisplayName("사용자 피어리뷰 수정 API [PATCH /api/members/{revieweeId}/review] - AccessToken 필수")
-    class updateReview {
+    @DisplayName("사용자 리뷰 수정 API [PATCH /api/members/{revieweeId}/review] - AccessToken 필수")
+    class updateMemberReview {
         private static final String BASE_URL = "/api/members/{revieweeId}/review";
         private static final Long REVIEWEE_ID = 1L;
         private static final Long REVIEWER_ID = 2L;
 
         @Test
-        @DisplayName("작성한 피어리뷰가 없다면 수정할 수 없다")
-        void throwExceptionByPeerReviewNotFound() throws Exception {
+        @DisplayName("작성한 리뷰가 없다면 수정할 수 없다")
+        void throwExceptionByMemberReviewNotFound() throws Exception {
             // given
             mockingToken(true, REVIEWER_ID);
-            doThrow(StudyWithMeException.type(PeerReviewErrorCode.PEER_REVIEW_NOT_FOUND))
-                    .when(updatePeerReviewUseCase)
-                    .updatePeerReview(any());
+            doThrow(StudyWithMeException.type(MemberReviewErrorCode.MEMBER_REVIEW_NOT_FOUND))
+                    .when(updateMemberReviewUseCase)
+                    .updateMemberReview(any());
 
             // when
-            final UpdatePeerReviewRequest request = new UpdatePeerReviewRequest("스터디에 참여를 잘해요");
+            final UpdateMemberReviewRequest request = new UpdateMemberReviewRequest("스터디에 참여를 잘해요");
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, REVIEWEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
@@ -234,7 +234,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
                     .content(convertObjectToJson(request));
 
             // then
-            final PeerReviewErrorCode expectedError = PeerReviewErrorCode.PEER_REVIEW_NOT_FOUND;
+            final MemberReviewErrorCode expectedError = MemberReviewErrorCode.MEMBER_REVIEW_NOT_FOUND;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
                             status().isNotFound(),
@@ -247,12 +247,12 @@ class MemberReviewApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "MemberApi/PeerReview/Update/Failure/Case1",
+                                    "MemberApi/Review/Update/Failure/Case1",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("revieweeId").description("피어리뷰 수정 대상자 ID(PK)")
+                                            parameterWithName("revieweeId").description("리뷰 수정 대상자 ID(PK)")
                                     ),
                                     requestFields(
                                             fieldWithPath("content").description("수정할 리뷰 내용")
@@ -263,16 +263,16 @@ class MemberReviewApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("이전과 동일한 내용으로 피어리뷰를 수정할 수 없다")
+        @DisplayName("이전과 동일한 내용으로 리뷰를 수정할 수 없다")
         void throwExceptionByContentSameAsBefore() throws Exception {
             // given
             mockingToken(true, REVIEWER_ID);
-            doThrow(StudyWithMeException.type(PeerReviewErrorCode.CONTENT_SAME_AS_BEFORE))
-                    .when(updatePeerReviewUseCase)
-                    .updatePeerReview(any());
+            doThrow(StudyWithMeException.type(MemberReviewErrorCode.CONTENT_SAME_AS_BEFORE))
+                    .when(updateMemberReviewUseCase)
+                    .updateMemberReview(any());
 
             // when
-            final UpdatePeerReviewRequest request = new UpdatePeerReviewRequest("스터디에 참여를 잘해요");
+            final UpdateMemberReviewRequest request = new UpdateMemberReviewRequest("스터디에 참여를 잘해요");
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, REVIEWEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
@@ -280,7 +280,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
                     .content(convertObjectToJson(request));
 
             // then
-            final PeerReviewErrorCode expectedError = PeerReviewErrorCode.CONTENT_SAME_AS_BEFORE;
+            final MemberReviewErrorCode expectedError = MemberReviewErrorCode.CONTENT_SAME_AS_BEFORE;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
                             status().isConflict(),
@@ -293,12 +293,12 @@ class MemberReviewApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "MemberApi/PeerReview/Update/Failure/Case2",
+                                    "MemberApi/Review/Update/Failure/Case2",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("revieweeId").description("피어리뷰 수정 대상자 ID(PK)")
+                                            parameterWithName("revieweeId").description("리뷰 수정 대상자 ID(PK)")
                                     ),
                                     requestFields(
                                             fieldWithPath("content").description("수정할 리뷰 내용")
@@ -309,16 +309,16 @@ class MemberReviewApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("피어리뷰 수정에 성공한다")
+        @DisplayName("리뷰 수정에 성공한다")
         void success() throws Exception {
             // given
             mockingToken(true, REVIEWER_ID);
             doNothing()
-                    .when(updatePeerReviewUseCase)
-                    .updatePeerReview(any());
+                    .when(updateMemberReviewUseCase)
+                    .updateMemberReview(any());
 
             // when
-            final UpdatePeerReviewRequest request = new UpdatePeerReviewRequest("스터디에 참여를 잘해요");
+            final UpdateMemberReviewRequest request = new UpdateMemberReviewRequest("스터디에 참여를 잘해요");
             MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, REVIEWEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
@@ -330,12 +330,12 @@ class MemberReviewApiControllerTest extends ControllerTest {
                     .andExpect(status().isNoContent())
                     .andDo(
                             document(
-                                    "MemberApi/PeerReview/Update/Success",
+                                    "MemberApi/Review/Update/Success",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("revieweeId").description("피어리뷰 수정 대상자 ID(PK)")
+                                            parameterWithName("revieweeId").description("리뷰 수정 대상자 ID(PK)")
                                     ),
                                     requestFields(
                                             fieldWithPath("content").description("수정할 리뷰 내용")

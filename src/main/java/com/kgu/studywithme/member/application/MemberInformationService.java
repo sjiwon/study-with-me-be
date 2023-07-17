@@ -6,7 +6,7 @@ import com.kgu.studywithme.member.application.service.QueryMemberByIdService;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.AttendanceRatio;
-import com.kgu.studywithme.peerreview.domain.PeerReviewRepository;
+import com.kgu.studywithme.memberreview.domain.MemberReviewRepository;
 import com.kgu.studywithme.study.domain.StudyRepository;
 import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.SimpleGraduatedStudy;
 import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.SimpleStudy;
@@ -22,7 +22,7 @@ public class MemberInformationService {
     private final QueryMemberByIdService queryMemberByIdService;
     private final MemberRepository memberRepository;
     private final StudyRepository studyRepository;
-    private final PeerReviewRepository peerReviewRepository;
+    private final MemberReviewRepository memberReviewRepository;
 
     public MemberInformation getInformation(final Long memberId) {
         final Member member = queryMemberByIdService.findById(memberId);
@@ -50,7 +50,7 @@ public class MemberInformationService {
     }
 
     public PeerReviewAssembler getPeerReviews(final Long memberId) {
-        final List<String> peerReviews = peerReviewRepository.findAllReviewContentByRevieweeId(memberId);
+        final List<String> peerReviews = memberReviewRepository.findAllReviewContentByRevieweeId(memberId);
         return new PeerReviewAssembler(peerReviews);
     }
 
