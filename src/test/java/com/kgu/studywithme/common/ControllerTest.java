@@ -22,11 +22,11 @@ import com.kgu.studywithme.member.application.usecase.command.SignUpMemberUseCas
 import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
 import com.kgu.studywithme.member.presentation.MemberApiController;
 import com.kgu.studywithme.member.presentation.MemberInformationApiController;
+import com.kgu.studywithme.memberreport.application.usecase.command.ReportMemberUseCase;
+import com.kgu.studywithme.memberreport.presentation.MemberReportApiController;
 import com.kgu.studywithme.peerreview.application.usecase.command.UpdatePeerReviewUseCase;
 import com.kgu.studywithme.peerreview.application.usecase.command.WritePeerReviewUseCase;
 import com.kgu.studywithme.peerreview.presentation.MemberReviewApiController;
-import com.kgu.studywithme.report.application.usecase.command.ReportMemberUseCase;
-import com.kgu.studywithme.report.presentation.MemberReportApiController;
 import com.kgu.studywithme.study.application.*;
 import com.kgu.studywithme.study.application.attendance.AttendanceService;
 import com.kgu.studywithme.study.application.notice.NoticeCommentService;

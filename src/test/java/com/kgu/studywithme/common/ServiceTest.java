@@ -4,8 +4,8 @@ import com.kgu.studywithme.auth.domain.TokenRepository;
 import com.kgu.studywithme.auth.utils.JwtTokenProvider;
 import com.kgu.studywithme.favorite.domain.FavoriteRepository;
 import com.kgu.studywithme.member.domain.MemberRepository;
+import com.kgu.studywithme.memberreport.domain.MemberReportRepository;
 import com.kgu.studywithme.peerreview.domain.PeerReviewRepository;
-import com.kgu.studywithme.report.domain.ReportRepository;
 import com.kgu.studywithme.study.domain.StudyRepository;
 import com.kgu.studywithme.study.domain.attendance.AttendanceRepository;
 import com.kgu.studywithme.study.domain.notice.NoticeRepository;
@@ -48,7 +48,7 @@ public abstract class ServiceTest {
     protected ReviewRepository reviewRepository;
 
     @Autowired
-    protected ReportRepository reportRepository;
+    protected MemberReportRepository memberReportRepository;
 
     @Autowired
     protected AttendanceRepository attendanceRepository;
