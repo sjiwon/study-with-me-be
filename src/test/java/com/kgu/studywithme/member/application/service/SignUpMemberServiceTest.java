@@ -2,7 +2,7 @@ package com.kgu.studywithme.member.application.service;
 
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.application.usecase.command.RegistrationMemberUseCase;
+import com.kgu.studywithme.member.application.usecase.command.SignUpMemberUseCase;
 import com.kgu.studywithme.member.domain.*;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
 import org.junit.jupiter.api.DisplayName;
@@ -20,16 +20,16 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@DisplayName("Member -> RegistrationMemberService 테스트")
-class RegistrationMemberServiceTest extends UseCaseTest {
+@DisplayName("Member -> SignUpMemberService 테스트")
+class SignUpMemberServiceTest extends UseCaseTest {
     @InjectMocks
-    private RegistrationMemberService memberRegistrationService;
+    private SignUpMemberService signUpMemberService;
 
     @Mock
     private MemberRepository memberRepository;
 
-    private final RegistrationMemberUseCase.Command command =
-            new RegistrationMemberUseCase.Command(
+    private final SignUpMemberUseCase.Command command =
+            new SignUpMemberUseCase.Command(
                     JIWON.getName(),
                     Nickname.from(JIWON.getNickname()),
                     Email.from(JIWON.getEmail()),
@@ -50,7 +50,7 @@ class RegistrationMemberServiceTest extends UseCaseTest {
         given(memberRepository.isEmailExists(any())).willReturn(true);
 
         // when - then
-        assertThatThrownBy(() -> memberRegistrationService.registration(command))
+        assertThatThrownBy(() -> signUpMemberService.signUp(command))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberErrorCode.DUPLICATE_EMAIL.getMessage());
 
@@ -68,7 +68,7 @@ class RegistrationMemberServiceTest extends UseCaseTest {
         given(memberRepository.isNicknameExists(any())).willReturn(true);
 
         // when - then
-        assertThatThrownBy(() -> memberRegistrationService.registration(command))
+        assertThatThrownBy(() -> signUpMemberService.signUp(command))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberErrorCode.DUPLICATE_NICKNAME.getMessage());
 
@@ -87,7 +87,7 @@ class RegistrationMemberServiceTest extends UseCaseTest {
         given(memberRepository.isPhoneExists(any())).willReturn(true);
 
         // when - then
-        assertThatThrownBy(() -> memberRegistrationService.registration(command))
+        assertThatThrownBy(() -> signUpMemberService.signUp(command))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberErrorCode.DUPLICATE_PHONE.getMessage());
 
@@ -107,7 +107,7 @@ class RegistrationMemberServiceTest extends UseCaseTest {
         given(memberRepository.save(any())).willReturn(member);
 
         // when
-        Long savedMemberId = memberRegistrationService.registration(command);
+        Long savedMemberId = signUpMemberService.signUp(command);
 
         // then
         verify(memberRepository, times(1)).isEmailExists(any());

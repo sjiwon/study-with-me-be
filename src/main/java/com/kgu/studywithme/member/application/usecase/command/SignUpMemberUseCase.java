@@ -6,8 +6,8 @@ import com.kgu.studywithme.member.domain.*;
 import java.time.LocalDate;
 import java.util.Set;
 
-public interface RegistrationMemberUseCase {
-    Long registration(Command command);
+public interface SignUpMemberUseCase {
+    Long signUp(Command command);
 
     record Command(
             String name,

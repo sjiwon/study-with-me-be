@@ -3,7 +3,7 @@ package com.kgu.studywithme.member.presentation;
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
-import com.kgu.studywithme.member.presentation.dto.request.RegistrationMemberRequest;
+import com.kgu.studywithme.member.presentation.dto.request.SignUpMemberRequest;
 import com.kgu.studywithme.member.presentation.dto.request.UpdateMemberRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -41,11 +41,11 @@ class MemberApiControllerTest extends ControllerTest {
         void throwExceptionByDuplicateNickname() throws Exception {
             // given
             doThrow(StudyWithMeException.type(MemberErrorCode.DUPLICATE_NICKNAME))
-                    .when(registrationMemberUseCase)
-                    .registration(any());
+                    .when(signUpMemberUseCase)
+                    .signUp(any());
 
             // when
-            final RegistrationMemberRequest request = createRegistrationMemberRequest();
+            final SignUpMemberRequest request = createRegistrationMemberRequest();
             MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
                     .contentType(APPLICATION_JSON)
@@ -93,10 +93,10 @@ class MemberApiControllerTest extends ControllerTest {
         @DisplayName("회원가입에 성공한다")
         void success() throws Exception {
             // given
-            given(registrationMemberUseCase.registration(any())).willReturn(1L);
+            given(signUpMemberUseCase.signUp(any())).willReturn(1L);
 
             // when
-            final RegistrationMemberRequest request = createRegistrationMemberRequest();
+            final SignUpMemberRequest request = createRegistrationMemberRequest();
             MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
                     .contentType(APPLICATION_JSON)
@@ -187,8 +187,8 @@ class MemberApiControllerTest extends ControllerTest {
         }
     }
 
-    private RegistrationMemberRequest createRegistrationMemberRequest() {
-        return new RegistrationMemberRequest(
+    private SignUpMemberRequest createRegistrationMemberRequest() {
+        return new SignUpMemberRequest(
                 JIWON.getName(),
                 JIWON.getNickname(),
                 JIWON.getEmail(),

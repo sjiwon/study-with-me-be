@@ -3,13 +3,13 @@ package com.kgu.studywithme.member.presentation;
 import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.global.aop.CheckMemberIdentity;
-import com.kgu.studywithme.member.application.usecase.command.RegistrationMemberUseCase;
+import com.kgu.studywithme.member.application.usecase.command.SignUpMemberUseCase;
 import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
 import com.kgu.studywithme.member.domain.Email;
 import com.kgu.studywithme.member.domain.Gender;
 import com.kgu.studywithme.member.domain.Nickname;
 import com.kgu.studywithme.member.domain.Region;
-import com.kgu.studywithme.member.presentation.dto.request.RegistrationMemberRequest;
+import com.kgu.studywithme.member.presentation.dto.request.SignUpMemberRequest;
 import com.kgu.studywithme.member.presentation.dto.request.UpdateMemberRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,19 +19,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-@Tag(name = "3-1. 사용자 회원가입/정보 수정 API")
+@Tag(name = "3-1. 사용자 회원가입 & 정보 수정 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class MemberApiController {
-    private final RegistrationMemberUseCase registrationMemberUseCase;
+    private final SignUpMemberUseCase signUpMemberUseCase;
     private final UpdateMemberUseCase updateMemberUseCase;
 
     @Operation(summary = "회원가입 EndPoint")
     @PostMapping("/member")
-    public ResponseEntity<Void> registration(@RequestBody @Valid final RegistrationMemberRequest request) {
-        final Long savedMemberId = registrationMemberUseCase.registration(
-                new RegistrationMemberUseCase.Command(
+    public ResponseEntity<Void> signUp(@RequestBody @Valid final SignUpMemberRequest request) {
+        final Long savedMemberId = signUpMemberUseCase.signUp(
+                new SignUpMemberUseCase.Command(
                         request.name(),
                         Nickname.from(request.nickname()),
                         Email.from(request.email()),

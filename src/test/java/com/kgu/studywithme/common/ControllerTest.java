@@ -18,7 +18,7 @@ import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeMarking
 import com.kgu.studywithme.favorite.presentation.FavoriteApiController;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.application.MemberInformationService;
-import com.kgu.studywithme.member.application.usecase.command.RegistrationMemberUseCase;
+import com.kgu.studywithme.member.application.usecase.command.SignUpMemberUseCase;
 import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
 import com.kgu.studywithme.member.presentation.MemberApiController;
 import com.kgu.studywithme.member.presentation.MemberInformationApiController;
@@ -142,7 +142,7 @@ public abstract class ControllerTest {
 
     // Member
     @MockBean
-    protected RegistrationMemberUseCase registrationMemberUseCase;
+    protected SignUpMemberUseCase signUpMemberUseCase;
 
     @MockBean
     protected UpdateMemberUseCase updateMemberUseCase;
