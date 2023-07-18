@@ -29,17 +29,14 @@ import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberR
 import com.kgu.studywithme.memberreview.presentation.MemberReviewApiController;
 import com.kgu.studywithme.study.application.*;
 import com.kgu.studywithme.study.application.attendance.AttendanceService;
-import com.kgu.studywithme.study.application.notice.NoticeCommentService;
 import com.kgu.studywithme.study.application.week.StudyWeeklyService;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
 import com.kgu.studywithme.study.presentation.*;
 import com.kgu.studywithme.study.presentation.attendance.AttendanceApiController;
-import com.kgu.studywithme.study.presentation.notice.StudyNoticeCommentApiController;
 import com.kgu.studywithme.study.presentation.week.StudyWeeklyApiController;
-import com.kgu.studywithme.studynotice.application.usecase.command.DeleteStudyNoticeUseCase;
-import com.kgu.studywithme.studynotice.application.usecase.command.UpdateStudyNoticeUseCase;
-import com.kgu.studywithme.studynotice.application.usecase.command.WriteStudyNoticeUseCase;
+import com.kgu.studywithme.studynotice.application.usecase.command.*;
 import com.kgu.studywithme.studynotice.presentation.StudyNoticeApiController;
+import com.kgu.studywithme.studynotice.presentation.StudyNoticeCommentApiController;
 import com.kgu.studywithme.upload.application.usecase.command.UploadStudyDescriptionImageUseCase;
 import com.kgu.studywithme.upload.application.usecase.command.UploadWeeklyImageUseCase;
 import com.kgu.studywithme.upload.presentation.UploadApiController;
@@ -95,11 +92,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
         // Study
         StudyApiController.class, StudyInformationApiController.class, StudyParticipationApiController.class,
         StudyReviewApiController.class, StudySearchApiController.class,
-        StudyNoticeCommentApiController.class,
         AttendanceApiController.class, StudyWeeklyApiController.class,
 
-        // StudyNotice
-        StudyNoticeApiController.class,
+        // StudyNotice & StudyNoticeComment
+        StudyNoticeApiController.class, StudyNoticeCommentApiController.class,
 
         // Upload
         UploadApiController.class,
@@ -183,15 +179,12 @@ public abstract class ControllerTest {
     protected StudySearchService studySearchService;
 
     @MockBean
-    protected NoticeCommentService commentService;
-
-    @MockBean
     protected AttendanceService attendanceService;
 
     @MockBean
     protected StudyWeeklyService studyWeeklyService;
 
-    // StudyNotice
+    // StudyNotice & StudyNoticeComment
     @MockBean
     protected WriteStudyNoticeUseCase writeStudyNoticeUseCase;
 
@@ -200,6 +193,15 @@ public abstract class ControllerTest {
 
     @MockBean
     protected DeleteStudyNoticeUseCase deleteStudyNoticeUseCase;
+
+    @MockBean
+    protected WriteStudyNoticeCommentUseCase writeStudyNoticeCommentUseCase;
+
+    @MockBean
+    protected UpdateStudyNoticeCommentUseCase updateStudyNoticeCommentUseCase;
+
+    @MockBean
+    protected DeleteStudyNoticeCommentUseCase deleteStudyNoticeCommentUseCase;
 
     // Upload
     @MockBean

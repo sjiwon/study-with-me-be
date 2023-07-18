@@ -44,4 +44,8 @@ public class StudyNoticeComment extends BaseEntity<StudyNoticeComment> {
     public void updateComment(final String content) {
         this.content = content;
     }
+
+    public boolean isWriter(final Long memberId) {
+        return this.writerId.equals(memberId);
+    }
 }

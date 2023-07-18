@@ -5,7 +5,7 @@ public interface WriteStudyNoticeCommentUseCase {
 
     record Command(
             Long noticeId,
-            Long memberId,
+            Long writerId,
             String content
     ) {
     }

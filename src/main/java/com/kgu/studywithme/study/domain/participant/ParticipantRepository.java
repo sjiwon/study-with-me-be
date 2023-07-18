@@ -2,12 +2,15 @@ package com.kgu.studywithme.study.domain.participant;
 
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.Study;
+import com.kgu.studywithme.study.infrastructure.repository.query.ParticipantVerificationRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface ParticipantRepository extends JpaRepository<Participant, Long> {
+public interface ParticipantRepository extends
+        JpaRepository<Participant, Long>,
+        ParticipantVerificationRepository {
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("DELETE FROM Participant p WHERE p.study = :study AND p.member = :member")
     void deleteParticipantAssociatedMember(
