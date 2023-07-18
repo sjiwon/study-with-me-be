@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
 import static com.kgu.studywithme.study.domain.participant.ParticipantStatus.APPROVE;
+import static com.kgu.studywithme.study.domain.participant.ParticipantStatus.GRADUATED;
 import static com.kgu.studywithme.study.domain.participant.QParticipant.participant;
 
 @StudyWithMeReadOnlyTransactional
@@ -21,6 +22,19 @@ public class ParticipantVerificationRepositoryImpl implements ParticipantVerific
                         participant.study.id.eq(studyId),
                         participant.member.id.eq(memberId),
                         participant.status.eq(APPROVE)
+                )
+                .fetchOne() != null;
+    }
+
+    @Override
+    public boolean isGraduatedParticipant(final Long studyId, final Long memberId) {
+        return query
+                .select(participant.id)
+                .from(participant)
+                .where(
+                        participant.study.id.eq(studyId),
+                        participant.member.id.eq(memberId),
+                        participant.status.eq(GRADUATED)
                 )
                 .fetchOne() != null;
     }

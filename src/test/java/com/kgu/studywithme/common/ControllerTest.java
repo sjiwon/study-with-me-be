@@ -31,12 +31,19 @@ import com.kgu.studywithme.study.application.*;
 import com.kgu.studywithme.study.application.attendance.AttendanceService;
 import com.kgu.studywithme.study.application.week.StudyWeeklyService;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
-import com.kgu.studywithme.study.presentation.*;
+import com.kgu.studywithme.study.presentation.StudyApiController;
+import com.kgu.studywithme.study.presentation.StudyInformationApiController;
+import com.kgu.studywithme.study.presentation.StudyParticipationApiController;
+import com.kgu.studywithme.study.presentation.StudySearchApiController;
 import com.kgu.studywithme.study.presentation.attendance.AttendanceApiController;
 import com.kgu.studywithme.study.presentation.week.StudyWeeklyApiController;
 import com.kgu.studywithme.studynotice.application.usecase.command.*;
 import com.kgu.studywithme.studynotice.presentation.StudyNoticeApiController;
 import com.kgu.studywithme.studynotice.presentation.StudyNoticeCommentApiController;
+import com.kgu.studywithme.studyreview.application.usecase.command.DeleteStudyReviewUseCase;
+import com.kgu.studywithme.studyreview.application.usecase.command.UpdateStudyReviewUseCase;
+import com.kgu.studywithme.studyreview.application.usecase.command.WriteStudyReviewUseCase;
+import com.kgu.studywithme.studyreview.presentation.StudyReviewApiController;
 import com.kgu.studywithme.upload.application.usecase.command.UploadStudyDescriptionImageUseCase;
 import com.kgu.studywithme.upload.application.usecase.command.UploadWeeklyImageUseCase;
 import com.kgu.studywithme.upload.presentation.UploadApiController;
@@ -91,11 +98,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
         // Study
         StudyApiController.class, StudyInformationApiController.class, StudyParticipationApiController.class,
-        StudyReviewApiController.class, StudySearchApiController.class,
+        StudySearchApiController.class,
         AttendanceApiController.class, StudyWeeklyApiController.class,
 
         // StudyNotice & StudyNoticeComment
         StudyNoticeApiController.class, StudyNoticeCommentApiController.class,
+
+        // StudyReview
+        StudyReviewApiController.class,
 
         // Upload
         UploadApiController.class,
@@ -173,9 +183,6 @@ public abstract class ControllerTest {
     protected ParticipationService participationService;
 
     @MockBean
-    protected StudyReviewService studyReviewService;
-
-    @MockBean
     protected StudySearchService studySearchService;
 
     @MockBean
@@ -202,6 +209,16 @@ public abstract class ControllerTest {
 
     @MockBean
     protected DeleteStudyNoticeCommentUseCase deleteStudyNoticeCommentUseCase;
+
+    // StudyReview
+    @MockBean
+    protected WriteStudyReviewUseCase writeStudyReviewUseCase;
+
+    @MockBean
+    protected UpdateStudyReviewUseCase updateStudyReviewUseCase;
+
+    @MockBean
+    protected DeleteStudyReviewUseCase deleteStudyReviewUseCase;
 
     // Upload
     @MockBean

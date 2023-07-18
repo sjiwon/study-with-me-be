@@ -1,4 +1,4 @@
-= 스터디 리뷰 API
+= 스터디 리뷰 작성/수정/삭제 API
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
@@ -26,25 +26,6 @@ include::{snippets}/StudyApi/Review/Write/Success/request-fields.adoc[]
 HTTP Response
 include::{snippets}/StudyApi/Review/Write/Success/http-response.adoc[]
 
-== 스터디 리뷰 삭제 [AccessToken 필수]
-=== 1. 작성자가 아니면 리뷰를 삭제할 수 없다
-HTTP Request
-include::{snippets}/StudyApi/Review/Remove/Failure/http-request.adoc[]
-include::{snippets}/StudyApi/Review/Remove/Failure/request-headers.adoc[]
-include::{snippets}/StudyApi/Review/Remove/Failure/path-parameters.adoc[]
-
-HTTP Response
-include::{snippets}/StudyApi/Review/Remove/Failure/response-body.adoc[]
-
-=== 2. 리뷰 삭제에 성공한다
-HTTP Request
-include::{snippets}/StudyApi/Review/Remove/Success/http-request.adoc[]
-include::{snippets}/StudyApi/Review/Remove/Success/request-headers.adoc[]
-include::{snippets}/StudyApi/Review/Remove/Success/path-parameters.adoc[]
-
-HTTP Response
-include::{snippets}/StudyApi/Review/Remove/Success/http-response.adoc[]
-
 == 스터디 리뷰 수정 [AccessToken 필수]
 === 1. 작성자가 아니면 리뷰를 수정할 수 없다
 HTTP Request
@@ -65,3 +46,22 @@ include::{snippets}/StudyApi/Review/Update/Success/request-fields.adoc[]
 
 HTTP Response
 include::{snippets}/StudyApi/Review/Update/Success/http-response.adoc[]
+
+== 스터디 리뷰 삭제 [AccessToken 필수]
+=== 1. 작성자가 아니면 리뷰를 삭제할 수 없다
+HTTP Request
+include::{snippets}/StudyApi/Review/Delete/Failure/http-request.adoc[]
+include::{snippets}/StudyApi/Review/Delete/Failure/request-headers.adoc[]
+include::{snippets}/StudyApi/Review/Delete/Failure/path-parameters.adoc[]
+
+HTTP Response
+include::{snippets}/StudyApi/Review/Delete/Failure/response-body.adoc[]
+
+=== 2. 리뷰 삭제에 성공한다
+HTTP Request
+include::{snippets}/StudyApi/Review/Delete/Success/http-request.adoc[]
+include::{snippets}/StudyApi/Review/Delete/Success/request-headers.adoc[]
+include::{snippets}/StudyApi/Review/Delete/Success/path-parameters.adoc[]
+
+HTTP Response
+include::{snippets}/StudyApi/Review/Delete/Success/http-response.adoc[]

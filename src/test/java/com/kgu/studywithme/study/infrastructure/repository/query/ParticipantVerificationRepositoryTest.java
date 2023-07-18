@@ -60,4 +60,22 @@ class ParticipantVerificationRepositoryTest extends RepositoryTest {
                 () -> assertThat(participantRepository.isParticipant(study.getId(), memberB.getId())).isTrue()
         );
     }
+
+    @Test
+    @DisplayName("스터디 졸업자 확인한다 (참여 상태 = GRADUATED)")
+    void isGraduatedParticipant() {
+        // TODO Participant Refactoring 후 완성
+
+        /* APPROVE = memberA */
+        assertAll(
+                () -> assertThat(participantRepository.isGraduatedParticipant(study.getId(), memberA.getId())).isTrue(),
+                () -> assertThat(participantRepository.isGraduatedParticipant(study.getId(), memberB.getId())).isFalse()
+        );
+
+        /* APPROVE = memberA + memberB */
+        assertAll(
+                () -> assertThat(participantRepository.isGraduatedParticipant(study.getId(), memberA.getId())).isTrue(),
+                () -> assertThat(participantRepository.isGraduatedParticipant(study.getId(), memberB.getId())).isTrue()
+        );
+    }
 }
