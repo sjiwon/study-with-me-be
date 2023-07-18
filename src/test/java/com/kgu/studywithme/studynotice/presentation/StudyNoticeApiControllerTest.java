@@ -4,7 +4,8 @@ import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
-import com.kgu.studywithme.study.presentation.dto.request.NoticeRequest;
+import com.kgu.studywithme.studynotice.presentation.dto.request.UpdateStudyNoticeRequest;
+import com.kgu.studywithme.studynotice.presentation.dto.request.WriteStudyNoticeRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -51,7 +52,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
             mockingToken(true, ANONYMOUS_ID);
 
             // when
-            final NoticeRequest request = new NoticeRequest(
+            final WriteStudyNoticeRequest request = new WriteStudyNoticeRequest(
                     "공지사항 제목",
                     "공지사항 내용~~"
             );
@@ -99,7 +100,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
             given(writeStudyNoticeUseCase.writeNotice(any())).willReturn(1L);
 
             // when
-            final NoticeRequest request = new NoticeRequest(
+            final WriteStudyNoticeRequest request = new WriteStudyNoticeRequest(
                     "공지사항 제목",
                     "공지사항 내용~~"
             );
@@ -152,7 +153,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
             mockingToken(true, ANONYMOUS_ID);
 
             // when
-            final NoticeRequest request = new NoticeRequest(
+            final UpdateStudyNoticeRequest request = new UpdateStudyNoticeRequest(
                     "공지사항 제목",
                     "공지사항 내용~~"
             );
@@ -203,7 +204,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
                     .updateNotice(any());
 
             // when
-            final NoticeRequest request = new NoticeRequest(
+            final UpdateStudyNoticeRequest request = new UpdateStudyNoticeRequest(
                     "공지사항 제목",
                     "공지사항 내용~~"
             );
@@ -254,7 +255,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
                     .updateNotice(any());
 
             // when
-            final NoticeRequest request = new NoticeRequest(
+            final UpdateStudyNoticeRequest request = new UpdateStudyNoticeRequest(
                     "공지사항 제목",
                     "공지사항 내용~~"
             );

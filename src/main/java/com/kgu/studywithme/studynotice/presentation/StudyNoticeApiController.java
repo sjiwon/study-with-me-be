@@ -2,10 +2,10 @@ package com.kgu.studywithme.studynotice.presentation;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.global.aop.CheckStudyHost;
-import com.kgu.studywithme.study.presentation.dto.request.NoticeRequest;
 import com.kgu.studywithme.studynotice.application.usecase.command.DeleteStudyNoticeUseCase;
 import com.kgu.studywithme.studynotice.application.usecase.command.UpdateStudyNoticeUseCase;
 import com.kgu.studywithme.studynotice.application.usecase.command.WriteStudyNoticeUseCase;
+import com.kgu.studywithme.studynotice.presentation.dto.request.UpdateStudyNoticeRequest;
 import com.kgu.studywithme.studynotice.presentation.dto.request.WriteStudyNoticeRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -49,7 +49,7 @@ public class StudyNoticeApiController {
             @ExtractPayload final Long hostId,
             @PathVariable final Long studyId,
             @PathVariable final Long noticeId,
-            @RequestBody @Valid final NoticeRequest request
+            @RequestBody @Valid final UpdateStudyNoticeRequest request
     ) {
         updateStudyNoticeUseCase.updateNotice(
                 new UpdateStudyNoticeUseCase.Command(

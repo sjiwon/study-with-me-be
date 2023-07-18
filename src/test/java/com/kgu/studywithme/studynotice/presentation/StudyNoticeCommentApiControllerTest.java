@@ -2,8 +2,9 @@ package com.kgu.studywithme.studynotice.presentation;
 
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.study.presentation.dto.request.NoticeCommentRequest;
 import com.kgu.studywithme.studynotice.exception.StudyNoticeErrorCode;
+import com.kgu.studywithme.studynotice.presentation.dto.request.UpdateStudyNoticeCommentRequest;
+import com.kgu.studywithme.studynotice.presentation.dto.request.WriteStudyNoticeCommentRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -45,7 +46,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
                     .writeNoticeComment(any());
 
             // when
-            final NoticeCommentRequest request = new NoticeCommentRequest("공지사항 댓글~~");
+            final WriteStudyNoticeCommentRequest request = new WriteStudyNoticeCommentRequest("공지사항 댓글~~");
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, NOTICE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
@@ -91,7 +92,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
                     .writeNoticeComment(any());
 
             // when
-            final NoticeCommentRequest request = new NoticeCommentRequest("공지사항 댓글~~");
+            final WriteStudyNoticeCommentRequest request = new WriteStudyNoticeCommentRequest("공지사항 댓글~~");
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, NOTICE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
@@ -137,7 +138,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
                     .updateNoticeComment(any());
 
             // when
-            final NoticeCommentRequest request = new NoticeCommentRequest("공지사항 댓글~~");
+            final UpdateStudyNoticeCommentRequest request = new UpdateStudyNoticeCommentRequest("공지사항 댓글~~");
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .put(BASE_URL, NOTICE_ID, COMMENT_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
@@ -184,7 +185,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
                     .updateNoticeComment(any());
 
             // when
-            final NoticeCommentRequest request = new NoticeCommentRequest("공지사항 댓글~~");
+            final UpdateStudyNoticeCommentRequest request = new UpdateStudyNoticeCommentRequest("공지사항 댓글~~");
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .put(BASE_URL, NOTICE_ID, COMMENT_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
