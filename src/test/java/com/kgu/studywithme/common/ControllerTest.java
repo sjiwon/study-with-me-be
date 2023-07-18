@@ -28,15 +28,15 @@ import com.kgu.studywithme.memberreview.application.usecase.command.UpdateMember
 import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.presentation.MemberReviewApiController;
 import com.kgu.studywithme.study.application.*;
-import com.kgu.studywithme.study.application.attendance.AttendanceService;
 import com.kgu.studywithme.study.application.week.StudyWeeklyService;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
 import com.kgu.studywithme.study.presentation.StudyApiController;
 import com.kgu.studywithme.study.presentation.StudyInformationApiController;
 import com.kgu.studywithme.study.presentation.StudyParticipationApiController;
 import com.kgu.studywithme.study.presentation.StudySearchApiController;
-import com.kgu.studywithme.study.presentation.attendance.AttendanceApiController;
 import com.kgu.studywithme.study.presentation.week.StudyWeeklyApiController;
+import com.kgu.studywithme.studyattendance.application.usecase.command.ManualAttendanceUseCase;
+import com.kgu.studywithme.studyattendance.presentation.StudyAttendanceApiController;
 import com.kgu.studywithme.studynotice.application.usecase.command.*;
 import com.kgu.studywithme.studynotice.presentation.StudyNoticeApiController;
 import com.kgu.studywithme.studynotice.presentation.StudyNoticeCommentApiController;
@@ -99,7 +99,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
         // Study
         StudyApiController.class, StudyInformationApiController.class, StudyParticipationApiController.class,
         StudySearchApiController.class,
-        AttendanceApiController.class, StudyWeeklyApiController.class,
+        StudyWeeklyApiController.class,
+
+        // StudyAttendance
+        StudyAttendanceApiController.class,
 
         // StudyNotice & StudyNoticeComment
         StudyNoticeApiController.class, StudyNoticeCommentApiController.class,
@@ -186,10 +189,11 @@ public abstract class ControllerTest {
     protected StudySearchService studySearchService;
 
     @MockBean
-    protected AttendanceService attendanceService;
-
-    @MockBean
     protected StudyWeeklyService studyWeeklyService;
+
+    // StudyAttendance
+    @MockBean
+    protected ManualAttendanceUseCase manualAttendanceUseCase;
 
     // StudyNotice & StudyNoticeComment
     @MockBean

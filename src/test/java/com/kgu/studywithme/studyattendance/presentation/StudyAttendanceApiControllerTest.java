@@ -1,9 +1,11 @@
-package com.kgu.studywithme.study.presentation.attendance;
+package com.kgu.studywithme.studyattendance.presentation;
 
 import com.kgu.studywithme.common.ControllerTest;
+import com.kgu.studywithme.global.exception.GlobalErrorCode;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
-import com.kgu.studywithme.study.presentation.dto.request.AttendanceRequest;
+import com.kgu.studywithme.studyattendance.exception.StudyAttendanceErrorCode;
+import com.kgu.studywithme.studyattendance.presentation.dto.request.ManualAttendanceRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -13,8 +15,8 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
-import static com.kgu.studywithme.study.domain.attendance.AttendanceStatus.ATTENDANCE;
-import static com.kgu.studywithme.study.domain.attendance.AttendanceStatus.NON_ATTENDANCE;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.NON_ATTENDANCE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
@@ -28,8 +30,8 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("Study -> AttendanceApiController 테스트")
-class AttendanceApiControllerTest extends ControllerTest {
+@DisplayName("StudyAttendance -> StudyAttendanceApiController 테스트")
+class StudyAttendanceApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("수동 출석 API [PATCH /api/studies/{studyId}/attendance/{memberId}] - AccessToken 필수")
     class manualCheckAttendance {
@@ -46,14 +48,14 @@ class AttendanceApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("팀장이 아니라면 수동으로 출석 정보를 변경할 수 없다")
+        @DisplayName("팀장이 아니라면 수동으로 출석 체크를 진행할 수 없다")
         void throwExceptionByMemberIsNotHost() throws Exception {
             // given
             mockingToken(true, PARTICIPANT_ID);
 
             // when
-            final AttendanceRequest request = new AttendanceRequest(1, ATTENDANCE.getDescription());
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final ManualAttendanceRequest request = new ManualAttendanceRequest(1, ATTENDANCE.getDescription());
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID, PARTICIPANT_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
@@ -91,33 +93,31 @@ class AttendanceApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("해당 주차에 미출석 정보가 존재하지 않는다면 출석 체크를 진행할 수 없다")
-        void throwExceptionByAttendanceNotFound() throws Exception {
+        @DisplayName("미출석으로 출석 체크를 진행할 수 없다")
+        void throwExceptionByCannotUpdateToNonAttendance() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            doThrow(StudyWithMeException.type(StudyErrorCode.ATTENDANCE_NOT_FOUND))
-                    .when(attendanceService)
-                    .manualCheckAttendance(any(), any(), any(), any());
 
             // when
-            final AttendanceRequest request = new AttendanceRequest(1, ATTENDANCE.getDescription());
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final ManualAttendanceRequest request = new ManualAttendanceRequest(1, NON_ATTENDANCE.getDescription());
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID, ANONYMOUS_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(request));
 
             // then
-            final StudyErrorCode expectedError = StudyErrorCode.ATTENDANCE_NOT_FOUND;
+            final GlobalErrorCode expectedError = GlobalErrorCode.VALIDATION_ERROR;
+            final String message = "출석을 미출결로 수정할 수 없습니다.";
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
-                            status().isNotFound(),
+                            status().isBadRequest(),
                             jsonPath("$.status").exists(),
                             jsonPath("$.status").value(expectedError.getStatus().value()),
                             jsonPath("$.errorCode").exists(),
                             jsonPath("$.errorCode").value(expectedError.getErrorCode()),
                             jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
+                            jsonPath("$.message").value(message)
                     )
                     .andDo(
                             document(
@@ -139,27 +139,27 @@ class AttendanceApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("미출석 상태로 출석 체크를 진행할 수 없다")
-        void throwExceptionByCannotUpdateToNonAttendance() throws Exception {
+        @DisplayName("해당 주차에 출석 정보가 존재하지 않는다면 출석 체크를 진행할 수 없다")
+        void throwExceptionByAttendanceNotFound() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            doThrow(StudyWithMeException.type(StudyErrorCode.CANNOT_UPDATE_TO_NON_ATTENDANCE))
-                    .when(attendanceService)
-                    .manualCheckAttendance(any(), any(), any(), any());
+            doThrow(StudyWithMeException.type(StudyAttendanceErrorCode.ATTENDANCE_NOT_FOUND))
+                    .when(manualAttendanceUseCase)
+                    .manualAttendance(any());
 
             // when
-            final AttendanceRequest request = new AttendanceRequest(1, NON_ATTENDANCE.getDescription());
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final ManualAttendanceRequest request = new ManualAttendanceRequest(1, ATTENDANCE.getDescription());
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID, ANONYMOUS_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(request));
 
             // then
-            final StudyErrorCode expectedError = StudyErrorCode.CANNOT_UPDATE_TO_NON_ATTENDANCE;
+            final StudyAttendanceErrorCode expectedError = StudyAttendanceErrorCode.ATTENDANCE_NOT_FOUND;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
-                            status().isConflict(),
+                            status().isNotFound(),
                             jsonPath("$.status").exists(),
                             jsonPath("$.status").value(expectedError.getStatus().value()),
                             jsonPath("$.errorCode").exists(),
@@ -192,12 +192,12 @@ class AttendanceApiControllerTest extends ControllerTest {
             // given
             mockingToken(true, HOST_ID);
             doNothing()
-                    .when(attendanceService)
-                    .manualCheckAttendance(any(), any(), any(), any());
+                    .when(manualAttendanceUseCase)
+                    .manualAttendance(any());
 
             // when
-            final AttendanceRequest request = new AttendanceRequest(1, ATTENDANCE.getDescription());
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final ManualAttendanceRequest request = new ManualAttendanceRequest(1, ATTENDANCE.getDescription());
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID, PARTICIPANT_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)

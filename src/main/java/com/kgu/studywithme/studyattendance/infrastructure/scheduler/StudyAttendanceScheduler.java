@@ -1,10 +1,10 @@
-package com.kgu.studywithme.study.application.scheduler;
+package com.kgu.studywithme.studyattendance.infrastructure.scheduler;
 
 import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.study.domain.StudyRepository;
-import com.kgu.studywithme.study.domain.attendance.AttendanceRepository;
 import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.BasicAttendance;
 import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.BasicWeekly;
+import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -15,29 +15,29 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.kgu.studywithme.study.domain.attendance.AttendanceStatus.ABSENCE;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ABSENCE;
 
 @Component
 @RequiredArgsConstructor
 public class StudyAttendanceScheduler {
     private final MemberRepository memberRepository;
     private final StudyRepository studyRepository;
-    private final AttendanceRepository attendanceRepository;
+    private final StudyAttendanceRepository studyAttendanceRepository;
 
     @Scheduled(cron = "0 0 0 * * *")
     public void processAbsenceCheckScheduler() {
-        Set<Long> absenceParticipantIds = new HashSet<>();
-        List<BasicWeekly> weeks = studyRepository.findAutoAttendanceAndPeriodEndWeek();
-        List<BasicAttendance> attendances = studyRepository.findNonAttendanceInformation();
+        final Set<Long> absenceParticipantIds = new HashSet<>();
+        final List<BasicWeekly> weeks = studyRepository.findAutoAttendanceAndPeriodEndWeek();
+        final List<BasicAttendance> attendances = studyRepository.findNonAttendanceInformation();
 
         weeks.forEach(week -> {
-            Long studyId = week.studyId();
-            int specificWeek = week.week();
-            Set<Long> participantIds = extractNonAttendanceParticipantIds(attendances, studyId, specificWeek);
+            final Long studyId = week.studyId();
+            final int specificWeek = week.week();
+            final Set<Long> participantIds = extractNonAttendanceParticipantIds(attendances, studyId, specificWeek);
 
             if (hasCandidates(participantIds)) {
                 absenceParticipantIds.addAll(participantIds);
-                attendanceRepository.updateParticipantStatus(studyId, specificWeek, participantIds, ABSENCE);
+                studyAttendanceRepository.updateParticipantStatus(studyId, specificWeek, participantIds, ABSENCE);
             }
         });
         memberRepository.applyScoreToAbsenceParticipant(absenceParticipantIds);

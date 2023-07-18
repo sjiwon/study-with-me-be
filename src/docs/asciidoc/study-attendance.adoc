@@ -6,7 +6,7 @@
 :toclevels: 2
 
 == 스터디 수동 출석체크 [AccessToken 필수]
-=== 1. 팀장이 아니라면 수동으로 출석 정보를 변경할 수 없다
+=== 1. 팀장이 아니라면 수동으로 출석 체크를 진행할 수 없다
 HTTP Request
 include::{snippets}/StudyApi/Attendance/ManualCheck/Failure/Case1/http-request.adoc[]
 include::{snippets}/StudyApi/Attendance/ManualCheck/Failure/Case1/request-headers.adoc[]
@@ -16,7 +16,7 @@ include::{snippets}/StudyApi/Attendance/ManualCheck/Failure/Case1/request-fields
 HTTP Response
 include::{snippets}/StudyApi/Attendance/ManualCheck/Failure/Case1/response-body.adoc[]
 
-=== 2. 해당 주차에 미출석 정보가 존재하지 않는다면 출석 체크를 진행할 수 없다
+=== 2. 미출석으로 출석 체크를 진행할 수 없다
 HTTP Request
 include::{snippets}/StudyApi/Attendance/ManualCheck/Failure/Case2/http-request.adoc[]
 include::{snippets}/StudyApi/Attendance/ManualCheck/Failure/Case2/request-headers.adoc[]
@@ -26,7 +26,7 @@ include::{snippets}/StudyApi/Attendance/ManualCheck/Failure/Case2/request-fields
 HTTP Response
 include::{snippets}/StudyApi/Attendance/ManualCheck/Failure/Case2/response-body.adoc[]
 
-=== 3. 미출석 상태로 출석 체크를 진행할 수 없다
+=== 3. 해당 주차에 출석 정보가 존재하지 않는다면 출석 체크를 진행할 수 없다
 HTTP Request
 include::{snippets}/StudyApi/Attendance/ManualCheck/Failure/Case3/http-request.adoc[]
 include::{snippets}/StudyApi/Attendance/ManualCheck/Failure/Case3/request-headers.adoc[]

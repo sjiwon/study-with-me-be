@@ -1,15 +1,13 @@
-package com.kgu.studywithme.study.domain.attendance;
+package com.kgu.studywithme.studyattendance.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
-import static com.kgu.studywithme.study.domain.attendance.AttendanceStatus.*;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Study/Attendance -> 도메인 [AttendanceStatus VO] 테스트")
+@DisplayName("StudyAttendance -> 도메인 [AttendanceStatus VO] 테스트")
 class AttendanceStatusTest {
     @Test
     @DisplayName("Description으로 AttendanceStatus를 조회한다")
@@ -26,7 +24,7 @@ class AttendanceStatusTest {
     @Test
     @DisplayName("AttendanceStatus의 Description 목록을 가져온다")
     void getAttendanceDescriptions() {
-        List<AttendanceStatus> result = AttendanceStatus.getAttendanceStatuses();
-        assertThat(result).containsExactlyInAnyOrder(ATTENDANCE, LATE, ABSENCE, NON_ATTENDANCE);
+        assertThat(AttendanceStatus.getAttendanceStatuses())
+                .containsExactlyInAnyOrder(ATTENDANCE, LATE, ABSENCE, NON_ATTENDANCE);
     }
 }

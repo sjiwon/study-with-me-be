@@ -2,7 +2,7 @@ package com.kgu.studywithme.member.infrastructure.repository.query;
 
 import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.AttendanceRatio;
 import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.StudyParticipateWeeks;
-import com.kgu.studywithme.study.domain.attendance.AttendanceStatus;
+import com.kgu.studywithme.studyattendance.domain.AttendanceStatus;
 
 import java.util.List;
 

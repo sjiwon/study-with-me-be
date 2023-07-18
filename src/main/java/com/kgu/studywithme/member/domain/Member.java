@@ -3,7 +3,7 @@ package com.kgu.studywithme.member.domain;
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.global.BaseEntity;
 import com.kgu.studywithme.member.domain.interest.Interest;
-import com.kgu.studywithme.study.domain.attendance.AttendanceStatus;
+import com.kgu.studywithme.studyattendance.domain.AttendanceStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

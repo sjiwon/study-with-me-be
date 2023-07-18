@@ -5,14 +5,14 @@ import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.A
 import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.QAttendanceRatio;
 import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.QStudyParticipateWeeks;
 import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.StudyParticipateWeeks;
-import com.kgu.studywithme.study.domain.attendance.AttendanceStatus;
+import com.kgu.studywithme.studyattendance.domain.AttendanceStatus;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-import static com.kgu.studywithme.study.domain.attendance.QAttendance.attendance;
+import static com.kgu.studywithme.studyattendance.domain.QStudyAttendance.studyAttendance;
 
 @StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
@@ -24,13 +24,13 @@ public class MemberAttendanceRepositoryImpl implements MemberAttendanceRepositor
         List<AttendanceRatio> fetchResult = query
                 .select(
                         new QAttendanceRatio(
-                                attendance.status,
-                                attendance.count().intValue()
+                                studyAttendance.status,
+                                studyAttendance.count().intValue()
                         )
                 )
-                .from(attendance)
+                .from(studyAttendance)
                 .where(participantIdEq(memberId))
-                .groupBy(attendance.status)
+                .groupBy(studyAttendance.status)
                 .fetch();
 
         return includeMissingAttendanceStatus(fetchResult);
@@ -51,13 +51,13 @@ public class MemberAttendanceRepositoryImpl implements MemberAttendanceRepositor
         return query
                 .select(
                         new QStudyParticipateWeeks(
-                                attendance.study.id,
-                                attendance.week
+                                studyAttendance.studyId,
+                                studyAttendance.week
                         )
                 )
-                .from(attendance)
+                .from(studyAttendance)
                 .where(participantIdEq(memberId))
-                .orderBy(attendance.study.id.asc())
+                .orderBy(studyAttendance.studyId.asc())
                 .fetch();
     }
 
@@ -68,17 +68,17 @@ public class MemberAttendanceRepositoryImpl implements MemberAttendanceRepositor
             final AttendanceStatus status
     ) {
         return query
-                .select(attendance.count())
-                .from(attendance)
+                .select(studyAttendance.count())
+                .from(studyAttendance)
                 .where(
-                        attendance.study.id.eq(studyId),
+                        studyAttendance.studyId.eq(studyId),
                         participantIdEq(memberId),
-                        attendance.status.eq(status)
+                        studyAttendance.status.eq(status)
                 )
                 .fetchOne();
     }
 
     private BooleanExpression participantIdEq(final Long memberId) {
-        return (memberId != null) ? attendance.participant.id.eq(memberId) : null;
+        return (memberId != null) ? studyAttendance.participantId.eq(memberId) : null;
     }
 }
