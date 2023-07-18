@@ -53,8 +53,8 @@ public class StudyNoticeApiController {
     ) {
         updateStudyNoticeUseCase.updateNotice(
                 new UpdateStudyNoticeUseCase.Command(
-                        noticeId,
                         hostId,
+                        noticeId,
                         request.title(),
                         request.content()
                 )
