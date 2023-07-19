@@ -57,8 +57,4 @@ public class StudyParticipant extends BaseEntity<StudyParticipant> {
     ) {
         return new StudyParticipant(studyId, hostId, status);
     }
-
-    public void updateStatus(final ParticipantStatus status) {
-        this.status = status;
-    }
 }

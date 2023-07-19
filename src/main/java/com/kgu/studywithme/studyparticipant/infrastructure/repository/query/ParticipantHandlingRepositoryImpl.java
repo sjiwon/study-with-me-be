@@ -2,8 +2,8 @@ package com.kgu.studywithme.studyparticipant.infrastructure.repository.query;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
+import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.studyparticipant.domain.ParticipantStatus;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipant;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Modifying;
 
 import java.util.Optional;
 
+import static com.kgu.studywithme.member.domain.QMember.member;
 import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPLY;
 import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPROVE;
 import static com.kgu.studywithme.studyparticipant.domain.QStudyParticipant.studyParticipant;
@@ -19,6 +20,36 @@ import static com.kgu.studywithme.studyparticipant.domain.QStudyParticipant.stud
 @RequiredArgsConstructor
 public class ParticipantHandlingRepositoryImpl implements ParticipantHandlingRepository {
     private final JPAQueryFactory query;
+
+    @Override
+    public Optional<Member> findApplier(final Long studyId, final Long memberId) {
+        return Optional.ofNullable(
+                query
+                        .selectFrom(member)
+                        .innerJoin(studyParticipant).on(studyParticipant.memberId.eq(member.id))
+                        .where(
+                                member.id.eq(memberId),
+                                studyIdEq(studyId),
+                                participantStatusEq(APPLY)
+                        )
+                        .fetchOne()
+        );
+    }
+
+    @Override
+    public Optional<Member> findParticipant(final Long studyId, final Long memberId) {
+        return Optional.ofNullable(
+                query
+                        .selectFrom(member)
+                        .innerJoin(studyParticipant).on(studyParticipant.memberId.eq(member.id))
+                        .where(
+                                member.id.eq(memberId),
+                                studyIdEq(studyId),
+                                participantStatusEq(APPROVE)
+                        )
+                        .fetchOne()
+        );
+    }
 
     @StudyWithMeWritableTransactional
     @Modifying(flushAutomatically = true, clearAutomatically = true)
@@ -35,31 +66,30 @@ public class ParticipantHandlingRepositoryImpl implements ParticipantHandlingRep
     }
 
     @Override
-    public Optional<StudyParticipant> findApplier(final Long studyId, final Long memberId) {
-        return Optional.ofNullable(
-                query
-                        .selectFrom(studyParticipant)
-                        .where(
-                                studyIdEq(studyId),
-                                memberIdEq(memberId),
-                                participantStatusEq(APPLY)
-                        )
-                        .fetchOne()
-        );
+    public int getCurrentParticipantsCount(final Long studyId) {
+        return query
+                .select(studyParticipant.count())
+                .from(studyParticipant)
+                .where(
+                        studyIdEq(studyId),
+                        participantStatusEq(APPROVE)
+                )
+                .fetchOne()
+                .intValue();
     }
 
+    @StudyWithMeWritableTransactional
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Override
-    public Optional<StudyParticipant> findParticipant(final Long studyId, final Long memberId) {
-        return Optional.ofNullable(
-                query
-                        .selectFrom(studyParticipant)
-                        .where(
-                                studyIdEq(studyId),
-                                memberIdEq(memberId),
-                                participantStatusEq(APPROVE)
-                        )
-                        .fetchOne()
-        );
+    public void updateParticipantStatus(final Long studyId, final Long memberId, final ParticipantStatus status) {
+        query
+                .update(studyParticipant)
+                .set(studyParticipant.status, status)
+                .where(
+                        studyIdEq(studyId),
+                        memberIdEq(memberId)
+                )
+                .execute();
     }
 
     private BooleanExpression studyIdEq(final Long studyId) {

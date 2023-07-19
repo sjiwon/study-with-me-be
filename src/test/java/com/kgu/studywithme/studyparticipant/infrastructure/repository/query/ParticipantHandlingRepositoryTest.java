@@ -64,28 +64,6 @@ class ParticipantHandlingRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    @DisplayName("스터디 신청 취소에 의해 신청자 정보를 삭제한다")
-    void deleteApplier() {
-        assertAll(
-                () -> assertThat(
-                        studyParticipantRepository.deleteApplier(study.getId(), host.getId())
-                ).isEqualTo(0),
-                () -> assertThat(
-                        studyParticipantRepository.deleteApplier(study.getId(), applier.getId())
-                ).isEqualTo(1),
-                () -> assertThat(
-                        studyParticipantRepository.deleteApplier(study.getId(), participant.getId())
-                ).isEqualTo(0),
-                () -> assertThat(
-                        studyParticipantRepository.deleteApplier(study.getId(), participateCancelMember.getId())
-                ).isEqualTo(0),
-                () -> assertThat(
-                        studyParticipantRepository.deleteApplier(study.getId(), graduatedMember.getId())
-                ).isEqualTo(0)
-        );
-    }
-
-    @Test
     @DisplayName("스터디 신청자를 조회한다 [With studyId + memberId]")
     void findApplier() {
         assertAll(
@@ -127,5 +105,43 @@ class ParticipantHandlingRepositoryTest extends RepositoryTest {
                         studyParticipantRepository.findParticipant(study.getId(), graduatedMember.getId())
                 ).isEmpty()
         );
+    }
+
+    @Test
+    @DisplayName("스터디 신청 취소에 의해 신청자 정보를 삭제한다")
+    void deleteApplier() {
+        assertAll(
+                () -> assertThat(
+                        studyParticipantRepository.deleteApplier(study.getId(), host.getId())
+                ).isEqualTo(0),
+                () -> assertThat(
+                        studyParticipantRepository.deleteApplier(study.getId(), applier.getId())
+                ).isEqualTo(1),
+                () -> assertThat(
+                        studyParticipantRepository.deleteApplier(study.getId(), participant.getId())
+                ).isEqualTo(0),
+                () -> assertThat(
+                        studyParticipantRepository.deleteApplier(study.getId(), participateCancelMember.getId())
+                ).isEqualTo(0),
+                () -> assertThat(
+                        studyParticipantRepository.deleteApplier(study.getId(), graduatedMember.getId())
+                ).isEqualTo(0)
+        );
+    }
+
+    @Test
+    @DisplayName("현재 스터디 참여자 수를 조회한다 -> updateParticipantStatus 적용 후 갱신 값도 확인")
+    void getCurrentParticipantsCount_updateParticipantStatus() {
+        /* 현재 APPROVE 2명 */
+        assertThat(studyParticipantRepository.getCurrentParticipantsCount(study.getId())).isEqualTo(2);
+
+        /* APPLIER -> APPROVE */
+        studyParticipantRepository.updateParticipantStatus(study.getId(), applier.getId(), APPROVE);
+        assertThat(studyParticipantRepository.getCurrentParticipantsCount(study.getId())).isEqualTo(3);
+
+        /* host, participant -> GRADUATED */
+        studyParticipantRepository.updateParticipantStatus(study.getId(), host.getId(), GRADUATED);
+        studyParticipantRepository.updateParticipantStatus(study.getId(), participant.getId(), GRADUATED);
+        assertThat(studyParticipantRepository.getCurrentParticipantsCount(study.getId())).isEqualTo(1);
     }
 }
