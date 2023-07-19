@@ -14,7 +14,9 @@ public enum StudyParticipantErrorCode implements ErrorCode {
     ALREADY_CANCEL_OR_GRADUATED(HttpStatus.CONFLICT, "STUDY_PARTICIPANT_004", "참여 취소 또는 졸업한 스터디는 다시 참여 신청할 수 없습니다."),
     APPLIER_NOT_FOUND(HttpStatus.NOT_FOUND, "STUDY_PARTICIPANT_005", "신청자 정보를 찾을 수 없습니다"),
     STUDY_IS_FINISH(HttpStatus.CONFLICT, "STUDY_PARTICIPANT_006", "스터디가 종료되었습니다."),
-    STUDY_CAPACITY_ALREADY_FULL(HttpStatus.CONFLICT, "STUDY_PARTICIPANT_007", "스터디 정원이 꽉 찼습니다.")
+    STUDY_CAPACITY_ALREADY_FULL(HttpStatus.CONFLICT, "STUDY_PARTICIPANT_007", "스터디 정원이 꽉 찼습니다."),
+    SELF_DELEGATING_NOT_ALLOWED(HttpStatus.BAD_REQUEST, "STUDY_PARTICIPANT_008", "새로운 스터디 팀장은 자기자신이 아니라 다른 참여자를 선택해주세요."),
+    NON_PARTICIPANT_CANNOT_BE_HOST(HttpStatus.CONFLICT, "STUDY_PARTICIPANT_009", "새로운 스터디 팀장은 스터디 참여자 중 한명을 선택해주세요."),
     ;
 
     private final HttpStatus status;
