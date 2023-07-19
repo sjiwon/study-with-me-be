@@ -1,6 +1,8 @@
 package com.kgu.studywithme.studyparticipant.infrastructure.repository.query;
 
 public interface ParticipantVerificationRepository {
+    boolean isApplier(final Long studyId, final Long memberId);
+
     boolean isParticipant(final Long studyId, final Long memberId);
 
     boolean isApplierOrParticipant(final Long studyId, final Long memberId);

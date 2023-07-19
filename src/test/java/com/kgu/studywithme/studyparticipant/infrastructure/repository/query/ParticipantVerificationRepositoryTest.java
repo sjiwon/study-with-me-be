@@ -64,6 +64,28 @@ class ParticipantVerificationRepositoryTest extends RepositoryTest {
     }
 
     @Test
+    @DisplayName("스터디 신청자인지 확인한다 (참여 상태 = APPLY)")
+    void isApplier() {
+        assertAll(
+                () -> assertThat(
+                        studyParticipantRepository.isApplier(study.getId(), host.getId())
+                ).isFalse(),
+                () -> assertThat(
+                        studyParticipantRepository.isApplier(study.getId(), applier.getId())
+                ).isTrue(),
+                () -> assertThat(
+                        studyParticipantRepository.isApplier(study.getId(), participant.getId())
+                ).isFalse(),
+                () -> assertThat(
+                        studyParticipantRepository.isApplier(study.getId(), participateCancelMember.getId())
+                ).isFalse(),
+                () -> assertThat(
+                        studyParticipantRepository.isApplier(study.getId(), graduatedMember.getId())
+                ).isFalse()
+        );
+    }
+
+    @Test
     @DisplayName("스터디 참여자인지 확인한다 (참여 상태 = APPROVE)")
     void isParticipant() {
         assertAll(
@@ -132,6 +154,28 @@ class ParticipantVerificationRepositoryTest extends RepositoryTest {
     @Test
     @DisplayName("스터디 참여 취소자 or 졸업자인지 확인한다 (참여 상태 IN CALCEL, GRADUATED)")
     void isAlreadyCancelOrGraduatedParticipant() {
+        assertAll(
+                () -> assertThat(
+                        studyParticipantRepository.isAlreadyCancelOrGraduatedParticipant(study.getId(), host.getId())
+                ).isFalse(),
+                () -> assertThat(
+                        studyParticipantRepository.isAlreadyCancelOrGraduatedParticipant(study.getId(), applier.getId())
+                ).isFalse(),
+                () -> assertThat(
+                        studyParticipantRepository.isAlreadyCancelOrGraduatedParticipant(study.getId(), participant.getId())
+                ).isFalse(),
+                () -> assertThat(
+                        studyParticipantRepository.isAlreadyCancelOrGraduatedParticipant(study.getId(), participateCancelMember.getId())
+                ).isTrue(),
+                () -> assertThat(
+                        studyParticipantRepository.isAlreadyCancelOrGraduatedParticipant(study.getId(), graduatedMember.getId())
+                ).isTrue()
+        );
+    }
+
+    @Test
+    @DisplayName("스터디 참여 취소자 or 졸업자인지 확인한다 (참여 상태 IN CALCEL, GRADUATED)")
+    void deleteApplier() {
         assertAll(
                 () -> assertThat(
                         studyParticipantRepository.isAlreadyCancelOrGraduatedParticipant(study.getId(), host.getId())

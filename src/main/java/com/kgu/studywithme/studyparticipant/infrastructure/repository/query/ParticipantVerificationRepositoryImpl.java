@@ -1,12 +1,13 @@
 package com.kgu.studywithme.studyparticipant.infrastructure.repository.query;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
+import com.kgu.studywithme.studyparticipant.domain.ParticipantStatus;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
-import static com.kgu.studywithme.study.domain.participant.QParticipant.participant;
 import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.*;
+import static com.kgu.studywithme.studyparticipant.domain.QStudyParticipant.studyParticipant;
 
 @StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
@@ -14,14 +15,27 @@ public class ParticipantVerificationRepositoryImpl implements ParticipantVerific
     private final JPAQueryFactory query;
 
     @Override
-    public boolean isParticipant(final Long studyId, final Long memberId) {
+    public boolean isApplier(final Long studyId, final Long memberId) {
         return query
-                .select(participant.id)
-                .from(participant)
+                .select(studyParticipant.id)
+                .from(studyParticipant)
                 .where(
                         studyIdEq(studyId),
-                        participantIdEq(memberId),
-                        participant.status.eq(APPROVE)
+                        memberIdEq(memberId),
+                        participantStatusEq(APPLY)
+                )
+                .fetchOne() != null;
+    }
+
+    @Override
+    public boolean isParticipant(final Long studyId, final Long memberId) {
+        return query
+                .select(studyParticipant.id)
+                .from(studyParticipant)
+                .where(
+                        studyIdEq(studyId),
+                        memberIdEq(memberId),
+                        participantStatusEq(APPROVE)
                 )
                 .fetchOne() != null;
     }
@@ -29,12 +43,12 @@ public class ParticipantVerificationRepositoryImpl implements ParticipantVerific
     @Override
     public boolean isApplierOrParticipant(final Long studyId, final Long memberId) {
         return query
-                .select(participant.id)
-                .from(participant)
+                .select(studyParticipant.id)
+                .from(studyParticipant)
                 .where(
                         studyIdEq(studyId),
-                        participantIdEq(memberId),
-                        participant.status.in(APPLY, APPROVE)
+                        memberIdEq(memberId),
+                        studyParticipant.status.in(APPLY, APPROVE)
                 )
                 .fetchOne() != null;
     }
@@ -42,12 +56,12 @@ public class ParticipantVerificationRepositoryImpl implements ParticipantVerific
     @Override
     public boolean isGraduatedParticipant(final Long studyId, final Long memberId) {
         return query
-                .select(participant.id)
-                .from(participant)
+                .select(studyParticipant.id)
+                .from(studyParticipant)
                 .where(
                         studyIdEq(studyId),
-                        participantIdEq(memberId),
-                        participant.status.eq(GRADUATED)
+                        memberIdEq(memberId),
+                        participantStatusEq(GRADUATED)
                 )
                 .fetchOne() != null;
     }
@@ -55,21 +69,25 @@ public class ParticipantVerificationRepositoryImpl implements ParticipantVerific
     @Override
     public boolean isAlreadyCancelOrGraduatedParticipant(final Long studyId, final Long memberId) {
         return query
-                .select(participant.id)
-                .from(participant)
+                .select(studyParticipant.id)
+                .from(studyParticipant)
                 .where(
                         studyIdEq(studyId),
-                        participantIdEq(memberId),
-                        participant.status.in(CALCEL, GRADUATED)
+                        memberIdEq(memberId),
+                        studyParticipant.status.in(CALCEL, GRADUATED)
                 )
                 .fetchOne() != null;
     }
 
     private BooleanExpression studyIdEq(final Long studyId) {
-        return participant.study.id.eq(studyId);
+        return studyParticipant.studyId.eq(studyId);
     }
 
-    private BooleanExpression participantIdEq(final Long memberId) {
-        return participant.member.id.eq(memberId);
+    private BooleanExpression memberIdEq(final Long memberId) {
+        return studyParticipant.memberId.eq(memberId);
+    }
+
+    private BooleanExpression participantStatusEq(final ParticipantStatus status) {
+        return studyParticipant.status.eq(status);
     }
 }
