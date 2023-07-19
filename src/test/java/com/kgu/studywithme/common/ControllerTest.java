@@ -27,12 +27,14 @@ import com.kgu.studywithme.memberreport.presentation.MemberReportApiController;
 import com.kgu.studywithme.memberreview.application.usecase.command.UpdateMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.presentation.MemberReviewApiController;
-import com.kgu.studywithme.study.application.*;
+import com.kgu.studywithme.study.application.StudyInformationService;
+import com.kgu.studywithme.study.application.StudySearchService;
+import com.kgu.studywithme.study.application.StudyService;
+import com.kgu.studywithme.study.application.StudyValidator;
 import com.kgu.studywithme.study.application.week.StudyWeeklyService;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
 import com.kgu.studywithme.study.presentation.StudyApiController;
 import com.kgu.studywithme.study.presentation.StudyInformationApiController;
-import com.kgu.studywithme.study.presentation.StudyParticipationApiController;
 import com.kgu.studywithme.study.presentation.StudySearchApiController;
 import com.kgu.studywithme.study.presentation.week.StudyWeeklyApiController;
 import com.kgu.studywithme.studyattendance.application.usecase.command.ManualAttendanceUseCase;
@@ -40,6 +42,11 @@ import com.kgu.studywithme.studyattendance.presentation.StudyAttendanceApiContro
 import com.kgu.studywithme.studynotice.application.usecase.command.*;
 import com.kgu.studywithme.studynotice.presentation.StudyNoticeApiController;
 import com.kgu.studywithme.studynotice.presentation.StudyNoticeCommentApiController;
+import com.kgu.studywithme.studyparticipant.application.usecase.command.*;
+import com.kgu.studywithme.studyparticipant.presentation.DelegateHostAuthorityApiController;
+import com.kgu.studywithme.studyparticipant.presentation.StudyApplyApiController;
+import com.kgu.studywithme.studyparticipant.presentation.StudyFinalizeApiController;
+import com.kgu.studywithme.studyparticipant.presentation.StudyParticipantDecisionApiController;
 import com.kgu.studywithme.studyreview.application.usecase.command.DeleteStudyReviewUseCase;
 import com.kgu.studywithme.studyreview.application.usecase.command.UpdateStudyReviewUseCase;
 import com.kgu.studywithme.studyreview.application.usecase.command.WriteStudyReviewUseCase;
@@ -97,9 +104,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
         MemberReportApiController.class,
 
         // Study
-        StudyApiController.class, StudyInformationApiController.class, StudyParticipationApiController.class,
+        StudyApiController.class, StudyInformationApiController.class,
         StudySearchApiController.class,
         StudyWeeklyApiController.class,
+
+        // StudyParticipant
+        StudyApplyApiController.class, StudyParticipantDecisionApiController.class,
+        DelegateHostAuthorityApiController.class, StudyFinalizeApiController.class,
 
         // StudyAttendance
         StudyAttendanceApiController.class,
@@ -183,13 +194,32 @@ public abstract class ControllerTest {
     protected StudyInformationService studyInformationService;
 
     @MockBean
-    protected ParticipationService participationService;
-
-    @MockBean
     protected StudySearchService studySearchService;
 
     @MockBean
     protected StudyWeeklyService studyWeeklyService;
+
+    // StudyParticipant
+    @MockBean
+    protected ApplyStudyUseCase applyStudyUseCase;
+
+    @MockBean
+    protected ApplyCancellationUseCase applyCancellationUseCase;
+
+    @MockBean
+    protected ApproveParticipationUseCase approveParticipationUseCase;
+
+    @MockBean
+    protected RejectParticipationUseCase rejectParticipationUseCase;
+
+    @MockBean
+    protected DelegateHostAuthorityUseCase delegateHostAuthorityUseCase;
+
+    @MockBean
+    protected CancelParticipationUseCase cancelParticipationUseCase;
+
+    @MockBean
+    protected GraduateStudyUseCase graduateStudyUseCase;
 
     // StudyAttendance
     @MockBean
