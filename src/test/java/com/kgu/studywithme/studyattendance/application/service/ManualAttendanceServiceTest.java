@@ -45,7 +45,7 @@ class ManualAttendanceServiceTest extends UseCaseTest {
     void setUp() {
         member = JIWON.toMember().apply(1L, LocalDateTime.now());
         previousScore = member.getScore();
-        study = SPRING.toOnlineStudy(member).apply(1L, LocalDateTime.now());
+        study = SPRING.toOnlineStudy(member.getId()).apply(1L, LocalDateTime.now());
     }
 
     @Test

@@ -32,7 +32,7 @@ class ParticipantHandlingRepositoryTest extends RepositoryTest {
     private Member host;
     private Member applier;
     private Member participant;
-    private Member participateCancelMember;
+    private Member leaveMember;
     private Member graduatedMember;
     private Study study;
 
@@ -41,7 +41,7 @@ class ParticipantHandlingRepositoryTest extends RepositoryTest {
         host = memberRepository.save(JIWON.toMember());
         applier = memberRepository.save(DUMMY1.toMember());
         participant = memberRepository.save(DUMMY2.toMember());
-        participateCancelMember = memberRepository.save(DUMMY3.toMember());
+        leaveMember = memberRepository.save(DUMMY3.toMember());
         graduatedMember = memberRepository.save(DUMMY4.toMember());
 
         study = studyRepository.save(SPRING.toOnlineStudy(host.getId()));
@@ -56,7 +56,7 @@ class ParticipantHandlingRepositoryTest extends RepositoryTest {
                 StudyParticipant.applyParticipant(study.getId(), participant.getId(), APPROVE)
         );
         studyParticipantRepository.save(
-                StudyParticipant.applyParticipant(study.getId(), participateCancelMember.getId(), CALCEL)
+                StudyParticipant.applyParticipant(study.getId(), leaveMember.getId(), LEAVE)
         );
         studyParticipantRepository.save(
                 StudyParticipant.applyParticipant(study.getId(), graduatedMember.getId(), GRADUATED)
@@ -77,7 +77,7 @@ class ParticipantHandlingRepositoryTest extends RepositoryTest {
                         studyParticipantRepository.findApplier(study.getId(), participant.getId())
                 ).isEmpty(),
                 () -> assertThat(
-                        studyParticipantRepository.findApplier(study.getId(), participateCancelMember.getId())
+                        studyParticipantRepository.findApplier(study.getId(), leaveMember.getId())
                 ).isEmpty(),
                 () -> assertThat(
                         studyParticipantRepository.findApplier(study.getId(), graduatedMember.getId())
@@ -99,7 +99,7 @@ class ParticipantHandlingRepositoryTest extends RepositoryTest {
                         studyParticipantRepository.findParticipant(study.getId(), participant.getId())
                 ).isPresent(),
                 () -> assertThat(
-                        studyParticipantRepository.findParticipant(study.getId(), participateCancelMember.getId())
+                        studyParticipantRepository.findParticipant(study.getId(), leaveMember.getId())
                 ).isEmpty(),
                 () -> assertThat(
                         studyParticipantRepository.findParticipant(study.getId(), graduatedMember.getId())
@@ -121,7 +121,7 @@ class ParticipantHandlingRepositoryTest extends RepositoryTest {
                         studyParticipantRepository.deleteApplier(study.getId(), participant.getId())
                 ).isEqualTo(0),
                 () -> assertThat(
-                        studyParticipantRepository.deleteApplier(study.getId(), participateCancelMember.getId())
+                        studyParticipantRepository.deleteApplier(study.getId(), leaveMember.getId())
                 ).isEqualTo(0),
                 () -> assertThat(
                         studyParticipantRepository.deleteApplier(study.getId(), graduatedMember.getId())

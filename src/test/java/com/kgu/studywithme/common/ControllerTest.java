@@ -216,7 +216,7 @@ public abstract class ControllerTest {
     protected DelegateHostAuthorityUseCase delegateHostAuthorityUseCase;
 
     @MockBean
-    protected CancelParticipationUseCase cancelParticipationUseCase;
+    protected LeaveParticipationUseCase leaveParticipationUseCase;
 
     @MockBean
     protected GraduateStudyUseCase graduateStudyUseCase;

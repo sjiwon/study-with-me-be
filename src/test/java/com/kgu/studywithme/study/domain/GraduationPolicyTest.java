@@ -84,7 +84,7 @@ class GraduationPolicyTest {
                 .update(13); // remain = 1
 
         // when
-        GraduationPolicy resetUpdateChange = policy.resetUpdateChanceForDelegatingStudyHost();
+        GraduationPolicy resetUpdateChange = policy.resetUpdateChanceByDelegatingHostAuthority();
 
         // then
         assertAll(

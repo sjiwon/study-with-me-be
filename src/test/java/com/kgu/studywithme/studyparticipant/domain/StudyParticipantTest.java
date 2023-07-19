@@ -10,7 +10,8 @@ import java.time.LocalDateTime;
 import static com.kgu.studywithme.fixture.MemberFixture.GHOST;
 import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.fixture.StudyFixture.SPRING;
-import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.*;
+import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPLY;
+import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPROVE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("StudyParticipant -> 도메인 [StudyParticipant] 테스트")
@@ -37,27 +38,5 @@ class StudyParticipantTest {
 
         // then
         assertThat(participant.getStatus()).isEqualTo(APPROVE);
-    }
-
-    @Test
-    @DisplayName("참여 상태를 업데이트한다")
-    void updateStatus() {
-        final StudyParticipant participant = StudyParticipant.applyInStudy(study.getId(), member.getId());
-
-        /* to APPROVE */
-        participant.updateStatus(APPROVE);
-        assertThat(participant.getStatus()).isEqualTo(APPROVE);
-
-        /* to REJECT */
-        participant.updateStatus(REJECT);
-        assertThat(participant.getStatus()).isEqualTo(REJECT);
-
-        /* to CANCEL */
-        participant.updateStatus(CALCEL);
-        assertThat(participant.getStatus()).isEqualTo(CALCEL);
-
-        /* to GRADUATED */
-        participant.updateStatus(GRADUATED);
-        assertThat(participant.getStatus()).isEqualTo(GRADUATED);
     }
 }

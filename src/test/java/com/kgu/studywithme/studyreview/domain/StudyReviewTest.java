@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class StudyReviewTest {
     private final Member memberA = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Member memberB = GHOST.toMember().apply(2L, LocalDateTime.now());
-    private final Study study = SPRING.toOnlineStudy(memberA);
+    private final Study study = SPRING.toOnlineStudy(memberA.getId());
     private final StudyReview review = StudyReview.writeReview(
             study.getId(),
             memberB.getId(),

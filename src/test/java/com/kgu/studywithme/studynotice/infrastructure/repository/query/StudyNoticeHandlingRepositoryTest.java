@@ -41,7 +41,7 @@ class StudyNoticeHandlingRepositoryTest extends RepositoryTest {
     @BeforeEach
     void setUp() {
         writer = memberRepository.save(JIWON.toMember());
-        study = studyRepository.save(SPRING.toOnlineStudy(writer));
+        study = studyRepository.save(SPRING.toOnlineStudy(writer.getId()));
     }
 
     @Test

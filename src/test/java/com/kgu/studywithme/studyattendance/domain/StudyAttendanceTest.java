@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @DisplayName("StudyAttendance -> 도메인 [StudyAttendance] 테스트")
 class StudyAttendanceTest {
     private final Member member = JIWON.toMember().apply(1L, LocalDateTime.now());
-    private final Study study = SPRING.toOnlineStudy(member).apply(1L, LocalDateTime.now());
+    private final Study study = SPRING.toOnlineStudy(member.getId()).apply(1L, LocalDateTime.now());
 
     @Test
     @DisplayName("StudyAttendance의 status를 변경한다")

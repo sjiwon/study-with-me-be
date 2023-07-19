@@ -3,7 +3,7 @@ package com.kgu.studywithme.studyparticipant.application.service;
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.study.application.QueryStudyByIdService;
+import com.kgu.studywithme.study.application.service.QueryStudyByIdService;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.ApplyStudyUseCase;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;

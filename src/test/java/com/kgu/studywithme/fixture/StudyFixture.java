@@ -1,9 +1,7 @@
 package com.kgu.studywithme.fixture;
 
 import com.kgu.studywithme.category.domain.Category;
-import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.*;
-import com.kgu.studywithme.study.domain.participant.Capacity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -80,9 +78,9 @@ public enum StudyFixture {
     private final int minimumAttendanceForGraduation;
     private final Set<String> hashtags;
 
-    public Study toOnlineStudy(Member host) {
+    public Study toOnlineStudy(final Long hostId) {
         return Study.createOnlineStudy(
-                host,
+                hostId,
                 StudyName.from(name),
                 Description.from(description),
                 Capacity.from(capacity),
@@ -93,9 +91,9 @@ public enum StudyFixture {
         );
     }
 
-    public Study toOfflineStudy(Member host) {
+    public Study toOfflineStudy(final Long hostId) {
         return Study.createOfflineStudy(
-                host,
+                hostId,
                 StudyName.from(name),
                 Description.from(description),
                 Capacity.from(capacity),

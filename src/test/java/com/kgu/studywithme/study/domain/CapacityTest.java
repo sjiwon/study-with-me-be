@@ -1,4 +1,4 @@
-package com.kgu.studywithme.study.domain.participant;
+package com.kgu.studywithme.study.domain;
 
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@DisplayName("Study/Participant -> 도메인 [Capacity VO] 테스트")
+@DisplayName("Study -> 도메인 [Capacity VO] 테스트")
 class CapacityTest {
     @ParameterizedTest(name = "{index}: {0}")
     @ValueSource(ints = {-1, 0, 1, 11})
@@ -35,9 +35,9 @@ class CapacityTest {
     @ParameterizedTest(name = "{index}: {0} - {1}")
     @MethodSource("isEqualOrOver")
     @DisplayName("생성한 Capacity에 대해서 비교값이 같거나 큰지 판별한다")
-    void isEqualOrOver(int compareValue, boolean expected) {
+    void isFullByCompareWith(int compareValue, boolean expected) {
         Capacity capacity = Capacity.from(2);
-        assertThat(capacity.isEqualOrOver(compareValue)).isEqualTo(expected);
+        assertThat(capacity.isFullByCompareWith(compareValue)).isEqualTo(expected);
     }
 
     private static Stream<Arguments> isEqualOrOver() {

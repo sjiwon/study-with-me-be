@@ -35,7 +35,7 @@ class DeleteStudyReviewServiceTest extends UseCaseTest {
 
     private final Member member = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Member anonymous = GHOST.toMember().apply(2L, LocalDateTime.now());
-    private final Study study = SPRING.toOnlineStudy(member).apply(1L, LocalDateTime.now());
+    private final Study study = SPRING.toOnlineStudy(member.getId()).apply(1L, LocalDateTime.now());
     private final StudyReview review = StudyReview.writeReview(
             study.getId(),
             member.getId(),

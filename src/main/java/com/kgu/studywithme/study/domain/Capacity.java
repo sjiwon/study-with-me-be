@@ -1,4 +1,4 @@
-package com.kgu.studywithme.study.domain.participant;
+package com.kgu.studywithme.study.domain;
 
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
@@ -37,7 +37,7 @@ public class Capacity {
         return (capacity < MINIMUM) || (MAXIMUM < capacity);
     }
 
-    public boolean isEqualOrOver(final int compareValue) {
+    public boolean isFullByCompareWith(final int compareValue) {
         return value <= compareValue;
     }
 }

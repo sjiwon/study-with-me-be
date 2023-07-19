@@ -4,7 +4,7 @@ import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.study.domain.participant.ParticipantRepository;
+import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import com.kgu.studywithme.studyreview.application.usecase.command.WriteStudyReviewUseCase;
 import com.kgu.studywithme.studyreview.domain.StudyReview;
 import com.kgu.studywithme.studyreview.domain.StudyReviewRepository;
@@ -31,13 +31,13 @@ class WriteStudyReviewServiceTest extends UseCaseTest {
     private WriteStudyReviewService writeStudyReviewService;
 
     @Mock
-    private ParticipantRepository participantRepository;
+    private StudyParticipantRepository studyParticipantRepository;
 
     @Mock
     private StudyReviewRepository studyReviewRepository;
 
     private final Member member = JIWON.toMember().apply(1L, LocalDateTime.now());
-    private final Study study = SPRING.toOnlineStudy(member).apply(1L, LocalDateTime.now());
+    private final Study study = SPRING.toOnlineStudy(member.getId()).apply(1L, LocalDateTime.now());
     private final WriteStudyReviewUseCase.Command command =
             new WriteStudyReviewUseCase.Command(
                     study.getId(),
@@ -49,14 +49,14 @@ class WriteStudyReviewServiceTest extends UseCaseTest {
     @DisplayName("스터디 졸업자가 아니면 리뷰를 작성할 수 없다")
     void throwExceptionByMemberIsNotGraduated() {
         // given
-        given(participantRepository.isGraduatedParticipant(any(), any())).willReturn(false);
+        given(studyParticipantRepository.isGraduatedParticipant(any(), any())).willReturn(false);
 
         // when - then
         assertThatThrownBy(() -> writeStudyReviewService.writeStudyReview(command))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyReviewErrorCode.ONLY_GRADUATED_PARTICIPANT_CAN_WRITE_REVIEW.getMessage());
 
-        verify(participantRepository, times(1)).isGraduatedParticipant(any(), any());
+        verify(studyParticipantRepository, times(1)).isGraduatedParticipant(any(), any());
         verify(studyReviewRepository, times(0)).existsByStudyIdAndWriterId(any(), any());
         verify(studyReviewRepository, times(0)).save(any());
     }
@@ -65,7 +65,7 @@ class WriteStudyReviewServiceTest extends UseCaseTest {
     @DisplayName("이미 리뷰를 작성했다면 더이상 작성할 수 없다")
     void throwExceptionByMemberIsAlreadyWrittenReview() {
         // given
-        given(participantRepository.isGraduatedParticipant(any(), any())).willReturn(true);
+        given(studyParticipantRepository.isGraduatedParticipant(any(), any())).willReturn(true);
         given(studyReviewRepository.existsByStudyIdAndWriterId(any(), any())).willReturn(true);
 
         // when - then
@@ -73,7 +73,7 @@ class WriteStudyReviewServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyReviewErrorCode.ALREADY_WRITTEN.getMessage());
 
-        verify(participantRepository, times(1)).isGraduatedParticipant(any(), any());
+        verify(studyParticipantRepository, times(1)).isGraduatedParticipant(any(), any());
         verify(studyReviewRepository, times(1)).existsByStudyIdAndWriterId(any(), any());
         verify(studyReviewRepository, times(0)).save(any());
     }
@@ -82,7 +82,7 @@ class WriteStudyReviewServiceTest extends UseCaseTest {
     @DisplayName("스터디 리뷰를 작성한다")
     void success() {
         // given
-        given(participantRepository.isGraduatedParticipant(any(), any())).willReturn(true);
+        given(studyParticipantRepository.isGraduatedParticipant(any(), any())).willReturn(true);
         given(studyReviewRepository.existsByStudyIdAndWriterId(any(), any())).willReturn(false);
 
         final StudyReview review = StudyReview.writeReview(
@@ -97,7 +97,7 @@ class WriteStudyReviewServiceTest extends UseCaseTest {
 
         // then
         assertThat(studyReviewId).isEqualTo(review.getId());
-        verify(participantRepository, times(1)).isGraduatedParticipant(any(), any());
+        verify(studyParticipantRepository, times(1)).isGraduatedParticipant(any(), any());
         verify(studyReviewRepository, times(1)).existsByStudyIdAndWriterId(any(), any());
         verify(studyReviewRepository, times(1)).save(any());
     }

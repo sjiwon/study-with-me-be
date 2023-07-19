@@ -2,11 +2,11 @@ package com.kgu.studywithme.studynotice.application.service;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.study.domain.participant.ParticipantRepository;
 import com.kgu.studywithme.studynotice.application.usecase.command.WriteStudyNoticeCommentUseCase;
 import com.kgu.studywithme.studynotice.domain.StudyNotice;
 import com.kgu.studywithme.studynotice.domain.StudyNoticeRepository;
 import com.kgu.studywithme.studynotice.exception.StudyNoticeErrorCode;
+import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class WriteStudyNoticeCommentService implements WriteStudyNoticeCommentUseCase {
     private final StudyNoticeRepository studyNoticeRepository;
-    private final ParticipantRepository participantRepository;
+    private final StudyParticipantRepository studyParticipantRepository;
 
     @Override
     public void writeNoticeComment(final Command command) {
@@ -31,7 +31,7 @@ public class WriteStudyNoticeCommentService implements WriteStudyNoticeCommentUs
     }
 
     private void validateWriterIsStudyParticipant(final Long studyId, final Long writerId) {
-        if (!participantRepository.isParticipant(studyId, writerId)) {
+        if (!studyParticipantRepository.isParticipant(studyId, writerId)) {
             throw StudyWithMeException.type(StudyNoticeErrorCode.ONLY_PARTICIPANT_CAN_WRITE_COMMENT);
         }
     }

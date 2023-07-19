@@ -37,8 +37,8 @@ class FavoriteRepositoryTest extends RepositoryTest {
         Member host = memberRepository.save(JIWON.toMember());
 
         member = memberRepository.save(GHOST.toMember());
-        study1 = studyRepository.save(TOEIC.toOnlineStudy(host));
-        study2 = studyRepository.save(SPRING.toOnlineStudy(host));
+        study1 = studyRepository.save(TOEIC.toOnlineStudy(host.getId()));
+        study2 = studyRepository.save(SPRING.toOnlineStudy(host.getId()));
     }
 
     @Test

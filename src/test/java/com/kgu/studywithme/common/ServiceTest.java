@@ -7,10 +7,6 @@ import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.memberreport.domain.MemberReportRepository;
 import com.kgu.studywithme.memberreview.domain.MemberReviewRepository;
 import com.kgu.studywithme.study.domain.StudyRepository;
-import com.kgu.studywithme.study.domain.attendance.AttendanceRepository;
-import com.kgu.studywithme.study.domain.notice.NoticeRepository;
-import com.kgu.studywithme.study.domain.notice.comment.CommentRepository;
-import com.kgu.studywithme.study.domain.review.ReviewRepository;
 import com.kgu.studywithme.study.domain.week.WeekRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,19 +35,7 @@ public abstract class ServiceTest {
     protected FavoriteRepository favoriteRepository;
 
     @Autowired
-    protected NoticeRepository noticeRepository;
-
-    @Autowired
-    protected CommentRepository commentRepository;
-
-    @Autowired
-    protected ReviewRepository reviewRepository;
-
-    @Autowired
     protected MemberReportRepository memberReportRepository;
-
-    @Autowired
-    protected AttendanceRepository attendanceRepository;
 
     @Autowired
     protected MemberReviewRepository memberReviewRepository;
