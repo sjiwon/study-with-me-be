@@ -61,23 +61,6 @@ public class MemberAttendanceRepositoryImpl implements MemberAttendanceRepositor
                 .fetch();
     }
 
-    @Override
-    public Long getAttendanceCount(
-            final Long studyId,
-            final Long memberId,
-            final AttendanceStatus status
-    ) {
-        return query
-                .select(studyAttendance.count())
-                .from(studyAttendance)
-                .where(
-                        studyAttendance.studyId.eq(studyId),
-                        participantIdEq(memberId),
-                        studyAttendance.status.eq(status)
-                )
-                .fetchOne();
-    }
-
     private BooleanExpression participantIdEq(final Long memberId) {
         return (memberId != null) ? studyAttendance.participantId.eq(memberId) : null;
     }

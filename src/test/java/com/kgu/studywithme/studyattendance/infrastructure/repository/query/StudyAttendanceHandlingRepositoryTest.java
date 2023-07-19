@@ -18,8 +18,7 @@ import java.util.Set;
 
 import static com.kgu.studywithme.fixture.MemberFixture.*;
 import static com.kgu.studywithme.fixture.StudyFixture.SPRING;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.NON_ATTENDANCE;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -44,7 +43,7 @@ class StudyAttendanceHandlingRepositoryTest extends RepositoryTest {
         member[2] = memberRepository.save(DUMMY2.toMember());
         member[3] = memberRepository.save(DUMMY3.toMember());
         member[4] = memberRepository.save(DUMMY4.toMember());
-        study = studyRepository.save(SPRING.toOnlineStudy(member[0]));
+        study = studyRepository.save(SPRING.toOnlineStudy(member[0].getId()));
     }
 
     @Test
@@ -64,12 +63,12 @@ class StudyAttendanceHandlingRepositoryTest extends RepositoryTest {
         final Optional<StudyAttendance> findStudyAttendance = studyAttendanceRepository.getParticipantAttendanceByWeek(
                 study.getId(),
                 member[0].getId(),
-                1
+                attendance.getWeek()
         );
         final Optional<StudyAttendance> emptyStudyAttendance = studyAttendanceRepository.getParticipantAttendanceByWeek(
                 study.getId(),
                 member[0].getId(),
-                2
+                attendance.getWeek() + 1
         );
 
         // then
@@ -141,5 +140,36 @@ class StudyAttendanceHandlingRepositoryTest extends RepositoryTest {
                         NON_ATTENDANCE
                 )
         );
+    }
+
+    @Test
+    @DisplayName("사용자의 스터디 출석 횟수를 조회한다")
+    void getAttendanceCount() {
+        /* 출석 1회 */
+        studyAttendanceRepository.save(
+                StudyAttendance.recordAttendance(
+                        study.getId(), member[0].getId(), 1, ATTENDANCE
+                )
+        );
+        assertThat(studyAttendanceRepository.getAttendanceCount(study.getId(), member[0].getId()))
+                .isEqualTo(1);
+
+        /* 출석 1회 + 지각 1회 */
+        studyAttendanceRepository.save(
+                StudyAttendance.recordAttendance(
+                        study.getId(), member[0].getId(), 2, LATE
+                )
+        );
+        assertThat(studyAttendanceRepository.getAttendanceCount(study.getId(), member[0].getId()))
+                .isEqualTo(1);
+
+        /* 출석 2회 + 지각 1회 */
+        studyAttendanceRepository.save(
+                StudyAttendance.recordAttendance(
+                        study.getId(), member[0].getId(), 3, ATTENDANCE
+                )
+        );
+        assertThat(studyAttendanceRepository.getAttendanceCount(study.getId(), member[0].getId()))
+                .isEqualTo(2);
     }
 }

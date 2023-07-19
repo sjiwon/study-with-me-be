@@ -11,11 +11,5 @@ public interface StudyAttendanceHandlingRepository {
             final Integer week
     );
 
-//    void updateParticipantStatus(
-//            final Long studyId,
-//            final int week,
-//            final Set<Long> participantIds,
-//            final AttendanceStatus attendanceStatus
-//    );
-    // TODO QueryDsl Bug -> jOOQ Migration
+    int getAttendanceCount(final Long studyId, final Long participantId);
 }
