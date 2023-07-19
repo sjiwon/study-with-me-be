@@ -1,14 +1,14 @@
 package com.kgu.studywithme.fixture;
 
-import com.kgu.studywithme.study.domain.week.Week;
-import com.kgu.studywithme.study.domain.week.attachment.Attachment;
-import com.kgu.studywithme.study.domain.week.attachment.UploadAttachment;
+import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
+import com.kgu.studywithme.studyweekly.domain.attachment.StudyWeeklyAttachment;
+import com.kgu.studywithme.studyweekly.domain.attachment.UploadAttachment;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum AttachmentFixture {
+public enum StudyWeeklyAttachmentFixture {
     PDF_FILE("hello.pdf", "https://kr.object.ncloudstorage.com/bucket/attachments/uuid.pdf"),
     TXT_FILE("hello.txt", "https://kr.object.ncloudstorage.com/bucket/attachments/uuid.txt"),
     HWP_FILE("hello.hwp", "https://kr.object.ncloudstorage.com/bucket/attachments/uuid.hwp"),
@@ -18,7 +18,10 @@ public enum AttachmentFixture {
     private final String uploadFileName;
     private final String link;
 
-    public Attachment toAttachment(Week week) {
-        return Attachment.addAttachmentFile(week, UploadAttachment.of(uploadFileName, link));
+    public StudyWeeklyAttachment toAttachment(final StudyWeekly studyWeekly) {
+        return StudyWeeklyAttachment.addAttachmentFile(
+                studyWeekly,
+                UploadAttachment.of(uploadFileName, link)
+        );
     }
 }

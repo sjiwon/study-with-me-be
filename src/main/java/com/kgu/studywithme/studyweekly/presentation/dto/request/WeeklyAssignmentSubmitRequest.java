@@ -1,4 +1,4 @@
-package com.kgu.studywithme.study.presentation.dto.request;
+package com.kgu.studywithme.studyweekly.presentation.dto.request;
 
 import com.kgu.studywithme.study.utils.validator.ValidUploadType;
 import jakarta.validation.constraints.NotBlank;

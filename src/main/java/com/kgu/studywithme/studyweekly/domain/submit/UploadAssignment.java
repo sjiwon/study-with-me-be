@@ -1,4 +1,4 @@
-package com.kgu.studywithme.study.domain.week.submit;
+package com.kgu.studywithme.studyweekly.domain.submit;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -8,8 +8,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import static com.kgu.studywithme.study.domain.week.submit.UploadType.FILE;
-import static com.kgu.studywithme.study.domain.week.submit.UploadType.LINK;
+import static com.kgu.studywithme.studyweekly.domain.submit.UploadType.FILE;
+import static com.kgu.studywithme.studyweekly.domain.submit.UploadType.LINK;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

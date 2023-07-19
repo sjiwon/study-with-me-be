@@ -1,4 +1,4 @@
-package com.kgu.studywithme.study.domain.week.submit;
+package com.kgu.studywithme.studyweekly.domain.submit;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

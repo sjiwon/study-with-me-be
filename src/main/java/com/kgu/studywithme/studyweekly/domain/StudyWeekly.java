@@ -1,12 +1,10 @@
-package com.kgu.studywithme.study.domain.week;
+package com.kgu.studywithme.studyweekly.domain;
 
 import com.kgu.studywithme.global.BaseEntity;
-import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.study.domain.week.attachment.Attachment;
-import com.kgu.studywithme.study.domain.week.attachment.UploadAttachment;
-import com.kgu.studywithme.study.domain.week.submit.Submit;
-import com.kgu.studywithme.study.domain.week.submit.UploadAssignment;
+import com.kgu.studywithme.studyweekly.domain.attachment.StudyWeeklyAttachment;
+import com.kgu.studywithme.studyweekly.domain.attachment.UploadAttachment;
+import com.kgu.studywithme.studyweekly.domain.submit.StudyWeeklySubmit;
+import com.kgu.studywithme.studyweekly.domain.submit.UploadAssignment;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -19,8 +17,14 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "study_week")
-public class Week extends BaseEntity<Week> {
+@Table(name = "study_weekly")
+public class StudyWeekly extends BaseEntity<StudyWeekly> {
+    @Column(name = "study_id", nullable = false)
+    private Long studyId;
+
+    @Column(name = "creator_id", nullable = false)
+    private Long creatorId;
+
     @Column(name = "title", nullable = false)
     private String title;
 
@@ -40,22 +44,15 @@ public class Week extends BaseEntity<Week> {
     @Column(name = "is_auto_attendance", nullable = false)
     private boolean autoAttendance;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false)
-    private Study study;
+    @OneToMany(mappedBy = "studyWeekly", cascade = CascadeType.PERSIST)
+    private List<StudyWeeklyAttachment> attachments = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "creator_id", referencedColumnName = "id", nullable = false)
-    private Member creator;
+    @OneToMany(mappedBy = "studyWeekly", cascade = CascadeType.PERSIST)
+    private List<StudyWeeklySubmit> submits = new ArrayList<>();
 
-    @OneToMany(mappedBy = "week", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
-    private List<Attachment> attachments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "week", cascade = CascadeType.PERSIST)
-    private List<Submit> submits = new ArrayList<>();
-
-    private Week(
-            final Study study,
+    private StudyWeekly(
+            final Long studyId,
+            final Long creatorId,
             final String title,
             final String content,
             final int week,
@@ -64,8 +61,8 @@ public class Week extends BaseEntity<Week> {
             final boolean autoAttendance,
             final List<UploadAttachment> attachments
     ) {
-        this.study = study;
-        this.creator = study.getHost();
+        this.studyId = studyId;
+        this.creatorId = creatorId;
         this.title = title;
         this.content = content;
         this.week = week;
@@ -75,19 +72,31 @@ public class Week extends BaseEntity<Week> {
         applyAttachments(attachments);
     }
 
-    public static Week createWeek(
-            final Study study,
+    public static StudyWeekly createWeekly(
+            final Long studyId,
+            final Long creatorId,
             final String title,
             final String content,
             final int week,
             final Period period,
             final List<UploadAttachment> attachments
     ) {
-        return new Week(study, title, content, week, period, false, false, attachments);
+        return new StudyWeekly(
+                studyId,
+                creatorId,
+                title,
+                content,
+                week,
+                period,
+                false,
+                false,
+                attachments
+        );
     }
 
-    public static Week createWeekWithAssignment(
-            final Study study,
+    public static StudyWeekly createWeeklyWithAssignment(
+            final Long studyId,
+            final Long creatorId,
             final String title,
             final String content,
             final int week,
@@ -95,7 +104,17 @@ public class Week extends BaseEntity<Week> {
             final boolean autoAttendance,
             final List<UploadAttachment> attachments
     ) {
-        return new Week(study, title, content, week, period, true, autoAttendance, attachments);
+        return new StudyWeekly(
+                studyId,
+                creatorId,
+                title,
+                content,
+                week,
+                period,
+                true,
+                autoAttendance,
+                attachments
+        );
     }
 
     public void update(
@@ -115,21 +134,20 @@ public class Week extends BaseEntity<Week> {
     }
 
     private void applyAttachments(final List<UploadAttachment> attachments) {
-        this.attachments.clear();
-
         if (!CollectionUtils.isEmpty(attachments)) {
+            this.attachments.clear();
             this.attachments.addAll(
                     attachments.stream()
-                            .map(uploadAttachment -> Attachment.addAttachmentFile(this, uploadAttachment))
+                            .map(uploadAttachment -> StudyWeeklyAttachment.addAttachmentFile(this, uploadAttachment))
                             .toList()
             );
         }
     }
 
     public void submitAssignment(
-            final Member participant,
+            final Long participantId,
             final UploadAssignment uploadAssignment
     ) {
-        submits.add(Submit.submitAssignment(this, participant, uploadAssignment));
+        submits.add(StudyWeeklySubmit.submitAssignment(this, participantId, uploadAssignment));
     }
 }

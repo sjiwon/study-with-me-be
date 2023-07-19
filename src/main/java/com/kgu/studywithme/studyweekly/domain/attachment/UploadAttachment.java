@@ -1,4 +1,4 @@
-package com.kgu.studywithme.study.domain.week.attachment;
+package com.kgu.studywithme.studyweekly.domain.attachment;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

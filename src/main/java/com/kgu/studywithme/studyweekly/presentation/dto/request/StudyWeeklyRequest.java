@@ -1,4 +1,4 @@
-package com.kgu.studywithme.study.presentation.dto.request;
+package com.kgu.studywithme.studyweekly.presentation.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

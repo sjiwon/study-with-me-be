@@ -1,19 +1,18 @@
 package com.kgu.studywithme.fixture;
 
-import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.study.domain.week.Week;
-import com.kgu.studywithme.study.domain.week.attachment.UploadAttachment;
+import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
+import com.kgu.studywithme.studyweekly.domain.attachment.UploadAttachment;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-import static com.kgu.studywithme.fixture.AttachmentFixture.*;
 import static com.kgu.studywithme.fixture.PeriodFixture.*;
+import static com.kgu.studywithme.fixture.StudyWeeklyAttachmentFixture.*;
 
 @Getter
 @RequiredArgsConstructor
-public enum WeekFixture {
+public enum StudyWeeklyFixture {
     STUDY_WEEKLY_1(
             "Week 1", "지정된 기간까지 과제 제출해주세요.",
             1, WEEK_1, true, true,
@@ -60,11 +59,28 @@ public enum WeekFixture {
     private final boolean autoAttendance;
     private final List<UploadAttachment> attachments;
 
-    public Week toWeek(Study study) {
-        return Week.createWeek(study, title, content, week, period.toPeriod(), attachments);
+    public StudyWeekly toWeekly(final Long studyId, final Long creatorId) {
+        return StudyWeekly.createWeekly(
+                studyId,
+                creatorId,
+                title,
+                content,
+                week,
+                period.toPeriod(),
+                attachments
+        );
     }
 
-    public Week toWeekWithAssignment(Study study) {
-        return Week.createWeekWithAssignment(study, title, content, week, period.toPeriod(), autoAttendance, attachments);
+    public StudyWeekly toWeeklyWithAssignment(final Long studyId, final Long creatorId) {
+        return StudyWeekly.createWeeklyWithAssignment(
+                studyId,
+                creatorId,
+                title,
+                content,
+                week,
+                period.toPeriod(),
+                autoAttendance,
+                attachments
+        );
     }
 }
