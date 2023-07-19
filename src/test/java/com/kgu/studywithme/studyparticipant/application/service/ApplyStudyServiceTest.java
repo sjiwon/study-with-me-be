@@ -66,7 +66,7 @@ class ApplyStudyServiceTest extends UseCaseTest {
         verify(studyParticipantRepository, times(0))
                 .isApplierOrParticipant(any(), any());
         verify(studyParticipantRepository, times(0))
-                .isAlreadyCancelOrGraduatedParticipant(any(), any());
+                .isAlreadyLeaveOrGraduatedParticipant(any(), any());
         verify(studyParticipantRepository, times(0)).save(any());
     }
 
@@ -90,7 +90,7 @@ class ApplyStudyServiceTest extends UseCaseTest {
         verify(studyParticipantRepository, times(0))
                 .isApplierOrParticipant(any(), any());
         verify(studyParticipantRepository, times(0))
-                .isAlreadyCancelOrGraduatedParticipant(any(), any());
+                .isAlreadyLeaveOrGraduatedParticipant(any(), any());
         verify(studyParticipantRepository, times(0)).save(any());
     }
 
@@ -115,17 +115,17 @@ class ApplyStudyServiceTest extends UseCaseTest {
         verify(studyParticipantRepository, times(1))
                 .isApplierOrParticipant(any(), any());
         verify(studyParticipantRepository, times(0))
-                .isAlreadyCancelOrGraduatedParticipant(any(), any());
+                .isAlreadyLeaveOrGraduatedParticipant(any(), any());
         verify(studyParticipantRepository, times(0)).save(any());
     }
 
     @Test
     @DisplayName("스터디 참여를 취소했거나 졸업한 사람은 동일 스터디에 다시 참여 신청을 할 수 없다")
-    void throwExceptionByAlreadyCancelOrGraduated() {
+    void throwExceptionByAlreadyLeaveOrGraduated() {
         // given
         given(queryStudyByIdService.findById(any())).willReturn(study);
         given(studyParticipantRepository.isApplierOrParticipant(any(), any())).willReturn(false);
-        given(studyParticipantRepository.isAlreadyCancelOrGraduatedParticipant(any(), any()))
+        given(studyParticipantRepository.isAlreadyLeaveOrGraduatedParticipant(any(), any()))
                 .willReturn(true);
 
         // when - then
@@ -136,13 +136,13 @@ class ApplyStudyServiceTest extends UseCaseTest {
                 )
         ))
                 .isInstanceOf(StudyWithMeException.class)
-                .hasMessage(StudyParticipantErrorCode.ALREADY_CANCEL_OR_GRADUATED.getMessage());
+                .hasMessage(StudyParticipantErrorCode.ALREADY_LEAVE_OR_GRADUATED.getMessage());
 
         verify(queryStudyByIdService, times(1)).findById(any());
         verify(studyParticipantRepository, times(1))
                 .isApplierOrParticipant(any(), any());
         verify(studyParticipantRepository, times(1))
-                .isAlreadyCancelOrGraduatedParticipant(any(), any());
+                .isAlreadyLeaveOrGraduatedParticipant(any(), any());
         verify(studyParticipantRepository, times(0)).save(any());
     }
 
@@ -152,7 +152,7 @@ class ApplyStudyServiceTest extends UseCaseTest {
         // given
         given(queryStudyByIdService.findById(any())).willReturn(study);
         given(studyParticipantRepository.isApplierOrParticipant(any(), any())).willReturn(false);
-        given(studyParticipantRepository.isAlreadyCancelOrGraduatedParticipant(any(), any()))
+        given(studyParticipantRepository.isAlreadyLeaveOrGraduatedParticipant(any(), any()))
                 .willReturn(false);
 
         // when
@@ -168,7 +168,7 @@ class ApplyStudyServiceTest extends UseCaseTest {
         verify(studyParticipantRepository, times(1))
                 .isApplierOrParticipant(any(), any());
         verify(studyParticipantRepository, times(1))
-                .isAlreadyCancelOrGraduatedParticipant(any(), any());
+                .isAlreadyLeaveOrGraduatedParticipant(any(), any());
         verify(studyParticipantRepository, times(1)).save(any());
     }
 }

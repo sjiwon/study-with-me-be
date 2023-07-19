@@ -9,5 +9,5 @@ public interface ParticipantVerificationRepository {
 
     boolean isGraduatedParticipant(final Long studyId, final Long memberId);
 
-    boolean isAlreadyCancelOrGraduatedParticipant(final Long studyId, final Long memberId);
+    boolean isAlreadyLeaveOrGraduatedParticipant(final Long studyId, final Long memberId);
 }

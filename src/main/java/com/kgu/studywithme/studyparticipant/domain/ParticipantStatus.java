@@ -9,7 +9,7 @@ public enum ParticipantStatus {
     APPLY("참여 신청"),
     APPROVE("참여 승인"),
     REJECT("참여 거절"),
-    CALCEL("참여 취소"),
+    LEAVE("참여 취소"),
     GRADUATED("졸업"),
     ;
 

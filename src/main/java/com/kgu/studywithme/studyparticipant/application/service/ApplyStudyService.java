@@ -47,8 +47,8 @@ public class ApplyStudyService implements ApplyStudyUseCase {
             throw StudyWithMeException.type(StudyParticipantErrorCode.ALREADY_APPLY_OR_PARTICIPATE);
         }
 
-        if (studyParticipantRepository.isAlreadyCancelOrGraduatedParticipant(study.getId(), applierId)) {
-            throw StudyWithMeException.type(StudyParticipantErrorCode.ALREADY_CANCEL_OR_GRADUATED);
+        if (studyParticipantRepository.isAlreadyLeaveOrGraduatedParticipant(study.getId(), applierId)) {
+            throw StudyWithMeException.type(StudyParticipantErrorCode.ALREADY_LEAVE_OR_GRADUATED);
         }
     }
 }

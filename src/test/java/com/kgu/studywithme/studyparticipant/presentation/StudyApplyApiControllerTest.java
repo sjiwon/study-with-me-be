@@ -157,7 +157,7 @@ class StudyApplyApiControllerTest extends ControllerTest {
         void throwExceptionByMemberIsAlreadyGraduateOrCancel() throws Exception {
             // given
             mockingToken(true, PARTICIPANT_ID);
-            doThrow(StudyWithMeException.type(StudyParticipantErrorCode.ALREADY_CANCEL_OR_GRADUATED))
+            doThrow(StudyWithMeException.type(StudyParticipantErrorCode.ALREADY_LEAVE_OR_GRADUATED))
                     .when(applyStudyUseCase)
                     .apply(any());
 
@@ -167,7 +167,7 @@ class StudyApplyApiControllerTest extends ControllerTest {
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
 
             // then
-            final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.ALREADY_CANCEL_OR_GRADUATED;
+            final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.ALREADY_LEAVE_OR_GRADUATED;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
                             status().isConflict(),

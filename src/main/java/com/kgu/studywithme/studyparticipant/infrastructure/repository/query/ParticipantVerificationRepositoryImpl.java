@@ -67,14 +67,14 @@ public class ParticipantVerificationRepositoryImpl implements ParticipantVerific
     }
 
     @Override
-    public boolean isAlreadyCancelOrGraduatedParticipant(final Long studyId, final Long memberId) {
+    public boolean isAlreadyLeaveOrGraduatedParticipant(final Long studyId, final Long memberId) {
         return query
                 .select(studyParticipant.id)
                 .from(studyParticipant)
                 .where(
                         studyIdEq(studyId),
                         memberIdEq(memberId),
-                        studyParticipant.status.in(CALCEL, GRADUATED)
+                        studyParticipant.status.in(LEAVE, GRADUATED)
                 )
                 .fetchOne() != null;
     }
