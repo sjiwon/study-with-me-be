@@ -56,4 +56,17 @@ class StudyWeeklyHandlingRepositoryTest extends RepositoryTest {
         final int nextWeek3 = studyWeeklyRepository.getNextWeek(study.getId());
         assertThat(nextWeek3).isEqualTo(3);
     }
+
+    @Test
+    @DisplayName("특정 주차 정보를 조회한다")
+    void getSpecificWeekly() {
+        /* 0주차 */
+        assertThat(studyWeeklyRepository.getSpecificWeekly(study.getId(), 0)).isEmpty();
+
+        /* 1주차 */
+        assertThat(studyWeeklyRepository.getSpecificWeekly(study.getId(), 1)).isEmpty();
+
+        studyWeeklyRepository.save(STUDY_WEEKLY_1.toWeeklyWithAssignment(study.getId(), host.getId()));
+        assertThat(studyWeeklyRepository.getSpecificWeekly(study.getId(), 1)).isPresent();
+    }
 }

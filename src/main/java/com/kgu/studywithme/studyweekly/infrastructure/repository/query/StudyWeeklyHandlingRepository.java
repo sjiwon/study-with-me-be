@@ -1,5 +1,11 @@
 package com.kgu.studywithme.studyweekly.infrastructure.repository.query;
 
+import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
+
+import java.util.Optional;
+
 public interface StudyWeeklyHandlingRepository {
     int getNextWeek(final Long studyId);
+
+    Optional<StudyWeekly> getSpecificWeekly(final Long studyId, final int week);
 }
