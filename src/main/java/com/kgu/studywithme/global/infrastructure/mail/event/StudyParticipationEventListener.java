@@ -1,9 +1,9 @@
 package com.kgu.studywithme.global.infrastructure.mail.event;
 
 import com.kgu.studywithme.global.infrastructure.mail.EmailSender;
-import com.kgu.studywithme.study.event.StudyApprovedEvent;
-import com.kgu.studywithme.study.event.StudyGraduatedEvent;
-import com.kgu.studywithme.study.event.StudyRejectedEvent;
+import com.kgu.studywithme.studyparticipant.event.StudyApprovedEvent;
+import com.kgu.studywithme.studyparticipant.event.StudyGraduatedEvent;
+import com.kgu.studywithme.studyparticipant.event.StudyRejectedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;

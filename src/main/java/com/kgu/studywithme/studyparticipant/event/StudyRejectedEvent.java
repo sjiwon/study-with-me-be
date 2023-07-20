@@ -1,4 +1,4 @@
-package com.kgu.studywithme.study.event;
+package com.kgu.studywithme.studyparticipant.event;
 
 public record StudyRejectedEvent(
         String email,
