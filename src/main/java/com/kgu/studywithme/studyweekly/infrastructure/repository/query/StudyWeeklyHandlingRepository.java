@@ -8,4 +8,8 @@ public interface StudyWeeklyHandlingRepository {
     int getNextWeek(final Long studyId);
 
     Optional<StudyWeekly> getSpecificWeekly(final Long studyId, final int week);
+
+    boolean isLatestWeek(final Long studyId, final int week);
+
+    void deleteSpecificWeekly(final Long studyId, final int week);
 }
