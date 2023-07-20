@@ -9,9 +9,9 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum StudyWeeklyAttachmentFixture {
-    PDF_FILE("hello.pdf", "https://kr.object.ncloudstorage.com/bucket/attachments/uuid.pdf"),
     TXT_FILE("hello.txt", "https://kr.object.ncloudstorage.com/bucket/attachments/uuid.txt"),
-    HWP_FILE("hello.hwp", "https://kr.object.ncloudstorage.com/bucket/attachments/uuid.hwp"),
+    HWPX_FILE("hello.hwpx", "https://kr.object.ncloudstorage.com/bucket/attachments/uuid.hwpx"),
+    PDF_FILE("hello.pdf", "https://kr.object.ncloudstorage.com/bucket/attachments/uuid.pdf"),
     IMG_FILE("hello.img", "https://kr.object.ncloudstorage.com/bucket/attachments/uuid.png"),
     ;
 

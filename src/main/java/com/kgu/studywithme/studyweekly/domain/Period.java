@@ -1,4 +1,4 @@
-package com.kgu.studywithme.study.domain.week;
+package com.kgu.studywithme.studyweekly.domain;
 
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.study.exception.StudyErrorCode;

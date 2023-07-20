@@ -18,7 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class StudyWeeklyAttachmentTest {
     private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L, LocalDateTime.now());
-    private final StudyWeekly weekly = STUDY_WEEKLY_1.toWeekly(study.getId(), host.getId()).apply(1L, LocalDateTime.now());
+    private final StudyWeekly weekly = STUDY_WEEKLY_1.toWeeklyWithAssignment(study.getId(), host.getId())
+            .apply(1L, LocalDateTime.now());
 
     @Test
     @DisplayName("StudyWeeklyAttachment를 생성한다")

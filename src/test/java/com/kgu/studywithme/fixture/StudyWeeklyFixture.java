@@ -26,7 +26,7 @@ public enum StudyWeeklyFixture {
             2, WEEK_2, true, true,
             List.of(
                     UploadAttachment.of(IMG_FILE.getUploadFileName(), IMG_FILE.getLink()),
-                    UploadAttachment.of(HWP_FILE.getUploadFileName(), HWP_FILE.getLink())
+                    UploadAttachment.of(HWPX_FILE.getUploadFileName(), HWPX_FILE.getLink())
             )
     ),
     STUDY_WEEKLY_3(

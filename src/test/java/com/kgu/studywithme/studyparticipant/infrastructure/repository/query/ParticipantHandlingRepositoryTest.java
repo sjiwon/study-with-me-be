@@ -12,6 +12,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 import static com.kgu.studywithme.fixture.MemberFixture.*;
 import static com.kgu.studywithme.fixture.StudyFixture.SPRING;
 import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.*;
@@ -64,7 +66,7 @@ class ParticipantHandlingRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    @DisplayName("스터디 신청자를 조회한다 [With studyId + memberId]")
+    @DisplayName("특정 스터디 신청자를 조회한다 [With studyId + memberId]")
     void findApplier() {
         assertAll(
                 () -> assertThat(
@@ -86,7 +88,7 @@ class ParticipantHandlingRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    @DisplayName("스터디 참여자를 조회한다 [With studyId + memberId]")
+    @DisplayName("특정 스터디 참여자를 조회한다 [With studyId + memberId]")
     void findParticipant() {
         assertAll(
                 () -> assertThat(
@@ -104,6 +106,35 @@ class ParticipantHandlingRepositoryTest extends RepositoryTest {
                 () -> assertThat(
                         studyParticipantRepository.findParticipant(study.getId(), graduatedMember.getId())
                 ).isEmpty()
+        );
+    }
+
+    @Test
+    @DisplayName("스터디 참여자들 ID(PK)를 조회한다 [With studyId]")
+    void findStudyParticipantIds() {
+        /* host + participant */
+        final List<Long> studyParticipantIds1 = studyParticipantRepository.findStudyParticipantIds(study.getId());
+        assertAll(
+                () -> assertThat(studyParticipantIds1).hasSize(2),
+                () -> assertThat(studyParticipantIds1).containsExactlyInAnyOrder(host.getId(), participant.getId())
+        );
+
+        /* + applier */
+        studyParticipantRepository.updateParticipantStatus(study.getId(), applier.getId(), APPROVE);
+        final List<Long> studyParticipantIds2 = studyParticipantRepository.findStudyParticipantIds(study.getId());
+        assertAll(
+                () -> assertThat(studyParticipantIds2).hasSize(3),
+                () -> assertThat(studyParticipantIds2)
+                        .containsExactlyInAnyOrder(host.getId(), participant.getId(), applier.getId())
+        );
+
+        /* - host & participant */
+        studyParticipantRepository.updateParticipantStatus(study.getId(), host.getId(), GRADUATED);
+        studyParticipantRepository.updateParticipantStatus(study.getId(), participant.getId(), GRADUATED);
+        final List<Long> studyParticipantIds3 = studyParticipantRepository.findStudyParticipantIds(study.getId());
+        assertAll(
+                () -> assertThat(studyParticipantIds3).hasSize(1),
+                () -> assertThat(studyParticipantIds3).containsExactlyInAnyOrder(applier.getId())
         );
     }
 

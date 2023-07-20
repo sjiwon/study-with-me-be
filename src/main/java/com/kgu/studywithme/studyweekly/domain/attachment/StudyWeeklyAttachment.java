@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "study_weekly")
+@Table(name = "study_weekly_attachment")
 public class StudyWeeklyAttachment extends BaseEntity<StudyWeeklyAttachment> {
     @Embedded
     private UploadAttachment uploadAttachment;

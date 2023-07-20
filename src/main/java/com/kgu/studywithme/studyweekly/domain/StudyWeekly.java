@@ -45,10 +45,10 @@ public class StudyWeekly extends BaseEntity<StudyWeekly> {
     private boolean autoAttendance;
 
     @OneToMany(mappedBy = "studyWeekly", cascade = CascadeType.PERSIST)
-    private List<StudyWeeklyAttachment> attachments = new ArrayList<>();
+    private final List<StudyWeeklyAttachment> attachments = new ArrayList<>();
 
     @OneToMany(mappedBy = "studyWeekly", cascade = CascadeType.PERSIST)
-    private List<StudyWeeklySubmit> submits = new ArrayList<>();
+    private final List<StudyWeeklySubmit> submits = new ArrayList<>();
 
     private StudyWeekly(
             final Long studyId,
@@ -134,11 +134,16 @@ public class StudyWeekly extends BaseEntity<StudyWeekly> {
     }
 
     private void applyAttachments(final List<UploadAttachment> attachments) {
+        this.attachments.clear();
         if (!CollectionUtils.isEmpty(attachments)) {
-            this.attachments.clear();
             this.attachments.addAll(
                     attachments.stream()
-                            .map(uploadAttachment -> StudyWeeklyAttachment.addAttachmentFile(this, uploadAttachment))
+                            .map(attachment ->
+                                    StudyWeeklyAttachment.addAttachmentFile(
+                                            this,
+                                            attachment
+                                    )
+                            )
                             .toList()
             );
         }

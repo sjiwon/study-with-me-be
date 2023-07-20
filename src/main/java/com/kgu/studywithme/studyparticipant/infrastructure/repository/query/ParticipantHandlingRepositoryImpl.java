@@ -9,6 +9,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Modifying;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.kgu.studywithme.member.domain.QMember.member;
@@ -49,6 +50,18 @@ public class ParticipantHandlingRepositoryImpl implements ParticipantHandlingRep
                         )
                         .fetchOne()
         );
+    }
+
+    @Override
+    public List<Long> findStudyParticipantIds(final Long studyId) {
+        return query
+                .select(studyParticipant.memberId)
+                .from(studyParticipant)
+                .where(
+                        studyIdEq(studyId),
+                        participantStatusEq(APPROVE)
+                )
+                .fetch();
     }
 
     @StudyWithMeWritableTransactional
