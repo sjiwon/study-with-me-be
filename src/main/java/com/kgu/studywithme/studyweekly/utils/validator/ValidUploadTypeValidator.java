@@ -1,4 +1,4 @@
-package com.kgu.studywithme.study.utils.validator;
+package com.kgu.studywithme.studyweekly.utils.validator;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

@@ -1,4 +1,4 @@
-package com.kgu.studywithme.study.utils.validator;
+package com.kgu.studywithme.studyweekly.utils.validator;
 
 import jakarta.validation.ConstraintValidatorContext;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.mock;
 
-@DisplayName("Study -> ValidUploadTypeValidator 테스트")
+@DisplayName("StudyWeekly -> ValidUploadTypeValidator 테스트")
 class ValidUploadTypeValidatorTest {
     private ValidUploadTypeValidator validator;
     private ConstraintValidatorContext context;
