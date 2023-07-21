@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@SpringBootTest
+@SpringBootTest(classes = AmazonS3Properties.class)
 @DisplayName("Upload -> AmazonS3Properties 테스트")
 class AmazonS3PropertiesTest {
     @Autowired

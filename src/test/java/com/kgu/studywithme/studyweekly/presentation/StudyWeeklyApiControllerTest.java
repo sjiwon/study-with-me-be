@@ -81,7 +81,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
             final StudyErrorCode expectedError = StudyErrorCode.MEMBER_IS_NOT_HOST;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
-                            status().isConflict(),
+                            status().isForbidden(),
                             jsonPath("$.status").exists(),
                             jsonPath("$.status").value(expectedError.getStatus().value()),
                             jsonPath("$.errorCode").exists(),
@@ -218,7 +218,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
             final StudyErrorCode expectedError = StudyErrorCode.MEMBER_IS_NOT_HOST;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
-                            status().isConflict(),
+                            status().isForbidden(),
                             jsonPath("$.status").exists(),
                             jsonPath("$.status").value(expectedError.getStatus().value()),
                             jsonPath("$.errorCode").exists(),
@@ -258,7 +258,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
         @DisplayName("해당 주차 정보를 찾지 못하면 수정할 수 없다")
         void throwExceptionByWeeklyNotFound() throws Exception {
             // given
-            mockingToken(true, ANONYMOUS_ID);
+            mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyWeeklyErrorCode.WEEKLY_NOT_FOUND))
                     .when(updateStudyWeeklyUseCase)
                     .updateStudyWeekly(any());
@@ -282,7 +282,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
             final StudyWeeklyErrorCode expectedError = StudyWeeklyErrorCode.WEEKLY_NOT_FOUND;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
-                            status().isConflict(),
+                            status().isNotFound(),
                             jsonPath("$.status").exists(),
                             jsonPath("$.status").value(expectedError.getStatus().value()),
                             jsonPath("$.errorCode").exists(),
@@ -403,7 +403,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
             final StudyErrorCode expectedError = StudyErrorCode.MEMBER_IS_NOT_HOST;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
-                            status().isConflict(),
+                            status().isForbidden(),
                             jsonPath("$.status").exists(),
                             jsonPath("$.status").value(expectedError.getStatus().value()),
                             jsonPath("$.errorCode").exists(),

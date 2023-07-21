@@ -55,7 +55,7 @@ class DelegateHostAuthorityApiControllerTest extends ControllerTest {
             final StudyErrorCode expectedError = StudyErrorCode.MEMBER_IS_NOT_HOST;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
-                            status().isConflict(),
+                            status().isForbidden(),
                             jsonPath("$.status").exists(),
                             jsonPath("$.status").value(expectedError.getStatus().value()),
                             jsonPath("$.errorCode").exists(),
@@ -83,7 +83,7 @@ class DelegateHostAuthorityApiControllerTest extends ControllerTest {
         void throwExceptionByStudyIsEnd() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            doThrow(StudyWithMeException.type(StudyParticipantErrorCode.STUDY_IS_FINISH))
+            doThrow(StudyWithMeException.type(StudyParticipantErrorCode.STUDY_IS_TERMINATED))
                     .when(delegateHostAuthorityUseCase)
                     .delegateHostAuthority(any());
 
@@ -93,7 +93,7 @@ class DelegateHostAuthorityApiControllerTest extends ControllerTest {
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
 
             // then
-            final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.STUDY_IS_FINISH;
+            final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.STUDY_IS_TERMINATED;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
                             status().isConflict(),

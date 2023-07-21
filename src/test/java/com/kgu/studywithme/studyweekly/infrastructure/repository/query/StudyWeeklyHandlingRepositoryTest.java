@@ -130,23 +130,23 @@ class StudyWeeklyHandlingRepositoryTest extends RepositoryTest {
     @DisplayName("해당 주차에 제출한 과제를 조회한다")
     void getSubmittedAssignment() {
         /* 1주차 X */
-        assertThat(studyWeeklyRepository.getSubmittedAssignment(study.getId(), study.getId(), 1)).isEmpty();
+        assertThat(studyWeeklyRepository.getSubmittedAssignment(host.getId(), study.getId(), 1)).isEmpty();
 
         /* 1주차 O */
         final StudyWeekly weekly1 = studyWeeklyRepository.save(
                 STUDY_WEEKLY_1.toWeeklyWithAssignment(study.getId(), host.getId())
         );
         weekly1.submitAssignment(host.getId(), UploadAssignment.withLink("https://notion.so"));
-        assertThat(studyWeeklyRepository.getSubmittedAssignment(study.getId(), study.getId(), 1)).isPresent();
+        assertThat(studyWeeklyRepository.getSubmittedAssignment(host.getId(), study.getId(), 1)).isPresent();
 
         /* 2주차 X */
-        assertThat(studyWeeklyRepository.getSubmittedAssignment(study.getId(), study.getId(), 2)).isEmpty();
+        assertThat(studyWeeklyRepository.getSubmittedAssignment(host.getId(), study.getId(), 2)).isEmpty();
 
         /* 2주차 O */
         final StudyWeekly weekly2 = studyWeeklyRepository.save(
                 STUDY_WEEKLY_2.toWeeklyWithAssignment(study.getId(), host.getId())
         );
         weekly2.submitAssignment(host.getId(), UploadAssignment.withLink("https://notion.so"));
-        assertThat(studyWeeklyRepository.getSubmittedAssignment(study.getId(), study.getId(), 2)).isPresent();
+        assertThat(studyWeeklyRepository.getSubmittedAssignment(host.getId(), study.getId(), 2)).isPresent();
     }
 }
