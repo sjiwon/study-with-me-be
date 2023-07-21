@@ -2,6 +2,7 @@ package com.kgu.studywithme.studyweekly.infrastructure.repository.query;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
+import com.kgu.studywithme.studyweekly.domain.submit.StudyWeeklySubmit;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -101,6 +102,25 @@ public class StudyWeeklyHandlingRepositoryImpl implements StudyWeeklyHandlingRep
                     .where(studyWeekly.id.eq(weeklyId))
                     .execute();
         }
+    }
+
+    @Override
+    public Optional<StudyWeeklySubmit> getSubmittedAssignment(
+            final Long memberId,
+            final Long studyId,
+            final int week
+    ) {
+        return Optional.ofNullable(
+                query
+                        .selectFrom(studyWeeklySubmit)
+                        .innerJoin(studyWeeklySubmit.studyWeekly, studyWeekly)
+                        .where(
+                                studyWeeklySubmit.participantId.eq(memberId),
+                                studyIdEq(studyId),
+                                weekEq(week)
+                        )
+                        .fetchOne()
+        );
     }
 
     private BooleanExpression studyIdEq(final Long studyId) {

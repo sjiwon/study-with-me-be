@@ -15,6 +15,7 @@ public enum StudyWeeklyErrorCode implements ErrorCode {
     // StudyWeeklySubmit
     MISSING_SUBMISSION(HttpStatus.BAD_REQUEST, "STUDY_WEEKLY_SUBMIT_001", "과제 제출물은 링크 또는 파일 중 하나를 반드시 업로드해야 합니다."),
     DUPLICATE_SUBMISSION(HttpStatus.BAD_REQUEST, "STUDY_WEEKLY_SUBMIT_002", "과제 제출물은 링크 또는 파일 중 한가지만 업로드해야 합니다."),
+    SUBMITTED_ASSIGNMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "STUDY_WEEKLY_SUBMIT_003", "제출한 과제가 존재하지 않습니다."),
     ;
 
     private final HttpStatus status;
