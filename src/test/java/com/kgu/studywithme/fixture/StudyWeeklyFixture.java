@@ -13,6 +13,14 @@ import static com.kgu.studywithme.fixture.StudyWeeklyAttachmentFixture.*;
 @Getter
 @RequiredArgsConstructor
 public enum StudyWeeklyFixture {
+    STUDY_WEEKLY_1_PREVIOUS(
+            "Week 1", "지정된 기간까지 과제 제출해주세요.",
+            1, WEEK_0, true, true,
+            List.of(
+                    UploadAttachment.of(IMG_FILE.getUploadFileName(), IMG_FILE.getLink()),
+                    UploadAttachment.of(PDF_FILE.getUploadFileName(), PDF_FILE.getLink())
+            )
+    ),
     STUDY_WEEKLY_1(
             "Week 1", "지정된 기간까지 과제 제출해주세요.",
             1, WEEK_1, true, true,
