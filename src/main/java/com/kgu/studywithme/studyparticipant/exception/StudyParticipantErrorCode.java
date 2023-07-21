@@ -21,6 +21,7 @@ public enum StudyParticipantErrorCode implements ErrorCode {
     HOST_CANNOT_GRADUATE_STUDY(HttpStatus.BAD_REQUEST, "STUDY_PARTICIPANT_011", "스터디 팀장은 팀장 권한을 위임하고 스터디를 졸업할 수 있습니다."),
     PARTICIPANT_NOT_FOUND(HttpStatus.NOT_FOUND, "STUDY_PARTICIPANT_012", "참여자 정보를 찾을 수 없습니다."),
     PARTICIPANT_NOT_MEET_GRADUATION_POLICY(HttpStatus.CONFLICT, "STUDY_PARTICIPANT_013", "졸업 요건을 채우지 않으면 스터디 졸업을 할 수 없습니다."),
+    MEMBER_IS_NOT_PARTICIPANT(HttpStatus.FORBIDDEN, "STUDY_PARTICIPANT_014", "스터디 참여자가 아니면 권한이 없습니다."),
     ;
 
     private final HttpStatus status;

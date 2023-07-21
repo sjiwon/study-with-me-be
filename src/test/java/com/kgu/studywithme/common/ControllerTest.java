@@ -30,19 +30,17 @@ import com.kgu.studywithme.memberreview.presentation.MemberReviewApiController;
 import com.kgu.studywithme.study.application.StudyInformationService;
 import com.kgu.studywithme.study.application.StudySearchService;
 import com.kgu.studywithme.study.application.StudyService;
-import com.kgu.studywithme.study.application.StudyValidator;
-import com.kgu.studywithme.study.application.week.StudyWeeklyService;
-import com.kgu.studywithme.study.exception.StudyErrorCode;
+import com.kgu.studywithme.study.domain.StudyRepository;
 import com.kgu.studywithme.study.presentation.StudyApiController;
 import com.kgu.studywithme.study.presentation.StudyInformationApiController;
 import com.kgu.studywithme.study.presentation.StudySearchApiController;
-import com.kgu.studywithme.study.presentation.week.StudyWeeklyApiController;
 import com.kgu.studywithme.studyattendance.application.usecase.command.ManualAttendanceUseCase;
 import com.kgu.studywithme.studyattendance.presentation.StudyAttendanceApiController;
 import com.kgu.studywithme.studynotice.application.usecase.command.*;
 import com.kgu.studywithme.studynotice.presentation.StudyNoticeApiController;
 import com.kgu.studywithme.studynotice.presentation.StudyNoticeCommentApiController;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.*;
+import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import com.kgu.studywithme.studyparticipant.presentation.DelegateHostAuthorityApiController;
 import com.kgu.studywithme.studyparticipant.presentation.StudyApplyApiController;
 import com.kgu.studywithme.studyparticipant.presentation.StudyFinalizeApiController;
@@ -51,6 +49,9 @@ import com.kgu.studywithme.studyreview.application.usecase.command.DeleteStudyRe
 import com.kgu.studywithme.studyreview.application.usecase.command.UpdateStudyReviewUseCase;
 import com.kgu.studywithme.studyreview.application.usecase.command.WriteStudyReviewUseCase;
 import com.kgu.studywithme.studyreview.presentation.StudyReviewApiController;
+import com.kgu.studywithme.studyweekly.application.usecase.command.*;
+import com.kgu.studywithme.studyweekly.presentation.StudyWeeklyApiController;
+import com.kgu.studywithme.studyweekly.presentation.StudyWeeklySubmitApiController;
 import com.kgu.studywithme.upload.application.usecase.command.UploadStudyDescriptionImageUseCase;
 import com.kgu.studywithme.upload.application.usecase.command.UploadWeeklyImageUseCase;
 import com.kgu.studywithme.upload.presentation.UploadApiController;
@@ -76,7 +77,6 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -106,7 +106,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
         // Study
         StudyApiController.class, StudyInformationApiController.class,
         StudySearchApiController.class,
-        StudyWeeklyApiController.class,
 
         // StudyParticipant
         StudyApplyApiController.class, StudyParticipantDecisionApiController.class,
@@ -117,6 +116,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
         // StudyNotice & StudyNoticeComment
         StudyNoticeApiController.class, StudyNoticeCommentApiController.class,
+
+        // StudyWeekly
+        StudyWeeklyApiController.class, StudyWeeklySubmitApiController.class,
 
         // StudyReview
         StudyReviewApiController.class,
@@ -139,8 +141,12 @@ public abstract class ControllerTest {
     @MockBean
     private JwtTokenProvider jwtTokenProvider;
 
+    // AOP Validation
     @MockBean
-    private StudyValidator studyValidator;
+    private StudyRepository studyRepository;
+
+    @MockBean
+    private StudyParticipantRepository studyParticipantRepository;
 
     // Auth
     @MockBean
@@ -196,9 +202,6 @@ public abstract class ControllerTest {
     @MockBean
     protected StudySearchService studySearchService;
 
-    @MockBean
-    protected StudyWeeklyService studyWeeklyService;
-
     // StudyParticipant
     @MockBean
     protected ApplyStudyUseCase applyStudyUseCase;
@@ -243,6 +246,22 @@ public abstract class ControllerTest {
 
     @MockBean
     protected DeleteStudyNoticeCommentUseCase deleteStudyNoticeCommentUseCase;
+
+    // StudyWeekly
+    @MockBean
+    protected CreateStudyWeeklyUseCase createStudyWeeklyUseCase;
+
+    @MockBean
+    protected UpdateStudyWeeklyUseCase updateStudyWeeklyUseCase;
+
+    @MockBean
+    protected DeleteStudyWeeklyUseCase deleteStudyWeeklyUseCase;
+
+    @MockBean
+    protected SubmitWeeklyAssignmentUseCase submitWeeklyAssignmentUseCase;
+
+    @MockBean
+    protected EditSubmittedWeeklyAssignmentUseCase editSubmittedWeeklyAssignmentUseCase;
 
     // StudyReview
     @MockBean
@@ -324,27 +343,11 @@ public abstract class ControllerTest {
                 .isTokenValid(any());
     }
 
-    protected void mockingForStudyParticipant(Long studyId, Long memberId, boolean isValid) {
-        if (isValid) {
-            doNothing()
-                    .when(studyValidator)
-                    .validateStudyParticipant(studyId, memberId);
-        } else {
-            doThrow(StudyWithMeException.type(StudyErrorCode.MEMBER_IS_NOT_PARTICIPANT))
-                    .when(studyValidator)
-                    .validateStudyParticipant(studyId, memberId);
-        }
+    protected void mockingForStudyHost(Long studyId, Long memberId, boolean isValid) {
+        given(studyRepository.isHost(studyId, memberId)).willReturn(isValid);
     }
 
-    protected void mockingForStudyHost(Long studyId, Long memberId, boolean isValid) {
-        if (isValid) {
-            doNothing()
-                    .when(studyValidator)
-                    .validateHost(studyId, memberId);
-        } else {
-            doThrow(StudyWithMeException.type(StudyErrorCode.MEMBER_IS_NOT_HOST))
-                    .when(studyValidator)
-                    .validateHost(studyId, memberId);
-        }
+    protected void mockingForStudyParticipant(Long studyId, Long memberId, boolean isValid) {
+        given(studyParticipantRepository.isParticipant(studyId, memberId)).willReturn(isValid);
     }
 }
