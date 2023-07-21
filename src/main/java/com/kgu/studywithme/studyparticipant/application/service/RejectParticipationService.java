@@ -48,8 +48,8 @@ public class RejectParticipationService implements RejectParticipationUseCase {
     }
 
     private void validateStudyInProgress(final Study study) {
-        if (study.isClosed()) {
-            throw StudyWithMeException.type(StudyParticipantErrorCode.STUDY_IS_FINISH);
+        if (study.isTerminated()) {
+            throw StudyWithMeException.type(StudyParticipantErrorCode.STUDY_IS_TERMINATED);
         }
     }
 }

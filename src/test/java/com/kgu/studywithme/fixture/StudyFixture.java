@@ -34,7 +34,7 @@ public enum StudyFixture {
     TOSS_INTERVIEW("Toss 면접 스터디", "Toss 기술 면접을 대비하기 위한 스터디입니다", INTERVIEW, IMAGE_INTERVIEW_001, OFFLINE,
             StudyLocation.of("서울특별시", "강남구"), 10, 15, new HashSet<>(Set.of("면접", "토스", "기술 면접"))),
     KAKAO_INTERVIEW("Kakao 면접 스터디", "Kakao 기술 면접을 대비하기 위한 스터디입니다", INTERVIEW, IMAGE_INTERVIEW_002, OFFLINE,
-            StudyLocation.of("경기도", "성남시"), 10, 15, new HashSet<>(Set.of("면접", "카카오", "기술 면접"))),
+            StudyLocation.of("경기도", "성남시"), 10, 17, new HashSet<>(Set.of("면접", "카카오", "기술 면접"))),
     NAVER_INTERVIEW("Naver 면접 스터디", "Naver 기술 면접을 대비하기 위한 스터디입니다", INTERVIEW, IMAGE_INTERVIEW_003, OFFLINE,
             StudyLocation.of("경기도", "성남시"), 10, 20, new HashSet<>(Set.of("면접", "네이버", "기술 면접"))),
     LINE_INTERVIEW("LINE 면접 스터디", "LINE 기술 면접을 대비하기 위한 스터디입니다", INTERVIEW, IMAGE_INTERVIEW_004, OFFLINE,

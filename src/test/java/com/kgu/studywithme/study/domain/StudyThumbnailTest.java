@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class StudyThumbnailTest {
     @Test
     @DisplayName("특정 스터디 썸네일을 조회한다")
-    void findSpecificStudyImage() {
+    void findSpecificStudyThumbnail() {
         // given
         final String language = "language_IELTS.png";
         final String interview = "interview_samsung.png";
@@ -36,9 +36,9 @@ class StudyThumbnailTest {
 
     @Test
     @DisplayName("제공해주지 않는 썸네일을 조회하면 예외가 발생한다")
-    void throwExceptionByfindAnonymousStudyImage() {
+    void throwExceptionByStudyThumbnailNotFound() {
         // given
-        final String anonymous = "language_001010101239012321321.png";
+        final String anonymous = "whoareyou.png";
 
         // when - then
         assertThatThrownBy(() -> StudyThumbnail.from(anonymous))

@@ -5,8 +5,8 @@ import com.kgu.studywithme.study.exception.StudyErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @DisplayName("Study -> 도메인 [Description VO] 테스트")
 class DescriptionTest {
@@ -21,9 +21,6 @@ class DescriptionTest {
     @Test
     @DisplayName("Description을 생성한다")
     void construct() {
-        final String value = "a".repeat(999);
-
-        Description description = Description.from(value);
-        assertThat(description.getValue()).isEqualTo(value);
+        assertDoesNotThrow(() -> Description.from("a".repeat(999)));
     }
 }

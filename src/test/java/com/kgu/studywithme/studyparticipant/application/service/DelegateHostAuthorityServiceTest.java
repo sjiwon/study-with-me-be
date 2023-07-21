@@ -49,9 +49,9 @@ class DelegateHostAuthorityServiceTest extends UseCaseTest {
 
     @Test
     @DisplayName("스터디가 종료되었으면 팀장 권한을 위임할 수 없다")
-    void throwExceptionByStudyIsEnd() {
+    void throwExceptionByStudyIsTerminated() {
         // given
-        study.close();
+        study.terminate();
         given(queryStudyByIdService.findById(any())).willReturn(study);
 
         // when - then
@@ -62,7 +62,7 @@ class DelegateHostAuthorityServiceTest extends UseCaseTest {
                 )
         ))
                 .isInstanceOf(StudyWithMeException.class)
-                .hasMessage(StudyParticipantErrorCode.STUDY_IS_FINISH.getMessage());
+                .hasMessage(StudyParticipantErrorCode.STUDY_IS_TERMINATED.getMessage());
 
         verify(queryStudyByIdService, times(1)).findById(any());
         verify(studyParticipantRepository, times(0)).isParticipant(any(), any());

@@ -47,4 +47,22 @@ public class StudyLocation {
     private static boolean isEmptyText(final String str) {
         return !StringUtils.hasText(str);
     }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final StudyLocation other = (StudyLocation) o;
+
+        if (!province.equals(other.province)) return false;
+        return city.equals(other.city);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = province.hashCode();
+        result = 31 * result + city.hashCode();
+        return result;
+    }
 }

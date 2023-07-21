@@ -29,7 +29,7 @@ public class Capacity {
 
     private static void validateCapacityIsInRange(final int value) {
         if (isOutOfRange(value)) {
-            throw StudyWithMeException.type(StudyErrorCode.CAPACITY_OUT_OF_RANGE);
+            throw StudyWithMeException.type(StudyErrorCode.CAPACITY_IS_OUT_OF_RANGE);
         }
     }
 
@@ -39,5 +39,20 @@ public class Capacity {
 
     public boolean isFullByCompareWith(final int compareValue) {
         return value <= compareValue;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final Capacity other = (Capacity) o;
+
+        return value == other.value;
+    }
+
+    @Override
+    public int hashCode() {
+        return value;
     }
 }

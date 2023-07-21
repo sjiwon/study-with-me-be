@@ -128,7 +128,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
         void throwExceptionByStudyIsEnd() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            doThrow(StudyWithMeException.type(StudyParticipantErrorCode.STUDY_IS_FINISH))
+            doThrow(StudyWithMeException.type(StudyParticipantErrorCode.STUDY_IS_TERMINATED))
                     .when(approveParticipationUseCase)
                     .approveParticipation(any());
 
@@ -138,7 +138,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
 
             // then
-            final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.STUDY_IS_FINISH;
+            final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.STUDY_IS_TERMINATED;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
                             status().isConflict(),
@@ -395,7 +395,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
         void throwExceptionByStudyIsEnd() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            doThrow(StudyWithMeException.type(StudyParticipantErrorCode.STUDY_IS_FINISH))
+            doThrow(StudyWithMeException.type(StudyParticipantErrorCode.STUDY_IS_TERMINATED))
                     .when(rejectParticipationUseCase)
                     .rejectParticipation(any());
 
@@ -408,7 +408,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
                     .content(convertObjectToJson(request));
 
             // then
-            final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.STUDY_IS_FINISH;
+            final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.STUDY_IS_TERMINATED;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
                             status().isConflict(),

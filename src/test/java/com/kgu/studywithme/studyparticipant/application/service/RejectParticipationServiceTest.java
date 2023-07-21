@@ -77,9 +77,9 @@ class RejectParticipationServiceTest extends UseCaseTest {
 
     @Test
     @DisplayName("스터디가 종료됨에 따라 참여 거절을 할 수 없다")
-    void throwExceptionByStudyIsEnd() {
+    void throwExceptionByStudyIsTerminated() {
         // given
-        study.close();
+        study.terminate();
         given(studyParticipantRepository.findApplier(any(), any())).willReturn(Optional.of(applierWithAllowEmail));
         given(queryStudyByIdService.findById(any())).willReturn(study);
 
@@ -92,7 +92,7 @@ class RejectParticipationServiceTest extends UseCaseTest {
                 )
         ))
                 .isInstanceOf(StudyWithMeException.class)
-                .hasMessage(StudyParticipantErrorCode.STUDY_IS_FINISH.getMessage());
+                .hasMessage(StudyParticipantErrorCode.STUDY_IS_TERMINATED.getMessage());
 
         verify(studyParticipantRepository, times(1)).findApplier(any(), any());
         verify(queryStudyByIdService, times(1)).findById(any());

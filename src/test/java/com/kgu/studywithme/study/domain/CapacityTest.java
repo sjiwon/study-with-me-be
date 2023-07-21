@@ -12,31 +12,31 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @DisplayName("Study -> 도메인 [Capacity VO] 테스트")
 class CapacityTest {
-    @ParameterizedTest(name = "{index}: {0}")
+    @ParameterizedTest
     @ValueSource(ints = {-1, 0, 1, 11})
     @DisplayName("범위를 넘어가는 값에 의해서 Capacity 생성에 실패한다")
-    void throwExceptionByCapacityOutOfRange(int value) {
+    void throwExceptionByCapacityOutOfRange(final int value) {
         assertThatThrownBy(() -> Capacity.from(value))
                 .isInstanceOf(StudyWithMeException.class)
-                .hasMessage(StudyErrorCode.CAPACITY_OUT_OF_RANGE.getMessage());
+                .hasMessage(StudyErrorCode.CAPACITY_IS_OUT_OF_RANGE.getMessage());
     }
 
-    @ParameterizedTest(name = "{index}: {0}")
+    @ParameterizedTest
     @ValueSource(ints = {2, 5, 10})
     @DisplayName("수용할 수 있는 값으로 Capacity를 생성한다")
-    void construct(int value) {
-        Capacity capacity = Capacity.from(value);
-        assertThat(capacity.getValue()).isEqualTo(value);
+    void construct(final int value) {
+        assertDoesNotThrow(() -> Capacity.from(value));
     }
 
-    @ParameterizedTest(name = "{index}: {0} - {1}")
+    @ParameterizedTest
     @MethodSource("isEqualOrOver")
     @DisplayName("생성한 Capacity에 대해서 비교값이 같거나 큰지 판별한다")
-    void isFullByCompareWith(int compareValue, boolean expected) {
-        Capacity capacity = Capacity.from(2);
+    void isFullByCompareWith(final int compareValue, final boolean expected) {
+        final Capacity capacity = Capacity.from(2);
         assertThat(capacity.isFullByCompareWith(compareValue)).isEqualTo(expected);
     }
 

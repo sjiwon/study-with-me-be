@@ -24,12 +24,12 @@ public class DelegateHostAuthorityService implements DelegateHostAuthorityUseCas
         validateNewHostIsCurrentHost(study, command.newHostId());
         validateNewHostIsParticipant(command.studyId(), command.newHostId());
 
-        study.deleteHostAuthority(command.newHostId());
+        study.delegateHostAuthority(command.newHostId());
     }
 
     private void validateStudyInProgress(final Study study) {
-        if (study.isClosed()) {
-            throw StudyWithMeException.type(StudyParticipantErrorCode.STUDY_IS_FINISH);
+        if (study.isTerminated()) {
+            throw StudyWithMeException.type(StudyParticipantErrorCode.STUDY_IS_TERMINATED);
         }
     }
 

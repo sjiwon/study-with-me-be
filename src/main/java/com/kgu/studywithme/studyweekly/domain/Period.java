@@ -1,7 +1,7 @@
 package com.kgu.studywithme.studyweekly.domain;
 
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.study.exception.StudyErrorCode;
+import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -41,7 +41,7 @@ public class Period {
             final LocalDateTime endDate
     ) {
         if (startDate.isAfter(endDate)) {
-            throw StudyWithMeException.type(StudyErrorCode.PERIOD_START_DATE_MUST_BE_BEFORE_END_DATE);
+            throw StudyWithMeException.type(StudyWeeklyErrorCode.PERIOD_START_DATE_MUST_BE_BEFORE_END_DATE);
         }
     }
 

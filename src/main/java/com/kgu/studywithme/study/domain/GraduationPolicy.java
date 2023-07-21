@@ -43,7 +43,7 @@ public class GraduationPolicy {
 
     private void validateUpdateChangeIsRemain() {
         if (updateChance == 0) {
-            throw StudyWithMeException.type(StudyErrorCode.NO_CHANGE_TO_UPDATE_GRADUATION_POLICY);
+            throw StudyWithMeException.type(StudyErrorCode.NO_CHANCE_TO_UPDATE_GRADUATION_POLICY);
         }
     }
 
@@ -51,7 +51,25 @@ public class GraduationPolicy {
         return new GraduationPolicy(minimumAttendance, DEFAULT_UPDATE_CHANCE);
     }
 
-    public boolean isGraduationRequirementsFulfilled(final int value) {
-        return minimumAttendance <= value;
+    public boolean isGraduationRequirementsFulfilled(final int attendanceCount) {
+        return minimumAttendance <= attendanceCount;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final GraduationPolicy other = (GraduationPolicy) o;
+
+        if (minimumAttendance != other.minimumAttendance) return false;
+        return updateChance == other.updateChance;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = minimumAttendance;
+        result = 31 * result + updateChance;
+        return result;
     }
 }

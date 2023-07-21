@@ -1,7 +1,7 @@
 package com.kgu.studywithme.studyweekly.domain;
 
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.study.exception.StudyErrorCode;
+import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +21,7 @@ class PeriodTest {
 
         assertThatThrownBy(() -> Period.of(startDate, endDate))
                 .isInstanceOf(StudyWithMeException.class)
-                .hasMessage(StudyErrorCode.PERIOD_START_DATE_MUST_BE_BEFORE_END_DATE.getMessage());
+                .hasMessage(StudyWeeklyErrorCode.PERIOD_START_DATE_MUST_BE_BEFORE_END_DATE.getMessage());
     }
 
     @Test

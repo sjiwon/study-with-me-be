@@ -31,4 +31,19 @@ public class Description {
             throw StudyWithMeException.type(StudyErrorCode.DESCRIPTION_IS_BLANK);
         }
     }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final Description other = (Description) o;
+
+        return value.equals(other.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
 }
