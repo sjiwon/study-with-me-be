@@ -1,6 +1,6 @@
 package com.kgu.studywithme.member.application.usecase.query;
 
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.ReceivedReview;
+import com.kgu.studywithme.member.infrastructure.repository.query.dto.ReceivedReview;
 
 import java.util.List;
 

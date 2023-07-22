@@ -1,7 +1,7 @@
 package com.kgu.studywithme.auth.application.service;
 
-import com.kgu.studywithme.auth.application.dto.response.LoginResponse;
-import com.kgu.studywithme.auth.application.dto.response.MemberInfo;
+import com.kgu.studywithme.auth.application.dto.LoginResponse;
+import com.kgu.studywithme.auth.application.dto.MemberInfo;
 import com.kgu.studywithme.auth.application.usecase.command.OAuthLoginUseCase;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.auth.infrastructure.oauth.OAuthConnector;

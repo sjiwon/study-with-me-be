@@ -1,6 +1,6 @@
 package com.kgu.studywithme.auth.application.service;
 
-import com.kgu.studywithme.auth.application.dto.response.TokenResponse;
+import com.kgu.studywithme.auth.application.dto.TokenResponse;
 import com.kgu.studywithme.auth.application.usecase.command.TokenReissueUseCase;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.auth.infrastructure.token.TokenPersistenceAdapter;

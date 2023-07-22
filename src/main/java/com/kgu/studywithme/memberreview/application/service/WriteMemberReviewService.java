@@ -3,7 +3,7 @@ package com.kgu.studywithme.memberreview.application.service;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.MemberRepository;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.StudyParticipateWeeks;
+import com.kgu.studywithme.member.infrastructure.repository.query.dto.StudyParticipateWeeks;
 import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.domain.MemberReview;
 import com.kgu.studywithme.memberreview.domain.MemberReviewRepository;

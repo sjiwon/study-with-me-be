@@ -1,8 +1,8 @@
 package com.kgu.studywithme.category.presentation;
 
-import com.kgu.studywithme.category.application.dto.response.CategoryResponse;
+import com.kgu.studywithme.category.application.dto.CategoryResponse;
 import com.kgu.studywithme.category.application.usecase.query.QueryAllCategoriesUseCase;
-import com.kgu.studywithme.global.dto.SimpleResponseWrapper;
+import com.kgu.studywithme.global.dto.ResponseWrapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +22,8 @@ public class CategoryApiController {
 
     @Operation(summary = "스터디 카테고리 조회 EndPoint")
     @GetMapping
-    public ResponseEntity<SimpleResponseWrapper<List<CategoryResponse>>> findAll() {
+    public ResponseEntity<ResponseWrapper<List<CategoryResponse>>> findAll() {
         final List<CategoryResponse> result = queryAllCategoriesUseCase.findAllCategories();
-        return ResponseEntity.ok(SimpleResponseWrapper.of(result));
+        return ResponseEntity.ok(ResponseWrapper.from(result));
     }
 }

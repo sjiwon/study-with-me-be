@@ -4,9 +4,9 @@ import com.kgu.studywithme.member.application.usecase.query.QueryAppliedStudyByI
 import com.kgu.studywithme.member.application.usecase.query.QueryLikeMarkedStudyByIdUseCase;
 import com.kgu.studywithme.member.application.usecase.query.QueryPrivateInformationByIdUseCase;
 import com.kgu.studywithme.member.infrastructure.repository.query.MemberInformationRepository;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.AppliedStudy;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.LikeMarkedStudy;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.MemberPrivateInformation;
+import com.kgu.studywithme.member.infrastructure.repository.query.dto.AppliedStudy;
+import com.kgu.studywithme.member.infrastructure.repository.query.dto.LikeMarkedStudy;
+import com.kgu.studywithme.member.infrastructure.repository.query.dto.MemberPrivateInformation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

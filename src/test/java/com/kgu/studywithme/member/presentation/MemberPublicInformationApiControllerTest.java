@@ -3,7 +3,7 @@ package com.kgu.studywithme.member.presentation;
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.*;
+import com.kgu.studywithme.member.infrastructure.repository.query.dto.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

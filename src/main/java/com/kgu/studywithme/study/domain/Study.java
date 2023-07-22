@@ -184,7 +184,7 @@ public class Study extends BaseEntity<Study> {
     }
 
     public boolean isCapacityFull(final int currentParticipants) {
-        return capacity.isFullByCompareWith(currentParticipants);
+        return capacity.isEqualOrLessThan(currentParticipants);
     }
 
     public boolean isParticipantMeetGraduationPolicy(final int attendanceCount) {

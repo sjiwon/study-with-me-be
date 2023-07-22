@@ -1,6 +1,6 @@
 package com.kgu.studywithme.auth.application.service;
 
-import com.kgu.studywithme.auth.application.dto.response.LoginResponse;
+import com.kgu.studywithme.auth.application.dto.LoginResponse;
 import com.kgu.studywithme.auth.application.usecase.command.OAuthLoginUseCase;
 import com.kgu.studywithme.auth.infrastructure.oauth.OAuthConnector;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.GoogleOAuthConnector;
@@ -85,7 +85,7 @@ class OAuthLoginServiceTest extends UseCaseTest {
             given(memberRepository.findByEmail(any())).willReturn(Optional.empty());
 
             // when - then
-            StudyWithMeOAuthException exception = assertThrows(
+            final StudyWithMeOAuthException exception = assertThrows(
                     StudyWithMeOAuthException.class,
                     () -> oAuthLoginService.login(command)
             );
@@ -115,7 +115,7 @@ class OAuthLoginServiceTest extends UseCaseTest {
             given(jwtTokenProvider.createRefreshToken(any())).willReturn(REFRESH_TOKEN);
 
             // when
-            LoginResponse response = oAuthLoginService.login(command);
+            final LoginResponse response = oAuthLoginService.login(command);
 
             // then
             verify(jwtTokenProvider, times(1)).createAccessToken(member.getId());

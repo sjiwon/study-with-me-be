@@ -1,6 +1,6 @@
 package com.kgu.studywithme.member.infrastructure.repository.query;
 
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.StudyParticipateWeeks;
+import com.kgu.studywithme.member.infrastructure.repository.query.dto.StudyParticipateWeeks;
 
 import java.util.List;
 

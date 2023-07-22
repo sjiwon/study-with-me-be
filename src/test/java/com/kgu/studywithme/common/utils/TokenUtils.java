@@ -1,6 +1,6 @@
 package com.kgu.studywithme.common.utils;
 
-import com.kgu.studywithme.auth.application.dto.response.TokenResponse;
+import com.kgu.studywithme.auth.application.dto.TokenResponse;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleTokenResponse;
 
 public class TokenUtils {

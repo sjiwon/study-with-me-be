@@ -1,6 +1,5 @@
 package com.kgu.studywithme.auth.presentation;
 
-import com.kgu.studywithme.auth.application.dto.response.LoginResponse;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.GoogleOAuthProperties;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleUserResponse;
 import com.kgu.studywithme.auth.presentation.dto.request.OAuthLoginRequest;
@@ -55,11 +54,11 @@ class OAuthApiControllerTest extends ControllerTest {
         @DisplayName("Google OAuth Authorization Code 요청을 위한 URI를 생성한다")
         void googleSuccess() throws Exception {
             // given
-            String authorizationCodeRequestUri = generateAuthorizationCodeRequestUri(REDIRECT_URL);
+            final String authorizationCodeRequestUri = generateAuthorizationCodeRequestUri(REDIRECT_URL);
             given(queryOAuthLinkUseCase.createOAuthLink(any())).willReturn(authorizationCodeRequestUri);
 
             // when
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .get(BASE_URL, PROVIDER_GOOGLE)
                     .param("redirectUrl", REDIRECT_URL);
 
@@ -102,7 +101,7 @@ class OAuthApiControllerTest extends ControllerTest {
         @DisplayName("Google 이메일에 해당하는 사용자가 DB에 존재하지 않을 경우 예외가 발생하고 추가정보 기입을 통해서 회원가입을 진행한다")
         void throwExceptionIfGoogleAuthUserNotInDB() throws Exception {
             // given
-            GoogleUserResponse googleUserResponse = JIWON.toGoogleUserResponse();
+            final GoogleUserResponse googleUserResponse = JIWON.toGoogleUserResponse();
             doThrow(new StudyWithMeOAuthException(googleUserResponse))
                     .when(oAuthLoginUseCase)
                     .login(any());
@@ -110,7 +109,7 @@ class OAuthApiControllerTest extends ControllerTest {
             // when
             final OAuthLoginRequest request
                     = new OAuthLoginRequest(AUTHORIZATION_CODE, REDIRECT_URL);
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, PROVIDER_GOOGLE)
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(request));
@@ -149,13 +148,12 @@ class OAuthApiControllerTest extends ControllerTest {
         @DisplayName("Google 이메일에 해당하는 사용자가 DB에 존재하면 로그인에 성공하고 사용자 정보 및 토큰을 발급해준다")
         void success() throws Exception {
             // given
-            LoginResponse response = JIWON.toLoginResponse();
-            given(oAuthLoginUseCase.login(any())).willReturn(response);
+            given(oAuthLoginUseCase.login(any())).willReturn(JIWON.toLoginResponse());
 
             // when
             final OAuthLoginRequest request
                     = new OAuthLoginRequest(AUTHORIZATION_CODE, REDIRECT_URL);
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, PROVIDER_GOOGLE)
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(request));
@@ -171,9 +169,9 @@ class OAuthApiControllerTest extends ControllerTest {
                             jsonPath("$.member.email").exists(),
                             jsonPath("$.member.email").value(JIWON.getEmail()),
                             jsonPath("$.accessToken").exists(),
-                            jsonPath("$.accessToken").value(response.accessToken()),
+                            jsonPath("$.accessToken").value(JIWON.toLoginResponse().accessToken()),
                             jsonPath("$.refreshToken").exists(),
-                            jsonPath("$.refreshToken").value(response.refreshToken())
+                            jsonPath("$.refreshToken").value(JIWON.toLoginResponse().refreshToken())
                     )
                     .andDo(
                             document(
@@ -209,7 +207,7 @@ class OAuthApiControllerTest extends ControllerTest {
             mockingToken(true, 1L);
 
             // when
-            MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+            final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
 
@@ -227,7 +225,7 @@ class OAuthApiControllerTest extends ControllerTest {
         }
     }
 
-    private String generateAuthorizationCodeRequestUri(String redirectUrl) {
+    private String generateAuthorizationCodeRequestUri(final String redirectUrl) {
         return properties.getAuthUrl() + "?"
                 + "response_type=code&"
                 + "client_id=" + properties.getClientId() + "&"

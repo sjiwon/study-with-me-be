@@ -1,7 +1,7 @@
 package com.kgu.studywithme.upload.presentation;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
-import com.kgu.studywithme.global.dto.SimpleResponseWrapper;
+import com.kgu.studywithme.global.dto.ResponseWrapper;
 import com.kgu.studywithme.upload.application.usecase.command.UploadStudyDescriptionImageUseCase;
 import com.kgu.studywithme.upload.application.usecase.command.UploadWeeklyImageUseCase;
 import com.kgu.studywithme.upload.presentation.dto.request.ImageUploadRequest;
@@ -28,12 +28,12 @@ public class UploadApiController {
 
     @Operation(summary = "이미지 업로드 EndPoint")
     @PostMapping(value = "/image", consumes = MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<SimpleResponseWrapper<String>> uploadImage(
+    public ResponseEntity<ResponseWrapper<String>> uploadImage(
             @ExtractPayload final Long memberId,
             @ModelAttribute @Valid final ImageUploadRequest request
     ) {
         final String imageUploadLink = uploadImageByType(request.type(), request.file());
-        return ResponseEntity.ok(SimpleResponseWrapper.of(imageUploadLink));
+        return ResponseEntity.ok(ResponseWrapper.from(imageUploadLink));
     }
 
     private String uploadImageByType(String type, MultipartFile file) {

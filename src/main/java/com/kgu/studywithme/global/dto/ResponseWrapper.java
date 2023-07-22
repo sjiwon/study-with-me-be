@@ -6,10 +6,10 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class SimpleResponseWrapper<T> {
+public class ResponseWrapper<T> {
     private final T result;
 
-    public static <T> SimpleResponseWrapper<T> of(T result) {
-        return new SimpleResponseWrapper<>(result);
+    public static <T> ResponseWrapper<T> from(final T result) {
+        return new ResponseWrapper<>(result);
     }
 }

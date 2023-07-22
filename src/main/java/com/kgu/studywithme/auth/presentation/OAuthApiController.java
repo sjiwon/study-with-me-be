@@ -1,13 +1,13 @@
 package com.kgu.studywithme.auth.presentation;
 
-import com.kgu.studywithme.auth.application.dto.response.LoginResponse;
+import com.kgu.studywithme.auth.application.dto.LoginResponse;
 import com.kgu.studywithme.auth.application.usecase.command.LogoutUseCase;
 import com.kgu.studywithme.auth.application.usecase.command.OAuthLoginUseCase;
 import com.kgu.studywithme.auth.application.usecase.query.QueryOAuthLinkUseCase;
 import com.kgu.studywithme.auth.presentation.dto.request.OAuthLoginRequest;
 import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.auth.utils.OAuthProvider;
-import com.kgu.studywithme.global.dto.SimpleResponseWrapper;
+import com.kgu.studywithme.global.dto.ResponseWrapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -26,7 +26,7 @@ public class OAuthApiController {
 
     @Operation(summary = "Provider별 OAuth 인증을 위한 URL을 받는 EndPoint")
     @GetMapping(value = "/access/{provider}", params = {"redirectUrl"})
-    public ResponseEntity<SimpleResponseWrapper<String>> access(
+    public ResponseEntity<ResponseWrapper<String>> access(
             @PathVariable final String provider,
             @RequestParam final String redirectUrl
     ) {
@@ -36,7 +36,7 @@ public class OAuthApiController {
                         redirectUrl
                 )
         );
-        return ResponseEntity.ok(SimpleResponseWrapper.of(oAuthLink));
+        return ResponseEntity.ok(ResponseWrapper.from(oAuthLink));
     }
 
     @Operation(summary = "Authorization Code를 통해서 Provider별 인증을 위한 EndPoint")

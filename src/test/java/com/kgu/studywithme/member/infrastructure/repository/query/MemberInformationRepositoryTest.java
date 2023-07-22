@@ -6,7 +6,7 @@ import com.kgu.studywithme.favorite.domain.Favorite;
 import com.kgu.studywithme.favorite.domain.FavoriteRepository;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.*;
+import com.kgu.studywithme.member.infrastructure.repository.query.dto.*;
 import com.kgu.studywithme.memberreview.domain.MemberReview;
 import com.kgu.studywithme.memberreview.domain.MemberReviewRepository;
 import com.kgu.studywithme.study.domain.Study;

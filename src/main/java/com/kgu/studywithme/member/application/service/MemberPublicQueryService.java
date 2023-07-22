@@ -2,7 +2,7 @@ package com.kgu.studywithme.member.application.service;
 
 import com.kgu.studywithme.member.application.usecase.query.*;
 import com.kgu.studywithme.member.infrastructure.repository.query.MemberInformationRepository;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.*;
+import com.kgu.studywithme.member.infrastructure.repository.query.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

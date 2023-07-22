@@ -1,6 +1,6 @@
 package com.kgu.studywithme.category.application.service;
 
-import com.kgu.studywithme.category.application.dto.response.CategoryResponse;
+import com.kgu.studywithme.category.application.dto.CategoryResponse;
 import com.kgu.studywithme.category.application.usecase.query.QueryAllCategoriesUseCase;
 import com.kgu.studywithme.category.domain.Category;
 import org.springframework.stereotype.Service;

@@ -1,15 +1,15 @@
 package com.kgu.studywithme.fixture;
 
-import com.kgu.studywithme.auth.application.dto.response.LoginResponse;
-import com.kgu.studywithme.auth.application.dto.response.MemberInfo;
+import com.kgu.studywithme.auth.application.dto.LoginResponse;
+import com.kgu.studywithme.auth.application.dto.MemberInfo;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleUserResponse;
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.member.domain.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -73,17 +73,13 @@ public enum MemberFixture {
     }
 
     private static String generateRandomPhoneNumber() {
-        String first = "010";
-        String second = String.valueOf((int) (Math.random() * 9000 + 1000));
-        String third = String.valueOf((int) (Math.random() * 9000 + 1000));
-
-        return first + second + third;
+        return "010" +
+                (int) (Math.random() * 9000 + 1000) +
+                (int) (Math.random() * 9000 + 1000);
     }
 
     public LoginResponse toLoginResponse() {
-        Member member = this.toMember();
-        ReflectionTestUtils.setField(member, "id", 1L);
-
+        final Member member = this.toMember().apply(1L, LocalDateTime.now());
         return new LoginResponse(
                 new MemberInfo(member),
                 ACCESS_TOKEN,

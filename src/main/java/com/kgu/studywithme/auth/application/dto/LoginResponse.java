@@ -1,4 +1,4 @@
-package com.kgu.studywithme.auth.application.dto.response;
+package com.kgu.studywithme.auth.application.dto;
 
 public record LoginResponse (
         MemberInfo member,

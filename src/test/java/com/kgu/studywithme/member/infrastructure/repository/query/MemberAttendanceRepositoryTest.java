@@ -3,7 +3,7 @@ package com.kgu.studywithme.member.infrastructure.repository.query;
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.StudyParticipateWeeks;
+import com.kgu.studywithme.member.infrastructure.repository.query.dto.StudyParticipateWeeks;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.study.domain.StudyRepository;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;

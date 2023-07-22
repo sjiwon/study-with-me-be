@@ -2,7 +2,7 @@ package com.kgu.studywithme.member.presentation;
 
 import com.kgu.studywithme.global.dto.ResponseWrapper;
 import com.kgu.studywithme.member.application.usecase.query.*;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.*;
+import com.kgu.studywithme.member.infrastructure.repository.query.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

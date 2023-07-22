@@ -2,7 +2,7 @@ package com.kgu.studywithme.member.infrastructure.repository.query;
 
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.response.*;
+import com.kgu.studywithme.member.infrastructure.repository.query.dto.*;
 import com.kgu.studywithme.studyattendance.domain.AttendanceStatus;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;

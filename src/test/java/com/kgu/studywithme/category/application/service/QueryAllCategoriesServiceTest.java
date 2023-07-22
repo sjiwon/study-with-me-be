@@ -1,6 +1,6 @@
 package com.kgu.studywithme.category.application.service;
 
-import com.kgu.studywithme.category.application.dto.response.CategoryResponse;
+import com.kgu.studywithme.category.application.dto.CategoryResponse;
 import com.kgu.studywithme.common.UseCaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
