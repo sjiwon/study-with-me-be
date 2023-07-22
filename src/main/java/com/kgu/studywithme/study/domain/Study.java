@@ -3,13 +3,12 @@ package com.kgu.studywithme.study.domain;
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.global.BaseEntity;
 import com.kgu.studywithme.study.domain.hashtag.Hashtag;
+import com.kgu.studywithme.study.domain.hashtag.Hashtags;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -60,8 +59,8 @@ public class Study extends BaseEntity<Study> {
     @Column(name = "is_terminated", nullable = false)
     private boolean terminated;
 
-    @OneToMany(mappedBy = "study", cascade = CascadeType.PERSIST)
-    private final List<Hashtag> hashtags = new ArrayList<>();
+    @Embedded
+    private Hashtags hashtags;
 
     private Study(
             final Long hostId,
@@ -86,7 +85,7 @@ public class Study extends BaseEntity<Study> {
         this.recruitmentStatus = IN_PROGRESS;
         this.graduationPolicy = GraduationPolicy.initPolicy(minimumAttendanceForGraduation);
         this.terminated = false;
-        applyHashtags(hashtags);
+        this.hashtags = new Hashtags(this, hashtags);
     }
 
     public static Study createOnlineStudy(
@@ -160,18 +159,7 @@ public class Study extends BaseEntity<Study> {
         this.location = (type == OFFLINE) ? StudyLocation.of(province, city) : null;
         this.recruitmentStatus = recruitmentStatus;
         this.graduationPolicy = this.graduationPolicy.update(minimumAttendanceForGraduation);
-        applyHashtags(hashtags);
-    }
-
-    public void applyHashtags(final Set<String> hashtags) {
-        this.hashtags.clear();
-        if (!CollectionUtils.isEmpty(hashtags)) {
-            this.hashtags.addAll(
-                    hashtags.stream()
-                            .map(value -> Hashtag.applyHashtag(this, value))
-                            .toList()
-            );
-        }
+        this.hashtags = new Hashtags(this, hashtags);
     }
 
     public boolean isHost(final Long memberId) {
@@ -221,7 +209,8 @@ public class Study extends BaseEntity<Study> {
     }
 
     public List<String> getHashtags() {
-        return hashtags.stream()
+        return hashtags.getHashtags()
+                .stream()
                 .map(Hashtag::getName)
                 .toList();
     }
