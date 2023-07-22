@@ -21,7 +21,7 @@ public class Hashtags {
     private static final int MIN_COUNT = 1;
     private static final int MAX_COUNT = 5;
 
-    @OneToMany(mappedBy = "study", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "study", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private final List<Hashtag> hashtags = new ArrayList<>();
 
     public Hashtags(final Study study, final Set<String> hashtags) {
