@@ -3,10 +3,13 @@ package com.kgu.studywithme.studyweekly.infrastructure.repository.query;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
 import com.kgu.studywithme.studyweekly.domain.submit.StudyWeeklySubmit;
+import com.kgu.studywithme.studyweekly.infrastructure.repository.query.dto.AutoAttendanceAndFinishedWeekly;
+import com.kgu.studywithme.studyweekly.infrastructure.repository.query.dto.QAutoAttendanceAndFinishedWeekly;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -121,6 +124,26 @@ public class StudyWeeklyHandlingRepositoryImpl implements StudyWeeklyHandlingRep
                         )
                         .fetchOne()
         );
+    }
+
+    @Override
+    public List<AutoAttendanceAndFinishedWeekly> findAutoAttendanceAndFinishedWeekly() {
+        final LocalDateTime now = LocalDateTime.now();
+
+        return query
+                .select(
+                        new QAutoAttendanceAndFinishedWeekly(
+                                studyWeekly.studyId,
+                                studyWeekly.week
+                        )
+                )
+                .from(studyWeekly)
+                .where(
+                        studyWeekly.autoAttendance.isTrue(),
+                        studyWeekly.period.endDate.before(now)
+                )
+                .orderBy(studyWeekly.studyId.asc(), studyWeekly.week.asc())
+                .fetch();
     }
 
     private BooleanExpression studyIdEq(final Long studyId) {

@@ -1,7 +1,9 @@
 package com.kgu.studywithme.studyattendance.infrastructure.repository.query;
 
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
+import com.kgu.studywithme.studyattendance.infrastructure.repository.query.dto.NonAttendanceWeekly;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface StudyAttendanceHandlingRepository {
@@ -12,4 +14,6 @@ public interface StudyAttendanceHandlingRepository {
     );
 
     int getAttendanceCount(final Long studyId, final Long participantId);
+
+    List<NonAttendanceWeekly> findNonAttendanceInformation();
 }

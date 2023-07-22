@@ -1,10 +1,10 @@
 package com.kgu.studywithme.studyattendance.infrastructure.scheduler;
 
 import com.kgu.studywithme.member.domain.MemberRepository;
-import com.kgu.studywithme.study.domain.StudyRepository;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.BasicAttendance;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.BasicWeekly;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
+import com.kgu.studywithme.studyattendance.infrastructure.repository.query.dto.NonAttendanceWeekly;
+import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
+import com.kgu.studywithme.studyweekly.infrastructure.repository.query.dto.AutoAttendanceAndFinishedWeekly;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -20,15 +20,15 @@ import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ABSENC
 @Component
 @RequiredArgsConstructor
 public class StudyAttendanceScheduler {
-    private final MemberRepository memberRepository;
-    private final StudyRepository studyRepository;
+    private final StudyWeeklyRepository studyWeeklyRepository;
     private final StudyAttendanceRepository studyAttendanceRepository;
+    private final MemberRepository memberRepository;
 
     @Scheduled(cron = "0 0 0 * * *")
     public void processAbsenceCheckScheduler() {
         final Set<Long> absenceParticipantIds = new HashSet<>();
-        final List<BasicWeekly> weeks = studyRepository.findAutoAttendanceAndPeriodEndWeek();
-        final List<BasicAttendance> attendances = studyRepository.findNonAttendanceInformation();
+        final List<AutoAttendanceAndFinishedWeekly> weeks = studyWeeklyRepository.findAutoAttendanceAndFinishedWeekly();
+        final List<NonAttendanceWeekly> attendances = studyAttendanceRepository.findNonAttendanceInformation();
 
         weeks.forEach(week -> {
             final Long studyId = week.studyId();
@@ -44,13 +44,13 @@ public class StudyAttendanceScheduler {
     }
 
     private Set<Long> extractNonAttendanceParticipantIds(
-            final List<BasicAttendance> attendances,
+            final List<NonAttendanceWeekly> attendances,
             final Long studyId,
             final int week
     ) {
         return attendances.stream()
                 .filter(attendance -> attendance.studyId().equals(studyId) && attendance.week() == week)
-                .map(BasicAttendance::participantId)
+                .map(NonAttendanceWeekly::participantId)
                 .collect(Collectors.toSet());
     }
 

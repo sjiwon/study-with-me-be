@@ -2,13 +2,17 @@ package com.kgu.studywithme.studyattendance.infrastructure.repository.query;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
+import com.kgu.studywithme.studyattendance.infrastructure.repository.query.dto.NonAttendanceWeekly;
+import com.kgu.studywithme.studyattendance.infrastructure.repository.query.dto.QNonAttendanceWeekly;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.NON_ATTENDANCE;
 import static com.kgu.studywithme.studyattendance.domain.QStudyAttendance.studyAttendance;
 
 @StudyWithMeReadOnlyTransactional
@@ -46,6 +50,26 @@ public class StudyAttendanceHandlingRepositoryImpl implements StudyAttendanceHan
                 )
                 .fetchOne()
                 .intValue();
+    }
+
+    @Override
+    public List<NonAttendanceWeekly> findNonAttendanceInformation() {
+        return query
+                .select(
+                        new QNonAttendanceWeekly(
+                                studyAttendance.studyId,
+                                studyAttendance.week,
+                                studyAttendance.participantId
+                        )
+                )
+                .from(studyAttendance)
+                .where(studyAttendance.status.eq(NON_ATTENDANCE))
+                .orderBy(
+                        studyAttendance.studyId.asc(),
+                        studyAttendance.week.asc(),
+                        studyAttendance.participantId.asc()
+                )
+                .fetch();
     }
 
     private BooleanExpression studyIdEq(final Long studyId) {
