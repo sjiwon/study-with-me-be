@@ -1,6 +1,7 @@
 package com.kgu.studywithme.study.presentation.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
@@ -33,6 +34,7 @@ public record CreateStudyRequest(
         @Positive(message = "졸업 요건은 양수여야 합니다.")
         Integer minimumAttendanceForGraduation,
 
+        @NotEmpty(message = "해시태그는 하나 이상 등록해야 합니다.")
         Set<String> hashtags
 ) {
 }
