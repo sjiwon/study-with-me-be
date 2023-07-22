@@ -1,6 +1,6 @@
 package com.kgu.studywithme.member.infrastructure.repository.query.dto.response;
 
-import com.kgu.studywithme.study.domain.attendance.AttendanceStatus;
+import com.kgu.studywithme.studyattendance.domain.AttendanceStatus;
 import com.querydsl.core.annotations.QueryProjection;
 
 public record AttendanceRatio(
@@ -8,5 +8,6 @@ public record AttendanceRatio(
         int count
 ) {
     @QueryProjection
-    public AttendanceRatio {}
+    public AttendanceRatio {
+    }
 }
