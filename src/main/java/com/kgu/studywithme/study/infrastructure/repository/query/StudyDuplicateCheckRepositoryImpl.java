@@ -1,6 +1,7 @@
 package com.kgu.studywithme.study.infrastructure.repository.query;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -16,7 +17,23 @@ public class StudyDuplicateCheckRepositoryImpl implements StudyDuplicateCheckRep
         return query
                 .select(study.id)
                 .from(study)
-                .where(study.name.value.eq(name))
+                .where(nameEq(name))
                 .fetchFirst() != null;
+    }
+
+    @Override
+    public boolean isNameUsedByOther(final Long studyId, final String name) {
+        return query
+                .select(study.id)
+                .from(study)
+                .where(
+                        study.id.ne(studyId),
+                        nameEq(name)
+                )
+                .fetchFirst() != null;
+    }
+
+    private BooleanExpression nameEq(final String name) {
+        return study.name.value.eq(name);
     }
 }
