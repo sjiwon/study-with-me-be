@@ -1,4 +1,4 @@
-package com.kgu.studywithme.study.application.dto.response;
+package com.kgu.studywithme.study.infrastructure.repository.query.dto;
 
 import java.util.List;
 

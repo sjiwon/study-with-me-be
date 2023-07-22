@@ -1,4 +1,4 @@
-package com.kgu.studywithme.study.application.dto.response;
+package com.kgu.studywithme.study.application.dto;
 
 import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.BasicStudy;
 

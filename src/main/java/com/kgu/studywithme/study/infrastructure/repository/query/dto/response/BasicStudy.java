@@ -2,7 +2,6 @@ package com.kgu.studywithme.study.infrastructure.repository.query.dto.response;
 
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.study.domain.*;
-import com.kgu.studywithme.study.domain.participant.Capacity;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
