@@ -33,17 +33,33 @@ class CapacityTest {
     }
 
     @ParameterizedTest
-    @MethodSource("isEqualOrOver")
-    @DisplayName("생성한 Capacity에 대해서 비교값이 같거나 큰지 판별한다")
-    void isFullByCompareWith(final int compareValue, final boolean expected) {
+    @MethodSource("isEqualOrLessThan")
+    @DisplayName("비교값에 대해서 Capacity가 같거나 더 작음을 판별한다")
+    void isEqualOrLessThan(final int compareValue, final boolean expected) {
         final Capacity capacity = Capacity.from(2);
-        assertThat(capacity.isFullByCompareWith(compareValue)).isEqualTo(expected);
+        assertThat(capacity.isEqualOrLessThan(compareValue)).isEqualTo(expected);
     }
 
-    private static Stream<Arguments> isEqualOrOver() {
+    private static Stream<Arguments> isEqualOrLessThan() {
         return Stream.of(
                 Arguments.of(3, true),
                 Arguments.of(2, true),
+                Arguments.of(1, false)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("isLessThan")
+    @DisplayName("비교값에 대해서 Capacity가 더 작음을 판별한다")
+    void isLessThan(final int compareValue, final boolean expected) {
+        final Capacity capacity = Capacity.from(2);
+        assertThat(capacity.isLessThan(compareValue)).isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> isLessThan() {
+        return Stream.of(
+                Arguments.of(3, true),
+                Arguments.of(2, false),
                 Arguments.of(1, false)
         );
     }

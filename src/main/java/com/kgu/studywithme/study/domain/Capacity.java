@@ -37,8 +37,12 @@ public class Capacity {
         return (capacity < MINIMUM) || (MAXIMUM < capacity);
     }
 
-    public boolean isFullByCompareWith(final int compareValue) {
+    public boolean isEqualOrLessThan(final int compareValue) {
         return value <= compareValue;
+    }
+
+    public boolean isLessThan(final int compareValue) {
+        return value < compareValue;
     }
 
     @Override
