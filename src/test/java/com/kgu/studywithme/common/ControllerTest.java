@@ -29,7 +29,9 @@ import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberR
 import com.kgu.studywithme.memberreview.presentation.MemberReviewApiController;
 import com.kgu.studywithme.study.application.StudyInformationService;
 import com.kgu.studywithme.study.application.StudySearchService;
-import com.kgu.studywithme.study.application.StudyService;
+import com.kgu.studywithme.study.application.usecase.command.CreateStudyUseCase;
+import com.kgu.studywithme.study.application.usecase.command.TerminateStudyUseCase;
+import com.kgu.studywithme.study.application.usecase.command.UpdateStudyUseCase;
 import com.kgu.studywithme.study.domain.StudyRepository;
 import com.kgu.studywithme.study.presentation.StudyApiController;
 import com.kgu.studywithme.study.presentation.StudyInformationApiController;
@@ -94,8 +96,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
         // Category & Favorite
         CategoryApiController.class, FavoriteApiController.class,
 
-        // Member
-        MemberApiController.class, MemberInformationApiController.class,
+        // Member [Command]
+        MemberApiController.class,
+
+        // Member [Query]
+        MemberInformationApiController.class,
 
         // MemberReview
         MemberReviewApiController.class,
@@ -103,8 +108,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
         // MemberReport
         MemberReportApiController.class,
 
-        // Study
-        StudyApiController.class, StudyInformationApiController.class,
+        // Study [Command]
+        StudyApiController.class,
+
+        // Study [Query]
+        StudyInformationApiController.class,
         StudySearchApiController.class,
 
         // StudyParticipant
@@ -171,13 +179,14 @@ public abstract class ControllerTest {
     @MockBean
     protected StudyLikeCancellationUseCase studyLikeCancellationUseCase;
 
-    // Member
+    // Member [Command]
     @MockBean
     protected SignUpMemberUseCase signUpMemberUseCase;
 
     @MockBean
     protected UpdateMemberUseCase updateMemberUseCase;
 
+    // Member [Query]
     @MockBean
     protected MemberInformationService memberInformationService;
 
@@ -192,10 +201,17 @@ public abstract class ControllerTest {
     @MockBean
     protected ReportMemberUseCase reportMemberUseCase;
 
-    // Study
+    // Study [Command]
     @MockBean
-    protected StudyService studyService;
+    protected CreateStudyUseCase createStudyUseCase;
 
+    @MockBean
+    protected UpdateStudyUseCase updateStudyUseCase;
+
+    @MockBean
+    protected TerminateStudyUseCase terminateStudyUseCase;
+
+    // Study [Query]
     @MockBean
     protected StudyInformationService studyInformationService;
 

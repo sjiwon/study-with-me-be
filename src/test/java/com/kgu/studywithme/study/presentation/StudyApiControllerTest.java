@@ -1,11 +1,10 @@
 package com.kgu.studywithme.study.presentation;
 
 import com.kgu.studywithme.common.ControllerTest;
-import com.kgu.studywithme.global.exception.GlobalErrorCode;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
-import com.kgu.studywithme.study.presentation.dto.request.StudyRegisterRequest;
-import com.kgu.studywithme.study.presentation.dto.request.StudyUpdateRequest;
+import com.kgu.studywithme.study.presentation.dto.request.CreateStudyRequest;
+import com.kgu.studywithme.study.presentation.dto.request.UpdateStudyRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -14,14 +13,10 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.Set;
-
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
-import static com.kgu.studywithme.study.presentation.utils.StudyRegisterRequestUtils.createOfflineStudyRegisterRequest;
-import static com.kgu.studywithme.study.presentation.utils.StudyRegisterRequestUtils.createOnlineStudyRegisterRequest;
-import static com.kgu.studywithme.study.presentation.utils.StudyUpdateRequestUtils.createOfflineStudyUpdateRequest;
-import static com.kgu.studywithme.study.presentation.utils.StudyUpdateRequestUtils.createOnlineStudyUpdateRequest;
+import static com.kgu.studywithme.fixture.StudyFixture.REAL_MYSQL;
+import static com.kgu.studywithme.fixture.StudyFixture.SPRING;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
@@ -40,134 +35,33 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class StudyApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("스터디 생성 API [POST /api/study] - AccessToken 필수")
-    class register {
+    class create {
         private static final String BASE_URL = "/api/study";
         private static final Long HOST_ID = 1L;
 
         @Test
-        @DisplayName("스터디 해시태그 개수가 0개면 스터디를 생성할 수 없다 [최소 1개]")
-        void throwExceptionByHashtagCountUnderflow() throws Exception {
-            // given
-            mockingToken(true, HOST_ID);
-
-            // when
-            final StudyRegisterRequest request = createOnlineStudyRegisterRequest(Set.of());
-            MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                    .post(BASE_URL)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
-
-            // then
-            final GlobalErrorCode expectedError = GlobalErrorCode.VALIDATION_ERROR;
-            final String message = "스터디는 최소 1개의 해시태그를 가져야 합니다.";
-            mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isBadRequest(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(message)
-                    )
-                    .andDo(
-                            document(
-                                    "StudyApi/Register/Failure/Case1",
-                                    getDocumentRequest(),
-                                    getDocumentResponse(),
-                                    getHeaderWithAccessToken(),
-                                    requestFields(
-                                            fieldWithPath("name").description("스터디명"),
-                                            fieldWithPath("description").description("스터디 설명"),
-                                            fieldWithPath("category").description("카테고리 ID(PK)"),
-                                            fieldWithPath("thumbnail").description("스터디 썸네일"),
-                                            fieldWithPath("capacity").description("최대 수용 인원"),
-                                            fieldWithPath("type").description("온/오프라인 유무")
-                                                    .attributes(constraint("온라인 = online / 오프라인 = offline")),
-                                            fieldWithPath("province").description("오프라인 스터디 지역 [경기도, 강원도, ...]")
-                                                    .optional()
-                                                    .attributes(constraint("오프라인 스터디의 경우 필수")),
-                                            fieldWithPath("city").description("오프라인 스터디 지역 [안양시, 수원시, ...]")
-                                                    .optional()
-                                                    .attributes(constraint("오프라인 스터디의 경우 필수")),
-                                            fieldWithPath("minimumAttendanceForGraduation").description("졸업 요건 [최소 출석 횟수]"),
-                                            fieldWithPath("hashtags").description("해시태그")
-                                                    .attributes(constraint("최소 1개 최대 5개"))
-                                    ),
-                                    getExceptionResponseFiels()
-                            )
-                    );
-        }
-
-        @Test
-        @DisplayName("스터디 해시태그 개수가 5개를 초과하면 스터디를 생성할 수 없다 [최대 5개]")
-        void throwExceptionByHashtagCountOverflow() throws Exception {
-            // given
-            mockingToken(true, HOST_ID);
-
-            // when
-            final StudyRegisterRequest request = createOnlineStudyRegisterRequest(Set.of("A", "B", "C", "D", "E", "F"));
-            MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                    .post(BASE_URL)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
-
-            // then
-            final GlobalErrorCode expectedError = GlobalErrorCode.VALIDATION_ERROR;
-            final String message = "스터디는 최대 5개의 해시태그를 가질 수 있습니다.";
-            mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isBadRequest(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(message)
-                    )
-                    .andDo(
-                            document(
-                                    "StudyApi/Register/Failure/Case2",
-                                    getDocumentRequest(),
-                                    getDocumentResponse(),
-                                    getHeaderWithAccessToken(),
-                                    requestFields(
-                                            fieldWithPath("name").description("스터디명"),
-                                            fieldWithPath("description").description("스터디 설명"),
-                                            fieldWithPath("category").description("카테고리 ID(PK)"),
-                                            fieldWithPath("thumbnail").description("스터디 썸네일"),
-                                            fieldWithPath("capacity").description("최대 수용 인원"),
-                                            fieldWithPath("type").description("온/오프라인 유무")
-                                                    .attributes(constraint("온라인 = online / 오프라인 = offline")),
-                                            fieldWithPath("province").description("오프라인 스터디 지역 [경기도, 강원도, ...]")
-                                                    .optional()
-                                                    .attributes(constraint("오프라인 스터디의 경우 필수")),
-                                            fieldWithPath("city").description("오프라인 스터디 지역 [안양시, 수원시, ...]")
-                                                    .optional()
-                                                    .attributes(constraint("오프라인 스터디의 경우 필수")),
-                                            fieldWithPath("minimumAttendanceForGraduation").description("졸업 요건 [최소 출석 횟수]"),
-                                            fieldWithPath("hashtags").description("해시태그")
-                                                    .attributes(constraint("최소 1개 최대 5개"))
-                                    ),
-                                    getExceptionResponseFiels()
-                            )
-                    );
-        }
-
-        @Test
-        @DisplayName("다른 스터디가 사용하고 있는 스터디명으로 생성할 수 없다")
+        @DisplayName("이미 사용하고 있는 이름이면 스터디 생성에 실패한다")
         void throwExceptionByDuplicateName() throws Exception {
             // given
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyErrorCode.DUPLICATE_NAME))
-                    .when(studyService)
-                    .register(any(), any());
+                    .when(createStudyUseCase)
+                    .createStudy(any());
 
             // when
-            final StudyRegisterRequest request = createOnlineStudyRegisterRequest(Set.of("A", "B", "C"));
-            MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+            final CreateStudyRequest request = new CreateStudyRequest(
+                    SPRING.getName(),
+                    SPRING.getDescription(),
+                    SPRING.getCapacity(),
+                    SPRING.getCategory().getId(),
+                    SPRING.getThumbnail().getImageName(),
+                    SPRING.getType().getValue(),
+                    null,
+                    null,
+                    SPRING.getMinimumAttendanceForGraduation(),
+                    SPRING.getHashtags()
+            );
+            final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
@@ -187,7 +81,7 @@ class StudyApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "StudyApi/Register/Failure/Case3",
+                                    "StudyApi/Register/Failure",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
@@ -219,11 +113,22 @@ class StudyApiControllerTest extends ControllerTest {
         void successOnline() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            given(studyService.register(any(), any())).willReturn(1L);
+            given(createStudyUseCase.createStudy(any())).willReturn(1L);
 
             // when
-            final StudyRegisterRequest request = createOnlineStudyRegisterRequest(Set.of("A", "B", "C"));
-            MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+            final CreateStudyRequest request = new CreateStudyRequest(
+                    SPRING.getName(),
+                    SPRING.getDescription(),
+                    SPRING.getCapacity(),
+                    SPRING.getCategory().getId(),
+                    SPRING.getThumbnail().getImageName(),
+                    SPRING.getType().getValue(),
+                    null,
+                    null,
+                    SPRING.getMinimumAttendanceForGraduation(),
+                    SPRING.getHashtags()
+            );
+            final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
@@ -268,11 +173,22 @@ class StudyApiControllerTest extends ControllerTest {
         void successOffline() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            given(studyService.register(any(), any())).willReturn(1L);
+            given(createStudyUseCase.createStudy(any())).willReturn(1L);
 
             // when
-            final StudyRegisterRequest request = createOfflineStudyRegisterRequest(Set.of("A", "B", "C"));
-            MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+            final CreateStudyRequest request = new CreateStudyRequest(
+                    REAL_MYSQL.getName(),
+                    REAL_MYSQL.getDescription(),
+                    REAL_MYSQL.getCapacity(),
+                    REAL_MYSQL.getCategory().getId(),
+                    REAL_MYSQL.getThumbnail().getImageName(),
+                    REAL_MYSQL.getType().getValue(),
+                    REAL_MYSQL.getLocation().getProvince(),
+                    REAL_MYSQL.getLocation().getCity(),
+                    REAL_MYSQL.getMinimumAttendanceForGraduation(),
+                    REAL_MYSQL.getHashtags()
+            );
+            final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
@@ -334,8 +250,20 @@ class StudyApiControllerTest extends ControllerTest {
             mockingToken(true, ANONYMOUS_ID);
 
             // when
-            final StudyUpdateRequest request = createOnlineStudyUpdateRequest(5, Set.of("A", "B", "C"));
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final UpdateStudyRequest request = new UpdateStudyRequest(
+                    SPRING.getName(),
+                    SPRING.getDescription(),
+                    SPRING.getCapacity(),
+                    SPRING.getCategory().getId(),
+                    SPRING.getThumbnail().getImageName(),
+                    SPRING.getType().getValue(),
+                    null,
+                    null,
+                    true,
+                    SPRING.getMinimumAttendanceForGraduation(),
+                    SPRING.getHashtags()
+            );
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
@@ -345,7 +273,7 @@ class StudyApiControllerTest extends ControllerTest {
             final StudyErrorCode expectedError = StudyErrorCode.MEMBER_IS_NOT_HOST;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
-                            status().isConflict(),
+                            status().isForbidden(),
                             jsonPath("$.status").exists(),
                             jsonPath("$.status").value(expectedError.getStatus().value()),
                             jsonPath("$.errorCode").exists(),
@@ -388,31 +316,45 @@ class StudyApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("스터디 해시태그 개수가 0개면 스터디 정보를 수정할 수 없다 [최소 1개]")
-        void throwExceptionByHashtagCountUnderflow() throws Exception {
+        @DisplayName("다른 스터디가 사용하고 있는 이름으로 수정할 수 없다")
+        void throwExceptionByDuplicateName() throws Exception {
             // given
             mockingToken(true, HOST_ID);
+            doThrow(StudyWithMeException.type(StudyErrorCode.DUPLICATE_NAME))
+                    .when(updateStudyUseCase)
+                    .updateStudy(any());
 
             // when
-            final StudyUpdateRequest request = createOnlineStudyUpdateRequest(5, Set.of());
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final UpdateStudyRequest request = new UpdateStudyRequest(
+                    SPRING.getName(),
+                    SPRING.getDescription(),
+                    SPRING.getCapacity(),
+                    SPRING.getCategory().getId(),
+                    SPRING.getThumbnail().getImageName(),
+                    SPRING.getType().getValue(),
+                    null,
+                    null,
+                    true,
+                    SPRING.getMinimumAttendanceForGraduation(),
+                    SPRING.getHashtags()
+            );
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(request));
 
             // then
-            final GlobalErrorCode expectedError = GlobalErrorCode.VALIDATION_ERROR;
-            final String message = "스터디는 최소 1개의 해시태그를 가져야 합니다.";
+            final StudyErrorCode expectedError = StudyErrorCode.DUPLICATE_NAME;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
-                            status().isBadRequest(),
+                            status().isConflict(),
                             jsonPath("$.status").exists(),
                             jsonPath("$.status").value(expectedError.getStatus().value()),
                             jsonPath("$.errorCode").exists(),
                             jsonPath("$.errorCode").value(expectedError.getErrorCode()),
                             jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(message)
+                            jsonPath("$.message").value(expectedError.getMessage())
                     )
                     .andDo(
                             document(
@@ -449,31 +391,45 @@ class StudyApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("스터디 해시태그 개수가 5개를 초과하면 스터디 정보를 수정할 수 없다 [최대 5개]")
-        void throwExceptionByHashtagCountOverflow() throws Exception {
+        @DisplayName("현재 참여자 수보다 낮게 스터디 정원을 수정할 수 없다")
+        void throwExceptionByCapacityCannotCoverCurrentParticipants() throws Exception {
             // given
             mockingToken(true, HOST_ID);
+            doThrow(StudyWithMeException.type(StudyErrorCode.CAPACITY_CANNOT_COVER_CURRENT_PARTICIPANTS))
+                    .when(updateStudyUseCase)
+                    .updateStudy(any());
 
             // when
-            final StudyUpdateRequest request = createOnlineStudyUpdateRequest(5, Set.of("A", "B", "C", "D", "E", "F"));
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final UpdateStudyRequest request = new UpdateStudyRequest(
+                    SPRING.getName(),
+                    SPRING.getDescription(),
+                    SPRING.getCapacity(),
+                    SPRING.getCategory().getId(),
+                    SPRING.getThumbnail().getImageName(),
+                    SPRING.getType().getValue(),
+                    null,
+                    null,
+                    true,
+                    SPRING.getMinimumAttendanceForGraduation(),
+                    SPRING.getHashtags()
+            );
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(request));
 
             // then
-            final GlobalErrorCode expectedError = GlobalErrorCode.VALIDATION_ERROR;
-            final String message = "스터디는 최대 5개의 해시태그를 가질 수 있습니다.";
+            final StudyErrorCode expectedError = StudyErrorCode.CAPACITY_CANNOT_COVER_CURRENT_PARTICIPANTS;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
-                            status().isBadRequest(),
+                            status().isConflict(),
                             jsonPath("$.status").exists(),
                             jsonPath("$.status").value(expectedError.getStatus().value()),
                             jsonPath("$.errorCode").exists(),
                             jsonPath("$.errorCode").value(expectedError.getErrorCode()),
                             jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(message)
+                            jsonPath("$.message").value(expectedError.getMessage())
                     )
                     .andDo(
                             document(
@@ -510,24 +466,36 @@ class StudyApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("다른 스터디가 사용하고 있는 스터디명으로 정보를 수정할 수 없다")
-        void throwExceptionByDuplicateName() throws Exception {
+        @DisplayName("졸업 요건 수정 기회가 남아있지 않음에 따라 스터디 정보를 수정할 수 없다")
+        void throwExceptionByNoChanceToUpdateGraduationPolicy() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            doThrow(StudyWithMeException.type(StudyErrorCode.DUPLICATE_NAME))
-                    .when(studyService)
-                    .update(any(), any(), any());
+            doThrow(StudyWithMeException.type(StudyErrorCode.NO_CHANCE_TO_UPDATE_GRADUATION_POLICY))
+                    .when(updateStudyUseCase)
+                    .updateStudy(any());
 
             // when
-            final StudyUpdateRequest request = createOnlineStudyUpdateRequest(5, Set.of("A", "B", "C"));
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final UpdateStudyRequest request = new UpdateStudyRequest(
+                    SPRING.getName(),
+                    SPRING.getDescription(),
+                    SPRING.getCapacity(),
+                    SPRING.getCategory().getId(),
+                    SPRING.getThumbnail().getImageName(),
+                    SPRING.getType().getValue(),
+                    null,
+                    null,
+                    true,
+                    SPRING.getMinimumAttendanceForGraduation(),
+                    SPRING.getHashtags()
+            );
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(request));
 
             // then
-            final StudyErrorCode expectedError = StudyErrorCode.DUPLICATE_NAME;
+            final StudyErrorCode expectedError = StudyErrorCode.NO_CHANCE_TO_UPDATE_GRADUATION_POLICY;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
                             status().isConflict(),
@@ -573,143 +541,29 @@ class StudyApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("최대 수용인원을 현재 스터디 인원보다 적게 설정할 수 없다")
-        void throwExceptionByCapacityCannotBeLessThanParticipants() throws Exception {
-            // given
-            mockingToken(true, HOST_ID);
-            doThrow(StudyWithMeException.type(StudyErrorCode.CAPACITY_CANNOT_BE_LESS_THAN_PARTICIPANTS))
-                    .when(studyService)
-                    .update(any(), any(), any());
-
-            // when
-            final StudyUpdateRequest request = createOnlineStudyUpdateRequest(5, Set.of("A", "B", "C"));
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .patch(BASE_URL, STUDY_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
-
-            // then
-            final StudyErrorCode expectedError = StudyErrorCode.CAPACITY_CANNOT_BE_LESS_THAN_PARTICIPANTS;
-            mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isConflict(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
-                    )
-                    .andDo(
-                            document(
-                                    "StudyApi/Update/Failure/Case5",
-                                    getDocumentRequest(),
-                                    getDocumentResponse(),
-                                    getHeaderWithAccessToken(),
-                                    pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
-                                    ),
-                                    requestFields(
-                                            fieldWithPath("name").description("스터디명"),
-                                            fieldWithPath("description").description("스터디 설명"),
-                                            fieldWithPath("capacity").description("최대 수용 인원"),
-                                            fieldWithPath("category").description("카테고리 ID(PK)"),
-                                            fieldWithPath("thumbnail").description("스터디 썸네일"),
-                                            fieldWithPath("type").description("온/오프라인 유무")
-                                                    .attributes(constraint("온라인 = online / 오프라인 = offline")),
-                                            fieldWithPath("province").description("오프라인 스터디 지역 [경기도, 강원도, ...]")
-                                                    .optional()
-                                                    .attributes(constraint("오프라인 스터디의 경우 필수")),
-                                            fieldWithPath("city").description("오프라인 스터디 지역 [안양시, 수원시, ...]")
-                                                    .optional()
-                                                    .attributes(constraint("오프라인 스터디의 경우 필수")),
-                                            fieldWithPath("recruitmentStatus").description("스터디 모집 활성화 여부")
-                                                    .attributes(constraint("활성화=true / 비활성화=false")),
-                                            fieldWithPath("minimumAttendanceForGraduation").description("졸업 요건 [최소 출석 횟수]"),
-                                            fieldWithPath("hashtags").description("해시태그")
-                                                    .attributes(constraint("최소 1개 최대 5개"))
-                                    ),
-                                    getExceptionResponseFiels()
-                            )
-                    );
-        }
-
-        @Test
-        @DisplayName("졸업 요건 수정 기회가 남아있지 않음에 따라 스터디 정보를 수정할 수 없다")
-        void throwExceptionByNoChangeToUpdateGraduationPolicy() throws Exception {
-            // given
-            mockingToken(true, HOST_ID);
-            doThrow(StudyWithMeException.type(StudyErrorCode.NO_CHANGE_TO_UPDATE_GRADUATION_POLICY))
-                    .when(studyService)
-                    .update(any(), any(), any());
-
-            // when
-            final StudyUpdateRequest request = createOnlineStudyUpdateRequest(5, Set.of("A", "B", "C"));
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .patch(BASE_URL, STUDY_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
-
-            // then
-            final StudyErrorCode expectedError = StudyErrorCode.NO_CHANGE_TO_UPDATE_GRADUATION_POLICY;
-            mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isConflict(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
-                    )
-                    .andDo(
-                            document(
-                                    "StudyApi/Update/Failure/Case6",
-                                    getDocumentRequest(),
-                                    getDocumentResponse(),
-                                    getHeaderWithAccessToken(),
-                                    pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
-                                    ),
-                                    requestFields(
-                                            fieldWithPath("name").description("스터디명"),
-                                            fieldWithPath("description").description("스터디 설명"),
-                                            fieldWithPath("capacity").description("최대 수용 인원"),
-                                            fieldWithPath("category").description("카테고리 ID(PK)"),
-                                            fieldWithPath("thumbnail").description("스터디 썸네일"),
-                                            fieldWithPath("type").description("온/오프라인 유무")
-                                                    .attributes(constraint("온라인 = online / 오프라인 = offline")),
-                                            fieldWithPath("province").description("오프라인 스터디 지역 [경기도, 강원도, ...]")
-                                                    .optional()
-                                                    .attributes(constraint("오프라인 스터디의 경우 필수")),
-                                            fieldWithPath("city").description("오프라인 스터디 지역 [안양시, 수원시, ...]")
-                                                    .optional()
-                                                    .attributes(constraint("오프라인 스터디의 경우 필수")),
-                                            fieldWithPath("recruitmentStatus").description("스터디 모집 활성화 여부")
-                                                    .attributes(constraint("활성화=true / 비활성화=false")),
-                                            fieldWithPath("minimumAttendanceForGraduation").description("졸업 요건 [최소 출석 횟수]"),
-                                            fieldWithPath("hashtags").description("해시태그")
-                                                    .attributes(constraint("최소 1개 최대 5개"))
-                                    ),
-                                    getExceptionResponseFiels()
-                            )
-                    );
-        }
-
-        @Test
         @DisplayName("정보 수정에 성공한다 - 온라인")
         void successOnline() throws Exception {
             // given
             mockingToken(true, HOST_ID);
             doNothing()
-                    .when(studyService)
-                    .update(any(), any(), any());
+                    .when(updateStudyUseCase)
+                    .updateStudy(any());
 
             // when
-            final StudyUpdateRequest request = createOnlineStudyUpdateRequest(5, Set.of("A", "B", "C"));
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final UpdateStudyRequest request = new UpdateStudyRequest(
+                    SPRING.getName(),
+                    SPRING.getDescription(),
+                    SPRING.getCapacity(),
+                    SPRING.getCategory().getId(),
+                    SPRING.getThumbnail().getImageName(),
+                    SPRING.getType().getValue(),
+                    null,
+                    null,
+                    true,
+                    SPRING.getMinimumAttendanceForGraduation(),
+                    SPRING.getHashtags()
+            );
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
@@ -757,12 +611,24 @@ class StudyApiControllerTest extends ControllerTest {
             // given
             mockingToken(true, HOST_ID);
             doNothing()
-                    .when(studyService)
-                    .update(any(), any(), any());
+                    .when(updateStudyUseCase)
+                    .updateStudy(any());
 
             // when
-            final StudyUpdateRequest request = createOfflineStudyUpdateRequest(5, Set.of("A", "B", "C"));
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final UpdateStudyRequest request = new UpdateStudyRequest(
+                    REAL_MYSQL.getName(),
+                    REAL_MYSQL.getDescription(),
+                    REAL_MYSQL.getCapacity(),
+                    REAL_MYSQL.getCategory().getId(),
+                    REAL_MYSQL.getThumbnail().getImageName(),
+                    REAL_MYSQL.getType().getValue(),
+                    REAL_MYSQL.getLocation().getProvince(),
+                    REAL_MYSQL.getLocation().getCity(),
+                    true,
+                    REAL_MYSQL.getMinimumAttendanceForGraduation(),
+                    REAL_MYSQL.getHashtags()
+            );
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
@@ -807,7 +673,7 @@ class StudyApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("스터디 종료 API [DELETE /api/studies/{studyId}] - AccessToken 필수")
-    class close {
+    class terminate {
         private static final String BASE_URL = "/api/studies/{studyId}";
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;
@@ -826,7 +692,7 @@ class StudyApiControllerTest extends ControllerTest {
             mockingToken(true, ANONYMOUS_ID);
 
             // when
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .delete(BASE_URL, STUDY_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
 
@@ -834,7 +700,7 @@ class StudyApiControllerTest extends ControllerTest {
             final StudyErrorCode expectedError = StudyErrorCode.MEMBER_IS_NOT_HOST;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
-                            status().isConflict(),
+                            status().isForbidden(),
                             jsonPath("$.status").exists(),
                             jsonPath("$.status").value(expectedError.getStatus().value()),
                             jsonPath("$.errorCode").exists(),
@@ -844,7 +710,7 @@ class StudyApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "StudyApi/Close/Failure",
+                                    "StudyApi/Terminate/Failure",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
@@ -863,7 +729,7 @@ class StudyApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
 
             // when
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .delete(BASE_URL, STUDY_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
 
@@ -872,7 +738,7 @@ class StudyApiControllerTest extends ControllerTest {
                     .andExpect(status().isNoContent())
                     .andDo(
                             document(
-                                    "StudyApi/Close/Success",
+                                    "StudyApi/Terminate/Success",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),

@@ -1,14 +1,12 @@
 package com.kgu.studywithme.study.presentation.dto.request;
 
-import com.kgu.studywithme.study.utils.validator.ValidHashtagCount;
-import com.kgu.studywithme.study.utils.validator.ValidStudyType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 import java.util.Set;
 
-public record StudyRegisterRequest(
+public record UpdateStudyRequest(
         @NotBlank(message = "스터디명은 필수입니다.")
         String name,
 
@@ -24,7 +22,6 @@ public record StudyRegisterRequest(
         @NotBlank(message = "스터디 썸네일은 필수입니다.")
         String thumbnail,
 
-        @ValidStudyType
         @NotBlank(message = "온/오프라인 유무는 필수입니다.")
         String type,
 
@@ -32,11 +29,13 @@ public record StudyRegisterRequest(
 
         String city,
 
+        @NotNull(message = "스터디 모집 여부는 필수입니다.")
+        Boolean recruitmentStatus,
+
         @NotNull(message = "스터디 졸업요건은 필수입니다. [최소 출석 횟수]")
         @Positive(message = "졸업 요건은 양수여야 합니다.")
         Integer minimumAttendanceForGraduation,
 
-        @ValidHashtagCount
         Set<String> hashtags
 ) {
 }
