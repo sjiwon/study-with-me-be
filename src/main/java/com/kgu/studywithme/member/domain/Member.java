@@ -3,6 +3,7 @@ package com.kgu.studywithme.member.domain;
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.global.BaseEntity;
 import com.kgu.studywithme.member.domain.interest.Interest;
+import com.kgu.studywithme.member.domain.interest.Interests;
 import com.kgu.studywithme.studyattendance.domain.AttendanceStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -10,7 +11,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -47,8 +47,8 @@ public class Member extends BaseEntity<Member> {
     @Column(name = "is_email_opt_in", nullable = false)
     private boolean emailOptIn;
 
-    @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
-    private List<Interest> interests = new ArrayList<>();
+    @Embedded
+    private Interests interests;
 
     private Member(
             final String name,
@@ -70,7 +70,7 @@ public class Member extends BaseEntity<Member> {
         this.region = region;
         this.score = Score.initScore();
         this.emailOptIn = emailOptIn;
-        applyInterests(interests);
+        this.interests = new Interests(this, interests);
     }
 
     public static Member createMember(
@@ -99,20 +99,7 @@ public class Member extends BaseEntity<Member> {
         this.phone = phone;
         this.region = this.region.update(province, city);
         this.emailOptIn = emailOptIn;
-        applyInterests(interests);
-    }
-
-    public void applyInterests(final Set<Category> interests) {
-        this.interests.clear();
-        this.interests.addAll(
-                interests.stream()
-                        .map(value -> Interest.applyInterest(this, value))
-                        .toList()
-        );
-    }
-
-    public boolean isSameMember(final Member member) {
-        return this.email.isSameEmail(member.getEmail());
+        this.interests = new Interests(this, interests);
     }
 
     public void applyScoreByAttendanceStatus(final AttendanceStatus status) {
@@ -177,7 +164,8 @@ public class Member extends BaseEntity<Member> {
     }
 
     public List<Category> getInterests() {
-        return interests.stream()
+        return interests.getInterests()
+                .stream()
                 .map(Interest::getCategory)
                 .toList();
     }

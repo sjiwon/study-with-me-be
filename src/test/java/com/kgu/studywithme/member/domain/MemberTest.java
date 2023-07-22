@@ -1,15 +1,12 @@
 package com.kgu.studywithme.member.domain;
 
-import com.kgu.studywithme.category.domain.Category;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.util.Set;
-
-import static com.kgu.studywithme.category.domain.Category.*;
-import static com.kgu.studywithme.fixture.MemberFixture.*;
+import static com.kgu.studywithme.fixture.MemberFixture.ANONYMOUS;
+import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -64,39 +61,6 @@ class MemberTest {
                 () -> assertThat(member.getScore()).isEqualTo(80),
                 () -> assertThat(member.isEmailOptIn()).isEqualTo(ANONYMOUS.isEmailOptIn()),
                 () -> assertThat(member.getInterests()).containsExactlyInAnyOrderElementsOf(ANONYMOUS.getInterests())
-        );
-    }
-
-    @Test
-    @DisplayName("Member의 관심사를 수정한다")
-    void updateInterests() {
-        // given
-        Member member = JIWON.toMember();
-
-        // when
-        final Set<Category> interests = Set.of(APTITUDE_NCS, CERTIFICATION, ETC);
-        member.applyInterests(interests);
-
-        // then
-        assertThat(member.getInterests()).containsExactlyInAnyOrderElementsOf(interests);
-    }
-
-    @Test
-    @DisplayName("이메일을 통해서 동일한 사용자인지 확인한다")
-    void isSameMember() {
-        // given
-        final Member member = JIWON.toMember();
-        Member compare1 = JIWON.toMember();
-        Member compare2 = GHOST.toMember();
-
-        // when
-        boolean actual1 = member.isSameMember(compare1);
-        boolean actual2 = member.isSameMember(compare2);
-
-        // then
-        assertAll(
-                () -> assertThat(actual1).isTrue(),
-                () -> assertThat(actual2).isFalse()
         );
     }
 

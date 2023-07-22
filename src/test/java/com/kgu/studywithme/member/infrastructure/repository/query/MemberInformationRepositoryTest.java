@@ -323,21 +323,11 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             /* Week 1 */
             studyAttendanceRepository.saveAll(
                     List.of(
-                            StudyAttendance.recordAttendance(
-                                    studyA.getId(), member.getId(), 1, ATTENDANCE
-                            ),
-                            StudyAttendance.recordAttendance(
-                                    studyB.getId(), member.getId(), 1, ATTENDANCE
-                            ),
-                            StudyAttendance.recordAttendance(
-                                    studyC.getId(), member.getId(), 1, LATE
-                            ),
-                            StudyAttendance.recordAttendance(
-                                    studyD.getId(), member.getId(), 1, ATTENDANCE
-                            ),
-                            StudyAttendance.recordAttendance(
-                                    studyE.getId(), member.getId(), 1, ABSENCE
-                            )
+                            StudyAttendance.recordAttendance(studyA.getId(), member.getId(), 1, ATTENDANCE),
+                            StudyAttendance.recordAttendance(studyB.getId(), member.getId(), 1, ATTENDANCE),
+                            StudyAttendance.recordAttendance(studyC.getId(), member.getId(), 1, LATE),
+                            StudyAttendance.recordAttendance(studyD.getId(), member.getId(), 1, ATTENDANCE),
+                            StudyAttendance.recordAttendance(studyE.getId(), member.getId(), 1, ABSENCE)
                     )
             );
 
@@ -352,21 +342,11 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             /* Week 2 */
             studyAttendanceRepository.saveAll(
                     List.of(
-                            StudyAttendance.recordAttendance(
-                                    studyA.getId(), member.getId(), 2, NON_ATTENDANCE
-                            ),
-                            StudyAttendance.recordAttendance(
-                                    studyB.getId(), member.getId(), 2, ATTENDANCE
-                            ),
-                            StudyAttendance.recordAttendance(
-                                    studyC.getId(), member.getId(), 2, NON_ATTENDANCE
-                            ),
-                            StudyAttendance.recordAttendance(
-                                    studyD.getId(), member.getId(), 2, ATTENDANCE
-                            ),
-                            StudyAttendance.recordAttendance(
-                                    studyE.getId(), member.getId(), 2, NON_ATTENDANCE
-                            )
+                            StudyAttendance.recordAttendance(studyA.getId(), member.getId(), 2, NON_ATTENDANCE),
+                            StudyAttendance.recordAttendance(studyB.getId(), member.getId(), 2, ATTENDANCE),
+                            StudyAttendance.recordAttendance(studyC.getId(), member.getId(), 2, NON_ATTENDANCE),
+                            StudyAttendance.recordAttendance(studyD.getId(), member.getId(), 2, ATTENDANCE),
+                            StudyAttendance.recordAttendance(studyE.getId(), member.getId(), 2, NON_ATTENDANCE)
                     )
             );
 

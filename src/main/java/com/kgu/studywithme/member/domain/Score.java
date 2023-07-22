@@ -70,4 +70,19 @@ public class Score {
     public Score updateAbsenceToLate() {
         return new Score(value + ABSENCE - LATE);
     }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final Score other = (Score) o;
+
+        return value == other.value;
+    }
+
+    @Override
+    public int hashCode() {
+        return value;
+    }
 }

@@ -15,8 +15,7 @@ import java.util.regex.Pattern;
 @Embeddable
 public class Email {
     // 이메일 형식은 @gmail.com만 허용
-    private static final String EMAIL_PATTERN = "^[a-zA-Z0-9._%+-]+@gmail\\.com$";
-    private static final Pattern EMAIL_MATCHER = Pattern.compile(EMAIL_PATTERN);
+    private static final Pattern EMAIL_MATCHER = Pattern.compile("^[a-zA-Z0-9._%+-]+@gmail\\.com$");
 
     @Column(name = "email", nullable = false, unique = true, updatable = false)
     private String value;
@@ -40,7 +39,18 @@ public class Email {
         return !EMAIL_MATCHER.matcher(email).matches();
     }
 
-    public boolean isSameEmail(final Email email) {
-        return this.value.equals(email.getValue());
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final Email other = (Email) o;
+
+        return value.equals(other.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
     }
 }

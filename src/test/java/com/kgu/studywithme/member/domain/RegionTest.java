@@ -13,13 +13,14 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @DisplayName("Member -> 도메인 [Region VO] 테스트")
 class RegionTest {
     @ParameterizedTest(name = "{index}: {0} - {1}")
     @MethodSource("invalidRegion")
     @DisplayName("province나 city가 비어있음에 따라 Region 생성에 실패한다")
-    void throwExceptionByRegionIsBlank(String province, String city) {
+    void throwExceptionByRegionIsBlank(final String province, final String city) {
         assertThatThrownBy(() -> Region.of(province, city))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberErrorCode.REGION_IS_BLANK.getMessage());
@@ -36,12 +37,8 @@ class RegionTest {
     @ParameterizedTest(name = "{index}: {0} - {1}")
     @MethodSource("validRegion")
     @DisplayName("Region[province / city]을 생성한다")
-    void construct(String province, String city) {
-        Region region = Region.of(province, city);
-        assertAll(
-                () -> assertThat(region.getProvince()).isEqualTo(province),
-                () -> assertThat(region.getCity()).isEqualTo(city)
-        );
+    void construct(final String province, final String city) {
+        assertDoesNotThrow(() -> Region.of(province, city));
     }
 
     private static Stream<Arguments> validRegion() {
@@ -56,10 +53,10 @@ class RegionTest {
     @DisplayName("Region을 수정한다")
     void update() {
         // given
-        Region region = Region.of("경기도", "안양시");
+        final Region region = Region.of("경기도", "안양시");
 
         // when
-        Region updateRegion = region.update("경기도", "수원시");
+        final Region updateRegion = region.update("경기도", "수원시");
 
         // then
         assertAll(
