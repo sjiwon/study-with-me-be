@@ -1,7 +1,7 @@
 package com.kgu.studywithme.member.application.service;
 
 import com.kgu.studywithme.member.application.usecase.query.*;
-import com.kgu.studywithme.member.infrastructure.repository.query.MemberInformationRepository;
+import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.member.infrastructure.repository.query.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,30 +17,30 @@ public class MemberPublicQueryService implements
         QueryReceivedReviewByIdUseCase,
         QueryAttendanceRatioByIdUseCase {
 
-    private final MemberInformationRepository memberInformationRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public MemberPublicInformation queryPublicInformation(final QueryPublicInformationByIdUseCase.Query query) {
-        return memberInformationRepository.fetchPublicInformationById(query.memberId());
+        return memberRepository.fetchPublicInformationById(query.memberId());
     }
 
     @Override
     public List<ParticipateStudy> queryParticipateStudy(final QueryParticipateStudyByIdUseCase.Query query) {
-        return memberInformationRepository.fetchParticipateStudyById(query.memberId());
+        return memberRepository.fetchParticipateStudyById(query.memberId());
     }
 
     @Override
     public List<GraduatedStudy> queryGraduatedStudy(final QueryGraduatedStudyByIdUseCase.Query query) {
-        return memberInformationRepository.fetchGraduatedStudyById(query.memberId());
+        return memberRepository.fetchGraduatedStudyById(query.memberId());
     }
 
     @Override
     public List<ReceivedReview> queryReceivedReview(final QueryReceivedReviewByIdUseCase.Query query) {
-        return memberInformationRepository.fetchReceivedReviewById(query.memberId());
+        return memberRepository.fetchReceivedReviewById(query.memberId());
     }
 
     @Override
     public List<AttendanceRatio> queryAttendanceRatio(final QueryAttendanceRatioByIdUseCase.Query query) {
-        return memberInformationRepository.fetchAttendanceRatioById(query.memberId());
+        return memberRepository.fetchAttendanceRatioById(query.memberId());
     }
 }
