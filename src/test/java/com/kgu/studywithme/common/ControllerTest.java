@@ -17,11 +17,12 @@ import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeCancell
 import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeMarkingUseCase;
 import com.kgu.studywithme.favorite.presentation.FavoriteApiController;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.application.MemberInformationService;
 import com.kgu.studywithme.member.application.usecase.command.SignUpMemberUseCase;
 import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
+import com.kgu.studywithme.member.application.usecase.query.*;
 import com.kgu.studywithme.member.presentation.MemberApiController;
-import com.kgu.studywithme.member.presentation.MemberInformationApiController;
+import com.kgu.studywithme.member.presentation.MemberPrivateInformationApiController;
+import com.kgu.studywithme.member.presentation.MemberPublicInformationApiController;
 import com.kgu.studywithme.memberreport.application.usecase.command.ReportMemberUseCase;
 import com.kgu.studywithme.memberreport.presentation.MemberReportApiController;
 import com.kgu.studywithme.memberreview.application.usecase.command.UpdateMemberReviewUseCase;
@@ -91,16 +92,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 @WebMvcTest({
         // Auth
-        OAuthApiController.class, TokenReissueApiController.class,
+        OAuthApiController.class,
+        TokenReissueApiController.class,
 
-        // Category & Favorite
-        CategoryApiController.class, FavoriteApiController.class,
+        // Category
+        CategoryApiController.class,
+
+        // Favorite
+        FavoriteApiController.class,
 
         // Member [Command]
         MemberApiController.class,
 
         // Member [Query]
-        MemberInformationApiController.class,
+        MemberPublicInformationApiController.class,
+        MemberPrivateInformationApiController.class,
 
         // MemberReview
         MemberReviewApiController.class,
@@ -116,17 +122,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
         StudySearchApiController.class,
 
         // StudyParticipant
-        StudyApplyApiController.class, StudyParticipantDecisionApiController.class,
-        DelegateHostAuthorityApiController.class, StudyFinalizeApiController.class,
+        StudyApplyApiController.class,
+        StudyParticipantDecisionApiController.class,
+        DelegateHostAuthorityApiController.class,
+        StudyFinalizeApiController.class,
 
         // StudyAttendance
         StudyAttendanceApiController.class,
 
         // StudyNotice & StudyNoticeComment
-        StudyNoticeApiController.class, StudyNoticeCommentApiController.class,
+        StudyNoticeApiController.class,
+        StudyNoticeCommentApiController.class,
 
         // StudyWeekly
-        StudyWeeklyApiController.class, StudyWeeklySubmitApiController.class,
+        StudyWeeklyApiController.class,
+        StudyWeeklySubmitApiController.class,
 
         // StudyReview
         StudyReviewApiController.class,
@@ -188,7 +198,29 @@ public abstract class ControllerTest {
 
     // Member [Query]
     @MockBean
-    protected MemberInformationService memberInformationService;
+    protected QueryPublicInformationByIdUseCase queryPublicInformationByIdUseCase;
+
+    @MockBean
+    protected QueryParticipateStudyByIdUseCase queryParticipateStudyByIdUseCase;
+
+    @MockBean
+    protected QueryGraduatedStudyByIdUseCase queryGraduatedStudyByIdUseCase;
+
+    @MockBean
+    protected QueryReceivedReviewByIdUseCase queryReceivedReviewByIdUseCase;
+
+    @MockBean
+    protected QueryAttendanceRatioByIdUseCase queryAttendanceRatioByIdUseCase;
+
+    @MockBean
+    protected QueryPrivateInformationByIdUseCase queryPrivateInformationByIdUseCase;
+
+    @MockBean
+    protected QueryAppliedStudyByIdUseCase queryAppliedStudyByIdUseCase;
+
+    @MockBean
+    protected QueryLikeMarkedStudyByIdUseCase queryLikeMarkedStudyByIdUseCase;
+
 
     // MemberReview
     @MockBean
