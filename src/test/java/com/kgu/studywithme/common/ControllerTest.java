@@ -28,14 +28,15 @@ import com.kgu.studywithme.memberreport.presentation.MemberReportApiController;
 import com.kgu.studywithme.memberreview.application.usecase.command.UpdateMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.presentation.MemberReviewApiController;
-import com.kgu.studywithme.study.application.StudyInformationService;
 import com.kgu.studywithme.study.application.StudySearchService;
 import com.kgu.studywithme.study.application.usecase.command.CreateStudyUseCase;
 import com.kgu.studywithme.study.application.usecase.command.TerminateStudyUseCase;
 import com.kgu.studywithme.study.application.usecase.command.UpdateStudyUseCase;
+import com.kgu.studywithme.study.application.usecase.query.*;
 import com.kgu.studywithme.study.domain.StudyRepository;
 import com.kgu.studywithme.study.presentation.StudyApiController;
 import com.kgu.studywithme.study.presentation.StudyInformationApiController;
+import com.kgu.studywithme.study.presentation.StudyInformationOnlyParticipantApiController;
 import com.kgu.studywithme.study.presentation.StudySearchApiController;
 import com.kgu.studywithme.studyattendance.application.usecase.command.ManualAttendanceUseCase;
 import com.kgu.studywithme.studyattendance.presentation.StudyAttendanceApiController;
@@ -119,6 +120,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
         // Study [Query]
         StudyInformationApiController.class,
+        StudyInformationOnlyParticipantApiController.class,
         StudySearchApiController.class,
 
         // StudyParticipant
@@ -245,7 +247,25 @@ public abstract class ControllerTest {
 
     // Study [Query]
     @MockBean
-    protected StudyInformationService studyInformationService;
+    protected QueryBasicInformationByIdUseCase queryBasicInformationByIdUseCase;
+
+    @MockBean
+    protected QueryReviewByIdUseCase queryReviewByIdUseCase;
+
+    @MockBean
+    protected QueryParticipantByIdUseCase queryParticipantByIdUseCase;
+
+    @MockBean
+    protected QueryApplicantByIdUseCase queryApplicantByIdUseCase;
+
+    @MockBean
+    protected QueryNoticeByIdUseCase queryNoticeByIdUseCase;
+
+    @MockBean
+    protected QueryAttendanceByIdUseCase queryAttendanceByIdUseCase;
+
+    @MockBean
+    protected QueryWeeklyByIdUseCase queryWeeklyByIdUseCase;
 
     @MockBean
     protected StudySearchService studySearchService;
@@ -329,7 +349,10 @@ public abstract class ControllerTest {
     protected UploadStudyDescriptionImageUseCase uploadStudyDescriptionImageUseCase;
 
     @BeforeEach
-    void setUp(WebApplicationContext context, RestDocumentationContextProvider provider) {
+    void setUp(
+            final WebApplicationContext context,
+            final RestDocumentationContextProvider provider
+    ) {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(MockMvcRestDocumentation.documentationConfiguration(provider))
                 .alwaysDo(print())
@@ -366,15 +389,18 @@ public abstract class ControllerTest {
         );
     }
 
-    protected Attributes.Attribute constraint(String value) {
+    protected Attributes.Attribute constraint(final String value) {
         return new Attributes.Attribute("constraints", value);
     }
 
-    protected String convertObjectToJson(Object data) throws JsonProcessingException {
+    protected String convertObjectToJson(final Object data) throws JsonProcessingException {
         return objectMapper.writeValueAsString(data);
     }
 
-    protected void mockingToken(boolean isValid, Long payloadId) {
+    protected void mockingToken(
+            final boolean isValid,
+            final Long payloadId
+    ) {
         given(jwtTokenProvider.isTokenValid(anyString())).willReturn(isValid);
         given(jwtTokenProvider.getId(anyString())).willReturn(payloadId);
     }
@@ -391,11 +417,19 @@ public abstract class ControllerTest {
                 .isTokenValid(any());
     }
 
-    protected void mockingForStudyHost(Long studyId, Long memberId, boolean isValid) {
+    protected void mockingForStudyHost(
+            final Long studyId,
+            final Long memberId,
+            final boolean isValid
+    ) {
         given(studyRepository.isHost(studyId, memberId)).willReturn(isValid);
     }
 
-    protected void mockingForStudyParticipant(Long studyId, Long memberId, boolean isValid) {
+    protected void mockingForStudyParticipant(
+            final Long studyId,
+            final Long memberId,
+            final boolean isValid
+    ) {
         given(studyParticipantRepository.isParticipant(studyId, memberId)).willReturn(isValid);
     }
 }

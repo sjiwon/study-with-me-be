@@ -2,8 +2,8 @@ package com.kgu.studywithme.studynotice.presentation;
 
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.exception.MemberErrorCode;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
+import com.kgu.studywithme.studynotice.exception.StudyNoticeErrorCode;
 import com.kgu.studywithme.studynotice.presentation.dto.request.UpdateStudyNoticeRequest;
 import com.kgu.studywithme.studynotice.presentation.dto.request.WriteStudyNoticeRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -195,11 +195,11 @@ class StudyNoticeApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("작성자가 아니라면 공지사항을 수정할 수 없다")
-        void throwExceptionByMemberIsNotWriter() throws Exception {
+        @DisplayName("공지사항 작성자가 아닌 사람이 수정을 시도하면 예외가 발생한다")
+        void throwExceptionByHostIsNotNoticeWriter() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            doThrow(StudyWithMeException.type(MemberErrorCode.MEMBER_IS_NOT_WRITER))
+            doThrow(StudyWithMeException.type(StudyNoticeErrorCode.ONLY_WRITER_CAN_UPDATE_NOTICE))
                     .when(updateStudyNoticeUseCase)
                     .updateNotice(any());
 
@@ -215,10 +215,10 @@ class StudyNoticeApiControllerTest extends ControllerTest {
                     .content(convertObjectToJson(request));
 
             // then
-            final MemberErrorCode expectedError = MemberErrorCode.MEMBER_IS_NOT_WRITER;
+            final StudyNoticeErrorCode expectedError = StudyNoticeErrorCode.ONLY_WRITER_CAN_UPDATE_NOTICE;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
-                            status().isConflict(),
+                            status().isForbidden(),
                             jsonPath("$.status").exists(),
                             jsonPath("$.status").value(expectedError.getStatus().value()),
                             jsonPath("$.errorCode").exists(),
@@ -246,7 +246,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("공지사항 수정에 성공한다")
+        @DisplayName("공지사항을 수정한다")
         void success() throws Exception {
             // given
             mockingToken(true, HOST_ID);
@@ -341,11 +341,11 @@ class StudyNoticeApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("작성자가 아니라면 공지사항을 삭제할 수 없다")
+        @DisplayName("공지사항 작성자가 아닌 사람이 삭제를 시도하면 예외가 발생한다")
         void throwExceptionByMemberIsNotWriter() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            doThrow(StudyWithMeException.type(MemberErrorCode.MEMBER_IS_NOT_WRITER))
+            doThrow(StudyWithMeException.type(StudyNoticeErrorCode.ONLY_WRITER_CAN_DELETE_NOTICE))
                     .when(deleteStudyNoticeUseCase)
                     .deleteNotice(any());
 
@@ -355,10 +355,10 @@ class StudyNoticeApiControllerTest extends ControllerTest {
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
 
             // then
-            final MemberErrorCode expectedError = MemberErrorCode.MEMBER_IS_NOT_WRITER;
+            final StudyNoticeErrorCode expectedError = StudyNoticeErrorCode.ONLY_WRITER_CAN_DELETE_NOTICE;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
-                            status().isConflict(),
+                            status().isForbidden(),
                             jsonPath("$.status").exists(),
                             jsonPath("$.status").value(expectedError.getStatus().value()),
                             jsonPath("$.errorCode").exists(),
@@ -382,7 +382,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("공지사항 삭제에 성공한다")
+        @DisplayName("공지사항을 삭제한다")
         void success() throws Exception {
             // given
             mockingToken(true, HOST_ID);

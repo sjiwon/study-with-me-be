@@ -2,8 +2,7 @@ package com.kgu.studywithme.studyreview.presentation;
 
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.exception.MemberErrorCode;
-import com.kgu.studywithme.study.exception.StudyErrorCode;
+import com.kgu.studywithme.studyreview.exception.StudyReviewErrorCode;
 import com.kgu.studywithme.studyreview.presentation.dto.request.UpdateStudyReviewRequest;
 import com.kgu.studywithme.studyreview.presentation.dto.request.WriteStudyReviewRequest;
 import org.junit.jupiter.api.DisplayName;
@@ -39,11 +38,11 @@ class StudyReviewApiControllerTest extends ControllerTest {
         private static final Long ANONYMOUS_ID = 2L;
 
         @Test
-        @DisplayName("졸업자가 아니면 리뷰를 작성할 수 없다")
+        @DisplayName("스터디 졸업자가 아니면 리뷰를 작성할 수 없다")
         void throwExceptionByMemberIsNotGraduated() throws Exception {
             // given
             mockingToken(true, ANONYMOUS_ID);
-            doThrow(StudyWithMeException.type(StudyErrorCode.MEMBER_IS_NOT_GRADUATED))
+            doThrow(StudyWithMeException.type(StudyReviewErrorCode.ONLY_GRADUATED_PARTICIPANT_CAN_WRITE_REVIEW))
                     .when(writeStudyReviewUseCase)
                     .writeStudyReview(any());
 
@@ -56,10 +55,10 @@ class StudyReviewApiControllerTest extends ControllerTest {
                     .content(convertObjectToJson(request));
 
             // then
-            final StudyErrorCode expectedError = StudyErrorCode.MEMBER_IS_NOT_GRADUATED;
+            final StudyReviewErrorCode expectedError = StudyReviewErrorCode.ONLY_GRADUATED_PARTICIPANT_CAN_WRITE_REVIEW;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
-                            status().isConflict(),
+                            status().isForbidden(),
                             jsonPath("$.status").exists(),
                             jsonPath("$.status").value(expectedError.getStatus().value()),
                             jsonPath("$.errorCode").exists(),
@@ -129,11 +128,11 @@ class StudyReviewApiControllerTest extends ControllerTest {
         private static final Long ANONYMOUS_ID = 2L;
 
         @Test
-        @DisplayName("작성자가 아니면 리뷰를 수정할 수 없다")
+        @DisplayName("스터디 리뷰 작성자가 아닌 사람이 수정을 시도하면 예외가 발생한다")
         void throwExceptionByMemberIsNotWriter() throws Exception {
             // given
             mockingToken(true, ANONYMOUS_ID);
-            doThrow(StudyWithMeException.type(MemberErrorCode.MEMBER_IS_NOT_WRITER))
+            doThrow(StudyWithMeException.type(StudyReviewErrorCode.ONLY_WRITER_CAN_UPDATE))
                     .when(updateStudyReviewUseCase)
                     .updateStudyReview(any());
 
@@ -146,10 +145,10 @@ class StudyReviewApiControllerTest extends ControllerTest {
                     .content(convertObjectToJson(request));
 
             // then
-            final MemberErrorCode expectedError = MemberErrorCode.MEMBER_IS_NOT_WRITER;
+            final StudyReviewErrorCode expectedError = StudyReviewErrorCode.ONLY_WRITER_CAN_UPDATE;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
-                            status().isConflict(),
+                            status().isForbidden(),
                             jsonPath("$.status").exists(),
                             jsonPath("$.status").value(expectedError.getStatus().value()),
                             jsonPath("$.errorCode").exists(),
@@ -176,7 +175,7 @@ class StudyReviewApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("리뷰 수정에 성공한다")
+        @DisplayName("작성한 스터디 리뷰를 수정한다")
         void success() throws Exception {
             // given
             mockingToken(true, WRITER_ID);
@@ -223,11 +222,11 @@ class StudyReviewApiControllerTest extends ControllerTest {
         private static final Long ANONYMOUS_ID = 2L;
 
         @Test
-        @DisplayName("작성자가 아니면 리뷰를 삭제할 수 없다")
+        @DisplayName("스터디 리뷰 작성자가 아닌 사람이 삭제를 시도하면 예외가 발생한다")
         void throwExceptionByMemberIsNotWriter() throws Exception {
             // given
             mockingToken(true, ANONYMOUS_ID);
-            doThrow(StudyWithMeException.type(MemberErrorCode.MEMBER_IS_NOT_WRITER))
+            doThrow(StudyWithMeException.type(StudyReviewErrorCode.ONLY_WRITER_CAN_DELETE))
                     .when(deleteStudyReviewUseCase)
                     .deleteStudyReview(any());
 
@@ -237,10 +236,10 @@ class StudyReviewApiControllerTest extends ControllerTest {
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
 
             // then
-            final MemberErrorCode expectedError = MemberErrorCode.MEMBER_IS_NOT_WRITER;
+            final StudyReviewErrorCode expectedError = StudyReviewErrorCode.ONLY_WRITER_CAN_DELETE;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
-                            status().isConflict(),
+                            status().isForbidden(),
                             jsonPath("$.status").exists(),
                             jsonPath("$.status").value(expectedError.getStatus().value()),
                             jsonPath("$.errorCode").exists(),
@@ -264,7 +263,7 @@ class StudyReviewApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("리뷰 삭제에 성공한다")
+        @DisplayName("작성한 스터디 리뷰를 삭제한다")
         void success() throws Exception {
             // given
             mockingToken(true, WRITER_ID);
