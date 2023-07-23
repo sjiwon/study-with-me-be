@@ -10,6 +10,6 @@ public interface StudyRepository extends
         JpaRepository<Study, Long>,
         StudyVerificationRepository,
         StudyDuplicateCheckRepository,
-        StudyCategoryQueryRepository,
-        StudyInformationQueryRepository {
+        StudyInformationQueryRepository,
+        StudyCategoryQueryRepository {
 }

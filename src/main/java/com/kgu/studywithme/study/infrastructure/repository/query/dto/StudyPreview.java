@@ -1,35 +1,47 @@
-package com.kgu.studywithme.study.infrastructure.repository.query.dto.response;
+package com.kgu.studywithme.study.infrastructure.repository.query.dto;
 
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.study.domain.*;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
-@Builder
 @AllArgsConstructor
-public class BasicStudy {
+public class StudyPreview {
     private final Long id;
     private final String name;
     private final String description;
     private final String category;
-    private final String thumbnail;
-    private final String thumbnailBackground;
+    private final Thumbnail thumbnail;
     private final String type;
     private final String recruitmentStatus;
-    private final int currentMembers;
-    private final int maxMembers;
-    private final LocalDateTime registerDate;
+    private final int maxMember;
+    private final int participantMembers;
+    private final LocalDateTime creationDate;
     private List<String> hashtags;
-    private List<Long> favoriteMarkingMembers;
+    private List<Long> likeMarkingMembers;
+
+    public record Thumbnail(
+            String name,
+            String background
+    ) {
+    }
+
+    public record HashtagSummary(
+            Long studyId,
+            String value
+    ) {
+        @QueryProjection
+        public HashtagSummary {
+        }
+    }
 
     @QueryProjection
-    public BasicStudy(
+    public StudyPreview(
             final Long id,
             final StudyName name,
             final Description description,
@@ -37,28 +49,27 @@ public class BasicStudy {
             final StudyThumbnail thumbnail,
             final StudyType type,
             final RecruitmentStatus recruitmentStatus,
-            final int currentMembers,
             final Capacity capacity,
-            final LocalDateTime registerDate
+            final int participantMembers,
+            final LocalDateTime creationDate
     ) {
         this.id = id;
         this.name = name.getValue();
         this.description = description.getValue();
         this.category = category.getName();
-        this.thumbnail = thumbnail.getImageName();
-        this.thumbnailBackground = thumbnail.getBackground();
+        this.thumbnail = new Thumbnail(thumbnail.getImageName(), thumbnail.getBackground());
         this.type = type.getDescription();
         this.recruitmentStatus = recruitmentStatus.getDescription();
-        this.currentMembers = currentMembers + 1; // + host
-        this.maxMembers = capacity.getValue();
-        this.registerDate = registerDate;
+        this.maxMember = capacity.getValue();
+        this.participantMembers = participantMembers;
+        this.creationDate = creationDate;
     }
 
     public void applyHashtags(final List<String> hashtags) {
         this.hashtags = hashtags;
     }
 
-    public void applyFavoriteMarkingMembers(final List<Long> favoriteMarkingMembers) {
-        this.favoriteMarkingMembers = favoriteMarkingMembers;
+    public void applyLikeMarkingMembers(final List<Long> likeMarkingMembers) {
+        this.likeMarkingMembers = likeMarkingMembers;
     }
 }
