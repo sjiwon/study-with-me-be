@@ -1,11 +1,9 @@
 package com.kgu.studywithme.study.presentation.dto.request;
 
-import com.kgu.studywithme.study.utils.validator.ValidSearchSortType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record StudyRecommendSearchRequest(
-        @ValidSearchSortType
+public record QueryStudyByRecommendRequest(
         @NotBlank(message = "정렬 조건은 필수입니다.")
         String sort,
 

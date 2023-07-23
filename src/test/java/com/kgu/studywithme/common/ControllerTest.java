@@ -28,7 +28,6 @@ import com.kgu.studywithme.memberreport.presentation.MemberReportApiController;
 import com.kgu.studywithme.memberreview.application.usecase.command.UpdateMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.presentation.MemberReviewApiController;
-import com.kgu.studywithme.study.application.StudySearchService;
 import com.kgu.studywithme.study.application.usecase.command.CreateStudyUseCase;
 import com.kgu.studywithme.study.application.usecase.command.TerminateStudyUseCase;
 import com.kgu.studywithme.study.application.usecase.command.UpdateStudyUseCase;
@@ -268,7 +267,10 @@ public abstract class ControllerTest {
     protected QueryWeeklyByIdUseCase queryWeeklyByIdUseCase;
 
     @MockBean
-    protected StudySearchService studySearchService;
+    protected QueryStudyByCategoryUseCase queryStudyByCategoryUseCase;
+
+    @MockBean
+    protected QueryStudyByRecommendUseCase queryStudyByRecommendUseCase;
 
     // StudyParticipant
     @MockBean

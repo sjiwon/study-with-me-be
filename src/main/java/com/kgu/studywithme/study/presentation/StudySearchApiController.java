@@ -1,12 +1,14 @@
 package com.kgu.studywithme.study.presentation;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
-import com.kgu.studywithme.study.application.StudySearchService;
-import com.kgu.studywithme.study.application.dto.response.DefaultStudyResponse;
-import com.kgu.studywithme.study.presentation.dto.request.StudyCategorySearchRequest;
-import com.kgu.studywithme.study.presentation.dto.request.StudyRecommendSearchRequest;
-import com.kgu.studywithme.study.utils.StudyCategoryCondition;
-import com.kgu.studywithme.study.utils.StudyRecommendCondition;
+import com.kgu.studywithme.global.dto.ResponseWrapper;
+import com.kgu.studywithme.study.application.dto.StudyPagingResponse;
+import com.kgu.studywithme.study.application.usecase.query.QueryStudyByCategoryUseCase;
+import com.kgu.studywithme.study.application.usecase.query.QueryStudyByRecommendUseCase;
+import com.kgu.studywithme.study.presentation.dto.request.QueryStudyByCategoryRequest;
+import com.kgu.studywithme.study.presentation.dto.request.QueryStudyByRecommendRequest;
+import com.kgu.studywithme.study.utils.QueryStudyByCategoryCondition;
+import com.kgu.studywithme.study.utils.QueryStudyByRecommendCondition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -24,28 +26,51 @@ import static com.kgu.studywithme.study.utils.PagingConstants.getDefaultPageRequ
 @RequiredArgsConstructor
 @RequestMapping("/api/studies")
 public class StudySearchApiController {
-    private final StudySearchService studySearchService;
+    private final QueryStudyByCategoryUseCase queryStudyByCategoryUseCase;
+    private final QueryStudyByRecommendUseCase queryStudyByRecommendUseCase;
 
     @Operation(summary = "카테고리 기반 스터디 조회 EndPoint")
     @GetMapping
-    public ResponseEntity<DefaultStudyResponse> findStudyByCategory(
-            @ModelAttribute @Valid final StudyCategorySearchRequest request
+    public ResponseEntity<ResponseWrapper<StudyPagingResponse>> queryStudyByCategory(
+            @ModelAttribute @Valid final QueryStudyByCategoryRequest request
     ) {
-        final StudyCategoryCondition condition = new StudyCategoryCondition(request);
-        final DefaultStudyResponse result = studySearchService.findStudyByCategory(condition, getDefaultPageRequest(request.page()));
+        final QueryStudyByCategoryCondition condition = new QueryStudyByCategoryCondition(
+                request.category(),
+                request.sort(),
+                request.type(),
+                request.province(),
+                request.city()
+        );
+        final StudyPagingResponse response = queryStudyByCategoryUseCase.queryStudyByCategory(
+                new QueryStudyByCategoryUseCase.Query(
+                        condition,
+                        getDefaultPageRequest(request.page())
+                )
+        );
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(ResponseWrapper.from(response));
     }
 
     @Operation(summary = "사용자 관심사 기반 스터디 조회 EndPoint")
     @GetMapping("/recommend")
-    public ResponseEntity<DefaultStudyResponse> findStudyByRecommend(
+    public ResponseEntity<ResponseWrapper<StudyPagingResponse>> queryStudyByRecommend(
             @ExtractPayload final Long memberId,
-            @ModelAttribute @Valid final StudyRecommendSearchRequest request
+            @ModelAttribute @Valid final QueryStudyByRecommendRequest request
     ) {
-        final StudyRecommendCondition condition = new StudyRecommendCondition(memberId, request);
-        final DefaultStudyResponse result = studySearchService.findStudyByRecommend(condition, getDefaultPageRequest(request.page()));
+        final QueryStudyByRecommendCondition condition = new QueryStudyByRecommendCondition(
+                memberId,
+                request.sort(),
+                request.type(),
+                request.province(),
+                request.city()
+        );
+        final StudyPagingResponse response = queryStudyByRecommendUseCase.queryStudyByRecommend(
+                new QueryStudyByRecommendUseCase.Query(
+                        condition,
+                        getDefaultPageRequest(request.page())
+                )
+        );
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(ResponseWrapper.from(response));
     }
 }
