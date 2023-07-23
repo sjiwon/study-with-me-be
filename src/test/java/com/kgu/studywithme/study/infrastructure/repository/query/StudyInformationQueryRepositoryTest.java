@@ -107,7 +107,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
                 () -> assertThat(result.getHashtags()).containsExactlyInAnyOrderElementsOf(study.getHashtags()),
                 () -> assertThat(result.getParticipants())
                         .map(StudyBasicInformation.ParticipantInformation::id)
-                        .containsExactlyInAnyOrder(memberA.getId(), memberB.getId()) // exclude host
+                        .containsExactlyInAnyOrder(host.getId(), memberA.getId(), memberB.getId()) // host, memberA, memberB
         );
     }
 

@@ -77,12 +77,11 @@ public class StudyInformationQueryRepositoryImpl implements StudyInformationQuer
                     .innerJoin(studyParticipant).on(studyParticipant.memberId.eq(member.id))
                     .where(
                             studyParticipant.studyId.eq(studyId),
-                            studyParticipant.memberId.ne(result.getHost().id()), // remove host
                             studyParticipant.status.eq(APPROVE)
                     )
                     .fetch();
             result.applyParticipants(participants);
-            result.applyCurrentMemberCount(participants.size() + 1); // + host
+            result.applyCurrentMemberCount(participants.size());
         }
 
         return result;
