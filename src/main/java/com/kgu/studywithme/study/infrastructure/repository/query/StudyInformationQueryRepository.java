@@ -1,23 +1,21 @@
 package com.kgu.studywithme.study.infrastructure.repository.query;
 
-import com.kgu.studywithme.study.domain.week.Week;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.AttendanceInformation;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.NoticeInformation;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.ReviewInformation;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.response.StudyApplicantInformation;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.*;
 
 import java.util.List;
 
 public interface StudyInformationQueryRepository {
-    int getGraduatedParticipantCountByStudyId(Long studyId);
+    StudyBasicInformation fetchBasicInformationById(final Long studyId);
 
-    List<ReviewInformation> findReviewByStudyId(Long studyId);
+    ReviewInformation fetchReviewById(final Long studyId);
 
-    List<NoticeInformation> findNoticeWithCommentsByStudyId(Long studyId);
+    StudyParticipantInformation fetchParticipantById(final Long studyId);
 
-    List<StudyApplicantInformation> findApplicantByStudyId(Long studyId);
+    List<StudyApplicantInformation> fetchApplicantById(final Long studyId);
 
-    List<AttendanceInformation> findAttendanceByStudyId(Long studyId);
+    List<NoticeInformation> fetchNoticeById(final Long studyId);
 
-    List<Week> findWeeklyByStudyId(Long studyId);
+    List<AttendanceInformation> fetchAttendanceById(final Long studyId);
+
+    List<WeeklyInformation> fetchWeeklyById(final Long studyId);
 }

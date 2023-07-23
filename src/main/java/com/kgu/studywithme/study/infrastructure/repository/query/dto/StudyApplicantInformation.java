@@ -6,14 +6,14 @@ import com.querydsl.core.annotations.QueryProjection;
 
 import java.time.LocalDateTime;
 
-public record StudyApplicant(
+public record StudyApplicantInformation(
         Long id,
         String nickname,
         int score,
         LocalDateTime applyDate
 ) {
     @QueryProjection
-    public StudyApplicant(
+    public StudyApplicantInformation(
             final Long id,
             final Nickname nickname,
             final Score score,

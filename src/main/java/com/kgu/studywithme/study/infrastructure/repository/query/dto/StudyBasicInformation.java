@@ -1,12 +1,16 @@
 package com.kgu.studywithme.study.infrastructure.repository.query.dto;
 
 import com.kgu.studywithme.category.domain.Category;
+import com.kgu.studywithme.member.domain.Gender;
 import com.kgu.studywithme.member.domain.Nickname;
+import com.kgu.studywithme.member.domain.Score;
 import com.kgu.studywithme.study.domain.*;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 @Getter
@@ -41,6 +45,22 @@ public class StudyBasicInformation {
             int score,
             int age
     ) {
+        @QueryProjection
+        public ParticipantInformation(
+                final Long id,
+                final Nickname nickname,
+                final Gender gender,
+                final Score score,
+                final LocalDate birth
+        ) {
+            this(
+                    id,
+                    nickname.getValue(),
+                    gender.getValue(),
+                    score.getValue(),
+                    Period.between(birth, LocalDate.now()).getYears()
+            );
+        }
     }
 
     @QueryProjection
@@ -53,7 +73,7 @@ public class StudyBasicInformation {
             final StudyType type,
             final StudyLocation location,
             final RecruitmentStatus recruitmentStatus,
-            final int maxMember,
+            final Capacity maxMember,
             final int minimumAttendanceForGraduation,
             final int remainingOpportunityToUpdateGraduationPolicy,
             final Long hostId,
@@ -67,7 +87,7 @@ public class StudyBasicInformation {
         this.type = type.getDescription();
         this.location = location;
         this.recruitmentStatus = recruitmentStatus.getDescription();
-        this.maxMember = maxMember;
+        this.maxMember = maxMember.getValue();
         this.minimumAttendanceForGraduation = minimumAttendanceForGraduation;
         this.remainingOpportunityToUpdateGraduationPolicy = remainingOpportunityToUpdateGraduationPolicy;
         this.host = new StudyMember(hostId, nickname.getValue());

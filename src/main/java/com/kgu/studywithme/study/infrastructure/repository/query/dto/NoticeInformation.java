@@ -19,7 +19,7 @@ public class NoticeInformation {
     private final StudyMember writer;
     private List<CommentInformation> comments;
 
-    record CommentInformation(
+    public record CommentInformation(
             Long id,
             Long noticeId,
             String content,

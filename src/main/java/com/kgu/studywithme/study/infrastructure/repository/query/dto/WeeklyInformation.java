@@ -2,7 +2,6 @@ package com.kgu.studywithme.study.infrastructure.repository.query.dto;
 
 import com.kgu.studywithme.member.domain.Nickname;
 import com.kgu.studywithme.studyweekly.domain.Period;
-import com.kgu.studywithme.studyweekly.domain.attachment.UploadAttachment;
 import com.kgu.studywithme.studyweekly.domain.submit.UploadAssignment;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
@@ -21,11 +20,22 @@ public class WeeklyInformation {
     private final boolean assignmentExists;
     private final boolean autoAttendance;
     private final StudyMember creator;
-    private List<UploadAttachment> attachments;
+    private List<WeeklyAttachment> attachments;
     private List<WeeklySubmit> submits;
+
+    public record WeeklyAttachment(
+            Long weeklyId,
+            String uploadFileName,
+            String link
+    ) {
+        @QueryProjection
+        public WeeklyAttachment {
+        }
+    }
 
     public record WeeklySubmit(
             StudyMember participant,
+            Long weeklyId,
             String submitType,
             String submitFileName,
             String submitLink
@@ -34,10 +44,12 @@ public class WeeklyInformation {
         public WeeklySubmit(
                 final Long submitterId,
                 final Nickname submitterNickname,
+                final Long weeklyId,
                 final UploadAssignment assignment
         ) {
             this(
                     new StudyMember(submitterId, submitterNickname.getValue()),
+                    weeklyId,
                     assignment.getType().getDescription(),
                     assignment.getUploadFileName(),
                     assignment.getLink()
@@ -67,7 +79,7 @@ public class WeeklyInformation {
         this.creator = new StudyMember(creatorId, creatorNickname.getValue());
     }
 
-    public void applyAttachments(final List<UploadAttachment> attachments) {
+    public void applyAttachments(final List<WeeklyAttachment> attachments) {
         this.attachments = attachments;
     }
 
