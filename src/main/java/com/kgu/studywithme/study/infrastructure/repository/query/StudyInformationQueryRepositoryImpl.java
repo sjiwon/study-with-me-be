@@ -42,6 +42,7 @@ public class StudyInformationQueryRepositoryImpl implements StudyInformationQuer
                                 study.location,
                                 study.recruitmentStatus,
                                 study.capacity,
+                                study.participantMembers,
                                 study.graduationPolicy.minimumAttendance,
                                 study.graduationPolicy.updateChance,
                                 member.id,
@@ -81,7 +82,6 @@ public class StudyInformationQueryRepositoryImpl implements StudyInformationQuer
                     )
                     .fetch();
             result.applyParticipants(participants);
-            result.applyCurrentMemberCount(participants.size());
         }
 
         return result;

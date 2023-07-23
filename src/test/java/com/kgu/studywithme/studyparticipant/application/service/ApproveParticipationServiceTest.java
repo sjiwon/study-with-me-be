@@ -21,6 +21,7 @@ import java.util.Optional;
 
 import static com.kgu.studywithme.fixture.MemberFixture.*;
 import static com.kgu.studywithme.fixture.StudyFixture.SPRING;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -45,10 +46,12 @@ class ApproveParticipationServiceTest extends UseCaseTest {
     private final Member applierWithAllowEmail = GHOST.toMember().apply(2L, LocalDateTime.now());
     private final Member applierWithNotAllowEmail = ANONYMOUS.toMember().apply(3L, LocalDateTime.now());
     private Study study;
+    private int previousParticipantMembers;
 
     @BeforeEach
     void setUp() {
         study = SPRING.toOnlineStudy(host.getId()).apply(1L, LocalDateTime.now());
+        previousParticipantMembers = study.getParticipantMembers();
     }
 
     @Test
@@ -69,7 +72,6 @@ class ApproveParticipationServiceTest extends UseCaseTest {
 
         verify(studyParticipantRepository, times(1)).findApplier(any(), any());
         verify(queryStudyByIdService, times(0)).findById(any());
-        verify(studyParticipantRepository, times(0)).getCurrentParticipantsCount(any());
         verify(studyParticipantRepository, times(0))
                 .updateParticipantStatus(any(), any(), any());
         verify(eventPublisher, times(0)).publishEvent(any(StudyApprovedEvent.class));
@@ -95,7 +97,6 @@ class ApproveParticipationServiceTest extends UseCaseTest {
 
         verify(studyParticipantRepository, times(1)).findApplier(any(), any());
         verify(queryStudyByIdService, times(1)).findById(any());
-        verify(studyParticipantRepository, times(0)).getCurrentParticipantsCount(any());
         verify(studyParticipantRepository, times(0))
                 .updateParticipantStatus(any(), any(), any());
         verify(eventPublisher, times(0)).publishEvent(any(StudyApprovedEvent.class));
@@ -107,7 +108,10 @@ class ApproveParticipationServiceTest extends UseCaseTest {
         // given
         given(studyParticipantRepository.findApplier(any(), any())).willReturn(Optional.of(applierWithAllowEmail));
         given(queryStudyByIdService.findById(any())).willReturn(study);
-        given(studyParticipantRepository.getCurrentParticipantsCount(any())).willReturn(study.getCapacity());
+
+        for (int i = 0; i < study.getCapacity(); i++) { // make full
+            study.addParticipant();
+        }
 
         // when - then
         assertThatThrownBy(() -> approveParticipationService.approveParticipation(
@@ -121,7 +125,6 @@ class ApproveParticipationServiceTest extends UseCaseTest {
 
         verify(studyParticipantRepository, times(1)).findApplier(any(), any());
         verify(queryStudyByIdService, times(1)).findById(any());
-        verify(studyParticipantRepository, times(1)).getCurrentParticipantsCount(any());
         verify(studyParticipantRepository, times(0))
                 .updateParticipantStatus(any(), any(), any());
         verify(eventPublisher, times(0)).publishEvent(any(StudyApprovedEvent.class));
@@ -133,7 +136,6 @@ class ApproveParticipationServiceTest extends UseCaseTest {
         // given
         given(studyParticipantRepository.findApplier(any(), any())).willReturn(Optional.of(applierWithAllowEmail));
         given(queryStudyByIdService.findById(any())).willReturn(study);
-        given(studyParticipantRepository.getCurrentParticipantsCount(any())).willReturn(study.getCapacity() - 1);
 
         // when
         approveParticipationService.approveParticipation(
@@ -146,10 +148,11 @@ class ApproveParticipationServiceTest extends UseCaseTest {
         // then
         verify(studyParticipantRepository, times(1)).findApplier(any(), any());
         verify(queryStudyByIdService, times(1)).findById(any());
-        verify(studyParticipantRepository, times(1)).getCurrentParticipantsCount(any());
         verify(studyParticipantRepository, times(1))
                 .updateParticipantStatus(any(), any(), any());
         verify(eventPublisher, times(1)).publishEvent(any(StudyApprovedEvent.class));
+
+        assertThat(study.getParticipantMembers()).isEqualTo(previousParticipantMembers + 1);
     }
 
     @Test
@@ -158,7 +161,6 @@ class ApproveParticipationServiceTest extends UseCaseTest {
         // given
         given(studyParticipantRepository.findApplier(any(), any())).willReturn(Optional.of(applierWithNotAllowEmail));
         given(queryStudyByIdService.findById(any())).willReturn(study);
-        given(studyParticipantRepository.getCurrentParticipantsCount(any())).willReturn(study.getCapacity() - 1);
 
         // when
         approveParticipationService.approveParticipation(
@@ -171,9 +173,10 @@ class ApproveParticipationServiceTest extends UseCaseTest {
         // then
         verify(studyParticipantRepository, times(1)).findApplier(any(), any());
         verify(queryStudyByIdService, times(1)).findById(any());
-        verify(studyParticipantRepository, times(1)).getCurrentParticipantsCount(any());
         verify(studyParticipantRepository, times(1))
                 .updateParticipantStatus(any(), any(), any());
         verify(eventPublisher, times(0)).publishEvent(any(StudyApprovedEvent.class));
+
+        assertThat(study.getParticipantMembers()).isEqualTo(previousParticipantMembers + 1);
     }
 }

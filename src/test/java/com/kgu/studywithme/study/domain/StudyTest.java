@@ -182,19 +182,24 @@ class StudyTest {
     @DisplayName("스터디 정원이 꽉 찼는지 확인한다")
     void isCapacityFull() {
         // given
-        final Study study = SPRING.toOnlineStudy(host.getId());
+        final Study study = JAPANESE.toOnlineStudy(host.getId()); // capacity = 5
 
-        // when
-        final boolean actual1 = study.isCapacityFull(study.getCapacity() - 1);
-        final boolean actual2 = study.isCapacityFull(study.getCapacity());
-        final boolean actual3 = study.isCapacityFull(study.getCapacity() + 1);
+        /* capacity = 5 & participantMembers = 1 */
+        assertThat(study.isCapacityFull()).isFalse();
 
-        // then
-        assertAll(
-                () -> assertThat(actual1).isFalse(),
-                () -> assertThat(actual2).isTrue(),
-                () -> assertThat(actual3).isTrue()
-        );
+        /* capacity = 5 & participantMembers = 6 */
+        for (int i = 0; i < 5; i++) {
+            study.addParticipant();
+        }
+        assertThat(study.isCapacityFull()).isTrue();
+
+        /* capacity = 5 & participantMembers = 5 */
+        study.removeParticipant();
+        assertThat(study.isCapacityFull()).isTrue();
+
+        /* capacity = 5 & participantMembers = 4 */
+        study.removeParticipant();
+        assertThat(study.isCapacityFull()).isFalse();
     }
 
     @Test

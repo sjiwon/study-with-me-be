@@ -15,7 +15,5 @@ public interface ParticipantHandlingRepository {
 
     long deleteApplier(final Long studyId, final Long memberId);
 
-    int getCurrentParticipantsCount(final Long studyId);
-
     void updateParticipantStatus(final Long studyId, final Long memberId, final ParticipantStatus status);
 }

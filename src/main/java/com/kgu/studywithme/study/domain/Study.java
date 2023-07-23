@@ -2,8 +2,10 @@ package com.kgu.studywithme.study.domain;
 
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.global.BaseEntity;
+import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.study.domain.hashtag.Hashtag;
 import com.kgu.studywithme.study.domain.hashtag.Hashtags;
+import com.kgu.studywithme.study.exception.StudyErrorCode;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -37,6 +39,9 @@ public class Study extends BaseEntity<Study> {
 
     @Embedded
     private Capacity capacity;
+
+    @Column(name = "participant_members", nullable = false)
+    private int participantMembers;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "image", nullable = false)
@@ -78,6 +83,7 @@ public class Study extends BaseEntity<Study> {
         this.name = name;
         this.description = description;
         this.capacity = capacity;
+        this.participantMembers = 1; // host
         this.category = category;
         this.thumbnail = thumbnail;
         this.type = type;
@@ -150,6 +156,7 @@ public class Study extends BaseEntity<Study> {
             final int minimumAttendanceForGraduation,
             final Set<String> hashtags
     ) {
+        validateCapacityCanCoverCurrentParticipants(capacity);
         this.name = name;
         this.description = description;
         this.capacity = capacity;
@@ -160,6 +167,12 @@ public class Study extends BaseEntity<Study> {
         this.recruitmentStatus = recruitmentStatus;
         this.graduationPolicy = this.graduationPolicy.update(minimumAttendanceForGraduation);
         this.hashtags = new Hashtags(this, hashtags);
+    }
+
+    private void validateCapacityCanCoverCurrentParticipants(final Capacity capacity) {
+        if (capacity.isLessThan(participantMembers)) {
+            throw StudyWithMeException.type(StudyErrorCode.CAPACITY_CANNOT_COVER_CURRENT_PARTICIPANTS);
+        }
     }
 
     public boolean isHost(final Long memberId) {
@@ -183,12 +196,20 @@ public class Study extends BaseEntity<Study> {
         terminated = true;
     }
 
-    public boolean isCapacityFull(final int currentParticipants) {
-        return capacity.isEqualOrLessThan(currentParticipants);
+    public boolean isCapacityFull() {
+        return capacity.isEqualOrLessThan(participantMembers);
     }
 
     public boolean isParticipantMeetGraduationPolicy(final int attendanceCount) {
         return graduationPolicy.isGraduationRequirementsFulfilled(attendanceCount);
+    }
+
+    public void addParticipant() {
+        participantMembers++;
+    }
+
+    public void removeParticipant() {
+        participantMembers--;
     }
 
     // Add Getter

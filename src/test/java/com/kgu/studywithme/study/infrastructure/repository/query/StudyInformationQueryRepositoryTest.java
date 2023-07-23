@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static com.kgu.studywithme.fixture.MemberFixture.*;
 import static com.kgu.studywithme.fixture.StudyFixture.SPRING;
@@ -86,6 +87,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
                         StudyParticipant.applyInStudy(study.getId(), memberC.getId())
                 )
         );
+        IntStream.range(0, 2).forEach(i -> study.addParticipant());
 
         final StudyBasicInformation result = studyRepository.fetchBasicInformationById(study.getId());
         assertAll(
@@ -103,7 +105,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
                 () -> assertThat(result.getRemainingOpportunityToUpdateGraduationPolicy()).isEqualTo(study.getGraduationPolicy().getUpdateChance()),
                 () -> assertThat(result.getHost().id()).isEqualTo(host.getId()),
                 () -> assertThat(result.getHost().nickname()).isEqualTo(host.getNicknameValue()),
-                () -> assertThat(result.getCurrentMemberCount()).isEqualTo(3), // host, memberA, memberB
+                () -> assertThat(result.getParticipantMembers()).isEqualTo(3), // host, memberA, memberB
                 () -> assertThat(result.getHashtags()).containsExactlyInAnyOrderElementsOf(study.getHashtags()),
                 () -> assertThat(result.getParticipants())
                         .map(StudyBasicInformation.ParticipantInformation::id)
@@ -180,6 +182,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
         /* memberA, memberC 참여 승인 */
         studyParticipantRepository.updateParticipantStatus(study.getId(), memberA.getId(), APPROVE);
         studyParticipantRepository.updateParticipantStatus(study.getId(), memberC.getId(), APPROVE);
+        IntStream.range(0, 2).forEach(i -> study.addParticipant());
 
         final StudyParticipantInformation result2 = studyRepository.fetchParticipantById(study.getId());
         assertAll(
@@ -191,6 +194,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
 
         /* memberB 참여 승인 */
         studyParticipantRepository.updateParticipantStatus(study.getId(), memberB.getId(), APPROVE);
+        IntStream.range(0, 1).forEach(i -> study.addParticipant());
 
         final StudyParticipantInformation result3 = studyRepository.fetchParticipantById(study.getId());
         assertAll(
@@ -202,6 +206,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
 
         /* memberC 졸업 */
         studyParticipantRepository.updateParticipantStatus(study.getId(), memberC.getId(), GRADUATED);
+        IntStream.range(0, 1).forEach(i -> study.removeParticipant());
 
         final StudyParticipantInformation result4 = studyRepository.fetchParticipantById(study.getId());
         assertAll(
@@ -240,6 +245,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
         /* memberA, memberC 참여 승인 */
         studyParticipantRepository.updateParticipantStatus(study.getId(), memberA.getId(), APPROVE);
         studyParticipantRepository.updateParticipantStatus(study.getId(), memberC.getId(), APPROVE);
+        IntStream.range(0, 2).forEach(i -> study.addParticipant());
 
         final List<StudyApplicantInformation> result2 = studyRepository.fetchApplicantById(study.getId());
         assertAll(
@@ -251,6 +257,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
 
         /* memberB 참여 승인 */
         studyParticipantRepository.updateParticipantStatus(study.getId(), memberB.getId(), APPROVE);
+        IntStream.range(0, 1).forEach(i -> study.addParticipant());
 
         final List<StudyApplicantInformation> result3 = studyRepository.fetchApplicantById(study.getId());
         assertThat(result3).isEmpty();
@@ -322,6 +329,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
                                 .apply(4L, LocalDateTime.now().minusDays(1))
                 )
         );
+        IntStream.range(0, 2).forEach(i -> study.addParticipant());
 
         studyAttendanceRepository.saveAll(
                 List.of(

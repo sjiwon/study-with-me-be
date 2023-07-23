@@ -25,10 +25,10 @@ public class StudyBasicInformation {
     private final StudyLocation location;
     private final String recruitmentStatus;
     private final int maxMember;
+    private final int participantMembers;
     private final int minimumAttendanceForGraduation;
     private final int remainingOpportunityToUpdateGraduationPolicy;
     private final StudyMember host;
-    private int currentMemberCount;
     private List<String> hashtags;
     private List<ParticipantInformation> participants;
 
@@ -73,7 +73,8 @@ public class StudyBasicInformation {
             final StudyType type,
             final StudyLocation location,
             final RecruitmentStatus recruitmentStatus,
-            final Capacity maxMember,
+            final Capacity capacity,
+            final int participantMembers,
             final int minimumAttendanceForGraduation,
             final int remainingOpportunityToUpdateGraduationPolicy,
             final Long hostId,
@@ -87,14 +88,11 @@ public class StudyBasicInformation {
         this.type = type.getDescription();
         this.location = location;
         this.recruitmentStatus = recruitmentStatus.getDescription();
-        this.maxMember = maxMember.getValue();
+        this.maxMember = capacity.getValue();
+        this.participantMembers = participantMembers;
         this.minimumAttendanceForGraduation = minimumAttendanceForGraduation;
         this.remainingOpportunityToUpdateGraduationPolicy = remainingOpportunityToUpdateGraduationPolicy;
         this.host = new StudyMember(hostId, nickname.getValue());
-    }
-
-    public void applyCurrentMemberCount(final int currentMemberCount) {
-        this.currentMemberCount = currentMemberCount;
     }
 
     public void applyHashtags(final List<String> hashtags) {

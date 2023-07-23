@@ -159,20 +159,4 @@ class ParticipantHandlingRepositoryTest extends RepositoryTest {
                 ).isEqualTo(0)
         );
     }
-
-    @Test
-    @DisplayName("현재 스터디 참여자 수를 조회한다 -> updateParticipantStatus 적용 후 갱신 값도 확인")
-    void getCurrentParticipantsCount_updateParticipantStatus() {
-        /* 현재 APPROVE 2명 */
-        assertThat(studyParticipantRepository.getCurrentParticipantsCount(study.getId())).isEqualTo(2);
-
-        /* APPLIER -> APPROVE */
-        studyParticipantRepository.updateParticipantStatus(study.getId(), applier.getId(), APPROVE);
-        assertThat(studyParticipantRepository.getCurrentParticipantsCount(study.getId())).isEqualTo(3);
-
-        /* host, participant -> GRADUATED */
-        studyParticipantRepository.updateParticipantStatus(study.getId(), host.getId(), GRADUATED);
-        studyParticipantRepository.updateParticipantStatus(study.getId(), participant.getId(), GRADUATED);
-        assertThat(studyParticipantRepository.getCurrentParticipantsCount(study.getId())).isEqualTo(1);
-    }
 }

@@ -31,6 +31,8 @@ public class ApproveParticipationService implements ApproveParticipationUseCase 
         validateStudyCapacityIsAvailable(study);
 
         studyParticipantRepository.updateParticipantStatus(command.studyId(), command.applierId(), APPROVE);
+        study.addParticipant();
+
         if (applier.isEmailOptIn()) {
             eventPublisher.publishEvent(
                     new StudyApprovedEvent(
@@ -54,9 +56,7 @@ public class ApproveParticipationService implements ApproveParticipationUseCase 
     }
 
     private void validateStudyCapacityIsAvailable(final Study study) {
-        final int currentParticipants = studyParticipantRepository.getCurrentParticipantsCount(study.getId());
-
-        if (study.isCapacityFull(currentParticipants)) {
+        if (study.isCapacityFull()) {
             throw StudyWithMeException.type(StudyParticipantErrorCode.STUDY_CAPACITY_ALREADY_FULL);
         }
     }

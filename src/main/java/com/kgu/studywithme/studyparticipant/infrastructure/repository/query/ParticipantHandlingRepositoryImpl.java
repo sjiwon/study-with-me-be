@@ -78,19 +78,6 @@ public class ParticipantHandlingRepositoryImpl implements ParticipantHandlingRep
                 .execute();
     }
 
-    @Override
-    public int getCurrentParticipantsCount(final Long studyId) {
-        return query
-                .select(studyParticipant.count())
-                .from(studyParticipant)
-                .where(
-                        studyIdEq(studyId),
-                        participantStatusEq(APPROVE)
-                )
-                .fetchOne()
-                .intValue();
-    }
-
     @StudyWithMeWritableTransactional
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Override

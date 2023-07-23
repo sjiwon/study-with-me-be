@@ -6,7 +6,6 @@ import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.application.usecase.command.UpdateStudyUseCase;
 import com.kgu.studywithme.study.domain.*;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -33,9 +32,6 @@ class UpdateStudyServiceTest extends UseCaseTest {
 
     @Mock
     private StudyRepository studyRepository;
-
-    @Mock
-    private StudyParticipantRepository studyParticipantRepository;
 
     @Mock
     private QueryStudyByIdService queryStudyByIdService;
@@ -72,13 +68,17 @@ class UpdateStudyServiceTest extends UseCaseTest {
         verify(studyRepository, times(1)).isNameUsedByOther(any(), any());
         verify(queryStudyByIdService, times(0)).findById(any());
     }
-    
+
     @Test
     @DisplayName("현재 참여자 수보다 낮게 스터디 정원을 수정할 수 없다")
     void throwExceptionByCapacityCannotCoverCurrentParticipants() {
         // given
         given(studyRepository.isNameUsedByOther(any(), any())).willReturn(false);
-        given(studyParticipantRepository.getCurrentParticipantsCount(any())).willReturn(JPA.getCapacity() + 1);
+        given(queryStudyByIdService.findById(any())).willReturn(study);
+
+        for (int i = 0; i < study.getCapacity(); i++) { // make full
+            study.addParticipant();
+        }
 
         // when - then
         assertThatThrownBy(() -> updateStudyService.updateStudy(command))
@@ -86,7 +86,7 @@ class UpdateStudyServiceTest extends UseCaseTest {
                 .hasMessage(StudyErrorCode.CAPACITY_CANNOT_COVER_CURRENT_PARTICIPANTS.getMessage());
 
         verify(studyRepository, times(1)).isNameUsedByOther(any(), any());
-        verify(queryStudyByIdService, times(0)).findById(any());
+        verify(queryStudyByIdService, times(1)).findById(any());
     }
 
     @Test

@@ -22,6 +22,7 @@ import java.util.Optional;
 
 import static com.kgu.studywithme.fixture.MemberFixture.*;
 import static com.kgu.studywithme.fixture.StudyFixture.SPRING;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -49,10 +50,12 @@ class GraduateStudyServiceTest extends UseCaseTest {
     private final Member applierWithAllowEmail = GHOST.toMember().apply(2L, LocalDateTime.now());
     private final Member applierWithNotAllowEmail = ANONYMOUS.toMember().apply(3L, LocalDateTime.now());
     private Study study;
+    private int previousParticipantMembers;
 
     @BeforeEach
     void setUp() {
         study = SPRING.toOnlineStudy(host.getId()).apply(1L, LocalDateTime.now());
+        previousParticipantMembers = study.getParticipantMembers();
     }
 
     @Test
@@ -157,6 +160,8 @@ class GraduateStudyServiceTest extends UseCaseTest {
         verify(studyParticipantRepository, times(1))
                 .updateParticipantStatus(any(), any(), any());
         verify(eventPublisher, times(1)).publishEvent(any(StudyGraduatedEvent.class));
+
+        assertThat(study.getParticipantMembers()).isEqualTo(previousParticipantMembers - 1);
     }
 
     @Test
@@ -184,5 +189,7 @@ class GraduateStudyServiceTest extends UseCaseTest {
         verify(studyParticipantRepository, times(1))
                 .updateParticipantStatus(any(), any(), any());
         verify(eventPublisher, times(0)).publishEvent(any(StudyGraduatedEvent.class));
+
+        assertThat(study.getParticipantMembers()).isEqualTo(previousParticipantMembers - 1);
     }
 }

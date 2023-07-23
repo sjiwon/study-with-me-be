@@ -34,6 +34,8 @@ public class GraduateStudyService implements GraduateStudyUseCase {
         validateParticipantMeetGraduationPolicy(study, participant);
 
         studyParticipantRepository.updateParticipantStatus(command.studyId(), command.participantId(), GRADUATED);
+        study.removeParticipant();
+
         if (participant.isEmailOptIn()) {
             eventPublisher.publishEvent(
                     new StudyGraduatedEvent(
