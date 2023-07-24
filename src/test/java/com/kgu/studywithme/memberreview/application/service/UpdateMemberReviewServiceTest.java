@@ -37,8 +37,7 @@ class UpdateMemberReviewServiceTest extends UseCaseTest {
     @DisplayName("해당 사용자에게 작성한 리뷰가 없다면 수정할 수 없다")
     void throwExceptionByMemberReviewNotFound() {
         // given
-        given(memberReviewRepository.findByReviewerIdAndRevieweeId(any(), any()))
-                .willReturn(Optional.empty());
+        given(memberReviewRepository.findByReviewerIdAndRevieweeId(any(), any())).willReturn(Optional.empty());
 
         // when - then
         assertThatThrownBy(() -> updateMemberReviewService.updateMemberReview(
@@ -47,16 +46,14 @@ class UpdateMemberReviewServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberReviewErrorCode.MEMBER_REVIEW_NOT_FOUND.getMessage());
 
-        verify(memberReviewRepository, times(1))
-                .findByReviewerIdAndRevieweeId(any(), any());
+        verify(memberReviewRepository, times(1)).findByReviewerIdAndRevieweeId(any(), any());
     }
 
     @Test
     @DisplayName("이전과 동일한 내용으로 리뷰를 수정할 수 없다")
     void throwExceptionByContentSameAsBefore() {
         // given
-        given(memberReviewRepository.findByReviewerIdAndRevieweeId(any(), any()))
-                .willReturn(Optional.of(memberReview));
+        given(memberReviewRepository.findByReviewerIdAndRevieweeId(any(), any())).willReturn(Optional.of(memberReview));
 
         // when - then
         assertThatThrownBy(() -> updateMemberReviewService.updateMemberReview(
@@ -65,26 +62,21 @@ class UpdateMemberReviewServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberReviewErrorCode.CONTENT_SAME_AS_BEFORE.getMessage());
 
-        verify(memberReviewRepository, times(1))
-                .findByReviewerIdAndRevieweeId(any(), any());
+        verify(memberReviewRepository, times(1)).findByReviewerIdAndRevieweeId(any(), any());
     }
 
     @Test
     @DisplayName("작성한 리뷰를 수정한다")
     void success() {
         // given
-        given(memberReviewRepository.findByReviewerIdAndRevieweeId(any(), any()))
-                .willReturn(Optional.of(memberReview));
+        given(memberReviewRepository.findByReviewerIdAndRevieweeId(any(), any())).willReturn(Optional.of(memberReview));
 
         // when
-        updateMemberReviewService.updateMemberReview(
-                new UpdateMemberReviewUseCase.Command(1L, 3L, "Bad..")
-        );
+        updateMemberReviewService.updateMemberReview(new UpdateMemberReviewUseCase.Command(1L, 3L, "Bad.."));
 
         // then
         assertAll(
-                () -> verify(memberReviewRepository, times(1))
-                        .findByReviewerIdAndRevieweeId(any(), any()),
+                () -> verify(memberReviewRepository, times(1)).findByReviewerIdAndRevieweeId(any(), any()),
                 () -> assertThat(memberReview.getContent()).isEqualTo("Bad..")
         );
     }

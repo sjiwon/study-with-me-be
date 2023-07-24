@@ -57,10 +57,12 @@ class JwtTokenProviderTest {
         final String invalidToken = INVALID_PROVIDER.createAccessToken(memberId);
 
         // then
-        assertDoesNotThrow(() -> VALID_PROVIDER.isTokenValid(validToken));
-        assertThatThrownBy(() -> INVALID_PROVIDER.isTokenValid(invalidToken))
-                .isInstanceOf(StudyWithMeException.class)
-                .hasMessage(AuthErrorCode.EXPIRED_TOKEN.getMessage());
+        assertAll(
+                () -> assertDoesNotThrow(() -> VALID_PROVIDER.isTokenValid(validToken)),
+                () -> assertThatThrownBy(() -> INVALID_PROVIDER.isTokenValid(invalidToken))
+                        .isInstanceOf(StudyWithMeException.class)
+                        .hasMessage(AuthErrorCode.EXPIRED_TOKEN.getMessage())
+        );
     }
 
     @Test

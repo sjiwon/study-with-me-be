@@ -79,9 +79,8 @@ public enum MemberFixture {
     }
 
     public LoginResponse toLoginResponse() {
-        final Member member = this.toMember().apply(1L, LocalDateTime.now());
         return new LoginResponse(
-                new MemberInfo(member),
+                new MemberInfo(this.toMember().apply(1L, LocalDateTime.now())),
                 ACCESS_TOKEN,
                 REFRESH_TOKEN
         );

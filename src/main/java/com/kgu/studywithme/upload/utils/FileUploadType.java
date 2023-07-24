@@ -6,11 +6,9 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum FileUploadType {
-    DESCRIPTION("description"),
-    IMAGE("image"),
-    ATTACHMENT("attachment"),
-    SUBMIT("submit"),
+    DESCRIPTION,
+    IMAGE,
+    ATTACHMENT,
+    SUBMIT,
     ;
-
-    private final String value;
 }

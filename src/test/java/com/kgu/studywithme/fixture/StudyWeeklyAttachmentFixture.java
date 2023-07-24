@@ -1,8 +1,5 @@
 package com.kgu.studywithme.fixture;
 
-import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
-import com.kgu.studywithme.studyweekly.domain.attachment.StudyWeeklyAttachment;
-import com.kgu.studywithme.studyweekly.domain.attachment.UploadAttachment;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -17,11 +14,4 @@ public enum StudyWeeklyAttachmentFixture {
 
     private final String uploadFileName;
     private final String link;
-
-    public StudyWeeklyAttachment toAttachment(final StudyWeekly studyWeekly) {
-        return StudyWeeklyAttachment.addAttachmentFile(
-                studyWeekly,
-                UploadAttachment.of(uploadFileName, link)
-        );
-    }
 }

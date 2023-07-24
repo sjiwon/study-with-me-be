@@ -48,8 +48,9 @@ class GoogleOAuthConnectorTest {
         @DisplayName("Google Server와의 통신 불량으로 인해 예외가 발생한다")
         void failure() {
             // given
-            given(restTemplate.postForEntity(eq(properties.getTokenUrl()), any(HttpEntity.class), eq(GoogleTokenResponse.class)))
-                    .willThrow(RestClientException.class);
+            given(restTemplate.postForEntity(
+                    eq(properties.getTokenUrl()), any(HttpEntity.class), eq(GoogleTokenResponse.class)
+            )).willThrow(RestClientException.class);
 
             // when - then
             assertThatThrownBy(() -> googleOAuthConnector.getToken(AUTHORIZATION_CODE, REDIRECT_URL))
@@ -63,8 +64,9 @@ class GoogleOAuthConnectorTest {
             // given
             final GoogleTokenResponse response = TokenUtils.createGoogleTokenResponse();
             final ResponseEntity<GoogleTokenResponse> responseEntity = ResponseEntity.ok(response);
-            given(restTemplate.postForEntity(eq(properties.getTokenUrl()), any(HttpEntity.class), eq(GoogleTokenResponse.class)))
-                    .willReturn(responseEntity);
+            given(restTemplate.postForEntity(
+                    eq(properties.getTokenUrl()), any(HttpEntity.class), eq(GoogleTokenResponse.class)
+            )).willReturn(responseEntity);
 
             // when
             final GoogleTokenResponse result
@@ -88,8 +90,9 @@ class GoogleOAuthConnectorTest {
         @DisplayName("Google Server와의 통신 불량으로 인해 예외가 발생한다")
         void failure() {
             // given
-            given(restTemplate.exchange(eq(properties.getUserInfoUrl()), eq(HttpMethod.GET), any(HttpEntity.class), eq(GoogleUserResponse.class)))
-                    .willThrow(RestClientException.class);
+            given(restTemplate.exchange(
+                    eq(properties.getUserInfoUrl()), eq(HttpMethod.GET), any(HttpEntity.class), eq(GoogleUserResponse.class)
+            )).willThrow(RestClientException.class);
 
             // when - then
             assertThatThrownBy(() -> googleOAuthConnector.getUserInfo(ACCESS_TOKEN))
@@ -103,8 +106,9 @@ class GoogleOAuthConnectorTest {
             // given
             final GoogleUserResponse response = JIWON.toGoogleUserResponse();
             final ResponseEntity<GoogleUserResponse> responseEntity = ResponseEntity.ok(response);
-            given(restTemplate.exchange(eq(properties.getUserInfoUrl()), eq(HttpMethod.GET), any(HttpEntity.class), eq(GoogleUserResponse.class)))
-                    .willReturn(responseEntity);
+            given(restTemplate.exchange(
+                    eq(properties.getUserInfoUrl()), eq(HttpMethod.GET), any(HttpEntity.class), eq(GoogleUserResponse.class)
+            )).willReturn(responseEntity);
 
             // when
             final GoogleUserResponse result = (GoogleUserResponse) googleOAuthConnector.getUserInfo(ACCESS_TOKEN);

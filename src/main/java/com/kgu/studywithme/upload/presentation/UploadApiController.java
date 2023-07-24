@@ -29,7 +29,9 @@ public class UploadApiController {
     @Operation(summary = "이미지 업로드 EndPoint")
     @CheckAuthUser
     @PostMapping(value = "/image", consumes = MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ResponseWrapper<String>> uploadImage(@ModelAttribute @Valid final ImageUploadRequest request) {
+    public ResponseEntity<ResponseWrapper<String>> uploadImage(
+            @ModelAttribute @Valid final ImageUploadRequest request
+    ) {
         final String imageUploadLink = uploadImageByType(request.type(), request.file());
         return ResponseEntity.ok(ResponseWrapper.from(imageUploadLink));
     }
