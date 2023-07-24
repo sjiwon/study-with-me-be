@@ -31,7 +31,6 @@ public class UploadApiController {
     @PostMapping(value = "/image", consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ResponseWrapper<String>> uploadImage(@ModelAttribute @Valid final ImageUploadRequest request) {
         final String imageUploadLink = uploadImageByType(request.type(), request.file());
-
         return ResponseEntity.ok(ResponseWrapper.from(imageUploadLink));
     }
 

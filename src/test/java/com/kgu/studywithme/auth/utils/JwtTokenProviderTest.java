@@ -21,10 +21,10 @@ class JwtTokenProviderTest {
     void issueAccessTokenAndRefreshToken() {
         // given
         final Long memberId = 1L;
-        
+
         // when
-        String accessToken = VALID_PROVIDER.createAccessToken(memberId);
-        String refreshToken = VALID_PROVIDER.createRefreshToken(memberId);
+        final String accessToken = VALID_PROVIDER.createAccessToken(memberId);
+        final String refreshToken = VALID_PROVIDER.createRefreshToken(memberId);
 
         // then
         assertAll(
@@ -40,7 +40,7 @@ class JwtTokenProviderTest {
         final Long memberId = 1L;
 
         // when
-        String accessToken = VALID_PROVIDER.createAccessToken(memberId);
+        final String accessToken = VALID_PROVIDER.createAccessToken(memberId);
 
         // then
         assertThat(VALID_PROVIDER.getId(accessToken)).isEqualTo(memberId);
@@ -53,8 +53,8 @@ class JwtTokenProviderTest {
         final Long memberId = 1L;
 
         // when
-        String validToken = VALID_PROVIDER.createAccessToken(memberId);
-        String invalidToken = INVALID_PROVIDER.createAccessToken(memberId);
+        final String validToken = VALID_PROVIDER.createAccessToken(memberId);
+        final String invalidToken = INVALID_PROVIDER.createAccessToken(memberId);
 
         // then
         assertDoesNotThrow(() -> VALID_PROVIDER.isTokenValid(validToken));
@@ -70,7 +70,7 @@ class JwtTokenProviderTest {
         final Long memberId = 1L;
 
         // when
-        String forgedToken = VALID_PROVIDER.createAccessToken(memberId) + "hacked";
+        final String forgedToken = VALID_PROVIDER.createAccessToken(memberId) + "hacked";
 
         // then
         assertThatThrownBy(() -> VALID_PROVIDER.isTokenValid(forgedToken))

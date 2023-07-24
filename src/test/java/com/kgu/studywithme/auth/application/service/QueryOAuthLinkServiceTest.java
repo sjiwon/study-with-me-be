@@ -19,6 +19,7 @@ import java.util.List;
 import static com.kgu.studywithme.auth.utils.OAuthProvider.GOOGLE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -77,8 +78,9 @@ class QueryOAuthLinkServiceTest extends UseCaseTest {
         );
 
         // then
-        verify(googleOAuthUri, times(1)).generate(any());
-
-        assertThat(uri).isEqualTo("google-oauth-uri");
+        assertAll(
+                () -> verify(googleOAuthUri, times(1)).generate(any()),
+                () -> assertThat(uri).isEqualTo("google-oauth-uri")
+        );
     }
 }

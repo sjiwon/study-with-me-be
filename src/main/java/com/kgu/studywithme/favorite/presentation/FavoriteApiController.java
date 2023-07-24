@@ -3,6 +3,7 @@ package com.kgu.studywithme.favorite.presentation;
 import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeCancellationUseCase;
 import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeMarkingUseCase;
+import com.kgu.studywithme.global.aop.CheckAuthUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class FavoriteApiController {
     private final StudyLikeCancellationUseCase studyLikeCancellationUseCase;
 
     @Operation(summary = "스터디 찜 등록 EndPoint")
+    @CheckAuthUser
     @PostMapping
     public ResponseEntity<Void> likeMarking(
             @ExtractPayload final Long memberId,
@@ -28,6 +30,7 @@ public class FavoriteApiController {
     }
 
     @Operation(summary = "스터디 찜 등록 취소 EndPoint")
+    @CheckAuthUser
     @DeleteMapping
     public ResponseEntity<Void> likeCancellation(
             @ExtractPayload final Long memberId,

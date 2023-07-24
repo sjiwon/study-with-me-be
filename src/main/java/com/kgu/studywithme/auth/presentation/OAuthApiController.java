@@ -7,6 +7,7 @@ import com.kgu.studywithme.auth.application.usecase.query.QueryOAuthLinkUseCase;
 import com.kgu.studywithme.auth.presentation.dto.request.OAuthLoginRequest;
 import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.auth.utils.OAuthProvider;
+import com.kgu.studywithme.global.aop.CheckAuthUser;
 import com.kgu.studywithme.global.dto.ResponseWrapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -36,7 +37,6 @@ public class OAuthApiController {
                         redirectUrl
                 )
         );
-
         return ResponseEntity.ok(ResponseWrapper.from(oAuthLink));
     }
 
@@ -53,15 +53,14 @@ public class OAuthApiController {
                         request.redirectUrl()
                 )
         );
-
         return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "로그아웃 EndPoint")
+    @CheckAuthUser
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(@ExtractPayload final Long memberId) {
         logoutUseCase.logout(new LogoutUseCase.Command(memberId));
-
         return ResponseEntity.noContent().build();
     }
 }

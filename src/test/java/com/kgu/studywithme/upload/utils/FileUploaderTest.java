@@ -1,7 +1,6 @@
 package com.kgu.studywithme.upload.utils;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
@@ -23,7 +22,7 @@ import static com.kgu.studywithme.common.utils.FileMockingUtils.createSingleMock
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
@@ -40,12 +39,13 @@ class FileUploaderTest extends UseCaseTest {
     private static final String ATTACHMENT = "attachments";
     private static final String SUBMIT = "submits";
     private static final MultipartFile NULL_FILE = null;
-    private static final MultipartFile EMPTY_FILE = new MockMultipartFile(
-            "file",
-            "hello.png",
-            "image/png",
-            new byte[]{}
-    );
+    private static final MultipartFile EMPTY_FILE =
+            new MockMultipartFile(
+                    "file",
+                    "hello.png",
+                    "image/png",
+                    new byte[]{}
+            );
 
     @BeforeEach
     void setUp() {
@@ -83,10 +83,11 @@ class FileUploaderTest extends UseCaseTest {
             final String uploadUrl = uploader.uploadStudyDescriptionImage(file);
 
             // then
-            verify(amazonS3, times(1)).putObject(any());
-            verify(amazonS3, times(1)).getUrl(any(), any());
-
-            assertThat(uploadUrl).isEqualTo(mockUrl.toString());
+            assertAll(
+                    () -> verify(amazonS3, times(1)).putObject(any()),
+                    () -> verify(amazonS3, times(1)).getUrl(any(), any()),
+                    () -> assertThat(uploadUrl).isEqualTo(mockUrl.toString())
+            );
         }
     }
 
@@ -121,10 +122,11 @@ class FileUploaderTest extends UseCaseTest {
             final String uploadUrl = uploader.uploadWeeklyImage(file);
 
             // then
-            verify(amazonS3, times(1)).putObject(any());
-            verify(amazonS3, times(1)).getUrl(any(), any());
-
-            assertThat(uploadUrl).isEqualTo(mockUrl.toString());
+            assertAll(
+                    () -> verify(amazonS3, times(1)).putObject(any()),
+                    () -> verify(amazonS3, times(1)).getUrl(any(), any()),
+                    () -> assertThat(uploadUrl).isEqualTo(mockUrl.toString())
+            );
         }
     }
 
@@ -159,10 +161,11 @@ class FileUploaderTest extends UseCaseTest {
             final String uploadUrl = uploader.uploadWeeklyAttachment(file);
 
             // then
-            verify(amazonS3, times(1)).putObject(any());
-            verify(amazonS3, times(1)).getUrl(any(), any());
-
-            assertThat(uploadUrl).isEqualTo(mockUrl.toString());
+            assertAll(
+                    () -> verify(amazonS3, times(1)).putObject(any()),
+                    () -> verify(amazonS3, times(1)).getUrl(any(), any()),
+                    () -> assertThat(uploadUrl).isEqualTo(mockUrl.toString())
+            );
         }
     }
 
@@ -197,10 +200,11 @@ class FileUploaderTest extends UseCaseTest {
             final String uploadUrl = uploader.uploadWeeklySubmit(file);
 
             // then
-            verify(amazonS3, times(1)).putObject(any());
-            verify(amazonS3, times(1)).getUrl(any(), any());
-
-            assertThat(uploadUrl).isEqualTo(mockUrl.toString());
+            assertAll(
+                    () -> verify(amazonS3, times(1)).putObject(any()),
+                    () -> verify(amazonS3, times(1)).getUrl(any(), any()),
+                    () -> assertThat(uploadUrl).isEqualTo(mockUrl.toString())
+            );
         }
     }
 
@@ -219,8 +223,10 @@ class FileUploaderTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(UploadErrorCode.S3_UPLOAD_FAILURE.getMessage());
 
-        verify(amazonS3, times(1)).putObject(any(PutObjectRequest.class));
-        verify(amazonS3, times(0)).getUrl(eq(BUCKET), anyString());
+        assertAll(
+                () -> verify(amazonS3, times(1)).putObject(any()),
+                () -> verify(amazonS3, times(0)).getUrl(any(), any())
+        );
     }
 
     private String createUploadLink(final String type, final String originalFileName) {

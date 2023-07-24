@@ -90,17 +90,17 @@ class OAuthLoginServiceTest extends UseCaseTest {
                     () -> oAuthLoginService.login(command)
             );
 
-            assertThat(exception.getResponse())
-                    .usingRecursiveComparison()
-                    .isEqualTo(googleUserResponse);
-
-            verify(googleOAuthConnector, times(1)).getToken(any(), any());
-            verify(googleOAuthConnector, times(1)).getUserInfo(any());
-            verify(memberRepository, times(1)).findByEmail(any());
-            verify(jwtTokenProvider, times(0)).createAccessToken(any());
-            verify(jwtTokenProvider, times(0)).createRefreshToken(any());
-            verify(tokenPersistenceAdapter, times(0))
-                    .synchronizeRefreshToken(any(), any());
+            assertAll(
+                    () -> assertThat(exception.getResponse())
+                            .usingRecursiveComparison()
+                            .isEqualTo(googleUserResponse),
+                    () -> verify(googleOAuthConnector, times(1)).getToken(any(), any()),
+                    () -> verify(googleOAuthConnector, times(1)).getUserInfo(any()),
+                    () -> verify(memberRepository, times(1)).findByEmail(any()),
+                    () -> verify(jwtTokenProvider, times(0)).createAccessToken(any()),
+                    () -> verify(jwtTokenProvider, times(0)).createRefreshToken(any()),
+                    () -> verify(tokenPersistenceAdapter, times(0)).synchronizeRefreshToken(any(), any())
+            );
         }
 
         @Test
@@ -118,15 +118,13 @@ class OAuthLoginServiceTest extends UseCaseTest {
             final LoginResponse response = oAuthLoginService.login(command);
 
             // then
-            verify(googleOAuthConnector, times(1)).getToken(any(), any());
-            verify(googleOAuthConnector, times(1)).getUserInfo(any());
-            verify(memberRepository, times(1)).findByEmail(any());
-            verify(jwtTokenProvider, times(1)).createAccessToken(any());
-            verify(jwtTokenProvider, times(1)).createRefreshToken(any());
-            verify(tokenPersistenceAdapter, times(1))
-                    .synchronizeRefreshToken(any(), any());
-
             assertAll(
+                    () -> verify(googleOAuthConnector, times(1)).getToken(any(), any()),
+                    () -> verify(googleOAuthConnector, times(1)).getUserInfo(any()),
+                    () -> verify(memberRepository, times(1)).findByEmail(any()),
+                    () -> verify(jwtTokenProvider, times(1)).createAccessToken(any()),
+                    () -> verify(jwtTokenProvider, times(1)).createRefreshToken(any()),
+                    () -> verify(tokenPersistenceAdapter, times(1)).synchronizeRefreshToken(any(), any()),
                     () -> assertThat(response.accessToken()).isEqualTo(ACCESS_TOKEN),
                     () -> assertThat(response.refreshToken()).isEqualTo(REFRESH_TOKEN)
             );

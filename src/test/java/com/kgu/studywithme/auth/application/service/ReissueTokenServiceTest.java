@@ -54,11 +54,12 @@ class ReissueTokenServiceTest extends UseCaseTest {
                     .isInstanceOf(StudyWithMeException.class)
                     .hasMessage(AuthErrorCode.INVALID_TOKEN.getMessage());
 
-            verify(tokenPersistenceAdapter, times(1)).isRefreshTokenExists(any(), any());
-            verify(jwtTokenProvider, times(0)).createAccessToken(any());
-            verify(jwtTokenProvider, times(0)).createRefreshToken(any());
-            verify(tokenPersistenceAdapter, times(0))
-                    .reissueRefreshTokenByRtrPolicy(any(), any());
+            assertAll(
+                    () -> verify(tokenPersistenceAdapter, times(1)).isRefreshTokenExists(any(), any()),
+                    () -> verify(jwtTokenProvider, times(0)).createAccessToken(any()),
+                    () -> verify(jwtTokenProvider, times(0)).createRefreshToken(any()),
+                    () -> verify(tokenPersistenceAdapter, times(0)).reissueRefreshTokenByRtrPolicy(any(), any())
+            );
         }
 
         @Test
@@ -73,13 +74,11 @@ class ReissueTokenServiceTest extends UseCaseTest {
             final TokenResponse response = tokenReissueService.reissueToken(command);
 
             // then
-            verify(tokenPersistenceAdapter, times(1)).isRefreshTokenExists(any(), any());
-            verify(jwtTokenProvider, times(1)).createAccessToken(any());
-            verify(jwtTokenProvider, times(1)).createRefreshToken(any());
-            verify(tokenPersistenceAdapter, times(1))
-                    .reissueRefreshTokenByRtrPolicy(any(), any());
-
             assertAll(
+                    () -> verify(tokenPersistenceAdapter, times(1)).isRefreshTokenExists(any(), any()),
+                    () -> verify(jwtTokenProvider, times(1)).createAccessToken(any()),
+                    () -> verify(jwtTokenProvider, times(1)).createRefreshToken(any()),
+                    () -> verify(tokenPersistenceAdapter, times(1)).reissueRefreshTokenByRtrPolicy(any(), any()),
                     () -> assertThat(response.accessToken()).isEqualTo(ACCESS_TOKEN),
                     () -> assertThat(response.refreshToken()).isEqualTo(REFRESH_TOKEN)
             );

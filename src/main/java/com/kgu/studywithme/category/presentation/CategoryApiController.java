@@ -24,7 +24,6 @@ public class CategoryApiController {
     @GetMapping
     public ResponseEntity<ResponseWrapper<List<CategoryResponse>>> findAllCategories() {
         final List<CategoryResponse> result = queryAllCategoriesUseCase.findAllCategories();
-
         return ResponseEntity.ok(ResponseWrapper.from(result));
     }
 }

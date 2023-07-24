@@ -11,14 +11,20 @@ public class FileMockingUtils {
     private static final String SINGLE_FILE_META_NAME = "file";
     private static final String MULTIPLE_FILE_META_NAME = "files";
 
-    public static MultipartFile createSingleMockMultipartFile(String fileName, String contentType) throws IOException {
-        try (FileInputStream stream = new FileInputStream(FILE_PATH + fileName)) {
+    public static MultipartFile createSingleMockMultipartFile(
+            final String fileName,
+            final String contentType
+    ) throws IOException {
+        try (final FileInputStream stream = new FileInputStream(FILE_PATH + fileName)) {
             return new MockMultipartFile(SINGLE_FILE_META_NAME, fileName, contentType, stream);
         }
     }
 
-    public static MultipartFile createMultipleMockMultipartFile(String fileName, String contentType) throws IOException {
-        try (FileInputStream stream = new FileInputStream(FILE_PATH + fileName)) {
+    public static MultipartFile createMultipleMockMultipartFile(
+            final String fileName,
+            final String contentType
+    ) throws IOException {
+        try (final FileInputStream stream = new FileInputStream(FILE_PATH + fileName)) {
             return new MockMultipartFile(MULTIPLE_FILE_META_NAME, fileName, contentType, stream);
         }
     }

@@ -28,7 +28,6 @@ public class TokenReissueApiController {
         final TokenResponse tokenResponse = reissueTokenUseCase.reissueToken(
                 new ReissueTokenUseCase.Command(memberId, refreshToken)
         );
-
         return ResponseEntity.ok(tokenResponse);
     }
 }
