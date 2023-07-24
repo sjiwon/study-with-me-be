@@ -29,7 +29,7 @@ public class FavoriteManager implements StudyLikeMarkingUseCase, StudyLikeCancel
             final Long memberId
     ) {
         if (favoriteRepository.existsByStudyIdAndMemberId(studyId, memberId)) {
-            throw StudyWithMeException.type(FavoriteErrorCode.ALREADY_FAVORITE_MARKED);
+            throw StudyWithMeException.type(FavoriteErrorCode.ALREADY_LIKE_MARKED);
         }
     }
 
@@ -44,7 +44,7 @@ public class FavoriteManager implements StudyLikeMarkingUseCase, StudyLikeCancel
             final Long memberId
     ) {
         if (!favoriteRepository.existsByStudyIdAndMemberId(studyId, memberId)) {
-            throw StudyWithMeException.type(FavoriteErrorCode.NOT_FAVORITE_MARKED);
+            throw StudyWithMeException.type(FavoriteErrorCode.NEVER_LIKE_MARKED);
         }
     }
 }

@@ -37,37 +37,48 @@ class FavoriteManagerTest extends UseCaseTest {
     @Nested
     @DisplayName("찜 등록")
     class likeMarking {
-        private final StudyLikeMarkingUseCase.Command command
-                = new StudyLikeMarkingUseCase.Command(STUDY_ID, MEMBER_ID);
+        private final StudyLikeMarkingUseCase.Command command =
+                new StudyLikeMarkingUseCase.Command(
+                        STUDY_ID,
+                        MEMBER_ID
+                );
 
         @Test
         @DisplayName("이미 찜 등록된 스터디를 찜할 수 없다")
-        void throwExceptionByAlreadyFavoriteMarked() {
+        void throwExceptionByAlreadyLikeMarked() {
             // given
-            given(favoriteRepository.existsByStudyIdAndMemberId(STUDY_ID, MEMBER_ID)).willReturn(true);
+            given(favoriteRepository.existsByStudyIdAndMemberId(any(), any()))
+                    .willReturn(true);
 
             // when - then
             assertThatThrownBy(() -> favoriteManager.likeMarking(command))
                     .isInstanceOf(StudyWithMeException.class)
-                    .hasMessage(FavoriteErrorCode.ALREADY_FAVORITE_MARKED.getMessage());
+                    .hasMessage(FavoriteErrorCode.ALREADY_LIKE_MARKED.getMessage());
 
+            verify(favoriteRepository, times(1))
+                    .existsByStudyIdAndMemberId(any(), any());
             verify(favoriteRepository, times(0)).save(any());
         }
 
         @Test
-        @DisplayName("찜 등록에 성공한다")
+        @DisplayName("해당 스터디를 찜 등록한다")
         void success() {
             // given
-            given(favoriteRepository.existsByStudyIdAndMemberId(STUDY_ID, MEMBER_ID)).willReturn(false);
+            given(favoriteRepository.existsByStudyIdAndMemberId(any(), any()))
+                    .willReturn(false);
 
-            final Favorite favorite = Favorite.favoriteMarking(STUDY_ID, MEMBER_ID).apply(1L, LocalDateTime.now());
-            given(favoriteRepository.save(any(Favorite.class))).willReturn(favorite);
+            final Favorite favorite = Favorite.favoriteMarking(STUDY_ID, MEMBER_ID)
+                    .apply(1L, LocalDateTime.now());
+            given(favoriteRepository.save(any())).willReturn(favorite);
 
             // when
-            Long savedFavoriteId = favoriteManager.likeMarking(command);
+            final Long savedFavoriteId = favoriteManager.likeMarking(command);
 
             // then
+            verify(favoriteRepository, times(1))
+                    .existsByStudyIdAndMemberId(any(), any());
             verify(favoriteRepository, times(1)).save(any());
+
             assertThat(savedFavoriteId).isEqualTo(favorite.getId());
         }
     }
@@ -75,36 +86,45 @@ class FavoriteManagerTest extends UseCaseTest {
     @Nested
     @DisplayName("찜 취소")
     class likeCancellation {
-        private final StudyLikeCancellationUseCase.Command command
-                = new StudyLikeCancellationUseCase.Command(STUDY_ID, MEMBER_ID);
+        private final StudyLikeCancellationUseCase.Command command =
+                new StudyLikeCancellationUseCase.Command(
+                        STUDY_ID,
+                        MEMBER_ID
+                );
 
         @Test
         @DisplayName("찜 등록이 되지 않은 스터디를 취소할 수 없다")
-        void throwExceptionByNotFavoriteMarked() {
+        void throwExceptionByNeverLikeMarked() {
             // given
-            given(favoriteRepository.existsByStudyIdAndMemberId(STUDY_ID, MEMBER_ID)).willReturn(false);
+            given(favoriteRepository.existsByStudyIdAndMemberId(any(), any()))
+                    .willReturn(false);
 
             // when - then
             assertThatThrownBy(() -> favoriteManager.likeCancellation(command))
                     .isInstanceOf(StudyWithMeException.class)
-                    .hasMessage(FavoriteErrorCode.NOT_FAVORITE_MARKED.getMessage());
+                    .hasMessage(FavoriteErrorCode.NEVER_LIKE_MARKED.getMessage());
 
+            verify(favoriteRepository, times(1))
+                    .existsByStudyIdAndMemberId(any(), any());
             verify(favoriteRepository, times(0))
                     .deleteByStudyIdAndMemberId(STUDY_ID, MEMBER_ID);
         }
 
         @Test
-        @DisplayName("찜 취소에 성공한다")
+        @DisplayName("해당 스터디에 대해서 등록한 찜을 취소한다")
         void success() {
             // given
-            given(favoriteRepository.existsByStudyIdAndMemberId(STUDY_ID, MEMBER_ID)).willReturn(true);
+            given(favoriteRepository.existsByStudyIdAndMemberId(STUDY_ID, MEMBER_ID))
+                    .willReturn(true);
 
             // when
             favoriteManager.likeCancellation(command);
 
             // then
             verify(favoriteRepository, times(1))
-                    .deleteByStudyIdAndMemberId(STUDY_ID, MEMBER_ID);
+                    .existsByStudyIdAndMemberId(any(), any());
+            verify(favoriteRepository, times(1))
+                    .deleteByStudyIdAndMemberId(any(), any());
         }
     }
 }

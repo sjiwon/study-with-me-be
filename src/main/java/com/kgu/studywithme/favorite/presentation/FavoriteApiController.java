@@ -19,7 +19,7 @@ public class FavoriteApiController {
 
     @Operation(summary = "스터디 찜 등록 EndPoint")
     @PostMapping
-    public ResponseEntity<Void> like(
+    public ResponseEntity<Void> likeMarking(
             @ExtractPayload final Long memberId,
             @PathVariable final Long studyId
     ) {
@@ -29,7 +29,7 @@ public class FavoriteApiController {
 
     @Operation(summary = "스터디 찜 등록 취소 EndPoint")
     @DeleteMapping
-    public ResponseEntity<Void> cancel(
+    public ResponseEntity<Void> likeCancellation(
             @ExtractPayload final Long memberId,
             @PathVariable final Long studyId
     ) {
