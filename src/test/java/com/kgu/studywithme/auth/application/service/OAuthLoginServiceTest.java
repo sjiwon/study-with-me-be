@@ -66,19 +66,19 @@ class OAuthLoginServiceTest extends UseCaseTest {
     @DisplayName("Google OAuth 로그인")
     class googleLogin {
         private final Member member = JIWON.toMember().apply(1L, LocalDateTime.now());
-        private final OAuthLoginUseCase.Command command = new OAuthLoginUseCase.Command(
-                GOOGLE,
-                UUID.randomUUID().toString(),
-                "http://localhost:3000"
-        );
+        private final OAuthLoginUseCase.Command command =
+                new OAuthLoginUseCase.Command(
+                        GOOGLE,
+                        UUID.randomUUID().toString(),
+                        "http://localhost:3000"
+                );
+        private final GoogleTokenResponse googleTokenResponse = createGoogleTokenResponse();
+        private final GoogleUserResponse googleUserResponse = JIWON.toGoogleUserResponse();
 
         @Test
-        @DisplayName("Google OAuth 인증을 진행할 때 해당 사용자가 DB에 존재하지 않으면 예외를 발생하고 로그인에 실패한다")
+        @DisplayName("Google OAuth 로그인을 진행할 때 해당 사용자가 DB에 존재하지 않으면 예외를 발생하고 회원가입을 진행한다")
         void throwExceptionIfGoogleAuthUserNotInDB() {
             // given
-            final GoogleTokenResponse googleTokenResponse = createGoogleTokenResponse();
-            final GoogleUserResponse googleUserResponse = JIWON.toGoogleUserResponse();
-
             given(googleOAuthConnector.isSupported(any())).willReturn(true);
             given(googleOAuthConnector.getToken(any(), any())).willReturn(googleTokenResponse);
             given(googleOAuthConnector.getUserInfo(any())).willReturn(googleUserResponse);
@@ -90,23 +90,23 @@ class OAuthLoginServiceTest extends UseCaseTest {
                     () -> oAuthLoginService.login(command)
             );
 
-            verify(jwtTokenProvider, times(0)).createAccessToken(member.getId());
-            verify(jwtTokenProvider, times(0)).createRefreshToken(member.getId());
-            verify(tokenPersistenceAdapter, times(0))
-                    .synchronizeRefreshToken(member.getId(), REFRESH_TOKEN);
-
             assertThat(exception.getResponse())
                     .usingRecursiveComparison()
                     .isEqualTo(googleUserResponse);
+
+            verify(googleOAuthConnector, times(1)).getToken(any(), any());
+            verify(googleOAuthConnector, times(1)).getUserInfo(any());
+            verify(memberRepository, times(1)).findByEmail(any());
+            verify(jwtTokenProvider, times(0)).createAccessToken(any());
+            verify(jwtTokenProvider, times(0)).createRefreshToken(any());
+            verify(tokenPersistenceAdapter, times(0))
+                    .synchronizeRefreshToken(any(), any());
         }
 
         @Test
-        @DisplayName("Google OAuth 인증을 진행할 때 해당 사용자가 DB에 존재하면 로그인에 성공하고 사용자 정보 및 토큰을 발급해준다")
+        @DisplayName("Google OAuth 로그인을 진행할 때 해당 사용자가 DB에 존재하면 로그인에 성공하고 사용자 정보 및 토큰을 발급해준다")
         void success() {
             // given
-            final GoogleTokenResponse googleTokenResponse = createGoogleTokenResponse();
-            final GoogleUserResponse googleUserResponse = JIWON.toGoogleUserResponse();
-
             given(googleOAuthConnector.isSupported(any())).willReturn(true);
             given(googleOAuthConnector.getToken(any(), any())).willReturn(googleTokenResponse);
             given(googleOAuthConnector.getUserInfo(any())).willReturn(googleUserResponse);
@@ -118,10 +118,13 @@ class OAuthLoginServiceTest extends UseCaseTest {
             final LoginResponse response = oAuthLoginService.login(command);
 
             // then
-            verify(jwtTokenProvider, times(1)).createAccessToken(member.getId());
-            verify(jwtTokenProvider, times(1)).createRefreshToken(member.getId());
+            verify(googleOAuthConnector, times(1)).getToken(any(), any());
+            verify(googleOAuthConnector, times(1)).getUserInfo(any());
+            verify(memberRepository, times(1)).findByEmail(any());
+            verify(jwtTokenProvider, times(1)).createAccessToken(any());
+            verify(jwtTokenProvider, times(1)).createRefreshToken(any());
             verify(tokenPersistenceAdapter, times(1))
-                    .synchronizeRefreshToken(member.getId(), REFRESH_TOKEN);
+                    .synchronizeRefreshToken(any(), any());
 
             assertAll(
                     () -> assertThat(response.accessToken()).isEqualTo(ACCESS_TOKEN),

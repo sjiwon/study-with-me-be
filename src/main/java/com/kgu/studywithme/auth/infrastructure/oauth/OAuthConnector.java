@@ -3,9 +3,9 @@ package com.kgu.studywithme.auth.infrastructure.oauth;
 import com.kgu.studywithme.auth.utils.OAuthProvider;
 
 public interface OAuthConnector {
-    boolean isSupported(OAuthProvider provider);
+    boolean isSupported(final OAuthProvider provider);
 
-    OAuthTokenResponse getToken(String code, String redirectUri);
+    OAuthTokenResponse getToken(final String code, final String redirectUri);
 
-    OAuthUserResponse getUserInfo(String accessToken);
+    OAuthUserResponse getUserInfo(final String accessToken);
 }

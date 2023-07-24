@@ -15,7 +15,7 @@ public enum OAuthProvider {
 
     private final String provider;
 
-    public static OAuthProvider of(final String provider) {
+    public static OAuthProvider from(final String provider) {
         return Arrays.stream(values())
                 .filter(oAuthProvider -> oAuthProvider.provider.equals(provider))
                 .findFirst()

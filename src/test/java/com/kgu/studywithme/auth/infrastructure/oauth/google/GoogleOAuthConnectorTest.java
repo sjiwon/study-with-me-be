@@ -61,13 +61,14 @@ class GoogleOAuthConnectorTest {
         @DisplayName("Authorization Code & RedirectUrl를 통해서 Google Authorization Server로부터 Token을 응답받는다")
         void success() {
             // given
-            GoogleTokenResponse response = TokenUtils.createGoogleTokenResponse();
-            ResponseEntity<GoogleTokenResponse> responseEntity = ResponseEntity.ok(response);
+            final GoogleTokenResponse response = TokenUtils.createGoogleTokenResponse();
+            final ResponseEntity<GoogleTokenResponse> responseEntity = ResponseEntity.ok(response);
             given(restTemplate.postForEntity(eq(properties.getTokenUrl()), any(HttpEntity.class), eq(GoogleTokenResponse.class)))
                     .willReturn(responseEntity);
 
             // when
-            GoogleTokenResponse result = (GoogleTokenResponse) googleOAuthConnector.getToken(AUTHORIZATION_CODE, REDIRECT_URL);
+            final GoogleTokenResponse result
+                    = (GoogleTokenResponse) googleOAuthConnector.getToken(AUTHORIZATION_CODE, REDIRECT_URL);
 
             // then
             assertAll(
@@ -100,13 +101,13 @@ class GoogleOAuthConnectorTest {
         @DisplayName("Access Token을 통해서 Google Server에 저장된 사용자 정보를 응답받는다")
         void success() {
             // given
-            GoogleUserResponse response = JIWON.toGoogleUserResponse();
-            ResponseEntity<GoogleUserResponse> responseEntity = ResponseEntity.ok(response);
+            final GoogleUserResponse response = JIWON.toGoogleUserResponse();
+            final ResponseEntity<GoogleUserResponse> responseEntity = ResponseEntity.ok(response);
             given(restTemplate.exchange(eq(properties.getUserInfoUrl()), eq(HttpMethod.GET), any(HttpEntity.class), eq(GoogleUserResponse.class)))
                     .willReturn(responseEntity);
 
             // when
-            GoogleUserResponse result = (GoogleUserResponse) googleOAuthConnector.getUserInfo(ACCESS_TOKEN);
+            final GoogleUserResponse result = (GoogleUserResponse) googleOAuthConnector.getUserInfo(ACCESS_TOKEN);
 
             // then
             assertAll(

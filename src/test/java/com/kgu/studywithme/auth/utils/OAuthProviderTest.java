@@ -15,7 +15,7 @@ class OAuthProviderTest {
     @Test
     @DisplayName("제공하지 않는 Provider에 대해서 OAuthProvider를 가져오려고 하면 예외가 발생한다")
     void throwExceptionByInvalidOAuthProvider() {
-        assertThatThrownBy(() -> OAuthProvider.of("anonymous"))
+        assertThatThrownBy(() -> OAuthProvider.from("anonymous"))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(AuthErrorCode.INVALID_OAUTH_PROVIDER.getMessage());
     }
@@ -24,7 +24,7 @@ class OAuthProviderTest {
     @DisplayName("주어진 Provider에 따른 OAuthProvider를 가져온다")
     void getSpecificOAuthProvider() {
         assertAll(
-                () -> assertThat(OAuthProvider.of("google")).isEqualTo(GOOGLE)
+                () -> assertThat(OAuthProvider.from("google")).isEqualTo(GOOGLE)
         );
     }
 }

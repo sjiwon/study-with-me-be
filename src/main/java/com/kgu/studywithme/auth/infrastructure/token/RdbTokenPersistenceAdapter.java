@@ -13,7 +13,10 @@ public class RdbTokenPersistenceAdapter implements TokenPersistenceAdapter {
 
     @StudyWithMeWritableTransactional
     @Override
-    public void synchronizeRefreshToken(Long memberId, String refreshToken) {
+    public void synchronizeRefreshToken(
+            final Long memberId,
+            final String refreshToken
+    ) {
         tokenRepository.findByMemberId(memberId)
                 .ifPresentOrElse(
                         token -> token.updateRefreshToken(refreshToken),
@@ -23,18 +26,24 @@ public class RdbTokenPersistenceAdapter implements TokenPersistenceAdapter {
 
     @StudyWithMeWritableTransactional
     @Override
-    public void reissueRefreshTokenByRtrPolicy(Long memberId, String refreshToken) {
+    public void reissueRefreshTokenByRtrPolicy(
+            final Long memberId,
+            final String refreshToken
+    ) {
         tokenRepository.reissueRefreshTokenByRtrPolicy(memberId, refreshToken);
     }
 
     @StudyWithMeWritableTransactional
     @Override
-    public void deleteRefreshTokenByMemberId(Long memberId) {
+    public void deleteRefreshTokenByMemberId(final Long memberId) {
         tokenRepository.deleteByMemberId(memberId);
     }
 
     @Override
-    public boolean isRefreshTokenExists(Long memberId, String refreshToken) {
+    public boolean isRefreshTokenExists(
+            final Long memberId,
+            final String refreshToken
+    ) {
         return tokenRepository.existsByMemberIdAndRefreshToken(memberId, refreshToken);
     }
 }

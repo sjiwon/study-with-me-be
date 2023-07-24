@@ -76,10 +76,10 @@ public class JwtTokenProvider {
             final Date expiredDate = claims.getBody().getExpiration();
             final Date now = new Date();
             return expiredDate.after(now);
-        } catch (ExpiredJwtException e) {
-            throw StudyWithMeException.type(AuthErrorCode.AUTH_EXPIRED_TOKEN);
-        } catch (SecurityException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
-            throw StudyWithMeException.type(AuthErrorCode.AUTH_INVALID_TOKEN);
+        } catch (final ExpiredJwtException e) {
+            throw StudyWithMeException.type(AuthErrorCode.EXPIRED_TOKEN);
+        } catch (final SecurityException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
+            throw StudyWithMeException.type(AuthErrorCode.INVALID_TOKEN);
         }
     }
 }

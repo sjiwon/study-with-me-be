@@ -26,16 +26,17 @@ public class OAuthApiController {
 
     @Operation(summary = "Provider별 OAuth 인증을 위한 URL을 받는 EndPoint")
     @GetMapping(value = "/access/{provider}", params = {"redirectUrl"})
-    public ResponseEntity<ResponseWrapper<String>> access(
+    public ResponseEntity<ResponseWrapper<String>> queryOAuthLink(
             @PathVariable final String provider,
             @RequestParam final String redirectUrl
     ) {
-        final String oAuthLink = queryOAuthLinkUseCase.createOAuthLink(
+        final String oAuthLink = queryOAuthLinkUseCase.queryOAuthLink(
                 new QueryOAuthLinkUseCase.Query(
-                        OAuthProvider.of(provider),
+                        OAuthProvider.from(provider),
                         redirectUrl
                 )
         );
+
         return ResponseEntity.ok(ResponseWrapper.from(oAuthLink));
     }
 
@@ -47,11 +48,12 @@ public class OAuthApiController {
     ) {
         final LoginResponse response = oAuthLoginUseCase.login(
                 new OAuthLoginUseCase.Command(
-                        OAuthProvider.of(provider),
+                        OAuthProvider.from(provider),
                         request.authorizationCode(),
                         request.redirectUrl()
                 )
         );
+
         return ResponseEntity.ok(response);
     }
 
@@ -59,6 +61,7 @@ public class OAuthApiController {
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(@ExtractPayload final Long memberId) {
         logoutUseCase.logout(new LogoutUseCase.Command(memberId));
+
         return ResponseEntity.noContent().build();
     }
 }

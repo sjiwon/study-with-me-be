@@ -32,7 +32,7 @@ public class GoogleOAuthConnector implements OAuthConnector {
     private final RestTemplate restTemplate;
 
     @Override
-    public boolean isSupported(OAuthProvider provider) {
+    public boolean isSupported(final OAuthProvider provider) {
         return provider == GOOGLE;
     }
 
@@ -41,15 +41,15 @@ public class GoogleOAuthConnector implements OAuthConnector {
             final String code,
             final String redirectUri
     ) {
-        HttpHeaders headers = createTokenRequestHeader();
-        MultiValueMap<String, String> params = applyTokenRequestParams(code, redirectUri);
+        final HttpHeaders headers = createTokenRequestHeader();
+        final MultiValueMap<String, String> params = applyTokenRequestParams(code, redirectUri);
 
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
+        final HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
         return fetchGoogleToken(request).getBody();
     }
 
     private HttpHeaders createTokenRequestHeader() {
-        HttpHeaders headers = new HttpHeaders();
+        final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         return headers;
     }
@@ -58,7 +58,7 @@ public class GoogleOAuthConnector implements OAuthConnector {
             final String code,
             final String redirectUri
     ) {
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", properties.getGrantType());
         params.add("client_id", properties.getClientId());
         params.add("client_secret", properties.getClientSecret());
@@ -72,20 +72,20 @@ public class GoogleOAuthConnector implements OAuthConnector {
     ) {
         try {
             return restTemplate.postForEntity(properties.getTokenUrl(), request, GoogleTokenResponse.class);
-        } catch (RestClientException e) {
+        } catch (final RestClientException e) {
             throw StudyWithMeException.type(AuthErrorCode.GOOGLE_OAUTH_EXCEPTION);
         }
     }
 
     @Override
     public OAuthUserResponse getUserInfo(final String accessToken) {
-        HttpHeaders headers = createUserInfoRequestHeader(accessToken);
-        HttpEntity<Void> request = new HttpEntity<>(headers);
+        final HttpHeaders headers = createUserInfoRequestHeader(accessToken);
+        final HttpEntity<Void> request = new HttpEntity<>(headers);
         return fetchGoogleUserInfo(request).getBody();
     }
 
     private HttpHeaders createUserInfoRequestHeader(final String accessToken) {
-        HttpHeaders headers = new HttpHeaders();
+        final HttpHeaders headers = new HttpHeaders();
         headers.set(AUTHORIZATION, String.join(" ", BEARER_TYPE, accessToken));
         return headers;
     }
@@ -93,7 +93,7 @@ public class GoogleOAuthConnector implements OAuthConnector {
     private ResponseEntity<GoogleUserResponse> fetchGoogleUserInfo(final HttpEntity<Void> request) {
         try {
             return restTemplate.exchange(properties.getUserInfoUrl(), GET, request, GoogleUserResponse.class);
-        } catch (RestClientException e) {
+        } catch (final RestClientException e) {
             throw StudyWithMeException.type(AuthErrorCode.GOOGLE_OAUTH_EXCEPTION);
         }
     }

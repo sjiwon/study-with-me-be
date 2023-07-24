@@ -11,11 +11,11 @@ public class GoogleTokenResponse implements OAuthTokenResponse {
     private final Integer expiresIn;
 
     public GoogleTokenResponse(
-            @JsonProperty("token_type") String tokenType,
-            @JsonProperty("id_token") String idToken,
-            @JsonProperty("access_token") String accessToken,
-            @JsonProperty("scope") String scope,
-            @JsonProperty("expires_in") Integer expiresIn
+            @JsonProperty("token_type") final String tokenType,
+            @JsonProperty("id_token") final String idToken,
+            @JsonProperty("access_token") final String accessToken,
+            @JsonProperty("scope") final String scope,
+            @JsonProperty("expires_in") final Integer expiresIn
     ) {
         this.tokenType = tokenType;
         this.idToken = idToken;

@@ -1,7 +1,7 @@
 package com.kgu.studywithme.auth.presentation;
 
 import com.kgu.studywithme.auth.application.dto.TokenResponse;
-import com.kgu.studywithme.auth.application.usecase.command.TokenReissueUseCase;
+import com.kgu.studywithme.auth.application.usecase.command.ReissueTokenUseCase;
 import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.auth.utils.ExtractToken;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,17 +17,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/token/reissue")
 public class TokenReissueApiController {
-    private final TokenReissueUseCase tokenReissueUseCase;
+    private final ReissueTokenUseCase reissueTokenUseCase;
 
     @Operation(summary = "RefreshToken을 통한 토큰 재발급 EndPoint")
     @PostMapping
-    public ResponseEntity<TokenResponse> reissueTokens(
+    public ResponseEntity<TokenResponse> reissueToken(
             @ExtractPayload final Long memberId,
             @ExtractToken final String refreshToken
     ) {
-        final TokenResponse tokenResponse = tokenReissueUseCase.reissueTokens(
-                new TokenReissueUseCase.Command(memberId, refreshToken)
+        final TokenResponse tokenResponse = reissueTokenUseCase.reissueToken(
+                new ReissueTokenUseCase.Command(memberId, refreshToken)
         );
+
         return ResponseEntity.ok(tokenResponse);
     }
 }

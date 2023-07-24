@@ -60,7 +60,7 @@ class JwtTokenProviderTest {
         assertDoesNotThrow(() -> VALID_PROVIDER.isTokenValid(validToken));
         assertThatThrownBy(() -> INVALID_PROVIDER.isTokenValid(invalidToken))
                 .isInstanceOf(StudyWithMeException.class)
-                .hasMessage(AuthErrorCode.AUTH_EXPIRED_TOKEN.getMessage());
+                .hasMessage(AuthErrorCode.EXPIRED_TOKEN.getMessage());
     }
 
     @Test
@@ -75,6 +75,6 @@ class JwtTokenProviderTest {
         // then
         assertThatThrownBy(() -> VALID_PROVIDER.isTokenValid(forgedToken))
                 .isInstanceOf(StudyWithMeException.class)
-                .hasMessage(AuthErrorCode.AUTH_INVALID_TOKEN.getMessage());
+                .hasMessage(AuthErrorCode.INVALID_TOKEN.getMessage());
     }
 }

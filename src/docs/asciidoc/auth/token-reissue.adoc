@@ -22,7 +22,7 @@ include::{snippets}/TokenReissueApi/Failure/Case2/request-headers.adoc[]
 HTTP Response
 include::{snippets}/TokenReissueApi/Failure/Case2/response-body.adoc[]
 
-=== 3. RefresToken으로 AccessToken과 RefreshToken을 재발급받는다
+=== 3. 사용자 소유의 RefreshToken을 통해서 AccessToken과 RefreshToken을 재발급받는다
 HTTP Request
 include::{snippets}/TokenReissueApi/Success/http-request.adoc[]
 include::{snippets}/TokenReissueApi/Success/request-headers.adoc[]

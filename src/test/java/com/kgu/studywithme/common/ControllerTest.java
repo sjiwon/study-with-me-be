@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kgu.studywithme.auth.application.usecase.command.LogoutUseCase;
 import com.kgu.studywithme.auth.application.usecase.command.OAuthLoginUseCase;
-import com.kgu.studywithme.auth.application.usecase.command.TokenReissueUseCase;
+import com.kgu.studywithme.auth.application.usecase.command.ReissueTokenUseCase;
 import com.kgu.studywithme.auth.application.usecase.query.QueryOAuthLinkUseCase;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.auth.presentation.OAuthApiController;
@@ -178,7 +178,7 @@ public abstract class ControllerTest {
     protected LogoutUseCase logoutUseCase;
 
     @MockBean
-    protected TokenReissueUseCase tokenReissueUseCase;
+    protected ReissueTokenUseCase reissueTokenUseCase;
 
     // Category & Favorite
     @MockBean
@@ -408,13 +408,13 @@ public abstract class ControllerTest {
     }
 
     protected void mockingTokenWithExpiredException() {
-        doThrow(StudyWithMeException.type(AuthErrorCode.AUTH_EXPIRED_TOKEN))
+        doThrow(StudyWithMeException.type(AuthErrorCode.EXPIRED_TOKEN))
                 .when(jwtTokenProvider)
                 .isTokenValid(any());
     }
 
     protected void mockingTokenWithInvalidException() {
-        doThrow(StudyWithMeException.type(AuthErrorCode.AUTH_INVALID_TOKEN))
+        doThrow(StudyWithMeException.type(AuthErrorCode.INVALID_TOKEN))
                 .when(jwtTokenProvider)
                 .isTokenValid(any());
     }

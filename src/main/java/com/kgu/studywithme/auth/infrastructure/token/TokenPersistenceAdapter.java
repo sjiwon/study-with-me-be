@@ -1,11 +1,11 @@
 package com.kgu.studywithme.auth.infrastructure.token;
 
 public interface TokenPersistenceAdapter {
-    void synchronizeRefreshToken(Long memberId, String refreshToken);
+    void synchronizeRefreshToken(final Long memberId, final String refreshToken);
 
-    void reissueRefreshTokenByRtrPolicy(Long memberId, String refreshToken);
+    void reissueRefreshTokenByRtrPolicy(final Long memberId, final String refreshToken);
 
-    void deleteRefreshTokenByMemberId(Long memberId);
+    void deleteRefreshTokenByMemberId(final Long memberId);
 
-    boolean isRefreshTokenExists(Long memberId, String refreshToken);
+    boolean isRefreshTokenExists(final Long memberId, final String refreshToken);
 }

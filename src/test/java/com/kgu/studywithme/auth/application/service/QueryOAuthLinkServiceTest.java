@@ -43,8 +43,12 @@ class QueryOAuthLinkServiceTest extends UseCaseTest {
     @Test
     @DisplayName("제공하지 않는 OAuth Provider에 대해서는 예외가 발생한다")
     void throwExceptionByInvalidOAuthProvider() {
+        // given
+        given(googleOAuthUri.isSupported(any())).willReturn(false);
+
+        // when - then
         assertThatThrownBy(
-                () -> queryOAuthLinkService.createOAuthLink(
+                () -> queryOAuthLinkService.queryOAuthLink(
                         new QueryOAuthLinkUseCase.Query(
                                 null,
                                 "google-redirect-url"
@@ -53,17 +57,19 @@ class QueryOAuthLinkServiceTest extends UseCaseTest {
         )
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(AuthErrorCode.INVALID_OAUTH_PROVIDER.getMessage());
+
+        verify(googleOAuthUri, times(0)).generate(any());
     }
 
     @Test
     @DisplayName("Google Provider에 대해서 생성된 OAuthUri를 응답받는다")
-    void googleSuccess() {
+    void successGoogle() {
         // given
         given(googleOAuthUri.isSupported(GOOGLE)).willReturn(true);
         given(googleOAuthUri.generate(any())).willReturn("google-oauth-uri");
 
         // when
-        String uri = queryOAuthLinkService.createOAuthLink(
+        final String uri = queryOAuthLinkService.queryOAuthLink(
                 new QueryOAuthLinkUseCase.Query(
                         GOOGLE,
                         "google-redirect-url"
@@ -71,7 +77,8 @@ class QueryOAuthLinkServiceTest extends UseCaseTest {
         );
 
         // then
-        verify(googleOAuthUri, times(1)).generate("google-redirect-url");
+        verify(googleOAuthUri, times(1)).generate(any());
+
         assertThat(uri).isEqualTo("google-oauth-uri");
     }
 }

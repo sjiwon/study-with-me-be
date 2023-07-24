@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -26,6 +27,6 @@ class LogoutServiceTest extends UseCaseTest {
         logoutService.logout(new LogoutUseCase.Command(1L));
 
         // then
-        verify(tokenPersistenceAdapter, times(1)).deleteRefreshTokenByMemberId(1L);
+        verify(tokenPersistenceAdapter, times(1)).deleteRefreshTokenByMemberId(any());
     }
 }

@@ -34,7 +34,7 @@ class RdbTokenPersistenceAdapterTest extends RepositoryTest {
             rdbTokenPersistenceAdapter.synchronizeRefreshToken(MEMBER_ID, REFRESH_TOKEN);
 
             // then
-            Token findToken = tokenRepository.findByMemberId(MEMBER_ID).orElseThrow();
+            final Token findToken = tokenRepository.findByMemberId(MEMBER_ID).orElseThrow();
             assertThat(findToken.getRefreshToken()).isEqualTo(REFRESH_TOKEN);
         }
 
@@ -49,7 +49,7 @@ class RdbTokenPersistenceAdapterTest extends RepositoryTest {
             rdbTokenPersistenceAdapter.synchronizeRefreshToken(MEMBER_ID, newRefreshToken);
 
             // then
-            Token findToken = tokenRepository.findByMemberId(MEMBER_ID).orElseThrow();
+            final Token findToken = tokenRepository.findByMemberId(MEMBER_ID).orElseThrow();
             assertThat(findToken.getRefreshToken()).isEqualTo(newRefreshToken);
         }
     }
@@ -65,7 +65,7 @@ class RdbTokenPersistenceAdapterTest extends RepositoryTest {
         rdbTokenPersistenceAdapter.reissueRefreshTokenByRtrPolicy(MEMBER_ID, newRefreshToken);
 
         // then
-        Token findToken = tokenRepository.findByMemberId(MEMBER_ID).orElseThrow();
+        final Token findToken = tokenRepository.findByMemberId(MEMBER_ID).orElseThrow();
         assertThat(findToken.getRefreshToken()).isEqualTo(newRefreshToken);
     }
 
@@ -84,13 +84,13 @@ class RdbTokenPersistenceAdapterTest extends RepositoryTest {
 
     @Test
     @DisplayName("사용자가 보유하고 있는 RefreshToken인지 확인한다")
-    void checkMemberHasSpecificRefreshToken() {
+    void isRefreshTokenExists() {
         // given
         tokenRepository.save(Token.issueRefreshToken(MEMBER_ID, REFRESH_TOKEN));
 
         // when
-        boolean actual1 = rdbTokenPersistenceAdapter.isRefreshTokenExists(MEMBER_ID, REFRESH_TOKEN);
-        boolean actual2 = rdbTokenPersistenceAdapter.isRefreshTokenExists(MEMBER_ID, REFRESH_TOKEN + "fake");
+        final boolean actual1 = rdbTokenPersistenceAdapter.isRefreshTokenExists(MEMBER_ID, REFRESH_TOKEN);
+        final boolean actual2 = rdbTokenPersistenceAdapter.isRefreshTokenExists(MEMBER_ID, REFRESH_TOKEN + "fake");
 
         // then
         assertAll(

@@ -1,6 +1,5 @@
 package com.kgu.studywithme.auth.presentation;
 
-import com.kgu.studywithme.auth.application.dto.TokenResponse;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.common.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
@@ -23,22 +22,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class TokenReissueApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("토큰 재발급 API [POST /api/token/reissue] - RefreshToken 필수")
-    class reissueTokens {
+    class reissueToken {
         private static final String BASE_URL = "/api/token/reissue";
 
         @Test
         @DisplayName("만료된 RefreshToken으로 인해 토큰 재발급에 실패한다")
-        void expiredRefreshToken() throws Exception {
+        void throwExceptionByExpiredRefreshToken() throws Exception {
             // given
             mockingTokenWithExpiredException();
 
             // when
-            MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+            final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, REFRESH_TOKEN));
 
             // then
-            final AuthErrorCode expectedError = AuthErrorCode.AUTH_EXPIRED_TOKEN;
+            final AuthErrorCode expectedError = AuthErrorCode.EXPIRED_TOKEN;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
                             status().isUnauthorized(),
@@ -62,17 +61,17 @@ class TokenReissueApiControllerTest extends ControllerTest {
 
         @Test
         @DisplayName("이미 사용했거나 조작된 RefreshToken이면 토큰 재발급에 실패한다")
-        void invalidRefreshToken() throws Exception {
+        void throwExceptionByInvalidRefreshToken() throws Exception {
             // given
             mockingTokenWithInvalidException();
 
             // when
-            MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+            final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, REFRESH_TOKEN));
 
             // then
-            final AuthErrorCode expectedError = AuthErrorCode.AUTH_INVALID_TOKEN;
+            final AuthErrorCode expectedError = AuthErrorCode.INVALID_TOKEN;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
                             status().isUnauthorized(),
@@ -95,17 +94,14 @@ class TokenReissueApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("RefreshToken으로 AccessToken과 RefreshToken을 재발급받는다")
+        @DisplayName("사용자 소유의 RefreshToken을 통해서 AccessToken과 RefreshToken을 재발급받는다")
         void success() throws Exception {
             // given
-            final Long memberId = 1L;
-            mockingToken(true, memberId);
-
-            TokenResponse response = createTokenResponse();
-            given(tokenReissueUseCase.reissueTokens(any())).willReturn(response);
+            mockingToken(true, 1L);
+            given(reissueTokenUseCase.reissueToken(any())).willReturn(createTokenResponse());
 
             // when
-            MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+            final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, REFRESH_TOKEN));
 
@@ -125,8 +121,10 @@ class TokenReissueApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithRefreshToken(),
                                     responseFields(
-                                            fieldWithPath("accessToken").description("새로 발급된 Access Token (Expire - 2시간)"),
-                                            fieldWithPath("refreshToken").description("새로 발급된 Refresh Token (Expire - 2주)")
+                                            fieldWithPath("accessToken")
+                                                    .description("새로 발급된 Access Token (Expire - 2시간)"),
+                                            fieldWithPath("refreshToken")
+                                                    .description("새로 발급된 Refresh Token (Expire - 2주)")
                                     )
                             )
                     );
