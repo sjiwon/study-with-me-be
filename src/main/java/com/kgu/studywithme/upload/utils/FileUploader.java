@@ -16,15 +16,11 @@ import java.io.InputStream;
 import java.util.UUID;
 
 import static com.kgu.studywithme.upload.infrastructure.aws.BucketMetadata.*;
+import static com.kgu.studywithme.upload.utils.FileUploadType.*;
 
 @Slf4j
 @Component
 public class FileUploader {
-    private static final String DESCRIPTION = "description";
-    private static final String IMAGE = "image";
-    private static final String ATTACHMENT = "attachment";
-    private static final String SUBMIT = "submit";
-
     private final AmazonS3 amazonS3;
     private final String bucket;
 
@@ -67,7 +63,7 @@ public class FileUploader {
     }
 
     private String uploadFile(
-            final String type,
+            final FileUploadType type,
             final MultipartFile file
     ) {
         final String fileName = createFileNameByType(type, file.getOriginalFilename());
@@ -76,12 +72,12 @@ public class FileUploader {
         objectMetadata.setContentType(file.getContentType());
         objectMetadata.setContentLength(file.getSize());
 
-        try (InputStream inputStream = file.getInputStream()) {
+        try (final InputStream inputStream = file.getInputStream()) {
             amazonS3.putObject(
                     new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
                             .withCannedAcl(CannedAccessControlList.PublicRead)
             );
-        } catch (IOException e) {
+        } catch (final IOException e) {
             log.error("S3 파일 업로드에 실패했습니다. {}", e.getMessage(), e);
             throw StudyWithMeException.type(UploadErrorCode.S3_UPLOAD_FAILURE);
         }
@@ -90,7 +86,7 @@ public class FileUploader {
     }
 
     private String createFileNameByType(
-            final String type,
+            final FileUploadType type,
             final String originalFileName
     ) {
         final String fileName = UUID.randomUUID() + extractFileExtension(originalFileName);

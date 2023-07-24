@@ -11,7 +11,7 @@ public class UploadStudyDescriptionImageService implements UploadStudyDescriptio
     private final FileUploader fileUploader;
 
     @Override
-    public String upload(Command command) {
+    public String uploadStudyDescriptionImage(final Command command) {
         return fileUploader.uploadStudyDescriptionImage(command.file());
     }
 }

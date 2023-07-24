@@ -1,5 +1,6 @@
 package com.kgu.studywithme.common.config;
 
+import com.kgu.studywithme.global.aop.CheckAuthUserAspect;
 import com.kgu.studywithme.global.aop.CheckMemberIdentityAspect;
 import com.kgu.studywithme.global.aop.CheckStudyHostAspect;
 import com.kgu.studywithme.global.aop.CheckStudyParticipantAspect;
@@ -16,6 +17,11 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 public class TestAopConfiguration {
     private final StudyRepository studyRepository;
     private final StudyParticipantRepository studyParticipantRepository;
+
+    @Bean
+    public CheckAuthUserAspect checkAuthUserAspect() {
+        return new CheckAuthUserAspect();
+    }
 
     @Bean
     public CheckMemberIdentityAspect checkMemberIdentityAspect() {

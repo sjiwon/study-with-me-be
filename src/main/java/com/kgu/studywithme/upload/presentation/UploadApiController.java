@@ -1,6 +1,6 @@
 package com.kgu.studywithme.upload.presentation;
 
-import com.kgu.studywithme.auth.utils.ExtractPayload;
+import com.kgu.studywithme.global.aop.CheckAuthUser;
 import com.kgu.studywithme.global.dto.ResponseWrapper;
 import com.kgu.studywithme.upload.application.usecase.command.UploadStudyDescriptionImageUseCase;
 import com.kgu.studywithme.upload.application.usecase.command.UploadWeeklyImageUseCase;
@@ -27,19 +27,24 @@ public class UploadApiController {
     private final UploadStudyDescriptionImageUseCase uploadStudyDescriptionImageUseCase;
 
     @Operation(summary = "이미지 업로드 EndPoint")
+    @CheckAuthUser
     @PostMapping(value = "/image", consumes = MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ResponseWrapper<String>> uploadImage(
-            @ExtractPayload final Long memberId,
-            @ModelAttribute @Valid final ImageUploadRequest request
-    ) {
+    public ResponseEntity<ResponseWrapper<String>> uploadImage(@ModelAttribute @Valid final ImageUploadRequest request) {
         final String imageUploadLink = uploadImageByType(request.type(), request.file());
+
         return ResponseEntity.ok(ResponseWrapper.from(imageUploadLink));
     }
 
-    private String uploadImageByType(String type, MultipartFile file) {
-        if (type.equals("weekly")) {
-            return uploadWeeklyImageUseCase.upload(new UploadWeeklyImageUseCase.Command(file));
+    private String uploadImageByType(
+            final String type,
+            final MultipartFile file
+    ) {
+        if ("weekly".equals(type)) {
+            return uploadWeeklyImageUseCase.uploadWeeklyImage(new UploadWeeklyImageUseCase.Command(file));
         }
-        return uploadStudyDescriptionImageUseCase.upload(new UploadStudyDescriptionImageUseCase.Command(file));
+
+        return uploadStudyDescriptionImageUseCase.uploadStudyDescriptionImage(
+                new UploadStudyDescriptionImageUseCase.Command(file)
+        );
     }
 }

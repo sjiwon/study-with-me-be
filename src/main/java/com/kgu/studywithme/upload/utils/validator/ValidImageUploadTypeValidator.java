@@ -9,7 +9,10 @@ public class ValidImageUploadTypeValidator implements ConstraintValidator<ValidI
     private static final List<String> ALLOWED_TYPE = List.of("weekly", "description");
 
     @Override
-    public boolean isValid(String value, ConstraintValidatorContext context) {
+    public boolean isValid(
+            final String value,
+            final ConstraintValidatorContext context
+    ) {
         return ALLOWED_TYPE.contains(value);
     }
 }

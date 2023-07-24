@@ -11,8 +11,6 @@ include::auth/token-reissue.adoc[leveloffset=+1]
 
 include::category/category.adoc[leveloffset=+1]
 
-include::favorite/study-favorite.adoc[leveloffset=+1]
-
 include::member-signup.adoc[leveloffset=+1]
 
 include::member-information.adoc[leveloffset=+1]
@@ -41,4 +39,6 @@ include::study-attendance.adoc[leveloffset=+1]
 
 include::study-weekly.adoc[leveloffset=+1]
 
-include::image-upload.adoc[leveloffset=+1]
+include::favorite/study-favorite.adoc[leveloffset=+1]
+
+include::upload/image-upload.adoc[leveloffset=+1]

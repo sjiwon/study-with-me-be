@@ -22,6 +22,7 @@ import java.util.UUID;
 import static com.kgu.studywithme.common.utils.FileMockingUtils.createSingleMockMultipartFile;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -38,6 +39,13 @@ class FileUploaderTest extends UseCaseTest {
     private static final String IMAGE = "images";
     private static final String ATTACHMENT = "attachments";
     private static final String SUBMIT = "submits";
+    private static final MultipartFile NULL_FILE = null;
+    private static final MultipartFile EMPTY_FILE = new MockMultipartFile(
+            "file",
+            "hello.png",
+            "image/png",
+            new byte[]{}
+    );
 
     @BeforeEach
     void setUp() {
@@ -50,36 +58,34 @@ class FileUploaderTest extends UseCaseTest {
         @Test
         @DisplayName("파일을 전송하지 않았거나 파일의 사이즈가 0이면 업로드가 불가능하다")
         void throwExceptionByFileIsEmpty() {
-            // given
-            MultipartFile nullFile = null;
-            MultipartFile emptyFile = new MockMultipartFile("file", "hello.png", "image/png", new byte[]{});
-
-            // when - then
-            assertThatThrownBy(() -> uploader.uploadStudyDescriptionImage(nullFile))
-                    .isInstanceOf(StudyWithMeException.class)
-                    .hasMessage(UploadErrorCode.FILE_IS_EMPTY.getMessage());
-            assertThatThrownBy(() -> uploader.uploadStudyDescriptionImage(emptyFile))
-                    .isInstanceOf(StudyWithMeException.class)
-                    .hasMessage(UploadErrorCode.FILE_IS_EMPTY.getMessage());
+            assertAll(
+                    () -> assertThatThrownBy(() -> uploader.uploadStudyDescriptionImage(NULL_FILE))
+                            .isInstanceOf(StudyWithMeException.class)
+                            .hasMessage(UploadErrorCode.FILE_IS_EMPTY.getMessage()),
+                    () -> assertThatThrownBy(() -> uploader.uploadStudyDescriptionImage(EMPTY_FILE))
+                            .isInstanceOf(StudyWithMeException.class)
+                            .hasMessage(UploadErrorCode.FILE_IS_EMPTY.getMessage())
+            );
         }
 
         @Test
-        @DisplayName("이미지 업로드를 성공한다")
+        @DisplayName("스터디 설명 이미지를 업로드한다")
         void success() throws Exception {
             // given
-            PutObjectResult putObjectResult = new PutObjectResult();
-            given(amazonS3.putObject(any(PutObjectRequest.class))).willReturn(putObjectResult);
+            final PutObjectResult putObjectResult = new PutObjectResult();
+            given(amazonS3.putObject(any())).willReturn(putObjectResult);
 
-            URL mockUrl = new URL(createUploadLink(IMAGE, "hello4.png"));
-            given(amazonS3.getUrl(eq(BUCKET), anyString())).willReturn(mockUrl);
+            final URL mockUrl = new URL(createUploadLink(IMAGE, "hello4.png"));
+            given(amazonS3.getUrl(any(), any())).willReturn(mockUrl);
 
             // when
             final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");
-            String uploadUrl = uploader.uploadStudyDescriptionImage(file);
+            final String uploadUrl = uploader.uploadStudyDescriptionImage(file);
 
             // then
-            verify(amazonS3, times(1)).putObject(any(PutObjectRequest.class));
-            verify(amazonS3, times(1)).getUrl(eq(BUCKET), anyString());
+            verify(amazonS3, times(1)).putObject(any());
+            verify(amazonS3, times(1)).getUrl(any(), any());
+
             assertThat(uploadUrl).isEqualTo(mockUrl.toString());
         }
     }
@@ -90,36 +96,34 @@ class FileUploaderTest extends UseCaseTest {
         @Test
         @DisplayName("파일을 전송하지 않았거나 파일의 사이즈가 0이면 업로드가 불가능하다")
         void throwExceptionByFileIsEmpty() {
-            // given
-            MultipartFile nullFile = null;
-            MultipartFile emptyFile = new MockMultipartFile("file", "hello.png", "image/png", new byte[]{});
-
-            // when - then
-            assertThatThrownBy(() -> uploader.uploadWeeklyImage(nullFile))
-                    .isInstanceOf(StudyWithMeException.class)
-                    .hasMessage(UploadErrorCode.FILE_IS_EMPTY.getMessage());
-            assertThatThrownBy(() -> uploader.uploadWeeklyImage(emptyFile))
-                    .isInstanceOf(StudyWithMeException.class)
-                    .hasMessage(UploadErrorCode.FILE_IS_EMPTY.getMessage());
+            assertAll(
+                    () -> assertThatThrownBy(() -> uploader.uploadWeeklyImage(NULL_FILE))
+                            .isInstanceOf(StudyWithMeException.class)
+                            .hasMessage(UploadErrorCode.FILE_IS_EMPTY.getMessage()),
+                    () -> assertThatThrownBy(() -> uploader.uploadWeeklyImage(EMPTY_FILE))
+                            .isInstanceOf(StudyWithMeException.class)
+                            .hasMessage(UploadErrorCode.FILE_IS_EMPTY.getMessage())
+            );
         }
 
         @Test
-        @DisplayName("이미지 업로드를 성공한다")
+        @DisplayName("Weekly 글 내부 이미지를 업로드한다")
         void success() throws Exception {
             // given
-            PutObjectResult putObjectResult = new PutObjectResult();
-            given(amazonS3.putObject(any(PutObjectRequest.class))).willReturn(putObjectResult);
+            final PutObjectResult putObjectResult = new PutObjectResult();
+            given(amazonS3.putObject(any())).willReturn(putObjectResult);
 
-            URL mockUrl = new URL(createUploadLink(IMAGE, "hello4.png"));
-            given(amazonS3.getUrl(eq(BUCKET), anyString())).willReturn(mockUrl);
+            final URL mockUrl = new URL(createUploadLink(IMAGE, "hello4.png"));
+            given(amazonS3.getUrl(any(), any())).willReturn(mockUrl);
 
             // when
             final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");
-            String uploadUrl = uploader.uploadWeeklyImage(file);
+            final String uploadUrl = uploader.uploadWeeklyImage(file);
 
             // then
-            verify(amazonS3, times(1)).putObject(any(PutObjectRequest.class));
-            verify(amazonS3, times(1)).getUrl(eq(BUCKET), anyString());
+            verify(amazonS3, times(1)).putObject(any());
+            verify(amazonS3, times(1)).getUrl(any(), any());
+
             assertThat(uploadUrl).isEqualTo(mockUrl.toString());
         }
     }
@@ -130,36 +134,34 @@ class FileUploaderTest extends UseCaseTest {
         @Test
         @DisplayName("파일을 전송하지 않았거나 파일의 사이즈가 0이면 업로드가 불가능하다")
         void throwExceptionByFileIsEmpty() {
-            // given
-            MultipartFile nullFile = null;
-            MultipartFile emptyFile = new MockMultipartFile("file", "hello.png", "image/png", new byte[]{});
-
-            // when - then
-            assertThatThrownBy(() -> uploader.uploadWeeklyAttachment(nullFile))
-                    .isInstanceOf(StudyWithMeException.class)
-                    .hasMessage(UploadErrorCode.FILE_IS_EMPTY.getMessage());
-            assertThatThrownBy(() -> uploader.uploadWeeklyAttachment(emptyFile))
-                    .isInstanceOf(StudyWithMeException.class)
-                    .hasMessage(UploadErrorCode.FILE_IS_EMPTY.getMessage());
+            assertAll(
+                    () -> assertThatThrownBy(() -> uploader.uploadWeeklyAttachment(NULL_FILE))
+                            .isInstanceOf(StudyWithMeException.class)
+                            .hasMessage(UploadErrorCode.FILE_IS_EMPTY.getMessage()),
+                    () -> assertThatThrownBy(() -> uploader.uploadWeeklyAttachment(EMPTY_FILE))
+                            .isInstanceOf(StudyWithMeException.class)
+                            .hasMessage(UploadErrorCode.FILE_IS_EMPTY.getMessage())
+            );
         }
 
         @Test
-        @DisplayName("첨부파일 업로드를 성공한다")
+        @DisplayName("Weekly 글 첨부파일을 업로드한다")
         void success() throws Exception {
             // given
-            PutObjectResult putObjectResult = new PutObjectResult();
-            given(amazonS3.putObject(any(PutObjectRequest.class))).willReturn(putObjectResult);
+            final PutObjectResult putObjectResult = new PutObjectResult();
+            given(amazonS3.putObject(any())).willReturn(putObjectResult);
 
-            URL mockUrl = new URL(createUploadLink(ATTACHMENT, "hello1.txt"));
-            given(amazonS3.getUrl(eq(BUCKET), anyString())).willReturn(mockUrl);
+            final URL mockUrl = new URL(createUploadLink(ATTACHMENT, "hello1.txt"));
+            given(amazonS3.getUrl(any(), any())).willReturn(mockUrl);
 
             // when
-            final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");
-            String uploadUrl = uploader.uploadWeeklyAttachment(file);
+            final MultipartFile file = createSingleMockMultipartFile("hello1.txt", "text/plain");
+            final String uploadUrl = uploader.uploadWeeklyAttachment(file);
 
             // then
-            verify(amazonS3, times(1)).putObject(any(PutObjectRequest.class));
-            verify(amazonS3, times(1)).getUrl(eq(BUCKET), anyString());
+            verify(amazonS3, times(1)).putObject(any());
+            verify(amazonS3, times(1)).getUrl(any(), any());
+
             assertThat(uploadUrl).isEqualTo(mockUrl.toString());
         }
     }
@@ -170,36 +172,34 @@ class FileUploaderTest extends UseCaseTest {
         @Test
         @DisplayName("파일을 전송하지 않았거나 파일의 사이즈가 0이면 업로드가 불가능하다")
         void throwExceptionByFileIsEmpty() {
-            // given
-            MultipartFile nullFile = null;
-            MultipartFile emptyFile = new MockMultipartFile("file", "empty.txt", "text/plain", new byte[]{});
-
-            // when - then
-            assertThatThrownBy(() -> uploader.uploadWeeklySubmit(nullFile))
-                    .isInstanceOf(StudyWithMeException.class)
-                    .hasMessage(UploadErrorCode.FILE_IS_EMPTY.getMessage());
-            assertThatThrownBy(() -> uploader.uploadWeeklySubmit(emptyFile))
-                    .isInstanceOf(StudyWithMeException.class)
-                    .hasMessage(UploadErrorCode.FILE_IS_EMPTY.getMessage());
+            assertAll(
+                    () -> assertThatThrownBy(() -> uploader.uploadWeeklySubmit(NULL_FILE))
+                            .isInstanceOf(StudyWithMeException.class)
+                            .hasMessage(UploadErrorCode.FILE_IS_EMPTY.getMessage()),
+                    () -> assertThatThrownBy(() -> uploader.uploadWeeklySubmit(EMPTY_FILE))
+                            .isInstanceOf(StudyWithMeException.class)
+                            .hasMessage(UploadErrorCode.FILE_IS_EMPTY.getMessage())
+            );
         }
 
         @Test
-        @DisplayName("과제 업로드를 성공한다")
+        @DisplayName("Weekly 과제를 업로드한다")
         void success() throws Exception {
             // given
-            PutObjectResult putObjectResult = new PutObjectResult();
-            given(amazonS3.putObject(any(PutObjectRequest.class))).willReturn(putObjectResult);
+            final PutObjectResult putObjectResult = new PutObjectResult();
+            given(amazonS3.putObject(any())).willReturn(putObjectResult);
 
-            URL mockUrl = new URL(createUploadLink(SUBMIT, "hello3.pdf"));
-            given(amazonS3.getUrl(eq(BUCKET), anyString())).willReturn(mockUrl);
+            final URL mockUrl = new URL(createUploadLink(SUBMIT, "hello3.pdf"));
+            given(amazonS3.getUrl(any(), any())).willReturn(mockUrl);
 
             // when
             final MultipartFile file = createSingleMockMultipartFile("hello3.pdf", "application/pdf");
-            String uploadUrl = uploader.uploadWeeklySubmit(file);
+            final String uploadUrl = uploader.uploadWeeklySubmit(file);
 
             // then
-            verify(amazonS3, times(1)).putObject(any(PutObjectRequest.class));
-            verify(amazonS3, times(1)).getUrl(eq(BUCKET), anyString());
+            verify(amazonS3, times(1)).putObject(any());
+            verify(amazonS3, times(1)).getUrl(any(), any());
+
             assertThat(uploadUrl).isEqualTo(mockUrl.toString());
         }
     }
@@ -210,20 +210,20 @@ class FileUploaderTest extends UseCaseTest {
         // given
         doThrow(StudyWithMeException.type(UploadErrorCode.S3_UPLOAD_FAILURE))
                 .when(amazonS3)
-                .putObject(any(PutObjectRequest.class));
+                .putObject(any());
 
-        // when
         final MultipartFile file = createSingleMockMultipartFile("hello3.pdf", "application/pdf");
+
+        // when - then
         assertThatThrownBy(() -> uploader.uploadWeeklySubmit(file))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(UploadErrorCode.S3_UPLOAD_FAILURE.getMessage());
 
-        // then
         verify(amazonS3, times(1)).putObject(any(PutObjectRequest.class));
         verify(amazonS3, times(0)).getUrl(eq(BUCKET), anyString());
     }
 
-    private String createUploadLink(String type, String originalFileName) {
+    private String createUploadLink(final String type, final String originalFileName) {
         return String.format(
                 "https://kr.object.ncloudstorage.com/%s/%s/%s",
                 BUCKET,
@@ -232,7 +232,7 @@ class FileUploaderTest extends UseCaseTest {
         );
     }
 
-    private String extractFileExtension(String fileName) {
+    private String extractFileExtension(final String fileName) {
         return fileName.substring(fileName.lastIndexOf("."));
     }
 }

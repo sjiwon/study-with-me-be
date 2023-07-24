@@ -12,8 +12,6 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.UUID;
-
 import static com.kgu.studywithme.common.utils.FileMockingUtils.createSingleMockMultipartFile;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
@@ -44,7 +42,7 @@ class UploadApiControllerTest extends ControllerTest {
 
             // when
             final MultipartFile file = createSingleMockMultipartFile("hello5.webp", "image/webp");
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL)
                     .file((MockMultipartFile) file)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
@@ -65,15 +63,17 @@ class UploadApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "UploadImageApi/Weekly/Failure/Case1",
+                                    "UploadApi/Image/Weekly/Failure/Case1",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     requestParts(
-                                            partWithName("file").description("글에 포함되는 이미지")
+                                            partWithName("file")
+                                                    .description("스터디 Weekly 설명에 포함되는 이미지")
                                     ),
                                     queryParameters(
-                                            parameterWithName("type").description("이미지 업로드 타입")
+                                            parameterWithName("type")
+                                                    .description("이미지 업로드 타입")
                                                     .attributes(constraint("주차별 이미지 = weekly / 스터디 설명 이미지 = description"))
                                     ),
                                     getExceptionResponseFiels()
@@ -88,13 +88,13 @@ class UploadApiControllerTest extends ControllerTest {
             mockingToken(true, MEMBER_ID);
             doThrow(StudyWithMeException.type(UploadErrorCode.FILE_IS_EMPTY))
                     .when(uploadWeeklyImageUseCase)
-                    .upload(any());
+                    .uploadWeeklyImage(any());
 
             // when
-            final MultipartFile file = new MockMultipartFile("file", new byte[0]);
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final MockMultipartFile file = new MockMultipartFile("file", new byte[0]);
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL)
-                    .file((MockMultipartFile) file)
+                    .file(file)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .queryParam("type", "weekly");
 
@@ -112,15 +112,17 @@ class UploadApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "UploadImageApi/Weekly/Failure/Case2",
+                                    "UploadApi/Image/Weekly/Failure/Case2",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     requestParts(
-                                            partWithName("file").description("글에 포함되는 이미지")
+                                            partWithName("file")
+                                                    .description("스터디 Weekly 설명에 포함되는 이미지")
                                     ),
                                     queryParameters(
-                                            parameterWithName("type").description("이미지 업로드 타입")
+                                            parameterWithName("type")
+                                                    .description("이미지 업로드 타입")
                                                     .attributes(constraint("주차별 이미지 = weekly / 스터디 설명 이미지 = description"))
                                     ),
                                     getExceptionResponseFiels()
@@ -129,20 +131,17 @@ class UploadApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("이미지 업로드를 성공한다")
+        @DisplayName("스터디 Weekly 설명에 포함되는 이미지를 업로드한다")
         void success() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
 
-            final String uploadLink = String.format(
-                    "https://kr.object.ncloudstorage.com/bucket/images/%s.png",
-                    UUID.randomUUID()
-            );
-            given(uploadWeeklyImageUseCase.upload(any())).willReturn(uploadLink);
+            final String uploadLink = "https://image-upload-link";
+            given(uploadWeeklyImageUseCase.uploadWeeklyImage(any())).willReturn(uploadLink);
 
             // when
             final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL)
                     .file((MockMultipartFile) file)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
@@ -157,19 +156,22 @@ class UploadApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "UploadImageApi/Weekly/Success",
+                                    "UploadApi/Image/Weekly/Success",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     requestParts(
-                                            partWithName("file").description("글에 포함되는 이미지")
+                                            partWithName("file")
+                                                    .description("스터디 Weekly 설명에 포함되는 이미지")
                                     ),
                                     queryParameters(
-                                            parameterWithName("type").description("이미지 업로드 타입")
+                                            parameterWithName("type")
+                                                    .description("이미지 업로드 타입")
                                                     .attributes(constraint("주차별 이미지 = weekly / 스터디 설명 이미지 = description"))
                                     ),
                                     responseFields(
-                                            fieldWithPath("result").description("업로드된 이미지 링크")
+                                            fieldWithPath("result")
+                                                    .description("업로드된 이미지 링크")
                                     )
                             )
                     );
@@ -177,10 +179,57 @@ class UploadApiControllerTest extends ControllerTest {
     }
 
     @Nested
-    @DisplayName("스터디 생성 시 설명 내부 이미지 업로드 API [POST /api/image] - AccessToken 필수")
+    @DisplayName("스터디 설명 내부 이미지 업로드 API [POST /api/image] - AccessToken 필수")
     class uploadStudyDescriptionImage {
         private static final String BASE_URL = "/api/image";
         private static final Long MEMBER_ID = 1L;
+
+        @Test
+        @DisplayName("허용하는 이미지 확장자[jpg, jpeg, png, gif]가 아니면 업로드가 불가능하다")
+        void throwExceptionByNotAllowedExtension() throws Exception {
+            // given
+            mockingToken(true, MEMBER_ID);
+
+            // when
+            final MultipartFile file = createSingleMockMultipartFile("hello5.webp", "image/webp");
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+                    .multipart(BASE_URL)
+                    .file((MockMultipartFile) file)
+                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
+                    .queryParam("type", "weekly");
+
+            // then
+            final GlobalErrorCode expectedError = GlobalErrorCode.VALIDATION_ERROR;
+            final String message = "이미지는 jpg, jpeg, png, gif만 허용합니다.";
+            mockMvc.perform(requestBuilder)
+                    .andExpectAll(
+                            status().isBadRequest(),
+                            jsonPath("$.status").exists(),
+                            jsonPath("$.status").value(expectedError.getStatus().value()),
+                            jsonPath("$.errorCode").exists(),
+                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
+                            jsonPath("$.message").exists(),
+                            jsonPath("$.message").value(message)
+                    )
+                    .andDo(
+                            document(
+                                    "UploadApi/Image/Description/Failure/Case1",
+                                    getDocumentRequest(),
+                                    getDocumentResponse(),
+                                    getHeaderWithAccessToken(),
+                                    requestParts(
+                                            partWithName("file")
+                                                    .description("스터디 설명에 포함되는 이미지")
+                                    ),
+                                    queryParameters(
+                                            parameterWithName("type")
+                                                    .description("이미지 업로드 타입")
+                                                    .attributes(constraint("주차별 이미지 = weekly / 스터디 설명 이미지 = description"))
+                                    ),
+                                    getExceptionResponseFiels()
+                            )
+                    );
+        }
 
         @Test
         @DisplayName("이미지를 전송하지 않거나 크기가 0인 이미지면 업로드를 실패한다")
@@ -189,13 +238,13 @@ class UploadApiControllerTest extends ControllerTest {
             mockingToken(true, MEMBER_ID);
             doThrow(StudyWithMeException.type(UploadErrorCode.FILE_IS_EMPTY))
                     .when(uploadStudyDescriptionImageUseCase)
-                    .upload(any());
+                    .uploadStudyDescriptionImage(any());
 
             // when
-            final MultipartFile file = new MockMultipartFile("file", new byte[0]);
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final MockMultipartFile file = new MockMultipartFile("file", new byte[0]);
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL)
-                    .file((MockMultipartFile) file)
+                    .file(file)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .queryParam("type", "description");
 
@@ -213,15 +262,17 @@ class UploadApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "UploadImageApi/Description/Failure",
+                                    "UploadApi/Image/Description/Failure/Case2",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     requestParts(
-                                            partWithName("file").description("글에 포함되는 이미지")
+                                            partWithName("file")
+                                                    .description("스터디 설명에 포함되는 이미지")
                                     ),
                                     queryParameters(
-                                            parameterWithName("type").description("이미지 업로드 타입")
+                                            parameterWithName("type")
+                                                    .description("이미지 업로드 타입")
                                                     .attributes(constraint("주차별 이미지 = weekly / 스터디 설명 이미지 = description"))
                                     ),
                                     getExceptionResponseFiels()
@@ -230,20 +281,17 @@ class UploadApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("이미지 업로드를 성공한다")
+        @DisplayName("스터디 설명에 포함되는 이미지를 업로드한다")
         void success() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
 
-            final String uploadLink = String.format(
-                    "https://kr.object.ncloudstorage.com/bucket/descriptions/%s.png",
-                    UUID.randomUUID()
-            );
-            given(uploadStudyDescriptionImageUseCase.upload(any())).willReturn(uploadLink);
+            final String uploadLink = "https://image-upload-link";
+            given(uploadStudyDescriptionImageUseCase.uploadStudyDescriptionImage(any())).willReturn(uploadLink);
 
             // when
             final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL)
                     .file((MockMultipartFile) file)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
@@ -258,19 +306,22 @@ class UploadApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "UploadImageApi/Description/Success",
+                                    "UploadApi/Image/Description/Success",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     requestParts(
-                                            partWithName("file").description("글에 포함되는 이미지")
+                                            partWithName("file")
+                                                    .description("스터디 설명에 포함되는 이미지")
                                     ),
                                     queryParameters(
-                                            parameterWithName("type").description("이미지 업로드 타입")
+                                            parameterWithName("type")
+                                                    .description("이미지 업로드 타입")
                                                     .attributes(constraint("주차별 이미지 = weekly / 스터디 설명 이미지 = description"))
                                     ),
                                     responseFields(
-                                            fieldWithPath("result").description("업로드된 이미지 링크")
+                                            fieldWithPath("result")
+                                                    .description("업로드된 이미지 링크")
                                     )
                             )
                     );
