@@ -9,6 +9,8 @@ include::auth/oauth.adoc[leveloffset=+1]
 
 include::auth/token-reissue.adoc[leveloffset=+1]
 
+include::category/category.adoc[leveloffset=+1]
+
 include::member-signup.adoc[leveloffset=+1]
 
 include::member-information.adoc[leveloffset=+1]
@@ -16,8 +18,6 @@ include::member-information.adoc[leveloffset=+1]
 include::member-review.adoc[leveloffset=+1]
 
 include::member-report.adoc[leveloffset=+1]
-
-include::category.adoc[leveloffset=+1]
 
 include::study-favorite.adoc[leveloffset=+1]
 

@@ -22,8 +22,9 @@ public class CategoryApiController {
 
     @Operation(summary = "스터디 카테고리 조회 EndPoint")
     @GetMapping
-    public ResponseEntity<ResponseWrapper<List<CategoryResponse>>> findAll() {
+    public ResponseEntity<ResponseWrapper<List<CategoryResponse>>> findAllCategories() {
         final List<CategoryResponse> result = queryAllCategoriesUseCase.findAllCategories();
+
         return ResponseEntity.ok(ResponseWrapper.from(result));
     }
 }
