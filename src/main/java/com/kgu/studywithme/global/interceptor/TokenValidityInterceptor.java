@@ -15,12 +15,16 @@ public class TokenValidityInterceptor implements HandlerInterceptor {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+    public boolean preHandle(
+            final HttpServletRequest request,
+            final HttpServletResponse response,
+            final Object handler
+    ) {
         if (CorsUtils.isPreFlightRequest(request)) {
             return true;
         }
 
-        Optional<String> token = AuthorizationExtractor.extractToken(request);
+        final Optional<String> token = AuthorizationExtractor.extractToken(request);
         return token
                 .map(jwtTokenProvider::isTokenValid)
                 .orElse(true);

@@ -11,13 +11,18 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 public class ExtractTokenArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
-    public boolean supportsParameter(MethodParameter parameter) {
+    public boolean supportsParameter(final MethodParameter parameter) {
         return parameter.hasParameterAnnotation(ExtractToken.class);
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
+    public Object resolveArgument(
+            final MethodParameter parameter,
+            final ModelAndViewContainer mavContainer,
+            final NativeWebRequest webRequest,
+            final WebDataBinderFactory binderFactory
+    ) {
+        final HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         return AuthorizationExtractor.extractToken(request)
                 .orElseThrow(() -> StudyWithMeException.type(AuthErrorCode.INVALID_PERMISSION));
     }

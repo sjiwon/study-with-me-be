@@ -15,14 +15,19 @@ public class ExtractPayloadArgumentResolver implements HandlerMethodArgumentReso
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    public boolean supportsParameter(MethodParameter parameter) {
+    public boolean supportsParameter(final MethodParameter parameter) {
         return parameter.hasParameterAnnotation(ExtractPayload.class);
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-        String token = AuthorizationExtractor.extractToken(request)
+    public Object resolveArgument(
+            final MethodParameter parameter,
+            final ModelAndViewContainer mavContainer,
+            final NativeWebRequest webRequest,
+            final WebDataBinderFactory binderFactory
+    ) {
+        final HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
+        final String token = AuthorizationExtractor.extractToken(request)
                 .orElseThrow(() -> StudyWithMeException.type(AuthErrorCode.INVALID_PERMISSION));
         return jwtTokenProvider.getId(token);
     }

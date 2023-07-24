@@ -6,7 +6,7 @@ import lombok.Getter;
 public class StudyWithMeException extends RuntimeException {
     private final ErrorCode code;
 
-    public StudyWithMeException(final ErrorCode code) {
+    private StudyWithMeException(final ErrorCode code) {
         super(code.getMessage());
         this.code = code;
     }
