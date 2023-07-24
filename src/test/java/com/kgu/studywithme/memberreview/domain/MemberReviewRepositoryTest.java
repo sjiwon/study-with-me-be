@@ -23,44 +23,50 @@ public class MemberReviewRepositoryTest extends RepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    private final Member[] reviewers = new Member[5];
     private Member reviewee;
+    private final Member[] reviewers = new Member[5];
 
     @BeforeEach
     void setUp() {
+        reviewee = memberRepository.save(JIWON.toMember());
         reviewers[0] = memberRepository.save(DUMMY1.toMember());
         reviewers[1] = memberRepository.save(DUMMY2.toMember());
         reviewers[2] = memberRepository.save(DUMMY3.toMember());
         reviewers[3] = memberRepository.save(DUMMY4.toMember());
         reviewers[4] = memberRepository.save(DUMMY5.toMember());
-        reviewee = memberRepository.save(JIWON.toMember());
     }
 
     @Test
     @DisplayName("사용자가 받은 리뷰를 조회한다")
-    void findAllReviewContentByRevieweeId() {
+    void findReviewContentById() {
         /* 3명 피어리뷰 */
         doReview(reviewers[0], reviewers[1], reviewers[2]);
 
-        List<String> result1 = memberReviewRepository.findAllReviewContentByRevieweeId(reviewee.getId());
-        assertThat(result1).hasSize(3);
-        assertThat(result1).containsExactly(
-                "BEST! - " + reviewers[0].getId(),
-                "BEST! - " + reviewers[1].getId(),
-                "BEST! - " + reviewers[2].getId()
+        final List<String> result1 = memberReviewRepository.findReviewContentById(reviewee.getId());
+        assertAll(
+                () -> assertThat(result1).hasSize(3),
+                () -> assertThat(result1)
+                        .containsExactly(
+                                "BEST! - " + reviewers[0].getId(),
+                                "BEST! - " + reviewers[1].getId(),
+                                "BEST! - " + reviewers[2].getId()
+                        )
         );
 
         /* 추가 2명 피어리뷰 */
         doReview(reviewers[3], reviewers[4]);
 
-        List<String> result2 = memberReviewRepository.findAllReviewContentByRevieweeId(reviewee.getId());
-        assertThat(result2).hasSize(5);
-        assertThat(result2).containsExactly(
-                "BEST! - " + reviewers[0].getId(),
-                "BEST! - " + reviewers[1].getId(),
-                "BEST! - " + reviewers[2].getId(),
-                "BEST! - " + reviewers[3].getId(),
-                "BEST! - " + reviewers[4].getId()
+        final List<String> result2 = memberReviewRepository.findReviewContentById(reviewee.getId());
+        assertAll(
+                () -> assertThat(result2).hasSize(5),
+                () -> assertThat(result2)
+                        .containsExactly(
+                                "BEST! - " + reviewers[0].getId(),
+                                "BEST! - " + reviewers[1].getId(),
+                                "BEST! - " + reviewers[2].getId(),
+                                "BEST! - " + reviewers[3].getId(),
+                                "BEST! - " + reviewers[4].getId()
+                        )
         );
     }
 
@@ -68,7 +74,18 @@ public class MemberReviewRepositoryTest extends RepositoryTest {
     @DisplayName("리뷰 대상자 ID와 리뷰 작성자 ID로 리뷰를 조회한다")
     void findByReviewerIdAndRevieweeId() {
         doReview(reviewers[0], reviewers[1], reviewers[2], reviewers[3], reviewers[4]);
-        assertThatMemberReviewMatch();
+
+        for (Member reviewer : reviewers) {
+            final MemberReview review =
+                    memberReviewRepository.findByReviewerIdAndRevieweeId(reviewer.getId(), reviewee.getId())
+                            .orElseThrow();
+
+            assertAll(
+                    () -> assertThat(review.getReviewerId()).isEqualTo(reviewer.getId()),
+                    () -> assertThat(review.getRevieweeId()).isEqualTo(reviewee.getId()),
+                    () -> assertThat(review.getContent()).isEqualTo("BEST! - " + reviewer.getId())
+            );
+        }
     }
 
     @Test
@@ -78,11 +95,11 @@ public class MemberReviewRepositoryTest extends RepositoryTest {
         doReview(reviewers[1], reviewers[3]);
 
         // when
-        boolean actual1 = memberReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[0].getId(), reviewee.getId());
-        boolean actual2 = memberReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[1].getId(), reviewee.getId());
-        boolean actual3 = memberReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[2].getId(), reviewee.getId());
-        boolean actual4 = memberReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[3].getId(), reviewee.getId());
-        boolean actual5 = memberReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[4].getId(), reviewee.getId());
+        final boolean actual1 = memberReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[0].getId(), reviewee.getId());
+        final boolean actual2 = memberReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[1].getId(), reviewee.getId());
+        final boolean actual3 = memberReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[2].getId(), reviewee.getId());
+        final boolean actual4 = memberReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[3].getId(), reviewee.getId());
+        final boolean actual5 = memberReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[4].getId(), reviewee.getId());
 
         // then
         assertAll(
@@ -94,33 +111,17 @@ public class MemberReviewRepositoryTest extends RepositoryTest {
         );
     }
 
-    private void doReview(Member... reviewers) {
-        Arrays.stream(reviewers)
-                .forEach(reviewer ->
-                        memberReviewRepository.save(
+    private void doReview(final Member... reviewers) {
+        memberReviewRepository.saveAll(
+                Arrays.stream(reviewers)
+                        .map(reviewer ->
                                 MemberReview.doReview(
                                         reviewer.getId(),
                                         reviewee.getId(),
                                         "BEST! - " + reviewer.getId()
                                 )
                         )
-                );
-    }
-
-    private void assertThatMemberReviewMatch() {
-        for (Member reviewer : reviewers) {
-            MemberReview memberReview = getMemberReview(reviewer.getId(), reviewee.getId());
-
-            assertAll(
-                    () -> assertThat(memberReview.getReviewerId()).isEqualTo(reviewer.getId()),
-                    () -> assertThat(memberReview.getRevieweeId()).isEqualTo(reviewee.getId()),
-                    () -> assertThat(memberReview.getContent()).isEqualTo("BEST! - " + reviewer.getId())
-            );
-        }
-    }
-
-    private MemberReview getMemberReview(Long reviewerId, Long revieweeId) {
-        return memberReviewRepository.findByReviewerIdAndRevieweeId(reviewerId, revieweeId)
-                .orElseThrow();
+                        .toList()
+        );
     }
 }

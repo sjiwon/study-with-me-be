@@ -35,7 +35,7 @@ public class UpdateMemberReviewService implements UpdateMemberReviewUseCase {
             final MemberReview memberReview,
             final String updateContent
     ) {
-        if (memberReview.isReviewSame(updateContent)) {
+        if (memberReview.isSameContent(updateContent)) {
             throw StudyWithMeException.type(MemberReviewErrorCode.CONTENT_SAME_AS_BEFORE);
         }
     }

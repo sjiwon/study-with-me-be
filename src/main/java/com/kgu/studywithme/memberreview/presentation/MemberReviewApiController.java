@@ -1,6 +1,7 @@
 package com.kgu.studywithme.memberreview.presentation;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
+import com.kgu.studywithme.global.aop.CheckAuthUser;
 import com.kgu.studywithme.memberreview.application.usecase.command.UpdateMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.presentation.dto.request.UpdateMemberReviewRequest;
@@ -21,8 +22,9 @@ public class MemberReviewApiController {
     private final UpdateMemberReviewUseCase updateMemberReviewUseCase;
 
     @Operation(summary = "피어리뷰 작성 EndPoint")
+    @CheckAuthUser
     @PostMapping
-    public ResponseEntity<Void> writeReview(
+    public ResponseEntity<Void> writeMemberReview(
             @ExtractPayload final Long reviewerId,
             @PathVariable final Long revieweeId,
             @RequestBody @Valid final WriteMemberReviewRequest request
@@ -34,8 +36,9 @@ public class MemberReviewApiController {
     }
 
     @Operation(summary = "피어리뷰 수정 EndPoint")
+    @CheckAuthUser
     @PatchMapping
-    public ResponseEntity<Void> updateReview(
+    public ResponseEntity<Void> updateMemberReview(
             @ExtractPayload final Long reviewerId,
             @PathVariable final Long revieweeId,
             @RequestBody @Valid final UpdateMemberReviewRequest request

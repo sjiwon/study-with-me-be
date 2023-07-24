@@ -18,6 +18,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -47,9 +48,13 @@ class WriteMemberReviewServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberReviewErrorCode.SELF_REVIEW_NOT_ALLOWED.getMessage());
 
-        verify(memberRepository, times(0)).findParticipateWeeksInStudyByMemberId(any());
-        verify(memberReviewRepository, times(0)).existsByReviewerIdAndRevieweeId(any(), any());
-        verify(memberReviewRepository, times(0)).save(any());
+        assertAll(
+                () -> verify(memberRepository, times(0))
+                        .findParticipateWeeksInStudyByMemberId(any()),
+                () -> verify(memberReviewRepository, times(0))
+                        .existsByReviewerIdAndRevieweeId(any(), any()),
+                () -> verify(memberReviewRepository, times(0)).save(any())
+        );
     }
 
     @Test
@@ -66,9 +71,13 @@ class WriteMemberReviewServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberReviewErrorCode.COMMON_STUDY_RECORD_NOT_FOUND.getMessage());
 
-        verify(memberRepository, times(2)).findParticipateWeeksInStudyByMemberId(any());
-        verify(memberReviewRepository, times(0)).existsByReviewerIdAndRevieweeId(any(), any());
-        verify(memberReviewRepository, times(0)).save(any());
+        assertAll(
+                () -> verify(memberRepository, times(2))
+                        .findParticipateWeeksInStudyByMemberId(any()),
+                () -> verify(memberReviewRepository, times(0))
+                        .existsByReviewerIdAndRevieweeId(any(), any()),
+                () -> verify(memberReviewRepository, times(0)).save(any())
+        );
     }
 
     @Test
@@ -87,13 +96,17 @@ class WriteMemberReviewServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberReviewErrorCode.ALREADY_REVIEW.getMessage());
 
-        verify(memberRepository, times(2)).findParticipateWeeksInStudyByMemberId(any());
-        verify(memberReviewRepository, times(1)).existsByReviewerIdAndRevieweeId(any(), any());
-        verify(memberReviewRepository, times(0)).save(any());
+        assertAll(
+                () -> verify(memberRepository, times(2))
+                        .findParticipateWeeksInStudyByMemberId(any()),
+                () -> verify(memberReviewRepository, times(1))
+                        .existsByReviewerIdAndRevieweeId(any(), any()),
+                () -> verify(memberReviewRepository, times(0)).save(any())
+        );
     }
 
     @Test
-    @DisplayName("리뷰 작성에 성공한다")
+    @DisplayName("리뷰를 작성한다")
     void success() {
         // given
         given(memberRepository.findParticipateWeeksInStudyByMemberId(1L))
@@ -103,16 +116,21 @@ class WriteMemberReviewServiceTest extends UseCaseTest {
         given(memberReviewRepository.existsByReviewerIdAndRevieweeId(1L, 2L))
                 .willReturn(false);
 
-        final MemberReview memberReview = MemberReview.doReview(1L, 2L, "Good").apply(1L, LocalDateTime.now());
+        final MemberReview memberReview = MemberReview.doReview(1L, 2L, "Good")
+                .apply(1L, LocalDateTime.now());
         given(memberReviewRepository.save(any())).willReturn(memberReview);
 
         // when
-        Long memberReviewId = writeMemberReviewService.writeMemberReview(command);
+        final Long memberReviewId = writeMemberReviewService.writeMemberReview(command);
 
         // then
-        verify(memberRepository, times(2)).findParticipateWeeksInStudyByMemberId(any());
-        verify(memberReviewRepository, times(1)).existsByReviewerIdAndRevieweeId(any(), any());
-        verify(memberReviewRepository, times(1)).save(any());
-        assertThat(memberReviewId).isEqualTo(memberReview.getId());
+        assertAll(
+                () -> verify(memberRepository, times(2))
+                        .findParticipateWeeksInStudyByMemberId(any()),
+                () -> verify(memberReviewRepository, times(1))
+                        .existsByReviewerIdAndRevieweeId(any(), any()),
+                () -> verify(memberReviewRepository, times(1)).save(any()),
+                () -> assertThat(memberReviewId).isEqualTo(memberReview.getId())
+        );
     }
 }

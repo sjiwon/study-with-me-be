@@ -44,7 +44,7 @@ public class MemberReview extends BaseEntity<MemberReview> {
         this.content = content;
     }
 
-    public boolean isReviewSame(final String updateContent) {
+    public boolean isSameContent(final String updateContent) {
         return this.content.equals(updateContent);
     }
 }

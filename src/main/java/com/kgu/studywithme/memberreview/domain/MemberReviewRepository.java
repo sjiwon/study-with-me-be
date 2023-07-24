@@ -12,7 +12,7 @@ public interface MemberReviewRepository extends JpaRepository<MemberReview, Long
     @Query("SELECT mr.content" +
             " FROM MemberReview mr" +
             " WHERE mr.revieweeId = :revieweeId")
-    List<String> findAllReviewContentByRevieweeId(@Param("revieweeId") Long revieweeId);
+    List<String> findReviewContentById(@Param("revieweeId") Long revieweeId);
 
     // Query Method
     Optional<MemberReview> findByReviewerIdAndRevieweeId(Long reviewerId, Long revieweeId);

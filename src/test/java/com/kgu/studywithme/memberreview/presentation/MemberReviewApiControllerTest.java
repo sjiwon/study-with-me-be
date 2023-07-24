@@ -47,7 +47,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
 
             // when
             final WriteMemberReviewRequest request = new WriteMemberReviewRequest("스터디에 참여를 잘해요");
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, REVIEWEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
@@ -72,10 +72,12 @@ class MemberReviewApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("revieweeId").description("리뷰 작성 대상자 ID(PK)")
+                                            parameterWithName("revieweeId")
+                                                    .description("리뷰 작성 대상자 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("content").description("리뷰 내용")
+                                            fieldWithPath("content")
+                                                    .description("리뷰 내용")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -93,7 +95,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
 
             // when
             final WriteMemberReviewRequest request = new WriteMemberReviewRequest("스터디에 참여를 잘해요");
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, REVIEWEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
@@ -118,10 +120,12 @@ class MemberReviewApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("revieweeId").description("리뷰 작성 대상자 ID(PK)")
+                                            parameterWithName("revieweeId")
+                                                    .description("리뷰 작성 대상자 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("content").description("리뷰 내용")
+                                            fieldWithPath("content")
+                                                    .description("리뷰 내용")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -139,7 +143,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
 
             // when
             final WriteMemberReviewRequest request = new WriteMemberReviewRequest("스터디에 참여를 잘해요");
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, REVIEWEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
@@ -164,10 +168,12 @@ class MemberReviewApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("revieweeId").description("리뷰 작성 대상자 ID(PK)")
+                                            parameterWithName("revieweeId")
+                                                    .description("리뷰 작성 대상자 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("content").description("리뷰 내용")
+                                            fieldWithPath("content")
+                                                    .description("리뷰 내용")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -175,7 +181,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("리뷰 작성에 성공한다")
+        @DisplayName("리뷰를 작성한다")
         void success() throws Exception {
             // given
             mockingToken(true, REVIEWER_ID);
@@ -183,7 +189,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
 
             // when
             final WriteMemberReviewRequest request = new WriteMemberReviewRequest("스터디에 참여를 잘해요");
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, REVIEWEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
@@ -199,10 +205,12 @@ class MemberReviewApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("revieweeId").description("리뷰 작성 대상자 ID(PK)")
+                                            parameterWithName("revieweeId")
+                                                    .description("리뷰 작성 대상자 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("content").description("리뷰 내용")
+                                            fieldWithPath("content")
+                                                    .description("리뷰 내용")
                                     )
                             )
                     );
@@ -217,7 +225,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
         private static final Long REVIEWER_ID = 2L;
 
         @Test
-        @DisplayName("작성한 리뷰가 없다면 수정할 수 없다")
+        @DisplayName("해당 사용자에게 작성한 리뷰가 없다면 수정할 수 없다")
         void throwExceptionByMemberReviewNotFound() throws Exception {
             // given
             mockingToken(true, REVIEWER_ID);
@@ -227,7 +235,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
 
             // when
             final UpdateMemberReviewRequest request = new UpdateMemberReviewRequest("스터디에 참여를 잘해요");
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, REVIEWEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
@@ -252,10 +260,12 @@ class MemberReviewApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("revieweeId").description("리뷰 수정 대상자 ID(PK)")
+                                            parameterWithName("revieweeId")
+                                                    .description("리뷰 수정 대상자 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("content").description("수정할 리뷰 내용")
+                                            fieldWithPath("content")
+                                                    .description("수정할 리뷰 내용")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -273,7 +283,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
 
             // when
             final UpdateMemberReviewRequest request = new UpdateMemberReviewRequest("스터디에 참여를 잘해요");
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, REVIEWEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
@@ -298,10 +308,12 @@ class MemberReviewApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("revieweeId").description("리뷰 수정 대상자 ID(PK)")
+                                            parameterWithName("revieweeId")
+                                                    .description("리뷰 수정 대상자 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("content").description("수정할 리뷰 내용")
+                                            fieldWithPath("content")
+                                                    .description("수정할 리뷰 내용")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -309,7 +321,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("리뷰 수정에 성공한다")
+        @DisplayName("작성한 리뷰를 수정한다")
         void success() throws Exception {
             // given
             mockingToken(true, REVIEWER_ID);
@@ -319,7 +331,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
 
             // when
             final UpdateMemberReviewRequest request = new UpdateMemberReviewRequest("스터디에 참여를 잘해요");
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, REVIEWEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
@@ -335,10 +347,12 @@ class MemberReviewApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("revieweeId").description("리뷰 수정 대상자 ID(PK)")
+                                            parameterWithName("revieweeId")
+                                                    .description("리뷰 수정 대상자 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("content").description("수정할 리뷰 내용")
+                                            fieldWithPath("content")
+                                                    .description("수정할 리뷰 내용")
                                     )
                             )
                     );

@@ -29,8 +29,8 @@ class MemberReviewTest {
         final MemberReview memberReview = MemberReview.doReview(1L, 2L, "Good!!");
 
         // when
-        boolean actual1 = memberReview.isReviewSame("Good!!");
-        boolean actual2 = memberReview.isReviewSame("Bad..");
+        final boolean actual1 = memberReview.isSameContent("Good!!");
+        final boolean actual2 = memberReview.isSameContent("Bad..");
 
         // then
         assertAll(
