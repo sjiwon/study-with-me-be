@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class StudyReviewTest {
     private final Member memberA = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Member memberB = GHOST.toMember().apply(2L, LocalDateTime.now());
-    private final Study study = SPRING.toOnlineStudy(memberA.getId());
+    private final Study study = SPRING.toOnlineStudy(memberA.getId()).apply(1L, LocalDateTime.now());
     private final StudyReview review = StudyReview.writeReview(
             study.getId(),
             memberB.getId(),
@@ -38,8 +38,8 @@ class StudyReviewTest {
     @DisplayName("스터디 리뷰 작성자인지 확인한다")
     void isWriter() {
         // when
-        boolean actual1 = review.isWriter(memberA.getId());
-        boolean actual2 = review.isWriter(memberB.getId());
+        final boolean actual1 = review.isWriter(memberA.getId());
+        final boolean actual2 = review.isWriter(memberB.getId());
 
         // then
         assertAll(

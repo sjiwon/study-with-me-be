@@ -36,6 +36,7 @@ class StudyReviewApiControllerTest extends ControllerTest {
         private static final Long STUDY_ID = 1L;
         private static final Long MEMBER_ID = 1L;
         private static final Long ANONYMOUS_ID = 2L;
+        private static final WriteStudyReviewRequest REQUEST = new WriteStudyReviewRequest("체계적으로 스터디가 이루어져서 좋아요");
 
         @Test
         @DisplayName("스터디 졸업자가 아니면 리뷰를 작성할 수 없다")
@@ -47,12 +48,11 @@ class StudyReviewApiControllerTest extends ControllerTest {
                     .writeStudyReview(any());
 
             // when
-            final WriteStudyReviewRequest request = new WriteStudyReviewRequest("체계적으로 스터디가 이루어져서 좋아요");
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, STUDY_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             final StudyReviewErrorCode expectedError = StudyReviewErrorCode.ONLY_GRADUATED_PARTICIPANT_CAN_WRITE_REVIEW;
@@ -68,15 +68,17 @@ class StudyReviewApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "StudyApi/Review/Write/Failure",
+                                    "StudyApi/Review/Write/Failure/Case1",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("content").description("리뷰 내용")
+                                            fieldWithPath("content")
+                                                    .description("리뷰 내용")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -84,19 +86,65 @@ class StudyReviewApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("리뷰 작성에 성공한다")
+        @DisplayName("이미 리뷰를 작성했다면 추가 작성할 수 없다")
+        void throwExceptionByMemberIsAlreadyWrittenReview() throws Exception {
+            // given
+            mockingToken(true, ANONYMOUS_ID);
+            doThrow(StudyWithMeException.type(StudyReviewErrorCode.ALREADY_WRITTEN))
+                    .when(writeStudyReviewUseCase)
+                    .writeStudyReview(any());
+
+            // when
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+                    .post(BASE_URL, STUDY_ID)
+                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
+                    .contentType(APPLICATION_JSON)
+                    .content(convertObjectToJson(REQUEST));
+
+            // then
+            final StudyReviewErrorCode expectedError = StudyReviewErrorCode.ALREADY_WRITTEN;
+            mockMvc.perform(requestBuilder)
+                    .andExpectAll(
+                            status().isConflict(),
+                            jsonPath("$.status").exists(),
+                            jsonPath("$.status").value(expectedError.getStatus().value()),
+                            jsonPath("$.errorCode").exists(),
+                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
+                            jsonPath("$.message").exists(),
+                            jsonPath("$.message").value(expectedError.getMessage())
+                    )
+                    .andDo(
+                            document(
+                                    "StudyApi/Review/Write/Failure/Case2",
+                                    getDocumentRequest(),
+                                    getDocumentResponse(),
+                                    getHeaderWithAccessToken(),
+                                    pathParameters(
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
+                                    ),
+                                    requestFields(
+                                            fieldWithPath("content")
+                                                    .description("리뷰 내용")
+                                    ),
+                                    getExceptionResponseFiels()
+                            )
+                    );
+        }
+
+        @Test
+        @DisplayName("스터디 리뷰를 작성한다")
         void success() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
             given(writeStudyReviewUseCase.writeStudyReview(any())).willReturn(1L);
 
             // when
-            final WriteStudyReviewRequest request = new WriteStudyReviewRequest("체계적으로 스터디가 이루어져서 좋아요");
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, STUDY_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             mockMvc.perform(requestBuilder)
@@ -108,10 +156,12 @@ class StudyReviewApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("content").description("리뷰 내용")
+                                            fieldWithPath("content")
+                                                    .description("리뷰 내용")
                                     )
                             )
                     );
@@ -126,6 +176,7 @@ class StudyReviewApiControllerTest extends ControllerTest {
         private static final Long REVIEW_ID = 1L;
         private static final Long WRITER_ID = 1L;
         private static final Long ANONYMOUS_ID = 2L;
+        private static final UpdateStudyReviewRequest REQUEST = new UpdateStudyReviewRequest("체계적으로 스터디가 이루어져서 좋아요");
 
         @Test
         @DisplayName("스터디 리뷰 작성자가 아닌 사람이 수정을 시도하면 예외가 발생한다")
@@ -137,12 +188,11 @@ class StudyReviewApiControllerTest extends ControllerTest {
                     .updateStudyReview(any());
 
             // when
-            final UpdateStudyReviewRequest request = new UpdateStudyReviewRequest("체계적으로 스터디가 이루어져서 좋아요");
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID, REVIEW_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             final StudyReviewErrorCode expectedError = StudyReviewErrorCode.ONLY_WRITER_CAN_UPDATE;
@@ -163,11 +213,14 @@ class StudyReviewApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("reviewId").description("수정할 리뷰 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("reviewId")
+                                                    .description("수정할 리뷰 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("content").description("수정할 리뷰 내용")
+                                            fieldWithPath("content")
+                                                    .description("수정할 리뷰 내용")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -184,12 +237,11 @@ class StudyReviewApiControllerTest extends ControllerTest {
                     .updateStudyReview(any());
 
             // when
-            final UpdateStudyReviewRequest request = new UpdateStudyReviewRequest("체계적으로 스터디가 이루어져서 좋아요");
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID, REVIEW_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             mockMvc.perform(requestBuilder)
@@ -201,11 +253,14 @@ class StudyReviewApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("reviewId").description("수정할 리뷰 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("reviewId")
+                                                    .description("수정할 리뷰 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("content").description("수정할 리뷰 내용")
+                                            fieldWithPath("content")
+                                                    .description("수정할 리뷰 내용")
                                     )
                             )
                     );
@@ -254,8 +309,10 @@ class StudyReviewApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("reviewId").description("삭제할 리뷰 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("reviewId")
+                                                    .description("삭제할 리뷰 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -286,8 +343,10 @@ class StudyReviewApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("reviewId").description("삭제할 리뷰 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("reviewId")
+                                                    .description("삭제할 리뷰 ID(PK)")
                                     )
                             )
                     );

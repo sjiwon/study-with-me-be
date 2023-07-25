@@ -20,6 +20,7 @@ import static com.kgu.studywithme.fixture.MemberFixture.GHOST;
 import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.fixture.StudyFixture.SPRING;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -57,8 +58,11 @@ class DeleteStudyReviewServiceTest extends UseCaseTest {
         ))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyReviewErrorCode.ONLY_WRITER_CAN_DELETE.getMessage());
-        verify(studyReviewRepository, times(1)).findById(any());
-        verify(studyReviewRepository, times(0)).delete(any());
+
+        assertAll(
+                () -> verify(studyReviewRepository, times(1)).findById(any()),
+                () -> verify(studyReviewRepository, times(0)).delete(any())
+        );
     }
 
     @Test
@@ -76,7 +80,9 @@ class DeleteStudyReviewServiceTest extends UseCaseTest {
         );
 
         // then
-        verify(studyReviewRepository, times(1)).findById(any());
-        verify(studyReviewRepository, times(1)).delete(any());
+        assertAll(
+                () -> verify(studyReviewRepository, times(1)).findById(any()),
+                () -> verify(studyReviewRepository, times(1)).delete(any())
+        );
     }
 }

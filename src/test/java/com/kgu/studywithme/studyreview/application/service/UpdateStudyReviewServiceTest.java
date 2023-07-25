@@ -21,6 +21,7 @@ import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.fixture.StudyFixture.SPRING;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -59,6 +60,7 @@ class UpdateStudyReviewServiceTest extends UseCaseTest {
         ))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyReviewErrorCode.ONLY_WRITER_CAN_UPDATE.getMessage());
+
         verify(studyReviewRepository, times(1)).findById(any());
     }
 
@@ -78,7 +80,9 @@ class UpdateStudyReviewServiceTest extends UseCaseTest {
         );
 
         // then
-        verify(studyReviewRepository, times(1)).findById(any());
-        assertThat(review.getContent()).isEqualTo("졸업자 리뷰 - 수정");
+        assertAll(
+                () -> verify(studyReviewRepository, times(1)).findById(any()),
+                () -> assertThat(review.getContent()).isEqualTo("졸업자 리뷰 - 수정")
+        );
     }
 }
