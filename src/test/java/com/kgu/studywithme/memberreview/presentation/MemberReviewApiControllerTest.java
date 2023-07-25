@@ -57,7 +57,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
             final MemberReviewErrorCode expectedError = MemberReviewErrorCode.SELF_REVIEW_NOT_ALLOWED;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
-                            status().isBadRequest(),
+                            status().isConflict(),
                             jsonPath("$.status").exists(),
                             jsonPath("$.status").value(expectedError.getStatus().value()),
                             jsonPath("$.errorCode").exists(),
