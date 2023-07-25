@@ -274,7 +274,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
         void throwExceptionByContentSameAsBefore() throws Exception {
             // given
             mockingToken(true, REVIEWER_ID);
-            doThrow(StudyWithMeException.type(MemberReviewErrorCode.CONTENT_SAME_AS_BEFORE))
+            doThrow(StudyWithMeException.type(MemberReviewErrorCode.REVIEW_SAME_AS_BEFORE))
                     .when(updateMemberReviewUseCase)
                     .updateMemberReview(any());
 
@@ -286,7 +286,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
                     .content(convertObjectToJson(REQUEST));
 
             // then
-            final MemberReviewErrorCode expectedError = MemberReviewErrorCode.CONTENT_SAME_AS_BEFORE;
+            final MemberReviewErrorCode expectedError = MemberReviewErrorCode.REVIEW_SAME_AS_BEFORE;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
                             status().isConflict(),

@@ -18,8 +18,6 @@ public class UpdateMemberReviewService implements UpdateMemberReviewUseCase {
     @Override
     public void updateMemberReview(final Command command) {
         final MemberReview memberReview = getPeerReview(command.reviewerId(), command.revieweeId());
-        validateReviewSameAsBefore(memberReview, command.content());
-
         memberReview.updateReview(command.content());
     }
 
@@ -29,14 +27,5 @@ public class UpdateMemberReviewService implements UpdateMemberReviewUseCase {
     ) {
         return memberReviewRepository.findByReviewerIdAndRevieweeId(reviewerId, revieweeId)
                 .orElseThrow(() -> StudyWithMeException.type(MemberReviewErrorCode.MEMBER_REVIEW_NOT_FOUND));
-    }
-
-    private void validateReviewSameAsBefore(
-            final MemberReview memberReview,
-            final String updateContent
-    ) {
-        if (memberReview.isSameContent(updateContent)) {
-            throw StudyWithMeException.type(MemberReviewErrorCode.CONTENT_SAME_AS_BEFORE);
-        }
     }
 }

@@ -60,7 +60,7 @@ class UpdateMemberReviewServiceTest extends UseCaseTest {
                 new UpdateMemberReviewUseCase.Command(1L, 3L, memberReview.getContent())
         ))
                 .isInstanceOf(StudyWithMeException.class)
-                .hasMessage(MemberReviewErrorCode.CONTENT_SAME_AS_BEFORE.getMessage());
+                .hasMessage(MemberReviewErrorCode.REVIEW_SAME_AS_BEFORE.getMessage());
 
         verify(memberReviewRepository, times(1)).findByReviewerIdAndRevieweeId(any(), any());
     }

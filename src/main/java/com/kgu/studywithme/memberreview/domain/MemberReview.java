@@ -1,6 +1,8 @@
 package com.kgu.studywithme.memberreview.domain;
 
 import com.kgu.studywithme.global.BaseEntity;
+import com.kgu.studywithme.global.exception.StudyWithMeException;
+import com.kgu.studywithme.memberreview.exception.MemberReviewErrorCode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -41,10 +43,13 @@ public class MemberReview extends BaseEntity<MemberReview> {
     }
 
     public void updateReview(final String content) {
+        validateReviewSameAsBefore(content);
         this.content = content;
     }
 
-    public boolean isSameContent(final String updateContent) {
-        return this.content.equals(updateContent);
+    private void validateReviewSameAsBefore(final String updateContent) {
+        if (this.content.equals(updateContent)) {
+            throw StudyWithMeException.type(MemberReviewErrorCode.REVIEW_SAME_AS_BEFORE);
+        }
     }
 }
