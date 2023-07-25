@@ -18,22 +18,18 @@ public class Capacity {
     @Column(name = "capacity", nullable = false)
     private int value;
 
-    private Capacity(final int value) {
+    public Capacity(final int value) {
+        validateCapacityIsInRange(value);
         this.value = value;
     }
 
-    public static Capacity from(final int value) {
-        validateCapacityIsInRange(value);
-        return new Capacity(value);
-    }
-
-    private static void validateCapacityIsInRange(final int value) {
+    private void validateCapacityIsInRange(final int value) {
         if (isOutOfRange(value)) {
             throw StudyWithMeException.type(StudyErrorCode.CAPACITY_IS_OUT_OF_RANGE);
         }
     }
 
-    private static boolean isOutOfRange(final int capacity) {
+    private boolean isOutOfRange(final int capacity) {
         return (capacity < MINIMUM) || (MAXIMUM < capacity);
     }
 

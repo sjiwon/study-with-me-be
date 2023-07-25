@@ -20,7 +20,7 @@ class CapacityTest {
     @ValueSource(ints = {-1, 0, 1, 11})
     @DisplayName("범위를 넘어가는 값에 의해서 Capacity 생성에 실패한다")
     void throwExceptionByCapacityOutOfRange(final int value) {
-        assertThatThrownBy(() -> Capacity.from(value))
+        assertThatThrownBy(() -> new Capacity(value))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyErrorCode.CAPACITY_IS_OUT_OF_RANGE.getMessage());
     }
@@ -29,14 +29,14 @@ class CapacityTest {
     @ValueSource(ints = {2, 5, 10})
     @DisplayName("수용할 수 있는 값으로 Capacity를 생성한다")
     void construct(final int value) {
-        assertDoesNotThrow(() -> Capacity.from(value));
+        assertDoesNotThrow(() -> new Capacity(value));
     }
 
     @ParameterizedTest
     @MethodSource("isEqualOrLessThan")
     @DisplayName("비교값에 대해서 Capacity가 같거나 더 작음을 판별한다")
     void isEqualOrLessThan(final int compareValue, final boolean expected) {
-        final Capacity capacity = Capacity.from(2);
+        final Capacity capacity = new Capacity(2);
         assertThat(capacity.isEqualOrLessThan(compareValue)).isEqualTo(expected);
     }
 
@@ -52,7 +52,7 @@ class CapacityTest {
     @MethodSource("isLessThan")
     @DisplayName("비교값에 대해서 Capacity가 더 작음을 판별한다")
     void isLessThan(final int compareValue, final boolean expected) {
-        final Capacity capacity = Capacity.from(2);
+        final Capacity capacity = new Capacity(2);
         assertThat(capacity.isLessThan(compareValue)).isEqualTo(expected);
     }
 

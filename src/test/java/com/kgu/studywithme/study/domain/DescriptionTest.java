@@ -13,7 +13,7 @@ class DescriptionTest {
     @Test
     @DisplayName("Description이 공백이면 생성에 실패한다")
     void throwExceptionByDescriptionIsBlank() {
-        assertThatThrownBy(() -> Description.from(""))
+        assertThatThrownBy(() -> new Description(""))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyErrorCode.DESCRIPTION_IS_BLANK.getMessage());
     }
@@ -21,6 +21,6 @@ class DescriptionTest {
     @Test
     @DisplayName("Description을 생성한다")
     void construct() {
-        assertDoesNotThrow(() -> Description.from("a".repeat(999)));
+        assertDoesNotThrow(() -> new Description("a".repeat(999)));
     }
 }

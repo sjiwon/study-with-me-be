@@ -15,7 +15,7 @@ class StudyNameTest {
     @Test
     @DisplayName("StudyName이 공백이면 생성에 실패한다")
     void throwExceptionByNameIsBlank() {
-        assertThatThrownBy(() -> StudyName.from(""))
+        assertThatThrownBy(() -> new StudyName(""))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyErrorCode.NAME_IS_BLANK.getMessage());
     }
@@ -23,7 +23,7 @@ class StudyNameTest {
     @Test
     @DisplayName("StudyName이 길이 제한을 넘어선다면 생성에 실패한다")
     void throwExceptionByNameLengthIsOutOfRange() {
-        assertThatThrownBy(() -> StudyName.from("a".repeat(21)))
+        assertThatThrownBy(() -> new StudyName("a".repeat(21)))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyErrorCode.NAME_LENGTH_IS_OUT_OF_RANGE.getMessage());
     }
@@ -32,6 +32,6 @@ class StudyNameTest {
     @ValueSource(strings = {"a", "aaaaaaaaaaaaaaaaaaaa"})
     @DisplayName("StudyName을 생성한다")
     void construct(final String value) {
-        assertDoesNotThrow(() -> StudyName.from(value));
+        assertDoesNotThrow(() -> new StudyName(value));
     }
 }

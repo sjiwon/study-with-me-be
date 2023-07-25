@@ -123,16 +123,14 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
                                     new AppliedStudy(
                                             1L,
                                             SPRING.getName(),
-                                            SPRING.getCategory().getName(),
-                                            SPRING.getThumbnail().getImageName(),
-                                            SPRING.getThumbnail().getBackground()
+                                            SPRING.getCategory(),
+                                            SPRING.getThumbnail()
                                     ),
                                     new AppliedStudy(
                                             2L,
                                             JPA.getName(),
-                                            JPA.getCategory().getName(),
-                                            JPA.getThumbnail().getImageName(),
-                                            JPA.getThumbnail().getBackground()
+                                            JPA.getCategory(),
+                                            JPA.getThumbnail()
                                     )
                             )
                     );
@@ -185,16 +183,14 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
                                     new LikeMarkedStudy(
                                             1L,
                                             SPRING.getName(),
-                                            SPRING.getCategory().getName(),
-                                            SPRING.getThumbnail().getImageName(),
-                                            SPRING.getThumbnail().getBackground()
+                                            SPRING.getCategory(),
+                                            SPRING.getThumbnail()
                                     ),
                                     new LikeMarkedStudy(
                                             2L,
                                             JPA.getName(),
-                                            JPA.getCategory().getName(),
-                                            JPA.getThumbnail().getImageName(),
-                                            JPA.getThumbnail().getBackground()
+                                            JPA.getCategory(),
+                                            JPA.getThumbnail()
                                     )
                             )
                     );

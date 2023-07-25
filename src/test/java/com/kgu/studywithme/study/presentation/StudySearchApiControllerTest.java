@@ -60,37 +60,57 @@ class StudySearchApiControllerTest extends ControllerTest {
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     queryParameters(
-                                            parameterWithName("category").description("카테고리 ID"),
-                                            parameterWithName("sort").description("정렬 기준")
+                                            parameterWithName("category")
+                                                    .description("카테고리 ID"),
+                                            parameterWithName("sort")
+                                                    .description("정렬 기준")
                                                     .attributes(constraint("date=최신순 / favorite=찜 / review=리뷰")),
-                                            parameterWithName("page").description("현재 페이지")
+                                            parameterWithName("page")
+                                                    .description("현재 페이지")
                                                     .attributes(constraint("시작 페이지 = 0")),
-                                            parameterWithName("type").description("온라인/오프라인 유무")
+                                            parameterWithName("type")
+                                                    .description("온라인/오프라인 유무")
                                                     .optional()
                                                     .attributes(constraint("null(온 + 오프) / online / offline")),
-                                            parameterWithName("province").description("오프라인 스터디 지역 [경기도, 강원도, ...]")
+                                            parameterWithName("province")
+                                                    .description("오프라인 스터디 지역 [경기도, 강원도, ...]")
                                                     .optional()
                                                     .attributes(constraint("type이 오프라인일 경우 활성화")),
-                                            parameterWithName("city").description("오프라인 스터디 지역 [안양시, 수원시, ...]")
+                                            parameterWithName("city")
+                                                    .description("오프라인 스터디 지역 [안양시, 수원시, ...]")
                                                     .optional()
                                                     .attributes(constraint("type이 오프라인일 경우 활성화"))
                                     ),
                                     responseFields(
-                                            fieldWithPath("result.studies[].id").description("스터디 ID(PK)"),
-                                            fieldWithPath("result.studies[].name").description("스터디명"),
-                                            fieldWithPath("result.studies[].description").description("스터디 설명"),
-                                            fieldWithPath("result.studies[].category").description("스터디 카테고리"),
-                                            fieldWithPath("result.studies[].thumbnail.name").description("스터디 썸네일 이미지"),
-                                            fieldWithPath("result.studies[].thumbnail.background").description("스터디 썸네일 배경색"),
-                                            fieldWithPath("result.studies[].type").description("스터디 타입")
+                                            fieldWithPath("studies[].id")
+                                                    .description("스터디 ID(PK)"),
+                                            fieldWithPath("studies[].name")
+                                                    .description("스터디명"),
+                                            fieldWithPath("studies[].description")
+                                                    .description("스터디 설명"),
+                                            fieldWithPath("studies[].category")
+                                                    .description("스터디 카테고리"),
+                                            fieldWithPath("studies[].thumbnail.name")
+                                                    .description("스터디 썸네일 이미지"),
+                                            fieldWithPath("studies[].thumbnail.background")
+                                                    .description("스터디 썸네일 배경색"),
+                                            fieldWithPath("studies[].type")
+                                                    .description("스터디 타입")
                                                     .attributes(constraint("온라인 / 오프라인")),
-                                            fieldWithPath("result.studies[].recruitmentStatus").description("스터디 모집 여부"),
-                                            fieldWithPath("result.studies[].maxMember").description("스터디 최대 인원"),
-                                            fieldWithPath("result.studies[].participantMembers").description("현재 스터디 참여자 수"),
-                                            fieldWithPath("result.studies[].creationDate").description("스터디 생성 날짜"),
-                                            fieldWithPath("result.studies[].hashtags[]").description("스터디 해시태그"),
-                                            fieldWithPath("result.studies[].likeMarkingMembers[]").description("스터디 찜 사용자 ID(PK) 리스트"),
-                                            fieldWithPath("result.hasNext").description("다음 스크롤 존재 여부")
+                                            fieldWithPath("studies[].recruitmentStatus")
+                                                    .description("스터디 모집 여부"),
+                                            fieldWithPath("studies[].maxMember")
+                                                    .description("스터디 최대 인원"),
+                                            fieldWithPath("studies[].participantMembers")
+                                                    .description("현재 스터디 참여자 수"),
+                                            fieldWithPath("studies[].creationDate")
+                                                    .description("스터디 생성 날짜"),
+                                            fieldWithPath("studies[].hashtags[]")
+                                                    .description("스터디 해시태그"),
+                                            fieldWithPath("studies[].likeMarkingMembers[]")
+                                                    .description("스터디 찜 사용자 ID(PK) 리스트"),
+                                            fieldWithPath("hasNext")
+                                                    .description("다음 스크롤 존재 여부")
                                                     .attributes(constraint("false면 무한 스크롤 종료"))
                                     )
                             )
@@ -130,36 +150,55 @@ class StudySearchApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     queryParameters(
-                                            parameterWithName("sort").description("정렬 기준")
+                                            parameterWithName("sort")
+                                                    .description("정렬 기준")
                                                     .attributes(constraint("date=최신순 / favorite=찜 / review=리뷰")),
-                                            parameterWithName("page").description("현재 페이지")
+                                            parameterWithName("page")
+                                                    .description("현재 페이지")
                                                     .attributes(constraint("시작 페이지 = 0")),
-                                            parameterWithName("type").description("온라인/오프라인 유무")
+                                            parameterWithName("type")
+                                                    .description("온라인/오프라인 유무")
                                                     .optional()
                                                     .attributes(constraint("null(온 + 오프) / online / offline")),
-                                            parameterWithName("province").description("오프라인 스터디 지역 [경기도, 강원도, ...]")
+                                            parameterWithName("province")
+                                                    .description("오프라인 스터디 지역 [경기도, 강원도, ...]")
                                                     .optional()
                                                     .attributes(constraint("type이 오프라인일 경우 활성화")),
-                                            parameterWithName("city").description("오프라인 스터디 지역 [안양시, 수원시, ...]")
+                                            parameterWithName("city")
+                                                    .description("오프라인 스터디 지역 [안양시, 수원시, ...]")
                                                     .optional()
                                                     .attributes(constraint("type이 오프라인일 경우 활성화"))
                                     ),
                                     responseFields(
-                                            fieldWithPath("result.studies[].id").description("스터디 ID(PK)"),
-                                            fieldWithPath("result.studies[].name").description("스터디명"),
-                                            fieldWithPath("result.studies[].description").description("스터디 설명"),
-                                            fieldWithPath("result.studies[].category").description("스터디 카테고리"),
-                                            fieldWithPath("result.studies[].thumbnail.name").description("스터디 썸네일"),
-                                            fieldWithPath("result.studies[].thumbnail.background").description("스터디 썸네일 배경색"),
-                                            fieldWithPath("result.studies[].type").description("스터디 타입")
+                                            fieldWithPath("studies[].id")
+                                                    .description("스터디 ID(PK)"),
+                                            fieldWithPath("studies[].name")
+                                                    .description("스터디명"),
+                                            fieldWithPath("studies[].description")
+                                                    .description("스터디 설명"),
+                                            fieldWithPath("studies[].category")
+                                                    .description("스터디 카테고리"),
+                                            fieldWithPath("studies[].thumbnail.name")
+                                                    .description("스터디 썸네일"),
+                                            fieldWithPath("studies[].thumbnail.background")
+                                                    .description("스터디 썸네일 배경색"),
+                                            fieldWithPath("studies[].type")
+                                                    .description("스터디 타입")
                                                     .attributes(constraint("온라인 / 오프라인")),
-                                            fieldWithPath("result.studies[].recruitmentStatus").description("스터디 모집 여부"),
-                                            fieldWithPath("result.studies[].maxMember").description("스터디 최대 인원"),
-                                            fieldWithPath("result.studies[].participantMembers").description("현재 스터디 참여자 수"),
-                                            fieldWithPath("result.studies[].creationDate").description("스터디 생성 날짜"),
-                                            fieldWithPath("result.studies[].hashtags[]").description("스터디 해시태그"),
-                                            fieldWithPath("result.studies[].likeMarkingMembers[]").description("스터디 찜 사용자 ID(PK) 리스트"),
-                                            fieldWithPath("result.hasNext").description("다음 스크롤 존재 여부")
+                                            fieldWithPath("studies[].recruitmentStatus")
+                                                    .description("스터디 모집 여부"),
+                                            fieldWithPath("studies[].maxMember")
+                                                    .description("스터디 최대 인원"),
+                                            fieldWithPath("studies[].participantMembers")
+                                                    .description("현재 스터디 참여자 수"),
+                                            fieldWithPath("studies[].creationDate")
+                                                    .description("스터디 생성 날짜"),
+                                            fieldWithPath("studies[].hashtags[]")
+                                                    .description("스터디 해시태그"),
+                                            fieldWithPath("studies[].likeMarkingMembers[]")
+                                                    .description("스터디 찜 사용자 ID(PK) 리스트"),
+                                            fieldWithPath("hasNext")
+                                                    .description("다음 스크롤 존재 여부")
                                                     .attributes(constraint("false면 무한 스크롤 종료"))
                                     )
                             )
@@ -182,8 +221,8 @@ class StudySearchApiControllerTest extends ControllerTest {
                                     "스터디 썸네일.png",
                                     "스터디 썸네일 백그라운드 RGB"
                             ),
-                            ONLINE.getValue(),
-                            IN_PROGRESS.getDescription(),
+                            ONLINE,
+                            IN_PROGRESS,
                             10,
                             8,
                             now.minusDays(index),

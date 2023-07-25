@@ -5,7 +5,8 @@ import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.application.service.QueryMemberByIdService;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.application.usecase.command.CreateStudyUseCase;
-import com.kgu.studywithme.study.domain.*;
+import com.kgu.studywithme.study.domain.Study;
+import com.kgu.studywithme.study.domain.StudyRepository;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -19,6 +20,7 @@ import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.fixture.StudyFixture.OS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -42,10 +44,10 @@ class CreateStudyServiceTest extends UseCaseTest {
     private final CreateStudyUseCase.Command command =
             new CreateStudyUseCase.Command(
                     host.getId(),
-                    StudyName.from(OS.getName()),
-                    Description.from(OS.getDescription()),
+                    OS.getName(),
+                    OS.getDescription(),
                     OS.getCategory(),
-                    Capacity.from(OS.getCapacity()),
+                    OS.getCapacity(),
                     OS.getThumbnail(),
                     OS.getType(),
                     null,
@@ -65,10 +67,12 @@ class CreateStudyServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyErrorCode.DUPLICATE_NAME.getMessage());
 
-        verify(studyRepository, times(1)).isNameExists(any());
-        verify(queryMemberByIdService, times(0)).findById(any());
-        verify(studyRepository, times(0)).save(any());
-        verify(studyParticipantRepository, times(0)).save(any());
+        assertAll(
+                () -> verify(studyRepository, times(1)).isNameExists(any()),
+                () -> verify(studyRepository, times(1)).isNameExists(any()),
+                () -> verify(studyRepository, times(0)).save(any()),
+                () -> verify(studyParticipantRepository, times(0)).save(any())
+        );
     }
 
     @Test
@@ -85,11 +89,12 @@ class CreateStudyServiceTest extends UseCaseTest {
         final Long savedStudyId = createStudyService.createStudy(command);
 
         // then
-        verify(studyRepository, times(1)).isNameExists(any());
-        verify(queryMemberByIdService, times(1)).findById(any());
-        verify(studyRepository, times(1)).save(any());
-        verify(studyParticipantRepository, times(1)).save(any());
-
-        assertThat(savedStudyId).isEqualTo(study.getId());
+        assertAll(
+                () -> verify(studyRepository, times(1)).isNameExists(any()),
+                () -> verify(studyRepository, times(1)).isNameExists(any()),
+                () -> verify(studyRepository, times(1)).save(any()),
+                () -> verify(studyParticipantRepository, times(1)).save(any()),
+                () -> assertThat(savedStudyId).isEqualTo(study.getId())
+        );
     }
 }

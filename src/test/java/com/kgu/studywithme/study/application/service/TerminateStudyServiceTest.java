@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.fixture.StudyFixture.SPRING;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -29,8 +30,7 @@ class TerminateStudyServiceTest extends UseCaseTest {
 
     private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L, LocalDateTime.now());
-    private final TerminateStudyUseCase.Command command =
-            new TerminateStudyUseCase.Command(study.getId());
+    private final TerminateStudyUseCase.Command command = new TerminateStudyUseCase.Command(study.getId());
 
     @Test
     @DisplayName("스터디를 종료시킨다")
@@ -42,7 +42,9 @@ class TerminateStudyServiceTest extends UseCaseTest {
         terminateStudyService.terminateStudy(command);
 
         // then
-        verify(queryStudyByIdService, times(1)).findById(any());
-        assertThat(study.isTerminated()).isTrue();
+        assertAll(
+                () -> verify(queryStudyByIdService, times(1)).findById(any()),
+                () -> assertThat(study.isTerminated()).isTrue()
+        );
     }
 }

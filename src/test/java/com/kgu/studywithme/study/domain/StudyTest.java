@@ -24,10 +24,10 @@ class StudyTest {
         final Study offlineStudy = TOSS_INTERVIEW.toOfflineStudy(host.getId());
 
         assertAll(
-                () -> assertThat(onlineStudy.getNameValue()).isEqualTo(SPRING.getName()),
-                () -> assertThat(onlineStudy.getDescriptionValue()).isEqualTo(SPRING.getDescription()),
+                () -> assertThat(onlineStudy.getName()).isEqualTo(SPRING.getName()),
+                () -> assertThat(onlineStudy.getDescription()).isEqualTo(SPRING.getDescription()),
                 () -> assertThat(onlineStudy.getCategory()).isEqualTo(SPRING.getCategory()),
-                () -> assertThat(onlineStudy.getCapacity()).isEqualTo(SPRING.getCapacity()),
+                () -> assertThat(onlineStudy.getCapacity()).isEqualTo(SPRING.getCapacity().getValue()),
                 () -> assertThat(onlineStudy.getThumbnail()).isEqualTo(SPRING.getThumbnail()),
                 () -> assertThat(onlineStudy.getType()).isEqualTo(SPRING.getType()),
                 () -> assertThat(onlineStudy.getLocation()).isNull(),
@@ -37,10 +37,10 @@ class StudyTest {
                 () -> assertThat(onlineStudy.isTerminated()).isFalse(),
                 () -> assertThat(onlineStudy.getHashtags()).containsExactlyInAnyOrderElementsOf(SPRING.getHashtags()),
 
-                () -> assertThat(offlineStudy.getNameValue()).isEqualTo(TOSS_INTERVIEW.getName()),
-                () -> assertThat(offlineStudy.getDescriptionValue()).isEqualTo(TOSS_INTERVIEW.getDescription()),
+                () -> assertThat(offlineStudy.getName()).isEqualTo(TOSS_INTERVIEW.getName()),
+                () -> assertThat(offlineStudy.getDescription()).isEqualTo(TOSS_INTERVIEW.getDescription()),
                 () -> assertThat(offlineStudy.getCategory()).isEqualTo(TOSS_INTERVIEW.getCategory()),
-                () -> assertThat(offlineStudy.getCapacity()).isEqualTo(TOSS_INTERVIEW.getCapacity()),
+                () -> assertThat(offlineStudy.getCapacity()).isEqualTo(TOSS_INTERVIEW.getCapacity().getValue()),
                 () -> assertThat(offlineStudy.getThumbnail()).isEqualTo(TOSS_INTERVIEW.getThumbnail()),
                 () -> assertThat(offlineStudy.getType()).isEqualTo(TOSS_INTERVIEW.getType()),
                 () -> assertThat(offlineStudy.getLocation()).isEqualTo(TOSS_INTERVIEW.getLocation()),
@@ -61,9 +61,9 @@ class StudyTest {
 
         // when
         onlineStudy.update(
-                StudyName.from(CHINESE.name()),
-                Description.from(CHINESE.getDescription()),
-                Capacity.from(CHINESE.getCapacity()),
+                CHINESE.getName(),
+                CHINESE.getDescription(),
+                CHINESE.getCapacity(),
                 CHINESE.getCategory(),
                 CHINESE.getThumbnail(),
                 CHINESE.getType(),
@@ -74,9 +74,9 @@ class StudyTest {
         );
 
         offlineStudy.update(
-                StudyName.from(KAKAO_INTERVIEW.name()),
-                Description.from(KAKAO_INTERVIEW.getDescription()),
-                Capacity.from(KAKAO_INTERVIEW.getCapacity()),
+                KAKAO_INTERVIEW.getName(),
+                KAKAO_INTERVIEW.getDescription(),
+                KAKAO_INTERVIEW.getCapacity(),
                 KAKAO_INTERVIEW.getCategory(),
                 KAKAO_INTERVIEW.getThumbnail(),
                 KAKAO_INTERVIEW.getType(),
@@ -89,10 +89,10 @@ class StudyTest {
 
         // then
         assertAll(
-                () -> assertThat(onlineStudy.getNameValue()).isEqualTo(CHINESE.name()),
-                () -> assertThat(onlineStudy.getDescriptionValue()).isEqualTo(CHINESE.getDescription()),
+                () -> assertThat(onlineStudy.getName()).isEqualTo(CHINESE.getName()),
+                () -> assertThat(onlineStudy.getDescription()).isEqualTo(CHINESE.getDescription()),
                 () -> assertThat(onlineStudy.getCategory()).isEqualTo(CHINESE.getCategory()),
-                () -> assertThat(onlineStudy.getCapacity()).isEqualTo(CHINESE.getCapacity()),
+                () -> assertThat(onlineStudy.getCapacity()).isEqualTo(CHINESE.getCapacity().getValue()),
                 () -> assertThat(onlineStudy.getThumbnail()).isEqualTo(CHINESE.getThumbnail()),
                 () -> assertThat(onlineStudy.getType()).isEqualTo(CHINESE.getType()),
                 () -> assertThat(onlineStudy.getLocation()).isNull(),
@@ -101,9 +101,10 @@ class StudyTest {
                 () -> assertThat(onlineStudy.getGraduationPolicy().getUpdateChance()).isEqualTo(2),
                 () -> assertThat(onlineStudy.getHashtags()).containsExactlyInAnyOrderElementsOf(CHINESE.getHashtags()),
 
-                () -> assertThat(offlineStudy.getNameValue()).isEqualTo(KAKAO_INTERVIEW.name()),
-                () -> assertThat(offlineStudy.getDescriptionValue()).isEqualTo(KAKAO_INTERVIEW.getDescription()),
+                () -> assertThat(offlineStudy.getName()).isEqualTo(KAKAO_INTERVIEW.getName()),
+                () -> assertThat(offlineStudy.getDescription()).isEqualTo(KAKAO_INTERVIEW.getDescription()),
                 () -> assertThat(offlineStudy.getCategory()).isEqualTo(KAKAO_INTERVIEW.getCategory()),
+                () -> assertThat(offlineStudy.getCapacity()).isEqualTo(KAKAO_INTERVIEW.getCapacity().getValue()),
                 () -> assertThat(offlineStudy.getThumbnail()).isEqualTo(KAKAO_INTERVIEW.getThumbnail()),
                 () -> assertThat(offlineStudy.getType()).isEqualTo(KAKAO_INTERVIEW.getType()),
                 () -> assertThat(offlineStudy.getLocation()).isEqualTo(KAKAO_INTERVIEW.getLocation()),

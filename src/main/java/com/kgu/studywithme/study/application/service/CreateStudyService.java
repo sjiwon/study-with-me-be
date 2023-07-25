@@ -67,7 +67,7 @@ public class CreateStudyService implements CreateStudyUseCase {
                 command.capacity(),
                 command.category(),
                 command.thumbnail(),
-                StudyLocation.of(command.province(), command.city()),
+                new StudyLocation(command.province(), command.city()),
                 command.minimumAttendanceForGraduation(),
                 command.hashtags()
         );

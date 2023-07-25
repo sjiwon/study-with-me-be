@@ -17,8 +17,8 @@ public class StudyPreview {
     private final String description;
     private final String category;
     private final Thumbnail thumbnail;
-    private final String type;
-    private final String recruitmentStatus;
+    private final StudyType type;
+    private final RecruitmentStatus recruitmentStatus;
     private final int maxMember;
     private final int participantMembers;
     private final LocalDateTime creationDate;
@@ -58,8 +58,8 @@ public class StudyPreview {
         this.description = description.getValue();
         this.category = category.getName();
         this.thumbnail = new Thumbnail(thumbnail.getImageName(), thumbnail.getBackground());
-        this.type = type.getDescription();
-        this.recruitmentStatus = recruitmentStatus.getDescription();
+        this.type = type;
+        this.recruitmentStatus = recruitmentStatus;
         this.maxMember = capacity.getValue();
         this.participantMembers = participantMembers;
         this.creationDate = creationDate;

@@ -122,16 +122,14 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
                                     new ParticipateStudy(
                                             1L,
                                             SPRING.getName(),
-                                            SPRING.getCategory().getName(),
-                                            SPRING.getThumbnail().getImageName(),
-                                            SPRING.getThumbnail().getBackground()
+                                            SPRING.getCategory(),
+                                            SPRING.getThumbnail()
                                     ),
                                     new ParticipateStudy(
                                             2L,
                                             JPA.getName(),
-                                            JPA.getCategory().getName(),
-                                            JPA.getThumbnail().getImageName(),
-                                            JPA.getThumbnail().getBackground()
+                                            JPA.getCategory(),
+                                            JPA.getThumbnail()
                                     )
                             )
                     );
@@ -181,7 +179,7 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
                             List.of(
                                     new GraduatedStudy(
                                             1L,
-                                            SPRING.getName(),
+                                            SPRING.getName().getValue(),
                                             SPRING.getCategory().getName(),
                                             SPRING.getThumbnail().getImageName(),
                                             SPRING.getThumbnail().getBackground(),
@@ -194,7 +192,7 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
                                     ),
                                     new GraduatedStudy(
                                             2L,
-                                            JPA.getName(),
+                                            JPA.getName().getValue(),
                                             JPA.getCategory().getName(),
                                             JPA.getThumbnail().getImageName(),
                                             JPA.getThumbnail().getBackground(),

@@ -4,7 +4,8 @@ import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.application.usecase.command.UpdateStudyUseCase;
-import com.kgu.studywithme.study.domain.*;
+import com.kgu.studywithme.study.domain.Study;
+import com.kgu.studywithme.study.domain.StudyRepository;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,10 +42,10 @@ class UpdateStudyServiceTest extends UseCaseTest {
     private final UpdateStudyUseCase.Command command =
             new UpdateStudyUseCase.Command(
                     study.getId(),
-                    StudyName.from(JPA.getName()),
-                    Description.from(JPA.getDescription()),
+                    JPA.getName(),
+                    JPA.getDescription(),
                     JPA.getCategory(),
-                    Capacity.from(JPA.getCapacity()),
+                    JPA.getCapacity(),
                     JPA.getThumbnail(),
                     JPA.getType(),
                     null,
@@ -65,8 +66,10 @@ class UpdateStudyServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyErrorCode.DUPLICATE_NAME.getMessage());
 
-        verify(studyRepository, times(1)).isNameUsedByOther(any(), any());
-        verify(queryStudyByIdService, times(0)).findById(any());
+        assertAll(
+                () -> verify(studyRepository, times(1)).isNameUsedByOther(any(), any()),
+                () -> verify(queryStudyByIdService, times(0)).findById(any())
+        );
     }
 
     @Test
@@ -85,8 +88,10 @@ class UpdateStudyServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyErrorCode.CAPACITY_CANNOT_COVER_CURRENT_PARTICIPANTS.getMessage());
 
-        verify(studyRepository, times(1)).isNameUsedByOther(any(), any());
-        verify(queryStudyByIdService, times(1)).findById(any());
+        assertAll(
+                () -> verify(studyRepository, times(1)).isNameUsedByOther(any(), any()),
+                () -> verify(queryStudyByIdService, times(1)).findById(any())
+        );
     }
 
     @Test
@@ -100,13 +105,12 @@ class UpdateStudyServiceTest extends UseCaseTest {
         updateStudyService.updateStudy(command);
 
         // then
-        verify(studyRepository, times(1)).isNameUsedByOther(any(), any());
-        verify(queryStudyByIdService, times(1)).findById(any());
-
         assertAll(
-                () -> assertThat(study.getNameValue()).isEqualTo(JPA.getName()),
-                () -> assertThat(study.getDescriptionValue()).isEqualTo(JPA.getDescription()),
-                () -> assertThat(study.getCapacity()).isEqualTo(JPA.getCapacity()),
+                () -> verify(studyRepository, times(1)).isNameUsedByOther(any(), any()),
+                () -> verify(queryStudyByIdService, times(1)).findById(any()),
+                () -> assertThat(study.getName()).isEqualTo(JPA.getName()),
+                () -> assertThat(study.getDescription()).isEqualTo(JPA.getDescription()),
+                () -> assertThat(study.getCapacity()).isEqualTo(JPA.getCapacity().getValue()),
                 () -> assertThat(study.getCategory()).isEqualTo(JPA.getCategory()),
                 () -> assertThat(study.getThumbnail()).isEqualTo(JPA.getThumbnail()),
                 () -> assertThat(study.getType()).isEqualTo(JPA.getType()),

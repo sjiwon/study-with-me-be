@@ -78,7 +78,8 @@ class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -123,13 +124,18 @@ class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     responseFields(
-                                            fieldWithPath("result[].id").description("신청자 ID(PK)"),
-                                            fieldWithPath("result[].nickname").description("신청자 닉네임"),
-                                            fieldWithPath("result[].score").description("신청자 점수"),
-                                            fieldWithPath("result[].applyDate").description("신청 날짜")
+                                            fieldWithPath("result[].id")
+                                                    .description("신청자 ID(PK)"),
+                                            fieldWithPath("result[].nickname")
+                                                    .description("신청자 닉네임"),
+                                            fieldWithPath("result[].score")
+                                                    .description("신청자 점수"),
+                                            fieldWithPath("result[].applyDate")
+                                                    .description("신청 날짜")
                                     )
                             )
                     );
@@ -180,7 +186,8 @@ class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -237,22 +244,36 @@ class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     responseFields(
-                                            fieldWithPath("result[].id").description("공지사항 ID(PK)"),
-                                            fieldWithPath("result[].title").description("공지사항 제목"),
-                                            fieldWithPath("result[].content").description("공지사항 내용"),
-                                            fieldWithPath("result[].createdAt").description("공지사항 작성 날짜"),
-                                            fieldWithPath("result[].lastModifiedAt").description("공지사항 수정 날짜"),
-                                            fieldWithPath("result[].writer.id").description("공지사항 작성자 ID(PK)"),
-                                            fieldWithPath("result[].writer.nickname").description("공지사항 작성자 닉네임"),
-                                            fieldWithPath("result[].comments[].id").description("공지사항 댓글 ID(PK)"),
-                                            fieldWithPath("result[].comments[].noticeId").description("공지사항 ID(PK)"),
-                                            fieldWithPath("result[].comments[].content").description("공지사항 댓글 내용"),
-                                            fieldWithPath("result[].comments[].writtenDate").description("공지사항 댓글 작성/수정 날짜"),
-                                            fieldWithPath("result[].comments[].writer.id").description("공지사항 댓글 작성자 ID(PK)"),
-                                            fieldWithPath("result[].comments[].writer.nickname").description("공지사항 댓글 작성자 닉네임")
+                                            fieldWithPath("result[].id")
+                                                    .description("공지사항 ID(PK)"),
+                                            fieldWithPath("result[].title")
+                                                    .description("공지사항 제목"),
+                                            fieldWithPath("result[].content")
+                                                    .description("공지사항 내용"),
+                                            fieldWithPath("result[].createdAt")
+                                                    .description("공지사항 작성 날짜"),
+                                            fieldWithPath("result[].lastModifiedAt")
+                                                    .description("공지사항 수정 날짜"),
+                                            fieldWithPath("result[].writer.id")
+                                                    .description("공지사항 작성자 ID(PK)"),
+                                            fieldWithPath("result[].writer.nickname")
+                                                    .description("공지사항 작성자 닉네임"),
+                                            fieldWithPath("result[].comments[].id")
+                                                    .description("공지사항 댓글 ID(PK)"),
+                                            fieldWithPath("result[].comments[].noticeId")
+                                                    .description("공지사항 ID(PK)"),
+                                            fieldWithPath("result[].comments[].content")
+                                                    .description("공지사항 댓글 내용"),
+                                            fieldWithPath("result[].comments[].writtenDate")
+                                                    .description("공지사항 댓글 작성/수정 날짜"),
+                                            fieldWithPath("result[].comments[].writer.id")
+                                                    .description("공지사항 댓글 작성자 ID(PK)"),
+                                            fieldWithPath("result[].comments[].writer.nickname")
+                                                    .description("공지사항 댓글 작성자 닉네임")
                                     )
                             )
                     );
@@ -303,7 +324,8 @@ class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -359,13 +381,18 @@ class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     responseFields(
-                                            fieldWithPath("result[].member.id").description("스터디 참여자 ID(PK)"),
-                                            fieldWithPath("result[].member.nickname").description("스터디 참여자 닉네임"),
-                                            fieldWithPath("result[].summaries[].week").description("스터디 주차"),
-                                            fieldWithPath("result[].summaries[].attendanceStatus").description("해당 주차 출석 상태")
+                                            fieldWithPath("result[].member.id")
+                                                    .description("스터디 참여자 ID(PK)"),
+                                            fieldWithPath("result[].member.nickname")
+                                                    .description("스터디 참여자 닉네임"),
+                                            fieldWithPath("result[].summaries[].week")
+                                                    .description("스터디 주차"),
+                                            fieldWithPath("result[].summaries[].attendanceStatus")
+                                                    .description("해당 주차 출석 상태")
                                     )
                             )
                     );
@@ -416,7 +443,8 @@ class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -480,41 +508,63 @@ class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     responseFields(
-                                            fieldWithPath("result[].id").description("스터디 주차 ID(PK)"),
-                                            fieldWithPath("result[].title").description("스터디 주차 제목"),
-                                            fieldWithPath("result[].content").description("스터디 주차 내용"),
-                                            fieldWithPath("result[].week").description("스터디 주차 Week 정보"),
-                                            fieldWithPath("result[].period.startDate").description("스터디 주차 시작날짜"),
-                                            fieldWithPath("result[].period.endDate").description("스터디 주차 종료날짜"),
-                                            fieldWithPath("result[].assignmentExists").description("스터디 주차 과제 존재 여부"),
-                                            fieldWithPath("result[].autoAttendance").description("스터디 주차 자동 출석 여부"),
-                                            fieldWithPath("result[].creator.id").description("스터디 주차 생성자 ID(PK)"),
-                                            fieldWithPath("result[].creator.nickname").description("스터디 주차 생성자 닉네임"),
-                                            fieldWithPath("result[].attachments[]").description("스터디 주차 첨부파일")
+                                            fieldWithPath("result[].id")
+                                                    .description("스터디 주차 ID(PK)"),
+                                            fieldWithPath("result[].title")
+                                                    .description("스터디 주차 제목"),
+                                            fieldWithPath("result[].content")
+                                                    .description("스터디 주차 내용"),
+                                            fieldWithPath("result[].week")
+                                                    .description("스터디 주차 Week 정보"),
+                                            fieldWithPath("result[].period.startDate")
+                                                    .description("스터디 주차 시작날짜"),
+                                            fieldWithPath("result[].period.endDate")
+                                                    .description("스터디 주차 종료날짜"),
+                                            fieldWithPath("result[].assignmentExists")
+                                                    .description("스터디 주차 과제 존재 여부"),
+                                            fieldWithPath("result[].autoAttendance")
+                                                    .description("스터디 주차 자동 출석 여부"),
+                                            fieldWithPath("result[].creator.id")
+                                                    .description("스터디 주차 생성자 ID(PK)"),
+                                            fieldWithPath("result[].creator.nickname")
+                                                    .description("스터디 주차 생성자 닉네임"),
+                                            fieldWithPath("result[].attachments[]")
+                                                    .description("스터디 주차 첨부파일")
                                                     .optional(),
-                                            fieldWithPath("result[].attachments[].weeklyId").description("스터디 주차 ID(PK)")
+                                            fieldWithPath("result[].attachments[].weeklyId")
+                                                    .description("스터디 주차 ID(PK)")
                                                     .optional(),
-                                            fieldWithPath("result[].attachments[].uploadFileName").description("스터디 주차 첨부파일 업로드 파일명")
+                                            fieldWithPath("result[].attachments[].uploadFileName")
+                                                    .description("스터디 주차 첨부파일 업로드 파일명")
                                                     .optional(),
-                                            fieldWithPath("result[].attachments[].link").description("스터디 주차 첨부파일 S3 업로드 링크")
+                                            fieldWithPath("result[].attachments[].link")
+                                                    .description("스터디 주차 첨부파일 S3 업로드 링크")
                                                     .optional(),
-                                            fieldWithPath("result[].submits[]").description("스터디 주차 제출 과제")
+                                            fieldWithPath("result[].submits[]")
+                                                    .description("스터디 주차 제출 과제")
                                                     .optional(),
-                                            fieldWithPath("result[].submits[].participant.id").description("스터디 주차 과제 제출자 ID(PK)")
+                                            fieldWithPath("result[].submits[].participant.id")
+                                                    .description("스터디 주차 과제 제출자 ID(PK)")
                                                     .optional(),
-                                            fieldWithPath("result[].submits[].participant.nickname").description("스터디 주차 과제 제출자 닉네임")
+                                            fieldWithPath("result[].submits[].participant.nickname")
+                                                    .description("스터디 주차 과제 제출자 닉네임")
                                                     .optional(),
-                                            fieldWithPath("result[].submits[].weeklyId").description("스터디 주차 ID(PK)")
+                                            fieldWithPath("result[].submits[].weeklyId")
+                                                    .description("스터디 주차 ID(PK)")
                                                     .optional(),
-                                            fieldWithPath("result[].submits[].submitType").description("스터디 주차 과제 제출 타입")
+                                            fieldWithPath("result[].submits[].submitType")
+                                                    .description("스터디 주차 과제 제출 타입")
                                                     .optional(),
-                                            fieldWithPath("result[].submits[].submitFileName").description("스터디 주차 과제 제출 파일명")
+                                            fieldWithPath("result[].submits[].submitFileName")
+                                                    .description("스터디 주차 과제 제출 파일명")
                                                     .optional()
                                                     .attributes(constraint("링크 제출 = null / 파일 제출 = 원본 파일명")),
-                                            fieldWithPath("result[].submits[].submitLink").description("스터디 주차 과제 제출 링크")
+                                            fieldWithPath("result[].submits[].submitLink")
+                                                    .description("스터디 주차 과제 제출 링크")
                                                     .optional()
                                     )
                             )

@@ -1,7 +1,6 @@
 package com.kgu.studywithme.study.presentation;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
-import com.kgu.studywithme.global.dto.ResponseWrapper;
 import com.kgu.studywithme.study.application.dto.StudyPagingResponse;
 import com.kgu.studywithme.study.application.usecase.query.QueryStudyByCategoryUseCase;
 import com.kgu.studywithme.study.application.usecase.query.QueryStudyByRecommendUseCase;
@@ -31,7 +30,7 @@ public class StudySearchApiController {
 
     @Operation(summary = "카테고리 기반 스터디 조회 EndPoint")
     @GetMapping
-    public ResponseEntity<ResponseWrapper<StudyPagingResponse>> queryStudyByCategory(
+    public ResponseEntity<StudyPagingResponse> queryStudyByCategory(
             @ModelAttribute @Valid final QueryStudyByCategoryRequest request
     ) {
         final QueryStudyByCategoryCondition condition = new QueryStudyByCategoryCondition(
@@ -48,12 +47,12 @@ public class StudySearchApiController {
                 )
         );
 
-        return ResponseEntity.ok(ResponseWrapper.from(response));
+        return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "사용자 관심사 기반 스터디 조회 EndPoint")
     @GetMapping("/recommend")
-    public ResponseEntity<ResponseWrapper<StudyPagingResponse>> queryStudyByRecommend(
+    public ResponseEntity<StudyPagingResponse> queryStudyByRecommend(
             @ExtractPayload final Long memberId,
             @ModelAttribute @Valid final QueryStudyByRecommendRequest request
     ) {
@@ -71,6 +70,6 @@ public class StudySearchApiController {
                 )
         );
 
-        return ResponseEntity.ok(ResponseWrapper.from(response));
+        return ResponseEntity.ok(response);
     }
 }

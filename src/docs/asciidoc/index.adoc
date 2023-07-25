@@ -21,13 +21,13 @@ include::member/member-review.adoc[leveloffset=+1]
 
 include::member/member-report.adoc[leveloffset=+1]
 
-include::study-register.adoc[leveloffset=+1]
+include::study/study-create-update-terminate.adoc[leveloffset=+1]
 
-include::study-update.adoc[leveloffset=+1]
+include::study/study-search.adoc[leveloffset=+1]
 
-include::study-basic-search.adoc[leveloffset=+1]
+include::study/study-information.adoc[leveloffset=+1]
 
-include::study-information.adoc[leveloffset=+1]
+include::study/study-information-only-participant.adoc[leveloffset=+1]
 
 include::study/study-participation.adoc[leveloffset=+1]
 

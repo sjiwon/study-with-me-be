@@ -83,8 +83,7 @@ class MemberAttendanceRepositoryTest extends RepositoryTest {
                 )
         );
 
-        final List<StudyParticipateWeeks> participateWeeks1
-                = memberRepository.findParticipateWeeksInStudyByMemberId(member.getId());
+        final List<StudyParticipateWeeks> participateWeeks1 = memberRepository.findParticipateWeeksInStudyByMemberId(member.getId());
         assertAll(
                 () -> assertThat(groupingWeeksByStudyId(participateWeeks1, studyA.getId())).containsExactlyInAnyOrder(1),
                 () -> assertThat(groupingWeeksByStudyId(participateWeeks1, studyB.getId())).containsExactlyInAnyOrder(1),
@@ -102,8 +101,7 @@ class MemberAttendanceRepositoryTest extends RepositoryTest {
                 )
         );
 
-        final List<StudyParticipateWeeks> participateWeeks2
-                = memberRepository.findParticipateWeeksInStudyByMemberId(member.getId());
+        final List<StudyParticipateWeeks> participateWeeks2 = memberRepository.findParticipateWeeksInStudyByMemberId(member.getId());
         assertAll(
                 () -> assertThat(groupingWeeksByStudyId(participateWeeks2, studyA.getId())).containsExactlyInAnyOrder(1, 2),
                 () -> assertThat(groupingWeeksByStudyId(participateWeeks2, studyB.getId())).containsExactlyInAnyOrder(1),
@@ -115,8 +113,7 @@ class MemberAttendanceRepositoryTest extends RepositoryTest {
         /* Week 3 */
         studyAttendanceRepository.save(StudyAttendance.recordAttendance(studyA.getId(), member.getId(), 3, ATTENDANCE));
 
-        final List<StudyParticipateWeeks> participateWeeks3
-                = memberRepository.findParticipateWeeksInStudyByMemberId(member.getId());
+        final List<StudyParticipateWeeks> participateWeeks3 = memberRepository.findParticipateWeeksInStudyByMemberId(member.getId());
         assertAll(
                 () -> assertThat(groupingWeeksByStudyId(participateWeeks3, studyA.getId())).containsExactlyInAnyOrder(1, 2, 3),
                 () -> assertThat(groupingWeeksByStudyId(participateWeeks3, studyB.getId())).containsExactlyInAnyOrder(1),

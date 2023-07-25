@@ -18,7 +18,7 @@ class StudyLocationTest {
     @MethodSource("invalidLocation")
     @DisplayName("province나 city가 비어있음에 따라 StudyLocation 생성에 실패한다")
     void throwExceptionByStudyLocationIsBlank(final String province, final String city) {
-        assertThatThrownBy(() -> StudyLocation.of(province, city))
+        assertThatThrownBy(() -> new StudyLocation(province, city))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyErrorCode.STUDY_LOCATION_IS_BLANK.getMessage());
     }
@@ -35,7 +35,7 @@ class StudyLocationTest {
     @MethodSource("validLocation")
     @DisplayName("StudyLocation[province / city]를 생성한다")
     void construct(final String province, final String city) {
-        assertDoesNotThrow(() -> StudyLocation.of(province, city));
+        assertDoesNotThrow(() -> new StudyLocation(province, city));
     }
 
     private static Stream<Arguments> validLocation() {

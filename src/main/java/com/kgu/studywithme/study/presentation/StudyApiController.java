@@ -2,6 +2,7 @@ package com.kgu.studywithme.study.presentation;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.category.domain.Category;
+import com.kgu.studywithme.global.aop.CheckAuthUser;
 import com.kgu.studywithme.global.aop.CheckStudyHost;
 import com.kgu.studywithme.study.application.usecase.command.CreateStudyUseCase;
 import com.kgu.studywithme.study.application.usecase.command.TerminateStudyUseCase;
@@ -27,6 +28,7 @@ public class StudyApiController {
     private final TerminateStudyUseCase terminateStudyUseCase;
 
     @Operation(summary = "스터디 생성 EndPoint")
+    @CheckAuthUser
     @PostMapping("/study")
     public ResponseEntity<Void> create(
             @ExtractPayload final Long hostId,
@@ -35,10 +37,10 @@ public class StudyApiController {
         final Long savedStudyId = createStudyUseCase.createStudy(
                 new CreateStudyUseCase.Command(
                         hostId,
-                        StudyName.from(request.name()),
-                        Description.from(request.description()),
+                        new StudyName(request.name()),
+                        new Description(request.description()),
                         Category.from(request.category()),
-                        Capacity.from(request.capacity()),
+                        new Capacity(request.capacity()),
                         StudyThumbnail.from(request.thumbnail()),
                         StudyType.from(request.type()),
                         request.province(),
@@ -68,10 +70,10 @@ public class StudyApiController {
         updateStudyUseCase.updateStudy(
                 new UpdateStudyUseCase.Command(
                         studyId,
-                        StudyName.from(request.name()),
-                        Description.from(request.description()),
+                        new StudyName(request.name()),
+                        new Description(request.description()),
                         Category.from(request.category()),
-                        Capacity.from(request.capacity()),
+                        new Capacity(request.capacity()),
                         StudyThumbnail.from(request.thumbnail()),
                         StudyType.from(request.type()),
                         request.province(),
@@ -91,9 +93,7 @@ public class StudyApiController {
             @ExtractPayload final Long hostId,
             @PathVariable final Long studyId
     ) {
-        terminateStudyUseCase.terminateStudy(
-                new TerminateStudyUseCase.Command(studyId)
-        );
+        terminateStudyUseCase.terminateStudy(new TerminateStudyUseCase.Command(studyId));
         return ResponseEntity.noContent().build();
     }
 }

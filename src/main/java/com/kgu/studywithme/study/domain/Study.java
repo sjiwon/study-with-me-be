@@ -163,7 +163,7 @@ public class Study extends BaseEntity<Study> {
         this.category = category;
         this.thumbnail = thumbnail;
         this.type = type;
-        this.location = (type == OFFLINE) ? StudyLocation.of(province, city) : null;
+        this.location = (type == OFFLINE) ? new StudyLocation(province, city) : null;
         this.recruitmentStatus = recruitmentStatus;
         this.graduationPolicy = this.graduationPolicy.update(minimumAttendanceForGraduation);
         this.hashtags = new Hashtags(this, hashtags);

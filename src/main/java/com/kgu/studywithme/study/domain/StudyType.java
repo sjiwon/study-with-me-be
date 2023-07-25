@@ -10,10 +10,9 @@ import java.util.Arrays;
 @Getter
 @RequiredArgsConstructor
 public enum StudyType {
-    ONLINE("온라인", "online"),
-    OFFLINE("오프라인", "offline");
+    ONLINE("online"),
+    OFFLINE("offline");
 
-    private final String description;
     private final String value;
 
     public static StudyType from(final String value) {

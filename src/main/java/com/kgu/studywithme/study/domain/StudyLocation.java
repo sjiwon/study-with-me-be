@@ -19,23 +19,16 @@ public class StudyLocation {
     @Column(name = "city")
     private String city;
 
-    private StudyLocation(
-            final String province,
-            final String city
-    ) {
-        this.province = province;
-        this.city = city;
-    }
-
-    public static StudyLocation of(
+    public StudyLocation(
             final String province,
             final String city
     ) {
         validateProvinceAndCityIsNotEmpty(province, city);
-        return new StudyLocation(province, city);
+        this.province = province;
+        this.city = city;
     }
 
-    private static void validateProvinceAndCityIsNotEmpty(
+    private void validateProvinceAndCityIsNotEmpty(
             final String province,
             final String city
     ) {
@@ -44,7 +37,7 @@ public class StudyLocation {
         }
     }
 
-    private static boolean isEmptyText(final String str) {
+    private boolean isEmptyText(final String str) {
         return !StringUtils.hasText(str);
     }
 

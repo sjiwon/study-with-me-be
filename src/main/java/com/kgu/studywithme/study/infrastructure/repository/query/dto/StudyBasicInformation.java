@@ -21,9 +21,9 @@ public class StudyBasicInformation {
     private final String description;
     private final String category;
     private final Thumbnail thumbnail;
-    private final String type;
+    private final StudyType type;
     private final StudyLocation location;
-    private final String recruitmentStatus;
+    private final RecruitmentStatus recruitmentStatus;
     private final int maxMember;
     private final int participantMembers;
     private final int minimumAttendanceForGraduation;
@@ -85,9 +85,9 @@ public class StudyBasicInformation {
         this.description = description.getValue();
         this.category = category.getName();
         this.thumbnail = new Thumbnail(thumbnail.getImageName(), thumbnail.getBackground());
-        this.type = type.getDescription();
+        this.type = type;
         this.location = location;
-        this.recruitmentStatus = recruitmentStatus.getDescription();
+        this.recruitmentStatus = recruitmentStatus;
         this.maxMember = capacity.getValue();
         this.participantMembers = participantMembers;
         this.minimumAttendanceForGraduation = minimumAttendanceForGraduation;

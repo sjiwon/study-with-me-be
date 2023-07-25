@@ -60,7 +60,6 @@ class ValidImageExtensionValidatorTest {
                 () -> verify(context).disableDefaultConstraintViolation(),
                 () -> verify(context).buildConstraintViolationWithTemplate("이미지는 jpg, jpeg, png, gif만 허용합니다."),
                 () -> verify(builder).addConstraintViolation(),
-
                 () -> assertThat(actual).isFalse()
         );
     }

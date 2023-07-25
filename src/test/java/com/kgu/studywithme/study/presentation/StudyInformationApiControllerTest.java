@@ -39,61 +39,10 @@ class StudyInformationApiControllerTest extends ControllerTest {
         private static final Long STUDY_ID = 1L;
 
         @Test
-        @DisplayName("스터디 상세 페이지 기본 정보를 조회한다")
+        @DisplayName("스터디 기본 정보를 조회한다")
         void success() throws Exception {
             // given
-            given(queryBasicInformationByIdUseCase.queryBasicInformation(any()))
-                    .willReturn(
-                            new StudyBasicInformation(
-                                    1L,
-                                    LINE_INTERVIEW.getName(),
-                                    LINE_INTERVIEW.getDescription(),
-                                    LINE_INTERVIEW.getCategory().getName(),
-                                    new StudyBasicInformation.Thumbnail(
-                                            LINE_INTERVIEW.getThumbnail().getImageName(),
-                                            LINE_INTERVIEW.getThumbnail().getBackground()
-                                    ),
-                                    LINE_INTERVIEW.getType().getDescription(),
-                                    LINE_INTERVIEW.getLocation(),
-                                    IN_PROGRESS.getDescription(),
-                                    LINE_INTERVIEW.getCapacity(),
-                                    LINE_INTERVIEW.getCapacity() - 2,
-                                    LINE_INTERVIEW.getMinimumAttendanceForGraduation(),
-                                    3,
-                                    new StudyMember(1L, JIWON.getNickname()),
-                                    new ArrayList<>(LINE_INTERVIEW.getHashtags()),
-                                    List.of(
-                                            new StudyBasicInformation.ParticipantInformation(
-                                                    1L,
-                                                    JIWON.getNickname().getValue(),
-                                                    JIWON.getGender().getValue(),
-                                                    98,
-                                                    22
-                                            ),
-                                            new StudyBasicInformation.ParticipantInformation(
-                                                    2L,
-                                                    GHOST.getNickname().getValue(),
-                                                    GHOST.getGender().getValue(),
-                                                    85,
-                                                    23
-                                            ),
-                                            new StudyBasicInformation.ParticipantInformation(
-                                                    3L,
-                                                    DUMMY1.getNickname().getValue(),
-                                                    DUMMY1.getGender().getValue(),
-                                                    92,
-                                                    28
-                                            ),
-                                            new StudyBasicInformation.ParticipantInformation(
-                                                    4L,
-                                                    DUMMY2.getNickname().getValue(),
-                                                    DUMMY2.getGender().getValue(),
-                                                    78,
-                                                    26
-                                            )
-                                    )
-                            )
-                    );
+            given(queryBasicInformationByIdUseCase.queryBasicInformation(any())).willReturn(createStudyBasicInformation());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -108,36 +57,59 @@ class StudyInformationApiControllerTest extends ControllerTest {
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     responseFields(
-                                            fieldWithPath("result.id").description("스터디 ID(PK)"),
-                                            fieldWithPath("result.name").description("스터디명"),
-                                            fieldWithPath("result.description").description("스터디 설명"),
-                                            fieldWithPath("result.category").description("스터디 카테고리"),
-                                            fieldWithPath("result.thumbnail.name").description("스터디 썸네일 이미지"),
-                                            fieldWithPath("result.thumbnail.background").description("스터디 썸네일 배경색"),
-                                            fieldWithPath("result.type").description("스터디 타입")
+                                            fieldWithPath("id")
+                                                    .description("스터디 ID(PK)"),
+                                            fieldWithPath("name")
+                                                    .description("스터디명"),
+                                            fieldWithPath("description")
+                                                    .description("스터디 설명"),
+                                            fieldWithPath("category")
+                                                    .description("스터디 카테고리"),
+                                            fieldWithPath("thumbnail.name")
+                                                    .description("스터디 썸네일 이미지"),
+                                            fieldWithPath("thumbnail.background")
+                                                    .description("스터디 썸네일 배경색"),
+                                            fieldWithPath("type")
+                                                    .description("스터디 타입")
                                                     .attributes(constraint("온라인 / 오프라인")),
-                                            fieldWithPath("result.location.province").description("오프라인 스터디 지역 [경기도, 강원도, ...]")
+                                            fieldWithPath("location.province")
+                                                    .description("오프라인 스터디 지역 [경기도, 강원도, ...]")
                                                     .optional()
                                                     .attributes(constraint("온라인 스터디 = null")),
-                                            fieldWithPath("result.location.city").description("오프라인 스터디 지역 [안양시, 수원시, ...]")
+                                            fieldWithPath("location.city")
+                                                    .description("오프라인 스터디 지역 [안양시, 수원시, ...]")
                                                     .optional()
                                                     .attributes(constraint("온라인 스터디 = null")),
-                                            fieldWithPath("result.recruitmentStatus").description("스터디 모집 여부"),
-                                            fieldWithPath("result.maxMember").description("스터디 최대 인원"),
-                                            fieldWithPath("result.participantMembers").description("현재 스터디 참여자 수"),
-                                            fieldWithPath("result.minimumAttendanceForGraduation").description("스터디 졸업 요건 [최소 출석 횟수]"),
-                                            fieldWithPath("result.remainingOpportunityToUpdateGraduationPolicy").description("남은 졸업 요건 변경 횟수"),
-                                            fieldWithPath("result.host.id").description("스터디 팀장 ID(PK)"),
-                                            fieldWithPath("result.host.nickname").description("스터디 팀장 닉네임"),
-                                            fieldWithPath("result.hashtags[]").description("스터디 해시태그"),
-                                            fieldWithPath("result.participants[].id").description("스터디 참여자 ID(PK)"),
-                                            fieldWithPath("result.participants[].nickname").description("스터디 참여자 닉네임"),
-                                            fieldWithPath("result.participants[].gender").description("스터디 참여자 성별"),
-                                            fieldWithPath("result.participants[].score").description("스터디 참여자 점수"),
-                                            fieldWithPath("result.participants[].age").description("스터디 참여자 나이")
+                                            fieldWithPath("recruitmentStatus")
+                                                    .description("스터디 모집 여부"),
+                                            fieldWithPath("maxMember")
+                                                    .description("스터디 최대 인원"),
+                                            fieldWithPath("participantMembers")
+                                                    .description("현재 스터디 참여자 수"),
+                                            fieldWithPath("minimumAttendanceForGraduation")
+                                                    .description("스터디 졸업 요건 [최소 출석 횟수]"),
+                                            fieldWithPath("remainingOpportunityToUpdateGraduationPolicy")
+                                                    .description("남은 졸업 요건 변경 횟수"),
+                                            fieldWithPath("host.id")
+                                                    .description("스터디 팀장 ID(PK)"),
+                                            fieldWithPath("host.nickname")
+                                                    .description("스터디 팀장 닉네임"),
+                                            fieldWithPath("hashtags[]")
+                                                    .description("스터디 해시태그"),
+                                            fieldWithPath("participants[].id")
+                                                    .description("스터디 참여자 ID(PK)"),
+                                            fieldWithPath("participants[].nickname")
+                                                    .description("스터디 참여자 닉네임"),
+                                            fieldWithPath("participants[].gender")
+                                                    .description("스터디 참여자 성별"),
+                                            fieldWithPath("participants[].score")
+                                                    .description("스터디 참여자 점수"),
+                                            fieldWithPath("participants[].age")
+                                                    .description("스터디 참여자 나이")
                                     )
                             )
                     );
@@ -188,16 +160,23 @@ class StudyInformationApiControllerTest extends ControllerTest {
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     responseFields(
-                                            fieldWithPath("result.reviews[].id").description("리뷰 ID(PK)"),
-                                            fieldWithPath("result.reviews[].content").description("리뷰 내용"),
-                                            fieldWithPath("result.reviews[].writtenDate").description("리뷰 작성 날짜"),
-                                            fieldWithPath("result.reviews[].reviewer.id").description("리뷰어 ID(PK)"),
-                                            fieldWithPath("result.reviews[].reviewer.nickname").description("리뷰어 닉네임")
+                                            fieldWithPath("reviews[].id")
+                                                    .description("리뷰 ID(PK)"),
+                                            fieldWithPath("reviews[].content")
+                                                    .description("리뷰 내용"),
+                                            fieldWithPath("reviews[].writtenDate")
+                                                    .description("리뷰 작성 날짜"),
+                                            fieldWithPath("reviews[].reviewer.id")
+                                                    .description("리뷰어 ID(PK)"),
+                                            fieldWithPath("reviews[].reviewer.nickname")
+                                                    .description("리뷰어 닉네임")
                                                     .attributes(constraint("날짜 내림차순 정렬로 응답")),
-                                            fieldWithPath("result.graduateCount").description("졸업한 사람 수")
+                                            fieldWithPath("graduateCount")
+                                                    .description("졸업한 사람 수")
                                     )
                             )
                     );
@@ -244,16 +223,73 @@ class StudyInformationApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     responseFields(
-                                            fieldWithPath("result.host.id").description("팀장 ID(PK)"),
-                                            fieldWithPath("result.host.nickname").description("팀장 닉네임"),
-                                            fieldWithPath("result.participants[].id").description("참여자 ID(PK)"),
-                                            fieldWithPath("result.participants[].nickname").description("참여자 닉네임")
+                                            fieldWithPath("host.id")
+                                                    .description("팀장 ID(PK)"),
+                                            fieldWithPath("host.nickname")
+                                                    .description("팀장 닉네임"),
+                                            fieldWithPath("participants[].id")
+                                                    .description("참여자 ID(PK)"),
+                                            fieldWithPath("participants[].nickname")
+                                                    .description("참여자 닉네임")
                                     )
                             )
                     );
         }
+    }
+
+    private static StudyBasicInformation createStudyBasicInformation() {
+        return new StudyBasicInformation(
+                1L,
+                LINE_INTERVIEW.getName().getValue(),
+                LINE_INTERVIEW.getDescription().getValue(),
+                LINE_INTERVIEW.getCategory().getName(),
+                new StudyBasicInformation.Thumbnail(
+                        LINE_INTERVIEW.getThumbnail().getImageName(),
+                        LINE_INTERVIEW.getThumbnail().getBackground()
+                ),
+                LINE_INTERVIEW.getType(),
+                LINE_INTERVIEW.getLocation(),
+                IN_PROGRESS,
+                LINE_INTERVIEW.getCapacity().getValue(),
+                LINE_INTERVIEW.getCapacity().getValue() - 2,
+                LINE_INTERVIEW.getMinimumAttendanceForGraduation(),
+                3,
+                new StudyMember(1L, JIWON.getNickname()),
+                new ArrayList<>(LINE_INTERVIEW.getHashtags()),
+                List.of(
+                        new StudyBasicInformation.ParticipantInformation(
+                                1L,
+                                JIWON.getNickname().getValue(),
+                                JIWON.getGender().getValue(),
+                                98,
+                                22
+                        ),
+                        new StudyBasicInformation.ParticipantInformation(
+                                2L,
+                                GHOST.getNickname().getValue(),
+                                GHOST.getGender().getValue(),
+                                85,
+                                23
+                        ),
+                        new StudyBasicInformation.ParticipantInformation(
+                                3L,
+                                DUMMY1.getNickname().getValue(),
+                                DUMMY1.getGender().getValue(),
+                                92,
+                                28
+                        ),
+                        new StudyBasicInformation.ParticipantInformation(
+                                4L,
+                                DUMMY2.getNickname().getValue(),
+                                DUMMY2.getGender().getValue(),
+                                78,
+                                26
+                        )
+                )
+        );
     }
 }

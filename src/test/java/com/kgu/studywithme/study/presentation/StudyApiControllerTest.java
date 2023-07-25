@@ -38,6 +38,30 @@ class StudyApiControllerTest extends ControllerTest {
     class create {
         private static final String BASE_URL = "/api/study";
         private static final Long HOST_ID = 1L;
+        private static final CreateStudyRequest ONLINE_STUDY_REQUEST = new CreateStudyRequest(
+                SPRING.getName().getValue(),
+                SPRING.getDescription().getValue(),
+                SPRING.getCapacity().getValue(),
+                SPRING.getCategory().getId(),
+                SPRING.getThumbnail().getImageName(),
+                SPRING.getType().getValue(),
+                null,
+                null,
+                SPRING.getMinimumAttendanceForGraduation(),
+                SPRING.getHashtags()
+        );
+        private static final CreateStudyRequest OFFLINE_STUDY_REQUEST = new CreateStudyRequest(
+                REAL_MYSQL.getName().getValue(),
+                REAL_MYSQL.getDescription().getValue(),
+                REAL_MYSQL.getCapacity().getValue(),
+                REAL_MYSQL.getCategory().getId(),
+                REAL_MYSQL.getThumbnail().getImageName(),
+                REAL_MYSQL.getType().getValue(),
+                REAL_MYSQL.getLocation().getProvince(),
+                REAL_MYSQL.getLocation().getCity(),
+                REAL_MYSQL.getMinimumAttendanceForGraduation(),
+                REAL_MYSQL.getHashtags()
+        );
 
         @Test
         @DisplayName("이미 사용하고 있는 이름이면 스터디 생성에 실패한다")
@@ -49,23 +73,11 @@ class StudyApiControllerTest extends ControllerTest {
                     .createStudy(any());
 
             // when
-            final CreateStudyRequest request = new CreateStudyRequest(
-                    SPRING.getName(),
-                    SPRING.getDescription(),
-                    SPRING.getCapacity(),
-                    SPRING.getCategory().getId(),
-                    SPRING.getThumbnail().getImageName(),
-                    SPRING.getType().getValue(),
-                    null,
-                    null,
-                    SPRING.getMinimumAttendanceForGraduation(),
-                    SPRING.getHashtags()
-            );
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(ONLINE_STUDY_REQUEST));
 
             // then
             final StudyErrorCode expectedError = StudyErrorCode.DUPLICATE_NAME;
@@ -81,26 +93,36 @@ class StudyApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "StudyApi/Register/Failure",
+                                    "StudyApi/Create/Failure",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     requestFields(
-                                            fieldWithPath("name").description("스터디명"),
-                                            fieldWithPath("description").description("스터디 설명"),
-                                            fieldWithPath("category").description("카테고리 ID(PK)"),
-                                            fieldWithPath("thumbnail").description("스터디 썸네일"),
-                                            fieldWithPath("capacity").description("최대 수용 인원"),
-                                            fieldWithPath("type").description("온/오프라인 유무")
+                                            fieldWithPath("name")
+                                                    .description("스터디명"),
+                                            fieldWithPath("description")
+                                                    .description("스터디 설명"),
+                                            fieldWithPath("category")
+                                                    .description("카테고리 ID(PK)"),
+                                            fieldWithPath("thumbnail")
+                                                    .description("스터디 썸네일"),
+                                            fieldWithPath("capacity")
+                                                    .description("최대 수용 인원"),
+                                            fieldWithPath("type")
+                                                    .description("온/오프라인 유무")
                                                     .attributes(constraint("온라인 = online / 오프라인 = offline")),
-                                            fieldWithPath("province").description("오프라인 스터디 지역 [경기도, 강원도, ...]")
+                                            fieldWithPath("province")
+                                                    .description("오프라인 스터디 지역 [경기도, 강원도, ...]")
                                                     .optional()
                                                     .attributes(constraint("오프라인 스터디의 경우 필수")),
-                                            fieldWithPath("city").description("오프라인 스터디 지역 [안양시, 수원시, ...]")
+                                            fieldWithPath("city")
+                                                    .description("오프라인 스터디 지역 [안양시, 수원시, ...]")
                                                     .optional()
                                                     .attributes(constraint("오프라인 스터디의 경우 필수")),
-                                            fieldWithPath("minimumAttendanceForGraduation").description("졸업 요건 [최소 출석 횟수]"),
-                                            fieldWithPath("hashtags").description("해시태그")
+                                            fieldWithPath("minimumAttendanceForGraduation")
+                                                    .description("졸업 요건 [최소 출석 횟수]"),
+                                            fieldWithPath("hashtags")
+                                                    .description("해시태그")
                                                     .attributes(constraint("최소 1개 최대 5개"))
                                     ),
                                     getExceptionResponseFiels()
@@ -109,30 +131,18 @@ class StudyApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("스터디 생성에 성공한다 - 온라인")
+        @DisplayName("스터디를 생성한다 - 온라인")
         void successOnline() throws Exception {
             // given
             mockingToken(true, HOST_ID);
             given(createStudyUseCase.createStudy(any())).willReturn(1L);
 
             // when
-            final CreateStudyRequest request = new CreateStudyRequest(
-                    SPRING.getName(),
-                    SPRING.getDescription(),
-                    SPRING.getCapacity(),
-                    SPRING.getCategory().getId(),
-                    SPRING.getThumbnail().getImageName(),
-                    SPRING.getType().getValue(),
-                    null,
-                    null,
-                    SPRING.getMinimumAttendanceForGraduation(),
-                    SPRING.getHashtags()
-            );
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(ONLINE_STUDY_REQUEST));
 
             // then
             mockMvc.perform(requestBuilder)
@@ -142,26 +152,36 @@ class StudyApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "StudyApi/Register/Success/Case1",
+                                    "StudyApi/Create/Success/Case1",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     requestFields(
-                                            fieldWithPath("name").description("스터디명"),
-                                            fieldWithPath("description").description("스터디 설명"),
-                                            fieldWithPath("category").description("카테고리 ID(PK)"),
-                                            fieldWithPath("thumbnail").description("스터디 썸네일"),
-                                            fieldWithPath("capacity").description("최대 수용 인원"),
-                                            fieldWithPath("type").description("온/오프라인 유무")
+                                            fieldWithPath("name")
+                                                    .description("스터디명"),
+                                            fieldWithPath("description")
+                                                    .description("스터디 설명"),
+                                            fieldWithPath("category")
+                                                    .description("카테고리 ID(PK)"),
+                                            fieldWithPath("thumbnail")
+                                                    .description("스터디 썸네일"),
+                                            fieldWithPath("capacity")
+                                                    .description("최대 수용 인원"),
+                                            fieldWithPath("type")
+                                                    .description("온/오프라인 유무")
                                                     .attributes(constraint("온라인 = online / 오프라인 = offline")),
-                                            fieldWithPath("province").description("오프라인 스터디 지역 [경기도, 강원도, ...]")
+                                            fieldWithPath("province")
+                                                    .description("오프라인 스터디 지역 [경기도, 강원도, ...]")
                                                     .optional()
                                                     .attributes(constraint("오프라인 스터디의 경우 필수")),
-                                            fieldWithPath("city").description("오프라인 스터디 지역 [안양시, 수원시, ...]")
+                                            fieldWithPath("city")
+                                                    .description("오프라인 스터디 지역 [안양시, 수원시, ...]")
                                                     .optional()
                                                     .attributes(constraint("오프라인 스터디의 경우 필수")),
-                                            fieldWithPath("minimumAttendanceForGraduation").description("졸업 요건 [최소 출석 횟수]"),
-                                            fieldWithPath("hashtags").description("해시태그")
+                                            fieldWithPath("minimumAttendanceForGraduation")
+                                                    .description("졸업 요건 [최소 출석 횟수]"),
+                                            fieldWithPath("hashtags")
+                                                    .description("해시태그")
                                                     .attributes(constraint("최소 1개 최대 5개"))
                                     )
                             )
@@ -169,30 +189,18 @@ class StudyApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("스터디 생성에 성공한다 - 오프라인")
+        @DisplayName("스터디를 생성한다 - 오프라인")
         void successOffline() throws Exception {
             // given
             mockingToken(true, HOST_ID);
             given(createStudyUseCase.createStudy(any())).willReturn(1L);
 
             // when
-            final CreateStudyRequest request = new CreateStudyRequest(
-                    REAL_MYSQL.getName(),
-                    REAL_MYSQL.getDescription(),
-                    REAL_MYSQL.getCapacity(),
-                    REAL_MYSQL.getCategory().getId(),
-                    REAL_MYSQL.getThumbnail().getImageName(),
-                    REAL_MYSQL.getType().getValue(),
-                    REAL_MYSQL.getLocation().getProvince(),
-                    REAL_MYSQL.getLocation().getCity(),
-                    REAL_MYSQL.getMinimumAttendanceForGraduation(),
-                    REAL_MYSQL.getHashtags()
-            );
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(OFFLINE_STUDY_REQUEST));
 
             // then
             mockMvc.perform(requestBuilder)
@@ -202,26 +210,36 @@ class StudyApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "StudyApi/Register/Success/Case2",
+                                    "StudyApi/Create/Success/Case2",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     requestFields(
-                                            fieldWithPath("name").description("스터디명"),
-                                            fieldWithPath("description").description("스터디 설명"),
-                                            fieldWithPath("category").description("카테고리 ID(PK)"),
-                                            fieldWithPath("thumbnail").description("스터디 썸네일"),
-                                            fieldWithPath("capacity").description("최대 수용 인원"),
-                                            fieldWithPath("type").description("온/오프라인 유무")
+                                            fieldWithPath("name")
+                                                    .description("스터디명"),
+                                            fieldWithPath("description")
+                                                    .description("스터디 설명"),
+                                            fieldWithPath("category")
+                                                    .description("카테고리 ID(PK)"),
+                                            fieldWithPath("thumbnail")
+                                                    .description("스터디 썸네일"),
+                                            fieldWithPath("capacity")
+                                                    .description("최대 수용 인원"),
+                                            fieldWithPath("type")
+                                                    .description("온/오프라인 유무")
                                                     .attributes(constraint("온라인 = online / 오프라인 = offline")),
-                                            fieldWithPath("province").description("오프라인 스터디 지역 [경기도, 강원도, ...]")
+                                            fieldWithPath("province")
+                                                    .description("오프라인 스터디 지역 [경기도, 강원도, ...]")
                                                     .optional()
                                                     .attributes(constraint("오프라인 스터디의 경우 필수")),
-                                            fieldWithPath("city").description("오프라인 스터디 지역 [안양시, 수원시, ...]")
+                                            fieldWithPath("city")
+                                                    .description("오프라인 스터디 지역 [안양시, 수원시, ...]")
                                                     .optional()
                                                     .attributes(constraint("오프라인 스터디의 경우 필수")),
-                                            fieldWithPath("minimumAttendanceForGraduation").description("졸업 요건 [최소 출석 횟수]"),
-                                            fieldWithPath("hashtags").description("해시태그")
+                                            fieldWithPath("minimumAttendanceForGraduation")
+                                                    .description("졸업 요건 [최소 출석 횟수]"),
+                                            fieldWithPath("hashtags")
+                                                    .description("해시태그")
                                                     .attributes(constraint("최소 1개 최대 5개"))
                                     )
                             )
@@ -236,6 +254,32 @@ class StudyApiControllerTest extends ControllerTest {
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;
         private static final Long ANONYMOUS_ID = 2L;
+        private static final UpdateStudyRequest ONLINE_STUDY_REQUEST = new UpdateStudyRequest(
+                SPRING.getName().getValue(),
+                SPRING.getDescription().getValue(),
+                SPRING.getCapacity().getValue(),
+                SPRING.getCategory().getId(),
+                SPRING.getThumbnail().getImageName(),
+                SPRING.getType().getValue(),
+                null,
+                null,
+                true,
+                SPRING.getMinimumAttendanceForGraduation(),
+                SPRING.getHashtags()
+        );
+        private static final UpdateStudyRequest OFFLINE_STUDY_REQUEST = new UpdateStudyRequest(
+                REAL_MYSQL.getName().getValue(),
+                REAL_MYSQL.getDescription().getValue(),
+                REAL_MYSQL.getCapacity().getValue(),
+                REAL_MYSQL.getCategory().getId(),
+                REAL_MYSQL.getThumbnail().getImageName(),
+                REAL_MYSQL.getType().getValue(),
+                REAL_MYSQL.getLocation().getProvince(),
+                REAL_MYSQL.getLocation().getCity(),
+                true,
+                REAL_MYSQL.getMinimumAttendanceForGraduation(),
+                REAL_MYSQL.getHashtags()
+        );
 
         @BeforeEach
         void setUp() {
@@ -250,24 +294,11 @@ class StudyApiControllerTest extends ControllerTest {
             mockingToken(true, ANONYMOUS_ID);
 
             // when
-            final UpdateStudyRequest request = new UpdateStudyRequest(
-                    SPRING.getName(),
-                    SPRING.getDescription(),
-                    SPRING.getCapacity(),
-                    SPRING.getCategory().getId(),
-                    SPRING.getThumbnail().getImageName(),
-                    SPRING.getType().getValue(),
-                    null,
-                    null,
-                    true,
-                    SPRING.getMinimumAttendanceForGraduation(),
-                    SPRING.getHashtags()
-            );
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(ONLINE_STUDY_REQUEST));
 
             // then
             final StudyErrorCode expectedError = StudyErrorCode.MEMBER_IS_NOT_HOST;
@@ -288,26 +319,38 @@ class StudyApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("name").description("스터디명"),
-                                            fieldWithPath("description").description("스터디 설명"),
-                                            fieldWithPath("capacity").description("최대 수용 인원"),
-                                            fieldWithPath("category").description("카테고리 ID(PK)"),
-                                            fieldWithPath("thumbnail").description("스터디 썸네일"),
-                                            fieldWithPath("type").description("온/오프라인 유무")
+                                            fieldWithPath("name")
+                                                    .description("스터디명"),
+                                            fieldWithPath("description")
+                                                    .description("스터디 설명"),
+                                            fieldWithPath("capacity")
+                                                    .description("최대 수용 인원"),
+                                            fieldWithPath("category")
+                                                    .description("카테고리 ID(PK)"),
+                                            fieldWithPath("thumbnail")
+                                                    .description("스터디 썸네일"),
+                                            fieldWithPath("type")
+                                                    .description("온/오프라인 유무")
                                                     .attributes(constraint("온라인 = online / 오프라인 = offline")),
-                                            fieldWithPath("province").description("오프라인 스터디 지역 [경기도, 강원도, ...]")
+                                            fieldWithPath("province")
+                                                    .description("오프라인 스터디 지역 [경기도, 강원도, ...]")
                                                     .optional()
                                                     .attributes(constraint("오프라인 스터디의 경우 필수")),
-                                            fieldWithPath("city").description("오프라인 스터디 지역 [안양시, 수원시, ...]")
+                                            fieldWithPath("city")
+                                                    .description("오프라인 스터디 지역 [안양시, 수원시, ...]")
                                                     .optional()
                                                     .attributes(constraint("오프라인 스터디의 경우 필수")),
-                                            fieldWithPath("recruitmentStatus").description("스터디 모집 활성화 여부")
+                                            fieldWithPath("recruitmentStatus")
+                                                    .description("스터디 모집 활성화 여부")
                                                     .attributes(constraint("활성화=true / 비활성화=false")),
-                                            fieldWithPath("minimumAttendanceForGraduation").description("졸업 요건 [최소 출석 횟수]"),
-                                            fieldWithPath("hashtags").description("해시태그")
+                                            fieldWithPath("minimumAttendanceForGraduation")
+                                                    .description("졸업 요건 [최소 출석 횟수]"),
+                                            fieldWithPath("hashtags")
+                                                    .description("해시태그")
                                                     .attributes(constraint("최소 1개 최대 5개"))
                                     ),
                                     getExceptionResponseFiels()
@@ -325,24 +368,11 @@ class StudyApiControllerTest extends ControllerTest {
                     .updateStudy(any());
 
             // when
-            final UpdateStudyRequest request = new UpdateStudyRequest(
-                    SPRING.getName(),
-                    SPRING.getDescription(),
-                    SPRING.getCapacity(),
-                    SPRING.getCategory().getId(),
-                    SPRING.getThumbnail().getImageName(),
-                    SPRING.getType().getValue(),
-                    null,
-                    null,
-                    true,
-                    SPRING.getMinimumAttendanceForGraduation(),
-                    SPRING.getHashtags()
-            );
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(ONLINE_STUDY_REQUEST));
 
             // then
             final StudyErrorCode expectedError = StudyErrorCode.DUPLICATE_NAME;
@@ -363,26 +393,38 @@ class StudyApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("name").description("스터디명"),
-                                            fieldWithPath("description").description("스터디 설명"),
-                                            fieldWithPath("capacity").description("최대 수용 인원"),
-                                            fieldWithPath("category").description("카테고리 ID(PK)"),
-                                            fieldWithPath("thumbnail").description("스터디 썸네일"),
-                                            fieldWithPath("type").description("온/오프라인 유무")
+                                            fieldWithPath("name")
+                                                    .description("스터디명"),
+                                            fieldWithPath("description")
+                                                    .description("스터디 설명"),
+                                            fieldWithPath("capacity")
+                                                    .description("최대 수용 인원"),
+                                            fieldWithPath("category")
+                                                    .description("카테고리 ID(PK)"),
+                                            fieldWithPath("thumbnail")
+                                                    .description("스터디 썸네일"),
+                                            fieldWithPath("type")
+                                                    .description("온/오프라인 유무")
                                                     .attributes(constraint("온라인 = online / 오프라인 = offline")),
-                                            fieldWithPath("province").description("오프라인 스터디 지역 [경기도, 강원도, ...]")
+                                            fieldWithPath("province")
+                                                    .description("오프라인 스터디 지역 [경기도, 강원도, ...]")
                                                     .optional()
                                                     .attributes(constraint("오프라인 스터디의 경우 필수")),
-                                            fieldWithPath("city").description("오프라인 스터디 지역 [안양시, 수원시, ...]")
+                                            fieldWithPath("city")
+                                                    .description("오프라인 스터디 지역 [안양시, 수원시, ...]")
                                                     .optional()
                                                     .attributes(constraint("오프라인 스터디의 경우 필수")),
-                                            fieldWithPath("recruitmentStatus").description("스터디 모집 활성화 여부")
+                                            fieldWithPath("recruitmentStatus")
+                                                    .description("스터디 모집 활성화 여부")
                                                     .attributes(constraint("활성화=true / 비활성화=false")),
-                                            fieldWithPath("minimumAttendanceForGraduation").description("졸업 요건 [최소 출석 횟수]"),
-                                            fieldWithPath("hashtags").description("해시태그")
+                                            fieldWithPath("minimumAttendanceForGraduation")
+                                                    .description("졸업 요건 [최소 출석 횟수]"),
+                                            fieldWithPath("hashtags")
+                                                    .description("해시태그")
                                                     .attributes(constraint("최소 1개 최대 5개"))
                                     ),
                                     getExceptionResponseFiels()
@@ -400,24 +442,11 @@ class StudyApiControllerTest extends ControllerTest {
                     .updateStudy(any());
 
             // when
-            final UpdateStudyRequest request = new UpdateStudyRequest(
-                    SPRING.getName(),
-                    SPRING.getDescription(),
-                    SPRING.getCapacity(),
-                    SPRING.getCategory().getId(),
-                    SPRING.getThumbnail().getImageName(),
-                    SPRING.getType().getValue(),
-                    null,
-                    null,
-                    true,
-                    SPRING.getMinimumAttendanceForGraduation(),
-                    SPRING.getHashtags()
-            );
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(ONLINE_STUDY_REQUEST));
 
             // then
             final StudyErrorCode expectedError = StudyErrorCode.CAPACITY_CANNOT_COVER_CURRENT_PARTICIPANTS;
@@ -438,26 +467,38 @@ class StudyApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("name").description("스터디명"),
-                                            fieldWithPath("description").description("스터디 설명"),
-                                            fieldWithPath("capacity").description("최대 수용 인원"),
-                                            fieldWithPath("category").description("카테고리 ID(PK)"),
-                                            fieldWithPath("thumbnail").description("스터디 썸네일"),
-                                            fieldWithPath("type").description("온/오프라인 유무")
+                                            fieldWithPath("name")
+                                                    .description("스터디명"),
+                                            fieldWithPath("description")
+                                                    .description("스터디 설명"),
+                                            fieldWithPath("capacity")
+                                                    .description("최대 수용 인원"),
+                                            fieldWithPath("category")
+                                                    .description("카테고리 ID(PK)"),
+                                            fieldWithPath("thumbnail")
+                                                    .description("스터디 썸네일"),
+                                            fieldWithPath("type")
+                                                    .description("온/오프라인 유무")
                                                     .attributes(constraint("온라인 = online / 오프라인 = offline")),
-                                            fieldWithPath("province").description("오프라인 스터디 지역 [경기도, 강원도, ...]")
+                                            fieldWithPath("province")
+                                                    .description("오프라인 스터디 지역 [경기도, 강원도, ...]")
                                                     .optional()
                                                     .attributes(constraint("오프라인 스터디의 경우 필수")),
-                                            fieldWithPath("city").description("오프라인 스터디 지역 [안양시, 수원시, ...]")
+                                            fieldWithPath("city")
+                                                    .description("오프라인 스터디 지역 [안양시, 수원시, ...]")
                                                     .optional()
                                                     .attributes(constraint("오프라인 스터디의 경우 필수")),
-                                            fieldWithPath("recruitmentStatus").description("스터디 모집 활성화 여부")
+                                            fieldWithPath("recruitmentStatus")
+                                                    .description("스터디 모집 활성화 여부")
                                                     .attributes(constraint("활성화=true / 비활성화=false")),
-                                            fieldWithPath("minimumAttendanceForGraduation").description("졸업 요건 [최소 출석 횟수]"),
-                                            fieldWithPath("hashtags").description("해시태그")
+                                            fieldWithPath("minimumAttendanceForGraduation")
+                                                    .description("졸업 요건 [최소 출석 횟수]"),
+                                            fieldWithPath("hashtags")
+                                                    .description("해시태그")
                                                     .attributes(constraint("최소 1개 최대 5개"))
                                     ),
                                     getExceptionResponseFiels()
@@ -475,24 +516,11 @@ class StudyApiControllerTest extends ControllerTest {
                     .updateStudy(any());
 
             // when
-            final UpdateStudyRequest request = new UpdateStudyRequest(
-                    SPRING.getName(),
-                    SPRING.getDescription(),
-                    SPRING.getCapacity(),
-                    SPRING.getCategory().getId(),
-                    SPRING.getThumbnail().getImageName(),
-                    SPRING.getType().getValue(),
-                    null,
-                    null,
-                    true,
-                    SPRING.getMinimumAttendanceForGraduation(),
-                    SPRING.getHashtags()
-            );
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(ONLINE_STUDY_REQUEST));
 
             // then
             final StudyErrorCode expectedError = StudyErrorCode.NO_CHANCE_TO_UPDATE_GRADUATION_POLICY;
@@ -513,26 +541,38 @@ class StudyApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("name").description("스터디명"),
-                                            fieldWithPath("description").description("스터디 설명"),
-                                            fieldWithPath("capacity").description("최대 수용 인원"),
-                                            fieldWithPath("category").description("카테고리 ID(PK)"),
-                                            fieldWithPath("thumbnail").description("스터디 썸네일"),
-                                            fieldWithPath("type").description("온/오프라인 유무")
+                                            fieldWithPath("name")
+                                                    .description("스터디명"),
+                                            fieldWithPath("description")
+                                                    .description("스터디 설명"),
+                                            fieldWithPath("capacity")
+                                                    .description("최대 수용 인원"),
+                                            fieldWithPath("category")
+                                                    .description("카테고리 ID(PK)"),
+                                            fieldWithPath("thumbnail")
+                                                    .description("스터디 썸네일"),
+                                            fieldWithPath("type")
+                                                    .description("온/오프라인 유무")
                                                     .attributes(constraint("온라인 = online / 오프라인 = offline")),
-                                            fieldWithPath("province").description("오프라인 스터디 지역 [경기도, 강원도, ...]")
+                                            fieldWithPath("province")
+                                                    .description("오프라인 스터디 지역 [경기도, 강원도, ...]")
                                                     .optional()
                                                     .attributes(constraint("오프라인 스터디의 경우 필수")),
-                                            fieldWithPath("city").description("오프라인 스터디 지역 [안양시, 수원시, ...]")
+                                            fieldWithPath("city")
+                                                    .description("오프라인 스터디 지역 [안양시, 수원시, ...]")
                                                     .optional()
                                                     .attributes(constraint("오프라인 스터디의 경우 필수")),
-                                            fieldWithPath("recruitmentStatus").description("스터디 모집 활성화 여부")
+                                            fieldWithPath("recruitmentStatus")
+                                                    .description("스터디 모집 활성화 여부")
                                                     .attributes(constraint("활성화=true / 비활성화=false")),
-                                            fieldWithPath("minimumAttendanceForGraduation").description("졸업 요건 [최소 출석 횟수]"),
-                                            fieldWithPath("hashtags").description("해시태그")
+                                            fieldWithPath("minimumAttendanceForGraduation")
+                                                    .description("졸업 요건 [최소 출석 횟수]"),
+                                            fieldWithPath("hashtags")
+                                                    .description("해시태그")
                                                     .attributes(constraint("최소 1개 최대 5개"))
                                     ),
                                     getExceptionResponseFiels()
@@ -541,7 +581,7 @@ class StudyApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("정보 수정에 성공한다 - 온라인")
+        @DisplayName("스터디 정보를 수정한다 - 온라인")
         void successOnline() throws Exception {
             // given
             mockingToken(true, HOST_ID);
@@ -551,9 +591,9 @@ class StudyApiControllerTest extends ControllerTest {
 
             // when
             final UpdateStudyRequest request = new UpdateStudyRequest(
-                    SPRING.getName(),
-                    SPRING.getDescription(),
-                    SPRING.getCapacity(),
+                    SPRING.getName().getValue(),
+                    SPRING.getDescription().getValue(),
+                    SPRING.getCapacity().getValue(),
                     SPRING.getCategory().getId(),
                     SPRING.getThumbnail().getImageName(),
                     SPRING.getType().getValue(),
@@ -579,26 +619,38 @@ class StudyApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("name").description("스터디명"),
-                                            fieldWithPath("description").description("스터디 설명"),
-                                            fieldWithPath("capacity").description("최대 수용 인원"),
-                                            fieldWithPath("category").description("카테고리 ID(PK)"),
-                                            fieldWithPath("thumbnail").description("스터디 썸네일"),
-                                            fieldWithPath("type").description("온/오프라인 유무")
+                                            fieldWithPath("name")
+                                                    .description("스터디명"),
+                                            fieldWithPath("description")
+                                                    .description("스터디 설명"),
+                                            fieldWithPath("capacity")
+                                                    .description("최대 수용 인원"),
+                                            fieldWithPath("category")
+                                                    .description("카테고리 ID(PK)"),
+                                            fieldWithPath("thumbnail")
+                                                    .description("스터디 썸네일"),
+                                            fieldWithPath("type")
+                                                    .description("온/오프라인 유무")
                                                     .attributes(constraint("온라인 = online / 오프라인 = offline")),
-                                            fieldWithPath("province").description("오프라인 스터디 지역 [경기도, 강원도, ...]")
+                                            fieldWithPath("province")
+                                                    .description("오프라인 스터디 지역 [경기도, 강원도, ...]")
                                                     .optional()
                                                     .attributes(constraint("오프라인 스터디의 경우 필수")),
-                                            fieldWithPath("city").description("오프라인 스터디 지역 [안양시, 수원시, ...]")
+                                            fieldWithPath("city")
+                                                    .description("오프라인 스터디 지역 [안양시, 수원시, ...]")
                                                     .optional()
                                                     .attributes(constraint("오프라인 스터디의 경우 필수")),
-                                            fieldWithPath("recruitmentStatus").description("스터디 모집 활성화 여부")
+                                            fieldWithPath("recruitmentStatus")
+                                                    .description("스터디 모집 활성화 여부")
                                                     .attributes(constraint("활성화=true / 비활성화=false")),
-                                            fieldWithPath("minimumAttendanceForGraduation").description("졸업 요건 [최소 출석 횟수]"),
-                                            fieldWithPath("hashtags").description("해시태그")
+                                            fieldWithPath("minimumAttendanceForGraduation")
+                                                    .description("졸업 요건 [최소 출석 횟수]"),
+                                            fieldWithPath("hashtags")
+                                                    .description("해시태그")
                                                     .attributes(constraint("최소 1개 최대 5개"))
                                     )
                             )
@@ -606,7 +658,7 @@ class StudyApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("정보 수정에 성공한다 - 오프라인")
+        @DisplayName("스터디 정보를 수정한다 - 오프라인")
         void successOffline() throws Exception {
             // given
             mockingToken(true, HOST_ID);
@@ -615,24 +667,11 @@ class StudyApiControllerTest extends ControllerTest {
                     .updateStudy(any());
 
             // when
-            final UpdateStudyRequest request = new UpdateStudyRequest(
-                    REAL_MYSQL.getName(),
-                    REAL_MYSQL.getDescription(),
-                    REAL_MYSQL.getCapacity(),
-                    REAL_MYSQL.getCategory().getId(),
-                    REAL_MYSQL.getThumbnail().getImageName(),
-                    REAL_MYSQL.getType().getValue(),
-                    REAL_MYSQL.getLocation().getProvince(),
-                    REAL_MYSQL.getLocation().getCity(),
-                    true,
-                    REAL_MYSQL.getMinimumAttendanceForGraduation(),
-                    REAL_MYSQL.getHashtags()
-            );
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(OFFLINE_STUDY_REQUEST));
 
             // then
             mockMvc.perform(requestBuilder)
@@ -644,26 +683,38 @@ class StudyApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("name").description("스터디명"),
-                                            fieldWithPath("description").description("스터디 설명"),
-                                            fieldWithPath("capacity").description("최대 수용 인원"),
-                                            fieldWithPath("category").description("카테고리 ID(PK)"),
-                                            fieldWithPath("thumbnail").description("스터디 썸네일"),
-                                            fieldWithPath("type").description("온/오프라인 유무")
+                                            fieldWithPath("name")
+                                                    .description("스터디명"),
+                                            fieldWithPath("description")
+                                                    .description("스터디 설명"),
+                                            fieldWithPath("capacity")
+                                                    .description("최대 수용 인원"),
+                                            fieldWithPath("category")
+                                                    .description("카테고리 ID(PK)"),
+                                            fieldWithPath("thumbnail")
+                                                    .description("스터디 썸네일"),
+                                            fieldWithPath("type")
+                                                    .description("온/오프라인 유무")
                                                     .attributes(constraint("온라인 = online / 오프라인 = offline")),
-                                            fieldWithPath("province").description("오프라인 스터디 지역 [경기도, 강원도, ...]")
+                                            fieldWithPath("province")
+                                                    .description("오프라인 스터디 지역 [경기도, 강원도, ...]")
                                                     .optional()
                                                     .attributes(constraint("오프라인 스터디의 경우 필수")),
-                                            fieldWithPath("city").description("오프라인 스터디 지역 [안양시, 수원시, ...]")
+                                            fieldWithPath("city")
+                                                    .description("오프라인 스터디 지역 [안양시, 수원시, ...]")
                                                     .optional()
                                                     .attributes(constraint("오프라인 스터디의 경우 필수")),
-                                            fieldWithPath("recruitmentStatus").description("스터디 모집 활성화 여부")
+                                            fieldWithPath("recruitmentStatus")
+                                                    .description("스터디 모집 활성화 여부")
                                                     .attributes(constraint("활성화=true / 비활성화=false")),
-                                            fieldWithPath("minimumAttendanceForGraduation").description("졸업 요건 [최소 출석 횟수]"),
-                                            fieldWithPath("hashtags").description("해시태그")
+                                            fieldWithPath("minimumAttendanceForGraduation")
+                                                    .description("졸업 요건 [최소 출석 횟수]"),
+                                            fieldWithPath("hashtags")
+                                                    .description("해시태그")
                                                     .attributes(constraint("최소 1개 최대 5개"))
                                     )
                             )
@@ -715,7 +766,8 @@ class StudyApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -743,7 +795,8 @@ class StudyApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     )
                             )
                     );
