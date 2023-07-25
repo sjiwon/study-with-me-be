@@ -91,10 +91,10 @@ class UploadApiControllerTest extends ControllerTest {
                     .uploadWeeklyImage(any());
 
             // when
-            final MockMultipartFile file = new MockMultipartFile("file", new byte[0]);
+            final MultipartFile file = new MockMultipartFile("file", new byte[0]);
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL)
-                    .file(file)
+                    .file((MockMultipartFile) file)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .queryParam("type", "weekly");
 
@@ -241,10 +241,10 @@ class UploadApiControllerTest extends ControllerTest {
                     .uploadStudyDescriptionImage(any());
 
             // when
-            final MockMultipartFile file = new MockMultipartFile("file", new byte[0]);
+            final MultipartFile file = new MockMultipartFile("file", new byte[0]);
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL)
-                    .file(file)
+                    .file((MockMultipartFile) file)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .queryParam("type", "description");
 

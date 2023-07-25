@@ -35,6 +35,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
         private static final String BASE_URL = "/api/members/{revieweeId}/review";
         private static final Long REVIEWEE_ID = 1L;
         private static final Long REVIEWER_ID = 2L;
+        private static final WriteMemberReviewRequest REQUEST = new WriteMemberReviewRequest("스터디에 참여를 잘해요");
 
         @Test
         @DisplayName("본인에게 리뷰를 남길 수 없다")
@@ -46,12 +47,11 @@ class MemberReviewApiControllerTest extends ControllerTest {
                     .writeMemberReview(any());
 
             // when
-            final WriteMemberReviewRequest request = new WriteMemberReviewRequest("스터디에 참여를 잘해요");
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, REVIEWEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             final MemberReviewErrorCode expectedError = MemberReviewErrorCode.SELF_REVIEW_NOT_ALLOWED;
@@ -94,12 +94,11 @@ class MemberReviewApiControllerTest extends ControllerTest {
                     .writeMemberReview(any());
 
             // when
-            final WriteMemberReviewRequest request = new WriteMemberReviewRequest("스터디에 참여를 잘해요");
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, REVIEWEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             final MemberReviewErrorCode expectedError = MemberReviewErrorCode.COMMON_STUDY_RECORD_NOT_FOUND;
@@ -142,12 +141,11 @@ class MemberReviewApiControllerTest extends ControllerTest {
                     .writeMemberReview(any());
 
             // when
-            final WriteMemberReviewRequest request = new WriteMemberReviewRequest("스터디에 참여를 잘해요");
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, REVIEWEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             final MemberReviewErrorCode expectedError = MemberReviewErrorCode.ALREADY_REVIEW;
@@ -188,12 +186,11 @@ class MemberReviewApiControllerTest extends ControllerTest {
             given(writeMemberReviewUseCase.writeMemberReview(any())).willReturn(1L);
 
             // when
-            final WriteMemberReviewRequest request = new WriteMemberReviewRequest("스터디에 참여를 잘해요");
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, REVIEWEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             mockMvc.perform(requestBuilder)
@@ -223,6 +220,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
         private static final String BASE_URL = "/api/members/{revieweeId}/review";
         private static final Long REVIEWEE_ID = 1L;
         private static final Long REVIEWER_ID = 2L;
+        private static final UpdateMemberReviewRequest REQUEST = new UpdateMemberReviewRequest("스터디에 참여를 잘해요");
 
         @Test
         @DisplayName("해당 사용자에게 작성한 리뷰가 없다면 수정할 수 없다")
@@ -234,12 +232,11 @@ class MemberReviewApiControllerTest extends ControllerTest {
                     .updateMemberReview(any());
 
             // when
-            final UpdateMemberReviewRequest request = new UpdateMemberReviewRequest("스터디에 참여를 잘해요");
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, REVIEWEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             final MemberReviewErrorCode expectedError = MemberReviewErrorCode.MEMBER_REVIEW_NOT_FOUND;
@@ -282,12 +279,11 @@ class MemberReviewApiControllerTest extends ControllerTest {
                     .updateMemberReview(any());
 
             // when
-            final UpdateMemberReviewRequest request = new UpdateMemberReviewRequest("스터디에 참여를 잘해요");
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, REVIEWEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             final MemberReviewErrorCode expectedError = MemberReviewErrorCode.CONTENT_SAME_AS_BEFORE;
@@ -330,12 +326,11 @@ class MemberReviewApiControllerTest extends ControllerTest {
                     .updateMemberReview(any());
 
             // when
-            final UpdateMemberReviewRequest request = new UpdateMemberReviewRequest("스터디에 참여를 잘해요");
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, REVIEWEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             mockMvc.perform(requestBuilder)

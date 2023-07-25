@@ -130,8 +130,10 @@ class OAuthApiControllerTest extends ControllerTest {
     class oAuthLogin {
         private static final String BASE_URL = "/api/oauth/login/{provider}";
         private static final String PROVIDER_GOOGLE = "google";
-        private static final String AUTHORIZATION_CODE = UUID.randomUUID().toString().replaceAll("-", "").repeat(2);
-        private static final String REDIRECT_URL = "http://localhost:3000";
+        private static final OAuthLoginRequest REQUEST = new OAuthLoginRequest(
+                UUID.randomUUID().toString().replaceAll("-", ""),
+                "http://localhost:3000"
+        );
 
         @Test
         @DisplayName("Google OAuth 로그인을 진행할 때 해당 사용자가 DB에 존재하지 않으면 예외를 발생하고 회원가입을 진행한다")
@@ -143,14 +145,10 @@ class OAuthApiControllerTest extends ControllerTest {
                     .login(any());
 
             // when
-            final OAuthLoginRequest request = new OAuthLoginRequest(
-                    AUTHORIZATION_CODE,
-                    REDIRECT_URL
-            );
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, PROVIDER_GOOGLE)
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             mockMvc.perform(requestBuilder)
@@ -195,14 +193,10 @@ class OAuthApiControllerTest extends ControllerTest {
             given(oAuthLoginUseCase.login(any())).willReturn(loginResponse);
 
             // when
-            final OAuthLoginRequest request = new OAuthLoginRequest(
-                    AUTHORIZATION_CODE,
-                    REDIRECT_URL
-            );
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, PROVIDER_GOOGLE)
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             mockMvc.perform(requestBuilder)
