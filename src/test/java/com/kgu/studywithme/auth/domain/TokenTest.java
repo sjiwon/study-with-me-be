@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Test;
 import static com.kgu.studywithme.common.utils.TokenUtils.REFRESH_TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("Token 도메인 테스트")
+@DisplayName("Auth -> 도메인 [Token] 테스트")
 class TokenTest {
     @Test
     @DisplayName("Token을 업데이트한다")
     void updateRefreshToken() {
         // given
-        Token token = Token.issueRefreshToken(1L, REFRESH_TOKEN);
+        final Token token = Token.issueRefreshToken(1L, REFRESH_TOKEN);
 
         // when
         token.updateRefreshToken(REFRESH_TOKEN + "_update");

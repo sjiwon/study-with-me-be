@@ -1,7 +1,9 @@
 package com.kgu.studywithme.favorite.domain;
 
 import com.kgu.studywithme.global.BaseEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,11 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "favorite")
-public class Favorite extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Favorite extends BaseEntity<Favorite> {
     @Column(name = "study_id", nullable = false)
     private Long studyId;
 

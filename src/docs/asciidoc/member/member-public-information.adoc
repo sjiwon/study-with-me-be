@@ -1,0 +1,56 @@
+= 사용자 Public 정보 조회 API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+
+== 사용자 기본 Public 정보
+HTTP Request
+include::{snippets}/MemberApi/Query/Public/BasicInformation/http-request.adoc[]
+include::{snippets}/MemberApi/Query/Public/BasicInformation/request-headers.adoc[]
+include::{snippets}/MemberApi/Query/Public/BasicInformation/path-parameters.adoc[]
+
+HTTP Response
+include::{snippets}/MemberApi/Query/Public/BasicInformation/response-body.adoc[]
+include::{snippets}/MemberApi/Query/Public/BasicInformation/response-fields.adoc[]
+
+== 사용자가 참여중인 스터디 리스트
+HTTP Request
+include::{snippets}/MemberApi/Query/Public/ParticipateStudy/http-request.adoc[]
+include::{snippets}/MemberApi/Query/Public/ParticipateStudy/request-headers.adoc[]
+include::{snippets}/MemberApi/Query/Public/ParticipateStudy/path-parameters.adoc[]
+
+HTTP Response
+include::{snippets}/MemberApi/Query/Public/ParticipateStudy/response-body.adoc[]
+include::{snippets}/MemberApi/Query/Public/ParticipateStudy/response-fields.adoc[]
+
+== 사용자가 졸업한 스터디 리스트
+HTTP Request
+include::{snippets}/MemberApi/Query/Public/GraduatedStudy/http-request.adoc[]
+include::{snippets}/MemberApi/Query/Public/GraduatedStudy/request-headers.adoc[]
+include::{snippets}/MemberApi/Query/Public/GraduatedStudy/path-parameters.adoc[]
+
+HTTP Response
+include::{snippets}/MemberApi/Query/Public/GraduatedStudy/response-body.adoc[]
+include::{snippets}/MemberApi/Query/Public/GraduatedStudy/response-fields.adoc[]
+
+== 사용자가 받은 리뷰
+HTTP Request
+include::{snippets}/MemberApi/Query/Public/ReceivedReview/http-request.adoc[]
+include::{snippets}/MemberApi/Query/Public/ReceivedReview/request-headers.adoc[]
+include::{snippets}/MemberApi/Query/Public/ReceivedReview/path-parameters.adoc[]
+
+HTTP Response
+include::{snippets}/MemberApi/Query/Public/ReceivedReview/response-body.adoc[]
+include::{snippets}/MemberApi/Query/Public/ReceivedReview/response-fields.adoc[]
+
+== 사용자 출석률
+HTTP Request
+include::{snippets}/MemberApi/Query/Public/AttendanceRatio/http-request.adoc[]
+include::{snippets}/MemberApi/Query/Public/AttendanceRatio/request-headers.adoc[]
+include::{snippets}/MemberApi/Query/Public/AttendanceRatio/path-parameters.adoc[]
+
+HTTP Response
+include::{snippets}/MemberApi/Query/Public/AttendanceRatio/response-body.adoc[]
+include::{snippets}/MemberApi/Query/Public/AttendanceRatio/response-fields.adoc[]

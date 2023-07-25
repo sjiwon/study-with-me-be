@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @RequiredArgsConstructor
@@ -26,5 +28,11 @@ public enum Category {
                 .filter(category -> category.id == id)
                 .findFirst()
                 .orElseThrow(() -> StudyWithMeException.type(CategoryErrorCode.CATEGORY_NOT_EXIST));
+    }
+
+    public static Set<Category> of(final Set<Long> ids) {
+        return ids.stream()
+                .map(Category::from)
+                .collect(Collectors.toSet());
     }
 }

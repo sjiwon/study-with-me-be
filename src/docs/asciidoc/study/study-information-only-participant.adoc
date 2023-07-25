@@ -1,0 +1,83 @@
+= 스터디 상세 정보 API [스터디 참여자 전용]
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+
+== 스터디 신청자 [AccessToken 필수]
+=== 1. 팀장이 아니라면 스터디 신청자 정보를 조회할 수 없다
+HTTP Request
+include::{snippets}/StudyApi/Query/Private/Applicant/Failure/http-request.adoc[]
+include::{snippets}/StudyApi/Query/Private/Applicant/Failure/request-headers.adoc[]
+include::{snippets}/StudyApi/Query/Private/Applicant/Failure/path-parameters.adoc[]
+
+HTTP Response
+include::{snippets}/StudyApi/Query/Private/Applicant/Failure/response-body.adoc[]
+
+=== 2. 스터디 신청자 정보를 조회한다
+HTTP Request
+include::{snippets}/StudyApi/Query/Private/Applicant/Success/http-request.adoc[]
+include::{snippets}/StudyApi/Query/Private/Applicant/Success/path-parameters.adoc[]
+
+HTTP Response
+include::{snippets}/StudyApi/Query/Private/Applicant/Success/response-body.adoc[]
+include::{snippets}/StudyApi/Query/Private/Applicant/Success/response-fields.adoc[]
+
+== 스터디 공지사항 [AccessToken 필수]
+=== 1. 스터디 참여자가 아니면 스터디 공지사항 조회에 실패한다
+HTTP Request
+include::{snippets}/StudyApi/Query/Private/Notice/Failure/http-request.adoc[]
+include::{snippets}/StudyApi/Query/Private/Notice/Failure/request-headers.adoc[]
+include::{snippets}/StudyApi/Query/Private/Notice/Failure/path-parameters.adoc[]
+
+HTTP Response
+include::{snippets}/StudyApi/Query/Private/Notice/Failure/response-body.adoc[]
+
+=== 2. 스터디 공지사항을 조회한다
+HTTP Request
+include::{snippets}/StudyApi/Query/Private/Notice/Success/http-request.adoc[]
+include::{snippets}/StudyApi/Query/Private/Notice/Success/request-headers.adoc[]
+include::{snippets}/StudyApi/Query/Private/Notice/Success/path-parameters.adoc[]
+
+HTTP Response
+include::{snippets}/StudyApi/Query/Private/Notice/Success/response-body.adoc[]
+include::{snippets}/StudyApi/Query/Private/Notice/Success/response-fields.adoc[]
+
+== 스터디 출석 정보 [AccessToken 필수]
+=== 1. 스터디 참여자가 아니라면 스터디 출석 정보를 조회할 수 없다
+HTTP Request
+include::{snippets}/StudyApi/Query/Private/Attendance/Failure/http-request.adoc[]
+include::{snippets}/StudyApi/Query/Private/Attendance/Failure/request-headers.adoc[]
+include::{snippets}/StudyApi/Query/Private/Attendance/Failure/path-parameters.adoc[]
+
+HTTP Response
+include::{snippets}/StudyApi/Query/Private/Attendance/Failure/response-body.adoc[]
+
+=== 2. 스터디 출석 정보를 조회한다
+HTTP Request
+include::{snippets}/StudyApi/Query/Private/Attendance/Success/http-request.adoc[]
+include::{snippets}/StudyApi/Query/Private/Attendance/Success/path-parameters.adoc[]
+
+HTTP Response
+include::{snippets}/StudyApi/Query/Private/Attendance/Success/response-body.adoc[]
+include::{snippets}/StudyApi/Query/Private/Attendance/Success/response-fields.adoc[]
+
+== 스터디 주차별 정보 조회 [AccessToken 필수]
+=== 1. 스터디 참여자가 아니라면 스터디 주차별 정보를 조회할 수 없다
+HTTP Request
+include::{snippets}/StudyApi/Query/Private/Weekly/Failure/http-request.adoc[]
+include::{snippets}/StudyApi/Query/Private/Weekly/Failure/request-headers.adoc[]
+include::{snippets}/StudyApi/Query/Private/Weekly/Failure/path-parameters.adoc[]
+
+HTTP Response
+include::{snippets}/StudyApi/Query/Private/Weekly/Failure/response-body.adoc[]
+
+=== 2. 스터디 주차별 정보를 조회한다
+HTTP Request
+include::{snippets}/StudyApi/Query/Private/Weekly/Success/http-request.adoc[]
+include::{snippets}/StudyApi/Query/Private/Weekly/Success/path-parameters.adoc[]
+
+HTTP Response
+include::{snippets}/StudyApi/Query/Private/Weekly/Success/response-body.adoc[]
+include::{snippets}/StudyApi/Query/Private/Weekly/Success/response-fields.adoc[]

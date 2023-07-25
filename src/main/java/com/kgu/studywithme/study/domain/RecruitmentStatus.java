@@ -1,14 +1,7 @@
 package com.kgu.studywithme.study.domain;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@Getter
-@RequiredArgsConstructor
 public enum RecruitmentStatus {
-    IN_PROGRESS("모집중"),
-    COMPLETE("모집 완료"),
+    IN_PROGRESS,
+    COMPLETE,
     ;
-
-    private final String description;
 }

@@ -23,6 +23,6 @@ public class CheckMemberIdentityAspect {
             final Long payloadId,
             final Long memberId
     ) {
-        return !payloadId.equals(memberId);
+        return payloadId != null && !payloadId.equals(memberId);
     }
 }

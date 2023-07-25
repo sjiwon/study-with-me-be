@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.mock;
 
-@DisplayName("Upload [Validator] -> ValidImageUploadTypeValidator 테스트")
+@DisplayName("Upload -> ValidImageUploadTypeValidator 테스트")
 class ValidImageUploadTypeValidatorTest {
     private ValidImageUploadTypeValidator validator;
     private ConstraintValidatorContext context;
@@ -27,7 +27,7 @@ class ValidImageUploadTypeValidatorTest {
         final String unknown = "unknown";
 
         // when
-        boolean actual = validator.isValid(unknown, context);
+        final boolean actual = validator.isValid(unknown, context);
 
         // then
         assertThat(actual).isFalse();
@@ -41,8 +41,8 @@ class ValidImageUploadTypeValidatorTest {
         final String description = "description";
 
         // when
-        boolean actual1 = validator.isValid(weekly, context);
-        boolean actual2 = validator.isValid(description, context);
+        final boolean actual1 = validator.isValid(weekly, context);
+        final boolean actual2 = validator.isValid(description, context);
 
         // then
         assertAll(

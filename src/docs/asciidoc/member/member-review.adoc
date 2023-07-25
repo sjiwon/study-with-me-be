@@ -1,0 +1,78 @@
+= 사용자 리뷰 작성/수정 API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+
+== 사용자 리뷰 작성 [AccessToken 필수]
+=== 1. 본인에게 리뷰를 남길 수 없다
+HTTP Request
+include::{snippets}/MemberApi/Review/Write/Failure/Case1/http-request.adoc[]
+include::{snippets}/MemberApi/Review/Write/Failure/Case1/request-headers.adoc[]
+include::{snippets}/MemberApi/Review/Write/Failure/Case1/path-parameters.adoc[]
+include::{snippets}/MemberApi/Review/Write/Failure/Case1/request-fields.adoc[]
+
+HTTP Response
+include::{snippets}/MemberApi/Review/Write/Failure/Case1/response-body.adoc[]
+
+=== 2. 함께 스터디를 진행한 기록이 없다면 리뷰를 남길 수 없다
+HTTP Request
+include::{snippets}/MemberApi/Review/Write/Failure/Case2/http-request.adoc[]
+include::{snippets}/MemberApi/Review/Write/Failure/Case2/request-headers.adoc[]
+include::{snippets}/MemberApi/Review/Write/Failure/Case2/path-parameters.adoc[]
+include::{snippets}/MemberApi/Review/Write/Failure/Case2/request-fields.adoc[]
+
+HTTP Response
+include::{snippets}/MemberApi/Review/Write/Failure/Case2/response-body.adoc[]
+
+=== 3. 해당 사용자에 대해 2번 이상 리뷰를 남길 수 없다
+HTTP Request
+include::{snippets}/MemberApi/Review/Write/Failure/Case3/http-request.adoc[]
+include::{snippets}/MemberApi/Review/Write/Failure/Case3/request-headers.adoc[]
+include::{snippets}/MemberApi/Review/Write/Failure/Case3/path-parameters.adoc[]
+include::{snippets}/MemberApi/Review/Write/Failure/Case3/request-fields.adoc[]
+
+HTTP Response
+include::{snippets}/MemberApi/Review/Write/Failure/Case3/response-body.adoc[]
+
+=== 4. 리뷰를 작성한다
+HTTP Request
+include::{snippets}/MemberApi/Review/Write/Success/http-request.adoc[]
+include::{snippets}/MemberApi/Review/Write/Success/request-headers.adoc[]
+include::{snippets}/MemberApi/Review/Write/Success/path-parameters.adoc[]
+include::{snippets}/MemberApi/Review/Write/Success/request-fields.adoc[]
+
+HTTP Response
+include::{snippets}/MemberApi/Review/Write/Success/http-response.adoc[]
+
+== 사용자 리뷰 수정 [AccessToken 필수]
+=== 1. 해당 사용자에게 작성한 리뷰가 없다면 수정할 수 없다
+HTTP Request
+include::{snippets}/MemberApi/Review/Update/Failure/Case1/http-request.adoc[]
+include::{snippets}/MemberApi/Review/Update/Failure/Case1/request-headers.adoc[]
+include::{snippets}/MemberApi/Review/Update/Failure/Case1/path-parameters.adoc[]
+include::{snippets}/MemberApi/Review/Update/Failure/Case1/request-fields.adoc[]
+
+HTTP Response
+include::{snippets}/MemberApi/Review/Update/Failure/Case1/response-body.adoc[]
+
+=== 2. 이전과 동일한 내용으로 리뷰를 수정할 수 없다
+HTTP Request
+include::{snippets}/MemberApi/Review/Update/Failure/Case2/http-request.adoc[]
+include::{snippets}/MemberApi/Review/Update/Failure/Case2/request-headers.adoc[]
+include::{snippets}/MemberApi/Review/Update/Failure/Case2/path-parameters.adoc[]
+include::{snippets}/MemberApi/Review/Update/Failure/Case2/request-fields.adoc[]
+
+HTTP Response
+include::{snippets}/MemberApi/Review/Update/Failure/Case2/response-body.adoc[]
+
+=== 3. 작성한 리뷰를 수정한다
+HTTP Request
+include::{snippets}/MemberApi/Review/Update/Success/http-request.adoc[]
+include::{snippets}/MemberApi/Review/Update/Success/request-headers.adoc[]
+include::{snippets}/MemberApi/Review/Update/Success/path-parameters.adoc[]
+include::{snippets}/MemberApi/Review/Update/Success/request-fields.adoc[]
+
+HTTP Response
+include::{snippets}/MemberApi/Review/Update/Success/http-response.adoc[]

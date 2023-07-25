@@ -17,29 +17,40 @@ public class StudyName {
     @Column(name = "name", nullable = false, unique = true)
     private String value;
 
-    private StudyName(String value) {
+    public StudyName(final String value) {
+        validateNameIsNotBlank(value);
+        validateLengthIsInRange(value);
         this.value = value;
     }
 
-    public static StudyName from(final String value) {
-        validateNameIsNotBlank(value);
-        validateLengthIsInRange(value);
-        return new StudyName(value);
-    }
-
-    private static void validateNameIsNotBlank(final String value) {
+    private void validateNameIsNotBlank(final String value) {
         if (value.isBlank()) {
             throw StudyWithMeException.type(StudyErrorCode.NAME_IS_BLANK);
         }
     }
 
-    private static void validateLengthIsInRange(final String value) {
+    private void validateLengthIsInRange(final String value) {
         if (isLengthOutOfRange(value)) {
-            throw StudyWithMeException.type(StudyErrorCode.NAME_LENGTH_OUT_OF_RANGE);
+            throw StudyWithMeException.type(StudyErrorCode.NAME_LENGTH_IS_OUT_OF_RANGE);
         }
     }
 
-    private static boolean isLengthOutOfRange(final String name) {
+    private boolean isLengthOutOfRange(final String name) {
         return MAXIMUM_LENGTH < name.length();
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final StudyName other = (StudyName) o;
+
+        return value.equals(other.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
     }
 }

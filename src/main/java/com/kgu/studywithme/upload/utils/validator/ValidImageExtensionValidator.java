@@ -10,7 +10,10 @@ public class ValidImageExtensionValidator implements ConstraintValidator<ValidIm
     private static final List<String> ALLOWED_EXTENSIONS = List.of("jpg", "jpeg", "png", "gif");
 
     @Override
-    public boolean isValid(MultipartFile file, ConstraintValidatorContext context) {
+    public boolean isValid(
+            final MultipartFile file,
+            final ConstraintValidatorContext context
+    ) {
         if (file == null || file.isEmpty()) {
             return true;
         }
@@ -24,13 +27,13 @@ public class ValidImageExtensionValidator implements ConstraintValidator<ValidIm
         return true;
     }
 
-    private boolean isNotAllowedExtension(MultipartFile file) {
-        String extension = getExtention(file);
+    private boolean isNotAllowedExtension(final MultipartFile file) {
+        final String extension = getExtention(file);
         return !ALLOWED_EXTENSIONS.contains(extension);
     }
 
-    private String getExtention(MultipartFile file) {
-        String uploadName = file.getOriginalFilename();
+    private String getExtention(final MultipartFile file) {
+        final String uploadName = file.getOriginalFilename();
         return uploadName.substring(uploadName.lastIndexOf(".") + 1);
     }
 }

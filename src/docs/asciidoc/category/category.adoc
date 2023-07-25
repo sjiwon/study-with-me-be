@@ -1,0 +1,14 @@
+= 카테고리 조회 API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+
+== 전체 스터디 카테고리 조회
+HTTP Request
+include::{snippets}/CategoryApi/FindAll/http-request.adoc[]
+
+HTTP Response
+include::{snippets}/CategoryApi/FindAll/response-body.adoc[]
+include::{snippets}/CategoryApi/FindAll/response-fields.adoc[]

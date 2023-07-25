@@ -3,16 +3,14 @@ package com.kgu.studywithme.member.domain;
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.global.BaseEntity;
 import com.kgu.studywithme.member.domain.interest.Interest;
-import com.kgu.studywithme.member.domain.review.PeerReview;
-import com.kgu.studywithme.member.domain.review.PeerReviews;
-import com.kgu.studywithme.study.domain.attendance.AttendanceStatus;
+import com.kgu.studywithme.member.domain.interest.Interests;
+import com.kgu.studywithme.studyattendance.domain.AttendanceStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -20,11 +18,7 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "member")
-public class Member extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Member extends BaseEntity<Member> {
     @Column(name = "name", nullable = false, updatable = false)
     private String name;
 
@@ -54,10 +48,7 @@ public class Member extends BaseEntity {
     private boolean emailOptIn;
 
     @Embedded
-    private PeerReviews peerReviews;
-
-    @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
-    private List<Interest> interests = new ArrayList<>();
+    private Interests interests;
 
     private Member(
             final String name,
@@ -79,8 +70,7 @@ public class Member extends BaseEntity {
         this.region = region;
         this.score = Score.initScore();
         this.emailOptIn = emailOptIn;
-        this.peerReviews = PeerReviews.createPeerReviewsPage();
-        applyInterests(interests);
+        this.interests = new Interests(this, interests);
     }
 
     public static Member createMember(
@@ -109,27 +99,7 @@ public class Member extends BaseEntity {
         this.phone = phone;
         this.region = this.region.update(province, city);
         this.emailOptIn = emailOptIn;
-        applyInterests(interests);
-    }
-
-    public void applyInterests(final Set<Category> interests) {
-        this.interests.clear();
-        this.interests.addAll(
-                interests.stream()
-                        .map(value -> Interest.applyInterest(this, value))
-                        .toList()
-        );
-    }
-
-    public boolean isSameMember(final Member member) {
-        return this.email.isSameEmail(member.getEmail());
-    }
-
-    public void applyPeerReview(
-            final Member reviewer,
-            final String content
-    ) {
-        peerReviews.writeReview(PeerReview.doReview(this, reviewer, content));
+        this.interests = new Interests(this, interests);
     }
 
     public void applyScoreByAttendanceStatus(final AttendanceStatus status) {
@@ -193,12 +163,9 @@ public class Member extends BaseEntity {
         return score.getValue();
     }
 
-    public List<PeerReview> getPeerReviews() {
-        return peerReviews.getPeerReviews();
-    }
-
     public List<Category> getInterests() {
-        return interests.stream()
+        return interests.getInterests()
+                .stream()
                 .map(Interest::getCategory)
                 .toList();
     }

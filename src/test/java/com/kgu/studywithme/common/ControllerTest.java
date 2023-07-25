@@ -2,38 +2,62 @@ package com.kgu.studywithme.common;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kgu.studywithme.auth.controller.OAuthApiController;
-import com.kgu.studywithme.auth.controller.TokenReissueApiController;
+import com.kgu.studywithme.auth.application.usecase.command.LogoutUseCase;
+import com.kgu.studywithme.auth.application.usecase.command.OAuthLoginUseCase;
+import com.kgu.studywithme.auth.application.usecase.command.ReissueTokenUseCase;
+import com.kgu.studywithme.auth.application.usecase.query.QueryOAuthLinkUseCase;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
-import com.kgu.studywithme.auth.infra.oauth.OAuthUri;
-import com.kgu.studywithme.auth.service.OAuthService;
-import com.kgu.studywithme.auth.service.TokenReissueService;
+import com.kgu.studywithme.auth.presentation.OAuthApiController;
+import com.kgu.studywithme.auth.presentation.TokenReissueApiController;
 import com.kgu.studywithme.auth.utils.JwtTokenProvider;
-import com.kgu.studywithme.category.controller.CategoryApiController;
-import com.kgu.studywithme.category.service.CategoryService;
+import com.kgu.studywithme.category.application.usecase.query.QueryAllCategoriesUseCase;
+import com.kgu.studywithme.category.presentation.CategoryApiController;
 import com.kgu.studywithme.common.config.TestAopConfiguration;
-import com.kgu.studywithme.favorite.controller.FavoriteApiController;
-import com.kgu.studywithme.favorite.service.FavoriteManageService;
+import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeCancellationUseCase;
+import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeMarkingUseCase;
+import com.kgu.studywithme.favorite.presentation.FavoriteApiController;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.controller.MemberApiController;
-import com.kgu.studywithme.member.controller.MemberInformationApiController;
-import com.kgu.studywithme.member.controller.MemberReviewApiController;
-import com.kgu.studywithme.member.service.MemberInformationService;
-import com.kgu.studywithme.member.service.MemberReviewService;
-import com.kgu.studywithme.member.service.MemberService;
-import com.kgu.studywithme.study.controller.*;
-import com.kgu.studywithme.study.controller.attendance.AttendanceApiController;
-import com.kgu.studywithme.study.controller.notice.StudyNoticeApiController;
-import com.kgu.studywithme.study.controller.notice.StudyNoticeCommentApiController;
-import com.kgu.studywithme.study.controller.week.StudyWeeklyApiController;
-import com.kgu.studywithme.study.exception.StudyErrorCode;
-import com.kgu.studywithme.study.service.*;
-import com.kgu.studywithme.study.service.attendance.AttendanceService;
-import com.kgu.studywithme.study.service.notice.NoticeCommentService;
-import com.kgu.studywithme.study.service.notice.NoticeService;
-import com.kgu.studywithme.study.service.week.StudyWeeklyService;
-import com.kgu.studywithme.upload.controller.UploadApiController;
-import com.kgu.studywithme.upload.utils.FileUploader;
+import com.kgu.studywithme.member.application.usecase.command.SignUpMemberUseCase;
+import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
+import com.kgu.studywithme.member.application.usecase.query.*;
+import com.kgu.studywithme.member.presentation.MemberApiController;
+import com.kgu.studywithme.member.presentation.MemberPrivateInformationApiController;
+import com.kgu.studywithme.member.presentation.MemberPublicInformationApiController;
+import com.kgu.studywithme.memberreport.application.usecase.command.ReportMemberUseCase;
+import com.kgu.studywithme.memberreport.presentation.MemberReportApiController;
+import com.kgu.studywithme.memberreview.application.usecase.command.UpdateMemberReviewUseCase;
+import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberReviewUseCase;
+import com.kgu.studywithme.memberreview.presentation.MemberReviewApiController;
+import com.kgu.studywithme.study.application.usecase.command.CreateStudyUseCase;
+import com.kgu.studywithme.study.application.usecase.command.TerminateStudyUseCase;
+import com.kgu.studywithme.study.application.usecase.command.UpdateStudyUseCase;
+import com.kgu.studywithme.study.application.usecase.query.*;
+import com.kgu.studywithme.study.domain.StudyRepository;
+import com.kgu.studywithme.study.presentation.StudyApiController;
+import com.kgu.studywithme.study.presentation.StudyInformationApiController;
+import com.kgu.studywithme.study.presentation.StudyInformationOnlyParticipantApiController;
+import com.kgu.studywithme.study.presentation.StudySearchApiController;
+import com.kgu.studywithme.studyattendance.application.usecase.command.ManualAttendanceUseCase;
+import com.kgu.studywithme.studyattendance.presentation.StudyAttendanceApiController;
+import com.kgu.studywithme.studynotice.application.usecase.command.*;
+import com.kgu.studywithme.studynotice.presentation.StudyNoticeApiController;
+import com.kgu.studywithme.studynotice.presentation.StudyNoticeCommentApiController;
+import com.kgu.studywithme.studyparticipant.application.usecase.command.*;
+import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
+import com.kgu.studywithme.studyparticipant.presentation.DelegateHostAuthorityApiController;
+import com.kgu.studywithme.studyparticipant.presentation.StudyApplyApiController;
+import com.kgu.studywithme.studyparticipant.presentation.StudyFinalizeApiController;
+import com.kgu.studywithme.studyparticipant.presentation.StudyParticipantDecisionApiController;
+import com.kgu.studywithme.studyreview.application.usecase.command.DeleteStudyReviewUseCase;
+import com.kgu.studywithme.studyreview.application.usecase.command.UpdateStudyReviewUseCase;
+import com.kgu.studywithme.studyreview.application.usecase.command.WriteStudyReviewUseCase;
+import com.kgu.studywithme.studyreview.presentation.StudyReviewApiController;
+import com.kgu.studywithme.studyweekly.application.usecase.command.*;
+import com.kgu.studywithme.studyweekly.presentation.StudyWeeklyApiController;
+import com.kgu.studywithme.studyweekly.presentation.StudyWeeklySubmitApiController;
+import com.kgu.studywithme.upload.application.usecase.command.UploadStudyDescriptionImageUseCase;
+import com.kgu.studywithme.upload.application.usecase.command.UploadWeeklyImageUseCase;
+import com.kgu.studywithme.upload.presentation.UploadApiController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +80,6 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -68,22 +91,58 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @WebMvcTest({
-        // auth
-        OAuthApiController.class, TokenReissueApiController.class,
+        // Auth
+        OAuthApiController.class,
+        TokenReissueApiController.class,
 
-        // category & favorite
-        CategoryApiController.class, FavoriteApiController.class,
+        // Category
+        CategoryApiController.class,
 
-        // member
-        MemberApiController.class, MemberInformationApiController.class, MemberReviewApiController.class,
+        // Favorite
+        FavoriteApiController.class,
 
-        // study
-        StudyApiController.class, StudyInformationApiController.class, StudyParticipationApiController.class,
-        StudyReviewApiController.class, StudySearchApiController.class,
-        StudyNoticeApiController.class, StudyNoticeCommentApiController.class,
-        AttendanceApiController.class, StudyWeeklyApiController.class,
+        // Member [Command]
+        MemberApiController.class,
 
-        // upload
+        // Member [Query]
+        MemberPublicInformationApiController.class,
+        MemberPrivateInformationApiController.class,
+
+        // MemberReview
+        MemberReviewApiController.class,
+
+        // MemberReport
+        MemberReportApiController.class,
+
+        // Study [Command]
+        StudyApiController.class,
+
+        // Study [Query]
+        StudyInformationApiController.class,
+        StudyInformationOnlyParticipantApiController.class,
+        StudySearchApiController.class,
+
+        // StudyParticipant
+        StudyApplyApiController.class,
+        StudyParticipantDecisionApiController.class,
+        DelegateHostAuthorityApiController.class,
+        StudyFinalizeApiController.class,
+
+        // StudyAttendance
+        StudyAttendanceApiController.class,
+
+        // StudyNotice & StudyNoticeComment
+        StudyNoticeApiController.class,
+        StudyNoticeCommentApiController.class,
+
+        // StudyWeekly
+        StudyWeeklyApiController.class,
+        StudyWeeklySubmitApiController.class,
+
+        // StudyReview
+        StudyReviewApiController.class,
+
+        // Upload
         UploadApiController.class,
 })
 @ExtendWith(RestDocumentationExtension.class)
@@ -94,77 +153,208 @@ public abstract class ControllerTest {
     @Autowired
     protected MockMvc mockMvc;
 
-    @MockBean
-    private JwtTokenProvider jwtTokenProvider;
-
     // common & internal
     @Autowired
     private ObjectMapper objectMapper;
 
     @MockBean
-    private StudyValidator studyValidator;
+    private JwtTokenProvider jwtTokenProvider;
 
-    // auth
+    // AOP Validation
     @MockBean
-    protected OAuthUri oAuthUri;
-
-    @MockBean
-    protected OAuthService oAuthService;
+    private StudyRepository studyRepository;
 
     @MockBean
-    protected TokenReissueService tokenReissueService;
+    private StudyParticipantRepository studyParticipantRepository;
 
-    // category & favorite
+    // Auth
     @MockBean
-    protected CategoryService categoryService;
-
-    @MockBean
-    protected FavoriteManageService favoriteManageService;
-
-    // member
-    @MockBean
-    protected MemberService memberService;
+    protected QueryOAuthLinkUseCase queryOAuthLinkUseCase;
 
     @MockBean
-    protected MemberInformationService memberInformationService;
+    protected OAuthLoginUseCase oAuthLoginUseCase;
 
     @MockBean
-    protected MemberReviewService memberReviewService;
-
-    // study
-    @MockBean
-    protected StudyService studyService;
+    protected LogoutUseCase logoutUseCase;
 
     @MockBean
-    protected StudyInformationService studyInformationService;
+    protected ReissueTokenUseCase reissueTokenUseCase;
+
+    // Category & Favorite
+    @MockBean
+    protected QueryAllCategoriesUseCase queryAllCategoriesUseCase;
 
     @MockBean
-    protected ParticipationService participationService;
+    protected StudyLikeMarkingUseCase studyLikeMarkingUseCase;
 
     @MockBean
-    protected StudyReviewService studyReviewService;
+    protected StudyLikeCancellationUseCase studyLikeCancellationUseCase;
+
+    // Member [Command]
+    @MockBean
+    protected SignUpMemberUseCase signUpMemberUseCase;
 
     @MockBean
-    protected StudySearchService studySearchService;
+    protected UpdateMemberUseCase updateMemberUseCase;
+
+    // Member [Query]
+    @MockBean
+    protected QueryPublicInformationByIdUseCase queryPublicInformationByIdUseCase;
 
     @MockBean
-    protected NoticeService noticeService;
+    protected QueryParticipateStudyByIdUseCase queryParticipateStudyByIdUseCase;
 
     @MockBean
-    protected NoticeCommentService commentService;
+    protected QueryGraduatedStudyByIdUseCase queryGraduatedStudyByIdUseCase;
 
     @MockBean
-    protected AttendanceService attendanceService;
+    protected QueryReceivedReviewByIdUseCase queryReceivedReviewByIdUseCase;
 
     @MockBean
-    protected StudyWeeklyService studyWeeklyService;
+    protected QueryAttendanceRatioByIdUseCase queryAttendanceRatioByIdUseCase;
 
-    // upload
     @MockBean
-    protected FileUploader uploader;
+    protected QueryPrivateInformationByIdUseCase queryPrivateInformationByIdUseCase;
+
+    @MockBean
+    protected QueryAppliedStudyByIdUseCase queryAppliedStudyByIdUseCase;
+
+    @MockBean
+    protected QueryLikeMarkedStudyByIdUseCase queryLikeMarkedStudyByIdUseCase;
+
+
+    // MemberReview
+    @MockBean
+    protected WriteMemberReviewUseCase writeMemberReviewUseCase;
+
+    @MockBean
+    protected UpdateMemberReviewUseCase updateMemberReviewUseCase;
+
+    // MemberReport
+    @MockBean
+    protected ReportMemberUseCase reportMemberUseCase;
+
+    // Study [Command]
+    @MockBean
+    protected CreateStudyUseCase createStudyUseCase;
+
+    @MockBean
+    protected UpdateStudyUseCase updateStudyUseCase;
+
+    @MockBean
+    protected TerminateStudyUseCase terminateStudyUseCase;
+
+    // Study [Query]
+    @MockBean
+    protected QueryBasicInformationByIdUseCase queryBasicInformationByIdUseCase;
+
+    @MockBean
+    protected QueryReviewByIdUseCase queryReviewByIdUseCase;
+
+    @MockBean
+    protected QueryParticipantByIdUseCase queryParticipantByIdUseCase;
+
+    @MockBean
+    protected QueryApplicantByIdUseCase queryApplicantByIdUseCase;
+
+    @MockBean
+    protected QueryNoticeByIdUseCase queryNoticeByIdUseCase;
+
+    @MockBean
+    protected QueryAttendanceByIdUseCase queryAttendanceByIdUseCase;
+
+    @MockBean
+    protected QueryWeeklyByIdUseCase queryWeeklyByIdUseCase;
+
+    @MockBean
+    protected QueryStudyByCategoryUseCase queryStudyByCategoryUseCase;
+
+    @MockBean
+    protected QueryStudyByRecommendUseCase queryStudyByRecommendUseCase;
+
+    // StudyParticipant
+    @MockBean
+    protected ApplyStudyUseCase applyStudyUseCase;
+
+    @MockBean
+    protected ApplyCancellationUseCase applyCancellationUseCase;
+
+    @MockBean
+    protected ApproveParticipationUseCase approveParticipationUseCase;
+
+    @MockBean
+    protected RejectParticipationUseCase rejectParticipationUseCase;
+
+    @MockBean
+    protected DelegateHostAuthorityUseCase delegateHostAuthorityUseCase;
+
+    @MockBean
+    protected LeaveParticipationUseCase leaveParticipationUseCase;
+
+    @MockBean
+    protected GraduateStudyUseCase graduateStudyUseCase;
+
+    // StudyAttendance
+    @MockBean
+    protected ManualAttendanceUseCase manualAttendanceUseCase;
+
+    // StudyNotice & StudyNoticeComment
+    @MockBean
+    protected WriteStudyNoticeUseCase writeStudyNoticeUseCase;
+
+    @MockBean
+    protected UpdateStudyNoticeUseCase updateStudyNoticeUseCase;
+
+    @MockBean
+    protected DeleteStudyNoticeUseCase deleteStudyNoticeUseCase;
+
+    @MockBean
+    protected WriteStudyNoticeCommentUseCase writeStudyNoticeCommentUseCase;
+
+    @MockBean
+    protected UpdateStudyNoticeCommentUseCase updateStudyNoticeCommentUseCase;
+
+    @MockBean
+    protected DeleteStudyNoticeCommentUseCase deleteStudyNoticeCommentUseCase;
+
+    // StudyWeekly
+    @MockBean
+    protected CreateStudyWeeklyUseCase createStudyWeeklyUseCase;
+
+    @MockBean
+    protected UpdateStudyWeeklyUseCase updateStudyWeeklyUseCase;
+
+    @MockBean
+    protected DeleteStudyWeeklyUseCase deleteStudyWeeklyUseCase;
+
+    @MockBean
+    protected SubmitWeeklyAssignmentUseCase submitWeeklyAssignmentUseCase;
+
+    @MockBean
+    protected EditSubmittedWeeklyAssignmentUseCase editSubmittedWeeklyAssignmentUseCase;
+
+    // StudyReview
+    @MockBean
+    protected WriteStudyReviewUseCase writeStudyReviewUseCase;
+
+    @MockBean
+    protected UpdateStudyReviewUseCase updateStudyReviewUseCase;
+
+    @MockBean
+    protected DeleteStudyReviewUseCase deleteStudyReviewUseCase;
+
+    // Upload
+    @MockBean
+    protected UploadWeeklyImageUseCase uploadWeeklyImageUseCase;
+
+    @MockBean
+    protected UploadStudyDescriptionImageUseCase uploadStudyDescriptionImageUseCase;
 
     @BeforeEach
-    void setUp(WebApplicationContext context, RestDocumentationContextProvider provider) {
+    void setUp(
+            final WebApplicationContext context,
+            final RestDocumentationContextProvider provider
+    ) {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(MockMvcRestDocumentation.documentationConfiguration(provider))
                 .alwaysDo(print())
@@ -201,52 +391,47 @@ public abstract class ControllerTest {
         );
     }
 
-    protected Attributes.Attribute constraint(String value) {
+    protected Attributes.Attribute constraint(final String value) {
         return new Attributes.Attribute("constraints", value);
     }
 
-    protected String convertObjectToJson(Object data) throws JsonProcessingException {
+    protected String convertObjectToJson(final Object data) throws JsonProcessingException {
         return objectMapper.writeValueAsString(data);
     }
 
-    protected void mockingToken(boolean isValid, Long payloadId) {
+    protected void mockingToken(
+            final boolean isValid,
+            final Long payloadId
+    ) {
         given(jwtTokenProvider.isTokenValid(anyString())).willReturn(isValid);
         given(jwtTokenProvider.getId(anyString())).willReturn(payloadId);
     }
 
     protected void mockingTokenWithExpiredException() {
-        doThrow(StudyWithMeException.type(AuthErrorCode.AUTH_EXPIRED_TOKEN))
+        doThrow(StudyWithMeException.type(AuthErrorCode.EXPIRED_TOKEN))
                 .when(jwtTokenProvider)
                 .isTokenValid(any());
     }
 
     protected void mockingTokenWithInvalidException() {
-        doThrow(StudyWithMeException.type(AuthErrorCode.AUTH_INVALID_TOKEN))
+        doThrow(StudyWithMeException.type(AuthErrorCode.INVALID_TOKEN))
                 .when(jwtTokenProvider)
                 .isTokenValid(any());
     }
 
-    protected void mockingForStudyParticipant(Long studyId, Long memberId, boolean isValid) {
-        if (isValid) {
-            doNothing()
-                    .when(studyValidator)
-                    .validateStudyParticipant(studyId, memberId);
-        } else {
-            doThrow(StudyWithMeException.type(StudyErrorCode.MEMBER_IS_NOT_PARTICIPANT))
-                    .when(studyValidator)
-                    .validateStudyParticipant(studyId, memberId);
-        }
+    protected void mockingForStudyHost(
+            final Long studyId,
+            final Long memberId,
+            final boolean isValid
+    ) {
+        given(studyRepository.isHost(studyId, memberId)).willReturn(isValid);
     }
 
-    protected void mockingForStudyHost(Long studyId, Long memberId, boolean isValid) {
-        if (isValid) {
-            doNothing()
-                    .when(studyValidator)
-                    .validateHost(studyId, memberId);
-        } else {
-            doThrow(StudyWithMeException.type(StudyErrorCode.MEMBER_IS_NOT_HOST))
-                    .when(studyValidator)
-                    .validateHost(studyId, memberId);
-        }
+    protected void mockingForStudyParticipant(
+            final Long studyId,
+            final Long memberId,
+            final boolean isValid
+    ) {
+        given(studyParticipantRepository.isParticipant(studyId, memberId)).willReturn(isValid);
     }
 }

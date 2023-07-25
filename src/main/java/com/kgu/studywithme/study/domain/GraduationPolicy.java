@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
 public class GraduationPolicy {
-    private static final int DEFAULT_UPDATE_CHANGE = 3;
+    private static final int DEFAULT_UPDATE_CHANCE = 3;
 
     @Column(name = "minimum_attendance", nullable = false)
     private int minimumAttendance;
@@ -29,7 +29,7 @@ public class GraduationPolicy {
     }
 
     public static GraduationPolicy initPolicy(final int minimumAttendance) {
-        return new GraduationPolicy(minimumAttendance, DEFAULT_UPDATE_CHANGE);
+        return new GraduationPolicy(minimumAttendance, DEFAULT_UPDATE_CHANCE);
     }
 
     public GraduationPolicy update(final int minimumAttendance) {
@@ -43,15 +43,33 @@ public class GraduationPolicy {
 
     private void validateUpdateChangeIsRemain() {
         if (updateChance == 0) {
-            throw StudyWithMeException.type(StudyErrorCode.NO_CHANGE_TO_UPDATE_GRADUATION_POLICY);
+            throw StudyWithMeException.type(StudyErrorCode.NO_CHANCE_TO_UPDATE_GRADUATION_POLICY);
         }
     }
 
-    public GraduationPolicy resetUpdateChanceForDelegatingStudyHost() {
-        return new GraduationPolicy(minimumAttendance, DEFAULT_UPDATE_CHANGE);
+    public GraduationPolicy resetUpdateChanceByDelegatingHostAuthority() {
+        return new GraduationPolicy(minimumAttendance, DEFAULT_UPDATE_CHANCE);
     }
 
-    public boolean isGraduationRequirementsFulfilled(final int value) {
-        return minimumAttendance <= value;
+    public boolean isGraduationRequirementsFulfilled(final int attendanceCount) {
+        return minimumAttendance <= attendanceCount;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final GraduationPolicy other = (GraduationPolicy) o;
+
+        if (minimumAttendance != other.minimumAttendance) return false;
+        return updateChance == other.updateChance;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = minimumAttendance;
+        result = 31 * result + updateChance;
+        return result;
     }
 }

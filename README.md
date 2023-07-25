@@ -71,13 +71,9 @@
 
 ## 🚩 실행 방식
 ### 1) MySQL DB
-```docker
-docker-compose up
-```
 
-- MySQL Docker Container 활성화
-
-<br>
+- Local에 MySQL이 설치되어 있는 상태면 `study_with_me` database 생성
+- Local에 MySQL이 설치되어 있지 않은 상태면 `docker-compose.yml`을 통해서 Docker에 MySQL Container 올리기
 
 ### 2) API Server
 #### yml 설정 변수 외부 주입 (local profile)
@@ -108,3 +104,5 @@ java -jar \
 ```
 
 #### (방법-2) IntelliJ 환경변수 설정 & 서버 ON
+
+### [3) Swagger URL](http://localhost:8080/swagger-ui.html)

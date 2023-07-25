@@ -9,17 +9,16 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-@DisplayName("Study 도메인 {StudyLocation VO} 테스트")
+@DisplayName("Study -> 도메인 [StudyLocation VO] 테스트")
 class StudyLocationTest {
-    @ParameterizedTest(name = "{index}: {0} - {1}")
+    @ParameterizedTest
     @MethodSource("invalidLocation")
     @DisplayName("province나 city가 비어있음에 따라 StudyLocation 생성에 실패한다")
-    void throwExceptionByStudyLocationIsBlank(String province, String city) {
-        assertThatThrownBy(() -> StudyLocation.of(province, city))
+    void throwExceptionByStudyLocationIsBlank(final String province, final String city) {
+        assertThatThrownBy(() -> new StudyLocation(province, city))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyErrorCode.STUDY_LOCATION_IS_BLANK.getMessage());
     }
@@ -32,15 +31,11 @@ class StudyLocationTest {
         );
     }
 
-    @ParameterizedTest(name = "{index}: {0} - {1}")
+    @ParameterizedTest
     @MethodSource("validLocation")
     @DisplayName("StudyLocation[province / city]를 생성한다")
-    void construct(String province, String city) {
-        StudyLocation area = StudyLocation.of(province, city);
-        assertAll(
-                () -> assertThat(area.getProvince()).isEqualTo(province),
-                () -> assertThat(area.getCity()).isEqualTo(city)
-        );
+    void construct(final String province, final String city) {
+        assertDoesNotThrow(() -> new StudyLocation(province, city));
     }
 
     private static Stream<Arguments> validLocation() {

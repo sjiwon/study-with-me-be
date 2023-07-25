@@ -1,0 +1,27 @@
+= 사용자 신고 API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+
+== 사용자 신고 [AccessToken 필수]
+=== 1. 이전에 신고한 내역이 여전히 처리중이라면 중복 신고를 하지 못한다
+HTTP Request
+include::{snippets}/MemberApi/Report/Failure/http-request.adoc[]
+include::{snippets}/MemberApi/Report/Failure/request-headers.adoc[]
+include::{snippets}/MemberApi/Report/Failure/path-parameters.adoc[]
+include::{snippets}/MemberApi/Report/Failure/request-body.adoc[]
+
+HTTP Response
+include::{snippets}/MemberApi/Report/Failure//response-body.adoc[]
+
+=== 2. 특정 사용자를 신고한다
+HTTP Request
+include::{snippets}/MemberApi/Report/Success/http-request.adoc[]
+include::{snippets}/MemberApi/Report/Success/request-headers.adoc[]
+include::{snippets}/MemberApi/Report/Success/path-parameters.adoc[]
+include::{snippets}/MemberApi/Report/Success/request-body.adoc[]
+
+HTTP Response
+include::{snippets}/MemberApi/Report/Success/http-response.adoc[]

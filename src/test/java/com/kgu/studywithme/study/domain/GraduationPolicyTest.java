@@ -12,12 +12,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Study 도메인 {GraduationPolicy VO} 테스트")
+@DisplayName("Study -> 도메인 [GraduationPolicy VO] 테스트")
 class GraduationPolicyTest {
     @Test
     @DisplayName("GraduationPolicy를 생성한다")
     void construct() {
-        GraduationPolicy policy = GraduationPolicy.initPolicy(10);
+        final GraduationPolicy policy = GraduationPolicy.initPolicy(10);
 
         assertAll(
                 () -> assertThat(policy.getMinimumAttendance()).isEqualTo(10),
@@ -37,21 +37,21 @@ class GraduationPolicyTest {
 
         @Test
         @DisplayName("수정할 기회가 남아있지 않음에 따라 GraduationPolicy를 수정할 수 없다")
-        void throwExceptionByNoChangeToUpdateGraduationPolicy() {
+        void throwExceptionByNoChanceToUpdateGraduationPolicy() {
             // given
             ReflectionTestUtils.setField(policy, "updateChance", 0);
 
             // when - then
             assertThatThrownBy(() -> policy.update(20))
                     .isInstanceOf(StudyWithMeException.class)
-                    .hasMessage(StudyErrorCode.NO_CHANGE_TO_UPDATE_GRADUATION_POLICY.getMessage());
+                    .hasMessage(StudyErrorCode.NO_CHANCE_TO_UPDATE_GRADUATION_POLICY.getMessage());
         }
 
         @Test
         @DisplayName("GraduationPolicy 수정에 성공한다 [변화 X]")
         void success1() {
             // when
-            GraduationPolicy update = policy.update(10);
+            final GraduationPolicy update = policy.update(10);
 
             // then
             assertAll(
@@ -64,7 +64,7 @@ class GraduationPolicyTest {
         @DisplayName("GraduationPolicy 수정에 성공한다 [변화 O]")
         void success2() {
             // when
-            GraduationPolicy update = policy.update(20);
+            final GraduationPolicy update = policy.update(20);
 
             // then
             assertAll(
@@ -76,15 +76,15 @@ class GraduationPolicyTest {
 
     @Test
     @DisplayName("스터디 팀장 위임 후 GraduationPolicy 수정 기회를 초기화한다")
-    void resetForDelegatingStudyHost() {
+    void resetUpdateChanceByDelegatingHostAuthority() {
         // given
-        GraduationPolicy policy = GraduationPolicy
+        final GraduationPolicy policy = GraduationPolicy
                 .initPolicy(10) // remain = 3
                 .update(15) // remain = 2
                 .update(13); // remain = 1
 
         // when
-        GraduationPolicy resetUpdateChange = policy.resetUpdateChanceForDelegatingStudyHost();
+        final GraduationPolicy resetUpdateChange = policy.resetUpdateChanceByDelegatingHostAuthority();
 
         // then
         assertAll(
@@ -97,11 +97,11 @@ class GraduationPolicyTest {
     @DisplayName("졸업 요건을 충족했는지 여부를 확인한다")
     void isGraduationRequirementsFulfilled() {
         // given
-        GraduationPolicy policy = GraduationPolicy.initPolicy(10);
+        final GraduationPolicy policy = GraduationPolicy.initPolicy(10);
 
         // when
-        boolean actual1 = policy.isGraduationRequirementsFulfilled(9);
-        boolean actual2 = policy.isGraduationRequirementsFulfilled(11);
+        final boolean actual1 = policy.isGraduationRequirementsFulfilled(9);
+        final boolean actual2 = policy.isGraduationRequirementsFulfilled(11);
 
         // then
         assertAll(

@@ -17,18 +17,29 @@ public class Description {
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String value;
 
-    private Description(final String value) {
+    public Description(final String value) {
+        validateDescriptionIsNotBlank(value);
         this.value = value;
     }
 
-    public static Description from(final String value) {
-        validateDescriptionIsNotBlank(value);
-        return new Description(value);
-    }
-
-    private static void validateDescriptionIsNotBlank(final String value) {
+    private void validateDescriptionIsNotBlank(final String value) {
         if (value.isBlank()) {
             throw StudyWithMeException.type(StudyErrorCode.DESCRIPTION_IS_BLANK);
         }
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final Description other = (Description) o;
+
+        return value.equals(other.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
     }
 }

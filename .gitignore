@@ -28,7 +28,7 @@ out/
 !**/src/test/**/out/
 
 ### RestDocs index.html ###
-src/docs/asciidoc/*.html
+src/docs/asciidoc/**/*.html
 src/main/resources/static/docs
 
 ### NetBeans ###

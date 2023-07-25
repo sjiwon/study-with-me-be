@@ -19,7 +19,7 @@ public class AdditionalWebConfiguration implements WebMvcConfigurer {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    public void addCorsMappings(CorsRegistry registry) {
+    public void addCorsMappings(final CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOriginPatterns("*")
                 .allowCredentials(true)
@@ -29,12 +29,12 @@ public class AdditionalWebConfiguration implements WebMvcConfigurer {
     }
 
     @Override
-    public void addInterceptors(InterceptorRegistry registry) {
+    public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(new TokenValidityInterceptor(jwtTokenProvider));
     }
 
     @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+    public void addArgumentResolvers(final List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new ExtractTokenArgumentResolver());
         resolvers.add(new ExtractPayloadArgumentResolver(jwtTokenProvider));
     }

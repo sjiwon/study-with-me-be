@@ -11,12 +11,13 @@ import java.io.IOException;
 
 import static com.kgu.studywithme.common.utils.FileMockingUtils.createSingleMockMultipartFile;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-@DisplayName("Upload [Validator] -> ValidImageExtensionValidator 테스트")
+@DisplayName("Upload -> ValidImageExtensionValidator 테스트")
 class ValidImageExtensionValidatorTest {
     private ValidImageExtensionValidator validator;
     private ConstraintValidatorContext context;
@@ -36,7 +37,7 @@ class ValidImageExtensionValidatorTest {
         final MultipartFile file = new MockMultipartFile("file", new byte[0]);
 
         // when
-        boolean actual = validator.isValid(file, null);
+        final boolean actual = validator.isValid(file, null);
 
         // then
         assertThat(actual).isTrue();
@@ -46,19 +47,21 @@ class ValidImageExtensionValidatorTest {
     @DisplayName("허용하지 않는 파일 확장자면 validator를 통과하지 못한다")
     void notAllowedExtension() throws IOException {
         // given
-        final MultipartFile file = createSingleMockMultipartFile("hello5.webp", "image/webp");
-
         given(context.buildConstraintViolationWithTemplate(anyString())).willReturn(builder);
         given(builder.addConstraintViolation()).willReturn(context);
 
+        final MultipartFile file = createSingleMockMultipartFile("hello5.webp", "image/webp");
+
         // when
-        boolean actual = validator.isValid(file, context);
+        final boolean actual = validator.isValid(file, context);
 
         // then
-        verify(context).disableDefaultConstraintViolation();
-        verify(context).buildConstraintViolationWithTemplate("이미지는 jpg, jpeg, png, gif만 허용합니다.");
-        verify(builder).addConstraintViolation();
-        assertThat(actual).isFalse();
+        assertAll(
+                () -> verify(context).disableDefaultConstraintViolation(),
+                () -> verify(context).buildConstraintViolationWithTemplate("이미지는 jpg, jpeg, png, gif만 허용합니다."),
+                () -> verify(builder).addConstraintViolation(),
+                () -> assertThat(actual).isFalse()
+        );
     }
 
     @Test
@@ -68,7 +71,7 @@ class ValidImageExtensionValidatorTest {
         final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");
 
         // when
-        boolean actual = validator.isValid(file, context);
+        final boolean actual = validator.isValid(file, context);
 
         // then
         assertThat(actual).isTrue();

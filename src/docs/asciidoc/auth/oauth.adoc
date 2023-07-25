@@ -1,0 +1,54 @@
+= OAuth 인증 API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+
+== OAuth Authorization Code 요청을 위한 URI 조회
+=== 1. 제공하지 않는 OAuth Provider에 대해서는 예외가 발생한다
+HTTP Request
+include::{snippets}/OAuthApi/Access/Failure/http-request.adoc[]
+include::{snippets}/OAuthApi/Access/Failure/path-parameters.adoc[]
+include::{snippets}/OAuthApi/Access/Failure/query-parameters.adoc[]
+
+HTTP Response
+include::{snippets}/OAuthApi/Access/Failure/response-body.adoc[]
+include::{snippets}/OAuthApi/Access/Failure/response-fields.adoc[]
+
+=== 2. OAuth Authorization Code 요청을 위한 URI를 생성한다
+HTTP Request
+include::{snippets}/OAuthApi/Access/Success/http-request.adoc[]
+include::{snippets}/OAuthApi/Access/Success/path-parameters.adoc[]
+include::{snippets}/OAuthApi/Access/Success/query-parameters.adoc[]
+
+HTTP Response
+include::{snippets}/OAuthApi/Access/Success/response-body.adoc[]
+include::{snippets}/OAuthApi/Access/Success/response-fields.adoc[]
+
+== OAuth 로그인
+=== 1. OAuth 로그인을 진행할 때 해당 사용자가 DB에 존재하지 않으면 예외를 발생하고 회원가입을 진행한다
+HTTP Request
+include::{snippets}/OAuthApi/Login/Failure/http-request.adoc[]
+include::{snippets}/OAuthApi/Login/Failure/request-fields.adoc[]
+
+HTTP Response
+include::{snippets}/OAuthApi/Login/Failure/response-body.adoc[]
+include::{snippets}/OAuthApi/Login/Failure/response-fields.adoc[]
+
+=== 2. OAuth 로그인을 진행할 때 해당 사용자가 DB에 존재하면 로그인에 성공하고 사용자 정보 및 토큰을 발급해준다
+HTTP Request
+include::{snippets}/OAuthApi/Login/Success/http-request.adoc[]
+include::{snippets}/OAuthApi/Login/Success/request-fields.adoc[]
+
+HTTP Response
+include::{snippets}/OAuthApi/Login/Success/response-body.adoc[]
+include::{snippets}/OAuthApi/Login/Success/response-fields.adoc[]
+
+== 로그아웃 [AccessToken 필수]
+HTTP Request
+include::{snippets}/OAuthApi/Logout/http-request.adoc[]
+include::{snippets}/OAuthApi/Logout/request-headers.adoc[]
+
+HTTP Response
+include::{snippets}/OAuthApi/Logout/http-response.adoc[]

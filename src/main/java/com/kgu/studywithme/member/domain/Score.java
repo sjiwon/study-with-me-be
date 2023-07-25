@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
 public class Score {
-    // 초기 세팅값
     private static final int DEFAULT_INIT_VALUE = 80;
     private static final int MINIMUM = 0;
     private static final int MAXIMUM = 100;
@@ -23,12 +22,8 @@ public class Score {
     @Column(name = "score", nullable = false)
     private int value;
 
-    private Score(final int value) {
+    public Score(final int value) {
         this.value = value < MINIMUM ? MINIMUM : Math.min(value, MAXIMUM);
-    }
-
-    public static Score from(final int value) {
-        return new Score(value);
     }
 
     public static Score initScore() {
@@ -69,5 +64,20 @@ public class Score {
 
     public Score updateAbsenceToLate() {
         return new Score(value + ABSENCE - LATE);
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final Score other = (Score) o;
+
+        return value == other.value;
+    }
+
+    @Override
+    public int hashCode() {
+        return value;
     }
 }

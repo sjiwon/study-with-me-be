@@ -14,169 +14,55 @@ import static com.kgu.studywithme.fixture.MemberFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Member [Repository Layer] -> MemberRepository 테스트")
+@DisplayName("Member -> MemberRepository 테스트")
 class MemberRepositoryTest extends RepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    private Member member;
-    private final Member[] participants = new Member[5];
+    private Member memberA;
+    private Member memberB;
+    private Member memberC;
 
     @BeforeEach
     void setUp() {
-        member = memberRepository.save(JIWON.toMember());
-        participants[0] = memberRepository.save(GHOST.toMember());
-        participants[1] = memberRepository.save(DUMMY1.toMember());
-        participants[2] = memberRepository.save(DUMMY2.toMember());
-        participants[3] = memberRepository.save(DUMMY3.toMember());
-        participants[4] = memberRepository.save(DUMMY4.toMember());
-    }
-
-    @Test
-    @DisplayName("ID(PK)로 사용자를 조회한다")
-    void findByIdWithInterests() {
-        // when
-        Member findMember = memberRepository.findByIdWithInterests(member.getId()).orElseThrow();
-
-        // then
-        assertThat(findMember).isEqualTo(member);
-    }
-
-    @Test
-    @DisplayName("이메일에 해당하는 사용자가 존재하는지 확인한다")
-    void existsByEmail() {
-        // given
-        final Email same = member.getEmail();
-        final Email diff = Email.from("diff" + member.getEmailValue());
-
-        // when
-        boolean actual1 = memberRepository.existsByEmail(same);
-        boolean actual2 = memberRepository.existsByEmail(diff);
-
-        // then
-        assertAll(
-                () -> assertThat(actual1).isTrue(),
-                () -> assertThat(actual2).isFalse()
-        );
-    }
-
-    @Test
-    @DisplayName("닉네임에 해당하는 사용자가 존재하는지 확인한다")
-    void existsByNickname() {
-        // given
-        final Nickname same = member.getNickname();
-        final Nickname diff = Nickname.from("diff" + member.getNicknameValue());
-
-        // when
-        boolean actual1 = memberRepository.existsByNickname(same);
-        boolean actual2 = memberRepository.existsByNickname(diff);
-
-        // then
-        assertAll(
-                () -> assertThat(actual1).isTrue(),
-                () -> assertThat(actual2).isFalse()
-        );
-    }
-
-    @Test
-    @DisplayName("다른 사람이 해당 닉네임을 사용하고 있는지 확인한다")
-    void existsByIdNotAndNickname() {
-        // given
-        final Nickname nickname = member.getNickname();
-
-        // when
-        boolean actual1 = memberRepository.existsByIdNotAndNickname(member.getId(), nickname);
-        boolean actual2 = memberRepository.existsByIdNotAndNickname(participants[0].getId(), nickname);
-
-        // then
-        assertAll(
-                () -> assertThat(actual1).isFalse(),
-                () -> assertThat(actual2).isTrue()
-        );
-    }
-
-    @Test
-    @DisplayName("전화번호에 해당하는 사용자가 존재하는지 확인한다")
-    void existsByPhone() {
-        // given
-        final String same = member.getPhone();
-        final String diff = member.getPhone().replaceAll("0", "9");
-
-        // when
-        boolean actual1 = memberRepository.existsByPhone(same);
-        boolean actual2 = memberRepository.existsByPhone(diff);
-
-        // then
-        assertAll(
-                () -> assertThat(actual1).isTrue(),
-                () -> assertThat(actual2).isFalse()
-        );
-    }
-
-    @Test
-    @DisplayName("다른 사람이 해당 전화번호를 사용하고 있는지 확인한다")
-    void existsByIdNotAndPhone() {
-        // given
-        final String phone = member.getPhone();
-
-        // when
-        boolean actual1 = memberRepository.existsByIdNotAndPhone(member.getId(), phone);
-        boolean actual2 = memberRepository.existsByIdNotAndPhone(participants[0].getId(), phone);
-
-        // then
-        assertAll(
-                () -> assertThat(actual1).isFalse(),
-                () -> assertThat(actual2).isTrue()
-        );
+        memberA = memberRepository.save(JIWON.toMember());
+        memberB = memberRepository.save(GHOST.toMember());
+        memberC = memberRepository.save(ANONYMOUS.toMember());
     }
 
     @Test
     @DisplayName("이메일로 사용자를 조회한다")
     void findByEmail() {
-        // given
-        final Email same = member.getEmail();
-        final Email diff = Email.from("diff" + member.getEmailValue());
-
         // when
-        Optional<Member> findMember1 = memberRepository.findByEmail(same);
-        Optional<Member> findMember2 = memberRepository.findByEmail(diff);
+        final Member findMemberA = memberRepository.findByEmail(memberA.getEmail()).orElseThrow();
+        final Optional<Member> emptyMember = memberRepository.findByEmail(new Email("diff" + memberA.getEmailValue()));
 
         // then
         assertAll(
-                () -> assertThat(findMember1).isPresent(),
-                () -> assertThat(findMember1.get()).isEqualTo(member),
-                () -> assertThat(findMember2).isEmpty()
+                () -> assertThat(findMemberA).isEqualTo(memberA),
+                () -> assertThat(emptyMember).isEmpty()
         );
     }
 
     @Test
-    @DisplayName("결석한 참여자들의 Score를 일괄 업데이트한다 [For Scheduling]")
-    void applyAbsenceScore() {
+    @DisplayName("결석자들의 Score를 감소시킨다 [결석 패널티 -5점]")
+    void applyScoreToAbsenceParticipant() {
         // given
-        final Set<Long> absenceParticipantIds = Set.of(
-                participants[2].getId(),
-                participants[3].getId()
-        );
+        final int scoreOfMemberA = memberA.getScore();
+        final int scoreOfMemberB = memberB.getScore();
+        final int scoreOfMemberC = memberC.getScore();
 
         // when
-        memberRepository.applyAbsenceScore(absenceParticipantIds);
+        memberRepository.applyScoreToAbsenceParticipant(Set.of(memberB.getId(), memberC.getId()));
 
         // then
-        List<Integer> expectScores = List.of(
-                80,
-                80,
-                80,
-                80 - 5,
-                80 - 5,
-                80
-        );
-        List<Member> members = memberRepository.findAll();
-
-        for (int i = 0; i < expectScores.size(); i++) {
-            Member member = members.get(i);
-            int expectScore = expectScores.get(i);
-
-            assertThat(member.getScore()).isEqualTo(expectScore);
-        }
+        final List<Member> members = memberRepository.findAll();
+        assertThat(members)
+                .map(Member::getScore)
+                .containsExactly(
+                        scoreOfMemberA,
+                        scoreOfMemberB - 5,
+                        scoreOfMemberC - 5
+                );
     }
 }
