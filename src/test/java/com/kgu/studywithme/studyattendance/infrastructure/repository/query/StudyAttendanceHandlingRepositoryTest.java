@@ -134,22 +134,19 @@ class StudyAttendanceHandlingRepositoryTest extends RepositoryTest {
         studyAttendanceRepository.save(
                 StudyAttendance.recordAttendance(study.getId(), member[0].getId(), 1, ATTENDANCE)
         );
-        assertThat(studyAttendanceRepository.getAttendanceCount(study.getId(), member[0].getId()))
-                .isEqualTo(1);
+        assertThat(studyAttendanceRepository.getAttendanceCount(study.getId(), member[0].getId())).isEqualTo(1);
 
         /* 출석 1회 + 지각 1회 */
         studyAttendanceRepository.save(
                 StudyAttendance.recordAttendance(study.getId(), member[0].getId(), 2, LATE)
         );
-        assertThat(studyAttendanceRepository.getAttendanceCount(study.getId(), member[0].getId()))
-                .isEqualTo(1);
+        assertThat(studyAttendanceRepository.getAttendanceCount(study.getId(), member[0].getId())).isEqualTo(1);
 
         /* 출석 2회 + 지각 1회 */
         studyAttendanceRepository.save(
                 StudyAttendance.recordAttendance(study.getId(), member[0].getId(), 3, ATTENDANCE)
         );
-        assertThat(studyAttendanceRepository.getAttendanceCount(study.getId(), member[0].getId()))
-                .isEqualTo(2);
+        assertThat(studyAttendanceRepository.getAttendanceCount(study.getId(), member[0].getId())).isEqualTo(2);
     }
 
     @Test

@@ -22,7 +22,7 @@ public class StudyAttendanceApiController {
     @Operation(summary = "스터디 출석 정보 수정 EndPoint")
     @CheckStudyHost
     @PatchMapping
-    public ResponseEntity<Void> manualCheckAttendance(
+    public ResponseEntity<Void> manualAttendance(
             @ExtractPayload final Long hostId,
             @PathVariable final Long studyId,
             @PathVariable final Long memberId,

@@ -40,6 +40,7 @@ class StudyAttendanceApiControllerTest extends ControllerTest {
         private static final Long HOST_ID = 1L;
         private static final Long PARTICIPANT_ID = 2L;
         private static final Long ANONYMOUS_ID = 3L;
+        private static final ManualAttendanceRequest REQUEST = new ManualAttendanceRequest(1, ATTENDANCE.getDescription());
 
         @BeforeEach
         void setUp() {
@@ -54,12 +55,11 @@ class StudyAttendanceApiControllerTest extends ControllerTest {
             mockingToken(true, PARTICIPANT_ID);
 
             // when
-            final ManualAttendanceRequest request = new ManualAttendanceRequest(1, ATTENDANCE.getDescription());
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID, PARTICIPANT_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             final StudyErrorCode expectedError = StudyErrorCode.MEMBER_IS_NOT_HOST;
@@ -80,12 +80,16 @@ class StudyAttendanceApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("memberId").description("수동 출석 체크할 참여자 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("memberId")
+                                                    .description("수동 출석 체크할 참여자 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("week").description("수동 출석할 주차"),
-                                            fieldWithPath("status").description("출석 정보")
+                                            fieldWithPath("week")
+                                                    .description("수동 출석할 주차"),
+                                            fieldWithPath("status")
+                                                    .description("출석 정보")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -126,12 +130,16 @@ class StudyAttendanceApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("memberId").description("수동 출석 체크할 참여자 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("memberId")
+                                                    .description("수동 출석 체크할 참여자 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("week").description("수동 출석할 주차"),
-                                            fieldWithPath("status").description("출석 정보")
+                                            fieldWithPath("week")
+                                                    .description("수동 출석할 주차"),
+                                            fieldWithPath("status")
+                                                    .description("출석 정보")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -148,12 +156,11 @@ class StudyAttendanceApiControllerTest extends ControllerTest {
                     .manualAttendance(any());
 
             // when
-            final ManualAttendanceRequest request = new ManualAttendanceRequest(1, ATTENDANCE.getDescription());
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID, ANONYMOUS_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             final StudyAttendanceErrorCode expectedError = StudyAttendanceErrorCode.ATTENDANCE_NOT_FOUND;
@@ -174,12 +181,16 @@ class StudyAttendanceApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("memberId").description("수동 출석 체크할 참여자 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("memberId")
+                                                    .description("수동 출석 체크할 참여자 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("week").description("수동 출석할 주차"),
-                                            fieldWithPath("status").description("출석 정보")
+                                            fieldWithPath("week")
+                                                    .description("수동 출석할 주차"),
+                                            fieldWithPath("status")
+                                                    .description("출석 정보")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -187,7 +198,7 @@ class StudyAttendanceApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("수동 출석 체크에 성공한다")
+        @DisplayName("수동 출석 체크를 진행한다")
         void success() throws Exception {
             // given
             mockingToken(true, HOST_ID);
@@ -196,12 +207,11 @@ class StudyAttendanceApiControllerTest extends ControllerTest {
                     .manualAttendance(any());
 
             // when
-            final ManualAttendanceRequest request = new ManualAttendanceRequest(1, ATTENDANCE.getDescription());
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID, PARTICIPANT_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             mockMvc.perform(requestBuilder)
@@ -213,12 +223,16 @@ class StudyAttendanceApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("memberId").description("수동 출석 체크할 참여자 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("memberId")
+                                                    .description("수동 출석 체크할 참여자 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("week").description("수동 출석할 주차"),
-                                            fieldWithPath("status").description("출석 정보")
+                                            fieldWithPath("week")
+                                                    .description("수동 출석할 주차"),
+                                            fieldWithPath("status")
+                                                    .description("출석 정보")
                                     )
                             )
                     );

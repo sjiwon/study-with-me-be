@@ -49,9 +49,9 @@ public class ApiGlobalExceptionHandler {
     }
 
     @ExceptionHandler(StudyWithMeException.class)
-    public ResponseEntity<ErrorResponse> studyWithMeException(final StudyWithMeException exception) {
-        final ErrorCode code = exception.getCode();
-        logging(code, exception);
+    public ResponseEntity<ErrorResponse> studyWithMeException(final StudyWithMeException e) {
+        final ErrorCode code = e.getCode();
+        logging(code, e);
 
         return ResponseEntity
                 .status(code.getStatus())
@@ -59,8 +59,8 @@ public class ApiGlobalExceptionHandler {
     }
 
     @ExceptionHandler(StudyWithMeOAuthException.class)
-    public ResponseEntity<OAuthUserResponse> studyWithMeOAuthException(final StudyWithMeOAuthException exception) {
-        final OAuthUserResponse response = exception.getResponse();
+    public ResponseEntity<OAuthUserResponse> studyWithMeOAuthException(final StudyWithMeOAuthException e) {
+        final OAuthUserResponse response = e.getResponse();
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(response);
@@ -71,9 +71,9 @@ public class ApiGlobalExceptionHandler {
      */
     @ExceptionHandler(UnsatisfiedServletRequestParameterException.class)
     public ResponseEntity<ErrorResponse> unsatisfiedServletRequestParameterException(
-            final UnsatisfiedServletRequestParameterException exception
+            final UnsatisfiedServletRequestParameterException e
     ) {
-        return convert(GlobalErrorCode.VALIDATION_ERROR, exception);
+        return convert(GlobalErrorCode.VALIDATION_ERROR, e);
     }
 
     /**
@@ -81,19 +81,19 @@ public class ApiGlobalExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> methodArgumentNotValidException(
-            final MethodArgumentNotValidException exception
+            final MethodArgumentNotValidException e
     ) throws JsonProcessingException {
-        final List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
-        return convert(GlobalErrorCode.VALIDATION_ERROR, extractErrorMessage(fieldErrors), exception);
+        final List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
+        return convert(GlobalErrorCode.VALIDATION_ERROR, extractErrorMessage(fieldErrors), e);
     }
 
     /**
      * 요청 데이터 Validation 전용 ExceptionHandler (@ModelAttribute)
      */
     @ExceptionHandler(BindException.class)
-    public ResponseEntity<ErrorResponse> bindException(final BindException exception) throws JsonProcessingException {
-        final List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
-        return convert(GlobalErrorCode.VALIDATION_ERROR, extractErrorMessage(fieldErrors), exception);
+    public ResponseEntity<ErrorResponse> bindException(final BindException e) throws JsonProcessingException {
+        final List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
+        return convert(GlobalErrorCode.VALIDATION_ERROR, extractErrorMessage(fieldErrors), e);
     }
 
     private String extractErrorMessage(final List<FieldError> fieldErrors) throws JsonProcessingException {
@@ -112,8 +112,8 @@ public class ApiGlobalExceptionHandler {
      * 존재하지 않는 Endpoint 전용 ExceptionHandler
      */
     @ExceptionHandler(NoHandlerFoundException.class)
-    public ResponseEntity<ErrorResponse> noHandlerFoundException(final NoHandlerFoundException exception) {
-        return convert(GlobalErrorCode.NOT_SUPPORTED_URI_ERROR, exception);
+    public ResponseEntity<ErrorResponse> noHandlerFoundException(final NoHandlerFoundException e) {
+        return convert(GlobalErrorCode.NOT_SUPPORTED_URI_ERROR, e);
     }
 
     /**
@@ -121,9 +121,9 @@ public class ApiGlobalExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ErrorResponse> methodArgumentTypeMismatchException(
-            final MethodArgumentTypeMismatchException exception
+            final MethodArgumentTypeMismatchException e
     ) {
-        return convert(GlobalErrorCode.NOT_SUPPORTED_URI_ERROR, exception);
+        return convert(GlobalErrorCode.NOT_SUPPORTED_URI_ERROR, e);
     }
 
     /**
@@ -131,9 +131,9 @@ public class ApiGlobalExceptionHandler {
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<ErrorResponse> httpRequestMethodNotSupportedException(
-            final HttpRequestMethodNotSupportedException exception
+            final HttpRequestMethodNotSupportedException e
     ) {
-        return convert(GlobalErrorCode.NOT_SUPPORTED_METHOD_ERROR, exception);
+        return convert(GlobalErrorCode.NOT_SUPPORTED_METHOD_ERROR, e);
     }
 
     /**
@@ -141,9 +141,9 @@ public class ApiGlobalExceptionHandler {
      */
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     public ResponseEntity<ErrorResponse> httpMediaTypeNotSupportedException(
-            final HttpMediaTypeNotSupportedException exception
+            final HttpMediaTypeNotSupportedException e
     ) {
-        return convert(GlobalErrorCode.UNSUPPORTED_MEDIA_TYPE_ERROR, exception);
+        return convert(GlobalErrorCode.UNSUPPORTED_MEDIA_TYPE_ERROR, e);
     }
 
     /**
@@ -151,11 +151,11 @@ public class ApiGlobalExceptionHandler {
      */
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorResponse> handleAnyException(
-            final RuntimeException exception,
+            final RuntimeException e,
             final HttpServletRequest request
     ) {
-        sendSlackAlertErrorLog(exception, request);
-        return convert(GlobalErrorCode.INTERNAL_SERVER_ERROR, exception);
+        sendSlackAlertErrorLog(e, request);
+        return convert(GlobalErrorCode.INTERNAL_SERVER_ERROR, e);
     }
 
     /**
@@ -178,9 +178,9 @@ public class ApiGlobalExceptionHandler {
 
     private ResponseEntity<ErrorResponse> convert(
             final ErrorCode code,
-            final Exception exception
+            final Exception e
     ) {
-        logging(code, exception);
+        logging(code, e);
         return ResponseEntity
                 .status(code.getStatus())
                 .body(ErrorResponse.from(code));
@@ -199,35 +199,35 @@ public class ApiGlobalExceptionHandler {
 
     private void logging(
             final ErrorCode code,
-            final Exception exception
+            final Exception e
     ) {
         log.warn(
                 "{} | {} | {}",
                 code.getStatus(),
                 code.getErrorCode(),
                 code.getMessage(),
-                exception
+                e
         );
     }
 
-    private void logging(final ErrorCode code, final String message, final Exception exception) {
+    private void logging(final ErrorCode code, final String message, final Exception e) {
         log.warn(
                 "{} | {} | {}",
                 code.getStatus(),
                 code.getErrorCode(),
                 message,
-                exception
+                e
         );
     }
 
-    public void sendSlackAlertErrorLog(final Exception exception, final HttpServletRequest request) {
+    public void sendSlackAlertErrorLog(final Exception e, final HttpServletRequest request) {
         try {
             SLACK_CLIENT.send(
                     slackWebhookUrl,
                     payload(p -> p
                             .text("서버 에러 발생!!")
                             .attachments(
-                                    List.of(generateSlackErrorAttachments(exception, request))
+                                    List.of(generateSlackErrorAttachments(e, request))
                             )
                     ));
         } catch (final IOException slackApiError) {
@@ -236,7 +236,7 @@ public class ApiGlobalExceptionHandler {
     }
 
     private Attachment generateSlackErrorAttachments(
-            final Exception exception,
+            final Exception e,
             final HttpServletRequest request
     ) {
         final String requestTime = DateTimeFormatter.ofPattern(DATETIME_FORMAT).format(LocalDateTime.now());
@@ -248,7 +248,7 @@ public class ApiGlobalExceptionHandler {
                         List.of(
                                 generateSlackField(TITLE_REQUEST_IP, (xffHeader == null) ? request.getRemoteAddr() : xffHeader),
                                 generateSlackField(TITLE_REQUEST_URL, createRequestFullPath(request)),
-                                generateSlackField(TITLE_ERROR_MESSAGE, exception.toString())
+                                generateSlackField(TITLE_ERROR_MESSAGE, e.toString())
                         )
                 )
                 .build();

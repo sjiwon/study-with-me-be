@@ -1,6 +1,7 @@
 package com.kgu.studywithme.studyattendance.infrastructure.repository.query;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
+import com.kgu.studywithme.studyattendance.domain.AttendanceStatus;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
 import com.kgu.studywithme.studyattendance.infrastructure.repository.query.dto.NonAttendanceWeekly;
 import com.kgu.studywithme.studyattendance.infrastructure.repository.query.dto.QNonAttendanceWeekly;
@@ -46,7 +47,7 @@ public class StudyAttendanceHandlingRepositoryImpl implements StudyAttendanceHan
                 .where(
                         studyIdEq(studyId),
                         participantIdEq(participantId),
-                        studyAttendance.status.eq(ATTENDANCE)
+                        statusEq(ATTENDANCE)
                 )
                 .fetchOne()
                 .intValue();
@@ -63,7 +64,7 @@ public class StudyAttendanceHandlingRepositoryImpl implements StudyAttendanceHan
                         )
                 )
                 .from(studyAttendance)
-                .where(studyAttendance.status.eq(NON_ATTENDANCE))
+                .where(statusEq(NON_ATTENDANCE))
                 .orderBy(
                         studyAttendance.studyId.asc(),
                         studyAttendance.week.asc(),
@@ -82,5 +83,9 @@ public class StudyAttendanceHandlingRepositoryImpl implements StudyAttendanceHan
 
     private BooleanExpression weekEq(final int week) {
         return studyAttendance.week.eq(week);
+    }
+
+    private BooleanExpression statusEq(final AttendanceStatus status) {
+        return studyAttendance.status.eq(status);
     }
 }

@@ -37,7 +37,7 @@ include::study/study-notice-comment.adoc[leveloffset=+1]
 
 include::study/study-review.adoc[leveloffset=+1]
 
-include::study-attendance.adoc[leveloffset=+1]
+include::study/study-attendance.adoc[leveloffset=+1]
 
 include::study-weekly.adoc[leveloffset=+1]
 

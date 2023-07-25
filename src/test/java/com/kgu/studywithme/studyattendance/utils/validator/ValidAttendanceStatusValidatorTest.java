@@ -36,10 +36,12 @@ class ValidAttendanceStatusValidatorTest {
         final boolean actual = validator.isValid("미출결", context);
 
         // then
-        verify(context).disableDefaultConstraintViolation();
-        verify(context).buildConstraintViolationWithTemplate("출석을 미출결로 수정할 수 없습니다.");
-        verify(builder).addConstraintViolation();
-        assertThat(actual).isFalse();
+        assertAll(
+                () -> verify(context).disableDefaultConstraintViolation(),
+                () -> verify(context).buildConstraintViolationWithTemplate("출석을 미출결로 수정할 수 없습니다."),
+                () -> verify(builder).addConstraintViolation(),
+                () -> assertThat(actual).isFalse()
+        );
     }
 
     @Test

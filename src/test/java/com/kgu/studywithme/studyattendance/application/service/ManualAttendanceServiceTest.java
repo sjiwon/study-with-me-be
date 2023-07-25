@@ -49,7 +49,7 @@ class ManualAttendanceServiceTest extends UseCaseTest {
     }
 
     @Test
-    @DisplayName("수동 출석을 진행한다 [이전 상태 = NON_ATTENDANCE]")
+    @DisplayName("수동 출석 체크를 진행한다 [이전 상태 = NON_ATTENDANCE]")
     void successCaseA() {
         // given
         final StudyAttendance attendance = StudyAttendance.recordAttendance(
@@ -68,22 +68,21 @@ class ManualAttendanceServiceTest extends UseCaseTest {
                         study.getId(),
                         member.getId(),
                         1,
-                        LATE // 미출결 -> 지각 :: previousScore - 1
+                        LATE // 미출결 -> 지각 = previousScore - 1
                 )
         );
 
         // then
-        verify(studyAttendanceRepository, times(1))
-                .getParticipantAttendanceByWeek(any(), any(), any());
-        verify(queryMemberByIdService, times(1)).findById(any());
         assertAll(
+                () -> verify(studyAttendanceRepository, times(1)).getParticipantAttendanceByWeek(any(), any(), any()),
+                () -> verify(queryMemberByIdService, times(1)).findById(any()),
                 () -> assertThat(attendance.getStatus()).isEqualTo(LATE),
                 () -> assertThat(member.getScore()).isEqualTo(previousScore - 1)
         );
     }
 
     @Test
-    @DisplayName("수동 출석을 진행한다 [이전 상태 != 변경 상태]")
+    @DisplayName("수동 출석 체크를 진행한다 [이전 상태 != 변경 상태]")
     void successCaseB() {
         // given
         final StudyAttendance attendance = StudyAttendance.recordAttendance(
@@ -107,10 +106,9 @@ class ManualAttendanceServiceTest extends UseCaseTest {
         );
 
         // then
-        verify(studyAttendanceRepository, times(1))
-                .getParticipantAttendanceByWeek(any(), any(), any());
-        verify(queryMemberByIdService, times(1)).findById(any());
         assertAll(
+                () -> verify(studyAttendanceRepository, times(1)).getParticipantAttendanceByWeek(any(), any(), any()),
+                () -> verify(queryMemberByIdService, times(1)).findById(any()),
                 () -> assertThat(attendance.getStatus()).isEqualTo(LATE),
                 () -> assertThat(member.getScore()).isEqualTo(previousScore + 4)
         );
