@@ -104,3 +104,5 @@ java -jar \
 ```
 
 #### (방법-2) IntelliJ 환경변수 설정 & 서버 ON
+
+### [3) Swagger URL](http://localhost:8080/swagger-ui.html)
