@@ -1,7 +1,6 @@
 package com.kgu.studywithme.memberreport.infrastructure.repository.query;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
-import com.kgu.studywithme.memberreport.domain.MemberReportStatus;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -15,15 +14,13 @@ public class MemberReportHandlingRepositoryImpl implements MemberReportHandlingR
 
     @Override
     public boolean isReportStillPending(final Long reporterId, final Long reporteeId) {
-        MemberReportStatus status = query
+        return query
                 .select(memberReport.status)
                 .from(memberReport)
                 .where(
                         memberReport.reporterId.eq(reporterId),
                         memberReport.reporteeId.eq(reporteeId)
                 )
-                .fetchOne();
-
-        return status == RECEIVE;
+                .fetchOne() == RECEIVE;
     }
 }

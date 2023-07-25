@@ -18,6 +18,7 @@ import static com.kgu.studywithme.fixture.MemberFixture.GHOST;
 import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -33,7 +34,6 @@ class ReportMemberServiceTest extends UseCaseTest {
 
     private final Member memberA = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Member memberB = GHOST.toMember().apply(2L, LocalDateTime.now());
-
     private final ReportMemberUseCase.Command command =
             new ReportMemberUseCase.Command(memberA.getId(), memberB.getId(), "report...");
 
@@ -48,29 +48,31 @@ class ReportMemberServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberReportErrorCode.PREVIOUS_REPORT_IS_STILL_PENDING.getMessage());
 
-        verify(memberReportRepository, times(1))
-                .isReportStillPending(memberA.getId(), memberB.getId());
-        verify(memberReportRepository, times(0)).save(any());
+        assertAll(
+                () -> verify(memberReportRepository, times(1)).isReportStillPending(memberA.getId(), memberB.getId()),
+                () -> verify(memberReportRepository, times(0)).save(any())
+        );
     }
 
     @Test
-    @DisplayName("사용자 신고에 성공한다")
+    @DisplayName("특정 사용자를 신고한다")
     void success() {
         // given
         given(memberReportRepository.isReportStillPending(any(), any())).willReturn(false);
 
-        final MemberReport memberReport = MemberReport
-                .createReportWithReason(memberA.getId(), memberB.getId(), "report...")
-                .apply(1L, LocalDateTime.now());
+        final MemberReport memberReport =
+                MemberReport.createReportWithReason(memberA.getId(), memberB.getId(), "report...")
+                        .apply(1L, LocalDateTime.now());
         given(memberReportRepository.save(any())).willReturn(memberReport);
 
         // when
-        Long reportId = reportMemberService.report(command);
+        final Long reportId = reportMemberService.report(command);
 
         // then
-        verify(memberReportRepository, times(1))
-                .isReportStillPending(memberA.getId(), memberB.getId());
-        verify(memberReportRepository, times(1)).save(any());
-        assertThat(reportId).isEqualTo(memberReport.getId());
+        assertAll(
+                () -> verify(memberReportRepository, times(1)).isReportStillPending(memberA.getId(), memberB.getId()),
+                () -> verify(memberReportRepository, times(1)).save(any()),
+                () -> assertThat(reportId).isEqualTo(memberReport.getId())
+        );
     }
 }

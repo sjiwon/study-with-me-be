@@ -33,9 +33,10 @@ class MemberReportApiControllerTest extends ControllerTest {
         private static final String BASE_URL = "/api/members/{reporteeId}/report";
         private static final Long REPORTEE_ID = 1L;
         private static final Long REPORTER_ID = 2L;
+        private static final ReportMemberRequest REQUEST = new ReportMemberRequest("참여를 안해요");
 
         @Test
-        @DisplayName("이전에 신고한 내역이 처리되지 않고 접수상태로 남아있다면 중복 신고를 하지 못한다")
+        @DisplayName("이전에 신고한 내역이 여전히 처리중이라면 중복 신고를 하지 못한다")
         void throwExceptionByPreviousReportIsStillPending() throws Exception {
             // given
             mockingToken(true, REPORTER_ID);
@@ -44,12 +45,11 @@ class MemberReportApiControllerTest extends ControllerTest {
                     .report(any());
 
             // when
-            final ReportMemberRequest request = new ReportMemberRequest("참여를 안해요");
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, REPORTEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             final MemberReportErrorCode expectedError = MemberReportErrorCode.PREVIOUS_REPORT_IS_STILL_PENDING;
@@ -70,10 +70,12 @@ class MemberReportApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("reporteeId").description("신고 대상자 ID(PK)")
+                                            parameterWithName("reporteeId")
+                                                    .description("신고 대상자 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("reason").description("신고 사유")
+                                            fieldWithPath("reason")
+                                                    .description("신고 사유")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -81,19 +83,18 @@ class MemberReportApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("사용자 신고에 성공한다")
+        @DisplayName("특정 사용자를 신고한다")
         void success() throws Exception {
             // given
             mockingToken(true, REPORTER_ID);
             given(reportMemberUseCase.report(any())).willReturn(1L);
 
             // when
-            final ReportMemberRequest request = new ReportMemberRequest("참여를 안해요");
-            MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, REPORTEE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             mockMvc.perform(requestBuilder)
@@ -105,10 +106,12 @@ class MemberReportApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("reporteeId").description("신고 대상자 ID(PK)")
+                                            parameterWithName("reporteeId")
+                                                    .description("신고 대상자 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("reason").description("신고 사유")
+                                            fieldWithPath("reason")
+                                                    .description("신고 사유")
                                     )
                             )
                     );

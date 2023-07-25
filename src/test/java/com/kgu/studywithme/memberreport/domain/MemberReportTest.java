@@ -15,7 +15,7 @@ class MemberReportTest {
     @DisplayName("특정 사용자에 대한 신고를 진행한다")
     void construct() {
         // when
-        MemberReport memberReport = MemberReport.createReportWithReason(1L, 2L, REASON);
+        final MemberReport memberReport = MemberReport.createReportWithReason(1L, 2L, REASON);
 
         // then
         assertAll(
@@ -28,7 +28,7 @@ class MemberReportTest {
     @DisplayName("관리자가 접수된 신고를 승인한다")
     void approveReport() {
         // given
-        MemberReport memberReport = MemberReport.createReportWithReason(1L, 2L, REASON);
+        final MemberReport memberReport = MemberReport.createReportWithReason(1L, 2L, REASON);
 
         // when
         memberReport.approveReport();
@@ -41,7 +41,7 @@ class MemberReportTest {
     @DisplayName("관리자가 접수된 신고를 거부한다")
     void rejectReport() {
         // given
-        MemberReport memberReport = MemberReport.createReportWithReason(1L, 2L, REASON);
+        final MemberReport memberReport = MemberReport.createReportWithReason(1L, 2L, REASON);
 
         // when
         memberReport.rejectReport();

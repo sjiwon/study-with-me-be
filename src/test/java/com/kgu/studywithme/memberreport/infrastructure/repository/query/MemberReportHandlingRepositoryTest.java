@@ -35,7 +35,7 @@ class MemberReportHandlingRepositoryTest extends RepositoryTest {
     @DisplayName("특정 사용자에 대한 신고가 여전히 처리중인지 확인한다")
     void isReportStillPending() {
         // given
-        MemberReport memberReport = memberReportRepository.save(
+        final MemberReport memberReport = memberReportRepository.save(
                 MemberReport.createReportWithReason(
                         memberA.getId(),
                         memberB.getId(),

@@ -17,7 +17,7 @@ include::member-information.adoc[leveloffset=+1]
 
 include::member/member-review.adoc[leveloffset=+1]
 
-include::member-report.adoc[leveloffset=+1]
+include::member/member-report.adoc[leveloffset=+1]
 
 include::study-register.adoc[leveloffset=+1]
 
