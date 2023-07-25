@@ -70,8 +70,10 @@ class DelegateHostAuthorityApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("participantId").description("권한을 위임할 사용자 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("participantId")
+                                                    .description("권한을 위임할 사용자 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -80,7 +82,7 @@ class DelegateHostAuthorityApiControllerTest extends ControllerTest {
 
         @Test
         @DisplayName("스터디가 종료되었으면 팀장 권한을 위임할 수 없다")
-        void throwExceptionByStudyIsEnd() throws Exception {
+        void throwExceptionByStudyIsTerminated() throws Exception {
             // given
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyParticipantErrorCode.STUDY_IS_TERMINATED))
@@ -111,8 +113,10 @@ class DelegateHostAuthorityApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("participantId").description("권한을 위임할 사용자 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("participantId")
+                                                    .description("권한을 위임할 사용자 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -137,7 +141,7 @@ class DelegateHostAuthorityApiControllerTest extends ControllerTest {
             final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.SELF_DELEGATING_NOT_ALLOWED;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
-                            status().isBadRequest(),
+                            status().isConflict(),
                             jsonPath("$.status").exists(),
                             jsonPath("$.status").value(expectedError.getStatus().value()),
                             jsonPath("$.errorCode").exists(),
@@ -152,8 +156,10 @@ class DelegateHostAuthorityApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("participantId").description("권한을 위임할 사용자 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("participantId")
+                                                    .description("권한을 위임할 사용자 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -193,8 +199,10 @@ class DelegateHostAuthorityApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("participantId").description("권한을 위임할 사용자 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("participantId")
+                                                    .description("권한을 위임할 사용자 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -225,8 +233,10 @@ class DelegateHostAuthorityApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("participantId").description("권한을 위임할 사용자 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("participantId")
+                                                    .description("권한을 위임할 사용자 ID(PK)")
                                     )
                             )
                     );

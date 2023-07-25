@@ -47,21 +47,14 @@ class ParticipantHandlingRepositoryTest extends RepositoryTest {
         graduatedMember = memberRepository.save(DUMMY4.toMember());
 
         study = studyRepository.save(SPRING.toOnlineStudy(host.getId()));
-
-        studyParticipantRepository.save(
-                StudyParticipant.applyHost(study.getId(), host.getId())
-        );
-        studyParticipantRepository.save(
-                StudyParticipant.applyInStudy(study.getId(), applier.getId())
-        );
-        studyParticipantRepository.save(
-                StudyParticipant.applyParticipant(study.getId(), participant.getId(), APPROVE)
-        );
-        studyParticipantRepository.save(
-                StudyParticipant.applyParticipant(study.getId(), leaveMember.getId(), LEAVE)
-        );
-        studyParticipantRepository.save(
-                StudyParticipant.applyParticipant(study.getId(), graduatedMember.getId(), GRADUATED)
+        studyParticipantRepository.saveAll(
+                List.of(
+                        StudyParticipant.applyHost(study.getId(), host.getId()),
+                        StudyParticipant.applyInStudy(study.getId(), applier.getId()),
+                        StudyParticipant.applyParticipant(study.getId(), participant.getId(), APPROVE),
+                        StudyParticipant.applyParticipant(study.getId(), leaveMember.getId(), LEAVE),
+                        StudyParticipant.applyParticipant(study.getId(), graduatedMember.getId(), GRADUATED)
+                )
         );
     }
 
@@ -69,21 +62,11 @@ class ParticipantHandlingRepositoryTest extends RepositoryTest {
     @DisplayName("특정 스터디 신청자를 조회한다 [With studyId + memberId]")
     void findApplier() {
         assertAll(
-                () -> assertThat(
-                        studyParticipantRepository.findApplier(study.getId(), host.getId())
-                ).isEmpty(),
-                () -> assertThat(
-                        studyParticipantRepository.findApplier(study.getId(), applier.getId())
-                ).isPresent(),
-                () -> assertThat(
-                        studyParticipantRepository.findApplier(study.getId(), participant.getId())
-                ).isEmpty(),
-                () -> assertThat(
-                        studyParticipantRepository.findApplier(study.getId(), leaveMember.getId())
-                ).isEmpty(),
-                () -> assertThat(
-                        studyParticipantRepository.findApplier(study.getId(), graduatedMember.getId())
-                ).isEmpty()
+                () -> assertThat(studyParticipantRepository.findApplier(study.getId(), host.getId())).isEmpty(),
+                () -> assertThat(studyParticipantRepository.findApplier(study.getId(), applier.getId())).isPresent(),
+                () -> assertThat(studyParticipantRepository.findApplier(study.getId(), participant.getId())).isEmpty(),
+                () -> assertThat(studyParticipantRepository.findApplier(study.getId(), leaveMember.getId())).isEmpty(),
+                () -> assertThat(studyParticipantRepository.findApplier(study.getId(), graduatedMember.getId())).isEmpty()
         );
     }
 
@@ -91,21 +74,11 @@ class ParticipantHandlingRepositoryTest extends RepositoryTest {
     @DisplayName("특정 스터디 참여자를 조회한다 [With studyId + memberId]")
     void findParticipant() {
         assertAll(
-                () -> assertThat(
-                        studyParticipantRepository.findParticipant(study.getId(), host.getId())
-                ).isPresent(),
-                () -> assertThat(
-                        studyParticipantRepository.findParticipant(study.getId(), applier.getId())
-                ).isEmpty(),
-                () -> assertThat(
-                        studyParticipantRepository.findParticipant(study.getId(), participant.getId())
-                ).isPresent(),
-                () -> assertThat(
-                        studyParticipantRepository.findParticipant(study.getId(), leaveMember.getId())
-                ).isEmpty(),
-                () -> assertThat(
-                        studyParticipantRepository.findParticipant(study.getId(), graduatedMember.getId())
-                ).isEmpty()
+                () -> assertThat(studyParticipantRepository.findParticipant(study.getId(), host.getId())).isPresent(),
+                () -> assertThat(studyParticipantRepository.findParticipant(study.getId(), applier.getId())).isEmpty(),
+                () -> assertThat(studyParticipantRepository.findParticipant(study.getId(), participant.getId())).isPresent(),
+                () -> assertThat(studyParticipantRepository.findParticipant(study.getId(), leaveMember.getId())).isEmpty(),
+                () -> assertThat(studyParticipantRepository.findParticipant(study.getId(), graduatedMember.getId())).isEmpty()
         );
     }
 
@@ -124,8 +97,7 @@ class ParticipantHandlingRepositoryTest extends RepositoryTest {
         final List<Long> studyParticipantIds2 = studyParticipantRepository.findStudyParticipantIds(study.getId());
         assertAll(
                 () -> assertThat(studyParticipantIds2).hasSize(3),
-                () -> assertThat(studyParticipantIds2)
-                        .containsExactlyInAnyOrder(host.getId(), participant.getId(), applier.getId())
+                () -> assertThat(studyParticipantIds2).containsExactlyInAnyOrder(host.getId(), participant.getId(), applier.getId())
         );
 
         /* - host & participant */
@@ -142,21 +114,11 @@ class ParticipantHandlingRepositoryTest extends RepositoryTest {
     @DisplayName("스터디 신청 취소에 의해 신청자 정보를 삭제한다")
     void deleteApplier() {
         assertAll(
-                () -> assertThat(
-                        studyParticipantRepository.deleteApplier(study.getId(), host.getId())
-                ).isEqualTo(0),
-                () -> assertThat(
-                        studyParticipantRepository.deleteApplier(study.getId(), applier.getId())
-                ).isEqualTo(1),
-                () -> assertThat(
-                        studyParticipantRepository.deleteApplier(study.getId(), participant.getId())
-                ).isEqualTo(0),
-                () -> assertThat(
-                        studyParticipantRepository.deleteApplier(study.getId(), leaveMember.getId())
-                ).isEqualTo(0),
-                () -> assertThat(
-                        studyParticipantRepository.deleteApplier(study.getId(), graduatedMember.getId())
-                ).isEqualTo(0)
+                () -> assertThat(studyParticipantRepository.deleteApplier(study.getId(), host.getId())).isEqualTo(0),
+                () -> assertThat(studyParticipantRepository.deleteApplier(study.getId(), applier.getId())).isEqualTo(1),
+                () -> assertThat(studyParticipantRepository.deleteApplier(study.getId(), participant.getId())).isEqualTo(0),
+                () -> assertThat(studyParticipantRepository.deleteApplier(study.getId(), leaveMember.getId())).isEqualTo(0),
+                () -> assertThat(studyParticipantRepository.deleteApplier(study.getId(), graduatedMember.getId())).isEqualTo(0)
         );
     }
 }

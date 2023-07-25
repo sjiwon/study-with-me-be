@@ -21,6 +21,7 @@ import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.fixture.StudyFixture.SPRING;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -64,9 +65,10 @@ class LeaveParticipationServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.HOST_CANNOT_LEAVE_STUDY.getMessage());
 
-        verify(queryStudyByIdService, times(1)).findById(any());
-        verify(studyParticipantRepository, times(0))
-                .updateParticipantStatus(any(), any(), any());
+        assertAll(
+                () -> verify(queryStudyByIdService, times(1)).findById(any()),
+                () -> verify(studyParticipantRepository, times(0)).updateParticipantStatus(any(), any(), any())
+        );
     }
 
     @Test
@@ -84,10 +86,10 @@ class LeaveParticipationServiceTest extends UseCaseTest {
         );
 
         // then
-        verify(queryStudyByIdService, times(1)).findById(any());
-        verify(studyParticipantRepository, times(1))
-                .updateParticipantStatus(any(), any(), any());
-
-        assertThat(study.getParticipantMembers()).isEqualTo(previousParticipantMembers - 1);
+        assertAll(
+                () -> verify(queryStudyByIdService, times(1)).findById(any()),
+                () -> verify(studyParticipantRepository, times(1)).updateParticipantStatus(any(), any(), any()),
+                () -> assertThat(study.getParticipantMembers()).isEqualTo(previousParticipantMembers - 1)
+        );
     }
 }

@@ -70,7 +70,8 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -95,7 +96,7 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
             final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.HOST_CANNOT_LEAVE_STUDY;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
-                            status().isBadRequest(),
+                            status().isConflict(),
                             jsonPath("$.status").exists(),
                             jsonPath("$.status").value(expectedError.getStatus().value()),
                             jsonPath("$.errorCode").exists(),
@@ -110,7 +111,8 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -141,7 +143,8 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     )
                             )
                     );
@@ -194,7 +197,8 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -219,7 +223,7 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
             final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.HOST_CANNOT_GRADUATE_STUDY;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
-                            status().isBadRequest(),
+                            status().isConflict(),
                             jsonPath("$.status").exists(),
                             jsonPath("$.status").value(expectedError.getStatus().value()),
                             jsonPath("$.errorCode").exists(),
@@ -234,7 +238,49 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
+                                    ),
+                                    getExceptionResponseFiels()
+                            )
+                    );
+        }
+
+        @Test
+        @DisplayName("참여자가 아닌 사람은 해당 스터디를 졸업할 수 없다")
+        void throwExceptionByParticipantNotFound() throws Exception {
+            // given
+            mockingToken(true, PARTICIPANT_ID);
+            doThrow(StudyWithMeException.type(StudyParticipantErrorCode.PARTICIPANT_NOT_FOUND))
+                    .when(graduateStudyUseCase)
+                    .graduateStudy(any());
+
+            // when
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+                    .patch(BASE_URL, STUDY_ID)
+                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
+
+            // then
+            final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.PARTICIPANT_NOT_FOUND;
+            mockMvc.perform(requestBuilder)
+                    .andExpectAll(
+                            status().isNotFound(),
+                            jsonPath("$.status").exists(),
+                            jsonPath("$.status").value(expectedError.getStatus().value()),
+                            jsonPath("$.errorCode").exists(),
+                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
+                            jsonPath("$.message").exists(),
+                            jsonPath("$.message").value(expectedError.getMessage())
+                    )
+                    .andDo(
+                            document(
+                                    "StudyApi/Participation/Graduate/Failure/Case3",
+                                    getDocumentRequest(),
+                                    getDocumentResponse(),
+                                    getHeaderWithAccessToken(),
+                                    pathParameters(
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -269,12 +315,13 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "StudyApi/Participation/Graduate/Failure/Case3",
+                                    "StudyApi/Participation/Graduate/Failure/Case4",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -305,7 +352,8 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     )
                             )
                     );

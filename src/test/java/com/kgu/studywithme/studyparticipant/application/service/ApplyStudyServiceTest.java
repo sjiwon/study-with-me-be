@@ -20,6 +20,7 @@ import static com.kgu.studywithme.fixture.MemberFixture.GHOST;
 import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.fixture.StudyFixture.SPRING;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -62,12 +63,12 @@ class ApplyStudyServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.STUDY_IS_NOT_RECRUITING_NOW.getMessage());
 
-        verify(queryStudyByIdService, times(1)).findById(any());
-        verify(studyParticipantRepository, times(0))
-                .isApplierOrParticipant(any(), any());
-        verify(studyParticipantRepository, times(0))
-                .isAlreadyLeaveOrGraduatedParticipant(any(), any());
-        verify(studyParticipantRepository, times(0)).save(any());
+        assertAll(
+                () -> verify(queryStudyByIdService, times(1)).findById(any()),
+                () -> verify(studyParticipantRepository, times(0)).isApplierOrParticipant(any(), any()),
+                () -> verify(studyParticipantRepository, times(0)).isAlreadyLeaveOrGraduatedParticipant(any(), any()),
+                () -> verify(studyParticipantRepository, times(0)).save(any())
+        );
     }
 
     @Test
@@ -86,12 +87,12 @@ class ApplyStudyServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.STUDY_HOST_CANNOT_APPLY.getMessage());
 
-        verify(queryStudyByIdService, times(1)).findById(any());
-        verify(studyParticipantRepository, times(0))
-                .isApplierOrParticipant(any(), any());
-        verify(studyParticipantRepository, times(0))
-                .isAlreadyLeaveOrGraduatedParticipant(any(), any());
-        verify(studyParticipantRepository, times(0)).save(any());
+        assertAll(
+                () -> verify(queryStudyByIdService, times(1)).findById(any()),
+                () -> verify(studyParticipantRepository, times(0)).isApplierOrParticipant(any(), any()),
+                () -> verify(studyParticipantRepository, times(0)).isAlreadyLeaveOrGraduatedParticipant(any(), any()),
+                () -> verify(studyParticipantRepository, times(0)).save(any())
+        );
     }
 
     @Test
@@ -111,12 +112,12 @@ class ApplyStudyServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.ALREADY_APPLY_OR_PARTICIPATE.getMessage());
 
-        verify(queryStudyByIdService, times(1)).findById(any());
-        verify(studyParticipantRepository, times(1))
-                .isApplierOrParticipant(any(), any());
-        verify(studyParticipantRepository, times(0))
-                .isAlreadyLeaveOrGraduatedParticipant(any(), any());
-        verify(studyParticipantRepository, times(0)).save(any());
+        assertAll(
+                () -> verify(queryStudyByIdService, times(1)).findById(any()),
+                () -> verify(studyParticipantRepository, times(1)).isApplierOrParticipant(any(), any()),
+                () -> verify(studyParticipantRepository, times(0)).isAlreadyLeaveOrGraduatedParticipant(any(), any()),
+                () -> verify(studyParticipantRepository, times(0)).save(any())
+        );
     }
 
     @Test
@@ -125,8 +126,7 @@ class ApplyStudyServiceTest extends UseCaseTest {
         // given
         given(queryStudyByIdService.findById(any())).willReturn(study);
         given(studyParticipantRepository.isApplierOrParticipant(any(), any())).willReturn(false);
-        given(studyParticipantRepository.isAlreadyLeaveOrGraduatedParticipant(any(), any()))
-                .willReturn(true);
+        given(studyParticipantRepository.isAlreadyLeaveOrGraduatedParticipant(any(), any())).willReturn(true);
 
         // when - then
         assertThatThrownBy(() -> applyStudyService.apply(
@@ -138,22 +138,21 @@ class ApplyStudyServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.ALREADY_LEAVE_OR_GRADUATED.getMessage());
 
-        verify(queryStudyByIdService, times(1)).findById(any());
-        verify(studyParticipantRepository, times(1))
-                .isApplierOrParticipant(any(), any());
-        verify(studyParticipantRepository, times(1))
-                .isAlreadyLeaveOrGraduatedParticipant(any(), any());
-        verify(studyParticipantRepository, times(0)).save(any());
+        assertAll(
+                () -> verify(queryStudyByIdService, times(1)).findById(any()),
+                () -> verify(studyParticipantRepository, times(1)).isApplierOrParticipant(any(), any()),
+                () -> verify(studyParticipantRepository, times(1)).isAlreadyLeaveOrGraduatedParticipant(any(), any()),
+                () -> verify(studyParticipantRepository, times(0)).save(any())
+        );
     }
 
     @Test
-    @DisplayName("스터디 참여 신청에 성공한다")
+    @DisplayName("스터디에 참여 신청을 한다")
     void success() {
         // given
         given(queryStudyByIdService.findById(any())).willReturn(study);
         given(studyParticipantRepository.isApplierOrParticipant(any(), any())).willReturn(false);
-        given(studyParticipantRepository.isAlreadyLeaveOrGraduatedParticipant(any(), any()))
-                .willReturn(false);
+        given(studyParticipantRepository.isAlreadyLeaveOrGraduatedParticipant(any(), any())).willReturn(false);
 
         // when
         applyStudyService.apply(
@@ -164,11 +163,11 @@ class ApplyStudyServiceTest extends UseCaseTest {
         );
 
         // then
-        verify(queryStudyByIdService, times(1)).findById(any());
-        verify(studyParticipantRepository, times(1))
-                .isApplierOrParticipant(any(), any());
-        verify(studyParticipantRepository, times(1))
-                .isAlreadyLeaveOrGraduatedParticipant(any(), any());
-        verify(studyParticipantRepository, times(1)).save(any());
+        assertAll(
+                () -> verify(queryStudyByIdService, times(1)).findById(any()),
+                () -> verify(studyParticipantRepository, times(1)).isApplierOrParticipant(any(), any()),
+                () -> verify(studyParticipantRepository, times(1)).isAlreadyLeaveOrGraduatedParticipant(any(), any()),
+                () -> verify(studyParticipantRepository, times(1)).save(any())
+        );
     }
 }

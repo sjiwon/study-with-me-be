@@ -59,8 +59,7 @@ public class GraduateStudyService implements GraduateStudyUseCase {
     }
 
     private void validateParticipantMeetGraduationPolicy(final Study study, final Member participant) {
-        final int attendanceCount
-                = studyAttendanceRepository.getAttendanceCount(study.getId(), participant.getId());
+        final int attendanceCount = studyAttendanceRepository.getAttendanceCount(study.getId(), participant.getId());
 
         if (!study.isParticipantMeetGraduationPolicy(attendanceCount)) {
             throw StudyWithMeException.type(StudyParticipantErrorCode.PARTICIPANT_NOT_MEET_GRADUATION_POLICY);

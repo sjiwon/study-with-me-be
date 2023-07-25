@@ -74,8 +74,10 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("applierId").description("참여 승인할 사용자 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("applierId")
+                                                    .description("참여 승인할 사용자 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -115,8 +117,10 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("applierId").description("참여 승인할 사용자 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("applierId")
+                                                    .description("참여 승인할 사용자 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -125,7 +129,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
 
         @Test
         @DisplayName("스터디가 종료됨에 따라 참여 승인을 할 수 없다")
-        void throwExceptionByStudyIsEnd() throws Exception {
+        void throwExceptionByStudyIsTerminated() throws Exception {
             // given
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyParticipantErrorCode.STUDY_IS_TERMINATED))
@@ -156,8 +160,10 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("applierId").description("참여 승인할 사용자 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("applierId")
+                                                    .description("참여 승인할 사용자 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -197,8 +203,10 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("applierId").description("참여 승인할 사용자 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("applierId")
+                                                    .description("참여 승인할 사용자 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -206,7 +214,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("참여 승인에 성공한다")
+        @DisplayName("스터디 참여를 승인한다")
         void success() throws Exception {
             // given
             mockingToken(true, HOST_ID);
@@ -229,8 +237,10 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("applierId").description("참여 승인할 사용자 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("applierId")
+                                                    .description("참여 승인할 사용자 ID(PK)")
                                     )
                             )
                     );
@@ -244,6 +254,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;
         private static final Long APPLIER_ID = 2L;
+        private static final RejectParticipationRequest REQUEST = new RejectParticipationRequest("열정 온도가 너무 낮아요");
 
         @BeforeEach
         void setUp() {
@@ -258,12 +269,11 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
             mockingToken(true, APPLIER_ID);
 
             // when
-            final RejectParticipationRequest request = new RejectParticipationRequest("열정 온도가 너무 낮아요 ㅠ");
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID, APPLIER_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             final StudyErrorCode expectedError = StudyErrorCode.MEMBER_IS_NOT_HOST;
@@ -284,11 +294,14 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("applierId").description("참여 승인할 사용자 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("applierId")
+                                                    .description("참여 승인할 사용자 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("reason").description("참여 거절 사유")
+                                            fieldWithPath("reason")
+                                                    .description("참여 거절 사유")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -300,17 +313,13 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
         void throwExceptionByRejectReasonIsEmpty() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            doThrow(StudyWithMeException.type(StudyErrorCode.ALREADY_CLOSED))
-                    .when(rejectParticipationUseCase)
-                    .rejectParticipation(any());
 
             // when
-            final RejectParticipationRequest request = new RejectParticipationRequest("");
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID, APPLIER_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(new RejectParticipationRequest("")));
 
             // then
             final GlobalErrorCode expectedError = GlobalErrorCode.VALIDATION_ERROR;
@@ -332,11 +341,14 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("applierId").description("참여 거절할 사용자 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("applierId")
+                                                    .description("참여 거절할 사용자 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("reason").description("참여 거절 사유")
+                                            fieldWithPath("reason")
+                                                    .description("참여 거절 사유")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -353,12 +365,11 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
                     .rejectParticipation(any());
 
             // when
-            final RejectParticipationRequest request = new RejectParticipationRequest("열정 온도가 너무 낮아요 ㅠ");
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID, APPLIER_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.APPLIER_NOT_FOUND;
@@ -379,11 +390,14 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("applierId").description("참여 거절할 사용자 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("applierId")
+                                                    .description("참여 거절할 사용자 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("reason").description("참여 거절 사유")
+                                            fieldWithPath("reason")
+                                                    .description("참여 거절 사유")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -392,7 +406,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
 
         @Test
         @DisplayName("스터디가 종료됨에 따라 참여 거절을 할 수 없다")
-        void throwExceptionByStudyIsEnd() throws Exception {
+        void throwExceptionByStudyIsTerminated() throws Exception {
             // given
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyParticipantErrorCode.STUDY_IS_TERMINATED))
@@ -400,12 +414,11 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
                     .rejectParticipation(any());
 
             // when
-            final RejectParticipationRequest request = new RejectParticipationRequest("열정 온도가 너무 낮아요 ㅠ");
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID, APPLIER_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.STUDY_IS_TERMINATED;
@@ -426,11 +439,14 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("applierId").description("참여 거절할 사용자 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("applierId")
+                                                    .description("참여 거절할 사용자 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("reason").description("참여 거절 사유")
+                                            fieldWithPath("reason")
+                                                    .description("참여 거절 사유")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -438,7 +454,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("참여 거절을 성공한다")
+        @DisplayName("스터디 참여를 거절한다")
         void success() throws Exception {
             // given
             mockingToken(true, HOST_ID);
@@ -447,12 +463,11 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
                     .rejectParticipation(any());
 
             // when
-            final RejectParticipationRequest request = new RejectParticipationRequest("열정 온도가 너무 낮아요 ㅠ");
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID, APPLIER_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             mockMvc.perform(requestBuilder)
@@ -464,11 +479,14 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("applierId").description("참여 거절할 사용자 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("applierId")
+                                                    .description("참여 거절할 사용자 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("reason").description("참여 거절 사유")
+                                            fieldWithPath("reason")
+                                                    .description("참여 거절 사유")
                                     )
                             )
                     );

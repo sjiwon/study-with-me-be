@@ -24,6 +24,7 @@ import static com.kgu.studywithme.fixture.MemberFixture.*;
 import static com.kgu.studywithme.fixture.StudyFixture.SPRING;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -74,12 +75,13 @@ class GraduateStudyServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.HOST_CANNOT_GRADUATE_STUDY.getMessage());
 
-        verify(queryStudyByIdService, times(1)).findById(any());
-        verify(studyParticipantRepository, times(0)).findParticipant(any(), any());
-        verify(studyAttendanceRepository, times(0)).getAttendanceCount(any(), any());
-        verify(studyParticipantRepository, times(0))
-                .updateParticipantStatus(any(), any(), any());
-        verify(eventPublisher, times(0)).publishEvent(any(StudyGraduatedEvent.class));
+        assertAll(
+                () -> verify(queryStudyByIdService, times(1)).findById(any()),
+                () -> verify(studyParticipantRepository, times(0)).findParticipant(any(), any()),
+                () -> verify(studyAttendanceRepository, times(0)).getAttendanceCount(any(), any()),
+                () -> verify(studyParticipantRepository, times(0)).updateParticipantStatus(any(), any(), any()),
+                () -> verify(eventPublisher, times(0)).publishEvent(any(StudyGraduatedEvent.class))
+        );
     }
 
     @Test
@@ -99,12 +101,13 @@ class GraduateStudyServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.PARTICIPANT_NOT_FOUND.getMessage());
 
-        verify(queryStudyByIdService, times(1)).findById(any());
-        verify(studyParticipantRepository, times(1)).findParticipant(any(), any());
-        verify(studyAttendanceRepository, times(0)).getAttendanceCount(any(), any());
-        verify(studyParticipantRepository, times(0))
-                .updateParticipantStatus(any(), any(), any());
-        verify(eventPublisher, times(0)).publishEvent(any(StudyGraduatedEvent.class));
+        assertAll(
+                () -> verify(queryStudyByIdService, times(1)).findById(any()),
+                () -> verify(studyParticipantRepository, times(1)).findParticipant(any(), any()),
+                () -> verify(studyAttendanceRepository, times(0)).getAttendanceCount(any(), any()),
+                () -> verify(studyParticipantRepository, times(0)).updateParticipantStatus(any(), any(), any()),
+                () -> verify(eventPublisher, times(0)).publishEvent(any(StudyGraduatedEvent.class))
+        );
     }
 
     @Test
@@ -127,12 +130,13 @@ class GraduateStudyServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.PARTICIPANT_NOT_MEET_GRADUATION_POLICY.getMessage());
 
-        verify(queryStudyByIdService, times(1)).findById(any());
-        verify(studyParticipantRepository, times(1)).findParticipant(any(), any());
-        verify(studyAttendanceRepository, times(1)).getAttendanceCount(any(), any());
-        verify(studyParticipantRepository, times(0))
-                .updateParticipantStatus(any(), any(), any());
-        verify(eventPublisher, times(0)).publishEvent(any(StudyGraduatedEvent.class));
+        assertAll(
+                () -> verify(queryStudyByIdService, times(1)).findById(any()),
+                () -> verify(studyParticipantRepository, times(1)).findParticipant(any(), any()),
+                () -> verify(studyAttendanceRepository, times(1)).getAttendanceCount(any(), any()),
+                () -> verify(studyParticipantRepository, times(0)).updateParticipantStatus(any(), any(), any()),
+                () -> verify(eventPublisher, times(0)).publishEvent(any(StudyGraduatedEvent.class))
+        );
     }
 
     @Test
@@ -154,14 +158,14 @@ class GraduateStudyServiceTest extends UseCaseTest {
         );
 
         // then
-        verify(queryStudyByIdService, times(1)).findById(any());
-        verify(studyParticipantRepository, times(1)).findParticipant(any(), any());
-        verify(studyAttendanceRepository, times(1)).getAttendanceCount(any(), any());
-        verify(studyParticipantRepository, times(1))
-                .updateParticipantStatus(any(), any(), any());
-        verify(eventPublisher, times(1)).publishEvent(any(StudyGraduatedEvent.class));
-
-        assertThat(study.getParticipantMembers()).isEqualTo(previousParticipantMembers - 1);
+        assertAll(
+                () -> verify(queryStudyByIdService, times(1)).findById(any()),
+                () -> verify(studyParticipantRepository, times(1)).findParticipant(any(), any()),
+                () -> verify(studyAttendanceRepository, times(1)).getAttendanceCount(any(), any()),
+                () -> verify(studyParticipantRepository, times(1)).updateParticipantStatus(any(), any(), any()),
+                () -> verify(eventPublisher, times(1)).publishEvent(any(StudyGraduatedEvent.class)),
+                () -> assertThat(study.getParticipantMembers()).isEqualTo(previousParticipantMembers - 1)
+        );
     }
 
     @Test
@@ -183,13 +187,13 @@ class GraduateStudyServiceTest extends UseCaseTest {
         );
 
         // then
-        verify(queryStudyByIdService, times(1)).findById(any());
-        verify(studyParticipantRepository, times(1)).findParticipant(any(), any());
-        verify(studyAttendanceRepository, times(1)).getAttendanceCount(any(), any());
-        verify(studyParticipantRepository, times(1))
-                .updateParticipantStatus(any(), any(), any());
-        verify(eventPublisher, times(0)).publishEvent(any(StudyGraduatedEvent.class));
-
-        assertThat(study.getParticipantMembers()).isEqualTo(previousParticipantMembers - 1);
+        assertAll(
+                () -> verify(queryStudyByIdService, times(1)).findById(any()),
+                () -> verify(studyParticipantRepository, times(1)).findParticipant(any(), any()),
+                () -> verify(studyAttendanceRepository, times(1)).getAttendanceCount(any(), any()),
+                () -> verify(studyParticipantRepository, times(1)).updateParticipantStatus(any(), any(), any()),
+                () -> verify(eventPublisher, times(0)).publishEvent(any(StudyGraduatedEvent.class)),
+                () -> assertThat(study.getParticipantMembers()).isEqualTo(previousParticipantMembers - 1)
+        );
     }
 }

@@ -22,6 +22,7 @@ import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.fixture.StudyFixture.SPRING;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -64,8 +65,10 @@ class DelegateHostAuthorityServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.STUDY_IS_TERMINATED.getMessage());
 
-        verify(queryStudyByIdService, times(1)).findById(any());
-        verify(studyParticipantRepository, times(0)).isParticipant(any(), any());
+        assertAll(
+                () -> verify(queryStudyByIdService, times(1)).findById(any()),
+                () -> verify(studyParticipantRepository, times(0)).isParticipant(any(), any())
+        );
     }
 
     @Test
@@ -84,8 +87,10 @@ class DelegateHostAuthorityServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.SELF_DELEGATING_NOT_ALLOWED.getMessage());
 
-        verify(queryStudyByIdService, times(1)).findById(any());
-        verify(studyParticipantRepository, times(0)).isParticipant(any(), any());
+        assertAll(
+                () -> verify(queryStudyByIdService, times(1)).findById(any()),
+                () -> verify(studyParticipantRepository, times(0)).isParticipant(any(), any())
+        );
     }
 
     @Test
@@ -105,8 +110,10 @@ class DelegateHostAuthorityServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.NON_PARTICIPANT_CANNOT_BE_HOST.getMessage());
 
-        verify(queryStudyByIdService, times(1)).findById(any());
-        verify(studyParticipantRepository, times(1)).isParticipant(any(), any());
+        assertAll(
+                () -> verify(queryStudyByIdService, times(1)).findById(any()),
+                () -> verify(studyParticipantRepository, times(1)).isParticipant(any(), any())
+        );
     }
 
     @Test
@@ -128,8 +135,10 @@ class DelegateHostAuthorityServiceTest extends UseCaseTest {
         );
 
         // then
-        verify(queryStudyByIdService, times(1)).findById(any());
-        verify(studyParticipantRepository, times(1)).isParticipant(any(), any());
-        assertThat(study.getGraduationPolicy().getUpdateChance()).isEqualTo(3); // default chance = 3
+        assertAll(
+                () -> verify(queryStudyByIdService, times(1)).findById(any()),
+                () -> verify(studyParticipantRepository, times(1)).isParticipant(any(), any()),
+                () -> assertThat(study.getGraduationPolicy().getUpdateChance()).isEqualTo(3) // default chance = 3
+        );
     }
 }

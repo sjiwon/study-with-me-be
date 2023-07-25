@@ -6,6 +6,8 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Set;
+
 import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.*;
 import static com.kgu.studywithme.studyparticipant.domain.QStudyParticipant.studyParticipant;
 
@@ -48,7 +50,7 @@ public class ParticipantVerificationRepositoryImpl implements ParticipantVerific
                 .where(
                         studyIdEq(studyId),
                         memberIdEq(memberId),
-                        studyParticipant.status.in(APPLY, APPROVE)
+                        participantStatusIn(Set.of(APPLY, APPROVE))
                 )
                 .fetchOne() != null;
     }
@@ -74,7 +76,7 @@ public class ParticipantVerificationRepositoryImpl implements ParticipantVerific
                 .where(
                         studyIdEq(studyId),
                         memberIdEq(memberId),
-                        studyParticipant.status.in(LEAVE, GRADUATED)
+                        participantStatusIn(Set.of(LEAVE, GRADUATED))
                 )
                 .fetchOne() != null;
     }
@@ -89,5 +91,9 @@ public class ParticipantVerificationRepositoryImpl implements ParticipantVerific
 
     private BooleanExpression participantStatusEq(final ParticipantStatus status) {
         return studyParticipant.status.eq(status);
+    }
+
+    private BooleanExpression participantStatusIn(final Set<ParticipantStatus> status) {
+        return studyParticipant.status.in(status);
     }
 }

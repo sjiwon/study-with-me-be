@@ -22,6 +22,7 @@ import java.util.Optional;
 import static com.kgu.studywithme.fixture.MemberFixture.*;
 import static com.kgu.studywithme.fixture.StudyFixture.SPRING;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -68,11 +69,12 @@ class RejectParticipationServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.APPLIER_NOT_FOUND.getMessage());
 
-        verify(studyParticipantRepository, times(1)).findApplier(any(), any());
-        verify(queryStudyByIdService, times(0)).findById(any());
-        verify(studyParticipantRepository, times(0))
-                .updateParticipantStatus(any(), any(), any());
-        verify(eventPublisher, times(0)).publishEvent(any(StudyRejectedEvent.class));
+        assertAll(
+                () -> verify(studyParticipantRepository, times(1)).findApplier(any(), any()),
+                () -> verify(queryStudyByIdService, times(0)).findById(any()),
+                () -> verify(studyParticipantRepository, times(0)).updateParticipantStatus(any(), any(), any()),
+                () -> verify(eventPublisher, times(0)).publishEvent(any(StudyRejectedEvent.class))
+        );
     }
 
     @Test
@@ -94,11 +96,12 @@ class RejectParticipationServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.STUDY_IS_TERMINATED.getMessage());
 
-        verify(studyParticipantRepository, times(1)).findApplier(any(), any());
-        verify(queryStudyByIdService, times(1)).findById(any());
-        verify(studyParticipantRepository, times(0))
-                .updateParticipantStatus(any(), any(), any());
-        verify(eventPublisher, times(0)).publishEvent(any(StudyRejectedEvent.class));
+        assertAll(
+                () -> verify(studyParticipantRepository, times(1)).findApplier(any(), any()),
+                () -> verify(queryStudyByIdService, times(1)).findById(any()),
+                () -> verify(studyParticipantRepository, times(0)).updateParticipantStatus(any(), any(), any()),
+                () -> verify(eventPublisher, times(0)).publishEvent(any(StudyRejectedEvent.class))
+        );
     }
 
     @Test
@@ -118,11 +121,12 @@ class RejectParticipationServiceTest extends UseCaseTest {
         );
 
         // then
-        verify(studyParticipantRepository, times(1)).findApplier(any(), any());
-        verify(queryStudyByIdService, times(1)).findById(any());
-        verify(studyParticipantRepository, times(1))
-                .updateParticipantStatus(any(), any(), any());
-        verify(eventPublisher, times(1)).publishEvent(any(StudyRejectedEvent.class));
+        assertAll(
+                () -> verify(studyParticipantRepository, times(1)).findApplier(any(), any()),
+                () -> verify(queryStudyByIdService, times(1)).findById(any()),
+                () -> verify(studyParticipantRepository, times(1)).updateParticipantStatus(any(), any(), any()),
+                () -> verify(eventPublisher, times(1)).publishEvent(any(StudyRejectedEvent.class))
+        );
     }
 
     @Test
@@ -142,10 +146,11 @@ class RejectParticipationServiceTest extends UseCaseTest {
         );
 
         // then
-        verify(studyParticipantRepository, times(1)).findApplier(any(), any());
-        verify(queryStudyByIdService, times(1)).findById(any());
-        verify(studyParticipantRepository, times(1))
-                .updateParticipantStatus(any(), any(), any());
-        verify(eventPublisher, times(0)).publishEvent(any(StudyRejectedEvent.class));
+        assertAll(
+                () -> verify(studyParticipantRepository, times(1)).findApplier(any(), any()),
+                () -> verify(queryStudyByIdService, times(1)).findById(any()),
+                () -> verify(studyParticipantRepository, times(1)).updateParticipantStatus(any(), any(), any()),
+                () -> verify(eventPublisher, times(0)).publishEvent(any(StudyRejectedEvent.class))
+        );
     }
 }

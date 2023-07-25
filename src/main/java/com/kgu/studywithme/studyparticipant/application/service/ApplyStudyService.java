@@ -25,8 +25,7 @@ public class ApplyStudyService implements ApplyStudyUseCase {
         validateApplierIsHost(study, command.applierId());
         validateApplierIsAlreadyRelatedToStudy(study, command.applierId());
 
-        final StudyParticipant participant
-                = StudyParticipant.applyInStudy(command.studyId(), command.applierId());
+        final StudyParticipant participant = StudyParticipant.applyInStudy(command.studyId(), command.applierId());
         studyParticipantRepository.save(participant);
     }
 

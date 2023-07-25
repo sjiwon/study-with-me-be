@@ -34,7 +34,7 @@ class StudyApplyApiControllerTest extends ControllerTest {
 
         @Test
         @DisplayName("스터디가 모집중이지 않으면 참여 신청을 할 수 없다")
-        void throwExceptionByRecruitmentIsComplete() throws Exception {
+        void throwExceptionByStudyIsNotRecruitingNow() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
             doThrow(StudyWithMeException.type(StudyParticipantErrorCode.STUDY_IS_NOT_RECRUITING_NOW))
@@ -65,7 +65,8 @@ class StudyApplyApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -74,7 +75,7 @@ class StudyApplyApiControllerTest extends ControllerTest {
 
         @Test
         @DisplayName("스터디 팀장은 본인 스터디에 참여 신청을 할 수 없다")
-        void throwExceptionByMemberIsHost() throws Exception {
+        void throwExceptionByStudyHostCannotApplyOwnStudy() throws Exception {
             // given
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyParticipantErrorCode.STUDY_HOST_CANNOT_APPLY))
@@ -90,7 +91,7 @@ class StudyApplyApiControllerTest extends ControllerTest {
             final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.STUDY_HOST_CANNOT_APPLY;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
-                            status().isConflict(),
+                            status().isForbidden(),
                             jsonPath("$.status").exists(),
                             jsonPath("$.status").value(expectedError.getStatus().value()),
                             jsonPath("$.errorCode").exists(),
@@ -105,7 +106,8 @@ class StudyApplyApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -114,7 +116,7 @@ class StudyApplyApiControllerTest extends ControllerTest {
 
         @Test
         @DisplayName("이미 신청했거나 참여중인 스터디에 다시 참여 신청할 수 없다")
-        void throwExceptionByMemberIsParticipant() throws Exception {
+        void throwExceptionByAlreadyApplyOrParticipate() throws Exception {
             // given
             mockingToken(true, PARTICIPANT_ID);
             doThrow(StudyWithMeException.type(StudyParticipantErrorCode.ALREADY_APPLY_OR_PARTICIPATE))
@@ -130,7 +132,7 @@ class StudyApplyApiControllerTest extends ControllerTest {
             final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.ALREADY_APPLY_OR_PARTICIPATE;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
-                            status().isBadRequest(),
+                            status().isConflict(),
                             jsonPath("$.status").exists(),
                             jsonPath("$.status").value(expectedError.getStatus().value()),
                             jsonPath("$.errorCode").exists(),
@@ -145,7 +147,8 @@ class StudyApplyApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -154,7 +157,7 @@ class StudyApplyApiControllerTest extends ControllerTest {
 
         @Test
         @DisplayName("스터디 참여를 취소했거나 졸업한 사람은 동일 스터디에 다시 참여 신청을 할 수 없다")
-        void throwExceptionByMemberIsAlreadyGraduateOrCancel() throws Exception {
+        void throwExceptionByAlreadyLeaveOrGraduated() throws Exception {
             // given
             mockingToken(true, PARTICIPANT_ID);
             doThrow(StudyWithMeException.type(StudyParticipantErrorCode.ALREADY_LEAVE_OR_GRADUATED))
@@ -185,7 +188,8 @@ class StudyApplyApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -193,7 +197,7 @@ class StudyApplyApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("스터디 참여 신청에 성공한다")
+        @DisplayName("스터디에 참여 신청을 한다")
         void success() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
@@ -216,7 +220,8 @@ class StudyApplyApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     )
                             )
                     );
@@ -233,7 +238,7 @@ class StudyApplyApiControllerTest extends ControllerTest {
 
         @Test
         @DisplayName("스터디 신청자가 아니면 신청 취소를 할 수 없다")
-        void throwExceptionByMemberIsNotApplier() throws Exception {
+        void throwExceptionByRequesterIsNotApplier() throws Exception {
             // given
             mockingToken(true, ANONYMOUS_ID);
             doThrow(StudyWithMeException.type(StudyParticipantErrorCode.APPLIER_NOT_FOUND))
@@ -264,7 +269,8 @@ class StudyApplyApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -272,7 +278,7 @@ class StudyApplyApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("스터디 신청 취소를 성공한다")
+        @DisplayName("스터디 참여 신청한 내역을 취소한다")
         void success() throws Exception {
             // given
             mockingToken(true, APPLIER_ID);
@@ -295,7 +301,8 @@ class StudyApplyApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     )
                             )
                     );

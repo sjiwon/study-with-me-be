@@ -29,7 +29,7 @@ include::study-basic-search.adoc[leveloffset=+1]
 
 include::study-information.adoc[leveloffset=+1]
 
-include::study-participation.adoc[leveloffset=+1]
+include::study/study-participation.adoc[leveloffset=+1]
 
 include::study/study-notice.adoc[leveloffset=+1]
 

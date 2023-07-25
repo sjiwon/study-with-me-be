@@ -23,8 +23,6 @@ public enum StudyErrorCode implements ErrorCode {
     CAPACITY_CANNOT_COVER_CURRENT_PARTICIPANTS(HttpStatus.CONFLICT, "STUDY_013", "현재 참여자 수보다 낮게 스터디 정원을 적용할 수 없습니다."),
     INVALID_SORT_TYPE(HttpStatus.BAD_REQUEST, "STUDY_014", "제공하지 않는 검색 조건입니다."),
     MEMBER_IS_NOT_HOST(HttpStatus.FORBIDDEN, "STUDY_015", "스터디 팀장이 아니면 권한이 없습니다."),
-
-    ALREADY_CLOSED(HttpStatus.CONFLICT, "STUDY_005", "이미 종료된 스터디입니다."),
     ;
 
     private final HttpStatus status;

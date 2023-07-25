@@ -2,6 +2,8 @@ package com.kgu.studywithme.studyparticipant.application.service;
 
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
+import com.kgu.studywithme.member.domain.Member;
+import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.ApplyCancellationUseCase;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
@@ -10,7 +12,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import java.time.LocalDateTime;
+
+import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
+import static com.kgu.studywithme.fixture.StudyFixture.SPRING;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -24,11 +31,10 @@ class ApplyCancellationServiceTest extends UseCaseTest {
     @Mock
     private StudyParticipantRepository studyParticipantRepository;
 
-    private final ApplyCancellationUseCase.Command command =
-            new ApplyCancellationUseCase.Command(
-                    1L,
-                    1L
-            );
+    private final Member member = JIWON.toMember().apply(1L, LocalDateTime.now());
+    private final Study study = SPRING.toOnlineStudy(member.getId()).apply(1L, LocalDateTime.now());
+    private final ApplyCancellationUseCase.Command command
+            = new ApplyCancellationUseCase.Command(study.getId(), member.getId());
 
     @Test
     @DisplayName("스터디 신청자가 아니면 신청 취소를 할 수 없다")
@@ -40,12 +46,15 @@ class ApplyCancellationServiceTest extends UseCaseTest {
         assertThatThrownBy(() -> applyCancellationService.applyCancellation(command))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.APPLIER_NOT_FOUND.getMessage());
-        verify(studyParticipantRepository, times(1)).isApplier(any(), any());
-        verify(studyParticipantRepository, times(0)).deleteApplier(any(), any());
+
+        assertAll(
+                () -> verify(studyParticipantRepository, times(1)).isApplier(any(), any()),
+                () -> verify(studyParticipantRepository, times(0)).deleteApplier(any(), any())
+        );
     }
 
     @Test
-    @DisplayName("스터디 신청 취소를 성공한다")
+    @DisplayName("스터디 참여 신청한 내역을 취소한다")
     void success() {
         // given
         given(studyParticipantRepository.isApplier(any(), any())).willReturn(true);
@@ -54,7 +63,9 @@ class ApplyCancellationServiceTest extends UseCaseTest {
         applyCancellationService.applyCancellation(command);
 
         // then
-        verify(studyParticipantRepository, times(1)).isApplier(any(), any());
-        verify(studyParticipantRepository, times(1)).deleteApplier(any(), any());
+        assertAll(
+                () -> verify(studyParticipantRepository, times(1)).isApplier(any(), any()),
+                () -> verify(studyParticipantRepository, times(1)).deleteApplier(any(), any())
+        );
     }
 }
