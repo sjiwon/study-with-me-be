@@ -22,13 +22,9 @@ public class Nickname {
     @Column(name = "nickname", nullable = false, unique = true)
     private String value;
 
-    private Nickname(final String value) {
-        this.value = value;
-    }
-
-    public static Nickname from(final String value) {
+    public Nickname(final String value) {
         validateNicknamePattern(value);
-        return new Nickname(value);
+        this.value = value;
     }
 
     public Nickname update(final String value) {
@@ -37,13 +33,13 @@ public class Nickname {
         return new Nickname(value);
     }
 
-    private static void validateNicknamePattern(final String value) {
+    private void validateNicknamePattern(final String value) {
         if (isInvalidPattern(value)) {
             throw StudyWithMeException.type(MemberErrorCode.INVALID_NICKNAME_FORMAT);
         }
     }
 
-    private static boolean isInvalidPattern(final String nickname) {
+    private boolean isInvalidPattern(final String nickname) {
         return !NICKNAME_MATCHER.matcher(nickname).matches();
     }
 

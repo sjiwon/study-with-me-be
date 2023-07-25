@@ -15,7 +15,7 @@ class EmailTest {
     @ValueSource(strings = {"", "abc", "@gmail.com", "abc@gmail", "abc@naver.com", "abc@kakao.com"})
     @DisplayName("형식에 맞지 않는 Email이면 생성에 실패한다")
     void throwExceptionByInvalidEmailFormat(final String value) {
-        assertThatThrownBy(() -> Email.from(value))
+        assertThatThrownBy(() -> new Email(value))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberErrorCode.INVALID_EMAIL_FORMAT.getMessage());
     }
@@ -24,6 +24,6 @@ class EmailTest {
     @ValueSource(strings = {"test1@gmail.com", "test2@gmail.com"})
     @DisplayName("Email을 생성한다")
     void construct(final String value) {
-        assertDoesNotThrow(() -> Email.from(value));
+        assertDoesNotThrow(() -> new Email(value));
     }
 }

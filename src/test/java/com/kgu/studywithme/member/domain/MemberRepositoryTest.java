@@ -6,9 +6,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
-import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
+import static com.kgu.studywithme.fixture.MemberFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -17,24 +19,50 @@ class MemberRepositoryTest extends RepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    private Member member;
+    private Member memberA;
+    private Member memberB;
+    private Member memberC;
 
     @BeforeEach
     void setUp() {
-        member = memberRepository.save(JIWON.toMember());
+        memberA = memberRepository.save(JIWON.toMember());
+        memberB = memberRepository.save(GHOST.toMember());
+        memberC = memberRepository.save(ANONYMOUS.toMember());
     }
 
     @Test
     @DisplayName("이메일로 사용자를 조회한다")
     void findByEmail() {
         // when
-        Member findMember = memberRepository.findByEmail(member.getEmail()).orElseThrow();
-        Optional<Member> emptyMember = memberRepository.findByEmail(Email.from("diff" + member.getEmailValue()));
+        final Member findMemberA = memberRepository.findByEmail(memberA.getEmail()).orElseThrow();
+        final Optional<Member> emptyMember = memberRepository.findByEmail(new Email("diff" + memberA.getEmailValue()));
 
         // then
         assertAll(
-                () -> assertThat(findMember).isEqualTo(member),
+                () -> assertThat(findMemberA).isEqualTo(memberA),
                 () -> assertThat(emptyMember).isEmpty()
         );
+    }
+
+    @Test
+    @DisplayName("결석자들의 Score를 감소시킨다 [결석 패널티 -5점]")
+    void applyScoreToAbsenceParticipant() {
+        // given
+        final int scoreOfMemberA = memberA.getScore();
+        final int scoreOfMemberB = memberB.getScore();
+        final int scoreOfMemberC = memberC.getScore();
+
+        // when
+        memberRepository.applyScoreToAbsenceParticipant(Set.of(memberB.getId(), memberC.getId()));
+
+        // then
+        final List<Member> members = memberRepository.findAll();
+        assertThat(members)
+                .map(Member::getScore)
+                .containsExactly(
+                        scoreOfMemberA,
+                        scoreOfMemberB - 5,
+                        scoreOfMemberC - 5
+                );
     }
 }

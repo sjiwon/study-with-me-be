@@ -47,8 +47,8 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
             final MemberPublicInformation response = new MemberPublicInformation(
                     member.getId(),
                     member.getName(),
-                    member.getNickname().getValue(),
-                    member.getEmail().getValue(),
+                    member.getNicknameValue(),
+                    member.getEmailValue(),
                     member.getBirth(),
                     member.getGender().getValue(),
                     member.getRegion(),
@@ -75,19 +75,30 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("memberId").description("조회할 사용자 ID(PK)")
+                                            parameterWithName("memberId")
+                                                    .description("조회할 사용자 ID(PK)")
                                     ),
                                     responseFields(
-                                            fieldWithPath("result.id").description("사용자 ID(PK)"),
-                                            fieldWithPath("result.name").description("사용자 이름"),
-                                            fieldWithPath("result.nickname").description("사용자 닉네임"),
-                                            fieldWithPath("result.email").description("사용자 이메일"),
-                                            fieldWithPath("result.birth").description("사용자 생년월일"),
-                                            fieldWithPath("result.gender").description("사용자 성별"),
-                                            fieldWithPath("result.region.province").description("거주지 [경기도, 강원도, ...]"),
-                                            fieldWithPath("result.region.city").description("거주지 [안양시, 수원시, ...]"),
-                                            fieldWithPath("result.score").description("사용자 점수"),
-                                            fieldWithPath("result.interests[]").description("사용자 관심사 목록")
+                                            fieldWithPath("id")
+                                                    .description("사용자 ID(PK)"),
+                                            fieldWithPath("name")
+                                                    .description("사용자 이름"),
+                                            fieldWithPath("nickname")
+                                                    .description("사용자 닉네임"),
+                                            fieldWithPath("email")
+                                                    .description("사용자 이메일"),
+                                            fieldWithPath("birth")
+                                                    .description("사용자 생년월일"),
+                                            fieldWithPath("gender")
+                                                    .description("사용자 성별"),
+                                            fieldWithPath("region.province")
+                                                    .description("거주지 [경기도, 강원도, ...]"),
+                                            fieldWithPath("region.city")
+                                                    .description("거주지 [안양시, 수원시, ...]"),
+                                            fieldWithPath("score")
+                                                    .description("사용자 점수"),
+                                            fieldWithPath("interests[]")
+                                                    .description("사용자 관심사 목록")
                                     )
                             )
                     );

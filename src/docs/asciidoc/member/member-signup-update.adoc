@@ -6,8 +6,7 @@
 :toclevels: 2
 
 == 회원가입
-=== 1. 중복되는 값(닉네임)에 의해서 회원가입에 실패한다
-==== 중복 체크 -> 닉네임 / 이메일 / 전화번호
+=== 1. 중복되는 값(닉네임)에 의해서 회원가입에 실패한다 [Case: 닉네임, 이메일, 전화번호]
 HTTP Request
 include::{snippets}/MemberApi/SignUp/Failure/http-request.adoc[]
 include::{snippets}/MemberApi/SignUp/Failure/request-fields.adoc[]
@@ -15,7 +14,7 @@ include::{snippets}/MemberApi/SignUp/Failure/request-fields.adoc[]
 HTTP Response
 include::{snippets}/MemberApi/SignUp/Failure/response-body.adoc[]
 
-=== 2. 회원가입에 성공한다
+=== 2. 회원가입을 진행한다
 HTTP Request
 include::{snippets}/MemberApi/SignUp/Success/http-request.adoc[]
 include::{snippets}/MemberApi/SignUp/Success/request-fields.adoc[]

@@ -56,7 +56,7 @@ public class OAuthLoginService implements OAuthLoginUseCase {
     }
 
     private Member findMemberOrException(final OAuthUserResponse userInfo) {
-        return memberRepository.findByEmail(Email.from(userInfo.getEmail()))
+        return memberRepository.findByEmail(new Email(userInfo.getEmail()))
                 .orElseThrow(() -> new StudyWithMeOAuthException(userInfo));
     }
 }

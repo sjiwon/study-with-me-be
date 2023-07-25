@@ -11,9 +11,11 @@ include::auth/token-reissue.adoc[leveloffset=+1]
 
 include::category/category.adoc[leveloffset=+1]
 
-include::member-signup.adoc[leveloffset=+1]
+include::member/member-signup-update.adoc[leveloffset=+1]
 
-include::member-information.adoc[leveloffset=+1]
+include::member/member-public-information.adoc[leveloffset=+1]
+
+include::member/member-private-information.adoc[leveloffset=+1]
 
 include::member/member-review.adoc[leveloffset=+1]
 

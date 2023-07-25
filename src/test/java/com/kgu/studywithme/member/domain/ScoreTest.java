@@ -21,7 +21,7 @@ class ScoreTest {
     @DisplayName("Maximum을 넘어선 Score를 설정할 경우 Maximum 값으로 자동 조정된다")
     void maximum() {
         // when
-        final Score score = Score.from(10000);
+        final Score score = new Score(10000);
 
         // then
         assertThat(score.getValue()).isEqualTo(100);
@@ -31,7 +31,7 @@ class ScoreTest {
     @DisplayName("Minimum보다 낮은 Score를 설정할 경우 Minimum 값으로 자동 조정된다")
     void minimum() {
         // when
-        final Score score = Score.from(-10000);
+        final Score score = new Score(-10000);
 
         // then
         assertThat(score.getValue()).isEqualTo(0);

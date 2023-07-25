@@ -3,7 +3,6 @@ package com.kgu.studywithme.member.infrastructure.repository.query;
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.member.infrastructure.repository.query.dto.QStudyParticipateWeeks;
 import com.kgu.studywithme.member.infrastructure.repository.query.dto.StudyParticipateWeeks;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -26,12 +25,8 @@ public class MemberAttendanceRepositoryImpl implements MemberAttendanceRepositor
                         )
                 )
                 .from(studyAttendance)
-                .where(participantIdEq(memberId))
+                .where(studyAttendance.participantId.eq(memberId))
                 .orderBy(studyAttendance.studyId.asc(), studyAttendance.week.asc())
                 .fetch();
-    }
-
-    private BooleanExpression participantIdEq(final Long memberId) {
-        return studyAttendance.participantId.eq(memberId);
     }
 }

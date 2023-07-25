@@ -22,7 +22,10 @@ public class Interests {
     @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private final List<Interest> interests = new ArrayList<>();
 
-    public Interests(final Member member, final Set<Category> interests) {
+    public Interests(
+            final Member member,
+            final Set<Category> interests
+    ) {
         validateInterestsIsEmpty(interests);
 
         this.interests.clear();

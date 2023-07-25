@@ -33,12 +33,12 @@ public class MemberApiController {
         final Long savedMemberId = signUpMemberUseCase.signUp(
                 new SignUpMemberUseCase.Command(
                         request.name(),
-                        Nickname.from(request.nickname()),
-                        Email.from(request.email()),
+                        new Nickname(request.nickname()),
+                        new Email(request.email()),
                         request.birth(),
                         request.phone(),
                         Gender.from(request.gender()),
-                        Region.of(request.province(), request.city()),
+                        new Region(request.province(), request.city()),
                         request.emailOptIn(),
                         Category.of(request.interests())
                 )

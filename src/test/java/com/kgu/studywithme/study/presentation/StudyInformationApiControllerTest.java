@@ -65,28 +65,28 @@ class StudyInformationApiControllerTest extends ControllerTest {
                                     List.of(
                                             new StudyBasicInformation.ParticipantInformation(
                                                     1L,
-                                                    JIWON.getNickname(),
+                                                    JIWON.getNickname().getValue(),
                                                     JIWON.getGender().getValue(),
                                                     98,
                                                     22
                                             ),
                                             new StudyBasicInformation.ParticipantInformation(
                                                     2L,
-                                                    GHOST.getNickname(),
+                                                    GHOST.getNickname().getValue(),
                                                     GHOST.getGender().getValue(),
                                                     85,
                                                     23
                                             ),
                                             new StudyBasicInformation.ParticipantInformation(
                                                     3L,
-                                                    DUMMY1.getNickname(),
+                                                    DUMMY1.getNickname().getValue(),
                                                     DUMMY1.getGender().getValue(),
                                                     92,
                                                     28
                                             ),
                                             new StudyBasicInformation.ParticipantInformation(
                                                     4L,
-                                                    DUMMY2.getNickname(),
+                                                    DUMMY2.getNickname().getValue(),
                                                     DUMMY2.getGender().getValue(),
                                                     78,
                                                     26

@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("Member -> MemberPrivateInformationApiController 테스트")
 class MemberPrivateInformationApiControllerTest extends ControllerTest {
     @Nested
-    @DisplayName("사용자 기본 Private 정보 조회 API [GET /api/members/me]")
+    @DisplayName("사용자 기본 Private 정보 조회 API [GET /api/members/me] - AccessToken 필수")
     class getInformation {
         private static final String BASE_URL = "/api/members/me";
         private static final Long MEMBER_ID = 1L;
@@ -46,8 +46,8 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
             final MemberPrivateInformation response = new MemberPrivateInformation(
                     member.getId(),
                     member.getName(),
-                    member.getNickname().getValue(),
-                    member.getEmail().getValue(),
+                    member.getNicknameValue(),
+                    member.getEmailValue(),
                     member.getBirth(),
                     member.getPhone(),
                     member.getGender().getValue(),
@@ -76,18 +76,30 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     responseFields(
-                                            fieldWithPath("result.id").description("사용자 ID(PK)"),
-                                            fieldWithPath("result.name").description("사용자 이름"),
-                                            fieldWithPath("result.nickname").description("사용자 닉네임"),
-                                            fieldWithPath("result.email").description("사용자 이메일"),
-                                            fieldWithPath("result.birth").description("사용자 생년월일"),
-                                            fieldWithPath("result.phone").description("사용자 전화번호"),
-                                            fieldWithPath("result.gender").description("사용자 성별"),
-                                            fieldWithPath("result.region.province").description("거주지 [경기도, 강원도, ...]"),
-                                            fieldWithPath("result.region.city").description("거주지 [안양시, 수원시, ...]"),
-                                            fieldWithPath("result.score").description("사용자 점수"),
-                                            fieldWithPath("result.emailOptIn").description("이메일 수신 동의 여부"),
-                                            fieldWithPath("result.interests[]").description("사용자 관심사 목록")
+                                            fieldWithPath("id")
+                                                    .description("사용자 ID(PK)"),
+                                            fieldWithPath("name")
+                                                    .description("사용자 이름"),
+                                            fieldWithPath("nickname")
+                                                    .description("사용자 닉네임"),
+                                            fieldWithPath("email")
+                                                    .description("사용자 이메일"),
+                                            fieldWithPath("birth")
+                                                    .description("사용자 생년월일"),
+                                            fieldWithPath("phone")
+                                                    .description("사용자 전화번호"),
+                                            fieldWithPath("gender")
+                                                    .description("사용자 성별"),
+                                            fieldWithPath("region.province")
+                                                    .description("거주지 [경기도, 강원도, ...]"),
+                                            fieldWithPath("region.city")
+                                                    .description("거주지 [안양시, 수원시, ...]"),
+                                            fieldWithPath("score")
+                                                    .description("사용자 점수"),
+                                            fieldWithPath("emailOptIn")
+                                                    .description("이메일 수신 동의 여부"),
+                                            fieldWithPath("interests[]")
+                                                    .description("사용자 관심사 목록")
                                     )
                             )
                     );
@@ -105,24 +117,25 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
-            given(queryAppliedStudyByIdUseCase.queryAppliedStudy(any())).willReturn(
-                    List.of(
-                            new AppliedStudy(
-                                    1L,
-                                    SPRING.getName(),
-                                    SPRING.getCategory().getName(),
-                                    SPRING.getThumbnail().getImageName(),
-                                    SPRING.getThumbnail().getBackground()
-                            ),
-                            new AppliedStudy(
-                                    2L,
-                                    JPA.getName(),
-                                    JPA.getCategory().getName(),
-                                    JPA.getThumbnail().getImageName(),
-                                    JPA.getThumbnail().getBackground()
+            given(queryAppliedStudyByIdUseCase.queryAppliedStudy(any()))
+                    .willReturn(
+                            List.of(
+                                    new AppliedStudy(
+                                            1L,
+                                            SPRING.getName(),
+                                            SPRING.getCategory().getName(),
+                                            SPRING.getThumbnail().getImageName(),
+                                            SPRING.getThumbnail().getBackground()
+                                    ),
+                                    new AppliedStudy(
+                                            2L,
+                                            JPA.getName(),
+                                            JPA.getCategory().getName(),
+                                            JPA.getThumbnail().getImageName(),
+                                            JPA.getThumbnail().getBackground()
+                                    )
                             )
-                    )
-            );
+                    );
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -139,11 +152,16 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     responseFields(
-                                            fieldWithPath("result[].id").description("신청한 스터디 ID(PK)"),
-                                            fieldWithPath("result[].name").description("신청한 스터디명"),
-                                            fieldWithPath("result[].category").description("신청한 스터디 카테고리"),
-                                            fieldWithPath("result[].thumbnail").description("신청한 스터디 썸네일 이미지"),
-                                            fieldWithPath("result[].thumbnailBackground").description("신청한 스터디 썸네일 배경색")
+                                            fieldWithPath("result[].id")
+                                                    .description("신청한 스터디 ID(PK)"),
+                                            fieldWithPath("result[].name")
+                                                    .description("신청한 스터디명"),
+                                            fieldWithPath("result[].category")
+                                                    .description("신청한 스터디 카테고리"),
+                                            fieldWithPath("result[].thumbnail")
+                                                    .description("신청한 스터디 썸네일 이미지"),
+                                            fieldWithPath("result[].thumbnailBackground")
+                                                    .description("신청한 스터디 썸네일 배경색")
                                     )
                             )
                     );
@@ -196,11 +214,16 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     responseFields(
-                                            fieldWithPath("result[].id").description("찜한 스터디 ID(PK)"),
-                                            fieldWithPath("result[].name").description("찜한 스터디명"),
-                                            fieldWithPath("result[].category").description("찜한 스터디 카테고리"),
-                                            fieldWithPath("result[].thumbnail").description("찜한 스터디 썸네일 이미지"),
-                                            fieldWithPath("result[].thumbnailBackground").description("찜한 스터디 썸네일 배경색")
+                                            fieldWithPath("result[].id")
+                                                    .description("찜한 스터디 ID(PK)"),
+                                            fieldWithPath("result[].name")
+                                                    .description("찜한 스터디명"),
+                                            fieldWithPath("result[].category")
+                                                    .description("찜한 스터디 카테고리"),
+                                            fieldWithPath("result[].thumbnail")
+                                                    .description("찜한 스터디 썸네일 이미지"),
+                                            fieldWithPath("result[].thumbnailBackground")
+                                                    .description("찜한 스터디 썸네일 배경색")
                                     )
                             )
                     );

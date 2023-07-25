@@ -17,6 +17,7 @@ import static com.kgu.studywithme.category.domain.Category.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
+import static com.kgu.studywithme.member.domain.Gender.MALE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
@@ -35,9 +36,21 @@ class MemberApiControllerTest extends ControllerTest {
     @DisplayName("회원가입 API [POST /api/member]")
     class signUp {
         private static final String BASE_URL = "/api/member";
+        private static final SignUpMemberRequest REQUEST = new SignUpMemberRequest(
+                JIWON.getName(),
+                JIWON.getNickname().getValue(),
+                JIWON.getEmail().getValue(),
+                JIWON.getBirth(),
+                "01012345678",
+                MALE.getSimpleValue(),
+                JIWON.getRegion().getProvince(),
+                JIWON.getRegion().getCity(),
+                JIWON.isEmailOptIn(),
+                Set.of(LANGUAGE.getId(), INTERVIEW.getId(), PROGRAMMING.getId())
+        );
 
         @Test
-        @DisplayName("중복되는 값(닉네임)에 의해서 회원가입에 실패한다")
+        @DisplayName("중복되는 값(닉네임)에 의해서 회원가입에 실패한다 [Case: 닉네임, 이메일, 전화번호]")
         void throwExceptionByDuplicateNickname() throws Exception {
             // given
             doThrow(StudyWithMeException.type(MemberErrorCode.DUPLICATE_NICKNAME))
@@ -45,11 +58,10 @@ class MemberApiControllerTest extends ControllerTest {
                     .signUp(any());
 
             // when
-            final SignUpMemberRequest request = createRegistrationMemberRequest();
-            MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+            final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             final MemberErrorCode expectedError = MemberErrorCode.DUPLICATE_NICKNAME;
@@ -69,19 +81,29 @@ class MemberApiControllerTest extends ControllerTest {
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     requestFields(
-                                            fieldWithPath("name").description("이름")
+                                            fieldWithPath("name")
+                                                    .description("이름")
                                                     .attributes(constraint("서버 제공 [Read-Only]")),
-                                            fieldWithPath("nickname").description("닉네임"),
-                                            fieldWithPath("email").description("이메일")
+                                            fieldWithPath("nickname")
+                                                    .description("닉네임"),
+                                            fieldWithPath("email")
+                                                    .description("이메일")
                                                     .attributes(constraint("서버 제공 [Read-Only]")),
-                                            fieldWithPath("birth").description("생년월일"),
-                                            fieldWithPath("phone").description("전화번호"),
-                                            fieldWithPath("gender").description("성별")
+                                            fieldWithPath("birth")
+                                                    .description("생년월일"),
+                                            fieldWithPath("phone")
+                                                    .description("전화번호"),
+                                            fieldWithPath("gender")
+                                                    .description("성별")
                                                     .attributes(constraint("남성[M] / 여성[F]")),
-                                            fieldWithPath("province").description("거주지 [경기도, 강원도, ...]"),
-                                            fieldWithPath("city").description("거주지 [안양시, 수원시, ...]"),
-                                            fieldWithPath("emailOptIn").description("이메일 수신 동의 여부"),
-                                            fieldWithPath("interests[]").description("관심사 Enum ID")
+                                            fieldWithPath("province")
+                                                    .description("거주지 [경기도, 강원도, ...]"),
+                                            fieldWithPath("city")
+                                                    .description("거주지 [안양시, 수원시, ...]"),
+                                            fieldWithPath("emailOptIn")
+                                                    .description("이메일 수신 동의 여부"),
+                                            fieldWithPath("interests[]")
+                                                    .description("관심사 Enum ID")
                                                     .attributes(constraint("스터디 카테고리 ID 한정"))
                                     ),
                                     getExceptionResponseFiels()
@@ -90,17 +112,16 @@ class MemberApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("회원가입에 성공한다")
+        @DisplayName("회원가입을 진행한다")
         void success() throws Exception {
             // given
             given(signUpMemberUseCase.signUp(any())).willReturn(1L);
 
             // when
-            final SignUpMemberRequest request = createRegistrationMemberRequest();
-            MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+            final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             mockMvc.perform(requestBuilder)
@@ -114,19 +135,29 @@ class MemberApiControllerTest extends ControllerTest {
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     requestFields(
-                                            fieldWithPath("name").description("이름")
+                                            fieldWithPath("name")
+                                                    .description("이름")
                                                     .attributes(constraint("서버 제공 [Read-Only]")),
-                                            fieldWithPath("nickname").description("닉네임"),
-                                            fieldWithPath("email").description("이메일")
+                                            fieldWithPath("nickname")
+                                                    .description("닉네임"),
+                                            fieldWithPath("email")
+                                                    .description("이메일")
                                                     .attributes(constraint("서버 제공 [Read-Only]")),
-                                            fieldWithPath("birth").description("생년월일"),
-                                            fieldWithPath("phone").description("전화번호"),
-                                            fieldWithPath("gender").description("성별")
+                                            fieldWithPath("birth")
+                                                    .description("생년월일"),
+                                            fieldWithPath("phone")
+                                                    .description("전화번호"),
+                                            fieldWithPath("gender")
+                                                    .description("성별")
                                                     .attributes(constraint("남성[M] / 여성[F]")),
-                                            fieldWithPath("province").description("거주지 [경기도, 강원도, ...]"),
-                                            fieldWithPath("city").description("거주지 [안양시, 수원시, ...]"),
-                                            fieldWithPath("emailOptIn").description("이메일 수신 동의 여부"),
-                                            fieldWithPath("interests[]").description("관심사 Enum ID")
+                                            fieldWithPath("province")
+                                                    .description("거주지 [경기도, 강원도, ...]"),
+                                            fieldWithPath("city")
+                                                    .description("거주지 [안양시, 수원시, ...]"),
+                                            fieldWithPath("emailOptIn")
+                                                    .description("이메일 수신 동의 여부"),
+                                            fieldWithPath("interests[]")
+                                                    .description("관심사 Enum ID")
                                                     .attributes(constraint("스터디 카테고리 ID 한정"))
                                     )
                             )
@@ -139,6 +170,14 @@ class MemberApiControllerTest extends ControllerTest {
     class update {
         private static final String BASE_URL = "/api/members/{memberId}";
         private static final Long MEMBER_ID = 1L;
+        private static final UpdateMemberRequest REQUEST = new UpdateMemberRequest(
+                JIWON.getNickname().getValue(),
+                "010-1234-5678",
+                JIWON.getRegion().getProvince(),
+                JIWON.getRegion().getCity(),
+                false,
+                Set.of(INTERVIEW.getId(), PROGRAMMING.getId())
+        );
 
         @Test
         @DisplayName("사용자 정보를 수정한다")
@@ -150,19 +189,11 @@ class MemberApiControllerTest extends ControllerTest {
                     .update(any());
 
             // when
-            final UpdateMemberRequest request = new UpdateMemberRequest(
-                    "updateNick",
-                    "01012300593",
-                    "경기도",
-                    "성남시",
-                    false,
-                    Set.of(INTERVIEW.getId(), PROGRAMMING.getId())
-            );
-            MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+            final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .patch(BASE_URL, MEMBER_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             mockMvc.perform(requestBuilder)
@@ -174,31 +205,22 @@ class MemberApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     requestFields(
-                                            fieldWithPath("nickname").description("닉네임"),
-                                            fieldWithPath("phone").description("전화번호"),
-                                            fieldWithPath("province").description("거주지 [경기도, 강원도, ...]"),
-                                            fieldWithPath("city").description("거주지 [안양시, 수원시, ...]"),
-                                            fieldWithPath("emailOptIn").description("이메일 수신 동의 여부"),
-                                            fieldWithPath("interests").description("관심사 Enum ID")
+                                            fieldWithPath("nickname")
+                                                    .description("닉네임"),
+                                            fieldWithPath("phone")
+                                                    .description("전화번호"),
+                                            fieldWithPath("province")
+                                                    .description("거주지 [경기도, 강원도, ...]"),
+                                            fieldWithPath("city")
+                                                    .description("거주지 [안양시, 수원시, ...]"),
+                                            fieldWithPath("emailOptIn")
+                                                    .description("이메일 수신 동의 여부"),
+                                            fieldWithPath("interests")
+                                                    .description("관심사 Enum ID")
                                                     .attributes(constraint("스터디 카테고리 ID 한정"))
                                     )
                             )
                     );
         }
-    }
-
-    private SignUpMemberRequest createRegistrationMemberRequest() {
-        return new SignUpMemberRequest(
-                JIWON.getName(),
-                JIWON.getNickname(),
-                JIWON.getEmail(),
-                JIWON.getBirth(),
-                "01012345678",
-                "M",
-                JIWON.getProvince(),
-                JIWON.getCity(),
-                JIWON.isEmailOptIn(),
-                Set.of(LANGUAGE.getId(), INTERVIEW.getId(), PROGRAMMING.getId())
-        );
     }
 }

@@ -248,7 +248,7 @@ class OAuthApiControllerTest extends ControllerTest {
         private static final String BASE_URL = "/api/oauth/logout";
 
         @Test
-        @DisplayName("로그아웃에 성공한다")
+        @DisplayName("로그아웃을 진행한다")
         void success() throws Exception {
             // given
             mockingToken(true, 1L);

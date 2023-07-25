@@ -35,14 +35,13 @@ class UpdateMemberServiceTest extends UseCaseTest {
     private MemberRepository memberRepository;
 
     private final Member member = JIWON.toMember().apply(1L, LocalDateTime.now());
-
     private final UpdateMemberUseCase.Command command =
             new UpdateMemberUseCase.Command(
                     member.getId(),
-                    GHOST.getNickname(),
-                    "01013572468",
-                    GHOST.getProvince(),
-                    GHOST.getCity(),
+                    GHOST.getNickname().getValue(),
+                    "010-1234-5678",
+                    GHOST.getRegion().getProvince(),
+                    GHOST.getRegion().getCity(),
                     false,
                     GHOST.getInterests()
             );
@@ -59,8 +58,10 @@ class UpdateMemberServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberErrorCode.DUPLICATE_NICKNAME.getMessage());
 
-        verify(memberRepository, times(1)).isNicknameUsedByOther(any(), any());
-        verify(memberRepository, times(0)).isPhoneUsedByOther(any(), any());
+        assertAll(
+                () -> verify(memberRepository, times(1)).isNicknameUsedByOther(any(), any()),
+                () -> verify(memberRepository, times(0)).isPhoneUsedByOther(any(), any())
+        );
     }
 
     @Test
@@ -76,8 +77,10 @@ class UpdateMemberServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberErrorCode.DUPLICATE_PHONE.getMessage());
 
-        verify(memberRepository, times(1)).isNicknameUsedByOther(any(), any());
-        verify(memberRepository, times(1)).isPhoneUsedByOther(any(), any());
+        assertAll(
+                () -> verify(memberRepository, times(1)).isNicknameUsedByOther(any(), any()),
+                () -> verify(memberRepository, times(1)).isPhoneUsedByOther(any(), any())
+        );
     }
 
     @Test
@@ -92,10 +95,9 @@ class UpdateMemberServiceTest extends UseCaseTest {
         memberUpdateService.update(command);
 
         // then
-        verify(memberRepository, times(1)).isNicknameUsedByOther(any(), any());
-        verify(memberRepository, times(1)).isPhoneUsedByOther(any(), any());
-
         assertAll(
+                () -> verify(memberRepository, times(1)).isNicknameUsedByOther(any(), any()),
+                () -> verify(memberRepository, times(1)).isPhoneUsedByOther(any(), any()),
                 () -> assertThat(member.getNicknameValue()).isEqualTo(command.nickname()),
                 () -> assertThat(member.getPhone()).isEqualTo(command.phone()),
                 () -> assertThat(member.getRegionProvince()).isEqualTo(command.province()),

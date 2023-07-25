@@ -1,7 +1,6 @@
 package com.kgu.studywithme.study.presentation;
 
 import com.kgu.studywithme.common.ControllerTest;
-import com.kgu.studywithme.member.domain.Nickname;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
 import com.kgu.studywithme.study.infrastructure.repository.query.dto.*;
 import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
@@ -96,13 +95,13 @@ class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
                             List.of(
                                     new StudyApplicantInformation(
                                             1L,
-                                            JIWON.getNickname(),
+                                            JIWON.getNickname().getValue(),
                                             85,
                                             LocalDateTime.now().minusDays(1)
                                     ),
                                     new StudyApplicantInformation(
                                             2L,
-                                            GHOST.getNickname(),
+                                            GHOST.getNickname().getValue(),
                                             72,
                                             LocalDateTime.now().minusDays(3)
                                     )
@@ -451,13 +450,13 @@ class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
                                             List.of(
                                                     new WeeklyInformation.WeeklySubmit(
                                                             1L,
-                                                            Nickname.from(JIWON.getNickname()),
+                                                            JIWON.getNickname(),
                                                             1L,
                                                             UploadAssignment.withLink("https://notion.so/jiwon")
                                                     ),
                                                     new WeeklyInformation.WeeklySubmit(
                                                             2L,
-                                                            Nickname.from(GHOST.getNickname()),
+                                                            GHOST.getNickname(),
                                                             1L,
                                                             UploadAssignment.withLink("https://notion.so/ghost")
                                                     )

@@ -29,11 +29,11 @@ public class MemberPrivateInformationApiController {
 
     @Operation(summary = "사용자 기본 Private 정보 조회 EndPoint")
     @GetMapping
-    public ResponseEntity<ResponseWrapper<MemberPrivateInformation>> getInformation(@ExtractPayload final Long memberId) {
+    public ResponseEntity<MemberPrivateInformation> getInformation(@ExtractPayload final Long memberId) {
         final MemberPrivateInformation response = queryPrivateInformationByIdUseCase.queryPrivateInformation(
                 new QueryPrivateInformationByIdUseCase.Query(memberId)
         );
-        return ResponseEntity.ok(ResponseWrapper.from(response));
+        return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "사용자가 신청한 스터디 조회 EndPoint")

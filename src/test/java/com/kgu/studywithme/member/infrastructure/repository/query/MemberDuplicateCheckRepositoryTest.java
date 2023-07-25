@@ -31,8 +31,8 @@ class MemberDuplicateCheckRepositoryTest extends RepositoryTest {
     @DisplayName("이메일에 해당하는 사용자가 존재하는지 확인한다")
     void isEmailExists() {
         // when
-        boolean actual1 = memberRepository.isEmailExists(memberA.getEmailValue());
-        boolean actual2 = memberRepository.isEmailExists("diff" + memberA.getEmailValue());
+        final boolean actual1 = memberRepository.isEmailExists(memberA.getEmailValue());
+        final boolean actual2 = memberRepository.isEmailExists("diff" + memberA.getEmailValue());
 
         // then
         assertAll(
@@ -45,8 +45,8 @@ class MemberDuplicateCheckRepositoryTest extends RepositoryTest {
     @DisplayName("닉네임에 해당하는 사용자가 존재하는지 확인한다")
     void isNicknameExists() {
         // when
-        boolean actual1 = memberRepository.isNicknameExists(memberA.getNicknameValue());
-        boolean actual2 = memberRepository.isNicknameExists("diff" + memberA.getNicknameValue());
+        final boolean actual1 = memberRepository.isNicknameExists(memberA.getNicknameValue());
+        final boolean actual2 = memberRepository.isNicknameExists("diff" + memberA.getNicknameValue());
 
         // then
         assertAll(
@@ -59,8 +59,8 @@ class MemberDuplicateCheckRepositoryTest extends RepositoryTest {
     @DisplayName("다른 사람이 해당 닉네임을 사용하고 있는지 확인한다")
     void isNicknameUsedByOther() {
         // when
-        boolean actual1 = memberRepository.isNicknameUsedByOther(memberA.getId(), memberB.getNicknameValue());
-        boolean actual2 = memberRepository.isNicknameUsedByOther(memberB.getId(), memberB.getNicknameValue());
+        final boolean actual1 = memberRepository.isNicknameUsedByOther(memberA.getId(), memberB.getNicknameValue());
+        final boolean actual2 = memberRepository.isNicknameUsedByOther(memberB.getId(), memberB.getNicknameValue());
 
         // then
         assertAll(
@@ -73,8 +73,8 @@ class MemberDuplicateCheckRepositoryTest extends RepositoryTest {
     @DisplayName("전화번호에 해당하는 사용자가 존재하는지 확인한다")
     void isPhoneExists() {
         // when
-        boolean actual1 = memberRepository.isPhoneExists(memberA.getPhone());
-        boolean actual2 = memberRepository.isPhoneExists(memberA.getPhone().replaceAll("0", "1"));
+        final boolean actual1 = memberRepository.isPhoneExists(memberA.getPhone());
+        final boolean actual2 = memberRepository.isPhoneExists(memberA.getPhone().replaceAll("0", "1"));
 
         // then
         assertAll(
@@ -87,8 +87,8 @@ class MemberDuplicateCheckRepositoryTest extends RepositoryTest {
     @DisplayName("다른 사람이 해당 전화번호를 사용하고 있는지 확인한다")
     void isPhoneUsedByOther() {
         // when
-        boolean actual1 = memberRepository.isPhoneUsedByOther(memberA.getId(), memberB.getPhone());
-        boolean actual2 = memberRepository.isPhoneUsedByOther(memberB.getId(), memberB.getPhone());
+        final boolean actual1 = memberRepository.isPhoneUsedByOther(memberA.getId(), memberB.getPhone());
+        final boolean actual2 = memberRepository.isPhoneUsedByOther(memberB.getId(), memberB.getPhone());
 
         // then
         assertAll(

@@ -1,0 +1,33 @@
+= 사용자 Private 정보 API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+
+== 사용자 기본 Private 정보 [AccessToken 필수]
+HTTP Request
+include::{snippets}/MemberApi/Query/Private/BasicInformation/http-request.adoc[]
+include::{snippets}/MemberApi/Query/Private/BasicInformation/request-headers.adoc[]
+
+HTTP Response
+include::{snippets}/MemberApi/Query/Private/BasicInformation/response-body.adoc[]
+include::{snippets}/MemberApi/Query/Private/BasicInformation/response-fields.adoc[]
+
+== 사용자가 신청한 스터디 리스트 [AccessToken 필수]
+HTTP Request
+include::{snippets}/MemberApi/Query/Private/AppliedStudy/http-request.adoc[]
+include::{snippets}/MemberApi/Query/Private/AppliedStudy/request-headers.adoc[]
+
+HTTP Response
+include::{snippets}/MemberApi/Query/Private/AppliedStudy/response-body.adoc[]
+include::{snippets}/MemberApi/Query/Private/AppliedStudy/response-fields.adoc[]
+
+== 사용자가 찜한 스터디 리스트 [AccessToken 필수]
+HTTP Request
+include::{snippets}/MemberApi/Query/Private/LikeMarkedStudy/http-request.adoc[]
+include::{snippets}/MemberApi/Query/Private/LikeMarkedStudy/request-headers.adoc[]
+
+HTTP Response
+include::{snippets}/MemberApi/Query/Private/LikeMarkedStudy/response-body.adoc[]
+include::{snippets}/MemberApi/Query/Private/LikeMarkedStudy/response-fields.adoc[]

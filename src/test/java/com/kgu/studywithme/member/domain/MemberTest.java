@@ -5,6 +5,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 import static com.kgu.studywithme.fixture.MemberFixture.ANONYMOUS;
 import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.*;
@@ -16,16 +18,15 @@ class MemberTest {
     @Test
     @DisplayName("Member를 생성한다")
     void constuct() {
-        Member member = JIWON.toMember();
+        final Member member = JIWON.toMember();
 
         assertAll(
                 () -> assertThat(member.getName()).isEqualTo(JIWON.getName()),
-                () -> assertThat(member.getNicknameValue()).isEqualTo(JIWON.getNickname()),
-                () -> assertThat(member.getEmailValue()).isEqualTo(JIWON.getEmail()),
+                () -> assertThat(member.getNickname()).isEqualTo(JIWON.getNickname()),
+                () -> assertThat(member.getEmail()).isEqualTo(JIWON.getEmail()),
                 () -> assertThat(member.getBirth()).isEqualTo(JIWON.getBirth()),
                 () -> assertThat(member.getGender()).isEqualTo(JIWON.getGender()),
-                () -> assertThat(member.getRegionProvince()).isEqualTo(JIWON.getProvince()),
-                () -> assertThat(member.getRegionCity()).isEqualTo(JIWON.getCity()),
+                () -> assertThat(member.getRegion()).isEqualTo(JIWON.getRegion()),
                 () -> assertThat(member.getScore()).isEqualTo(80),
                 () -> assertThat(member.isEmailOptIn()).isEqualTo(JIWON.isEmailOptIn()),
                 () -> assertThat(member.getInterests()).containsExactlyInAnyOrderElementsOf(JIWON.getInterests())
@@ -36,14 +37,14 @@ class MemberTest {
     @DisplayName("사용자 정보를 수정한다")
     void update() {
         // given
-        Member member = JIWON.toMember();
+        final Member member = JIWON.toMember().apply(1L, LocalDateTime.now());
 
         // when
         member.update(
-                ANONYMOUS.getNickname(),
+                ANONYMOUS.getNickname().getValue(),
                 "01013249583",
-                ANONYMOUS.getProvince(),
-                ANONYMOUS.getCity(),
+                ANONYMOUS.getRegion().getProvince(),
+                ANONYMOUS.getRegion().getCity(),
                 ANONYMOUS.isEmailOptIn(),
                 ANONYMOUS.getInterests()
         );
@@ -51,13 +52,12 @@ class MemberTest {
         // then
         assertAll(
                 () -> assertThat(member.getName()).isEqualTo(JIWON.getName()),
-                () -> assertThat(member.getNicknameValue()).isEqualTo(ANONYMOUS.getNickname()),
-                () -> assertThat(member.getEmailValue()).isEqualTo(JIWON.getEmail()),
+                () -> assertThat(member.getNickname()).isEqualTo(ANONYMOUS.getNickname()),
+                () -> assertThat(member.getEmail()).isEqualTo(JIWON.getEmail()),
                 () -> assertThat(member.getBirth()).isEqualTo(JIWON.getBirth()),
                 () -> assertThat(member.getPhone()).isEqualTo("01013249583"),
                 () -> assertThat(member.getGender()).isEqualTo(JIWON.getGender()),
-                () -> assertThat(member.getRegionProvince()).isEqualTo(ANONYMOUS.getProvince()),
-                () -> assertThat(member.getRegionCity()).isEqualTo(ANONYMOUS.getCity()),
+                () -> assertThat(member.getRegion()).isEqualTo(ANONYMOUS.getRegion()),
                 () -> assertThat(member.getScore()).isEqualTo(80),
                 () -> assertThat(member.isEmailOptIn()).isEqualTo(ANONYMOUS.isEmailOptIn()),
                 () -> assertThat(member.getInterests()).containsExactlyInAnyOrderElementsOf(ANONYMOUS.getInterests())

@@ -27,11 +27,11 @@ public class MemberPublicInformationApiController {
 
     @Operation(summary = "사용자 기본 Public 정보 조회 EndPoint")
     @GetMapping
-    public ResponseEntity<ResponseWrapper<MemberPublicInformation>> getInformation(@PathVariable final Long memberId) {
+    public ResponseEntity<MemberPublicInformation> getInformation(@PathVariable final Long memberId) {
         final MemberPublicInformation response = queryPublicInformationByIdUseCase.queryPublicInformation(
                 new QueryPublicInformationByIdUseCase.Query(memberId)
         );
-        return ResponseEntity.ok(ResponseWrapper.from(response));
+        return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "사용자가 참여하고 있는 스터디 조회 EndPoint")

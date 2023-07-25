@@ -20,22 +20,18 @@ public class Email {
     @Column(name = "email", nullable = false, unique = true, updatable = false)
     private String value;
 
-    private Email(final String value) {
+    public Email(final String value) {
+        validateEmailPattern(value);
         this.value = value;
     }
 
-    public static Email from(final String value) {
-        validateEmailPattern(value);
-        return new Email(value);
-    }
-
-    private static void validateEmailPattern(final String value) {
+    private void validateEmailPattern(final String value) {
         if (isNotValidPattern(value)) {
             throw StudyWithMeException.type(MemberErrorCode.INVALID_EMAIL_FORMAT);
         }
     }
 
-    private static boolean isNotValidPattern(final String email) {
+    private boolean isNotValidPattern(final String email) {
         return !EMAIL_MATCHER.matcher(email).matches();
     }
 

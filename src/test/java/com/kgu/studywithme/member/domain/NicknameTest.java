@@ -18,7 +18,7 @@ class NicknameTest {
     @ValueSource(strings = {"한", "!@#hello", "Hello World", "일이삼사오육칠팔구십십일"})
     @DisplayName("형식에 맞지 않는 Nickname이면 생성에 실패한다")
     void throwExceptionByInvalidNicknameFormat(final String value) {
-        assertThatThrownBy(() -> Nickname.from(value))
+        assertThatThrownBy(() -> new Nickname(value))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberErrorCode.INVALID_NICKNAME_FORMAT.getMessage());
     }
@@ -27,7 +27,7 @@ class NicknameTest {
     @ValueSource(strings = {"하이", "하이123", "hEllo123"})
     @DisplayName("Nickname을 생성한다")
     void construct(final String value) {
-        assertDoesNotThrow(() -> Nickname.from(value));
+        assertDoesNotThrow(() -> new Nickname(value));
     }
 
     @Nested
@@ -37,7 +37,7 @@ class NicknameTest {
         @DisplayName("이전과 동일한 닉네임으로 수정할 수 없다")
         void throwExceptionByNicknameSameAsBefore() {
             // given
-            final Nickname nickname = Nickname.from("Hello");
+            final Nickname nickname = new Nickname("Hello");
 
             // when - then
             assertThatThrownBy(() -> nickname.update(nickname.getValue()))
@@ -49,7 +49,7 @@ class NicknameTest {
         @DisplayName("닉네임을 수정한다")
         void success() {
             // given
-            final Nickname nickname = Nickname.from("Hello");
+            final Nickname nickname = new Nickname("Hello");
 
             // when
             final Nickname updateNickname = nickname.update("HelloA");
