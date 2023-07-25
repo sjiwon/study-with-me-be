@@ -12,8 +12,11 @@ import org.mockito.Mock;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @DisplayName("StudyNotice -> WriteStudyNoticeService 테스트")
 class WriteStudyNoticeServiceTest extends UseCaseTest {
@@ -42,6 +45,9 @@ class WriteStudyNoticeServiceTest extends UseCaseTest {
         final Long noticeId = writeStudyNoticeService.writeNotice(command);
 
         // then
-        assertThat(noticeId).isEqualTo(notice.getId());
+        assertAll(
+                () -> verify(studyNoticeRepository, times(1)).save(any()),
+                () -> assertThat(noticeId).isEqualTo(notice.getId())
+        );
     }
 }

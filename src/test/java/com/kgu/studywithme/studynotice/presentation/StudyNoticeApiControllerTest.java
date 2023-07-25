@@ -33,11 +33,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class StudyNoticeApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("공지사항 작성 API [POST /api/studies/{studyId}/notice] - AccessToken 필수")
-    class register {
+    class write {
         private static final String BASE_URL = "/api/studies/{studyId}/notice";
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;
         private static final Long ANONYMOUS_ID = 2L;
+        private static final WriteStudyNoticeRequest REQUEST = new WriteStudyNoticeRequest(
+                "공지사항 제목",
+                "공지사항 내용~~"
+        );
 
         @BeforeEach
         void setUp() {
@@ -52,15 +56,11 @@ class StudyNoticeApiControllerTest extends ControllerTest {
             mockingToken(true, ANONYMOUS_ID);
 
             // when
-            final WriteStudyNoticeRequest request = new WriteStudyNoticeRequest(
-                    "공지사항 제목",
-                    "공지사항 내용~~"
-            );
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, STUDY_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             final StudyErrorCode expectedError = StudyErrorCode.MEMBER_IS_NOT_HOST;
@@ -81,11 +81,14 @@ class StudyNoticeApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("title").description("공지사항 제목"),
-                                            fieldWithPath("content").description("공지사항 내용")
+                                            fieldWithPath("title")
+                                                    .description("공지사항 제목"),
+                                            fieldWithPath("content")
+                                                    .description("공지사항 내용")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -93,22 +96,18 @@ class StudyNoticeApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("공지사항 작성에 성공한다")
+        @DisplayName("스터디 공지사항을 작성한다")
         void success() throws Exception {
             // given
             mockingToken(true, HOST_ID);
             given(writeStudyNoticeUseCase.writeNotice(any())).willReturn(1L);
 
             // when
-            final WriteStudyNoticeRequest request = new WriteStudyNoticeRequest(
-                    "공지사항 제목",
-                    "공지사항 내용~~"
-            );
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, STUDY_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             mockMvc.perform(requestBuilder)
@@ -120,11 +119,14 @@ class StudyNoticeApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("title").description("공지사항 제목"),
-                                            fieldWithPath("content").description("공지사항 내용")
+                                            fieldWithPath("title")
+                                                    .description("공지사항 제목"),
+                                            fieldWithPath("content")
+                                                    .description("공지사항 내용")
                                     )
                             )
                     );
@@ -139,6 +141,10 @@ class StudyNoticeApiControllerTest extends ControllerTest {
         private static final Long NOTICE_ID = 1L;
         private static final Long HOST_ID = 1L;
         private static final Long ANONYMOUS_ID = 2L;
+        private static final UpdateStudyNoticeRequest REQUEST = new UpdateStudyNoticeRequest(
+                "공지사항 제목",
+                "공지사항 내용~~"
+        );
 
         @BeforeEach
         void setUp() {
@@ -153,15 +159,11 @@ class StudyNoticeApiControllerTest extends ControllerTest {
             mockingToken(true, ANONYMOUS_ID);
 
             // when
-            final UpdateStudyNoticeRequest request = new UpdateStudyNoticeRequest(
-                    "공지사항 제목",
-                    "공지사항 내용~~"
-            );
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID, NOTICE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             final StudyErrorCode expectedError = StudyErrorCode.MEMBER_IS_NOT_HOST;
@@ -182,12 +184,16 @@ class StudyNoticeApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("noticeId").description("공지사항 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("noticeId")
+                                                    .description("공지사항 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("title").description("수정할 공지사항 제목"),
-                                            fieldWithPath("content").description("수정할 공지사항 내용")
+                                            fieldWithPath("title")
+                                                    .description("수정할 공지사항 제목"),
+                                            fieldWithPath("content")
+                                                    .description("수정할 공지사항 내용")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -204,15 +210,11 @@ class StudyNoticeApiControllerTest extends ControllerTest {
                     .updateNotice(any());
 
             // when
-            final UpdateStudyNoticeRequest request = new UpdateStudyNoticeRequest(
-                    "공지사항 제목",
-                    "공지사항 내용~~"
-            );
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID, NOTICE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             final StudyNoticeErrorCode expectedError = StudyNoticeErrorCode.ONLY_WRITER_CAN_UPDATE_NOTICE;
@@ -233,12 +235,16 @@ class StudyNoticeApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("noticeId").description("공지사항 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("noticeId")
+                                                    .description("공지사항 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("title").description("수정할 공지사항 제목"),
-                                            fieldWithPath("content").description("수정할 공지사항 내용")
+                                            fieldWithPath("title")
+                                                    .description("수정할 공지사항 제목"),
+                                            fieldWithPath("content")
+                                                    .description("수정할 공지사항 내용")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -255,15 +261,11 @@ class StudyNoticeApiControllerTest extends ControllerTest {
                     .updateNotice(any());
 
             // when
-            final UpdateStudyNoticeRequest request = new UpdateStudyNoticeRequest(
-                    "공지사항 제목",
-                    "공지사항 내용~~"
-            );
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID, NOTICE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             mockMvc.perform(requestBuilder)
@@ -275,12 +277,16 @@ class StudyNoticeApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("noticeId").description("공지사항 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("noticeId")
+                                                    .description("공지사항 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("title").description("수정할 공지사항 제목"),
-                                            fieldWithPath("content").description("수정할 공지사항 내용")
+                                            fieldWithPath("title")
+                                                    .description("수정할 공지사항 제목"),
+                                            fieldWithPath("content")
+                                                    .description("수정할 공지사항 내용")
                                     )
                             )
                     );
@@ -289,7 +295,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("공지사항 삭제 API [DELETE /api/studies/{studyId}/notices/{noticeId}] - AccessToken 필수")
-    class remove {
+    class delete {
         private static final String BASE_URL = "/api/studies/{studyId}/notices/{noticeId}";
         private static final Long STUDY_ID = 1L;
         private static final Long NOTICE_ID = 1L;
@@ -332,8 +338,10 @@ class StudyNoticeApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("noticeId").description("삭제할 공지사항 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("noticeId")
+                                                    .description("삭제할 공지사항 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -373,8 +381,10 @@ class StudyNoticeApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("noticeId").description("삭제할 공지사항 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("noticeId")
+                                                    .description("삭제할 공지사항 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -405,8 +415,10 @@ class StudyNoticeApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("noticeId").description("삭제할 공지사항 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("noticeId")
+                                                    .description("삭제할 공지사항 ID(PK)")
                                     )
                             )
                     );

@@ -116,7 +116,7 @@ class GoogleOAuthConnectorTest {
             // then
             assertAll(
                     () -> assertThat(result.getName()).isEqualTo(JIWON.getName()),
-                    () -> assertThat(result.getEmail()).isEqualTo(JIWON.getEmail()),
+                    () -> assertThat(result.getEmail()).isEqualTo(JIWON.getEmail().getValue()),
                     () -> assertThat(result.getProfileImage()).isEqualTo("google_profile_url")
             );
         }

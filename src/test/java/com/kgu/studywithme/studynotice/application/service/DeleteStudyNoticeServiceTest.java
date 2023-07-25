@@ -18,6 +18,7 @@ import java.util.Optional;
 import static com.kgu.studywithme.fixture.MemberFixture.GHOST;
 import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -38,7 +39,7 @@ class DeleteStudyNoticeServiceTest extends UseCaseTest {
             writer.getId(),
             "Title",
             "Content"
-    );
+    ).apply(1L, LocalDateTime.now());
 
     @Test
     @DisplayName("공지사항 작성자가 아닌 사람이 삭제를 시도하면 예외가 발생한다")
@@ -56,8 +57,10 @@ class DeleteStudyNoticeServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyNoticeErrorCode.ONLY_WRITER_CAN_DELETE_NOTICE.getMessage());
 
-        verify(studyNoticeRepository, times(1)).findById(any());
-        verify(studyNoticeRepository, times(0)).deleteNotice(any());
+        assertAll(
+                () -> verify(studyNoticeRepository, times(1)).findById(any()),
+                () -> verify(studyNoticeRepository, times(0)).deleteNotice(any())
+        );
     }
 
     @Test
@@ -75,7 +78,9 @@ class DeleteStudyNoticeServiceTest extends UseCaseTest {
         );
 
         // then
-        verify(studyNoticeRepository, times(1)).findById(any());
-        verify(studyNoticeRepository, times(1)).deleteNotice(any());
+        assertAll(
+                () -> verify(studyNoticeRepository, times(1)).findById(any()),
+                () -> verify(studyNoticeRepository, times(1)).deleteNotice(any())
+        );
     }
 }

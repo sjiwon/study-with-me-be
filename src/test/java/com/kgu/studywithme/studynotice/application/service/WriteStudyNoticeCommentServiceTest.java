@@ -38,7 +38,12 @@ class WriteStudyNoticeCommentServiceTest extends UseCaseTest {
     private StudyParticipantRepository studyParticipantRepository;
 
     private final Member writer = JIWON.toMember().apply(1L, LocalDateTime.now());
-
+    private final StudyNotice notice = StudyNotice.writeNotice(
+            1L,
+            writer.getId(),
+            "공지사항 제목",
+            "공지사항 내용"
+    ).apply(1L, LocalDateTime.now());
     private final WriteStudyNoticeCommentUseCase.Command command =
             new WriteStudyNoticeCommentUseCase.Command(
                     1L,
@@ -50,12 +55,6 @@ class WriteStudyNoticeCommentServiceTest extends UseCaseTest {
     @DisplayName("스터디 참여자(status = APPROVE)가 아니면 공지사항에 댓글을 작성할 수 없다")
     void throwExceptionByWriterIsNotStudyParticipant() {
         // given
-        final StudyNotice notice = StudyNotice.writeNotice(
-                1L,
-                writer.getId(),
-                "공지사항 제목",
-                "공지사항 내용"
-        ).apply(1L, LocalDateTime.now());
         given(studyNoticeRepository.findById(any())).willReturn(Optional.of(notice));
         given(studyParticipantRepository.isParticipant(any(), any())).willReturn(false);
 
@@ -64,20 +63,16 @@ class WriteStudyNoticeCommentServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyNoticeErrorCode.ONLY_PARTICIPANT_CAN_WRITE_COMMENT.getMessage());
 
-        verify(studyNoticeRepository, times(1)).findById(any());
-        verify(studyParticipantRepository, times(1)).isParticipant(any(), any());
+        assertAll(
+                () -> verify(studyNoticeRepository, times(1)).findById(any()),
+                () -> verify(studyParticipantRepository, times(1)).isParticipant(any(), any())
+        );
     }
 
     @Test
     @DisplayName("공지사항에 댓글을 작성한다")
     void success() {
         // given
-        final StudyNotice notice = StudyNotice.writeNotice(
-                1L,
-                writer.getId(),
-                "공지사항 제목",
-                "공지사항 내용"
-        ).apply(1L, LocalDateTime.now());
         given(studyNoticeRepository.findById(any())).willReturn(Optional.of(notice));
         given(studyParticipantRepository.isParticipant(any(), any())).willReturn(true);
 
@@ -85,22 +80,16 @@ class WriteStudyNoticeCommentServiceTest extends UseCaseTest {
         writeStudyNoticeCommentService.writeNoticeComment(command);
 
         // then
-        verify(studyNoticeRepository, times(1)).findById(any());
-        verify(studyParticipantRepository, times(1)).isParticipant(any(), any());
         assertAll(
+                () -> verify(studyNoticeRepository, times(1)).findById(any()),
+                () -> verify(studyParticipantRepository, times(1)).isParticipant(any(), any()),
                 () -> assertThat(notice.getComments()).hasSize(1),
-                () -> assertThat(
-                        notice.getComments()
-                                .stream()
-                                .map(StudyNoticeComment::getWriterId)
-                                .toList()
-                ).containsExactlyInAnyOrder(writer.getId()),
-                () -> assertThat(
-                        notice.getComments()
-                                .stream()
-                                .map(StudyNoticeComment::getContent)
-                                .toList()
-                ).containsExactlyInAnyOrder("댓글!!")
+                () -> assertThat(notice.getComments())
+                        .map(StudyNoticeComment::getWriterId)
+                        .containsExactlyInAnyOrder(writer.getId()),
+                () -> assertThat(notice.getComments())
+                        .map(StudyNoticeComment::getContent)
+                        .containsExactlyInAnyOrder("댓글!!")
         );
     }
 }

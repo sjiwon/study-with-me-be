@@ -30,15 +30,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class StudyNoticeCommentApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("공지사항 댓글 작성 API [POST /api/notices/{noticeId}/comment] - AccessToken 필수")
-    class register {
+    class write {
         private static final String BASE_URL = "/api/notices/{noticeId}/comment";
         private static final Long NOTICE_ID = 1L;
         private static final Long PARTICIPANT_ID = 1L;
         private static final Long ANONYMOUS_ID = 2L;
+        private static final WriteStudyNoticeCommentRequest REQUEST = new WriteStudyNoticeCommentRequest("공지사항 댓글~~");
 
         @Test
         @DisplayName("스터디 참여자가 아니면 공지사항에 댓글을 작성할 수 없다")
-        void throwExceptionByMemberIsNotParticipant() throws Exception {
+        void throwExceptionByWriterIsNotStudyParticipant() throws Exception {
             // given
             mockingToken(true, ANONYMOUS_ID);
             doThrow(StudyWithMeException.type(StudyNoticeErrorCode.ONLY_PARTICIPANT_CAN_WRITE_COMMENT))
@@ -46,12 +47,11 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
                     .writeNoticeComment(any());
 
             // when
-            final WriteStudyNoticeCommentRequest request = new WriteStudyNoticeCommentRequest("공지사항 댓글~~");
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, NOTICE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             final StudyNoticeErrorCode expectedError = StudyNoticeErrorCode.ONLY_PARTICIPANT_CAN_WRITE_COMMENT;
@@ -72,10 +72,12 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("noticeId").description("공지사항 ID(PK)")
+                                            parameterWithName("noticeId")
+                                                    .description("공지사항 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("content").description("댓글 내용")
+                                            fieldWithPath("content")
+                                                    .description("댓글 내용")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -83,7 +85,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("공지사항에 대한 댓글 작성에 성공한다")
+        @DisplayName("공지사항에 댓글을 작성한다")
         void success() throws Exception {
             // given
             mockingToken(true, PARTICIPANT_ID);
@@ -92,12 +94,11 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
                     .writeNoticeComment(any());
 
             // when
-            final WriteStudyNoticeCommentRequest request = new WriteStudyNoticeCommentRequest("공지사항 댓글~~");
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, NOTICE_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             mockMvc.perform(requestBuilder)
@@ -109,10 +110,12 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("noticeId").description("공지사항 ID(PK)")
+                                            parameterWithName("noticeId")
+                                                    .description("공지사항 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("content").description("댓글 내용")
+                                            fieldWithPath("content")
+                                                    .description("댓글 내용")
                                     )
                             )
                     );
@@ -127,9 +130,10 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
         private static final Long COMMENT_ID = 1L;
         private static final Long PARTICIPANT_ID = 1L;
         private static final Long ANONYMOUS_ID = 2L;
+        private static final UpdateStudyNoticeCommentRequest REQUEST = new UpdateStudyNoticeCommentRequest("공지사항 댓글~~");
 
         @Test
-        @DisplayName("작성자가 아니라면 댓글을 수정할 수 없다")
+        @DisplayName("댓글 작성자가 아니면 수정할 수 없다")
         void throwExceptionByMemberIsNotWriter() throws Exception {
             // given
             mockingToken(true, ANONYMOUS_ID);
@@ -138,12 +142,11 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
                     .updateNoticeComment(any());
 
             // when
-            final UpdateStudyNoticeCommentRequest request = new UpdateStudyNoticeCommentRequest("공지사항 댓글~~");
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .put(BASE_URL, NOTICE_ID, COMMENT_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             final StudyNoticeErrorCode expectedError = StudyNoticeErrorCode.ONLY_WRITER_CAN_UPDATE_NOTICE_COMMENT;
@@ -164,11 +167,14 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("noticeId").description("공지사항 ID(PK)"),
-                                            parameterWithName("commentId").description("수정할 댓글 ID(PK)")
+                                            parameterWithName("noticeId")
+                                                    .description("공지사항 ID(PK)"),
+                                            parameterWithName("commentId")
+                                                    .description("수정할 댓글 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("content").description("수정할 댓글 내용")
+                                            fieldWithPath("content")
+                                                    .description("수정할 댓글 내용")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -176,7 +182,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("공지사항에 대한 댓글 수정에 성공한다")
+        @DisplayName("공지사항 댓글을 수정한다")
         void success() throws Exception {
             // given
             mockingToken(true, PARTICIPANT_ID);
@@ -185,12 +191,11 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
                     .updateNoticeComment(any());
 
             // when
-            final UpdateStudyNoticeCommentRequest request = new UpdateStudyNoticeCommentRequest("공지사항 댓글~~");
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .put(BASE_URL, NOTICE_ID, COMMENT_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(request));
+                    .content(convertObjectToJson(REQUEST));
 
             // then
             mockMvc.perform(requestBuilder)
@@ -202,11 +207,14 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("noticeId").description("공지사항 ID(PK)"),
-                                            parameterWithName("commentId").description("수정할 댓글 ID(PK)")
+                                            parameterWithName("noticeId")
+                                                    .description("공지사항 ID(PK)"),
+                                            parameterWithName("commentId")
+                                                    .description("수정할 댓글 ID(PK)")
                                     ),
                                     requestFields(
-                                            fieldWithPath("content").description("수정할 댓글 내용")
+                                            fieldWithPath("content")
+                                                    .description("수정할 댓글 내용")
                                     )
                             )
                     );
@@ -215,7 +223,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("공지사항 댓글 삭제 API [DELETE /api/notices/{noticeId}/comments/{commentId}] - AccessToken 필수")
-    class remove {
+    class delete {
         private static final String BASE_URL = "/api/notices/{noticeId}/comments/{commentId}";
         private static final Long NOTICE_ID = 1L;
         private static final Long COMMENT_ID = 1L;
@@ -223,7 +231,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
         private static final Long ANONYMOUS_ID = 2L;
 
         @Test
-        @DisplayName("작성자가 아니라면 댓글을 삭제할 수 없다")
+        @DisplayName("댓글 작성자가 아니면 삭제할 수 없다")
         void throwExceptionByMemberIsNotWriter() throws Exception {
             // given
             mockingToken(true, ANONYMOUS_ID);
@@ -255,8 +263,10 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("noticeId").description("공지사항 ID(PK)"),
-                                            parameterWithName("commentId").description("삭제할 댓글 ID(PK)")
+                                            parameterWithName("noticeId")
+                                                    .description("공지사항 ID(PK)"),
+                                            parameterWithName("commentId")
+                                                    .description("삭제할 댓글 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -264,7 +274,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("공지사항에 등록한 댓글 삭제에 성공한다")
+        @DisplayName("공지사항 댓글을 삭제한다")
         void success() throws Exception {
             // given
             mockingToken(true, PARTICIPANT_ID);
@@ -287,8 +297,10 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("noticeId").description("공지사항 ID(PK)"),
-                                            parameterWithName("commentId").description("삭제할 댓글 ID(PK)")
+                                            parameterWithName("noticeId")
+                                                    .description("공지사항 ID(PK)"),
+                                            parameterWithName("commentId")
+                                                    .description("삭제할 댓글 ID(PK)")
                                     )
                             )
                     );

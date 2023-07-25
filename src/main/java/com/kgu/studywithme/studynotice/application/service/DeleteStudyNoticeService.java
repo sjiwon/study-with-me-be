@@ -28,7 +28,10 @@ public class DeleteStudyNoticeService implements DeleteStudyNoticeUseCase {
                 .orElseThrow(() -> StudyWithMeException.type(StudyNoticeErrorCode.NOTICE_NOT_FOUND));
     }
 
-    private void validateNoticeWriter(final StudyNotice notice, final Long hostId) {
+    private void validateNoticeWriter(
+            final StudyNotice notice,
+            final Long hostId
+    ) {
         if (!notice.isWriter(hostId)) {
             throw StudyWithMeException.type(StudyNoticeErrorCode.ONLY_WRITER_CAN_DELETE_NOTICE);
         }

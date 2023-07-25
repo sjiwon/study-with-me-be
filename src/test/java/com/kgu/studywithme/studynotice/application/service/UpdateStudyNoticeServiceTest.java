@@ -40,7 +40,7 @@ class UpdateStudyNoticeServiceTest extends UseCaseTest {
             writer.getId(),
             "Title",
             "Content"
-    );
+    ).apply(1L, LocalDateTime.now());
 
     @Test
     @DisplayName("공지사항 작성자가 아닌 사람이 수정을 시도하면 예외가 발생한다")
@@ -59,6 +59,7 @@ class UpdateStudyNoticeServiceTest extends UseCaseTest {
         ))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyNoticeErrorCode.ONLY_WRITER_CAN_UPDATE_NOTICE.getMessage());
+
         verify(studyNoticeRepository, times(1)).findById(any());
     }
 
@@ -79,8 +80,8 @@ class UpdateStudyNoticeServiceTest extends UseCaseTest {
         );
 
         // then
-        verify(studyNoticeRepository, times(1)).findById(any());
         assertAll(
+                () -> verify(studyNoticeRepository, times(1)).findById(any()),
                 () -> assertThat(notice.getTitle()).isEqualTo("Title-Update"),
                 () -> assertThat(notice.getContent()).isEqualTo("Content-Update")
         );

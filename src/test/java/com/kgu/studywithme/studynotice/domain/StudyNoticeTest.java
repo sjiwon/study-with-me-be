@@ -26,7 +26,7 @@ class StudyNoticeTest {
                 writer.getId(),
                 "Hello",
                 "Hello World"
-        );
+        ).apply(1L, LocalDateTime.now());
     }
 
     @Test
@@ -63,13 +63,13 @@ class StudyNoticeTest {
                         .containsExactlyInAnyOrder(1L, 1L, 2L, 2L, 2L)
         );
     }
-    
+
     @Test
     @DisplayName("공지사항 작성자인지 확인한다")
     void isWriter() {
         // when
-        boolean actual1 = notice.isWriter(writer.getId());
-        boolean actual2 = notice.isWriter(anonymous.getId());
+        final boolean actual1 = notice.isWriter(writer.getId());
+        final boolean actual2 = notice.isWriter(anonymous.getId());
 
         // then
         assertAll(

@@ -19,6 +19,7 @@ import java.util.Optional;
 import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -82,7 +83,9 @@ class UpdateStudyNoticeCommentServiceTest extends UseCaseTest {
         );
 
         // then
-        verify(studyNoticeCommentRepository, times(1)).findById(any());
-        assertThat(comment.getContent()).isEqualTo("댓글 수정");
+        assertAll(
+                () -> verify(studyNoticeCommentRepository, times(1)).findById(any()),
+                () -> assertThat(comment.getContent()).isEqualTo("댓글 수정")
+        );
     }
 }

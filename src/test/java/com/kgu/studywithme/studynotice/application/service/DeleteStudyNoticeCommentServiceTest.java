@@ -18,6 +18,7 @@ import java.util.Optional;
 
 import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -61,8 +62,10 @@ class DeleteStudyNoticeCommentServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyNoticeErrorCode.ONLY_WRITER_CAN_DELETE_NOTICE_COMMENT.getMessage());
 
-        verify(studyNoticeCommentRepository, times(1)).findById(any());
-        verify(studyNoticeCommentRepository, times(0)).delete(any());
+        assertAll(
+                () -> verify(studyNoticeCommentRepository, times(1)).findById(any()),
+                () -> verify(studyNoticeCommentRepository, times(0)).delete(any())
+        );
     }
 
     @Test
@@ -80,7 +83,9 @@ class DeleteStudyNoticeCommentServiceTest extends UseCaseTest {
         );
 
         // then
-        verify(studyNoticeCommentRepository, times(1)).findById(any());
-        verify(studyNoticeCommentRepository, times(1)).delete(any());
+        assertAll(
+                () -> verify(studyNoticeCommentRepository, times(1)).findById(any()),
+                () -> verify(studyNoticeCommentRepository, times(1)).delete(any())
+        );
     }
 }

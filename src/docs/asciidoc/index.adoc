@@ -31,9 +31,9 @@ include::study-information.adoc[leveloffset=+1]
 
 include::study-participation.adoc[leveloffset=+1]
 
-include::study-notice.adoc[leveloffset=+1]
+include::study/study-notice.adoc[leveloffset=+1]
 
-include::study-notice-comment.adoc[leveloffset=+1]
+include::study/study-notice-comment.adoc[leveloffset=+1]
 
 include::study/study-review.adoc[leveloffset=+1]
 

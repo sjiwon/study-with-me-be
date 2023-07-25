@@ -16,7 +16,7 @@ include::{snippets}/StudyApi/Notice/Comment/Write/Failure/request-fields.adoc[]
 HTTP Response
 include::{snippets}/StudyApi/Notice/Comment/Write/Failure/http-response.adoc[]
 
-=== 2. 공지사항에 대한 댓글 작성에 성공한다
+=== 2. 공지사항에 댓글을 작성한다
 HTTP Request
 include::{snippets}/StudyApi/Notice/Comment/Write/Success/http-request.adoc[]
 include::{snippets}/StudyApi/Notice/Comment/Write/Success/request-headers.adoc[]
@@ -27,7 +27,7 @@ HTTP Response
 include::{snippets}/StudyApi/Notice/Comment/Write/Success/http-response.adoc[]
 
 == 공지사항 댓글 수정 [AccessToken 필수]
-=== 1. 작성자가 아니면 댓글을 수정할 수 없다
+=== 1. 댓글 작성자가 아니면 수정할 수 없다
 HTTP Request
 include::{snippets}/StudyApi/Notice/Comment/Update/Failure/http-request.adoc[]
 include::{snippets}/StudyApi/Notice/Comment/Update/Failure/request-headers.adoc[]
@@ -37,7 +37,7 @@ include::{snippets}/StudyApi/Notice/Comment/Update/Failure/request-fields.adoc[]
 HTTP Response
 include::{snippets}/StudyApi/Notice/Comment/Update/Failure/response-body.adoc[]
 
-=== 2. 공지사항에 대한 댓글 수정에 성공한다
+=== 2. 공지사항 댓글을 수정한다
 HTTP Request
 include::{snippets}/StudyApi/Notice/Comment/Update/Success/http-request.adoc[]
 include::{snippets}/StudyApi/Notice/Comment/Update/Success/request-headers.adoc[]
@@ -48,7 +48,7 @@ HTTP Response
 include::{snippets}/StudyApi/Notice/Comment/Update/Success/http-response.adoc[]
 
 == 공지사항 댓글 삭제 [AccessToken 필수]
-=== 1. 작성자가 아니면 댓글을 삭제할 수 없다
+=== 1. 댓글 작성자가 아니면 삭제할 수 없다
 HTTP Request
 include::{snippets}/StudyApi/Notice/Comment/Delete/Failure/http-request.adoc[]
 include::{snippets}/StudyApi/Notice/Comment/Delete/Failure/request-headers.adoc[]
@@ -57,7 +57,7 @@ include::{snippets}/StudyApi/Notice/Comment/Delete/Failure/path-parameters.adoc[
 HTTP Response
 include::{snippets}/StudyApi/Notice/Comment/Delete/Failure/response-body.adoc[]
 
-=== 2. 공지사항에 대한 댓글 삭제에 성공한다
+=== 2. 공지사항 댓글을 삭제한다
 HTTP Request
 include::{snippets}/StudyApi/Notice/Comment/Delete/Success/http-request.adoc[]
 include::{snippets}/StudyApi/Notice/Comment/Delete/Success/request-headers.adoc[]

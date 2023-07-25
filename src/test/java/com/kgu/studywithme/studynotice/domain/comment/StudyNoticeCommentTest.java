@@ -21,9 +21,10 @@ class StudyNoticeCommentTest {
 
     @BeforeEach
     void setUp() {
-        StudyNotice notice
-                = StudyNotice.writeNotice(1L, writer.getId(), "Hello", "Hello World");
-        comment = StudyNoticeComment.writeComment(notice, writer.getId(), "Yes!!");
+        final StudyNotice notice = StudyNotice
+                .writeNotice(1L, writer.getId(), "Hello", "Hello World")
+                .apply(1L, LocalDateTime.now());
+        comment = StudyNoticeComment.writeComment(notice, writer.getId(), "Yes!!").apply(1L, LocalDateTime.now());
     }
 
     @Test
@@ -40,8 +41,8 @@ class StudyNoticeCommentTest {
     @DisplayName("공지사항 댓글 작성자인지 확인한다")
     void isWriter() {
         // when
-        boolean actual1 = comment.isWriter(writer.getId());
-        boolean actual2 = comment.isWriter(anonymous.getId());
+        final boolean actual1 = comment.isWriter(writer.getId());
+        final boolean actual2 = comment.isWriter(anonymous.getId());
 
         // then
         assertAll(
