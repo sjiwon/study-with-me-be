@@ -3,6 +3,7 @@ package com.kgu.studywithme.study.infrastructure.repository.query.dto;
 import com.kgu.studywithme.member.domain.Nickname;
 import com.kgu.studywithme.studyweekly.domain.Period;
 import com.kgu.studywithme.studyweekly.domain.submit.UploadAssignment;
+import com.kgu.studywithme.studyweekly.domain.submit.UploadType;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,7 +37,7 @@ public class WeeklyInformation {
     public record WeeklySubmit(
             StudyMember participant,
             Long weeklyId,
-            String submitType,
+            UploadType submitType,
             String submitFileName,
             String submitLink
     ) {
@@ -50,7 +51,7 @@ public class WeeklyInformation {
             this(
                     new StudyMember(submitterId, submitterNickname.getValue()),
                     weeklyId,
-                    assignment.getType().getDescription(),
+                    assignment.getType(),
                     assignment.getUploadFileName(),
                     assignment.getLink()
             );

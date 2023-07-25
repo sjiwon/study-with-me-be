@@ -40,7 +40,7 @@ public class StudyWeeklyApiController {
                         hostId,
                         request.title(),
                         request.content(),
-                        Period.of(request.startDate(), request.endDate()),
+                        new Period(request.startDate(), request.endDate()),
                         request.assignmentExists(),
                         request.autoAttendance(),
                         request.files()
@@ -64,7 +64,7 @@ public class StudyWeeklyApiController {
                         week,
                         request.title(),
                         request.content(),
-                        Period.of(request.startDate(), request.endDate()),
+                        new Period(request.startDate(), request.endDate()),
                         request.assignmentExists(),
                         request.autoAttendance(),
                         request.files()

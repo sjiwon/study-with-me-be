@@ -17,35 +17,35 @@ public enum StudyWeeklyFixture {
             "Week 1", "지정된 기간까지 과제 제출해주세요.",
             1, WEEK_0, true, true,
             List.of(
-                    UploadAttachment.of(IMG_FILE.getUploadFileName(), IMG_FILE.getLink()),
-                    UploadAttachment.of(PDF_FILE.getUploadFileName(), PDF_FILE.getLink())
+                    new UploadAttachment(IMG_FILE.getUploadFileName(), IMG_FILE.getLink()),
+                    new UploadAttachment(PDF_FILE.getUploadFileName(), PDF_FILE.getLink())
             )
     ),
     STUDY_WEEKLY_1(
             "Week 1", "지정된 기간까지 과제 제출해주세요.",
             1, WEEK_1, true, true,
             List.of(
-                    UploadAttachment.of(IMG_FILE.getUploadFileName(), IMG_FILE.getLink()),
-                    UploadAttachment.of(PDF_FILE.getUploadFileName(), PDF_FILE.getLink())
+                    new UploadAttachment(IMG_FILE.getUploadFileName(), IMG_FILE.getLink()),
+                    new UploadAttachment(PDF_FILE.getUploadFileName(), PDF_FILE.getLink())
             )
     ),
     STUDY_WEEKLY_2(
             "Week 2", "지정된 기간까지 과제 제출해주세요.",
             2, WEEK_2, true, true,
             List.of(
-                    UploadAttachment.of(IMG_FILE.getUploadFileName(), IMG_FILE.getLink()),
-                    UploadAttachment.of(HWPX_FILE.getUploadFileName(), HWPX_FILE.getLink())
+                    new UploadAttachment(IMG_FILE.getUploadFileName(), IMG_FILE.getLink()),
+                    new UploadAttachment(HWPX_FILE.getUploadFileName(), HWPX_FILE.getLink())
             )
     ),
     STUDY_WEEKLY_3(
             "Week 3", "지정된 기간까지 과제 제출해주세요.",
             3, WEEK_3, true, true,
-            List.of(UploadAttachment.of(PDF_FILE.getUploadFileName(), PDF_FILE.getLink()))
+            List.of(new UploadAttachment(PDF_FILE.getUploadFileName(), PDF_FILE.getLink()))
     ),
     STUDY_WEEKLY_4(
             "Week 4", "지정된 기간까지 과제 제출해주세요.",
             4, WEEK_4, true, true,
-            List.of(UploadAttachment.of(TXT_FILE.getUploadFileName(), TXT_FILE.getLink()))
+            List.of(new UploadAttachment(TXT_FILE.getUploadFileName(), TXT_FILE.getLink()))
     ),
     STUDY_WEEKLY_5(
             "Week 5", "지정된 시간까지 다들 줌에 접속해주세요.",

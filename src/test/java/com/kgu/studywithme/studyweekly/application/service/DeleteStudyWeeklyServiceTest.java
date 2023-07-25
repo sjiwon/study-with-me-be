@@ -19,6 +19,7 @@ import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.fixture.StudyFixture.SPRING;
 import static com.kgu.studywithme.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
@@ -35,7 +36,7 @@ class DeleteStudyWeeklyServiceTest extends UseCaseTest {
 
     private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L, LocalDateTime.now());
-    private final StudyWeekly weekly = STUDY_WEEKLY_1.toWeekly(study.getId(), host.getId());
+    private final StudyWeekly weekly = STUDY_WEEKLY_1.toWeekly(study.getId(), host.getId()).apply(1L, LocalDateTime.now());
     private final DeleteStudyWeeklyUseCase.Command command =
             new DeleteStudyWeeklyUseCase.Command(
                     study.getId(),
@@ -53,8 +54,10 @@ class DeleteStudyWeeklyServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyWeeklyErrorCode.ONLY_LATEST_WEEKLY_CAN_DELETE.getMessage());
 
-        verify(studyWeeklyRepository, times(1)).isLatestWeek(any(), anyInt());
-        verify(studyWeeklyRepository, times(0)).deleteSpecificWeekly(any(), anyInt());
+        assertAll(
+                () -> verify(studyWeeklyRepository, times(1)).isLatestWeek(any(), anyInt()),
+                () -> verify(studyWeeklyRepository, times(0)).deleteSpecificWeekly(any(), anyInt())
+        );
     }
 
     @Test
@@ -67,7 +70,9 @@ class DeleteStudyWeeklyServiceTest extends UseCaseTest {
         deleteStudyWeeklyService.deleteStudyWeekly(command);
 
         // then
-        verify(studyWeeklyRepository, times(1)).isLatestWeek(any(), anyInt());
-        verify(studyWeeklyRepository, times(1)).deleteSpecificWeekly(any(), anyInt());
+        assertAll(
+                () -> verify(studyWeeklyRepository, times(1)).isLatestWeek(any(), anyInt()),
+                () -> verify(studyWeeklyRepository, times(1)).deleteSpecificWeekly(any(), anyInt())
+        );
     }
 }

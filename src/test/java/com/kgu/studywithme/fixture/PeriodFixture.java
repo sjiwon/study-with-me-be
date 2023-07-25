@@ -22,6 +22,6 @@ public enum PeriodFixture {
     private final LocalDateTime endDate;
 
     public Period toPeriod() {
-        return Period.of(startDate, endDate);
+        return new Period(startDate, endDate);
     }
 }

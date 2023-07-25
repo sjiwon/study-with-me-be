@@ -39,7 +39,9 @@ include::study/study-review.adoc[leveloffset=+1]
 
 include::study/study-attendance.adoc[leveloffset=+1]
 
-include::study-weekly.adoc[leveloffset=+1]
+include::study/study-weekly.adoc[leveloffset=+1]
+
+include::study/study-weekly-assignment-submit.adoc[leveloffset=+1]
 
 include::favorite/study-favorite.adoc[leveloffset=+1]
 

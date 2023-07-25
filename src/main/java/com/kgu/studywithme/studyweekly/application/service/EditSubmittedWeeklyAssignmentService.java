@@ -37,8 +37,7 @@ public class EditSubmittedWeeklyAssignmentService implements EditSubmittedWeekly
     public void editSubmittedWeeklyAssignment(final Command command) {
         validateAssignmentSubmissionExists(command.file(), command.link());
 
-        final StudyWeeklySubmit submittedAssignment
-                = getSubmittedAssignment(command.memberId(), command.studyId(), command.week());
+        final StudyWeeklySubmit submittedAssignment = getSubmittedAssignment(command.memberId(), command.studyId(), command.week());
         final UploadAssignment assignment = uploadAssignment(command.uploadType(), command.file(), command.link());
         submittedAssignment.editUpload(assignment);
 

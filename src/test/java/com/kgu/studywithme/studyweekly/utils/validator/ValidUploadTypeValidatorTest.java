@@ -27,7 +27,7 @@ class ValidUploadTypeValidatorTest {
         final String unknown = "unknown";
 
         // when
-        boolean actual = validator.isValid(unknown, context);
+        final boolean actual = validator.isValid(unknown, context);
 
         // then
         assertThat(actual).isFalse();
@@ -41,8 +41,8 @@ class ValidUploadTypeValidatorTest {
         final String file = "file";
 
         // when
-        boolean actual1 = validator.isValid(link, context);
-        boolean actual2 = validator.isValid(file, context);
+        final boolean actual1 = validator.isValid(link, context);
+        final boolean actual2 = validator.isValid(file, context);
 
         // then
         assertAll(

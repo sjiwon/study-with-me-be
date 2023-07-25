@@ -24,7 +24,7 @@ class StudyWeeklyAttachmentTest {
     @Test
     @DisplayName("StudyWeeklyAttachment를 생성한다")
     void construct() {
-        final UploadAttachment uploadAttachment = UploadAttachment.of("hello.pdf", "uuid.pdf");
+        final UploadAttachment uploadAttachment = new UploadAttachment("hello.pdf", "uuid.pdf");
         final StudyWeeklyAttachment attachment = StudyWeeklyAttachment.addAttachmentFile(weekly, uploadAttachment);
 
         assertAll(

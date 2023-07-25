@@ -26,6 +26,7 @@ import static com.kgu.studywithme.fixture.StudyFixture.SPRING;
 import static com.kgu.studywithme.fixture.StudyWeeklyAttachmentFixture.HWPX_FILE;
 import static com.kgu.studywithme.fixture.StudyWeeklyAttachmentFixture.TXT_FILE;
 import static com.kgu.studywithme.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -87,10 +88,12 @@ class CreateStudyWeeklyServiceTest extends UseCaseTest {
         );
 
         // then
-        verify(uploader, times(files.size())).uploadWeeklyAttachment(any());
-        verify(studyWeeklyRepository, times(1)).getNextWeek(any());
-        verify(studyWeeklyRepository, times(1)).save(any());
-        verify(studyParticipantRepository, times(1)).findStudyParticipantIds(any());
-        verify(studyAttendanceRepository, times(1)).saveAll(any());
+        assertAll(
+                () -> verify(uploader, times(files.size())).uploadWeeklyAttachment(any()),
+                () -> verify(studyWeeklyRepository, times(1)).getNextWeek(any()),
+                () -> verify(studyWeeklyRepository, times(1)).save(any()),
+                () -> verify(studyParticipantRepository, times(1)).findStudyParticipantIds(any()),
+                () -> verify(studyAttendanceRepository, times(1)).saveAll(any())
+        );
     }
 }

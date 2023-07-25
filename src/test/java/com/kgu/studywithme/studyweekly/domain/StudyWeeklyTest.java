@@ -70,10 +70,10 @@ class StudyWeeklyTest {
 
         // when
         final List<UploadAttachment> attachments = List.of(
-                UploadAttachment.of(PDF_FILE.getUploadFileName(), PDF_FILE.getLink()),
-                UploadAttachment.of(TXT_FILE.getUploadFileName(), TXT_FILE.getLink()),
-                UploadAttachment.of(HWPX_FILE.getUploadFileName(), HWPX_FILE.getLink()),
-                UploadAttachment.of(IMG_FILE.getUploadFileName(), IMG_FILE.getLink())
+                new UploadAttachment(PDF_FILE.getUploadFileName(), PDF_FILE.getLink()),
+                new UploadAttachment(TXT_FILE.getUploadFileName(), TXT_FILE.getLink()),
+                new UploadAttachment(HWPX_FILE.getUploadFileName(), HWPX_FILE.getLink()),
+                new UploadAttachment(IMG_FILE.getUploadFileName(), IMG_FILE.getLink())
         );
         weekly.update(
                 "title",

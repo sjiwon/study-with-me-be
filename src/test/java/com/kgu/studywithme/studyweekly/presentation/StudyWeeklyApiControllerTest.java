@@ -31,6 +31,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @DisplayName("StudyWeekly -> StudyWeeklyApiController 테스트")
 class StudyWeeklyApiControllerTest extends ControllerTest {
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+
     @Nested
     @DisplayName("스터디 주차 생성 API [POST /api/studies/{studyId}/week] - AccessToken 필수")
     class createWeekly {
@@ -38,7 +40,6 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;
         private static final Long ANONYMOUS_ID = 2L;
-        private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 
         private MultipartFile files1;
         private MultipartFile files2;
@@ -96,19 +97,27 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     requestParts(
-                                            partWithName("files").description("스터디 해당 주차에 대한 첨부파일")
+                                            partWithName("files")
+                                                    .description("스터디 해당 주차에 대한 첨부파일")
                                                     .optional()
                                     ),
                                     queryParameters(
-                                            parameterWithName("title").description("스터디 주차 제목"),
-                                            parameterWithName("content").description("스터디 주차 내용"),
-                                            parameterWithName("startDate").description("스터디 주차 시작 날짜"),
-                                            parameterWithName("endDate").description("스터디 주차 종료 날짜"),
-                                            parameterWithName("assignmentExists").description("스터디 주차 과제 존재 여부"),
-                                            parameterWithName("autoAttendance").description("스터디 주차 자동 출석 여부")
+                                            parameterWithName("title")
+                                                    .description("스터디 주차 제목"),
+                                            parameterWithName("content")
+                                                    .description("스터디 주차 내용"),
+                                            parameterWithName("startDate")
+                                                    .description("스터디 주차 시작 날짜"),
+                                            parameterWithName("endDate")
+                                                    .description("스터디 주차 종료 날짜"),
+                                            parameterWithName("assignmentExists")
+                                                    .description("스터디 주차 과제 존재 여부"),
+                                            parameterWithName("autoAttendance")
+                                                    .description("스터디 주차 자동 출석 여부")
                                                     .attributes(constraint("과제 존재 여부가 false면 자동 출석은 무조건 false"))
                                     ),
                                     getExceptionResponseFiels()
@@ -147,19 +156,26 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)")
                                     ),
                                     requestParts(
-                                            partWithName("files").description("스터디 해당 주차에 대한 첨부파일")
+                                            partWithName("files")
+                                                    .description("스터디 해당 주차에 대한 첨부파일")
                                                     .optional()
                                     ),
                                     queryParameters(
-                                            parameterWithName("title").description("스터디 주차 제목"),
-                                            parameterWithName("content").description("스터디 주차 내용"),
-                                            parameterWithName("startDate").description("스터디 주차 시작 날짜"),
-                                            parameterWithName("endDate").description("스터디 주차 종료 날짜"),
+                                            parameterWithName("title")
+                                                    .description("스터디 주차 제목"),
+                                            parameterWithName("content")
+                                                    .description("스터디 주차 내용"),
+                                            parameterWithName("startDate")
+                                                    .description("스터디 주차 시작 날짜"),
+                                            parameterWithName("endDate")
+                                                    .description("스터디 주차 종료 날짜"),
                                             parameterWithName("assignmentExists").description("스터디 주차 과제 존재 여부"),
-                                            parameterWithName("autoAttendance").description("스터디 주차 자동 출석 여부")
+                                            parameterWithName("autoAttendance")
+                                                    .description("스터디 주차 자동 출석 여부")
                                                     .attributes(constraint("과제 존재 여부가 false면 자동 출석은 무조건 false"))
                                     )
                             )
@@ -175,7 +191,6 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;
         private static final Long ANONYMOUS_ID = 2L;
-        private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 
         private MultipartFile files1;
         private MultipartFile files2;
@@ -233,20 +248,29 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("week").description("수정할 주차")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("week")
+                                                    .description("수정할 주차")
                                     ),
                                     requestParts(
-                                            partWithName("files").description("스터디 해당 주차에 대한 첨부파일")
+                                            partWithName("files")
+                                                    .description("스터디 해당 주차에 대한 첨부파일")
                                                     .optional()
                                     ),
                                     queryParameters(
-                                            parameterWithName("title").description("스터디 주차 제목"),
-                                            parameterWithName("content").description("스터디 주차 내용"),
-                                            parameterWithName("startDate").description("스터디 주차 시작 날짜"),
-                                            parameterWithName("endDate").description("스터디 주차 종료 날짜"),
-                                            parameterWithName("assignmentExists").description("스터디 주차 과제 존재 여부"),
-                                            parameterWithName("autoAttendance").description("스터디 주차 자동 출석 여부")
+                                            parameterWithName("title")
+                                                    .description("스터디 주차 제목"),
+                                            parameterWithName("content")
+                                                    .description("스터디 주차 내용"),
+                                            parameterWithName("startDate")
+                                                    .description("스터디 주차 시작 날짜"),
+                                            parameterWithName("endDate")
+                                                    .description("스터디 주차 종료 날짜"),
+                                            parameterWithName("assignmentExists")
+                                                    .description("스터디 주차 과제 존재 여부"),
+                                            parameterWithName("autoAttendance")
+                                                    .description("스터디 주차 자동 출석 여부")
                                                     .attributes(constraint("과제 존재 여부가 false면 자동 출석은 무조건 false"))
                                     ),
                                     getExceptionResponseFiels()
@@ -297,20 +321,29 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("week").description("수정할 주차")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("week")
+                                                    .description("수정할 주차")
                                     ),
                                     requestParts(
-                                            partWithName("files").description("스터디 해당 주차에 대한 첨부파일")
+                                            partWithName("files")
+                                                    .description("스터디 해당 주차에 대한 첨부파일")
                                                     .optional()
                                     ),
                                     queryParameters(
-                                            parameterWithName("title").description("스터디 주차 제목"),
-                                            parameterWithName("content").description("스터디 주차 내용"),
-                                            parameterWithName("startDate").description("스터디 주차 시작 날짜"),
-                                            parameterWithName("endDate").description("스터디 주차 종료 날짜"),
-                                            parameterWithName("assignmentExists").description("스터디 주차 과제 존재 여부"),
-                                            parameterWithName("autoAttendance").description("스터디 주차 자동 출석 여부")
+                                            parameterWithName("title")
+                                                    .description("스터디 주차 제목"),
+                                            parameterWithName("content")
+                                                    .description("스터디 주차 내용"),
+                                            parameterWithName("startDate")
+                                                    .description("스터디 주차 시작 날짜"),
+                                            parameterWithName("endDate")
+                                                    .description("스터디 주차 종료 날짜"),
+                                            parameterWithName("assignmentExists")
+                                                    .description("스터디 주차 과제 존재 여부"),
+                                            parameterWithName("autoAttendance")
+                                                    .description("스터디 주차 자동 출석 여부")
                                                     .attributes(constraint("과제 존재 여부가 false면 자동 출석은 무조건 false"))
                                     ),
                                     getExceptionResponseFiels()
@@ -352,20 +385,29 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("week").description("수정할 주차")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("week")
+                                                    .description("수정할 주차")
                                     ),
                                     requestParts(
-                                            partWithName("files").description("스터디 해당 주차에 대한 첨부파일")
+                                            partWithName("files")
+                                                    .description("스터디 해당 주차에 대한 첨부파일")
                                                     .optional()
                                     ),
                                     queryParameters(
-                                            parameterWithName("title").description("스터디 주차 제목"),
-                                            parameterWithName("content").description("스터디 주차 내용"),
-                                            parameterWithName("startDate").description("스터디 주차 시작 날짜"),
-                                            parameterWithName("endDate").description("스터디 주차 종료 날짜"),
-                                            parameterWithName("assignmentExists").description("스터디 주차 과제 존재 여부"),
-                                            parameterWithName("autoAttendance").description("스터디 주차 자동 출석 여부")
+                                            parameterWithName("title")
+                                                    .description("스터디 주차 제목"),
+                                            parameterWithName("content")
+                                                    .description("스터디 주차 내용"),
+                                            parameterWithName("startDate")
+                                                    .description("스터디 주차 시작 날짜"),
+                                            parameterWithName("endDate")
+                                                    .description("스터디 주차 종료 날짜"),
+                                            parameterWithName("assignmentExists")
+                                                    .description("스터디 주차 과제 존재 여부"),
+                                            parameterWithName("autoAttendance")
+                                                    .description("스터디 주차 자동 출석 여부")
                                                     .attributes(constraint("과제 존재 여부가 false면 자동 출석은 무조건 false"))
                                     )
                             )
@@ -418,8 +460,10 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("week").description("삭제할 주차")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("week")
+                                                    .description("삭제할 주차")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -459,8 +503,10 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("week").description("삭제할 주차")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("week")
+                                                    .description("삭제할 주차")
                                     ),
                                     getExceptionResponseFiels()
                             )

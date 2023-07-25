@@ -89,8 +89,10 @@ class UpdateStudyWeeklyServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyWeeklyErrorCode.WEEKLY_NOT_FOUND.getMessage());
 
-        verify(studyWeeklyRepository, times(1)).getSpecificWeekly(any(), anyInt());
-        verify(uploader, times(0)).uploadWeeklyAttachment(any());
+        assertAll(
+                () -> verify(studyWeeklyRepository, times(1)).getSpecificWeekly(any(), anyInt()),
+                () -> verify(uploader, times(0)).uploadWeeklyAttachment(any())
+        );
     }
 
     @Test
@@ -118,28 +120,24 @@ class UpdateStudyWeeklyServiceTest extends UseCaseTest {
         );
 
         // then
-        verify(studyWeeklyRepository, times(1)).getSpecificWeekly(any(), anyInt());
-        verify(uploader, times(files.size())).uploadWeeklyAttachment(any());
-
         assertAll(
+                () -> verify(studyWeeklyRepository, times(1)).getSpecificWeekly(any(), anyInt()),
+                () -> verify(uploader, times(files.size())).uploadWeeklyAttachment(any()),
                 () -> assertThat(weekly.getTitle()).isEqualTo(STUDY_WEEKLY_2.getTitle()),
                 () -> assertThat(weekly.getContent()).isEqualTo(STUDY_WEEKLY_2.getContent()),
                 () -> assertThat(weekly.getPeriod().getStartDate()).isEqualTo(STUDY_WEEKLY_2.getPeriod().getStartDate()),
                 () -> assertThat(weekly.getPeriod().getEndDate()).isEqualTo(STUDY_WEEKLY_2.getPeriod().getEndDate()),
                 () -> assertThat(weekly.isAssignmentExists()).isEqualTo(STUDY_WEEKLY_2.isAssignmentExists()),
                 () -> assertThat(weekly.isAutoAttendance()).isEqualTo(STUDY_WEEKLY_2.isAutoAttendance()),
-                () -> assertThat(
-                        weekly.getAttachments()
-                                .stream()
-                                .map(StudyWeeklyAttachment::getUploadAttachment)
-                                .map(UploadAttachment::getLink)
-                                .toList()
-                ).containsExactlyInAnyOrder(
-                        TXT_FILE.getLink(),
-                        HWPX_FILE.getLink(),
-                        PDF_FILE.getLink(),
-                        IMG_FILE.getLink()
-                )
+                () -> assertThat(weekly.getAttachments())
+                        .map(StudyWeeklyAttachment::getUploadAttachment)
+                        .map(UploadAttachment::getLink)
+                        .containsExactlyInAnyOrder(
+                                TXT_FILE.getLink(),
+                                HWPX_FILE.getLink(),
+                                PDF_FILE.getLink(),
+                                IMG_FILE.getLink()
+                        )
         );
     }
 }

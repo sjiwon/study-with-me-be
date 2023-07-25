@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @DisplayName("StudyWeekly -> 도메인 [Period VO] 테스트")
 class PeriodTest {
@@ -19,7 +20,7 @@ class PeriodTest {
         final LocalDateTime startDate = LocalDateTime.now().plusDays(7);
         final LocalDateTime endDate = LocalDateTime.now().plusDays(1);
 
-        assertThatThrownBy(() -> Period.of(startDate, endDate))
+        assertThatThrownBy(() -> new Period(startDate, endDate))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyWeeklyErrorCode.PERIOD_START_DATE_MUST_BE_BEFORE_END_DATE.getMessage());
     }
@@ -27,27 +28,18 @@ class PeriodTest {
     @Test
     @DisplayName("Period을 생성한다")
     void construct() {
-        final LocalDateTime startDate = LocalDateTime.now().plusDays(1);
-        final LocalDateTime endDate = LocalDateTime.now().plusDays(7);
-        final Period period = Period.of(startDate, endDate);
-
-        assertAll(
-                () -> assertThat(period.getStartDate()).isEqualTo(startDate),
-                () -> assertThat(period.getEndDate()).isEqualTo(endDate)
-        );
+        assertDoesNotThrow(() -> new Period(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2)));
     }
 
     @Test
     @DisplayName("주어진 날짜가 Period의 StartDate ~ EndDate 사이에 포함되는지 확인한다")
     void isDateWithInRange() {
         // given
-        final LocalDateTime startDate = LocalDateTime.now().plusDays(1);
-        final LocalDateTime endDate = LocalDateTime.now().plusDays(7);
-        final Period period = Period.of(startDate, endDate);
+        final Period period = new Period(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(7));
 
         // when
-        boolean actual1 = period.isDateWithInRange(LocalDateTime.now().plusDays(4));
-        boolean actual2 = period.isDateWithInRange(LocalDateTime.now().plusDays(8));
+        final boolean actual1 = period.isDateWithInRange(LocalDateTime.now().plusDays(4));
+        final boolean actual2 = period.isDateWithInRange(LocalDateTime.now().plusDays(8));
 
         // then
         assertAll(

@@ -73,22 +73,27 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "StudyApi/Weekly/Assignment/Submit/Failure/Case1",
+                                    "StudyApi/Weekly/AssignmentSubmit/Failure/Case1",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("week").description("과제를 제출할 주차")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("week")
+                                                    .description("과제를 제출할 주차")
                                     ),
                                     requestParts(
-                                            partWithName("file").description("제출할 파일")
+                                            partWithName("file")
+                                                    .description("제출할 파일")
                                                     .optional()
                                     ),
                                     queryParameters(
-                                            parameterWithName("type").description("과제 제출 타입")
+                                            parameterWithName("type")
+                                                    .description("과제 제출 타입")
                                                     .attributes(constraint("file=파일 / link=링크")),
-                                            parameterWithName("link").description("제출할 링크")
+                                            parameterWithName("link")
+                                                    .description("제출할 링크")
                                                     .optional()
                                     ),
                                     getExceptionResponseFiels()
@@ -125,22 +130,27 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "StudyApi/Weekly/Assignment/Submit/Failure/Case2",
+                                    "StudyApi/Weekly/AssignmentSubmit/Failure/Case2",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("week").description("과제를 제출할 주차")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("week")
+                                                    .description("과제를 제출할 주차")
                                     ),
                                     requestParts(
-                                            partWithName("file").description("제출할 파일")
+                                            partWithName("file")
+                                                    .description("제출할 파일")
                                                     .optional()
                                     ),
                                     queryParameters(
-                                            parameterWithName("type").description("과제 제출 타입")
+                                            parameterWithName("type")
+                                                    .description("과제 제출 타입")
                                                     .attributes(constraint("file=파일 / link=링크")),
-                                            parameterWithName("link").description("제출할 링크")
+                                            parameterWithName("link")
+                                                    .description("제출할 링크")
                                                     .optional()
                                     ),
                                     getExceptionResponseFiels()
@@ -179,22 +189,27 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "StudyApi/Weekly/Assignment/Submit/Failure/Case3",
+                                    "StudyApi/Weekly/AssignmentSubmit/Failure/Case3",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("week").description("과제를 제출할 주차")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("week")
+                                                    .description("과제를 제출할 주차")
                                     ),
                                     requestParts(
-                                            partWithName("file").description("제출할 파일")
+                                            partWithName("file")
+                                                    .description("제출할 파일")
                                                     .optional()
                                     ),
                                     queryParameters(
-                                            parameterWithName("type").description("과제 제출 타입")
+                                            parameterWithName("type")
+                                                    .description("과제 제출 타입")
                                                     .attributes(constraint("file=파일 / link=링크")),
-                                            parameterWithName("link").description("제출할 링크")
+                                            parameterWithName("link")
+                                                    .description("제출할 링크")
                                                     .optional()
                                     ),
                                     getExceptionResponseFiels()
@@ -220,22 +235,27 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                     .andExpect(status().isNoContent())
                     .andDo(
                             document(
-                                    "StudyApi/Weekly/Assignment/Submit/Success/Case1",
+                                    "StudyApi/Weekly/AssignmentSubmit/Success/Case1",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("week").description("과제를 제출할 주차")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("week")
+                                                    .description("과제를 제출할 주차")
                                     ),
                                     requestParts(
-                                            partWithName("file").description("제출할 파일")
+                                            partWithName("file")
+                                                    .description("제출할 파일")
                                                     .optional()
                                     ),
                                     queryParameters(
-                                            parameterWithName("type").description("과제 제출 타입")
+                                            parameterWithName("type")
+                                                    .description("과제 제출 타입")
                                                     .attributes(constraint("file=파일 / link=링크")),
-                                            parameterWithName("link").description("제출할 링크")
+                                            parameterWithName("link")
+                                                    .description("제출할 링크")
                                                     .optional()
                                     )
                             )
@@ -260,22 +280,27 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                     .andExpect(status().isNoContent())
                     .andDo(
                             document(
-                                    "StudyApi/Weekly/Assignment/Submit/Success/Case2",
+                                    "StudyApi/Weekly/AssignmentSubmit/Success/Case2",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("week").description("과제를 제출할 주차")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("week")
+                                                    .description("과제를 제출할 주차")
                                     ),
                                     requestParts(
-                                            partWithName("file").description("제출할 파일")
+                                            partWithName("file")
+                                                    .description("제출할 파일")
                                                     .optional()
                                     ),
                                     queryParameters(
-                                            parameterWithName("type").description("과제 제출 타입")
+                                            parameterWithName("type")
+                                                    .description("과제 제출 타입")
                                                     .attributes(constraint("file=파일 / link=링크")),
-                                            parameterWithName("link").description("제출할 링크")
+                                            parameterWithName("link")
+                                                    .description("제출할 링크")
                                                     .optional()
                                     )
                             )
@@ -328,22 +353,27 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "StudyApi/Weekly/Assignment/Edit/Failure/Case1",
+                                    "StudyApi/Weekly/AssignmentEdit/Failure/Case1",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("week").description("제출한 과제를 수정할 주차")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("week")
+                                                    .description("제출한 과제를 수정할 주차")
                                     ),
                                     requestParts(
-                                            partWithName("file").description("제출할 파일")
+                                            partWithName("file")
+                                                    .description("제출할 파일")
                                                     .optional()
                                     ),
                                     queryParameters(
-                                            parameterWithName("type").description("과제 제출 타입")
+                                            parameterWithName("type")
+                                                    .description("과제 제출 타입")
                                                     .attributes(constraint("file=파일 / link=링크")),
-                                            parameterWithName("link").description("제출할 링크")
+                                            parameterWithName("link")
+                                                    .description("제출할 링크")
                                                     .optional()
                                     ),
                                     getExceptionResponseFiels()
@@ -380,22 +410,27 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "StudyApi/Weekly/Assignment/Edit/Failure/Case2",
+                                    "StudyApi/Weekly/AssignmentEdit/Failure/Case2",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("week").description("제출한 과제를 수정할 주차")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("week")
+                                                    .description("제출한 과제를 수정할 주차")
                                     ),
                                     requestParts(
-                                            partWithName("file").description("제출할 파일")
+                                            partWithName("file")
+                                                    .description("제출할 파일")
                                                     .optional()
                                     ),
                                     queryParameters(
-                                            parameterWithName("type").description("과제 제출 타입")
+                                            parameterWithName("type")
+                                                    .description("과제 제출 타입")
                                                     .attributes(constraint("file=파일 / link=링크")),
-                                            parameterWithName("link").description("제출할 링크")
+                                            parameterWithName("link")
+                                                    .description("제출할 링크")
                                                     .optional()
                                     ),
                                     getExceptionResponseFiels()
@@ -434,22 +469,86 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "StudyApi/Weekly/Assignment/Edit/Failure/Case3",
+                                    "StudyApi/Weekly/AssignmentEdit/Failure/Case3",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("week").description("제출한 과제를 수정할 주차")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("week")
+                                                    .description("제출한 과제를 수정할 주차")
                                     ),
                                     requestParts(
-                                            partWithName("file").description("제출할 파일")
+                                            partWithName("file")
+                                                    .description("제출할 파일")
                                                     .optional()
                                     ),
                                     queryParameters(
-                                            parameterWithName("type").description("과제 제출 타입")
+                                            parameterWithName("type")
+                                                    .description("과제 제출 타입")
                                                     .attributes(constraint("file=파일 / link=링크")),
-                                            parameterWithName("link").description("제출할 링크")
+                                            parameterWithName("link")
+                                                    .description("제출할 링크")
+                                                    .optional()
+                                    ),
+                                    getExceptionResponseFiels()
+                            )
+                    );
+        }
+
+        @Test
+        @DisplayName("제출한 과제가 없다면 수정할 수 없다")
+        void throwExceptionBySubmittedAssignmentNotFound() throws Exception {
+            // given
+            mockingToken(true, HOST_ID);
+            doThrow(StudyWithMeException.type(StudyWeeklyErrorCode.SUBMITTED_ASSIGNMENT_NOT_FOUND))
+                    .when(editSubmittedWeeklyAssignmentUseCase)
+                    .editSubmittedWeeklyAssignment(any());
+
+            // when
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+                    .multipart(BASE_URL, STUDY_ID, WEEK)
+                    .file((MockMultipartFile) file)
+                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
+                    .queryParam("type", "file")
+                    .queryParam("link", "https://notion.so");
+
+            // then
+            final StudyWeeklyErrorCode expectedError = StudyWeeklyErrorCode.SUBMITTED_ASSIGNMENT_NOT_FOUND;
+            mockMvc.perform(requestBuilder)
+                    .andExpectAll(
+                            status().isNotFound(),
+                            jsonPath("$.status").exists(),
+                            jsonPath("$.status").value(expectedError.getStatus().value()),
+                            jsonPath("$.errorCode").exists(),
+                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
+                            jsonPath("$.message").exists(),
+                            jsonPath("$.message").value(expectedError.getMessage())
+                    )
+                    .andDo(
+                            document(
+                                    "StudyApi/Weekly/AssignmentEdit/Failure/Case4",
+                                    getDocumentRequest(),
+                                    getDocumentResponse(),
+                                    getHeaderWithAccessToken(),
+                                    pathParameters(
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("week")
+                                                    .description("제출한 과제를 수정할 주차")
+                                    ),
+                                    requestParts(
+                                            partWithName("file")
+                                                    .description("제출할 파일")
+                                                    .optional()
+                                    ),
+                                    queryParameters(
+                                            parameterWithName("type")
+                                                    .description("과제 제출 타입")
+                                                    .attributes(constraint("file=파일 / link=링크")),
+                                            parameterWithName("link")
+                                                    .description("제출할 링크")
                                                     .optional()
                                     ),
                                     getExceptionResponseFiels()
@@ -475,22 +574,27 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                     .andExpect(status().isNoContent())
                     .andDo(
                             document(
-                                    "StudyApi/Weekly/Assignment/Edit/Success",
+                                    "StudyApi/Weekly/AssignmentEdit/Success",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("week").description("제출한 과제를 수정할 주차")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("week")
+                                                    .description("제출한 과제를 수정할 주차")
                                     ),
                                     requestParts(
-                                            partWithName("file").description("제출할 파일")
+                                            partWithName("file")
+                                                    .description("제출할 파일")
                                                     .optional()
                                     ),
                                     queryParameters(
-                                            parameterWithName("type").description("과제 제출 타입")
+                                            parameterWithName("type")
+                                                    .description("과제 제출 타입")
                                                     .attributes(constraint("file=파일 / link=링크")),
-                                            parameterWithName("link").description("제출할 링크")
+                                            parameterWithName("link")
+                                                    .description("제출할 링크")
                                                     .optional()
                                     )
                             )

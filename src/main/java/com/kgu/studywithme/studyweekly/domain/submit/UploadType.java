@@ -1,14 +1,7 @@
 package com.kgu.studywithme.studyweekly.domain.submit;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@Getter
-@RequiredArgsConstructor
 public enum UploadType {
-    LINK("링크 제출"),
-    FILE("파일 제출"),
+    LINK,
+    FILE,
     ;
-
-    private final String description;
 }

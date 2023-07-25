@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class DeleteStudyWeeklyService implements DeleteStudyWeeklyUseCase {
-    private StudyWeeklyRepository studyWeeklyRepository;
+    private final StudyWeeklyRepository studyWeeklyRepository;
 
     @Override
     public void deleteStudyWeekly(final Command command) {

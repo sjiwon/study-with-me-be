@@ -20,23 +20,16 @@ public class Period {
     @Column(name = "end_date", nullable = false)
     private LocalDateTime endDate;
 
-    private Period(
-            final LocalDateTime startDate,
-            final LocalDateTime endDate
-    ) {
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
-
-    public static Period of(
+    public Period(
             final LocalDateTime startDate,
             final LocalDateTime endDate
     ) {
         validateStartIsBeforeEnd(startDate, endDate);
-        return new Period(startDate, endDate);
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
-    private static void validateStartIsBeforeEnd(
+    private void validateStartIsBeforeEnd(
             final LocalDateTime startDate,
             final LocalDateTime endDate
     ) {

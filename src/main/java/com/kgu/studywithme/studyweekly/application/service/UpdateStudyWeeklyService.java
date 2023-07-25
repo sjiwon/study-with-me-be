@@ -49,7 +49,7 @@ public class UpdateStudyWeeklyService implements UpdateStudyWeeklyUseCase {
 
         return files.stream()
                 .map(file ->
-                        UploadAttachment.of(
+                        new UploadAttachment(
                                 file.getOriginalFilename(),
                                 uploader.uploadWeeklyAttachment(file)
                         )

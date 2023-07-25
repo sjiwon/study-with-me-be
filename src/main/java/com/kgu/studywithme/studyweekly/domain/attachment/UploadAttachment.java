@@ -16,19 +16,12 @@ public class UploadAttachment {
     @Column(name = "link", nullable = false)
     private String link;
 
-    private UploadAttachment(
+    public UploadAttachment(
             final String uploadFileName,
             final String link
     ) {
         this.uploadFileName = uploadFileName;
         this.link = link;
-    }
-
-    public static UploadAttachment of(
-            final String uploadFileName,
-            final String link
-    ) {
-        return new UploadAttachment(uploadFileName, link);
     }
 
     @Override

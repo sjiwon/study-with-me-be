@@ -9,7 +9,7 @@ public class ValidUploadTypeValidator implements ConstraintValidator<ValidUpload
     private static final List<String> ALLOWED_TYPE = List.of("link", "file");
 
     @Override
-    public boolean isValid(String value, ConstraintValidatorContext context) {
+    public boolean isValid(final String value, final ConstraintValidatorContext context) {
         return ALLOWED_TYPE.contains(value);
     }
 }
