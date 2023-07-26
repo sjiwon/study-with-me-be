@@ -223,14 +223,10 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
         /* 신청자 3명 */
         studyParticipantRepository.saveAll(
                 List.of(
-                        StudyParticipant.applyHost(study.getId(), host.getId())
-                                .apply(1L, LocalDateTime.now().minusDays(4)),
-                        StudyParticipant.applyInStudy(study.getId(), memberA.getId())
-                                .apply(2L, LocalDateTime.now().minusDays(3)),
-                        StudyParticipant.applyInStudy(study.getId(), memberB.getId())
-                                .apply(3L, LocalDateTime.now().minusDays(2)),
+                        StudyParticipant.applyHost(study.getId(), host.getId()),
+                        StudyParticipant.applyInStudy(study.getId(), memberA.getId()),
+                        StudyParticipant.applyInStudy(study.getId(), memberB.getId()),
                         StudyParticipant.applyInStudy(study.getId(), memberC.getId())
-                                .apply(4L, LocalDateTime.now().minusDays(1))
                 )
         );
 

@@ -2,12 +2,13 @@ package com.kgu.studywithme.favorite.domain;
 
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.member.domain.Member;
+import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.study.domain.Study;
+import com.kgu.studywithme.study.domain.StudyRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.time.LocalDateTime;
 
 import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.fixture.StudyFixture.JPA;
@@ -20,9 +21,22 @@ class FavoriteRepositoryTest extends RepositoryTest {
     @Autowired
     private FavoriteRepository favoriteRepository;
 
-    private final Member member = JIWON.toMember().apply(1L, LocalDateTime.now());
-    private final Study studyA = SPRING.toOnlineStudy(member.getId()).apply(1L, LocalDateTime.now());
-    private final Study studyB = JPA.toOnlineStudy(member.getId()).apply(2L, LocalDateTime.now());
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private StudyRepository studyRepository;
+
+    private Member member;
+    private Study studyA;
+    private Study studyB;
+
+    @BeforeEach
+    void setUp() {
+        member = memberRepository.save(JIWON.toMember());
+        studyA = studyRepository.save(SPRING.toOnlineStudy(member.getId()));
+        studyB = studyRepository.save(JPA.toOnlineStudy(member.getId()));
+    }
 
     @Test
     @DisplayName("특정 스터디에 대해서 사용자가 찜을 했는지 여부를 확인한다")

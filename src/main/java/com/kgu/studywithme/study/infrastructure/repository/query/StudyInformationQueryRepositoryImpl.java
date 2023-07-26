@@ -168,7 +168,7 @@ public class StudyInformationQueryRepositoryImpl implements StudyInformationQuer
                         studyParticipant.studyId.eq(studyId),
                         studyParticipant.status.eq(APPLY)
                 )
-                .orderBy(studyParticipant.createdAt.desc())
+                .orderBy(studyParticipant.id.desc())
                 .fetch();
     }
 
