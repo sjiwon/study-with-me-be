@@ -41,13 +41,11 @@ dependencies {
 
     // JPA & DB
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    runtimeOnly 'com.mysql:mysql-connector-j' // local & prod
-    runtimeOnly 'com.h2database:h2' // test
+    runtimeOnly 'com.mysql:mysql-connector-j'
 
     // Flyway
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-mysql'
-    testImplementation 'org.flywaydb.flyway-test-extensions:flyway-spring-test:9.0.0'
 
     // Querydsl
     implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
@@ -87,6 +85,12 @@ dependencies {
     // Spring REST Docs (With MockMvc)
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+    // TestContainers
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation 'org.testcontainers:mysql:1.18.3'
+    testImplementation 'org.flywaydb.flyway-test-extensions:flyway-spring-test:9.5.0'
 }
 
 tasks.named('test') {
