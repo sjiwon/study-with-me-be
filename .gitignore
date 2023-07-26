@@ -31,6 +31,9 @@ out/
 src/docs/asciidoc/**/*.html
 src/main/resources/static/docs
 
+### Docker MySQL Meta Data ###
+mysql_data
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
