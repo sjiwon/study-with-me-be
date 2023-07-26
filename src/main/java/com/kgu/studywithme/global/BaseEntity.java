@@ -31,6 +31,7 @@ public abstract class BaseEntity<T> {
         lastModifiedAt = LocalDateTime.now();
     }
 
+    @SuppressWarnings("unchecked")
     @VisibleForTesting
     public T apply(final long id, final LocalDateTime now) {
         this.id = id;
