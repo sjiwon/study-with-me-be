@@ -11,8 +11,9 @@ spring:
       ddl-auto: validate
     properties:
       hibernate:
-        show_sql: true
+        show_sql: false
         format_sql: true
+        highlight_sql: true
         default_batch_fetch_size: 50
 
   thymeleaf:
@@ -67,3 +68,12 @@ cloud:
 slack:
   webhook:
     url: ${SLACK_WEBHOOK_URL}
+
+logging:
+  level:
+    org.springframework.core:
+      LocalVariableTableParameterNameDiscoverer: error
+    org.hibernate:
+      SQL: DEBUG
+      type.descriptor.sql: TRACE
+      orm.jdbc.bind: TRACE
