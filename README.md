@@ -40,7 +40,7 @@
 ## 🛠 Tech Stacks
 ### Backend
 
-![Backend](https://github.com/sjiwon/study-with-me-be/assets/51479381/8f017410-e803-4751-a3fe-4f1d026f04d4)
+![Backend](https://github.com/sjiwon/study-with-me-be/assets/51479381/22cc530c-43f0-4b63-bf04-d313fb547955)
 
 ### Infra
 
