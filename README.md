@@ -40,9 +40,10 @@
 ## 🛠 Tech Stacks
 ### Backend
 
-![BE 스택](https://github.com/kgu-capstone/study-with-me-be/assets/51479381/2c65f1ea-02b2-4782-895f-eba9b1abd2f1)
+![Backend](https://github.com/sjiwon/study-with-me-be/assets/51479381/8f017410-e803-4751-a3fe-4f1d026f04d4)
 
 ### Infra
+
 
 ![Infra 스택](https://github.com/kgu-capstone/study-with-me-be/assets/51479381/cc23b8e5-efe8-4955-91cd-21a4e533c593)
 
