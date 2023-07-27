@@ -3,11 +3,18 @@ services:
   database:
     image: mysql:8.0.33
     container_name: mysql_container
+    restart: always
     ports:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: "1234"
       MYSQL_DATABASE: "study_with_me"
+      TZ: "Asia/Seoul"
+      LANG: "C.UTF_8"
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --skip-character-set-client-handshake
     volumes:
       - "./mysql_data:/var/lib/mysql" # .idb = Table Data / .frm = Table Definition / ...
       - "./src/main/resources/sql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro" # Init Script
