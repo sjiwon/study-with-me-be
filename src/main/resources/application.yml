@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/study_with_me?autoReconnect=true&serverTimeZone=Asia/Seoul
+    url: jdbc:mysql://localhost:3306/study_with_me?autoReconnect=true&characterEncoding=utf8&serverTimeZone=Asia/Seoul
     username: root
     password: 1234
 
@@ -19,7 +19,7 @@ spring:
     properties:
       hibernate:
         show_sql: false
-        format_sql: true
+        format_sql: false
         highlight_sql: true
         default_batch_fetch_size: 50
 
@@ -49,7 +49,7 @@ spring:
 jwt:
   secret-key: testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
   access-token-validity: 7200
-  refresh-token-validity: 129600
+  refresh-token-validity: 1209600
 
 oauth2:
   google:
@@ -87,7 +87,3 @@ logging:
   level:
     org.springframework.core:
       LocalVariableTableParameterNameDiscoverer: error
-    org.hibernate:
-      SQL: DEBUG
-      type.descriptor.sql: TRACE
-      orm.jdbc.bind: TRACE

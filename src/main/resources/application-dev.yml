@@ -12,7 +12,7 @@ spring:
     properties:
       hibernate:
         show_sql: false
-        format_sql: true
+        format_sql: false
         highlight_sql: true
         default_batch_fetch_size: 50
 
@@ -42,7 +42,7 @@ spring:
 jwt:
   secret-key: ${JWT_SECRET_KEY}
   access-token-validity: 7200 # 2시간
-  refresh-token-validity: 129600 # 2주
+  refresh-token-validity: 1209600 # 2주
 
 oauth2:
   google:
@@ -73,7 +73,8 @@ logging:
   level:
     org.springframework.core:
       LocalVariableTableParameterNameDiscoverer: error
-    org.hibernate:
-      SQL: DEBUG
-      type.descriptor.sql: TRACE
-      orm.jdbc.bind: TRACE
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: false
