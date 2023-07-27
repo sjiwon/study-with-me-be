@@ -7,11 +7,13 @@ import com.kgu.studywithme.studyweekly.domain.submit.UploadType;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.List;
 
 @Getter
 @AllArgsConstructor
+@ToString
 public class WeeklyInformation {
     private final Long id;
     private final String title;
