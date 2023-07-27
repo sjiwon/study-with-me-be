@@ -1,12 +1,12 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/study_with_me?autoReconnect=true&characterEncoding=utf8&serverTimeZone=Asia/Seoul
+    url: jdbc:mysql://localhost:13306/study_with_me?autoReconnect=true&characterEncoding=utf8&serverTimeZone=Asia/Seoul
     username: root
     password: 1234
 
   flyway:
-    enabled: true
+    enabled: false
     encoding: UTF-8
     baseline-on-migrate: true
     baseline-version: 1
