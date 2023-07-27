@@ -33,6 +33,7 @@ src/main/resources/static/docs
 
 ### Docker ###
 mysql_data
+redis_data
 
 ### Log ###
 logs
