@@ -73,11 +73,10 @@
 ## 🚩 실행 방식
 ### 1) MySQL DB
 
-- Local에 MySQL이 설치되어 있는 상태면 `study_with_me` database 생성
-- Local에 MySQL이 설치되어 있지 않은 상태면 `docker-compose.yml`을 통해서 Docker에 MySQL Container 올리기
+- `docker-compose.yml` 실행
 
-### 2) API Server
-#### yml 설정 변수 외부 주입 (local profile)
+### 2) API Server (Local Profile)
+#### application.yml 변수
 - `NAVER_EMAIL_USERNAME` = 네이버 계정 이메일
 - `NAVER_EMAIL_PASSWORD` = 네이버 계정 비밀번호
 - `OAUTH_GOOGLE_CLIENT_ID` = Google OAuth Application Client Id
@@ -88,7 +87,7 @@
 - `NCP_BUCKET_NAME` = Naver Cloud Platform Object Storage Bucket
 - `SLACK_WEBHOOK_URL` = Slack Webhook Url
 
-#### (방법-1) 빌드된 JAR 파일 실행
+#### (실행-1) 빌드된 JAR 파일 실행
 ```shell
 java -jar \
     -Dfile.encoding=UTF-8 \
@@ -104,6 +103,8 @@ java -jar \
 ./build/libs/StudyWithMe.jar
 ```
 
-#### (방법-2) IntelliJ 환경변수 설정 & 서버 ON
+#### (실행-2) IntelliJ 환경변수 설정 & 서버 ON
 
 ### [3) Swagger URL](http://localhost:8080/swagger-ui.html)
+
+- API 테스트 시 필요한 `Access Token`은 `src/main/resources/AccessToken.txt`에서 사용

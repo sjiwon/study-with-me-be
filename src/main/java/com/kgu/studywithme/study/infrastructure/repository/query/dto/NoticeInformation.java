@@ -4,12 +4,14 @@ import com.kgu.studywithme.member.domain.Nickname;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 @AllArgsConstructor
+@ToString
 public class NoticeInformation {
     private final Long id;
     private final String title;

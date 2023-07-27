@@ -24,7 +24,7 @@ public class StudyAttendanceScheduler {
     private final StudyAttendanceRepository studyAttendanceRepository;
     private final MemberRepository memberRepository;
 
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
     public void processAbsenceCheckScheduler() {
         final Set<Long> absenceParticipantIds = new HashSet<>();
         final List<AutoAttendanceAndFinishedWeekly> weeks = studyWeeklyRepository.findAutoAttendanceAndFinishedWeekly();

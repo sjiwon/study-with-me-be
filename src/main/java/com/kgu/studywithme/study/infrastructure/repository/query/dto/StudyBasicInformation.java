@@ -8,6 +8,7 @@ import com.kgu.studywithme.study.domain.*;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
+@ToString
 public class StudyBasicInformation {
     private final Long id;
     private final String name;
