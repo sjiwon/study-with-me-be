@@ -107,4 +107,4 @@ java -jar \
 
 ### [3) Swagger URL](http://localhost:8080/swagger-ui.html)
 
-- API 테스트 시 필요한 `Access Token`은 `src/main/resources/AccessToken.txt`에서 사용
+- API 테스트 시 필요한 `Token`은 `src/main/resources/DummyToken.txt`에서 사용

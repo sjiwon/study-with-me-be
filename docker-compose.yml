@@ -1,6 +1,6 @@
 version: "3"
 services:
-  database:
+  database: # mysql -u root -p -> 1234
     image: mysql:8.0.33
     container_name: database
     restart: always
@@ -18,3 +18,11 @@ services:
     volumes:
       - "./mysql_data:/var/lib/mysql" # .idb = Table Data / .frm = Table Definition / ...
       - "./src/main/resources/sql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro" # Init Script
+
+  redis: # redis-cli
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - "./redis_data/data:/data"

@@ -121,8 +121,8 @@ public enum MemberFixture {
     }
 
     private static String generateRandomPhoneNumber() {
-        return "010" +
-                (int) (Math.random() * 9000 + 1000) +
+        return "010" + "-" +
+                (int) (Math.random() * 9000 + 1000) + "-" +
                 (int) (Math.random() * 9000 + 1000);
     }
 
