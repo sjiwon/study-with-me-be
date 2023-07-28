@@ -40,12 +40,12 @@
 ## 🛠 Tech Stacks
 ### Backend
 
-![Backend](https://github.com/sjiwon/study-with-me-be/assets/51479381/22cc530c-43f0-4b63-bf04-d313fb547955)
+![Backend](https://github.com/sjiwon/study-with-me-be/assets/51479381/fc86b403-34bb-4ad2-be0d-2924cede3b68)
 
 ### Infra
 
 
-![Infra 스택](https://github.com/kgu-capstone/study-with-me-be/assets/51479381/cc23b8e5-efe8-4955-91cd-21a4e533c593)
+![Infra](https://github.com/sjiwon/study-with-me-be/assets/51479381/bf862ad2-5f86-43fc-bb7e-a6cb36ab08d8)
 
 <br>
 
@@ -71,7 +71,7 @@
 <br>
 
 ## 🚩 실행 방식
-### 1) MySQL DB
+### 1) MySQL DB & Redis
 
 - `docker-compose.yml` 실행
 
