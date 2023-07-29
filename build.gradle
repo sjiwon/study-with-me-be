@@ -92,6 +92,9 @@ dependencies {
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 
+    // RestAssured (E2E Test)
+    testImplementation 'io.rest-assured:rest-assured:5.3.1'
+
     // TestContainers
     testImplementation 'org.springframework.boot:spring-boot-testcontainers'
     testImplementation 'org.testcontainers:junit-jupiter'
