@@ -1,6 +1,6 @@
 package com.kgu.studywithme.auth.infrastructure.token;
 
-import com.kgu.studywithme.common.RedisTestContainers;
+import com.kgu.studywithme.common.annotation.RedisTestContainers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
