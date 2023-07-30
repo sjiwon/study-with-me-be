@@ -13,7 +13,7 @@ import org.mockito.Mock;
 
 import java.time.LocalDateTime;
 
-import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
+import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;

@@ -12,12 +12,12 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
-import static com.kgu.studywithme.fixture.PeriodFixture.WEEK_6;
-import static com.kgu.studywithme.fixture.StudyFixture.SPRING;
-import static com.kgu.studywithme.fixture.StudyWeeklyAttachmentFixture.*;
-import static com.kgu.studywithme.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1;
-import static com.kgu.studywithme.fixture.StudyWeeklyFixture.STUDY_WEEKLY_5;
+import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
+import static com.kgu.studywithme.common.fixture.PeriodFixture.WEEK_6;
+import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
+import static com.kgu.studywithme.common.fixture.StudyWeeklyAttachmentFixture.*;
+import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1;
+import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_5;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 

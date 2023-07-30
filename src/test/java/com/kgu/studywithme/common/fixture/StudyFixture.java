@@ -1,4 +1,4 @@
-package com.kgu.studywithme.fixture;
+package com.kgu.studywithme.common.fixture;
 
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.study.domain.*;

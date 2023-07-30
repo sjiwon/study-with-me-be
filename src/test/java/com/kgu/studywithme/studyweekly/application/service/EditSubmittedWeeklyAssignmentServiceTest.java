@@ -25,11 +25,11 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
+import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
+import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1;
+import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1_PREVIOUS;
 import static com.kgu.studywithme.common.utils.FileMockingUtils.createMultipleMockMultipartFile;
-import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
-import static com.kgu.studywithme.fixture.StudyFixture.SPRING;
-import static com.kgu.studywithme.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1;
-import static com.kgu.studywithme.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1_PREVIOUS;
 import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

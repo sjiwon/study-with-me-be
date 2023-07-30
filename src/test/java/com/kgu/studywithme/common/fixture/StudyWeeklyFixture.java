@@ -1,4 +1,4 @@
-package com.kgu.studywithme.fixture;
+package com.kgu.studywithme.common.fixture;
 
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
 import com.kgu.studywithme.studyweekly.domain.attachment.UploadAttachment;
@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-import static com.kgu.studywithme.fixture.PeriodFixture.*;
-import static com.kgu.studywithme.fixture.StudyWeeklyAttachmentFixture.*;
+import static com.kgu.studywithme.common.fixture.PeriodFixture.*;
+import static com.kgu.studywithme.common.fixture.StudyWeeklyAttachmentFixture.*;
 
 @Getter
 @RequiredArgsConstructor

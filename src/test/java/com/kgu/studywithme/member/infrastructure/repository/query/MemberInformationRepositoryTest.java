@@ -24,8 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static com.kgu.studywithme.fixture.MemberFixture.*;
-import static com.kgu.studywithme.fixture.StudyFixture.*;
+import static com.kgu.studywithme.common.fixture.MemberFixture.*;
+import static com.kgu.studywithme.common.fixture.StudyFixture.*;
 import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.*;
 import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPROVE;
 import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.GRADUATED;

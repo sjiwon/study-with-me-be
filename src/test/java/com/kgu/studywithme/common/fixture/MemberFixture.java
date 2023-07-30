@@ -1,4 +1,4 @@
-package com.kgu.studywithme.fixture;
+package com.kgu.studywithme.common.fixture;
 
 import com.kgu.studywithme.auth.application.dto.LoginResponse;
 import com.kgu.studywithme.auth.application.dto.MemberInfo;

@@ -16,11 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
-import static com.kgu.studywithme.fixture.PeriodFixture.WEEK_0;
-import static com.kgu.studywithme.fixture.StudyFixture.JPA;
-import static com.kgu.studywithme.fixture.StudyFixture.SPRING;
-import static com.kgu.studywithme.fixture.StudyWeeklyFixture.*;
+import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
+import static com.kgu.studywithme.common.fixture.PeriodFixture.WEEK_0;
+import static com.kgu.studywithme.common.fixture.StudyFixture.JPA;
+import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
+import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
