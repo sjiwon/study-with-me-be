@@ -8,6 +8,7 @@ import com.kgu.studywithme.common.stub.StubOAuthUri;
 import com.kgu.studywithme.upload.utils.FileUploader;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 
 @TestConfiguration
 public class ExternalApiConfiguration {
@@ -22,6 +23,7 @@ public class ExternalApiConfiguration {
     }
 
     @Bean
+    @Primary
     public FileUploader fileUploader() {
         return new StubFileUploader();
     }

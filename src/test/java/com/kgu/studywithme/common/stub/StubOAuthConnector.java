@@ -6,10 +6,12 @@ import com.kgu.studywithme.auth.infrastructure.oauth.OAuthUserResponse;
 import com.kgu.studywithme.auth.utils.OAuthProvider;
 import com.kgu.studywithme.common.fixture.OAuthFixture;
 
+import static com.kgu.studywithme.auth.utils.OAuthProvider.GOOGLE;
+
 public class StubOAuthConnector implements OAuthConnector {
     @Override
     public boolean isSupported(final OAuthProvider provider) {
-        return true;
+        return provider == GOOGLE;
     }
 
     @Override
