@@ -1,5 +1,6 @@
 package com.kgu.studywithme.common.fixture;
 
+import com.kgu.studywithme.acceptance.fixture.StudyAcceptanceFixture;
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.study.domain.*;
 import lombok.Getter;
@@ -199,5 +200,12 @@ public enum StudyFixture {
                 minimumAttendanceForGraduation,
                 hashtags
         );
+    }
+
+    public Long 스터디를_생성한다(final String accessToken) {
+        return StudyAcceptanceFixture.스터디를_생성한다(accessToken, this)
+                .extract()
+                .jsonPath()
+                .getLong("studyId");
     }
 }
