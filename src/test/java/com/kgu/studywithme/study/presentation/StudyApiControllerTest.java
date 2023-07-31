@@ -24,8 +24,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -148,7 +147,7 @@ class StudyApiControllerTest extends ControllerTest {
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
                             status().isCreated(),
-                            jsonPath("$").doesNotExist()
+                            jsonPath("$.studyId").value(1L)
                     )
                     .andDo(
                             document(
@@ -183,6 +182,10 @@ class StudyApiControllerTest extends ControllerTest {
                                             fieldWithPath("hashtags")
                                                     .description("해시태그")
                                                     .attributes(constraint("최소 1개 최대 5개"))
+                                    ),
+                                    responseFields(
+                                            fieldWithPath("studyId")
+                                                    .description("생성한 스터디 ID(PK)")
                                     )
                             )
                     );
@@ -206,7 +209,7 @@ class StudyApiControllerTest extends ControllerTest {
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
                             status().isCreated(),
-                            jsonPath("$").doesNotExist()
+                            jsonPath("$.studyId").value(1L)
                     )
                     .andDo(
                             document(
@@ -241,6 +244,10 @@ class StudyApiControllerTest extends ControllerTest {
                                             fieldWithPath("hashtags")
                                                     .description("해시태그")
                                                     .attributes(constraint("최소 1개 최대 5개"))
+                                    ),
+                                    responseFields(
+                                            fieldWithPath("studyId")
+                                                    .description("생성한 스터디 ID(PK)")
                                     )
                             )
                     );
