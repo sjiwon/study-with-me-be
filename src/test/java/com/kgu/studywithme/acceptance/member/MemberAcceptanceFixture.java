@@ -1,4 +1,4 @@
-package com.kgu.studywithme.acceptance.fixture;
+package com.kgu.studywithme.acceptance.member;
 
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.common.fixture.MemberFixture;
@@ -9,7 +9,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.util.stream.Collectors;
 
-import static com.kgu.studywithme.acceptance.fixture.CommonRequestFixture.postRequest;
+import static com.kgu.studywithme.acceptance.CommonRequestFixture.postRequest;
 
 public class MemberAcceptanceFixture {
     public static ValidatableResponse 회원가입을_진행한다(final MemberFixture fixture) {

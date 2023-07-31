@@ -1,6 +1,6 @@
 package com.kgu.studywithme.common.fixture;
 
-import com.kgu.studywithme.acceptance.fixture.StudyAcceptanceFixture;
+import com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture;
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.study.domain.*;
 import lombok.Getter;

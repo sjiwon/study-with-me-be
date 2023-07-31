@@ -1,4 +1,4 @@
-package com.kgu.studywithme.acceptance;
+package com.kgu.studywithme.acceptance.study;
 
 import com.kgu.studywithme.common.AcceptanceTest;
 import org.junit.jupiter.api.DisplayName;

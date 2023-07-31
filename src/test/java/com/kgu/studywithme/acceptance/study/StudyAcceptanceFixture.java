@@ -1,4 +1,4 @@
-package com.kgu.studywithme.acceptance.fixture;
+package com.kgu.studywithme.acceptance.study;
 
 import com.kgu.studywithme.common.fixture.StudyFixture;
 import com.kgu.studywithme.study.presentation.dto.request.CreateStudyRequest;
@@ -7,7 +7,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
-import static com.kgu.studywithme.acceptance.fixture.CommonRequestFixture.postRequest;
+import static com.kgu.studywithme.acceptance.CommonRequestFixture.postRequest;
 
 public class StudyAcceptanceFixture {
     public static ValidatableResponse 스터디를_생성한다(final String accessToken, final StudyFixture fixture) {

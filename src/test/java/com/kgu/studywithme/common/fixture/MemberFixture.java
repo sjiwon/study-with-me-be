@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.kgu.studywithme.acceptance.fixture.AuthAcceptanceFixture.Google_OAuth_로그인을_진행한다;
-import static com.kgu.studywithme.acceptance.fixture.MemberAcceptanceFixture.회원가입을_진행한다;
+import static com.kgu.studywithme.acceptance.auth.AuthAcceptanceFixture.Google_OAuth_로그인을_진행한다;
+import static com.kgu.studywithme.acceptance.member.MemberAcceptanceFixture.회원가입을_진행한다;
 import static com.kgu.studywithme.category.domain.Category.*;
 import static com.kgu.studywithme.common.fixture.OAuthFixture.getAuthorizationCodeByIdentifier;
 import static com.kgu.studywithme.common.utils.OAuthUtils.GOOGLE_PROVIDER;

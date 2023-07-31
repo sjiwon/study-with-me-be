@@ -1,4 +1,4 @@
-package com.kgu.studywithme.acceptance.fixture;
+package com.kgu.studywithme.acceptance;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;

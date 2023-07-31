@@ -1,11 +1,11 @@
-package com.kgu.studywithme.acceptance;
+package com.kgu.studywithme.acceptance.study;
 
 import com.kgu.studywithme.common.AcceptanceTest;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.kgu.studywithme.acceptance.fixture.StudyAcceptanceFixture.스터디를_생성한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디를_생성한다;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static org.springframework.http.HttpStatus.CREATED;

@@ -1,4 +1,4 @@
-package com.kgu.studywithme.acceptance.fixture;
+package com.kgu.studywithme.acceptance.auth;
 
 import com.kgu.studywithme.auth.presentation.dto.request.OAuthLoginRequest;
 import io.restassured.response.ValidatableResponse;
@@ -6,8 +6,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
-import static com.kgu.studywithme.acceptance.fixture.CommonRequestFixture.getRequest;
-import static com.kgu.studywithme.acceptance.fixture.CommonRequestFixture.postRequest;
+import static com.kgu.studywithme.acceptance.CommonRequestFixture.getRequest;
+import static com.kgu.studywithme.acceptance.CommonRequestFixture.postRequest;
 
 public class AuthAcceptanceFixture {
     public static ValidatableResponse Google_OAuth_인증_URL를_생성한다(

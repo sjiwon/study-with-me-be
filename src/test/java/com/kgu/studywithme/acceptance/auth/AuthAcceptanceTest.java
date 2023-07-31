@@ -1,11 +1,11 @@
-package com.kgu.studywithme.acceptance;
+package com.kgu.studywithme.acceptance.auth;
 
 import com.kgu.studywithme.common.AcceptanceTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.kgu.studywithme.acceptance.fixture.AuthAcceptanceFixture.*;
-import static com.kgu.studywithme.acceptance.fixture.MemberAcceptanceFixture.회원가입을_진행한다;
+import static com.kgu.studywithme.acceptance.auth.AuthAcceptanceFixture.*;
+import static com.kgu.studywithme.acceptance.member.MemberAcceptanceFixture.회원가입을_진행한다;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.OAuthFixture.GOOGLE_JIWON;
 import static com.kgu.studywithme.common.utils.OAuthUtils.GOOGLE_PROVIDER;
