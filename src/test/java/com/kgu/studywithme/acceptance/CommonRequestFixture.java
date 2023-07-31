@@ -247,7 +247,7 @@ public class CommonRequestFixture {
     }
 
     private static File getFile(final String fileName) {
-        final String BASE_PATH = "src/test/resources/files/";
+        final String BASE_PATH = "files/";
         try {
             return new ClassPathResource(BASE_PATH + fileName).getFile();
         } catch (final IOException e) {
