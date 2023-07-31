@@ -5,6 +5,7 @@ import com.kgu.studywithme.auth.application.dto.MemberInfo;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleUserResponse;
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.member.domain.*;
+import io.restassured.response.ValidatableResponse;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -13,7 +14,12 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.kgu.studywithme.acceptance.fixture.AuthAcceptanceFixture.Google_OAuth_로그인을_진행한다;
+import static com.kgu.studywithme.acceptance.fixture.MemberAcceptanceFixture.회원가입을_진행한다;
 import static com.kgu.studywithme.category.domain.Category.*;
+import static com.kgu.studywithme.common.fixture.OAuthFixture.getAuthorizationCodeByIdentifier;
+import static com.kgu.studywithme.common.utils.OAuthUtils.GOOGLE_PROVIDER;
+import static com.kgu.studywithme.common.utils.OAuthUtils.REDIRECT_URL;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.REFRESH_TOKEN;
 import static com.kgu.studywithme.member.domain.Gender.MALE;
@@ -126,6 +132,10 @@ public enum MemberFixture {
                 (int) (Math.random() * 9000 + 1000);
     }
 
+    public GoogleUserResponse toGoogleUserResponse() {
+        return new GoogleUserResponse(name, email.getValue(), "google_profile_url");
+    }
+
     public LoginResponse toLoginResponse() {
         return new LoginResponse(
                 new MemberInfo(toMember().apply(1L, LocalDateTime.now())),
@@ -134,7 +144,17 @@ public enum MemberFixture {
         );
     }
 
-    public GoogleUserResponse toGoogleUserResponse() {
-        return new GoogleUserResponse(name, email.getValue(), "google_profile_url");
+    public LoginResponse 회원가입_후_Google_OAuth_로그인을_진행한다() {
+        회원가입을_진행한다(this);
+
+        final ValidatableResponse response = Google_OAuth_로그인을_진행한다(
+                GOOGLE_PROVIDER,
+                getAuthorizationCodeByIdentifier(this.getEmail().getValue()),
+                REDIRECT_URL
+        );
+
+        return response
+                .extract()
+                .as(LoginResponse.class);
     }
 }
