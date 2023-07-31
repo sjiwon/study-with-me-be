@@ -153,7 +153,7 @@ class OAuthApiControllerTest extends ControllerTest {
             // then
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
-                            status().isUnauthorized(),
+                            status().isNotFound(),
                             jsonPath("$.name").exists(),
                             jsonPath("$.name").value(googleUserResponse.getName()),
                             jsonPath("$.email").exists(),
