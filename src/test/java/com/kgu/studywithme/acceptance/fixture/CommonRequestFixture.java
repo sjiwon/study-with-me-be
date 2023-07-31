@@ -16,100 +16,88 @@ import static io.restassured.http.ContentType.JSON;
 import static io.restassured.http.ContentType.MULTIPART;
 
 public class CommonRequestFixture {
-    public static ValidatableResponse getRequest(
-            final String path,
-            final List<Object> pathParams
-    ) {
+    public static ValidatableResponse getRequest(final String path) {
         return request(given -> given
                 .contentType(JSON)
                 .when()
-                .get(path, pathParams.toArray())
+                .get(path)
         );
     }
 
     public static ValidatableResponse getRequest(
             final String accessToken,
-            final String path,
-            final List<Object> pathParams
+            final String path
     ) {
         return request(given -> given
                 .contentType(JSON)
                 .auth().oauth2(accessToken)
                 .when()
-                .get(path, pathParams.toArray())
+                .get(path)
         );
     }
 
-    public static ValidatableResponse postRequest(
-            final String path,
-            final List<Object> pathParams
-    ) {
+    public static ValidatableResponse postRequest(final String path) {
         return request(given -> given
                 .contentType(JSON)
                 .when()
-                .post(path, pathParams.toArray())
+                .post(path)
         );
     }
 
     public static ValidatableResponse postRequest(
             final Object body,
-            final String path,
-            final List<Object> pathParams
+            final String path
     ) {
         return request(given -> given
                 .contentType(JSON)
                 .body(body)
                 .when()
-                .post(path, pathParams.toArray())
+                .post(path)
         );
     }
 
     public static ValidatableResponse postRequest(
             final String accessToken,
-            final String path,
-            final List<Object> pathParams
+            final String path
     ) {
         return request(given -> given
                 .contentType(JSON)
                 .auth().oauth2(accessToken)
                 .when()
-                .post(path, pathParams.toArray())
+                .post(path)
         );
     }
 
     public static ValidatableResponse postRequest(
             final String accessToken,
             final Object body,
-            final String path,
-            final List<Object> pathParams
+            final String path
     ) {
         return request(given -> given
                 .contentType(JSON)
                 .auth().oauth2(accessToken)
                 .body(body)
                 .when()
-                .post(path, pathParams.toArray())
+                .post(path)
         );
     }
 
     public static ValidatableResponse multipartRequest(
             final String fileName,
-            final String path,
-            final List<Object> pathParams
+            final String path
     ) {
         return request(given -> given
                 .contentType(MULTIPART)
                 .when()
                 .multiPart("file", getFile(fileName))
-                .post(path, pathParams.toArray())
+                .post(path)
         );
     }
 
     public static ValidatableResponse multipartRequest(
             final String fileName,
             final Map<String, String> params,
-            final String path,
-            final List<Object> pathParams
+            final String path
     ) {
         final RequestSpecification request = RestAssured.given().log().all()
                 .contentType(MULTIPART)
@@ -117,22 +105,21 @@ public class CommonRequestFixture {
                 .multiPart("file", getFile(fileName));
         params.keySet().forEach(paramKey -> request.formParam(paramKey, params.get(paramKey)));
 
-        return request.post(path, pathParams.toArray())
+        return request.post(path)
                 .then().log().all();
     }
 
     public static ValidatableResponse multipartRequest(
             final String fileName,
             final String accessToken,
-            final String path,
-            final List<Object> pathParams
+            final String path
     ) {
         return request(given -> given
                 .contentType(MULTIPART)
                 .auth().oauth2(accessToken)
                 .when()
                 .multiPart("file", getFile(fileName))
-                .post(path, pathParams.toArray())
+                .post(path)
         );
     }
 
@@ -140,8 +127,7 @@ public class CommonRequestFixture {
             final String fileName,
             final Map<String, String> params,
             final String accessToken,
-            final String path,
-            final List<Object> pathParams
+            final String path
     ) {
         final RequestSpecification request = RestAssured.given().log().all()
                 .contentType(MULTIPART)
@@ -150,29 +136,27 @@ public class CommonRequestFixture {
                 .multiPart("file", getFile(fileName));
         params.keySet().forEach(paramKey -> request.formParam(paramKey, params.get(paramKey)));
 
-        return request.post(path, pathParams.toArray())
+        return request.post(path)
                 .then().log().all();
     }
 
     public static ValidatableResponse multipartRequest(
             final List<String> fileNames,
-            final String path,
-            final List<Object> pathParams
+            final String path
     ) {
         final RequestSpecification request = RestAssured.given().log().all()
                 .contentType(MULTIPART)
                 .request();
         fileNames.forEach(fileName -> request.multiPart("files", getFile(fileName)));
 
-        return request.post(path, pathParams.toArray())
+        return request.post(path)
                 .then().log().all();
     }
 
     public static ValidatableResponse multipartRequest(
             final List<String> fileNames,
             final Map<String, String> params,
-            final String path,
-            final List<Object> pathParams
+            final String path
     ) {
         final RequestSpecification request = RestAssured.given().log().all()
                 .contentType(MULTIPART)
@@ -180,15 +164,14 @@ public class CommonRequestFixture {
         fileNames.forEach(fileName -> request.multiPart("files", getFile(fileName)));
         params.keySet().forEach(paramKey -> request.formParam(paramKey, params.get(paramKey)));
 
-        return request.post(path, pathParams.toArray())
+        return request.post(path)
                 .then().log().all();
     }
 
     public static ValidatableResponse multipartRequest(
             final List<String> fileNames,
             final String accessToken,
-            final String path,
-            final List<Object> pathParams
+            final String path
     ) {
         final RequestSpecification request = RestAssured.given().log().all()
                 .contentType(MULTIPART)
@@ -196,7 +179,7 @@ public class CommonRequestFixture {
                 .request();
         fileNames.forEach(fileName -> request.multiPart("files", getFile(fileName)));
 
-        return request.post(path, pathParams.toArray())
+        return request.post(path)
                 .then().log().all();
     }
 
@@ -204,8 +187,7 @@ public class CommonRequestFixture {
             final List<String> fileNames,
             final Map<String, String> params,
             final String accessToken,
-            final String path,
-            final List<Object> pathParams
+            final String path
     ) {
         final RequestSpecification request = RestAssured.given().log().all()
                 .contentType(MULTIPART)
@@ -214,55 +196,47 @@ public class CommonRequestFixture {
         fileNames.forEach(fileName -> request.multiPart("files", getFile(fileName)));
         params.keySet().forEach(paramKey -> request.formParam(paramKey, params.get(paramKey)));
 
-        return request.post(path, pathParams.toArray())
+        return request.post(path)
                 .then().log().all();
     }
 
-    public static ValidatableResponse patchRequest(
-            final String path,
-            final List<Object> pathParams
-    ) {
+    public static ValidatableResponse patchRequest(final String path) {
         return request(given -> given
                 .contentType(JSON)
                 .when()
-                .patch(path, pathParams.toArray())
+                .patch(path)
         );
     }
 
     public static ValidatableResponse patchRequest(
             final String accessToken,
-            final String path,
-            final List<Object> pathParams
+            final String path
     ) {
         return request(given -> given
                 .contentType(JSON)
                 .auth().oauth2(accessToken)
                 .when()
-                .patch(path, pathParams.toArray())
+                .patch(path)
         );
     }
 
-    public static ValidatableResponse deleteRequest(
-            final String path,
-            final List<Object> pathParams
-    ) {
+    public static ValidatableResponse deleteRequest(final String path) {
         return request(given -> given
                 .contentType(JSON)
                 .when()
-                .delete(path, pathParams.toArray())
+                .delete(path)
         );
     }
 
     public static ValidatableResponse deleteRequest(
             final String accessToken,
-            final String path,
-            final List<Object> pathParams
+            final String path
     ) {
         return request(given -> given
                 .contentType(JSON)
                 .auth().oauth2(accessToken)
                 .when()
-                .delete(path, pathParams.toArray())
+                .delete(path)
         );
     }
 
