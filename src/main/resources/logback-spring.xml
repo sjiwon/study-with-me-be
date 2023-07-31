@@ -10,8 +10,6 @@
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <layout class="com.kgu.studywithme.global.logging.MaskingPatternLayout">
                 <maskPattern>(\d+\.\d+\.\d+\.\d+)</maskPattern> <!-- IP address IPv4 pattern -->
-                <maskPattern>phone\s*=\s*([^,)\s]+)</maskPattern> <!-- Phone Arg pattern -->
-                <maskPattern>\s*Token\s*=\s*([^,)\s]+)</maskPattern> <!-- Token Arg pattern -->
                 <pattern>${LOG_PATTERN}</pattern>
             </layout>
         </encoder>
