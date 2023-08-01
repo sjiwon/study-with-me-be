@@ -1,7 +1,6 @@
 package com.kgu.studywithme.common.config;
 
 import com.kgu.studywithme.global.aop.CheckAuthUserAspect;
-import com.kgu.studywithme.global.aop.CheckMemberIdentityAspect;
 import com.kgu.studywithme.global.aop.CheckStudyHostAspect;
 import com.kgu.studywithme.global.aop.CheckStudyParticipantAspect;
 import com.kgu.studywithme.study.domain.StudyRepository;
@@ -21,11 +20,6 @@ public class TestAopConfiguration {
     @Bean
     public CheckAuthUserAspect checkAuthUserAspect() {
         return new CheckAuthUserAspect();
-    }
-
-    @Bean
-    public CheckMemberIdentityAspect checkMemberIdentityAspect() {
-        return new CheckMemberIdentityAspect();
     }
 
     @Bean

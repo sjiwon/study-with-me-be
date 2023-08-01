@@ -169,9 +169,9 @@ class MemberApiControllerTest extends ControllerTest {
     }
 
     @Nested
-    @DisplayName("사용자 정보 수정 [PATCH /api/members/{memberId}] - AccessToken 필수")
+    @DisplayName("사용자 정보 수정 [PATCH /api/members/me] - AccessToken 필수")
     class update {
-        private static final String BASE_URL = "/api/members/{memberId}";
+        private static final String BASE_URL = "/api/members/me";
         private static final Long MEMBER_ID = 1L;
         private static final UpdateMemberRequest REQUEST = new UpdateMemberRequest(
                 JIWON.getNickname().getValue(),
@@ -196,7 +196,7 @@ class MemberApiControllerTest extends ControllerTest {
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                    .patch(BASE_URL, MEMBER_ID)
+                    .patch(BASE_URL)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(REQUEST));
