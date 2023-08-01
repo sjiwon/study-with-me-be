@@ -1,5 +1,6 @@
 package com.kgu.studywithme.member.presentation;
 
+import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
@@ -11,9 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.Set;
+import java.util.stream.Collectors;
 
-import static com.kgu.studywithme.category.domain.Category.*;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
@@ -41,12 +41,15 @@ class MemberApiControllerTest extends ControllerTest {
                 JIWON.getNickname().getValue(),
                 JIWON.getEmail().getValue(),
                 JIWON.getBirth(),
-                "01012345678",
+                JIWON.getPhone(),
                 MALE.getSimpleValue(),
                 JIWON.getRegion().getProvince(),
                 JIWON.getRegion().getCity(),
                 JIWON.isEmailOptIn(),
-                Set.of(LANGUAGE.getId(), INTERVIEW.getId(), PROGRAMMING.getId())
+                JIWON.getInterests()
+                        .stream()
+                        .map(Category::getId)
+                        .collect(Collectors.toSet())
         );
 
         @Test
@@ -172,11 +175,14 @@ class MemberApiControllerTest extends ControllerTest {
         private static final Long MEMBER_ID = 1L;
         private static final UpdateMemberRequest REQUEST = new UpdateMemberRequest(
                 JIWON.getNickname().getValue(),
-                "010-1234-5678",
+                JIWON.getPhone(),
                 JIWON.getRegion().getProvince(),
                 JIWON.getRegion().getCity(),
                 false,
-                Set.of(INTERVIEW.getId(), PROGRAMMING.getId())
+                JIWON.getInterests()
+                        .stream()
+                        .map(Category::getId)
+                        .collect(Collectors.toSet())
         );
 
         @Test

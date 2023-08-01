@@ -36,7 +36,7 @@ class SignUpMemberServiceTest extends UseCaseTest {
                     JIWON.getNickname(),
                     JIWON.getEmail(),
                     JIWON.getBirth(),
-                    "010-1234-5678",
+                    JIWON.getPhone(),
                     JIWON.getGender(),
                     JIWON.getRegion(),
                     true,

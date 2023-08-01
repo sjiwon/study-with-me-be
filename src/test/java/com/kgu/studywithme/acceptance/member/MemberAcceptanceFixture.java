@@ -23,7 +23,7 @@ public class MemberAcceptanceFixture {
                 fixture.getNickname().getValue(),
                 fixture.getEmail().getValue(),
                 fixture.getBirth(),
-                "010-1234-5678",
+                fixture.getPhone(),
                 fixture.getGender().getSimpleValue(),
                 fixture.getRegion().getProvince(),
                 fixture.getRegion().getCity(),

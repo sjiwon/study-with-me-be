@@ -39,7 +39,7 @@ class UpdateMemberServiceTest extends UseCaseTest {
             new UpdateMemberUseCase.Command(
                     member.getId(),
                     GHOST.getNickname().getValue(),
-                    "010-1234-5678",
+                    GHOST.getPhone(),
                     GHOST.getRegion().getProvince(),
                     GHOST.getRegion().getCity(),
                     false,
