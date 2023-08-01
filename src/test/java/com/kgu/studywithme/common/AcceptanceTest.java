@@ -5,6 +5,7 @@ import com.kgu.studywithme.auth.infrastructure.oauth.google.GoogleOAuthUri;
 import com.kgu.studywithme.common.config.ExternalApiConfiguration;
 import com.kgu.studywithme.common.config.MySqlTestContainersConfiguration;
 import com.kgu.studywithme.common.config.RedisTestContainersConfiguration;
+import com.kgu.studywithme.common.stub.StubEmailSender;
 import com.kgu.studywithme.common.utils.DatabaseCleaner;
 import com.kgu.studywithme.upload.utils.S3FileUploader;
 import io.restassured.RestAssured;
@@ -38,6 +39,9 @@ public abstract class AcceptanceTest {
 
     @MockBean
     private S3FileUploader s3FileUploaderMock;
+
+    @MockBean
+    private StubEmailSender stubEmailSenderMock;
 
     @BeforeEach
     void setUp() {
