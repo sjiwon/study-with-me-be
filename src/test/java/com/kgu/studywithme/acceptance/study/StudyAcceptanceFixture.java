@@ -30,4 +30,11 @@ public class StudyAcceptanceFixture {
 
         return postRequest(accessToken, request, uri);
     }
+
+    public static Long 스터디를_생성하고_PK를_얻는다(final String accessToken, final StudyFixture fixture) {
+        return 스터디를_생성한다(accessToken, fixture)
+                .extract()
+                .jsonPath()
+                .getLong("studyId");
+    }
 }
