@@ -88,8 +88,8 @@ public class CommonRequestFixture {
     ) {
         return request(given -> given
                 .contentType(MULTIPART)
-                .when()
                 .multiPart("file", getFile(fileName))
+                .when()
                 .post(path)
         );
     }
@@ -101,8 +101,8 @@ public class CommonRequestFixture {
     ) {
         final RequestSpecification request = RestAssured.given().log().all()
                 .contentType(MULTIPART)
-                .request()
-                .multiPart("file", getFile(fileName));
+                .multiPart("file", getFile(fileName))
+                .request();
         params.keySet().forEach(paramKey -> request.formParam(paramKey, params.get(paramKey)));
 
         return request.post(path)
@@ -117,8 +117,8 @@ public class CommonRequestFixture {
         return request(given -> given
                 .contentType(MULTIPART)
                 .auth().oauth2(accessToken)
-                .when()
                 .multiPart("file", getFile(fileName))
+                .when()
                 .post(path)
         );
     }
@@ -132,8 +132,8 @@ public class CommonRequestFixture {
         final RequestSpecification request = RestAssured.given().log().all()
                 .contentType(MULTIPART)
                 .auth().oauth2(accessToken)
-                .request()
-                .multiPart("file", getFile(fileName));
+                .multiPart("file", getFile(fileName))
+                .request();
         params.keySet().forEach(paramKey -> request.formParam(paramKey, params.get(paramKey)));
 
         return request.post(path)
@@ -215,6 +215,20 @@ public class CommonRequestFixture {
         return request(given -> given
                 .contentType(JSON)
                 .auth().oauth2(accessToken)
+                .when()
+                .patch(path)
+        );
+    }
+
+    public static ValidatableResponse patchRequest(
+            final String accessToken,
+            final Object body,
+            final String path
+    ) {
+        return request(given -> given
+                .contentType(JSON)
+                .auth().oauth2(accessToken)
+                .body(body)
                 .when()
                 .patch(path)
         );
