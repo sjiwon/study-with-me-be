@@ -6,17 +6,18 @@ import com.kgu.studywithme.member.presentation.dto.request.SignUpMemberRequest;
 import io.restassured.response.ValidatableResponse;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 import java.util.stream.Collectors;
 
 import static com.kgu.studywithme.acceptance.CommonRequestFixture.postRequest;
 
 public class MemberAcceptanceFixture {
     public static ValidatableResponse 회원가입을_진행한다(final MemberFixture fixture) {
-        final URI uri = UriComponentsBuilder
+        final String uri = UriComponentsBuilder
                 .fromPath("/api/member")
                 .build()
-                .toUri();
+                .toUri()
+                .getPath();
+
         final SignUpMemberRequest request = new SignUpMemberRequest(
                 fixture.getName(),
                 fixture.getNickname().getValue(),
@@ -33,6 +34,6 @@ public class MemberAcceptanceFixture {
                         .collect(Collectors.toSet())
         );
 
-        return postRequest(request, uri.getPath());
+        return postRequest(request, uri);
     }
 }

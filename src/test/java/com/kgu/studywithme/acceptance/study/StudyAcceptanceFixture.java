@@ -5,16 +5,16 @@ import com.kgu.studywithme.study.presentation.dto.request.CreateStudyRequest;
 import io.restassured.response.ValidatableResponse;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
-
 import static com.kgu.studywithme.acceptance.CommonRequestFixture.postRequest;
 
 public class StudyAcceptanceFixture {
     public static ValidatableResponse 스터디를_생성한다(final String accessToken, final StudyFixture fixture) {
-        final URI uri = UriComponentsBuilder
+        final String uri = UriComponentsBuilder
                 .fromPath("/api/study")
                 .build()
-                .toUri();
+                .toUri()
+                .getPath();
+
         final CreateStudyRequest request = new CreateStudyRequest(
                 fixture.getName().getValue(),
                 fixture.getDescription().getValue(),
@@ -28,6 +28,6 @@ public class StudyAcceptanceFixture {
                 fixture.getHashtags()
         );
 
-        return postRequest(accessToken, request, uri.getPath());
+        return postRequest(accessToken, request, uri);
     }
 }
