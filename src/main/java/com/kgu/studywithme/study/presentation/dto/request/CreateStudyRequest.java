@@ -1,9 +1,9 @@
 package com.kgu.studywithme.study.presentation.dto.request;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 
 import java.util.Set;
 
@@ -31,7 +31,7 @@ public record CreateStudyRequest(
         String city,
 
         @NotNull(message = "스터디 졸업요건은 필수입니다. [최소 출석 횟수]")
-        @Positive(message = "졸업 요건은 양수여야 합니다.")
+        @Min(value = 0, message = "졸업 요건[최소 출석 횟수]는 0 이상이여야 합니다.")
         Integer minimumAttendanceForGraduation,
 
         @NotEmpty(message = "해시태그는 하나 이상 등록해야 합니다.")

@@ -163,6 +163,12 @@ public enum StudyFixture {
             null, new Capacity(6), 8,
             new HashSet<>(Set.of("OS", "운영체제", "프로세스와 쓰레드", "데드락"))
     ),
+    KAFKA( // 참여 인원 2 & 졸업 최소 조건 0
+            new StudyName("Kafka 스터디"), new Description("카프카 스터디입니다"), PROGRAMMING,
+            IMAGE_PROGRAMMING_003, ONLINE,
+            null, new Capacity(2), 0,
+            new HashSet<>(Set.of("카프카", "메시지 큐", "Event Driven"))
+    ),
     ;
 
     private final StudyName name;

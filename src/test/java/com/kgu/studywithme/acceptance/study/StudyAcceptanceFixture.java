@@ -3,6 +3,7 @@ package com.kgu.studywithme.acceptance.study;
 import com.kgu.studywithme.common.fixture.StudyFixture;
 import com.kgu.studywithme.study.presentation.dto.request.CreateStudyRequest;
 import com.kgu.studywithme.study.presentation.dto.request.UpdateStudyRequest;
+import com.kgu.studywithme.studyparticipant.presentation.dto.request.RejectParticipationRequest;
 import io.restassured.response.ValidatableResponse;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -82,5 +83,94 @@ public class StudyAcceptanceFixture {
                 .getPath();
 
         return deleteRequest(accessToken, uri);
+    }
+
+    public static ValidatableResponse 스터디_참여_신청을_한다(
+            final String accessToken,
+            final Long studyId
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies/{studyId}/applicants")
+                .build(studyId)
+                .getPath();
+
+        return postRequest(accessToken, uri);
+    }
+
+    public static ValidatableResponse 스터디_참여_신청을_취소한다(
+            final String accessToken,
+            final Long studyId
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies/{studyId}/applicants")
+                .build(studyId)
+                .getPath();
+
+        return deleteRequest(accessToken, uri);
+    }
+
+    public static ValidatableResponse 스터디_신청자에_대한_참여를_승인한다(
+            final String accessToken,
+            final Long studyId,
+            final Long applierId
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies/{studyId}/applicants/{applierId}/approve")
+                .build(studyId, applierId)
+                .getPath();
+
+        return patchRequest(accessToken, uri);
+    }
+
+    public static ValidatableResponse 스터디_신청자에_대한_참여를_거절한다(
+            final String accessToken,
+            final Long studyId,
+            final Long applierId
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies/{studyId}/applicants/{applierId}/reject")
+                .build(studyId, applierId)
+                .getPath();
+
+        final RejectParticipationRequest request = new RejectParticipationRequest("Sorry...");
+
+        return patchRequest(accessToken, request, uri);
+    }
+
+    public static ValidatableResponse 스터디_팀장_권한을_위임한다(
+            final String accessToken,
+            final Long studyId,
+            final Long participantId
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies/{studyId}/participants/{participantId}/delegation")
+                .build(studyId, participantId)
+                .getPath();
+
+        return patchRequest(accessToken, uri);
+    }
+
+    public static ValidatableResponse 스터디_참여를_취소한다(
+            final String accessToken,
+            final Long studyId
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies/{studyId}/participants/leave")
+                .build(studyId)
+                .getPath();
+
+        return patchRequest(accessToken, uri);
+    }
+
+    public static ValidatableResponse 스터디를_졸업한다(
+            final String accessToken,
+            final Long studyId
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies/{studyId}/graduate")
+                .build(studyId)
+                .getPath();
+
+        return patchRequest(accessToken, uri);
     }
 }
