@@ -25,8 +25,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -130,7 +129,7 @@ class MemberApiControllerTest extends ControllerTest {
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
                             status().isCreated(),
-                            jsonPath("$").doesNotExist()
+                            jsonPath("$.memberId").value(1L)
                     )
                     .andDo(
                             document(
@@ -162,6 +161,10 @@ class MemberApiControllerTest extends ControllerTest {
                                             fieldWithPath("interests[]")
                                                     .description("관심사 Enum ID")
                                                     .attributes(constraint("스터디 카테고리 ID 한정"))
+                                    ),
+                                    responseFields(
+                                            fieldWithPath("memberId")
+                                                    .description("생성한 사용자 ID(PK)")
                                     )
                             )
                     );

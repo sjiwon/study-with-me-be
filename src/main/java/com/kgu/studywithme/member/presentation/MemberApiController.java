@@ -11,6 +11,7 @@ import com.kgu.studywithme.member.domain.Nickname;
 import com.kgu.studywithme.member.domain.Region;
 import com.kgu.studywithme.member.presentation.dto.request.SignUpMemberRequest;
 import com.kgu.studywithme.member.presentation.dto.request.UpdateMemberRequest;
+import com.kgu.studywithme.member.presentation.dto.response.MemberIdResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -29,7 +30,7 @@ public class MemberApiController {
 
     @Operation(summary = "회원가입 EndPoint")
     @PostMapping("/member")
-    public ResponseEntity<Void> signUp(@RequestBody @Valid final SignUpMemberRequest request) {
+    public ResponseEntity<MemberIdResponse> signUp(@RequestBody @Valid final SignUpMemberRequest request) {
         final Long savedMemberId = signUpMemberUseCase.signUp(
                 new SignUpMemberUseCase.Command(
                         request.name(),
@@ -50,7 +51,7 @@ public class MemberApiController {
                                 .fromPath("/api/members/{id}")
                                 .build(savedMemberId)
                 )
-                .build();
+                .body(new MemberIdResponse(savedMemberId));
     }
 
     @Operation(summary = "사용자 정보 수정 EndPoint")
