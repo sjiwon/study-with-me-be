@@ -24,9 +24,23 @@ public class Hashtags {
     @OneToMany(mappedBy = "study", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private final List<Hashtag> hashtags = new ArrayList<>();
 
-    public Hashtags(final Study study, final Set<String> hashtags) {
+    public Hashtags(
+            final Study study,
+            final Set<String> hashtags
+    ) {
         validateHashtagCount(hashtags);
+        this.hashtags.addAll(
+                hashtags.stream()
+                        .map(value -> Hashtag.applyHashtag(study, value))
+                        .toList()
+        );
+    }
 
+    public void update(
+            final Study study,
+            final Set<String> hashtags
+    ) {
+        validateHashtagCount(hashtags);
         this.hashtags.clear();
         this.hashtags.addAll(
                 hashtags.stream()
@@ -36,7 +50,7 @@ public class Hashtags {
     }
 
     private void validateHashtagCount(final Set<String> hashtags) {
-        if (hashtags.size() < MIN_COUNT) {
+        if (hashtags.isEmpty()) {
             throw StudyWithMeException.type(StudyErrorCode.HASHTAG_MUST_EXISTS_AT_LEAST_ONE);
         }
 
