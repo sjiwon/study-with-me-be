@@ -1,5 +1,6 @@
 package com.kgu.studywithme.common.fixture;
 
+import com.kgu.studywithme.acceptance.member.MemberAcceptanceFixture;
 import com.kgu.studywithme.auth.application.dto.LoginResponse;
 import com.kgu.studywithme.auth.application.dto.MemberInfo;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleUserResponse;
@@ -15,7 +16,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static com.kgu.studywithme.acceptance.auth.AuthAcceptanceFixture.Google_OAuth_로그인을_진행한다;
-import static com.kgu.studywithme.acceptance.member.MemberAcceptanceFixture.회원가입을_진행한다;
 import static com.kgu.studywithme.category.domain.Category.*;
 import static com.kgu.studywithme.common.fixture.OAuthFixture.getAuthorizationCodeByIdentifier;
 import static com.kgu.studywithme.common.utils.OAuthUtils.GOOGLE_PROVIDER;
@@ -140,8 +140,27 @@ public enum MemberFixture {
     }
 
     public LoginResponse 회원가입_후_Google_OAuth_로그인을_진행한다() {
-        회원가입을_진행한다(this);
+        MemberAcceptanceFixture.회원가입을_진행한다(this);
 
+        final ValidatableResponse response = Google_OAuth_로그인을_진행한다(
+                GOOGLE_PROVIDER,
+                getAuthorizationCodeByIdentifier(this.getEmail().getValue()),
+                REDIRECT_URL
+        );
+
+        return response
+                .extract()
+                .as(LoginResponse.class);
+    }
+
+    public Long 회원가입을_진행한다() {
+        return MemberAcceptanceFixture.회원가입을_진행한다(this)
+                .extract()
+                .jsonPath()
+                .getLong("memberId");
+    }
+
+    public LoginResponse 로그인을_진행한다() {
         final ValidatableResponse response = Google_OAuth_로그인을_진행한다(
                 GOOGLE_PROVIDER,
                 getAuthorizationCodeByIdentifier(this.getEmail().getValue()),
