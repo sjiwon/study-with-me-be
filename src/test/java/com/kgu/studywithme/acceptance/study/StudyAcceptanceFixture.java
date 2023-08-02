@@ -4,6 +4,8 @@ import com.kgu.studywithme.common.fixture.StudyFixture;
 import com.kgu.studywithme.study.presentation.dto.request.CreateStudyRequest;
 import com.kgu.studywithme.study.presentation.dto.request.UpdateStudyRequest;
 import com.kgu.studywithme.studyparticipant.presentation.dto.request.RejectParticipationRequest;
+import com.kgu.studywithme.studyreview.presentation.dto.request.UpdateStudyReviewRequest;
+import com.kgu.studywithme.studyreview.presentation.dto.request.WriteStudyReviewRequest;
 import io.restassured.response.ValidatableResponse;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -172,5 +174,47 @@ public class StudyAcceptanceFixture {
                 .getPath();
 
         return patchRequest(accessToken, uri);
+    }
+
+    public static ValidatableResponse 스터디_리뷰를_작성한다(
+            final String accessToken,
+            final Long studyId
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies/{studyId}/review")
+                .build(studyId)
+                .getPath();
+
+        final WriteStudyReviewRequest request = new WriteStudyReviewRequest("Good!");
+
+        return postRequest(accessToken, request, uri);
+    }
+
+    public static ValidatableResponse 작성한_스터디_리뷰를_수정한다(
+            final String accessToken,
+            final Long studyId,
+            final Long reviewId
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies/{studyId}/reviews/{reviewId}")
+                .build(studyId, reviewId)
+                .getPath();
+
+        final UpdateStudyReviewRequest request = new UpdateStudyReviewRequest("Bad..");
+
+        return patchRequest(accessToken, request, uri);
+    }
+
+    public static ValidatableResponse 작성한_스터디_리뷰를_삭제한다(
+            final String accessToken,
+            final Long studyId,
+            final Long reviewId
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies/{studyId}/reviews/{reviewId}")
+                .build(studyId, reviewId)
+                .getPath();
+
+        return deleteRequest(accessToken, uri);
     }
 }
