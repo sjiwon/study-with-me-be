@@ -4,6 +4,8 @@ import com.kgu.studywithme.common.fixture.StudyFixture;
 import com.kgu.studywithme.common.fixture.StudyWeeklyFixture;
 import com.kgu.studywithme.study.presentation.dto.request.CreateStudyRequest;
 import com.kgu.studywithme.study.presentation.dto.request.UpdateStudyRequest;
+import com.kgu.studywithme.studyattendance.domain.AttendanceStatus;
+import com.kgu.studywithme.studyattendance.presentation.dto.request.ManualAttendanceRequest;
 import com.kgu.studywithme.studyparticipant.presentation.dto.request.RejectParticipationRequest;
 import com.kgu.studywithme.studyreview.presentation.dto.request.UpdateStudyReviewRequest;
 import com.kgu.studywithme.studyreview.presentation.dto.request.WriteStudyReviewRequest;
@@ -332,5 +334,22 @@ public class StudyAcceptanceFixture {
                 accessToken,
                 uri
         );
+    }
+
+    public static ValidatableResponse 사용자에_대한_해당_주차_출석_정보를_수정한다(
+            final String accessToken,
+            final Long studyId,
+            final Long memberId,
+            final int week,
+            final AttendanceStatus status
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies/{studyId}/attendance/{memberId}")
+                .build(studyId, memberId)
+                .getPath();
+
+        final ManualAttendanceRequest request = new ManualAttendanceRequest(week, status.getDescription());
+
+        return patchRequest(accessToken, request, uri);
     }
 }
