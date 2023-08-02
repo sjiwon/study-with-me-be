@@ -78,6 +78,7 @@ public class MemberInformationRepositoryImpl implements MemberInformationReposit
                         studyParticipant.memberId.eq(memberId),
                         studyParticipant.status.eq(APPROVE)
                 )
+                .orderBy(studyParticipant.id.desc())
                 .fetch();
     }
 
@@ -103,6 +104,7 @@ public class MemberInformationRepositoryImpl implements MemberInformationReposit
                         studyParticipant.memberId.eq(memberId),
                         studyParticipant.status.eq(GRADUATED)
                 )
+                .orderBy(studyParticipant.id.desc())
                 .fetch();
     }
 
@@ -117,6 +119,7 @@ public class MemberInformationRepositoryImpl implements MemberInformationReposit
                 )
                 .from(memberReview)
                 .where(memberReview.revieweeId.eq(memberId))
+                .orderBy(memberReview.id.desc())
                 .fetch();
     }
 
@@ -144,7 +147,8 @@ public class MemberInformationRepositoryImpl implements MemberInformationReposit
                         .filter(ratio -> ratio.status() == status)
                         .findFirst()
                         .orElse(new AttendanceRatio(status, 0))
-                ).toList();
+                )
+                .toList();
     }
 
     @Override
@@ -203,6 +207,7 @@ public class MemberInformationRepositoryImpl implements MemberInformationReposit
                         studyParticipant.memberId.eq(memberId),
                         studyParticipant.status.eq(APPLY)
                 )
+                .orderBy(studyParticipant.id.desc())
                 .fetch();
     }
 
@@ -220,6 +225,7 @@ public class MemberInformationRepositoryImpl implements MemberInformationReposit
                 .from(study)
                 .innerJoin(favorite).on(favorite.studyId.eq(study.id))
                 .where(favorite.memberId.eq(memberId))
+                .orderBy(favorite.id.desc())
                 .fetch();
     }
 }

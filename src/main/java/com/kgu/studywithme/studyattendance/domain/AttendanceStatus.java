@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 @Getter
@@ -25,6 +26,8 @@ public enum AttendanceStatus {
     }
 
     public static List<AttendanceStatus> getAttendanceStatuses() {
-        return Arrays.stream(values()).toList();
+        return Arrays.stream(values())
+                .sorted(Comparator.comparingInt(Enum::ordinal))
+                .toList();
     }
 }

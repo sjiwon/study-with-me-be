@@ -148,10 +148,10 @@ class MemberInformationRepositoryTest extends RepositoryTest {
                     () -> assertThat(result1).hasSize(3),
                     () -> assertThat(result1)
                             .map(ReceivedReview::content)
-                            .containsExactlyInAnyOrder(
-                                    "Good - " + reviewerA.getId(),
+                            .containsExactly(
+                                    "Good - " + reviewerC.getId(),
                                     "Good - " + reviewerB.getId(),
-                                    "Good - " + reviewerC.getId()
+                                    "Good - " + reviewerA.getId()
                             )
             );
 
@@ -178,12 +178,12 @@ class MemberInformationRepositoryTest extends RepositoryTest {
                     () -> assertThat(result2).hasSize(5),
                     () -> assertThat(result2)
                             .map(ReceivedReview::content)
-                            .containsExactlyInAnyOrder(
-                                    "Good - " + reviewerA.getId(),
-                                    "Good - " + reviewerB.getId(),
-                                    "Good - " + reviewerC.getId(),
+                            .containsExactly(
+                                    "Good - " + reviewerE.getId(),
                                     "Good - " + reviewerD.getId(),
-                                    "Good - " + reviewerE.getId()
+                                    "Good - " + reviewerC.getId(),
+                                    "Good - " + reviewerB.getId(),
+                                    "Good - " + reviewerA.getId()
                             )
             );
         }
@@ -226,7 +226,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             final List<AppliedStudy> result1 = memberRepository.fetchAppliedStudyById(member.getId());
             assertThat(result1)
                     .map(AppliedStudy::id)
-                    .containsExactlyInAnyOrder(studyA.getId(), studyB.getId(), studyC.getId());
+                    .containsExactly(studyC.getId(), studyB.getId(), studyA.getId());
 
             /* studyD, studyE 추가 신청 -> studyB 승인 */
             studyParticipantRepository.saveAll(
@@ -240,7 +240,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             final List<AppliedStudy> result2 = memberRepository.fetchAppliedStudyById(member.getId());
             assertThat(result2)
                     .map(AppliedStudy::id)
-                    .containsExactlyInAnyOrder(studyA.getId(), studyC.getId(), studyD.getId(), studyE.getId());
+                    .containsExactly(studyE.getId(), studyD.getId(), studyC.getId(), studyA.getId());
         }
 
         @Test
@@ -258,7 +258,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             final List<ParticipateStudy> result1 = memberRepository.fetchParticipateStudyById(member.getId());
             assertThat(result1)
                     .map(ParticipateStudy::id)
-                    .containsExactlyInAnyOrder(studyA.getId(), studyB.getId(), studyC.getId());
+                    .containsExactly(studyC.getId(), studyB.getId(), studyA.getId());
 
             /* studyD, studyE 추가 참여 -> studyC 졸업 */
             studyParticipantRepository.saveAll(
@@ -272,7 +272,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             final List<ParticipateStudy> result2 = memberRepository.fetchParticipateStudyById(member.getId());
             assertThat(result2)
                     .map(ParticipateStudy::id)
-                    .containsExactlyInAnyOrder(studyA.getId(), studyB.getId(), studyD.getId(), studyE.getId());
+                    .containsExactly(studyE.getId(), studyD.getId(), studyB.getId(), studyA.getId());
         }
 
         @Test
@@ -303,7 +303,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             final List<GraduatedStudy> result2 = memberRepository.fetchGraduatedStudyById(member.getId());
             assertThat(result2)
                     .map(GraduatedStudy::id)
-                    .containsExactlyInAnyOrder(studyA.getId(), studyC.getId());
+                    .containsExactly(studyC.getId(), studyA.getId());
         }
 
         @Test
@@ -385,7 +385,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             final List<LikeMarkedStudy> result1 = memberRepository.fetchLikeMarkedStudyById(member.getId());
             assertThat(result1)
                     .map(LikeMarkedStudy::id)
-                    .containsExactlyInAnyOrder(studyA.getId(), studyB.getId(), studyC.getId());
+                    .containsExactly(studyC.getId(), studyB.getId(), studyA.getId());
 
             /* studyD, studyE 추가 찜 */
             favoriteRepository.saveAll(
@@ -398,7 +398,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             final List<LikeMarkedStudy> result2 = memberRepository.fetchLikeMarkedStudyById(member.getId());
             assertThat(result2)
                     .map(LikeMarkedStudy::id)
-                    .containsExactlyInAnyOrder(studyA.getId(), studyB.getId(), studyC.getId(), studyD.getId(), studyE.getId());
+                    .containsExactly(studyE.getId(), studyD.getId(), studyC.getId(), studyB.getId(), studyA.getId());
         }
     }
 }
