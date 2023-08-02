@@ -95,6 +95,19 @@ public class CommonRequestFixture {
     }
 
     public static ValidatableResponse multipartRequest(
+            final Map<String, String> params,
+            final String path
+    ) {
+        final RequestSpecification request = RestAssured.given().log().all()
+                .contentType(MULTIPART)
+                .request();
+        params.keySet().forEach(paramKey -> request.multiPart(paramKey, params.get(paramKey)));
+
+        return request.post(path)
+                .then().log().all();
+    }
+
+    public static ValidatableResponse multipartRequest(
             final String fileName,
             final Map<String, String> params,
             final String path
@@ -103,7 +116,7 @@ public class CommonRequestFixture {
                 .contentType(MULTIPART)
                 .multiPart("file", getFile(fileName))
                 .request();
-        params.keySet().forEach(paramKey -> request.formParam(paramKey, params.get(paramKey)));
+        params.keySet().forEach(paramKey -> request.multiPart(paramKey, params.get(paramKey)));
 
         return request.post(path)
                 .then().log().all();
@@ -124,6 +137,21 @@ public class CommonRequestFixture {
     }
 
     public static ValidatableResponse multipartRequest(
+            final Map<String, String> params,
+            final String accessToken,
+            final String path
+    ) {
+        final RequestSpecification request = RestAssured.given().log().all()
+                .contentType(MULTIPART)
+                .auth().oauth2(accessToken)
+                .request();
+        params.keySet().forEach(paramKey -> request.multiPart(paramKey, params.get(paramKey)));
+
+        return request.post(path)
+                .then().log().all();
+    }
+
+    public static ValidatableResponse multipartRequest(
             final String fileName,
             final Map<String, String> params,
             final String accessToken,
@@ -134,7 +162,7 @@ public class CommonRequestFixture {
                 .auth().oauth2(accessToken)
                 .multiPart("file", getFile(fileName))
                 .request();
-        params.keySet().forEach(paramKey -> request.formParam(paramKey, params.get(paramKey)));
+        params.keySet().forEach(paramKey -> request.multiPart(paramKey, params.get(paramKey)));
 
         return request.post(path)
                 .then().log().all();
@@ -145,7 +173,6 @@ public class CommonRequestFixture {
             final String path
     ) {
         final RequestSpecification request = RestAssured.given().log().all()
-                .contentType(MULTIPART)
                 .request();
         fileNames.forEach(fileName -> request.multiPart("files", getFile(fileName)));
 
@@ -162,7 +189,7 @@ public class CommonRequestFixture {
                 .contentType(MULTIPART)
                 .request();
         fileNames.forEach(fileName -> request.multiPart("files", getFile(fileName)));
-        params.keySet().forEach(paramKey -> request.formParam(paramKey, params.get(paramKey)));
+        params.keySet().forEach(paramKey -> request.multiPart(paramKey, params.get(paramKey)));
 
         return request.post(path)
                 .then().log().all();
@@ -194,7 +221,7 @@ public class CommonRequestFixture {
                 .auth().oauth2(accessToken)
                 .request();
         fileNames.forEach(fileName -> request.multiPart("files", getFile(fileName)));
-        params.keySet().forEach(paramKey -> request.formParam(paramKey, params.get(paramKey)));
+        params.keySet().forEach(paramKey -> request.multiPart(paramKey, params.get(paramKey)));
 
         return request.post(path)
                 .then().log().all();

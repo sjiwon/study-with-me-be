@@ -1,6 +1,7 @@
 package com.kgu.studywithme.acceptance.study;
 
 import com.kgu.studywithme.common.fixture.StudyFixture;
+import com.kgu.studywithme.common.fixture.StudyWeeklyFixture;
 import com.kgu.studywithme.study.presentation.dto.request.CreateStudyRequest;
 import com.kgu.studywithme.study.presentation.dto.request.UpdateStudyRequest;
 import com.kgu.studywithme.studyparticipant.presentation.dto.request.RejectParticipationRequest;
@@ -9,9 +10,16 @@ import com.kgu.studywithme.studyreview.presentation.dto.request.WriteStudyReview
 import io.restassured.response.ValidatableResponse;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static com.kgu.studywithme.acceptance.CommonRequestFixture.*;
 
 public class StudyAcceptanceFixture {
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+
     public static ValidatableResponse 스터디를_생성한다(
             final String accessToken,
             final StudyFixture fixture
@@ -216,5 +224,113 @@ public class StudyAcceptanceFixture {
                 .getPath();
 
         return deleteRequest(accessToken, uri);
+    }
+
+    public static ValidatableResponse 스터디_주차를_생성한다(
+            final String accessToken,
+            final Long studyId,
+            final StudyWeeklyFixture fixture
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies/{studyId}/week")
+                .build(studyId)
+                .getPath();
+
+        final Map<String, String> params = new HashMap<>();
+        params.put("title", fixture.getTitle());
+        params.put("content", fixture.getContent());
+        params.put("startDate", fixture.getPeriod().getStartDate().format(DATE_TIME_FORMATTER));
+        params.put("endDate", fixture.getPeriod().getEndDate().format(DATE_TIME_FORMATTER));
+        params.put("assignmentExists", String.valueOf(fixture.isAssignmentExists()));
+        params.put("autoAttendance", String.valueOf(fixture.isAutoAttendance()));
+
+        return multipartRequest(
+                List.of("hello2.hwpx", "hello4.png"),
+                params,
+                accessToken,
+                uri
+        );
+    }
+
+    public static ValidatableResponse 스터디_주차를_수정한다(
+            final String accessToken,
+            final Long studyId,
+            final int week,
+            final StudyWeeklyFixture fixture
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies/{studyId}/weeks/{week}")
+                .build(studyId, week)
+                .getPath();
+
+        final Map<String, String> params = new HashMap<>();
+        params.put("title", fixture.getTitle());
+        params.put("content", fixture.getContent());
+        params.put("startDate", fixture.getPeriod().getStartDate().format(DATE_TIME_FORMATTER));
+        params.put("endDate", fixture.getPeriod().getEndDate().format(DATE_TIME_FORMATTER));
+        params.put("assignmentExists", String.valueOf(fixture.isAssignmentExists()));
+        params.put("autoAttendance", String.valueOf(fixture.isAutoAttendance()));
+
+        return multipartRequest(
+                List.of("hello1.txt", "hello3.pdf"),
+                params,
+                accessToken,
+                uri
+        );
+    }
+
+    public static ValidatableResponse 스터디_주차를_삭제한다(
+            final String accessToken,
+            final Long studyId,
+            final int week
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies/{studyId}/weeks/{week}")
+                .build(studyId, week)
+                .getPath();
+
+        return deleteRequest(accessToken, uri);
+    }
+
+    public static ValidatableResponse 해당_주차에_과제를_제출한다(
+            final String accessToken,
+            final Long studyId,
+            final int week
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies/{studyId}/weeks/{week}/assignment")
+                .build(studyId, week)
+                .getPath();
+
+        final Map<String, String> params = new HashMap<>();
+        params.put("type", "link");
+        params.put("link", "https://notion.so");
+
+        return multipartRequest(
+                params,
+                accessToken,
+                uri
+        );
+    }
+
+    public static ValidatableResponse 해당_주차에_제출한_과제를_수정한다(
+            final String accessToken,
+            final Long studyId,
+            final int week
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies/{studyId}/weeks/{week}/assignment/edit")
+                .build(studyId, week)
+                .getPath();
+
+        final Map<String, String> params = new HashMap<>();
+        params.put("type", "file");
+
+        return multipartRequest(
+                "hello3.pdf",
+                params,
+                accessToken,
+                uri
+        );
     }
 }
