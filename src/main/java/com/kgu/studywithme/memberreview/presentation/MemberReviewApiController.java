@@ -6,6 +6,7 @@ import com.kgu.studywithme.memberreview.application.usecase.command.UpdateMember
 import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.presentation.dto.request.UpdateMemberReviewRequest;
 import com.kgu.studywithme.memberreview.presentation.dto.request.WriteMemberReviewRequest;
+import com.kgu.studywithme.memberreview.presentation.dto.response.MemberReviewIdResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -24,15 +25,15 @@ public class MemberReviewApiController {
     @Operation(summary = "피어리뷰 작성 EndPoint")
     @CheckAuthUser
     @PostMapping
-    public ResponseEntity<Void> writeMemberReview(
+    public ResponseEntity<MemberReviewIdResponse> writeMemberReview(
             @ExtractPayload final Long reviewerId,
             @PathVariable final Long revieweeId,
             @RequestBody @Valid final WriteMemberReviewRequest request
     ) {
-        writeMemberReviewUseCase.writeMemberReview(
+        final Long reviewId = writeMemberReviewUseCase.writeMemberReview(
                 new WriteMemberReviewUseCase.Command(reviewerId, revieweeId, request.content())
         );
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(new MemberReviewIdResponse(reviewId));
     }
 
     @Operation(summary = "피어리뷰 수정 EndPoint")

@@ -22,8 +22,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -111,7 +110,10 @@ class StudyNoticeApiControllerTest extends ControllerTest {
 
             // then
             mockMvc.perform(requestBuilder)
-                    .andExpect(status().isNoContent())
+                    .andExpectAll(
+                            status().isOk(),
+                            jsonPath("$.noticeId").value(1L)
+                    )
                     .andDo(
                             document(
                                     "StudyApi/Notice/Write/Success",
@@ -127,6 +129,10 @@ class StudyNoticeApiControllerTest extends ControllerTest {
                                                     .description("공지사항 제목"),
                                             fieldWithPath("content")
                                                     .description("공지사항 내용")
+                                    ),
+                                    responseFields(
+                                            fieldWithPath("noticeId")
+                                                    .description("작성한 공지사항 ID(PK)")
                                     )
                             )
                     );

@@ -7,6 +7,7 @@ import com.kgu.studywithme.studynotice.application.usecase.command.UpdateStudyNo
 import com.kgu.studywithme.studynotice.application.usecase.command.WriteStudyNoticeUseCase;
 import com.kgu.studywithme.studynotice.presentation.dto.request.UpdateStudyNoticeRequest;
 import com.kgu.studywithme.studynotice.presentation.dto.request.WriteStudyNoticeRequest;
+import com.kgu.studywithme.studynotice.presentation.dto.response.StudyNoticeIdResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -26,12 +27,12 @@ public class StudyNoticeApiController {
     @Operation(summary = "스터디 공지사항 작성 EndPoint")
     @CheckStudyHost
     @PostMapping("/notice")
-    public ResponseEntity<Void> write(
+    public ResponseEntity<StudyNoticeIdResponse> write(
             @ExtractPayload final Long hostId,
             @PathVariable final Long studyId,
             @RequestBody @Valid final WriteStudyNoticeRequest request
     ) {
-        writeStudyNoticeUseCase.writeNotice(
+        final Long noticeId = writeStudyNoticeUseCase.writeNotice(
                 new WriteStudyNoticeUseCase.Command(
                         hostId,
                         studyId,
@@ -39,7 +40,7 @@ public class StudyNoticeApiController {
                         request.content()
                 )
         );
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(new StudyNoticeIdResponse(noticeId));
     }
 
     @Operation(summary = "스터디 공지사항 수정 EndPoint")
