@@ -85,7 +85,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
                 new EditSubmittedWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),
-                        currentWeekly.getWeek(),
+                        currentWeekly.getId(),
                         "link",
                         null,
                         null
@@ -95,7 +95,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
                 .hasMessage(StudyWeeklyErrorCode.MISSING_SUBMISSION.getMessage());
 
         assertAll(
-                () -> verify(studyWeeklyRepository, times(0)).getSubmittedAssignment(any(), any(), anyInt()),
+                () -> verify(studyWeeklyRepository, times(0)).getSubmittedAssignment(any(), any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt())
         );
@@ -108,7 +108,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
                 new EditSubmittedWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),
-                        currentWeekly.getWeek(),
+                        currentWeekly.getId(),
                         "link",
                         file,
                         "https://notion.so"
@@ -118,7 +118,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
                 .hasMessage(StudyWeeklyErrorCode.DUPLICATE_SUBMISSION.getMessage());
 
         assertAll(
-                () -> verify(studyWeeklyRepository, times(0)).getSubmittedAssignment(any(), any(), anyInt()),
+                () -> verify(studyWeeklyRepository, times(0)).getSubmittedAssignment(any(), any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt())
         );
@@ -128,14 +128,14 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
     @DisplayName("제출한 과제가 없다면 수정할 수 없다")
     void throwExceptionBySubmittedAssignmentNotFound() {
         // given
-        given(studyWeeklyRepository.getSubmittedAssignment(any(), any(), anyInt())).willReturn(Optional.empty());
+        given(studyWeeklyRepository.getSubmittedAssignment(any(), any(), any())).willReturn(Optional.empty());
 
         // when - then
         assertThatThrownBy(() -> editSubmittedWeeklyAssignmentService.editSubmittedWeeklyAssignment(
                 new EditSubmittedWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),
-                        currentWeekly.getWeek(),
+                        currentWeekly.getId(),
                         "link",
                         null,
                         "https://notion.so"
@@ -145,7 +145,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
                 .hasMessage(StudyWeeklyErrorCode.SUBMITTED_ASSIGNMENT_NOT_FOUND.getMessage());
 
         assertAll(
-                () -> verify(studyWeeklyRepository, times(1)).getSubmittedAssignment(any(), any(), anyInt()),
+                () -> verify(studyWeeklyRepository, times(1)).getSubmittedAssignment(any(), any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt())
         );
@@ -160,7 +160,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
                 host.getId(),
                 UploadAssignment.withLink("https://notion.so")
         ).apply(1L, LocalDateTime.now());
-        given(studyWeeklyRepository.getSubmittedAssignment(any(), any(), anyInt())).willReturn(Optional.of(submittedAssignment));
+        given(studyWeeklyRepository.getSubmittedAssignment(any(), any(), any())).willReturn(Optional.of(submittedAssignment));
         given(queryMemberByIdService.findById(any())).willReturn(host);
 
         // when
@@ -168,7 +168,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
                 new EditSubmittedWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),
-                        currentWeekly.getWeek(),
+                        currentWeekly.getId(),
                         "link",
                         null,
                         "https://notion.so"
@@ -177,7 +177,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyWeeklyRepository, times(1)).getSubmittedAssignment(any(), any(), anyInt()),
+                () -> verify(studyWeeklyRepository, times(1)).getSubmittedAssignment(any(), any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
                 () -> assertThat(host.getScore()).isEqualTo(previousScore) // Score 유지
@@ -193,7 +193,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
                 host.getId(),
                 UploadAssignment.withLink("https://notion.so")
         ).apply(1L, LocalDateTime.now());
-        given(studyWeeklyRepository.getSubmittedAssignment(any(), any(), anyInt())).willReturn(Optional.of(submittedAssignment));
+        given(studyWeeklyRepository.getSubmittedAssignment(any(), any(), any())).willReturn(Optional.of(submittedAssignment));
         given(queryMemberByIdService.findById(any())).willReturn(host);
         given(studyAttendanceRepository.getParticipantAttendanceByWeek(any(), any(), anyInt())).willReturn(Optional.of(attendance));
 
@@ -202,7 +202,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
                 new EditSubmittedWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),
-                        previousWeekly.getWeek(),
+                        previousWeekly.getId(),
                         "link",
                         null,
                         "https://notion.so"
@@ -211,7 +211,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyWeeklyRepository, times(1)).getSubmittedAssignment(any(), any(), anyInt()),
+                () -> verify(studyWeeklyRepository, times(1)).getSubmittedAssignment(any(), any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceRepository, times(1)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
                 () -> assertThat(host.getScore()).isEqualTo(previousScore - 2) // 출석 -> 지각

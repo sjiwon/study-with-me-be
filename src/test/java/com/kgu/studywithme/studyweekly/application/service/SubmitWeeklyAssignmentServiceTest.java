@@ -81,7 +81,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                 new SubmitWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),
-                        currentWeekly.getWeek(),
+                        currentWeekly.getId(),
                         "link",
                         null,
                         null
@@ -91,7 +91,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                 .hasMessage(StudyWeeklyErrorCode.MISSING_SUBMISSION.getMessage());
 
         assertAll(
-                () -> verify(studyWeeklyRepository, times(0)).getSpecificWeekly(any(), anyInt()),
+                () -> verify(studyWeeklyRepository, times(0)).findById(any()),
                 () -> verify(studyParticipantRepository, times(0)).findParticipant(any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
@@ -106,7 +106,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                 new SubmitWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),
-                        currentWeekly.getWeek(),
+                        currentWeekly.getId(),
                         "link",
                         file,
                         "https://notion.so"
@@ -116,7 +116,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                 .hasMessage(StudyWeeklyErrorCode.DUPLICATE_SUBMISSION.getMessage());
 
         assertAll(
-                () -> verify(studyWeeklyRepository, times(0)).getSpecificWeekly(any(), anyInt()),
+                () -> verify(studyWeeklyRepository, times(0)).findById(any()),
                 () -> verify(studyParticipantRepository, times(0)).findParticipant(any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
@@ -128,14 +128,14 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
     @DisplayName("존재하지 않는 주차에 대해서 과제 제출을 하려고 시도하면 실패한다")
     void throwExceptionByWeekNotFound() {
         // given
-        given(studyWeeklyRepository.getSpecificWeekly(any(), anyInt())).willReturn(Optional.empty());
+        given(studyWeeklyRepository.findById(any())).willReturn(Optional.empty());
 
         // when - then
         assertThatThrownBy(() -> submitWeeklyAssignmentService.submitWeeklyAssignment(
                 new SubmitWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),
-                        currentWeekly.getWeek(),
+                        currentWeekly.getId(),
                         "link",
                         null,
                         "https://notion.so"
@@ -145,7 +145,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                 .hasMessage(StudyWeeklyErrorCode.WEEKLY_NOT_FOUND.getMessage());
 
         assertAll(
-                () -> verify(studyWeeklyRepository, times(1)).getSpecificWeekly(any(), anyInt()),
+                () -> verify(studyWeeklyRepository, times(1)).findById(any()),
                 () -> verify(studyParticipantRepository, times(0)).findParticipant(any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
@@ -157,7 +157,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
     @DisplayName("해당 주차 과제를 제출한다 [링크 제출] -> 기간안에 제출")
     void successWithLinkA() {
         // given
-        given(studyWeeklyRepository.getSpecificWeekly(any(), anyInt())).willReturn(Optional.of(currentWeekly));
+        given(studyWeeklyRepository.findById(any())).willReturn(Optional.of(currentWeekly));
         given(studyParticipantRepository.findParticipant(any(), any())).willReturn(Optional.of(host));
 
         // when
@@ -165,7 +165,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                 new SubmitWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),
-                        currentWeekly.getWeek(),
+                        currentWeekly.getId(),
                         "link",
                         null,
                         "https://notion.so"
@@ -174,7 +174,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyWeeklyRepository, times(1)).getSpecificWeekly(any(), anyInt()),
+                () -> verify(studyWeeklyRepository, times(1)).findById(any()),
                 () -> verify(studyParticipantRepository, times(1)).findParticipant(any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
@@ -187,7 +187,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
     @DisplayName("해당 주차 과제를 제출한다 [링크 제출] -> 스케줄러에 의한 결석 처리 = 지각으로 수정")
     void successWithLinkB() {
         // given
-        given(studyWeeklyRepository.getSpecificWeekly(any(), anyInt())).willReturn(Optional.of(previousWeekly));
+        given(studyWeeklyRepository.findById(any())).willReturn(Optional.of(previousWeekly));
         given(studyParticipantRepository.findParticipant(any(), any())).willReturn(Optional.of(host));
         given(studyAttendanceRepository.getParticipantAttendanceByWeek(any(), any(), anyInt())).willReturn(Optional.of(attendance));
 
@@ -196,7 +196,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                 new SubmitWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),
-                        previousWeekly.getWeek(),
+                        previousWeekly.getId(),
                         "link",
                         null,
                         "https://notion.so"
@@ -205,7 +205,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyWeeklyRepository, times(1)).getSpecificWeekly(any(), anyInt()),
+                () -> verify(studyWeeklyRepository, times(1)).findById(any()),
                 () -> verify(studyParticipantRepository, times(1)).findParticipant(any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceRepository, times(1)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
@@ -218,7 +218,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
     @DisplayName("해당 주차 과제를 제출한다 [파일 제출] -> 기간안에 제출")
     void successWithFileA() {
         // given
-        given(studyWeeklyRepository.getSpecificWeekly(any(), anyInt())).willReturn(Optional.of(currentWeekly));
+        given(studyWeeklyRepository.findById(any())).willReturn(Optional.of(currentWeekly));
         given(studyParticipantRepository.findParticipant(any(), any())).willReturn(Optional.of(host));
         given(uploader.uploadWeeklySubmit(file)).willReturn(TXT_FILE.getLink());
 
@@ -227,7 +227,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                 new SubmitWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),
-                        currentWeekly.getWeek(),
+                        currentWeekly.getId(),
                         "file",
                         file,
                         null
@@ -236,7 +236,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyWeeklyRepository, times(1)).getSpecificWeekly(any(), anyInt()),
+                () -> verify(studyWeeklyRepository, times(1)).findById(any()),
                 () -> verify(studyParticipantRepository, times(1)).findParticipant(any(), any()),
                 () -> verify(uploader, times(1)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
@@ -249,7 +249,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
     @DisplayName("해당 주차 과제를 제출한다 [파일 제출] -> 스케줄러에 의한 결석 처리 = 지각으로 수정")
     void successWithFileB() {
         // given
-        given(studyWeeklyRepository.getSpecificWeekly(any(), anyInt())).willReturn(Optional.of(previousWeekly));
+        given(studyWeeklyRepository.findById(any())).willReturn(Optional.of(previousWeekly));
         given(studyParticipantRepository.findParticipant(any(), any())).willReturn(Optional.of(host));
         given(uploader.uploadWeeklySubmit(file)).willReturn(TXT_FILE.getLink());
         given(studyAttendanceRepository.getParticipantAttendanceByWeek(any(), any(), anyInt())).willReturn(Optional.of(attendance));
@@ -259,7 +259,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                 new SubmitWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),
-                        previousWeekly.getWeek(),
+                        previousWeekly.getId(),
                         "file",
                         file,
                         null
@@ -268,7 +268,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyWeeklyRepository, times(1)).getSpecificWeekly(any(), anyInt()),
+                () -> verify(studyWeeklyRepository, times(1)).findById(any()),
                 () -> verify(studyParticipantRepository, times(1)).findParticipant(any(), any()),
                 () -> verify(uploader, times(1)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceRepository, times(1)).getParticipantAttendanceByWeek(any(), any(), anyInt()),

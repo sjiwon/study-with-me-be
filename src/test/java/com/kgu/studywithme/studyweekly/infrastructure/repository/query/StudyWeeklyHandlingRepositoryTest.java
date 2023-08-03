@@ -67,69 +67,49 @@ class StudyWeeklyHandlingRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    @DisplayName("특정 주차 정보를 조회한다")
-    void getSpecificWeekly() {
-        /* 0주차 */
-        assertThat(studyWeeklyRepository.getSpecificWeekly(studyA.getId(), 0)).isEmpty();
-
-        /* 1주차 */
-        assertThat(studyWeeklyRepository.getSpecificWeekly(studyA.getId(), 1)).isEmpty();
-
-        studyWeeklyRepository.save(STUDY_WEEKLY_1.toWeeklyWithAssignment(studyA.getId(), host.getId()));
-        assertThat(studyWeeklyRepository.getSpecificWeekly(studyA.getId(), 1)).isPresent();
-    }
-
-    @Test
-    @DisplayName("주어진 주차가 가장 최신 주차인지 확인한다")
+    @DisplayName("해당 주차가 가장 최신 주차인지 확인한다")
     void isLatestWeek() {
-        /* 0주차 */
-        assertThat(studyWeeklyRepository.isLatestWeek(studyA.getId(), 0)).isTrue();
-
         /* 1주차 */
-        studyWeeklyRepository.save(STUDY_WEEKLY_1.toWeeklyWithAssignment(studyA.getId(), host.getId()));
-        assertAll(
-                () -> assertThat(studyWeeklyRepository.isLatestWeek(studyA.getId(), 0)).isFalse(),
-                () -> assertThat(studyWeeklyRepository.isLatestWeek(studyA.getId(), 1)).isTrue()
-        );
+        final StudyWeekly weekly1 = studyWeeklyRepository.save(STUDY_WEEKLY_1.toWeeklyWithAssignment(studyA.getId(), host.getId()));
+        assertThat(studyWeeklyRepository.isLatestWeek(studyA.getId(), weekly1.getId())).isTrue();
 
         /* 2주차 */
-        studyWeeklyRepository.save(STUDY_WEEKLY_2.toWeeklyWithAssignment(studyA.getId(), host.getId()));
+        final StudyWeekly weekly2 = studyWeeklyRepository.save(STUDY_WEEKLY_2.toWeeklyWithAssignment(studyA.getId(), host.getId()));
         assertAll(
-                () -> assertThat(studyWeeklyRepository.isLatestWeek(studyA.getId(), 0)).isFalse(),
-                () -> assertThat(studyWeeklyRepository.isLatestWeek(studyA.getId(), 1)).isFalse(),
-                () -> assertThat(studyWeeklyRepository.isLatestWeek(studyA.getId(), 2)).isTrue()
+                () -> assertThat(studyWeeklyRepository.isLatestWeek(studyA.getId(), weekly1.getId())).isFalse(),
+                () -> assertThat(studyWeeklyRepository.isLatestWeek(studyA.getId(), weekly2.getId())).isTrue()
         );
     }
 
     @Test
     @DisplayName("특정 주차 정보를 삭제 한다 [제출 과제 삭제 -> 주차 첨부파일 삭제 -> 주차 출석정보 삭제 -> 주차 삭제]")
     void deleteSpecificWeekly() {
-        studyWeeklyRepository.save(STUDY_WEEKLY_1.toWeeklyWithAssignment(studyA.getId(), host.getId()));
-        studyWeeklyRepository.save(STUDY_WEEKLY_2.toWeeklyWithAssignment(studyA.getId(), host.getId()));
-        studyWeeklyRepository.save(STUDY_WEEKLY_3.toWeeklyWithAssignment(studyA.getId(), host.getId()));
+        final StudyWeekly weekly1 = studyWeeklyRepository.save(STUDY_WEEKLY_1.toWeeklyWithAssignment(studyA.getId(), host.getId()));
+        final StudyWeekly weekly2 = studyWeeklyRepository.save(STUDY_WEEKLY_2.toWeeklyWithAssignment(studyA.getId(), host.getId()));
+        final StudyWeekly weekly3 = studyWeeklyRepository.save(STUDY_WEEKLY_3.toWeeklyWithAssignment(studyA.getId(), host.getId()));
 
         /* 3주차 삭제 */
-        studyWeeklyRepository.deleteSpecificWeekly(studyA.getId(), STUDY_WEEKLY_3.getWeek());
+        studyWeeklyRepository.deleteSpecificWeekly(studyA.getId(), weekly3.getId());
         assertAll(
-                () -> assertThat(studyWeeklyRepository.getSpecificWeekly(studyA.getId(), 1)).isPresent(),
-                () -> assertThat(studyWeeklyRepository.getSpecificWeekly(studyA.getId(), 2)).isPresent(),
-                () -> assertThat(studyWeeklyRepository.getSpecificWeekly(studyA.getId(), 3)).isEmpty()
+                () -> assertThat(studyWeeklyRepository.existsById(weekly1.getId())).isTrue(),
+                () -> assertThat(studyWeeklyRepository.existsById(weekly2.getId())).isTrue(),
+                () -> assertThat(studyWeeklyRepository.existsById(weekly3.getId())).isFalse()
         );
 
         /* 2주차 삭제 */
-        studyWeeklyRepository.deleteSpecificWeekly(studyA.getId(), STUDY_WEEKLY_2.getWeek());
+        studyWeeklyRepository.deleteSpecificWeekly(studyA.getId(), weekly2.getId());
         assertAll(
-                () -> assertThat(studyWeeklyRepository.getSpecificWeekly(studyA.getId(), 1)).isPresent(),
-                () -> assertThat(studyWeeklyRepository.getSpecificWeekly(studyA.getId(), 2)).isEmpty(),
-                () -> assertThat(studyWeeklyRepository.getSpecificWeekly(studyA.getId(), 3)).isEmpty()
+                () -> assertThat(studyWeeklyRepository.existsById(weekly1.getId())).isTrue(),
+                () -> assertThat(studyWeeklyRepository.existsById(weekly2.getId())).isFalse(),
+                () -> assertThat(studyWeeklyRepository.existsById(weekly3.getId())).isFalse()
         );
 
         /* 1주차 삭제 */
-        studyWeeklyRepository.deleteSpecificWeekly(studyA.getId(), STUDY_WEEKLY_1.getWeek());
+        studyWeeklyRepository.deleteSpecificWeekly(studyA.getId(), weekly1.getId());
         assertAll(
-                () -> assertThat(studyWeeklyRepository.getSpecificWeekly(studyA.getId(), 1)).isEmpty(),
-                () -> assertThat(studyWeeklyRepository.getSpecificWeekly(studyA.getId(), 2)).isEmpty(),
-                () -> assertThat(studyWeeklyRepository.getSpecificWeekly(studyA.getId(), 3)).isEmpty()
+                () -> assertThat(studyWeeklyRepository.existsById(weekly1.getId())).isFalse(),
+                () -> assertThat(studyWeeklyRepository.existsById(weekly2.getId())).isFalse(),
+                () -> assertThat(studyWeeklyRepository.existsById(weekly3.getId())).isFalse()
         );
     }
 
@@ -137,24 +117,20 @@ class StudyWeeklyHandlingRepositoryTest extends RepositoryTest {
     @DisplayName("해당 주차에 제출한 과제를 조회한다")
     void getSubmittedAssignment() {
         /* 1주차 X */
-        assertThat(studyWeeklyRepository.getSubmittedAssignment(host.getId(), studyA.getId(), 1)).isEmpty();
+        final StudyWeekly weekly1 = studyWeeklyRepository.save(STUDY_WEEKLY_1.toWeeklyWithAssignment(studyA.getId(), host.getId()));
+        assertThat(studyWeeklyRepository.getSubmittedAssignment(host.getId(), studyA.getId(), weekly1.getId())).isEmpty();
 
         /* 1주차 O */
-        final StudyWeekly weekly1 = studyWeeklyRepository.save(
-                STUDY_WEEKLY_1.toWeeklyWithAssignment(studyA.getId(), host.getId())
-        );
         weekly1.submitAssignment(host.getId(), UploadAssignment.withLink("https://notion.so"));
-        assertThat(studyWeeklyRepository.getSubmittedAssignment(host.getId(), studyA.getId(), 1)).isPresent();
+        assertThat(studyWeeklyRepository.getSubmittedAssignment(host.getId(), studyA.getId(), weekly1.getId())).isPresent();
 
         /* 2주차 X */
-        assertThat(studyWeeklyRepository.getSubmittedAssignment(host.getId(), studyA.getId(), 2)).isEmpty();
+        final StudyWeekly weekly2 = studyWeeklyRepository.save(STUDY_WEEKLY_2.toWeeklyWithAssignment(studyA.getId(), host.getId()));
+        assertThat(studyWeeklyRepository.getSubmittedAssignment(host.getId(), studyA.getId(), weekly2.getId())).isEmpty();
 
         /* 2주차 O */
-        final StudyWeekly weekly2 = studyWeeklyRepository.save(
-                STUDY_WEEKLY_2.toWeeklyWithAssignment(studyA.getId(), host.getId())
-        );
         weekly2.submitAssignment(host.getId(), UploadAssignment.withLink("https://notion.so"));
-        assertThat(studyWeeklyRepository.getSubmittedAssignment(host.getId(), studyA.getId(), 2)).isPresent();
+        assertThat(studyWeeklyRepository.getSubmittedAssignment(host.getId(), studyA.getId(), weekly2.getId())).isPresent();
     }
 
     @Test

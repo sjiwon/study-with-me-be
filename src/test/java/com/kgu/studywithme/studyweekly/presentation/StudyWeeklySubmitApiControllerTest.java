@@ -29,11 +29,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("StudyWeekly -> StudyWeeklySubmitApiController 테스트")
 class StudyWeeklySubmitApiControllerTest extends ControllerTest {
     @Nested
-    @DisplayName("스터디 주차별 과제 제출 API [POST /api/studies/{studyId}/weeks/{week}/assignment] - AccessToken 필수")
+    @DisplayName("스터디 주차별 과제 제출 API [POST /api/studies/{studyId}/weeks/{weeklyId}/assignment] - AccessToken 필수")
     class submitWeeklyAssignment {
-        private static final String BASE_URL = "/api/studies/{studyId}/weeks/{week}/assignment";
-        private static final Integer WEEK = 1;
+        private static final String BASE_URL = "/api/studies/{studyId}/weeks/{weeklyId}/assignment";
         private static final Long STUDY_ID = 1L;
+        private static final Long WEEKLY_ID = 1L;
         private static final Long HOST_ID = 1L;
         private static final Long ANONYMOUS_ID = 2L;
         private MultipartFile file;
@@ -54,7 +54,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .multipart(BASE_URL, STUDY_ID, WEEK)
+                    .multipart(BASE_URL, STUDY_ID, WEEKLY_ID)
                     .file((MockMultipartFile) file)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .queryParam("type", "file");
@@ -80,8 +80,8 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                                     pathParameters(
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)"),
-                                            parameterWithName("week")
-                                                    .description("과제를 제출할 주차")
+                                            parameterWithName("weeklyId")
+                                                    .description("과제를 제출할 주차 ID(PK)")
                                     ),
                                     requestParts(
                                             partWithName("file")
@@ -112,7 +112,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .multipart(BASE_URL, STUDY_ID, WEEK)
+                    .multipart(BASE_URL, STUDY_ID, WEEKLY_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .queryParam("type", "file");
 
@@ -137,8 +137,8 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                                     pathParameters(
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)"),
-                                            parameterWithName("week")
-                                                    .description("과제를 제출할 주차")
+                                            parameterWithName("weeklyId")
+                                                    .description("과제를 제출할 주차 ID(PK)")
                                     ),
                                     requestParts(
                                             partWithName("file")
@@ -169,7 +169,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .multipart(BASE_URL, STUDY_ID, WEEK)
+                    .multipart(BASE_URL, STUDY_ID, WEEKLY_ID)
                     .file((MockMultipartFile) file)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .queryParam("type", "file")
@@ -196,8 +196,8 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                                     pathParameters(
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)"),
-                                            parameterWithName("week")
-                                                    .description("과제를 제출할 주차")
+                                            parameterWithName("weeklyId")
+                                                    .description("과제를 제출할 주차 ID(PK)")
                                     ),
                                     requestParts(
                                             partWithName("file")
@@ -225,7 +225,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .multipart(BASE_URL, STUDY_ID, WEEK)
+                    .multipart(BASE_URL, STUDY_ID, WEEKLY_ID)
                     .file((MockMultipartFile) file)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .queryParam("type", "file");
@@ -242,8 +242,8 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                                     pathParameters(
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)"),
-                                            parameterWithName("week")
-                                                    .description("과제를 제출할 주차")
+                                            parameterWithName("weeklyId")
+                                                    .description("과제를 제출할 주차 ID(PK)")
                                     ),
                                     requestParts(
                                             partWithName("file")
@@ -270,7 +270,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .multipart(BASE_URL, STUDY_ID, WEEK)
+                    .multipart(BASE_URL, STUDY_ID, WEEKLY_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .queryParam("type", "link")
                     .queryParam("link", "https://notion.so");
@@ -287,8 +287,8 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                                     pathParameters(
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)"),
-                                            parameterWithName("week")
-                                                    .description("과제를 제출할 주차")
+                                            parameterWithName("weeklyId")
+                                                    .description("과제를 제출할 주차 ID(PK)")
                                     ),
                                     requestParts(
                                             partWithName("file")
@@ -309,11 +309,11 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
     }
 
     @Nested
-    @DisplayName("스터디 주차별 제출한 과제 수정 API [POST /api/studies/{studyId}/weeks/{week}/assignment/edit] - AccessToken 필수")
+    @DisplayName("스터디 주차별 제출한 과제 수정 API [POST /api/studies/{studyId}/weeks/{weeklyId}/assignment/edit] - AccessToken 필수")
     class editSubmittedWeeklyAssignment {
-        private static final String BASE_URL = "/api/studies/{studyId}/weeks/{week}/assignment/edit";
-        private static final Integer WEEK = 1;
+        private static final String BASE_URL = "/api/studies/{studyId}/weeks/{weeklyId}/assignment/edit";
         private static final Long STUDY_ID = 1L;
+        private static final Long WEEKLY_ID = 1L;
         private static final Long HOST_ID = 1L;
         private static final Long ANONYMOUS_ID = 2L;
         private MultipartFile file;
@@ -334,7 +334,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .multipart(BASE_URL, STUDY_ID, WEEK)
+                    .multipart(BASE_URL, STUDY_ID, WEEKLY_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .queryParam("type", "link")
                     .queryParam("link", "https://notion.so");
@@ -360,8 +360,8 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                                     pathParameters(
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)"),
-                                            parameterWithName("week")
-                                                    .description("제출한 과제를 수정할 주차")
+                                            parameterWithName("weeklyId")
+                                                    .description("제출한 과제를 수정할 주차 ID(PK)")
                                     ),
                                     requestParts(
                                             partWithName("file")
@@ -392,7 +392,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .multipart(BASE_URL, STUDY_ID, WEEK)
+                    .multipart(BASE_URL, STUDY_ID, WEEKLY_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .queryParam("type", "file");
 
@@ -417,8 +417,8 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                                     pathParameters(
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)"),
-                                            parameterWithName("week")
-                                                    .description("제출한 과제를 수정할 주차")
+                                            parameterWithName("weeklyId")
+                                                    .description("제출한 과제를 수정할 주차 ID(PK)")
                                     ),
                                     requestParts(
                                             partWithName("file")
@@ -449,7 +449,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .multipart(BASE_URL, STUDY_ID, WEEK)
+                    .multipart(BASE_URL, STUDY_ID, WEEKLY_ID)
                     .file((MockMultipartFile) file)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .queryParam("type", "file")
@@ -476,8 +476,8 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                                     pathParameters(
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)"),
-                                            parameterWithName("week")
-                                                    .description("제출한 과제를 수정할 주차")
+                                            parameterWithName("weeklyId")
+                                                    .description("제출한 과제를 수정할 주차 ID(PK)")
                                     ),
                                     requestParts(
                                             partWithName("file")
@@ -508,7 +508,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .multipart(BASE_URL, STUDY_ID, WEEK)
+                    .multipart(BASE_URL, STUDY_ID, WEEKLY_ID)
                     .file((MockMultipartFile) file)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .queryParam("type", "file")
@@ -535,8 +535,8 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                                     pathParameters(
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)"),
-                                            parameterWithName("week")
-                                                    .description("제출한 과제를 수정할 주차")
+                                            parameterWithName("weeklyId")
+                                                    .description("제출한 과제를 수정할 주차 ID(PK)")
                                     ),
                                     requestParts(
                                             partWithName("file")
@@ -564,7 +564,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .multipart(BASE_URL, STUDY_ID, WEEK)
+                    .multipart(BASE_URL, STUDY_ID, WEEKLY_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .queryParam("type", "link")
                     .queryParam("link", "https://notion.so");
@@ -581,8 +581,8 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                                     pathParameters(
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)"),
-                                            parameterWithName("week")
-                                                    .description("제출한 과제를 수정할 주차")
+                                            parameterWithName("weeklyId")
+                                                    .description("제출한 과제를 수정할 주차 ID(PK)")
                                     ),
                                     requestParts(
                                             partWithName("file")

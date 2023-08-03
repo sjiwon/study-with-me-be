@@ -8,6 +8,7 @@ import com.kgu.studywithme.studyweekly.application.usecase.command.UpdateStudyWe
 import com.kgu.studywithme.studyweekly.domain.Period;
 import com.kgu.studywithme.studyweekly.presentation.dto.request.CreateStudyWeeklyRequest;
 import com.kgu.studywithme.studyweekly.presentation.dto.request.UpdateStudyWeeklyRequest;
+import com.kgu.studywithme.studyweekly.presentation.dto.response.StudyWeeklyIdResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -29,12 +30,12 @@ public class StudyWeeklyApiController {
     @Operation(summary = "스터디 주차 생성 EndPoint")
     @CheckStudyHost
     @PostMapping(value = "/week", consumes = MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> createWeekly(
+    public ResponseEntity<StudyWeeklyIdResponse> createWeekly(
             @ExtractPayload final Long hostId,
             @PathVariable final Long studyId,
             @ModelAttribute @Valid final CreateStudyWeeklyRequest request
     ) {
-        createStudyWeeklyUseCase.createStudyWeekly(
+        final Long weeklyId = createStudyWeeklyUseCase.createStudyWeekly(
                 new CreateStudyWeeklyUseCase.Command(
                         studyId,
                         hostId,
@@ -46,22 +47,21 @@ public class StudyWeeklyApiController {
                         request.files()
                 )
         );
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(new StudyWeeklyIdResponse(weeklyId));
     }
 
     @Operation(summary = "스터디 주차 수정 EndPoint")
     @CheckStudyHost
-    @PostMapping(value = "/weeks/{week}", consumes = MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/weeks/{weeklyId}", consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> updateWeekly(
             @ExtractPayload final Long hostId,
             @PathVariable final Long studyId,
-            @PathVariable final Integer week,
+            @PathVariable final Long weeklyId,
             @ModelAttribute @Valid final UpdateStudyWeeklyRequest request
     ) {
         updateStudyWeeklyUseCase.updateStudyWeekly(
                 new UpdateStudyWeeklyUseCase.Command(
-                        studyId,
-                        week,
+                        weeklyId,
                         request.title(),
                         request.content(),
                         new Period(request.startDate(), request.endDate()),
@@ -75,16 +75,16 @@ public class StudyWeeklyApiController {
 
     @Operation(summary = "스터디 주차 삭제 EndPoint")
     @CheckStudyHost
-    @DeleteMapping("/weeks/{week}")
+    @DeleteMapping("/weeks/{weeklyId}")
     public ResponseEntity<Void> deleteWeekly(
             @ExtractPayload final Long hostId,
             @PathVariable final Long studyId,
-            @PathVariable final Integer week
+            @PathVariable final Long weeklyId
     ) {
         deleteStudyWeeklyUseCase.deleteStudyWeekly(
                 new DeleteStudyWeeklyUseCase.Command(
                         studyId,
-                        week
+                        weeklyId
                 )
         );
         return ResponseEntity.noContent().build();

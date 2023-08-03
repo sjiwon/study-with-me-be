@@ -18,7 +18,7 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 @Tag(name = "4-8-2. 스터디 주차별 과제 제출 API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/studies/{studyId}/weeks/{week}/assignment")
+@RequestMapping("/api/studies/{studyId}/weeks/{weeklyId}/assignment")
 public class StudyWeeklySubmitApiController {
     private final SubmitWeeklyAssignmentUseCase submitWeeklyAssignmentUseCase;
     private final EditSubmittedWeeklyAssignmentUseCase editSubmittedWeeklyAssignmentUseCase;
@@ -29,14 +29,14 @@ public class StudyWeeklySubmitApiController {
     public ResponseEntity<Void> submitWeeklyAssignment(
             @ExtractPayload final Long memberId,
             @PathVariable final Long studyId,
-            @PathVariable final Integer week,
+            @PathVariable final Long weeklyId,
             @ModelAttribute @Valid final SubmitWeeklyAssignmentRequest request
     ) {
         submitWeeklyAssignmentUseCase.submitWeeklyAssignment(
                 new SubmitWeeklyAssignmentUseCase.Command(
                         memberId,
                         studyId,
-                        week,
+                        weeklyId,
                         request.type(),
                         request.file(),
                         request.link()
@@ -51,14 +51,14 @@ public class StudyWeeklySubmitApiController {
     public ResponseEntity<Void> editSubmittedWeeklyAssignment(
             @ExtractPayload final Long memberId,
             @PathVariable final Long studyId,
-            @PathVariable final Integer week,
+            @PathVariable final Long weeklyId,
             @ModelAttribute @Valid final EditSubmittedWeeklyAssignmentRequest request
     ) {
         editSubmittedWeeklyAssignmentUseCase.editSubmittedWeeklyAssignment(
                 new EditSubmittedWeeklyAssignmentUseCase.Command(
                         memberId,
                         studyId,
-                        week,
+                        weeklyId,
                         request.type(),
                         request.file(),
                         request.link()

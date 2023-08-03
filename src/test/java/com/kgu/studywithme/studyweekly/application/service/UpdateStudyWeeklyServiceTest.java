@@ -33,7 +33,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -51,12 +50,14 @@ class UpdateStudyWeeklyServiceTest extends UseCaseTest {
 
     private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L, LocalDateTime.now());
-    private final StudyWeekly weekly = STUDY_WEEKLY_1.toWeekly(study.getId(), host.getId());
+    private final StudyWeekly weekly = STUDY_WEEKLY_1.toWeekly(study.getId(), host.getId()).apply(1L, LocalDateTime.now());
+
     private MultipartFile file1;
     private MultipartFile file2;
     private MultipartFile file3;
     private MultipartFile file4;
     private List<MultipartFile> files;
+    private UpdateStudyWeeklyUseCase.Command command;
 
     @BeforeEach
     void setUp() throws IOException {
@@ -65,32 +66,31 @@ class UpdateStudyWeeklyServiceTest extends UseCaseTest {
         file3 = createMultipleMockMultipartFile("hello3.pdf", "application/pdf");
         file4 = createMultipleMockMultipartFile("hello4.png", "image/png");
         files = List.of(file1, file2, file3, file4);
-    }
-
-    @Test
-    @DisplayName("해당 주차 정보를 찾지 못하면 수정할 수 없다")
-    void throwExceptionByWeeklyNotFound() {
-        // given
-        given(studyWeeklyRepository.getSpecificWeekly(any(), anyInt())).willReturn(Optional.empty());
-
-        // when - then
-        assertThatThrownBy(() -> updateStudyWeeklyService.updateStudyWeekly(
+        command =
                 new UpdateStudyWeeklyUseCase.Command(
-                        study.getId(),
-                        STUDY_WEEKLY_1.getWeek(),
+                        weekly.getId(),
                         STUDY_WEEKLY_2.getTitle(),
                         STUDY_WEEKLY_2.getContent(),
                         STUDY_WEEKLY_2.getPeriod().toPeriod(),
                         STUDY_WEEKLY_2.isAssignmentExists(),
                         STUDY_WEEKLY_2.isAutoAttendance(),
                         files
-                )
-        ))
+                );
+    }
+
+    @Test
+    @DisplayName("해당 주차 정보를 찾지 못하면 수정할 수 없다")
+    void throwExceptionByWeeklyNotFound() {
+        // given
+        given(studyWeeklyRepository.findById(any())).willReturn(Optional.empty());
+
+        // when - then
+        assertThatThrownBy(() -> updateStudyWeeklyService.updateStudyWeekly(command))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyWeeklyErrorCode.WEEKLY_NOT_FOUND.getMessage());
 
         assertAll(
-                () -> verify(studyWeeklyRepository, times(1)).getSpecificWeekly(any(), anyInt()),
+                () -> verify(studyWeeklyRepository, times(1)).findById(any()),
                 () -> verify(uploader, times(0)).uploadWeeklyAttachment(any())
         );
     }
@@ -99,29 +99,18 @@ class UpdateStudyWeeklyServiceTest extends UseCaseTest {
     @DisplayName("해당 주차 정보를 수정한다")
     void success() {
         // given
-        given(studyWeeklyRepository.getSpecificWeekly(any(), anyInt())).willReturn(Optional.of(weekly));
+        given(studyWeeklyRepository.findById(any())).willReturn(Optional.of(weekly));
         given(uploader.uploadWeeklyAttachment(file1)).willReturn(TXT_FILE.getLink());
         given(uploader.uploadWeeklyAttachment(file2)).willReturn(HWPX_FILE.getLink());
         given(uploader.uploadWeeklyAttachment(file3)).willReturn(PDF_FILE.getLink());
         given(uploader.uploadWeeklyAttachment(file4)).willReturn(IMG_FILE.getLink());
 
         // when
-        updateStudyWeeklyService.updateStudyWeekly(
-                new UpdateStudyWeeklyUseCase.Command(
-                        study.getId(),
-                        STUDY_WEEKLY_1.getWeek(),
-                        STUDY_WEEKLY_2.getTitle(),
-                        STUDY_WEEKLY_2.getContent(),
-                        STUDY_WEEKLY_2.getPeriod().toPeriod(),
-                        STUDY_WEEKLY_2.isAssignmentExists(),
-                        STUDY_WEEKLY_2.isAutoAttendance(),
-                        files
-                )
-        );
+        updateStudyWeeklyService.updateStudyWeekly(command);
 
         // then
         assertAll(
-                () -> verify(studyWeeklyRepository, times(1)).getSpecificWeekly(any(), anyInt()),
+                () -> verify(studyWeeklyRepository, times(1)).findById(any()),
                 () -> verify(uploader, times(files.size())).uploadWeeklyAttachment(any()),
                 () -> assertThat(weekly.getTitle()).isEqualTo(STUDY_WEEKLY_2.getTitle()),
                 () -> assertThat(weekly.getContent()).isEqualTo(STUDY_WEEKLY_2.getContent()),

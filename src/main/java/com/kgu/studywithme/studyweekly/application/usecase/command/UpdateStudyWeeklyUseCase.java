@@ -9,8 +9,7 @@ public interface UpdateStudyWeeklyUseCase {
     void updateStudyWeekly(final Command command);
 
     record Command(
-            Long studyId,
-            int week,
+            Long weeklyId,
             String title,
             String content,
             Period period,

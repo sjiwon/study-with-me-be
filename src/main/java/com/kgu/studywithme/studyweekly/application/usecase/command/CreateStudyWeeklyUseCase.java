@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface CreateStudyWeeklyUseCase {
-    void createStudyWeekly(final Command command);
+    Long createStudyWeekly(final Command command);
 
     record Command(
             Long studyId,

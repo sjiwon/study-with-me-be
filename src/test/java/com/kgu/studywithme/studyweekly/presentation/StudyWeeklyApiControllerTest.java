@@ -21,10 +21,13 @@ import static com.kgu.studywithme.common.utils.FileMockingUtils.createMultipleMo
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -130,6 +133,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, HOST_ID);
+            given(createStudyWeeklyUseCase.createStudyWeekly(any())).willReturn(1L);
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -148,7 +152,10 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
 
             // then
             mockMvc.perform(requestBuilder)
-                    .andExpect(status().isNoContent())
+                    .andExpectAll(
+                            status().isOk(),
+                            jsonPath("$.weeklyId").value(1L)
+                    )
                     .andDo(
                             document(
                                     "StudyApi/Weekly/Create/Success",
@@ -177,6 +184,10 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                             parameterWithName("autoAttendance")
                                                     .description("스터디 주차 자동 출석 여부")
                                                     .attributes(constraint("과제 존재 여부가 false면 자동 출석은 무조건 false"))
+                                    ),
+                                    responseFields(
+                                            fieldWithPath("weeklyId")
+                                                    .description("생성한 Weekly ID(PK)")
                                     )
                             )
                     );
@@ -184,11 +195,11 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
     }
 
     @Nested
-    @DisplayName("스터디 주차 수정 API [PATCH /api/studies/{studyId}/weeks/{week}] - AccessToken 필수")
+    @DisplayName("스터디 주차 수정 API [PATCH /api/studies/{studyId}/weeks/{weeklyId}] - AccessToken 필수")
     class updateWeekly {
-        private static final String BASE_URL = "/api/studies/{studyId}/weeks/{week}";
-        private static final Integer WEEK = 1;
+        private static final String BASE_URL = "/api/studies/{studyId}/weeks/{weeklyId}";
         private static final Long STUDY_ID = 1L;
+        private static final Long WEEKLY_ID = 1L;
         private static final Long HOST_ID = 1L;
         private static final Long ANONYMOUS_ID = 2L;
 
@@ -216,7 +227,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .multipart(BASE_URL, STUDY_ID, WEEK)
+                    .multipart(BASE_URL, STUDY_ID, WEEKLY_ID)
                     .file((MockMultipartFile) files1)
                     .file((MockMultipartFile) files2)
                     .file((MockMultipartFile) files3)
@@ -250,8 +261,8 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                     pathParameters(
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)"),
-                                            parameterWithName("week")
-                                                    .description("수정할 주차")
+                                            parameterWithName("weeklyId")
+                                                    .description("수정할 주차 ID(PK)")
                                     ),
                                     requestParts(
                                             partWithName("files")
@@ -289,7 +300,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .multipart(BASE_URL, STUDY_ID, WEEK)
+                    .multipart(BASE_URL, STUDY_ID, WEEKLY_ID)
                     .file((MockMultipartFile) files1)
                     .file((MockMultipartFile) files2)
                     .file((MockMultipartFile) files3)
@@ -323,8 +334,8 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                     pathParameters(
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)"),
-                                            parameterWithName("week")
-                                                    .description("수정할 주차")
+                                            parameterWithName("weeklyId")
+                                                    .description("수정할 주차 ID(PK)")
                                     ),
                                     requestParts(
                                             partWithName("files")
@@ -362,7 +373,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .multipart(BASE_URL, STUDY_ID, WEEK)
+                    .multipart(BASE_URL, STUDY_ID, WEEKLY_ID)
                     .file((MockMultipartFile) files1)
                     .file((MockMultipartFile) files2)
                     .file((MockMultipartFile) files3)
@@ -387,8 +398,8 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                     pathParameters(
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)"),
-                                            parameterWithName("week")
-                                                    .description("수정할 주차")
+                                            parameterWithName("weeklyId")
+                                                    .description("수정할 주차 ID(PK)")
                                     ),
                                     requestParts(
                                             partWithName("files")
@@ -416,11 +427,11 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
     }
 
     @Nested
-    @DisplayName("스터디 주차 삭제 API [DELETE /api/studies/{studyId}/weeks/{week}] - AccessToken 필수")
+    @DisplayName("스터디 주차 삭제 API [DELETE /api/studies/{studyId}/weeks/{weeklyId}] - AccessToken 필수")
     class deleteWeekly {
-        private static final String BASE_URL = "/api/studies/{studyId}/weeks/{week}";
-        private static final Integer WEEK = 1;
+        private static final String BASE_URL = "/api/studies/{studyId}/weeks/{weeklyId}";
         private static final Long STUDY_ID = 1L;
+        private static final Long WEEKLY_ID = 1L;
         private static final Long HOST_ID = 1L;
         private static final Long ANONYMOUS_ID = 2L;
 
@@ -438,7 +449,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .delete(BASE_URL, STUDY_ID, WEEK)
+                    .delete(BASE_URL, STUDY_ID, WEEKLY_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
 
             // then
@@ -462,8 +473,8 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                     pathParameters(
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)"),
-                                            parameterWithName("week")
-                                                    .description("삭제할 주차")
+                                            parameterWithName("weeklyId")
+                                                    .description("삭제할 주차 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -481,7 +492,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .delete(BASE_URL, STUDY_ID, WEEK)
+                    .delete(BASE_URL, STUDY_ID, WEEKLY_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
 
             // then
@@ -505,8 +516,8 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                     pathParameters(
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)"),
-                                            parameterWithName("week")
-                                                    .description("삭제할 주차")
+                                            parameterWithName("weeklyId")
+                                                    .description("삭제할 주차 ID(PK)")
                                     ),
                                     getExceptionResponseFiels()
                             )
@@ -521,7 +532,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .delete(BASE_URL, STUDY_ID, WEEK)
+                    .delete(BASE_URL, STUDY_ID, WEEKLY_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
 
             // then
@@ -534,8 +545,10 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("studyId").description("스터디 ID(PK)"),
-                                            parameterWithName("week").description("삭제할 주차")
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("weeklyId")
+                                                    .description("삭제할 주차 ID(PK)")
                                     )
                             )
                     );
