@@ -143,7 +143,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .put(BASE_URL, NOTICE_ID, COMMENT_ID)
+                    .patch(BASE_URL, NOTICE_ID, COMMENT_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(REQUEST));
@@ -192,7 +192,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .put(BASE_URL, NOTICE_ID, COMMENT_ID)
+                    .patch(BASE_URL, NOTICE_ID, COMMENT_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(REQUEST));

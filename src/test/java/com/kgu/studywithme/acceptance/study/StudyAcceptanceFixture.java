@@ -6,6 +6,8 @@ import com.kgu.studywithme.study.presentation.dto.request.CreateStudyRequest;
 import com.kgu.studywithme.study.presentation.dto.request.UpdateStudyRequest;
 import com.kgu.studywithme.studyattendance.domain.AttendanceStatus;
 import com.kgu.studywithme.studyattendance.presentation.dto.request.ManualAttendanceRequest;
+import com.kgu.studywithme.studynotice.presentation.dto.request.UpdateStudyNoticeCommentRequest;
+import com.kgu.studywithme.studynotice.presentation.dto.request.UpdateStudyNoticeRequest;
 import com.kgu.studywithme.studynotice.presentation.dto.request.WriteStudyNoticeCommentRequest;
 import com.kgu.studywithme.studynotice.presentation.dto.request.WriteStudyNoticeRequest;
 import com.kgu.studywithme.studyparticipant.presentation.dto.request.RejectParticipationRequest;
@@ -369,6 +371,34 @@ public class StudyAcceptanceFixture {
         return postRequest(accessToken, request, uri);
     }
 
+    public static ValidatableResponse 작성한_스터디_공지사항을_수정한다(
+            final String accessToken,
+            final Long studyId,
+            final Long noticeId
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies/{studyId}/notices/{noticeId}")
+                .build(studyId, noticeId)
+                .getPath();
+
+        final UpdateStudyNoticeRequest request = new UpdateStudyNoticeRequest("hello", "content");
+
+        return patchRequest(accessToken, request, uri);
+    }
+
+    public static ValidatableResponse 작성한_스터디_공지사항을_삭제한다(
+            final String accessToken,
+            final Long studyId,
+            final Long noticeId
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies/{studyId}/notices/{noticeId}")
+                .build(studyId, noticeId)
+                .getPath();
+
+        return deleteRequest(accessToken, uri);
+    }
+
     public static ValidatableResponse 스터디_공지사항에_댓글을_작성한다(
             final String accessToken,
             final Long noticeId
@@ -381,6 +411,34 @@ public class StudyAcceptanceFixture {
         final WriteStudyNoticeCommentRequest request = new WriteStudyNoticeCommentRequest("ok");
 
         return postRequest(accessToken, request, uri);
+    }
+
+    public static ValidatableResponse 스터디_공지사항에_작성한_댓글을_수정한다(
+            final String accessToken,
+            final Long noticeId,
+            final Long commentId
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/notices/{noticeId}/comments/{commentId}")
+                .build(noticeId, commentId)
+                .getPath();
+
+        final UpdateStudyNoticeCommentRequest request = new UpdateStudyNoticeCommentRequest("ok");
+
+        return patchRequest(accessToken, request, uri);
+    }
+
+    public static ValidatableResponse 스터디_공지사항에_작성한_댓글을_삭제한다(
+            final String accessToken,
+            final Long noticeId,
+            final Long commentId
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/notices/{noticeId}/comments/{commentId}")
+                .build(noticeId, commentId)
+                .getPath();
+
+        return deleteRequest(accessToken, uri);
     }
 
     public static ValidatableResponse 스터디_기본_정보를_조회한다(final Long studyId) {
