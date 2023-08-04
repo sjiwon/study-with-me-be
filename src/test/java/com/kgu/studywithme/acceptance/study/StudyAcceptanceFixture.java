@@ -6,6 +6,8 @@ import com.kgu.studywithme.study.presentation.dto.request.CreateStudyRequest;
 import com.kgu.studywithme.study.presentation.dto.request.UpdateStudyRequest;
 import com.kgu.studywithme.studyattendance.domain.AttendanceStatus;
 import com.kgu.studywithme.studyattendance.presentation.dto.request.ManualAttendanceRequest;
+import com.kgu.studywithme.studynotice.presentation.dto.request.WriteStudyNoticeCommentRequest;
+import com.kgu.studywithme.studynotice.presentation.dto.request.WriteStudyNoticeRequest;
 import com.kgu.studywithme.studyparticipant.presentation.dto.request.RejectParticipationRequest;
 import com.kgu.studywithme.studyreview.presentation.dto.request.UpdateStudyReviewRequest;
 import com.kgu.studywithme.studyreview.presentation.dto.request.WriteStudyReviewRequest;
@@ -257,12 +259,12 @@ public class StudyAcceptanceFixture {
     public static ValidatableResponse 스터디_주차를_수정한다(
             final String accessToken,
             final Long studyId,
-            final int week,
+            final Long weeklyId,
             final StudyWeeklyFixture fixture
     ) {
         final String uri = UriComponentsBuilder
-                .fromPath("/api/studies/{studyId}/weeks/{week}")
-                .build(studyId, week)
+                .fromPath("/api/studies/{studyId}/weeks/{weeklyId}")
+                .build(studyId, weeklyId)
                 .getPath();
 
         final Map<String, String> params = new HashMap<>();
@@ -284,11 +286,11 @@ public class StudyAcceptanceFixture {
     public static ValidatableResponse 스터디_주차를_삭제한다(
             final String accessToken,
             final Long studyId,
-            final int week
+            final Long weeklyId
     ) {
         final String uri = UriComponentsBuilder
-                .fromPath("/api/studies/{studyId}/weeks/{week}")
-                .build(studyId, week)
+                .fromPath("/api/studies/{studyId}/weeks/{weeklyId}")
+                .build(studyId, weeklyId)
                 .getPath();
 
         return deleteRequest(accessToken, uri);
@@ -297,11 +299,11 @@ public class StudyAcceptanceFixture {
     public static ValidatableResponse 해당_주차에_과제를_제출한다(
             final String accessToken,
             final Long studyId,
-            final int week
+            final Long weeklyId
     ) {
         final String uri = UriComponentsBuilder
-                .fromPath("/api/studies/{studyId}/weeks/{week}/assignment")
-                .build(studyId, week)
+                .fromPath("/api/studies/{studyId}/weeks/{weeklyId}/assignment")
+                .build(studyId, weeklyId)
                 .getPath();
 
         final Map<String, String> params = new HashMap<>();
@@ -318,11 +320,11 @@ public class StudyAcceptanceFixture {
     public static ValidatableResponse 해당_주차에_제출한_과제를_수정한다(
             final String accessToken,
             final Long studyId,
-            final int week
+            final Long weeklyId
     ) {
         final String uri = UriComponentsBuilder
-                .fromPath("/api/studies/{studyId}/weeks/{week}/assignment/edit")
-                .build(studyId, week)
+                .fromPath("/api/studies/{studyId}/weeks/{weeklyId}/assignment/edit")
+                .build(studyId, weeklyId)
                 .getPath();
 
         final Map<String, String> params = new HashMap<>();
@@ -351,5 +353,108 @@ public class StudyAcceptanceFixture {
         final ManualAttendanceRequest request = new ManualAttendanceRequest(week, status.getDescription());
 
         return patchRequest(accessToken, request, uri);
+    }
+
+    public static ValidatableResponse 스터디_공지사항을_작성한다(
+            final String accessToken,
+            final Long studyId
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies/{studyId}/notice")
+                .build(studyId)
+                .getPath();
+
+        final WriteStudyNoticeRequest request = new WriteStudyNoticeRequest("hello", "content");
+
+        return postRequest(accessToken, request, uri);
+    }
+
+    public static ValidatableResponse 스터디_공지사항에_댓글을_작성한다(
+            final String accessToken,
+            final Long noticeId
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/notices/{noticeId}/comment")
+                .build(noticeId)
+                .getPath();
+
+        final WriteStudyNoticeCommentRequest request = new WriteStudyNoticeCommentRequest("ok");
+
+        return postRequest(accessToken, request, uri);
+    }
+
+    public static ValidatableResponse 스터디_기본_정보를_조회한다(final Long studyId) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies/{studyId}")
+                .build(studyId)
+                .getPath();
+
+        return getRequest(uri);
+    }
+
+    public static ValidatableResponse 스터디_리뷰를_조회한다(final Long studyId) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies/{studyId}/reviews")
+                .build(studyId)
+                .getPath();
+
+        return getRequest(uri);
+    }
+
+    public static ValidatableResponse 스터디_참여자를_조회한다(final Long studyId) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies/{studyId}/participants")
+                .build(studyId)
+                .getPath();
+
+        return getRequest(uri);
+    }
+
+    public static ValidatableResponse 스터디_신청자를_조회한다(
+            final String accessToken,
+            final Long studyId
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies/{studyId}/applicants")
+                .build(studyId)
+                .getPath();
+
+        return getRequest(accessToken, uri);
+    }
+
+    public static ValidatableResponse 스터디_공지사항을_조회한다(
+            final String accessToken,
+            final Long studyId
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies/{studyId}/notices")
+                .build(studyId)
+                .getPath();
+
+        return getRequest(accessToken, uri);
+    }
+
+    public static ValidatableResponse 스터디_출석_정보를_조회한다(
+            final String accessToken,
+            final Long studyId
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies/{studyId}/attendances")
+                .build(studyId)
+                .getPath();
+
+        return getRequest(accessToken, uri);
+    }
+
+    public static ValidatableResponse 스터디_주차별_정보를_조회한다(
+            final String accessToken,
+            final Long studyId
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies/{studyId}/weeks")
+                .build(studyId)
+                .getPath();
+
+        return getRequest(accessToken, uri);
     }
 }
