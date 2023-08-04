@@ -515,4 +515,30 @@ public class StudyAcceptanceFixture {
 
         return getRequest(accessToken, uri);
     }
+
+    public static ValidatableResponse 카테고리로_스터디를_조회한다(
+            final Long categoryId,
+            final String sort,
+            final int page
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies?category={categoryId}&sort={sort}&page={page}")
+                .build(categoryId, sort, page)
+                .getPath();
+
+        return getRequest(uri);
+    }
+
+    public static ValidatableResponse 관심사로_스터디를_조회한다(
+            final String accessToken,
+            final String sort,
+            final int page
+    ) {
+        final String uri = UriComponentsBuilder
+                .fromPath("/api/studies/recommend?sort={sort}&page={page}")
+                .build(sort, page)
+                .getPath();
+
+        return getRequest(accessToken, uri);
+    }
 }
