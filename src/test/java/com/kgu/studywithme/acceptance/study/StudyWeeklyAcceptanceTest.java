@@ -11,8 +11,11 @@ import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1;
 import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_2;
+import static com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode.ONLY_LATEST_WEEKLY_CAN_DELETE;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.HttpStatus.OK;
 
 @DisplayName("[Acceptance Test] 스터디 주차 관련 기능")
 public class StudyWeeklyAcceptanceTest extends AcceptanceTest {
@@ -75,7 +78,9 @@ public class StudyWeeklyAcceptanceTest extends AcceptanceTest {
         @DisplayName("가장 최신 주차만 삭제할 수 있다")
         void onlyLatestWeeklyCanDelete() {
             스터디_주차를_삭제한다(hostAccessToken, studyId, idOfWeekly1)
-                    .statusCode(CONFLICT.value());
+                    .statusCode(ONLY_LATEST_WEEKLY_CAN_DELETE.getStatus().value())
+                    .body("errorCode", is(ONLY_LATEST_WEEKLY_CAN_DELETE.getErrorCode()))
+                    .body("message", is(ONLY_LATEST_WEEKLY_CAN_DELETE.getMessage()));
         }
 
         @Test

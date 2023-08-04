@@ -10,7 +10,10 @@ import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.*;
 import static com.kgu.studywithme.common.fixture.MemberFixture.GHOST;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.KAFKA;
-import static org.springframework.http.HttpStatus.*;
+import static com.kgu.studywithme.studyreview.exception.StudyReviewErrorCode.ONLY_GRADUATED_PARTICIPANT_CAN_WRITE_REVIEW;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.HttpStatus.OK;
 
 @DisplayName("[Acceptance Test] 스터디 리뷰 관련 기능")
 public class StudyReviewAcceptanceTest extends AcceptanceTest {
@@ -34,7 +37,9 @@ public class StudyReviewAcceptanceTest extends AcceptanceTest {
         @DisplayName("졸업하지 않은 참여자는 스터디 리뷰를 작성할 수 없다")
         void memberisNotGraduated() {
             스터디_리뷰를_작성한다(participantAccessToken, studyId)
-                    .statusCode(FORBIDDEN.value());
+                    .statusCode(ONLY_GRADUATED_PARTICIPANT_CAN_WRITE_REVIEW.getStatus().value())
+                    .body("errorCode", is(ONLY_GRADUATED_PARTICIPANT_CAN_WRITE_REVIEW.getErrorCode()))
+                    .body("message", is(ONLY_GRADUATED_PARTICIPANT_CAN_WRITE_REVIEW.getMessage()));
         }
 
         @Test

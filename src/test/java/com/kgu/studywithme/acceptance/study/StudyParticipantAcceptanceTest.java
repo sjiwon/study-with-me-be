@@ -10,7 +10,9 @@ import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.*;
 import static com.kgu.studywithme.common.fixture.MemberFixture.*;
 import static com.kgu.studywithme.common.fixture.StudyFixture.KAFKA;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
-import static org.springframework.http.HttpStatus.*;
+import static com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode.*;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @DisplayName("[Acceptance Test] 스터디 참여 관련 기능")
 public class StudyParticipantAcceptanceTest extends AcceptanceTest {
@@ -43,7 +45,9 @@ public class StudyParticipantAcceptanceTest extends AcceptanceTest {
         @DisplayName("스터디 팀장은 본인 스터디에 참여 신청을 할 수 없다")
         void hostCannotApply() {
             스터디_참여_신청을_한다(hostAccessToken, studyId)
-                    .statusCode(FORBIDDEN.value());
+                    .statusCode(STUDY_HOST_CANNOT_APPLY.getStatus().value())
+                    .body("errorCode", is(STUDY_HOST_CANNOT_APPLY.getErrorCode()))
+                    .body("message", is(STUDY_HOST_CANNOT_APPLY.getMessage()));
         }
 
         @Test
@@ -61,7 +65,9 @@ public class StudyParticipantAcceptanceTest extends AcceptanceTest {
         @DisplayName("참여 신청을 하지 않은 사용자는 신청 취소를 할 수 없다")
         void applierNotFound() {
             스터디_참여_신청을_취소한다(accessTokenOfMemberA, studyId)
-                    .statusCode(NOT_FOUND.value());
+                    .statusCode(APPLIER_NOT_FOUND.getStatus().value())
+                    .body("errorCode", is(APPLIER_NOT_FOUND.getErrorCode()))
+                    .body("message", is(APPLIER_NOT_FOUND.getMessage()));
         }
 
         @Test
@@ -89,7 +95,9 @@ public class StudyParticipantAcceptanceTest extends AcceptanceTest {
             스터디_신청자에_대한_참여를_승인한다(hostAccessToken, twoCapacityAndZeroPolicyStudyId, idOfMemberA);
 
             스터디_신청자에_대한_참여를_승인한다(hostAccessToken, twoCapacityAndZeroPolicyStudyId, idOfMemberB)
-                    .statusCode(CONFLICT.value());
+                    .statusCode(STUDY_CAPACITY_ALREADY_FULL.getStatus().value())
+                    .body("errorCode", is(STUDY_CAPACITY_ALREADY_FULL.getErrorCode()))
+                    .body("message", is(STUDY_CAPACITY_ALREADY_FULL.getMessage()));
         }
 
         @Test
@@ -132,7 +140,9 @@ public class StudyParticipantAcceptanceTest extends AcceptanceTest {
         @DisplayName("스터디 참여자가 아니면 팀장 권한을 위임할 수 없다")
         void nonParticipantCannotBeHost() {
             스터디_팀장_권한을_위임한다(hostAccessToken, studyId, idOfMemberA)
-                    .statusCode(CONFLICT.value());
+                    .statusCode(NON_PARTICIPANT_CANNOT_BE_HOST.getStatus().value())
+                    .body("errorCode", is(NON_PARTICIPANT_CANNOT_BE_HOST.getErrorCode()))
+                    .body("message", is(NON_PARTICIPANT_CANNOT_BE_HOST.getMessage()));
         }
 
         @Test
@@ -158,7 +168,9 @@ public class StudyParticipantAcceptanceTest extends AcceptanceTest {
         @DisplayName("스터디 팀장은 참여 취소를 할 수 없다")
         void hostCannotLeaveStudy() {
             스터디_참여를_취소한다(hostAccessToken, studyId)
-                    .statusCode(CONFLICT.value());
+                    .statusCode(HOST_CANNOT_LEAVE_STUDY.getStatus().value())
+                    .body("errorCode", is(HOST_CANNOT_LEAVE_STUDY.getErrorCode()))
+                    .body("message", is(HOST_CANNOT_LEAVE_STUDY.getMessage()));
         }
 
         @Test
@@ -184,14 +196,18 @@ public class StudyParticipantAcceptanceTest extends AcceptanceTest {
         @DisplayName("스터디 팀장은 졸업을 할 수 없다")
         void hostCannotLeaveStudy() {
             스터디를_졸업한다(hostAccessToken, studyId)
-                    .statusCode(CONFLICT.value());
+                    .statusCode(HOST_CANNOT_GRADUATE_STUDY.getStatus().value())
+                    .body("errorCode", is(HOST_CANNOT_GRADUATE_STUDY.getErrorCode()))
+                    .body("message", is(HOST_CANNOT_GRADUATE_STUDY.getMessage()));
         }
 
         @Test
         @DisplayName("졸업 요건[최소 출석 횟수]를 채우지 못하면 졸업을 할 수 없다")
         void participantNotMeetGraduationPolicy() {
             스터디를_졸업한다(accessTokenOfMemberA, studyId)
-                    .statusCode(CONFLICT.value());
+                    .statusCode(PARTICIPANT_NOT_MEET_GRADUATION_POLICY.getStatus().value())
+                    .body("errorCode", is(PARTICIPANT_NOT_MEET_GRADUATION_POLICY.getErrorCode()))
+                    .body("message", is(PARTICIPANT_NOT_MEET_GRADUATION_POLICY.getMessage()));
         }
 
         @Test

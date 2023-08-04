@@ -13,14 +13,16 @@ import static com.kgu.studywithme.common.fixture.MemberFixture.GHOST;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1;
-import static org.springframework.http.HttpStatus.*;
+import static com.kgu.studywithme.memberreview.exception.MemberReviewErrorCode.*;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.HttpStatus.OK;
 
 @DisplayName("[Acceptance Test] 사용자 리뷰 관련 기능")
 public class MemberReviewAcceptanceTest extends AcceptanceTest {
     private Long hostId;
     private String hostAccessToken;
     private Long memberId;
-    private String memberAccessToken;
     private Long studyId;
 
     @BeforeEach
@@ -28,7 +30,7 @@ public class MemberReviewAcceptanceTest extends AcceptanceTest {
         hostId = JIWON.회원가입을_진행한다();
         hostAccessToken = JIWON.로그인을_진행한다().accessToken();
         memberId = GHOST.회원가입을_진행한다();
-        memberAccessToken = GHOST.로그인을_진행한다().accessToken();
+        final String memberAccessToken = GHOST.로그인을_진행한다().accessToken();
 
         studyId = 스터디를_생성하고_PK를_얻는다(hostAccessToken, SPRING);
         스터디_참여_신청을_한다(memberAccessToken, studyId);
@@ -41,14 +43,18 @@ public class MemberReviewAcceptanceTest extends AcceptanceTest {
         @DisplayName("셀프 리뷰는 허용하지 않는다")
         void selfReviewNotAllowed() {
             해당_사용자에게_리뷰를_작성한다(hostAccessToken, hostId)
-                    .statusCode(CONFLICT.value());
+                    .statusCode(SELF_REVIEW_NOT_ALLOWED.getStatus().value())
+                    .body("errorCode", is(SELF_REVIEW_NOT_ALLOWED.getErrorCode()))
+                    .body("message", is(SELF_REVIEW_NOT_ALLOWED.getMessage()));
         }
 
         @Test
         @DisplayName("같이 스터디를 진행한 적이 없으면 리뷰를 남길 수 없다")
         void commonStudyRecordNotFound() {
             해당_사용자에게_리뷰를_작성한다(hostAccessToken, memberId)
-                    .statusCode(CONFLICT.value());
+                    .statusCode(COMMON_STUDY_RECORD_NOT_FOUND.getStatus().value())
+                    .body("errorCode", is(COMMON_STUDY_RECORD_NOT_FOUND.getErrorCode()))
+                    .body("message", is(COMMON_STUDY_RECORD_NOT_FOUND.getMessage()));
         }
 
         @Test
@@ -69,7 +75,9 @@ public class MemberReviewAcceptanceTest extends AcceptanceTest {
         @DisplayName("작성한 리뷰가 없으면 수정할 수 없다")
         void failure() {
             작성한_리뷰를_수정한다(hostAccessToken, memberId)
-                    .statusCode(NOT_FOUND.value());
+                    .statusCode(MEMBER_REVIEW_NOT_FOUND.getStatus().value())
+                    .body("errorCode", is(MEMBER_REVIEW_NOT_FOUND.getErrorCode()))
+                    .body("message", is(MEMBER_REVIEW_NOT_FOUND.getMessage()));
         }
 
         @Test

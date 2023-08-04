@@ -64,7 +64,6 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         @DisplayName("로그아웃을 진행한다")
         void success() {
             final String accessToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행한다().accessToken();
-
             로그아웃을_진행한다(accessToken)
                     .statusCode(NO_CONTENT.value());
         }
@@ -77,7 +76,6 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         @DisplayName("RefreshToken을 통해서 AccessToken + RefreshToken을 재발급받는다")
         void tokenReissueApi() {
             final String refreshToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행한다().refreshToken();
-
             토큰을_재발급받는다(refreshToken)
                     .statusCode(OK.value())
                     .body("refreshToken", notNullValue(String.class))

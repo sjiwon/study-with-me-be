@@ -11,7 +11,8 @@ import static com.kgu.studywithme.acceptance.favorite.FavoriteAcceptanceFixture.
 import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디를_생성하고_PK를_얻는다;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
-import static org.springframework.http.HttpStatus.CONFLICT;
+import static com.kgu.studywithme.favorite.exception.FavoriteErrorCode.NEVER_LIKE_MARKED;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @DisplayName("[Acceptance Test] 스터디 찜 관련 기능")
@@ -43,7 +44,9 @@ public class FavoriteAcceptanceTest extends AcceptanceTest {
         @DisplayName("찜 등록되지 않은 스터디를 찜 취소할 수 없다")
         void failure() {
             찜_등록한_스터디를_취소한다(accessToken, studyId)
-                    .statusCode(CONFLICT.value());
+                    .statusCode(NEVER_LIKE_MARKED.getStatus().value())
+                    .body("errorCode", is(NEVER_LIKE_MARKED.getErrorCode()))
+                    .body("message", is(NEVER_LIKE_MARKED.getMessage()));
         }
 
         @Test

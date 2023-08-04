@@ -15,9 +15,10 @@ import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1;
 import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_2;
 import static com.kgu.studywithme.study.domain.RecruitmentStatus.IN_PROGRESS;
+import static com.kgu.studywithme.study.exception.StudyErrorCode.MEMBER_IS_NOT_HOST;
 import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.*;
+import static com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode.MEMBER_IS_NOT_PARTICIPANT;
 import static org.hamcrest.Matchers.*;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.OK;
 
 @DisplayName("[Acceptance Test] 스터디 정보 관련 기능")
@@ -183,7 +184,9 @@ public class StudyQueryAcceptanceTest extends AcceptanceTest {
             @DisplayName("스터디 팀장이 아니면 신청자를 조회할 수 없다")
             void memberIsNotHost() {
                 스터디_신청자를_조회한다(accessTokenOfMemberA, studyId)
-                        .statusCode(FORBIDDEN.value());
+                        .statusCode(MEMBER_IS_NOT_HOST.getStatus().value())
+                        .body("errorCode", is(MEMBER_IS_NOT_HOST.getErrorCode()))
+                        .body("message", is(MEMBER_IS_NOT_HOST.getMessage()));
             }
 
             @Test
@@ -225,7 +228,9 @@ public class StudyQueryAcceptanceTest extends AcceptanceTest {
             @DisplayName("스터디 참여자가 아니면 공지사항을 조회할 수 없다")
             void memberIsNotParticipant() {
                 스터디_공지사항을_조회한다(memberAccessToken, studyId)
-                        .statusCode(FORBIDDEN.value());
+                        .statusCode(MEMBER_IS_NOT_PARTICIPANT.getStatus().value())
+                        .body("errorCode", is(MEMBER_IS_NOT_PARTICIPANT.getErrorCode()))
+                        .body("message", is(MEMBER_IS_NOT_PARTICIPANT.getMessage()));
             }
 
             @Test
@@ -281,7 +286,9 @@ public class StudyQueryAcceptanceTest extends AcceptanceTest {
             void memberIsNotParticipant() {
                 final String anonymousAccessToken = DUMMY9.회원가입_후_Google_OAuth_로그인을_진행한다().accessToken();
                 스터디_출석_정보를_조회한다(anonymousAccessToken, studyId)
-                        .statusCode(FORBIDDEN.value());
+                        .statusCode(MEMBER_IS_NOT_PARTICIPANT.getStatus().value())
+                        .body("errorCode", is(MEMBER_IS_NOT_PARTICIPANT.getErrorCode()))
+                        .body("message", is(MEMBER_IS_NOT_PARTICIPANT.getMessage()));
             }
 
             @Test
@@ -345,7 +352,9 @@ public class StudyQueryAcceptanceTest extends AcceptanceTest {
             void memberIsNotParticipant() {
                 final String anonymousAccessToken = DUMMY9.회원가입_후_Google_OAuth_로그인을_진행한다().accessToken();
                 스터디_주차별_정보를_조회한다(anonymousAccessToken, studyId)
-                        .statusCode(FORBIDDEN.value());
+                        .statusCode(MEMBER_IS_NOT_PARTICIPANT.getStatus().value())
+                        .body("errorCode", is(MEMBER_IS_NOT_PARTICIPANT.getErrorCode()))
+                        .body("message", is(MEMBER_IS_NOT_PARTICIPANT.getMessage()));
             }
 
             @Test
