@@ -9,6 +9,8 @@ import com.kgu.studywithme.study.domain.StudyRepository;
 import com.kgu.studywithme.studynotice.domain.StudyNotice;
 import com.kgu.studywithme.studynotice.domain.StudyNoticeRepository;
 import com.kgu.studywithme.studynotice.domain.comment.StudyNoticeCommentRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,6 +37,9 @@ class StudyNoticeHandlingRepositoryTest extends RepositoryTest {
     @Autowired
     private StudyRepository studyRepository;
 
+    @PersistenceContext
+    private EntityManager em;
+
     private Member writer;
     private Study study;
 
@@ -42,6 +47,32 @@ class StudyNoticeHandlingRepositoryTest extends RepositoryTest {
     void setUp() {
         writer = memberRepository.save(JIWON.toMember());
         study = studyRepository.save(SPRING.toOnlineStudy(writer.getId()));
+    }
+
+    @Test
+    @DisplayName("공지사항을 수정한다 [제목, 내용]")
+    void updateNotice() {
+        // given
+        final StudyNotice notice = studyNoticeRepository.save(
+                StudyNotice.writeNotice(
+                        study.getId(),
+                        writer.getId(),
+                        "Title",
+                        "Content"
+                )
+        );
+
+        // when
+        final long affectedRowCount = studyNoticeRepository.updateNotice(notice.getId(), "Title-Update", "Content-Update");
+        syncAndClear(); // force
+
+        // then
+        final StudyNotice findNotice = studyNoticeRepository.findById(notice.getId()).orElseThrow();
+        assertAll(
+                () -> assertThat(affectedRowCount).isEqualTo(1),
+                () -> assertThat(findNotice.getTitle()).isEqualTo("Title-Update"),
+                () -> assertThat(findNotice.getContent()).isEqualTo("Content-Update")
+        );
     }
 
     @Test
@@ -88,5 +119,10 @@ class StudyNoticeHandlingRepositoryTest extends RepositoryTest {
                 .stream()
                 .map(BaseEntity::getId)
                 .toList();
+    }
+
+    private void syncAndClear() {
+        em.flush();
+        em.clear();
     }
 }

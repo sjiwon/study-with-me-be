@@ -63,18 +63,4 @@ class StudyNoticeTest {
                         .containsExactlyInAnyOrder(1L, 1L, 2L, 2L, 2L)
         );
     }
-
-    @Test
-    @DisplayName("공지사항 작성자인지 확인한다")
-    void isWriter() {
-        // when
-        final boolean actual1 = notice.isWriter(writer.getId());
-        final boolean actual2 = notice.isWriter(anonymous.getId());
-
-        // then
-        assertAll(
-                () -> assertThat(actual1).isTrue(),
-                () -> assertThat(actual2).isFalse()
-        );
-    }
 }

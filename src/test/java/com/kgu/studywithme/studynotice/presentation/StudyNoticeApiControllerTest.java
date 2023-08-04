@@ -1,9 +1,7 @@
 package com.kgu.studywithme.studynotice.presentation;
 
 import com.kgu.studywithme.common.ControllerTest;
-import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
-import com.kgu.studywithme.studynotice.exception.StudyNoticeErrorCode;
 import com.kgu.studywithme.studynotice.presentation.dto.request.UpdateStudyNoticeRequest;
 import com.kgu.studywithme.studynotice.presentation.dto.request.WriteStudyNoticeRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +16,6 @@ import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -185,58 +182,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "StudyApi/Notice/Update/Failure/Case1",
-                                    getDocumentRequest(),
-                                    getDocumentResponse(),
-                                    getHeaderWithAccessToken(),
-                                    pathParameters(
-                                            parameterWithName("studyId")
-                                                    .description("스터디 ID(PK)"),
-                                            parameterWithName("noticeId")
-                                                    .description("공지사항 ID(PK)")
-                                    ),
-                                    requestFields(
-                                            fieldWithPath("title")
-                                                    .description("수정할 공지사항 제목"),
-                                            fieldWithPath("content")
-                                                    .description("수정할 공지사항 내용")
-                                    ),
-                                    getExceptionResponseFiels()
-                            )
-                    );
-        }
-
-        @Test
-        @DisplayName("공지사항 작성자가 아닌 사람이 수정을 시도하면 예외가 발생한다")
-        void throwExceptionByHostIsNotNoticeWriter() throws Exception {
-            // given
-            mockingToken(true, HOST_ID);
-            doThrow(StudyWithMeException.type(StudyNoticeErrorCode.ONLY_WRITER_CAN_UPDATE_NOTICE))
-                    .when(updateStudyNoticeUseCase)
-                    .updateNotice(any());
-
-            // when
-            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .patch(BASE_URL, STUDY_ID, NOTICE_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .contentType(APPLICATION_JSON)
-                    .content(convertObjectToJson(REQUEST));
-
-            // then
-            final StudyNoticeErrorCode expectedError = StudyNoticeErrorCode.ONLY_WRITER_CAN_UPDATE_NOTICE;
-            mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isForbidden(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
-                    )
-                    .andDo(
-                            document(
-                                    "StudyApi/Notice/Update/Failure/Case2",
+                                    "StudyApi/Notice/Update/Failure",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
@@ -339,50 +285,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "StudyApi/Notice/Delete/Failure/Case1",
-                                    getDocumentRequest(),
-                                    getDocumentResponse(),
-                                    getHeaderWithAccessToken(),
-                                    pathParameters(
-                                            parameterWithName("studyId")
-                                                    .description("스터디 ID(PK)"),
-                                            parameterWithName("noticeId")
-                                                    .description("삭제할 공지사항 ID(PK)")
-                                    ),
-                                    getExceptionResponseFiels()
-                            )
-                    );
-        }
-
-        @Test
-        @DisplayName("공지사항 작성자가 아닌 사람이 삭제를 시도하면 예외가 발생한다")
-        void throwExceptionByMemberIsNotWriter() throws Exception {
-            // given
-            mockingToken(true, HOST_ID);
-            doThrow(StudyWithMeException.type(StudyNoticeErrorCode.ONLY_WRITER_CAN_DELETE_NOTICE))
-                    .when(deleteStudyNoticeUseCase)
-                    .deleteNotice(any());
-
-            // when
-            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .delete(BASE_URL, STUDY_ID, NOTICE_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
-
-            // then
-            final StudyNoticeErrorCode expectedError = StudyNoticeErrorCode.ONLY_WRITER_CAN_DELETE_NOTICE;
-            mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isForbidden(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
-                    )
-                    .andDo(
-                            document(
-                                    "StudyApi/Notice/Delete/Failure/Case2",
+                                    "StudyApi/Notice/Delete/Failure",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),

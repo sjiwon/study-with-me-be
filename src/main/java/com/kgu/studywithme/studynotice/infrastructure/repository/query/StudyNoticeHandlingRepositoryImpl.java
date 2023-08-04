@@ -17,6 +17,18 @@ public class StudyNoticeHandlingRepositoryImpl implements StudyNoticeHandlingRep
     @StudyWithMeWritableTransactional
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Override
+    public long updateNotice(final Long noticeId, final String title, final String content) {
+        return query
+                .update(studyNotice)
+                .set(studyNotice.title, title)
+                .set(studyNotice.content, content)
+                .where(studyNotice.id.eq(noticeId))
+                .execute();
+    }
+
+    @StudyWithMeWritableTransactional
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Override
     public void deleteNotice(final Long noticeId) {
         // 1. delete notice comment
         query.delete(studyNoticeComment)
