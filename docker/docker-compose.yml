@@ -17,7 +17,7 @@ services:
       - --skip-character-set-client-handshake
     volumes:
       - "./mysql_data:/var/lib/mysql" # .idb = Table Data / .frm = Table Definition / ...
-      - "./src/main/resources/sql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro" # Init Script
+      - "../src/main/resources/sql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro" # Init Script
 
   redis: # redis-cli
     image: redis:latest
