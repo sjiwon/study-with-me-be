@@ -166,7 +166,7 @@ public class Study extends BaseEntity<Study> {
         this.location = (type == OFFLINE) ? new StudyLocation(province, city) : null;
         this.recruitmentStatus = recruitmentStatus;
         this.graduationPolicy = this.graduationPolicy.update(minimumAttendanceForGraduation);
-        this.hashtags = new Hashtags(this, hashtags);
+        this.hashtags.update(this, hashtags);
     }
 
     private void validateCapacityCanCoverCurrentParticipants(final Capacity capacity) {

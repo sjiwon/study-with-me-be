@@ -1,13 +1,13 @@
 package com.kgu.studywithme.studyweekly.infrastructure.repository.query;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
-import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
 import com.kgu.studywithme.studyweekly.domain.submit.StudyWeeklySubmit;
 import com.kgu.studywithme.studyweekly.infrastructure.repository.query.dto.AutoAttendanceAndFinishedWeekly;
 import com.kgu.studywithme.studyweekly.infrastructure.repository.query.dto.QAutoAttendanceAndFinishedWeekly;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Modifying;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -39,45 +39,31 @@ public class StudyWeeklyHandlingRepositoryImpl implements StudyWeeklyHandlingRep
     }
 
     @Override
-    public Optional<StudyWeekly> getSpecificWeekly(final Long studyId, final int week) {
-        return Optional.ofNullable(
-                query
-                        .selectFrom(studyWeekly)
-                        .where(
-                                studyIdEq(studyId),
-                                weekEq(week)
-                        )
-                        .fetchOne()
-        );
-    }
-
-    @Override
-    public boolean isLatestWeek(final Long studyId, final int week) {
-        final List<Integer> weeks = query
-                .select(studyWeekly.week)
+    public boolean isLatestWeek(final Long studyId, final Long weeklyId) {
+        final List<Long> weeks = query
+                .select(studyWeekly.id)
                 .from(studyWeekly)
                 .where(studyIdEq(studyId))
-                .orderBy(studyWeekly.week.desc())
+                .orderBy(studyWeekly.id.desc())
                 .fetch();
 
         if (weeks.isEmpty()) {
             return true;
         }
-        return weeks.get(0) == week;
+        return weeks.get(0).equals(weeklyId);
     }
 
+    @StudyWithMeWritableTransactional
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Override
-    public void deleteSpecificWeekly(final Long studyId, final int week) {
-        final Long weeklyId = query
-                .select(studyWeekly.id)
+    public void deleteSpecificWeekly(final Long studyId, final Long weeklyId) {
+        final Integer week = query
+                .select(studyWeekly.week)
                 .from(studyWeekly)
-                .where(
-                        studyIdEq(studyId),
-                        weekEq(week)
-                )
+                .where(weeklyIdEq(weeklyId))
                 .fetchOne();
 
-        if (weeklyId != null) {
+        if (week != null) {
             // 1. 제출한 과제 삭제
             query
                     .delete(studyWeeklySubmit)
@@ -102,7 +88,7 @@ public class StudyWeeklyHandlingRepositoryImpl implements StudyWeeklyHandlingRep
             // 4. 해당 주차 삭제
             query
                     .delete(studyWeekly)
-                    .where(studyWeekly.id.eq(weeklyId))
+                    .where(weeklyIdEq(weeklyId))
                     .execute();
         }
     }
@@ -111,7 +97,7 @@ public class StudyWeeklyHandlingRepositoryImpl implements StudyWeeklyHandlingRep
     public Optional<StudyWeeklySubmit> getSubmittedAssignment(
             final Long memberId,
             final Long studyId,
-            final int week
+            final Long weeklyId
     ) {
         return Optional.ofNullable(
                 query
@@ -120,7 +106,7 @@ public class StudyWeeklyHandlingRepositoryImpl implements StudyWeeklyHandlingRep
                         .where(
                                 studyWeeklySubmit.participantId.eq(memberId),
                                 studyIdEq(studyId),
-                                weekEq(week)
+                                weeklyIdEq(weeklyId)
                         )
                         .fetchOne()
         );
@@ -150,7 +136,7 @@ public class StudyWeeklyHandlingRepositoryImpl implements StudyWeeklyHandlingRep
         return studyWeekly.studyId.eq(studyId);
     }
 
-    private BooleanExpression weekEq(final int week) {
-        return studyWeekly.week.eq(week);
+    private BooleanExpression weeklyIdEq(final Long weeklyId) {
+        return studyWeekly.id.eq(weeklyId);
     }
 }

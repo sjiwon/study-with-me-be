@@ -20,8 +20,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -194,7 +193,10 @@ class MemberReviewApiControllerTest extends ControllerTest {
 
             // then
             mockMvc.perform(requestBuilder)
-                    .andExpect(status().isNoContent())
+                    .andExpectAll(
+                            status().isOk(),
+                            jsonPath("$.reviewId").value(1L)
+                    )
                     .andDo(
                             document(
                                     "MemberApi/Review/Write/Success",
@@ -208,6 +210,10 @@ class MemberReviewApiControllerTest extends ControllerTest {
                                     requestFields(
                                             fieldWithPath("content")
                                                     .description("리뷰 내용")
+                                    ),
+                                    responseFields(
+                                            fieldWithPath("reviewId")
+                                                    .description("작성한 사용자 리뷰 ID(PK)")
                                     )
                             )
                     );

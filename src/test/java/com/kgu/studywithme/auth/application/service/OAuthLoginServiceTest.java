@@ -27,8 +27,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static com.kgu.studywithme.auth.utils.OAuthProvider.GOOGLE;
+import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.utils.TokenUtils.*;
-import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;

@@ -27,7 +27,18 @@ public class Interests {
             final Set<Category> interests
     ) {
         validateInterestsIsEmpty(interests);
+        this.interests.addAll(
+                interests.stream()
+                        .map(value -> Interest.applyInterest(member, value))
+                        .toList()
+        );
+    }
 
+    public void update(
+            final Member member,
+            final Set<Category> interests
+    ) {
+        validateInterestsIsEmpty(interests);
         this.interests.clear();
         this.interests.addAll(
                 interests.stream()

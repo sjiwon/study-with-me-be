@@ -40,7 +40,7 @@ public class StudyNoticeCommentApiController {
     }
 
     @Operation(summary = "스터디 공지사항 댓글 수정 EndPoint")
-    @PutMapping("/comments/{commentId}")
+    @PatchMapping("/comments/{commentId}")
     public ResponseEntity<Void> update(
             @ExtractPayload final Long memberId,
             @PathVariable final Long noticeId,

@@ -6,6 +6,7 @@ import com.kgu.studywithme.studyreview.application.usecase.command.UpdateStudyRe
 import com.kgu.studywithme.studyreview.application.usecase.command.WriteStudyReviewUseCase;
 import com.kgu.studywithme.studyreview.presentation.dto.request.UpdateStudyReviewRequest;
 import com.kgu.studywithme.studyreview.presentation.dto.request.WriteStudyReviewRequest;
+import com.kgu.studywithme.studyreview.presentation.dto.response.StudyReviewIdResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -24,19 +25,19 @@ public class StudyReviewApiController {
 
     @Operation(summary = "스터디 리뷰 작성 EndPoint")
     @PostMapping("/review")
-    public ResponseEntity<Void> write(
+    public ResponseEntity<StudyReviewIdResponse> write(
             @ExtractPayload final Long memberId,
             @PathVariable final Long studyId,
             @RequestBody @Valid final WriteStudyReviewRequest request
     ) {
-        writeStudyReviewUseCase.writeStudyReview(
+        final Long reviewId = writeStudyReviewUseCase.writeStudyReview(
                 new WriteStudyReviewUseCase.Command(
                         studyId,
                         memberId,
                         request.content()
                 )
         );
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(new StudyReviewIdResponse(reviewId));
     }
 
     @Operation(summary = "스터디 리뷰 수정 EndPoint")

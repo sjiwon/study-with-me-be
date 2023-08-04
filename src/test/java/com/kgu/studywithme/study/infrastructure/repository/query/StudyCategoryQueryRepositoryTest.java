@@ -28,8 +28,8 @@ import java.util.List;
 
 import static com.kgu.studywithme.category.domain.Category.INTERVIEW;
 import static com.kgu.studywithme.category.domain.Category.PROGRAMMING;
-import static com.kgu.studywithme.fixture.MemberFixture.*;
-import static com.kgu.studywithme.fixture.StudyFixture.*;
+import static com.kgu.studywithme.common.fixture.MemberFixture.*;
+import static com.kgu.studywithme.common.fixture.StudyFixture.*;
 import static com.kgu.studywithme.study.domain.StudyType.OFFLINE;
 import static com.kgu.studywithme.study.domain.StudyType.ONLINE;
 import static com.kgu.studywithme.study.utils.PagingConstants.SortType.*;

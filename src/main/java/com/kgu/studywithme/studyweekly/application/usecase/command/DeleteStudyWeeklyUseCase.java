@@ -5,7 +5,7 @@ public interface DeleteStudyWeeklyUseCase {
 
     record Command(
             Long studyId,
-            int week
+            Long weeklyId
     ) {
     }
 }

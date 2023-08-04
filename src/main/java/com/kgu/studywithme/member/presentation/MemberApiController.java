@@ -2,7 +2,7 @@ package com.kgu.studywithme.member.presentation;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.category.domain.Category;
-import com.kgu.studywithme.global.aop.CheckMemberIdentity;
+import com.kgu.studywithme.global.aop.CheckAuthUser;
 import com.kgu.studywithme.member.application.usecase.command.SignUpMemberUseCase;
 import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
 import com.kgu.studywithme.member.domain.Email;
@@ -11,6 +11,7 @@ import com.kgu.studywithme.member.domain.Nickname;
 import com.kgu.studywithme.member.domain.Region;
 import com.kgu.studywithme.member.presentation.dto.request.SignUpMemberRequest;
 import com.kgu.studywithme.member.presentation.dto.request.UpdateMemberRequest;
+import com.kgu.studywithme.member.presentation.dto.response.MemberIdResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -29,7 +30,7 @@ public class MemberApiController {
 
     @Operation(summary = "회원가입 EndPoint")
     @PostMapping("/member")
-    public ResponseEntity<Void> signUp(@RequestBody @Valid final SignUpMemberRequest request) {
+    public ResponseEntity<MemberIdResponse> signUp(@RequestBody @Valid final SignUpMemberRequest request) {
         final Long savedMemberId = signUpMemberUseCase.signUp(
                 new SignUpMemberUseCase.Command(
                         request.name(),
@@ -50,15 +51,14 @@ public class MemberApiController {
                                 .fromPath("/api/members/{id}")
                                 .build(savedMemberId)
                 )
-                .build();
+                .body(new MemberIdResponse(savedMemberId));
     }
 
     @Operation(summary = "사용자 정보 수정 EndPoint")
-    @CheckMemberIdentity
-    @PatchMapping("/members/{memberId}")
+    @CheckAuthUser
+    @PatchMapping("/members/me")
     public ResponseEntity<Void> update(
-            @ExtractPayload final Long payloadId,
-            @PathVariable final Long memberId,
+            @ExtractPayload final Long memberId,
             @RequestBody @Valid final UpdateMemberRequest request
     ) {
         updateMemberUseCase.update(

@@ -16,12 +16,15 @@ public class DeleteStudyWeeklyService implements DeleteStudyWeeklyUseCase {
 
     @Override
     public void deleteStudyWeekly(final Command command) {
-        validateSpecificWeekIsLatestWeek(command.studyId(), command.week());
-        studyWeeklyRepository.deleteSpecificWeekly(command.studyId(), command.week());
+        validateSpecificWeekIsLatestWeek(command.studyId(), command.weeklyId());
+        studyWeeklyRepository.deleteSpecificWeekly(command.studyId(), command.weeklyId());
     }
 
-    private void validateSpecificWeekIsLatestWeek(final Long studyId, final int week) {
-        if (!studyWeeklyRepository.isLatestWeek(studyId, week)) {
+    private void validateSpecificWeekIsLatestWeek(
+            final Long studyId,
+            final Long weeklyId
+    ) {
+        if (!studyWeeklyRepository.isLatestWeek(studyId, weeklyId)) {
             throw StudyWithMeException.type(StudyWeeklyErrorCode.ONLY_LATEST_WEEKLY_CAN_DELETE);
         }
     }

@@ -1,4 +1,4 @@
-package com.kgu.studywithme.fixture;
+package com.kgu.studywithme.common.fixture;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

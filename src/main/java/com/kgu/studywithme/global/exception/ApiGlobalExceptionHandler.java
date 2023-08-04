@@ -31,7 +31,7 @@ import java.util.Map;
 
 import static com.kgu.studywithme.global.infrastructure.slack.SlackMetadata.*;
 import static com.slack.api.webhook.WebhookPayloads.payload;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Slf4j
 @RestControllerAdvice
@@ -69,7 +69,7 @@ public class ApiGlobalExceptionHandler {
     public ResponseEntity<OAuthUserResponse> studyWithMeOAuthException(final StudyWithMeOAuthException e) {
         final OAuthUserResponse response = e.getResponse();
         return ResponseEntity
-                .status(UNAUTHORIZED)
+                .status(NOT_FOUND)
                 .body(response);
     }
 

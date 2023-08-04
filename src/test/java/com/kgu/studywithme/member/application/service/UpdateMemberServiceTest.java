@@ -13,8 +13,8 @@ import org.mockito.Mock;
 
 import java.time.LocalDateTime;
 
-import static com.kgu.studywithme.fixture.MemberFixture.GHOST;
-import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
+import static com.kgu.studywithme.common.fixture.MemberFixture.GHOST;
+import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -39,7 +39,7 @@ class UpdateMemberServiceTest extends UseCaseTest {
             new UpdateMemberUseCase.Command(
                     member.getId(),
                     GHOST.getNickname().getValue(),
-                    "010-1234-5678",
+                    GHOST.getPhone(),
                     GHOST.getRegion().getProvince(),
                     GHOST.getRegion().getCity(),
                     false,

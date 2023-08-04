@@ -26,10 +26,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
-@DisplayName("Upload -> FileUploader 테스트")
-class FileUploaderTest extends UseCaseTest {
+@DisplayName("Upload -> S3FileUploader 테스트")
+class S3FileUploaderTest extends UseCaseTest {
     @InjectMocks
-    private FileUploader uploader;
+    private S3FileUploader uploader;
 
     @Mock
     private AmazonS3 amazonS3;
@@ -49,7 +49,7 @@ class FileUploaderTest extends UseCaseTest {
 
     @BeforeEach
     void setUp() {
-        uploader = new FileUploader(amazonS3, BUCKET);
+        uploader = new S3FileUploader(amazonS3, BUCKET);
     }
 
     @Nested

@@ -37,7 +37,7 @@ public class EditSubmittedWeeklyAssignmentService implements EditSubmittedWeekly
     public void editSubmittedWeeklyAssignment(final Command command) {
         validateAssignmentSubmissionExists(command.file(), command.link());
 
-        final StudyWeeklySubmit submittedAssignment = getSubmittedAssignment(command.memberId(), command.studyId(), command.week());
+        final StudyWeeklySubmit submittedAssignment = getSubmittedAssignment(command.memberId(), command.studyId(), command.weeklyId());
         final UploadAssignment assignment = uploadAssignment(command.uploadType(), command.file(), command.link());
         submittedAssignment.editUpload(assignment);
 
@@ -65,9 +65,9 @@ public class EditSubmittedWeeklyAssignmentService implements EditSubmittedWeekly
     private StudyWeeklySubmit getSubmittedAssignment(
             final Long memberId,
             final Long studyId,
-            final int week
+            final Long weeklyId
     ) {
-        return studyWeeklyRepository.getSubmittedAssignment(memberId, studyId, week)
+        return studyWeeklyRepository.getSubmittedAssignment(memberId, studyId, weeklyId)
                 .orElseThrow(() -> StudyWithMeException.type(StudyWeeklyErrorCode.SUBMITTED_ASSIGNMENT_NOT_FOUND));
     }
 

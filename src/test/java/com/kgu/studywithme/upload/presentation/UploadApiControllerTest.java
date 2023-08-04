@@ -196,7 +196,7 @@ class UploadApiControllerTest extends ControllerTest {
                     .multipart(BASE_URL)
                     .file((MockMultipartFile) file)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .queryParam("type", "weekly");
+                    .queryParam("type", "description");
 
             // then
             final GlobalErrorCode expectedError = GlobalErrorCode.VALIDATION_ERROR;

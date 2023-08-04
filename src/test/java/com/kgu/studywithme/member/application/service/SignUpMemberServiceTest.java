@@ -13,7 +13,7 @@ import org.mockito.Mock;
 
 import java.time.LocalDateTime;
 
-import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
+import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -36,7 +36,7 @@ class SignUpMemberServiceTest extends UseCaseTest {
                     JIWON.getNickname(),
                     JIWON.getEmail(),
                     JIWON.getBirth(),
-                    "010-1234-5678",
+                    JIWON.getPhone(),
                     JIWON.getGender(),
                     JIWON.getRegion(),
                     true,

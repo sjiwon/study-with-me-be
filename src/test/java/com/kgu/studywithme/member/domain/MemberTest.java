@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static com.kgu.studywithme.fixture.MemberFixture.ANONYMOUS;
-import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
+import static com.kgu.studywithme.common.fixture.MemberFixture.ANONYMOUS;
+import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -25,6 +25,7 @@ class MemberTest {
                 () -> assertThat(member.getNickname()).isEqualTo(JIWON.getNickname()),
                 () -> assertThat(member.getEmail()).isEqualTo(JIWON.getEmail()),
                 () -> assertThat(member.getBirth()).isEqualTo(JIWON.getBirth()),
+                () -> assertThat(member.getPhone()).isEqualTo(JIWON.getPhone()),
                 () -> assertThat(member.getGender()).isEqualTo(JIWON.getGender()),
                 () -> assertThat(member.getRegion()).isEqualTo(JIWON.getRegion()),
                 () -> assertThat(member.getScore()).isEqualTo(80),
@@ -42,7 +43,7 @@ class MemberTest {
         // when
         member.update(
                 ANONYMOUS.getNickname().getValue(),
-                "01013249583",
+                ANONYMOUS.getPhone(),
                 ANONYMOUS.getRegion().getProvince(),
                 ANONYMOUS.getRegion().getCity(),
                 ANONYMOUS.isEmailOptIn(),
@@ -55,7 +56,7 @@ class MemberTest {
                 () -> assertThat(member.getNickname()).isEqualTo(ANONYMOUS.getNickname()),
                 () -> assertThat(member.getEmail()).isEqualTo(JIWON.getEmail()),
                 () -> assertThat(member.getBirth()).isEqualTo(JIWON.getBirth()),
-                () -> assertThat(member.getPhone()).isEqualTo("01013249583"),
+                () -> assertThat(member.getPhone()).isEqualTo(ANONYMOUS.getPhone()),
                 () -> assertThat(member.getGender()).isEqualTo(JIWON.getGender()),
                 () -> assertThat(member.getRegion()).isEqualTo(ANONYMOUS.getRegion()),
                 () -> assertThat(member.getScore()).isEqualTo(80),

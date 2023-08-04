@@ -16,8 +16,8 @@ import org.mockito.Mock;
 
 import java.time.LocalDateTime;
 
-import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
-import static com.kgu.studywithme.fixture.StudyFixture.OS;
+import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
+import static com.kgu.studywithme.common.fixture.StudyFixture.OS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -69,7 +69,7 @@ class CreateStudyServiceTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(studyRepository, times(1)).isNameExists(any()),
-                () -> verify(studyRepository, times(1)).isNameExists(any()),
+                () -> verify(queryMemberByIdService, times(0)).findById(any()),
                 () -> verify(studyRepository, times(0)).save(any()),
                 () -> verify(studyParticipantRepository, times(0)).save(any())
         );
@@ -91,7 +91,7 @@ class CreateStudyServiceTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyRepository, times(1)).isNameExists(any()),
-                () -> verify(studyRepository, times(1)).isNameExists(any()),
+                () -> verify(queryMemberByIdService, times(1)).findById(any()),
                 () -> verify(studyRepository, times(1)).save(any()),
                 () -> verify(studyParticipantRepository, times(1)).save(any()),
                 () -> assertThat(savedStudyId).isEqualTo(study.getId())

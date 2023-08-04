@@ -38,7 +38,7 @@ public class SubmitWeeklyAssignmentService implements SubmitWeeklyAssignmentUseC
     public void submitWeeklyAssignment(final Command command) {
         validateAssignmentSubmissionExists(command.file(), command.link());
 
-        final StudyWeekly weekly = getSpecificWeekly(command.studyId(), command.week());
+        final StudyWeekly weekly = getSpecificWeekly(command.weeklyId());
         final Member member = getParticipant(command.studyId(), command.memberId());
 
         submitAssignment(weekly, member, command);
@@ -58,11 +58,8 @@ public class SubmitWeeklyAssignmentService implements SubmitWeeklyAssignmentUseC
         }
     }
 
-    private StudyWeekly getSpecificWeekly(
-            final Long studyId,
-            final int week
-    ) {
-        return studyWeeklyRepository.getSpecificWeekly(studyId, week)
+    private StudyWeekly getSpecificWeekly(final Long weeklyId) {
+        return studyWeeklyRepository.findById(weeklyId)
                 .orElseThrow(() -> StudyWithMeException.type(StudyWeeklyErrorCode.WEEKLY_NOT_FOUND));
     }
 

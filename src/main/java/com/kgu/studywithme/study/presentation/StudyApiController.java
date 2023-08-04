@@ -10,6 +10,7 @@ import com.kgu.studywithme.study.application.usecase.command.UpdateStudyUseCase;
 import com.kgu.studywithme.study.domain.*;
 import com.kgu.studywithme.study.presentation.dto.request.CreateStudyRequest;
 import com.kgu.studywithme.study.presentation.dto.request.UpdateStudyRequest;
+import com.kgu.studywithme.study.presentation.dto.response.StudyIdResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -30,7 +31,7 @@ public class StudyApiController {
     @Operation(summary = "스터디 생성 EndPoint")
     @CheckAuthUser
     @PostMapping("/study")
-    public ResponseEntity<Void> create(
+    public ResponseEntity<StudyIdResponse> create(
             @ExtractPayload final Long hostId,
             @RequestBody @Valid final CreateStudyRequest request
     ) {
@@ -56,7 +57,7 @@ public class StudyApiController {
                                 .fromPath("/api/studies/{id}")
                                 .build(savedStudyId)
                 )
-                .build();
+                .body(new StudyIdResponse(savedStudyId));
     }
 
     @Operation(summary = "스터디 수정 EndPoint")

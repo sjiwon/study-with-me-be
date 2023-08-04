@@ -1,105 +1,25 @@
 package com.kgu.studywithme.upload.utils;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.upload.exception.UploadErrorCode;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.UUID;
+public interface FileUploader {
+    /**
+     * 스터디 생성 시 설명 내부 이미지 업로드
+     */
+    String uploadStudyDescriptionImage(final MultipartFile file);
 
-import static com.kgu.studywithme.upload.infrastructure.aws.BucketMetadata.*;
-import static com.kgu.studywithme.upload.utils.FileUploadType.*;
+    /**
+     * Weekly 글 내부 이미지 업로드
+     */
+    String uploadWeeklyImage(final MultipartFile file);
 
-@Slf4j
-@Component
-public class FileUploader {
-    private final AmazonS3 amazonS3;
-    private final String bucket;
+    /**
+     * Weekly 글 첨부파일 업로드
+     */
+    String uploadWeeklyAttachment(final MultipartFile file);
 
-    public FileUploader(
-            final AmazonS3 amazonS3,
-            @Value("${cloud.ncp.storage.bucket}") final String bucket
-    ) {
-        this.amazonS3 = amazonS3;
-        this.bucket = bucket;
-    }
-
-    // 스터디 생성 시 설명 내부 이미지 업로드
-    public String uploadStudyDescriptionImage(final MultipartFile file) {
-        validateFileExists(file);
-        return uploadFile(DESCRIPTION, file);
-    }
-
-    // Weekly 글 내부 이미지 업로드
-    public String uploadWeeklyImage(final MultipartFile file) {
-        validateFileExists(file);
-        return uploadFile(IMAGE, file);
-    }
-
-    // Weekly 글 첨부파일 업로드
-    public String uploadWeeklyAttachment(final MultipartFile file) {
-        validateFileExists(file);
-        return uploadFile(ATTACHMENT, file);
-    }
-
-    // Weekly 과제 제출
-    public String uploadWeeklySubmit(final MultipartFile file) {
-        validateFileExists(file);
-        return uploadFile(SUBMIT, file);
-    }
-
-    private void validateFileExists(final MultipartFile file) {
-        if (file == null || file.isEmpty()) {
-            throw StudyWithMeException.type(UploadErrorCode.FILE_IS_EMPTY);
-        }
-    }
-
-    private String uploadFile(
-            final FileUploadType type,
-            final MultipartFile file
-    ) {
-        final String fileName = createFileNameByType(type, file.getOriginalFilename());
-
-        final ObjectMetadata objectMetadata = new ObjectMetadata();
-        objectMetadata.setContentType(file.getContentType());
-        objectMetadata.setContentLength(file.getSize());
-
-        try (final InputStream inputStream = file.getInputStream()) {
-            amazonS3.putObject(
-                    new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
-                            .withCannedAcl(CannedAccessControlList.PublicRead)
-            );
-        } catch (final IOException e) {
-            log.error("S3 파일 업로드에 실패했습니다. {}", e.getMessage(), e);
-            throw StudyWithMeException.type(UploadErrorCode.S3_UPLOAD_FAILURE);
-        }
-
-        return amazonS3.getUrl(bucket, fileName).toString();
-    }
-
-    private String createFileNameByType(
-            final FileUploadType type,
-            final String originalFileName
-    ) {
-        final String fileName = UUID.randomUUID() + extractFileExtension(originalFileName);
-
-        return switch (type) {
-            case DESCRIPTION -> String.format(STUDY_DESCRIPTIONS, fileName);
-            case IMAGE -> String.format(WEEKLY_IMAGES, fileName);
-            case ATTACHMENT -> String.format(WEEKLY_ATTACHMENTS, fileName);
-            default -> String.format(WEEKLY_SUBMITS, fileName);
-        };
-    }
-
-    private String extractFileExtension(final String fileName) {
-        return fileName.substring(fileName.lastIndexOf("."));
-    }
+    /**
+     * Weekly 과제 업로드
+     */
+    String uploadWeeklySubmit(final MultipartFile file);
 }

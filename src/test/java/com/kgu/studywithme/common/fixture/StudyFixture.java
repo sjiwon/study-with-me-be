@@ -1,5 +1,6 @@
-package com.kgu.studywithme.fixture;
+package com.kgu.studywithme.common.fixture;
 
+import com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture;
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.study.domain.*;
 import lombok.Getter;
@@ -19,7 +20,7 @@ public enum StudyFixture {
     TOEIC(
             new StudyName("TOEIC 스터디"), new Description("TOEIC 스터디입니다"), LANGUAGE,
             IMAGE_LANGUAGE_001, ONLINE,
-            null, new Capacity(8), 5,
+            null, new Capacity(8), 0,
             new HashSet<>(Set.of("언어", "토익", "TOEIC"))
     ),
     TOEFL(
@@ -80,7 +81,7 @@ public enum StudyFixture {
     LINE_INTERVIEW(
             new StudyName("LINE 면접 스터디"), new Description("LINE 기술 면접을 대비하기 위한 스터디입니다"), INTERVIEW,
             IMAGE_INTERVIEW_004, OFFLINE,
-            new StudyLocation("경기도", "성남시"), new Capacity(10), 15,
+            new StudyLocation("경기도", "성남시"), new Capacity(10), 0,
             new HashSet<>(Set.of("면접", "라인", "기술 면접"))
     ),
     GOOGLE_INTERVIEW(
@@ -162,6 +163,36 @@ public enum StudyFixture {
             null, new Capacity(6), 8,
             new HashSet<>(Set.of("OS", "운영체제", "프로세스와 쓰레드", "데드락"))
     ),
+    KAFKA( // 참여 인원 2 & 졸업 최소 조건 0
+            new StudyName("Kafka 스터디"), new Description("Kafka 스터디입니다"), PROGRAMMING,
+            IMAGE_PROGRAMMING_003, ONLINE,
+            null, new Capacity(2), 0,
+            new HashSet<>(Set.of("카프카", "메시지 큐", "Event Driven"))
+    ),
+    RABBITMQ( // 참여 인원 10 & 졸업 최소 조건 0
+            new StudyName("RabbitMQ 스터디"), new Description("RabbitMQ 스터디입니다"), PROGRAMMING,
+            IMAGE_PROGRAMMING_003, ONLINE,
+            null, new Capacity(10), 0,
+            new HashSet<>(Set.of("RabbitMQ", "메시지 큐"))
+    ),
+    OOP(
+            new StudyName("객체지향 스터디"), new Description("객사오 읽는 스터디입니다"), PROGRAMMING,
+            IMAGE_PROGRAMMING_003, ONLINE,
+            null, new Capacity(10), 0,
+            new HashSet<>(Set.of("객체지향 사실과 오해", "자바", "OOP"))
+    ),
+    REDIS(
+            new StudyName("Redis 스터디"), new Description("레디스 스터디입니다"), PROGRAMMING,
+            IMAGE_PROGRAMMING_003, ONLINE,
+            null, new Capacity(10), 0,
+            new HashSet<>(Set.of("레디스", "인메모리"))
+    ),
+    JSP(
+            new StudyName("JSP 스터디"), new Description("JSP 스터디입니다"), PROGRAMMING,
+            IMAGE_PROGRAMMING_003, ONLINE,
+            null, new Capacity(10), 0,
+            new HashSet<>(Set.of("JSP", "자바"))
+    ),
     ;
 
     private final StudyName name;
@@ -199,5 +230,12 @@ public enum StudyFixture {
                 minimumAttendanceForGraduation,
                 hashtags
         );
+    }
+
+    public Long 스터디를_생성한다(final String accessToken) {
+        return StudyAcceptanceFixture.스터디를_생성한다(accessToken, this)
+                .extract()
+                .jsonPath()
+                .getLong("studyId");
     }
 }

@@ -99,7 +99,7 @@ public class Member extends BaseEntity<Member> {
         this.phone = phone;
         this.region = this.region.update(province, city);
         this.emailOptIn = emailOptIn;
-        this.interests = new Interests(this, interests);
+        this.interests.update(this, interests);
     }
 
     public void applyScoreByAttendanceStatus(final AttendanceStatus status) {

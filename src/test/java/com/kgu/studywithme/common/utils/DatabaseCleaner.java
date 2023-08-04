@@ -1,4 +1,4 @@
-package com.kgu.studywithme.common;
+package com.kgu.studywithme.common.utils;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Table;

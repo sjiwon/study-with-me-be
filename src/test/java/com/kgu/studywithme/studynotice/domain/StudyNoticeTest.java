@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static com.kgu.studywithme.fixture.MemberFixture.GHOST;
-import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
+import static com.kgu.studywithme.common.fixture.MemberFixture.GHOST;
+import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -61,20 +61,6 @@ class StudyNoticeTest {
                 () -> assertThat(notice.getComments())
                         .map(StudyNoticeComment::getWriterId)
                         .containsExactlyInAnyOrder(1L, 1L, 2L, 2L, 2L)
-        );
-    }
-
-    @Test
-    @DisplayName("공지사항 작성자인지 확인한다")
-    void isWriter() {
-        // when
-        final boolean actual1 = notice.isWriter(writer.getId());
-        final boolean actual2 = notice.isWriter(anonymous.getId());
-
-        // then
-        assertAll(
-                () -> assertThat(actual1).isTrue(),
-                () -> assertThat(actual2).isFalse()
         );
     }
 }

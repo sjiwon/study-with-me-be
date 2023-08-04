@@ -1,5 +1,6 @@
 package com.kgu.studywithme.member.presentation;
 
+import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
@@ -11,12 +12,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.Set;
+import java.util.stream.Collectors;
 
-import static com.kgu.studywithme.category.domain.Category.*;
+import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
-import static com.kgu.studywithme.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.member.domain.Gender.MALE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -25,8 +25,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -41,12 +40,15 @@ class MemberApiControllerTest extends ControllerTest {
                 JIWON.getNickname().getValue(),
                 JIWON.getEmail().getValue(),
                 JIWON.getBirth(),
-                "01012345678",
+                JIWON.getPhone(),
                 MALE.getSimpleValue(),
                 JIWON.getRegion().getProvince(),
                 JIWON.getRegion().getCity(),
                 JIWON.isEmailOptIn(),
-                Set.of(LANGUAGE.getId(), INTERVIEW.getId(), PROGRAMMING.getId())
+                JIWON.getInterests()
+                        .stream()
+                        .map(Category::getId)
+                        .collect(Collectors.toSet())
         );
 
         @Test
@@ -127,7 +129,7 @@ class MemberApiControllerTest extends ControllerTest {
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
                             status().isCreated(),
-                            jsonPath("$").doesNotExist()
+                            jsonPath("$.memberId").value(1L)
                     )
                     .andDo(
                             document(
@@ -159,6 +161,10 @@ class MemberApiControllerTest extends ControllerTest {
                                             fieldWithPath("interests[]")
                                                     .description("관심사 Enum ID")
                                                     .attributes(constraint("스터디 카테고리 ID 한정"))
+                                    ),
+                                    responseFields(
+                                            fieldWithPath("memberId")
+                                                    .description("생성한 사용자 ID(PK)")
                                     )
                             )
                     );
@@ -166,17 +172,20 @@ class MemberApiControllerTest extends ControllerTest {
     }
 
     @Nested
-    @DisplayName("사용자 정보 수정 [PATCH /api/members/{memberId}] - AccessToken 필수")
+    @DisplayName("사용자 정보 수정 [PATCH /api/members/me] - AccessToken 필수")
     class update {
-        private static final String BASE_URL = "/api/members/{memberId}";
+        private static final String BASE_URL = "/api/members/me";
         private static final Long MEMBER_ID = 1L;
         private static final UpdateMemberRequest REQUEST = new UpdateMemberRequest(
                 JIWON.getNickname().getValue(),
-                "010-1234-5678",
+                JIWON.getPhone(),
                 JIWON.getRegion().getProvince(),
                 JIWON.getRegion().getCity(),
                 false,
-                Set.of(INTERVIEW.getId(), PROGRAMMING.getId())
+                JIWON.getInterests()
+                        .stream()
+                        .map(Category::getId)
+                        .collect(Collectors.toSet())
         );
 
         @Test
@@ -190,7 +199,7 @@ class MemberApiControllerTest extends ControllerTest {
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                    .patch(BASE_URL, MEMBER_ID)
+                    .patch(BASE_URL)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(REQUEST));

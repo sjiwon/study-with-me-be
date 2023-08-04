@@ -8,7 +8,7 @@ public interface EditSubmittedWeeklyAssignmentUseCase {
     record Command(
             Long memberId,
             Long studyId,
-            int week,
+            Long weeklyId,
             String uploadType,
             MultipartFile file,
             String link
