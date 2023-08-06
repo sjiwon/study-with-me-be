@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
@@ -86,7 +87,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
                                             fieldWithPath("content")
                                                     .description("공지사항 내용")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -190,7 +191,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)"),
                                             parameterWithName("noticeId")
-                                                    .description("공지사항 ID(PK)")
+                                                    .description("수정할 공지사항 ID(PK)")
                                     ),
                                     requestFields(
                                             fieldWithPath("title")
@@ -198,7 +199,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
                                             fieldWithPath("content")
                                                     .description("수정할 공지사항 내용")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -232,7 +233,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)"),
                                             parameterWithName("noticeId")
-                                                    .description("공지사항 ID(PK)")
+                                                    .description("수정할 공지사항 ID(PK)")
                                     ),
                                     requestFields(
                                             fieldWithPath("title")
@@ -295,7 +296,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
                                             parameterWithName("noticeId")
                                                     .description("삭제할 공지사항 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }

@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
@@ -91,7 +92,7 @@ class StudyAttendanceApiControllerTest extends ControllerTest {
                                             fieldWithPath("status")
                                                     .description("출석 정보")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -141,7 +142,7 @@ class StudyAttendanceApiControllerTest extends ControllerTest {
                                             fieldWithPath("status")
                                                     .description("출석 정보")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -192,7 +193,7 @@ class StudyAttendanceApiControllerTest extends ControllerTest {
                                             fieldWithPath("status")
                                                     .description("출석 정보")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }

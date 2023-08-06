@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 import static com.kgu.studywithme.common.utils.FileMockingUtils.createSingleMockMultipartFile;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
@@ -96,7 +97,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                                                     .description("제출할 링크")
                                                     .optional()
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -153,7 +154,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                                                     .description("제출할 링크")
                                                     .optional()
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -212,7 +213,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                                                     .description("제출할 링크")
                                                     .optional()
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -376,7 +377,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                                                     .description("제출할 링크")
                                                     .optional()
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -433,7 +434,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                                                     .description("제출할 링크")
                                                     .optional()
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -492,7 +493,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                                                     .description("제출할 링크")
                                                     .optional()
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -551,7 +552,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                                                     .description("제출할 링크")
                                                     .optional()
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }

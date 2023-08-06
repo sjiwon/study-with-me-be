@@ -260,7 +260,7 @@ include::{snippets}/StudyApi/Participation/Graduate/Failure/Case2/path-parameter
 HTTP Response
 include::{snippets}/StudyApi/Participation/Graduate/Failure/Case2/response-body.adoc[]
 
-=== 3. 참여자가 아닌 사람은 해당 스터디를 졸업할 수 없다
+=== 3. 졸업 요건을 만족하지 못한 참여자는 스터디를 졸업할 수 없다
 HTTP Request
 include::{snippets}/StudyApi/Participation/Graduate/Failure/Case3/http-request.adoc[]
 include::{snippets}/StudyApi/Participation/Graduate/Failure/Case3/request-headers.adoc[]
@@ -269,16 +269,7 @@ include::{snippets}/StudyApi/Participation/Graduate/Failure/Case3/path-parameter
 HTTP Response
 include::{snippets}/StudyApi/Participation/Graduate/Failure/Case3/response-body.adoc[]
 
-=== 4. 졸업 요건을 만족하지 못한 참여자는 스터디를 졸업할 수 없다
-HTTP Request
-include::{snippets}/StudyApi/Participation/Graduate/Failure/Case4/http-request.adoc[]
-include::{snippets}/StudyApi/Participation/Graduate/Failure/Case4/request-headers.adoc[]
-include::{snippets}/StudyApi/Participation/Graduate/Failure/Case4/path-parameters.adoc[]
-
-HTTP Response
-include::{snippets}/StudyApi/Participation/Graduate/Failure/Case4/response-body.adoc[]
-
-=== 5. 스터디를 졸업한다
+=== 4. 스터디를 졸업한다
 HTTP Request
 include::{snippets}/StudyApi/Participation/Graduate/Success/http-request.adoc[]
 include::{snippets}/StudyApi/Participation/Graduate/Success/request-headers.adoc[]

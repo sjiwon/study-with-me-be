@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static com.kgu.studywithme.common.fixture.StudyFixture.REAL_MYSQL;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
@@ -124,7 +125,7 @@ class StudyApiControllerTest extends ControllerTest {
                                                     .description("해시태그")
                                                     .attributes(constraint("최소 1개 최대 5개"))
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -360,7 +361,7 @@ class StudyApiControllerTest extends ControllerTest {
                                                     .description("해시태그")
                                                     .attributes(constraint("최소 1개 최대 5개"))
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -434,7 +435,7 @@ class StudyApiControllerTest extends ControllerTest {
                                                     .description("해시태그")
                                                     .attributes(constraint("최소 1개 최대 5개"))
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -508,7 +509,7 @@ class StudyApiControllerTest extends ControllerTest {
                                                     .description("해시태그")
                                                     .attributes(constraint("최소 1개 최대 5개"))
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -582,7 +583,7 @@ class StudyApiControllerTest extends ControllerTest {
                                                     .description("해시태그")
                                                     .attributes(constraint("최소 1개 최대 5개"))
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -776,7 +777,7 @@ class StudyApiControllerTest extends ControllerTest {
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }

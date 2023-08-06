@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
@@ -79,7 +80,7 @@ class StudyReviewApiControllerTest extends ControllerTest {
                                             fieldWithPath("content")
                                                     .description("리뷰 내용")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -126,7 +127,7 @@ class StudyReviewApiControllerTest extends ControllerTest {
                                             fieldWithPath("content")
                                                     .description("리뷰 내용")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -228,7 +229,7 @@ class StudyReviewApiControllerTest extends ControllerTest {
                                             fieldWithPath("content")
                                                     .description("수정할 리뷰 내용")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -320,7 +321,7 @@ class StudyReviewApiControllerTest extends ControllerTest {
                                             parameterWithName("reviewId")
                                                     .description("삭제할 리뷰 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }

@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.web.multipart.MultipartFile;
 
 import static com.kgu.studywithme.common.utils.FileMockingUtils.createSingleMockMultipartFile;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
@@ -76,7 +77,7 @@ class UploadApiControllerTest extends ControllerTest {
                                                     .description("이미지 업로드 타입")
                                                     .attributes(constraint("주차별 이미지 = weekly / 스터디 설명 이미지 = description"))
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -125,7 +126,7 @@ class UploadApiControllerTest extends ControllerTest {
                                                     .description("이미지 업로드 타입")
                                                     .attributes(constraint("주차별 이미지 = weekly / 스터디 설명 이미지 = description"))
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -226,7 +227,7 @@ class UploadApiControllerTest extends ControllerTest {
                                                     .description("이미지 업로드 타입")
                                                     .attributes(constraint("주차별 이미지 = weekly / 스터디 설명 이미지 = description"))
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -275,7 +276,7 @@ class UploadApiControllerTest extends ControllerTest {
                                                     .description("이미지 업로드 타입")
                                                     .attributes(constraint("주차별 이미지 = weekly / 스터디 설명 이미지 = description"))
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }

@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
@@ -79,7 +80,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
                                             fieldWithPath("content")
                                                     .description("댓글 내용")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -176,7 +177,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
                                             fieldWithPath("content")
                                                     .description("수정할 댓글 내용")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -268,7 +269,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
                                             parameterWithName("commentId")
                                                     .description("삭제할 댓글 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }

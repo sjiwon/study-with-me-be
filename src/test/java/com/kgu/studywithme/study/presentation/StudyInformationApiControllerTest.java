@@ -17,6 +17,7 @@ import java.util.List;
 
 import static com.kgu.studywithme.common.fixture.MemberFixture.*;
 import static com.kgu.studywithme.common.fixture.StudyFixture.LINE_INTERVIEW;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static com.kgu.studywithme.study.domain.RecruitmentStatus.IN_PROGRESS;
@@ -173,8 +174,7 @@ class StudyInformationApiControllerTest extends ControllerTest {
                                             fieldWithPath("reviews[].reviewer.id")
                                                     .description("리뷰어 ID(PK)"),
                                             fieldWithPath("reviews[].reviewer.nickname")
-                                                    .description("리뷰어 닉네임")
-                                                    .attributes(constraint("날짜 내림차순 정렬로 응답")),
+                                                    .description("리뷰어 닉네임"),
                                             fieldWithPath("graduateCount")
                                                     .description("졸업한 사람 수")
                                     )
@@ -241,7 +241,7 @@ class StudyInformationApiControllerTest extends ControllerTest {
         }
     }
 
-    private static StudyBasicInformation createStudyBasicInformation() {
+    private StudyBasicInformation createStudyBasicInformation() {
         return new StudyBasicInformation(
                 1L,
                 LINE_INTERVIEW.getName().getValue(),
