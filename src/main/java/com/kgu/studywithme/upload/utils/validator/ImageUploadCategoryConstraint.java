@@ -10,9 +10,9 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.PARAMETER, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = ValidImageExtensionValidator.class)
-public @interface ValidImageExtension {
-    String message() default "";
+@Constraint(validatedBy = ImageUploadCategoryConstraintValidator.class)
+public @interface ImageUploadCategoryConstraint {
+    String message() default "잘못된 요청입니다.";
 
     Class<?>[] groups() default {};
 

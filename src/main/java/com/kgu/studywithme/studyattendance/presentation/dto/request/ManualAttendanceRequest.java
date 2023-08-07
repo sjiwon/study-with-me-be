@@ -1,6 +1,6 @@
 package com.kgu.studywithme.studyattendance.presentation.dto.request;
 
-import com.kgu.studywithme.studyattendance.utils.validator.ValidAttendanceStatus;
+import com.kgu.studywithme.studyattendance.utils.validator.AttendanceStatusUpdateConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -9,7 +9,7 @@ public record ManualAttendanceRequest(
         Integer week,
 
         @NotBlank(message = "출석 상태는 필수입니다.")
-        @ValidAttendanceStatus
+        @AttendanceStatusUpdateConstraint
         String status
 ) {
 }

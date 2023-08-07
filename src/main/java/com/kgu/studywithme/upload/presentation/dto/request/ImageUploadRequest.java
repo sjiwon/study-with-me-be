@@ -1,14 +1,14 @@
 package com.kgu.studywithme.upload.presentation.dto.request;
 
-import com.kgu.studywithme.upload.utils.validator.ValidImageExtension;
-import com.kgu.studywithme.upload.utils.validator.ValidImageUploadType;
+import com.kgu.studywithme.upload.utils.validator.ImageExtensionConstraint;
+import com.kgu.studywithme.upload.utils.validator.ImageUploadCategoryConstraint;
 import org.springframework.web.multipart.MultipartFile;
 
 public record ImageUploadRequest(
-        @ValidImageUploadType
+        @ImageUploadCategoryConstraint
         String type,
 
-        @ValidImageExtension
+        @ImageExtensionConstraint
         MultipartFile file
 ) {
 }

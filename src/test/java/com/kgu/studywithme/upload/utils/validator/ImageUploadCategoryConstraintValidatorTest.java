@@ -9,19 +9,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.mock;
 
-@DisplayName("Upload -> ValidImageUploadTypeValidator 테스트")
-class ValidImageUploadTypeValidatorTest {
-    private ValidImageUploadTypeValidator validator;
+@DisplayName("Upload -> ValidImageUploadCategoryValidator 테스트")
+class ImageUploadCategoryConstraintValidatorTest {
+    private ImageUploadCategoryConstraintValidator validator;
     private ConstraintValidatorContext context;
 
     @BeforeEach
     void setUp() {
-        validator = new ValidImageUploadTypeValidator();
+        validator = new ImageUploadCategoryConstraintValidator();
         context = mock(ConstraintValidatorContext.class);
     }
 
     @Test
-    @DisplayName("허용하지 않는 업로드 타입이 들어오면 validator를 통과하지 못한다")
+    @DisplayName("허용하지 않는 이미지 업로드 타입이 들어오면 validator를 통과하지 못한다")
     void notAllowedStudyType() {
         // given
         final String unknown = "unknown";
@@ -34,7 +34,7 @@ class ValidImageUploadTypeValidatorTest {
     }
 
     @Test
-    @DisplayName("허용하는 업로드 타입이 들어오면 validator를 통과한다")
+    @DisplayName("허용하는 이미지 업로드 타입이 들어오면 validator를 통과한다")
     void allowedStudyType() {
         // given
         final String weekly = "weekly";

@@ -18,14 +18,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @DisplayName("Upload -> ValidImageExtensionValidator 테스트")
-class ValidImageExtensionValidatorTest {
-    private ValidImageExtensionValidator validator;
+class ImageExtensionConstraintValidatorTest {
+    private ImageExtensionConstraintValidator validator;
     private ConstraintValidatorContext context;
     private ConstraintValidatorContext.ConstraintViolationBuilder builder;
 
     @BeforeEach
     void setUp() {
-        validator = new ValidImageExtensionValidator();
+        validator = new ImageExtensionConstraintValidator();
         context = mock(ConstraintValidatorContext.class);
         builder = mock(ConstraintValidatorContext.ConstraintViolationBuilder.class);
     }
