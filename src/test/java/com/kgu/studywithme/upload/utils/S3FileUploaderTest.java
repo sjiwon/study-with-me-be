@@ -1,10 +1,10 @@
 package com.kgu.studywithme.upload.utils;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.PutObjectResult;
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.upload.exception.UploadErrorCode;
+import io.awspring.cloud.s3.S3Resource;
+import io.awspring.cloud.s3.S3Template;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -32,7 +32,10 @@ class S3FileUploaderTest extends UseCaseTest {
     private S3FileUploader uploader;
 
     @Mock
-    private AmazonS3 amazonS3;
+    private S3Template s3Template;
+
+    @Mock
+    private S3Resource s3Resource;
 
     private static final String BUCKET = "bucket";
     private static final String IMAGE = "images";
@@ -49,7 +52,7 @@ class S3FileUploaderTest extends UseCaseTest {
 
     @BeforeEach
     void setUp() {
-        uploader = new S3FileUploader(amazonS3, BUCKET);
+        uploader = new S3FileUploader(s3Template, BUCKET);
     }
 
     @Nested
@@ -72,11 +75,9 @@ class S3FileUploaderTest extends UseCaseTest {
         @DisplayName("스터디 설명 이미지를 업로드한다")
         void success() throws Exception {
             // given
-            final PutObjectResult putObjectResult = new PutObjectResult();
-            given(amazonS3.putObject(any())).willReturn(putObjectResult);
-
             final URL mockUrl = new URL(createUploadLink(IMAGE, "hello4.png"));
-            given(amazonS3.getUrl(any(), any())).willReturn(mockUrl);
+            given(s3Template.upload(any(), any(), any(), any())).willReturn(s3Resource);
+            given(s3Resource.getURL()).willReturn(mockUrl);
 
             // when
             final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");
@@ -84,8 +85,7 @@ class S3FileUploaderTest extends UseCaseTest {
 
             // then
             assertAll(
-                    () -> verify(amazonS3, times(1)).putObject(any()),
-                    () -> verify(amazonS3, times(1)).getUrl(any(), any()),
+                    () -> verify(s3Template, times(1)).upload(any(), any(), any(), any()),
                     () -> assertThat(uploadUrl).isEqualTo(mockUrl.toString())
             );
         }
@@ -111,11 +111,9 @@ class S3FileUploaderTest extends UseCaseTest {
         @DisplayName("Weekly 글 내부 이미지를 업로드한다")
         void success() throws Exception {
             // given
-            final PutObjectResult putObjectResult = new PutObjectResult();
-            given(amazonS3.putObject(any())).willReturn(putObjectResult);
-
             final URL mockUrl = new URL(createUploadLink(IMAGE, "hello4.png"));
-            given(amazonS3.getUrl(any(), any())).willReturn(mockUrl);
+            given(s3Template.upload(any(), any(), any(), any())).willReturn(s3Resource);
+            given(s3Resource.getURL()).willReturn(mockUrl);
 
             // when
             final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");
@@ -123,8 +121,7 @@ class S3FileUploaderTest extends UseCaseTest {
 
             // then
             assertAll(
-                    () -> verify(amazonS3, times(1)).putObject(any()),
-                    () -> verify(amazonS3, times(1)).getUrl(any(), any()),
+                    () -> verify(s3Template, times(1)).upload(any(), any(), any(), any()),
                     () -> assertThat(uploadUrl).isEqualTo(mockUrl.toString())
             );
         }
@@ -150,11 +147,9 @@ class S3FileUploaderTest extends UseCaseTest {
         @DisplayName("Weekly 글 첨부파일을 업로드한다")
         void success() throws Exception {
             // given
-            final PutObjectResult putObjectResult = new PutObjectResult();
-            given(amazonS3.putObject(any())).willReturn(putObjectResult);
-
             final URL mockUrl = new URL(createUploadLink(ATTACHMENT, "hello1.txt"));
-            given(amazonS3.getUrl(any(), any())).willReturn(mockUrl);
+            given(s3Template.upload(any(), any(), any(), any())).willReturn(s3Resource);
+            given(s3Resource.getURL()).willReturn(mockUrl);
 
             // when
             final MultipartFile file = createSingleMockMultipartFile("hello1.txt", "text/plain");
@@ -162,8 +157,7 @@ class S3FileUploaderTest extends UseCaseTest {
 
             // then
             assertAll(
-                    () -> verify(amazonS3, times(1)).putObject(any()),
-                    () -> verify(amazonS3, times(1)).getUrl(any(), any()),
+                    () -> verify(s3Template, times(1)).upload(any(), any(), any(), any()),
                     () -> assertThat(uploadUrl).isEqualTo(mockUrl.toString())
             );
         }
@@ -189,11 +183,9 @@ class S3FileUploaderTest extends UseCaseTest {
         @DisplayName("Weekly 과제를 업로드한다")
         void success() throws Exception {
             // given
-            final PutObjectResult putObjectResult = new PutObjectResult();
-            given(amazonS3.putObject(any())).willReturn(putObjectResult);
-
             final URL mockUrl = new URL(createUploadLink(SUBMIT, "hello3.pdf"));
-            given(amazonS3.getUrl(any(), any())).willReturn(mockUrl);
+            given(s3Template.upload(any(), any(), any(), any())).willReturn(s3Resource);
+            given(s3Resource.getURL()).willReturn(mockUrl);
 
             // when
             final MultipartFile file = createSingleMockMultipartFile("hello3.pdf", "application/pdf");
@@ -201,8 +193,7 @@ class S3FileUploaderTest extends UseCaseTest {
 
             // then
             assertAll(
-                    () -> verify(amazonS3, times(1)).putObject(any()),
-                    () -> verify(amazonS3, times(1)).getUrl(any(), any()),
+                    () -> verify(s3Template, times(1)).upload(any(), any(), any(), any()),
                     () -> assertThat(uploadUrl).isEqualTo(mockUrl.toString())
             );
         }
@@ -213,8 +204,8 @@ class S3FileUploaderTest extends UseCaseTest {
     void throwExceptionByNCPCommunications() throws IOException {
         // given
         doThrow(StudyWithMeException.type(UploadErrorCode.S3_UPLOAD_FAILURE))
-                .when(amazonS3)
-                .putObject(any());
+                .when(s3Template)
+                .upload(any(), any(), any(), any());
 
         final MultipartFile file = createSingleMockMultipartFile("hello3.pdf", "application/pdf");
 
@@ -223,10 +214,7 @@ class S3FileUploaderTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(UploadErrorCode.S3_UPLOAD_FAILURE.getMessage());
 
-        assertAll(
-                () -> verify(amazonS3, times(1)).putObject(any()),
-                () -> verify(amazonS3, times(0)).getUrl(any(), any())
-        );
+        verify(s3Template, times(1)).upload(any(), any(), any(), any());
     }
 
     private String createUploadLink(final String type, final String originalFileName) {
