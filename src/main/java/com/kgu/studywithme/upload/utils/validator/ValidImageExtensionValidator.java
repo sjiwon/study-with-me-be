@@ -1,14 +1,11 @@
 package com.kgu.studywithme.upload.utils.validator;
 
+import com.kgu.studywithme.upload.utils.FileExtension;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 public class ValidImageExtensionValidator implements ConstraintValidator<ValidImageExtension, MultipartFile> {
-    private static final List<String> ALLOWED_EXTENSIONS = List.of("jpg", "jpeg", "png", "gif");
-
     @Override
     public boolean isValid(
             final MultipartFile file,
@@ -28,12 +25,6 @@ public class ValidImageExtensionValidator implements ConstraintValidator<ValidIm
     }
 
     private boolean isNotAllowedExtension(final MultipartFile file) {
-        final String extension = getExtention(file);
-        return !ALLOWED_EXTENSIONS.contains(extension);
-    }
-
-    private String getExtention(final MultipartFile file) {
-        final String uploadName = file.getOriginalFilename();
-        return uploadName.substring(uploadName.lastIndexOf(".") + 1);
+        return !FileExtension.isValidImageExtension(file.getOriginalFilename());
     }
 }

@@ -66,7 +66,7 @@ public class S3FileUploader implements FileUploader {
             final MultipartFile file
     ) {
         try (final InputStream inputStream = file.getInputStream()) {
-            final String fileName = createFileNameByType(type, file.getOriginalFilename());
+            final String uploadFileName = createFileNameByType(type, file.getOriginalFilename());
 
             final ObjectMetadata objectMetadata = ObjectMetadata.builder()
                     .contentType(file.getContentType())
@@ -75,7 +75,7 @@ public class S3FileUploader implements FileUploader {
 
             return s3Template.upload(
                     bucket,
-                    fileName,
+                    uploadFileName,
                     inputStream,
                     objectMetadata
             ).getURL().toString();
@@ -86,20 +86,16 @@ public class S3FileUploader implements FileUploader {
     }
 
     private String createFileNameByType(
-            final FileUploadType type,
-            final String originalFileName
+            final FileUploadType uploadType,
+            final String fileName
     ) {
-        final String fileName = UUID.randomUUID() + extractFileExtension(originalFileName);
+        final String uploadFileName = UUID.randomUUID() + FileExtension.getExtensionFromFileName(fileName).getValue();
 
-        return switch (type) {
-            case DESCRIPTION -> String.format(STUDY_DESCRIPTIONS, fileName);
-            case IMAGE -> String.format(WEEKLY_IMAGES, fileName);
-            case ATTACHMENT -> String.format(WEEKLY_ATTACHMENTS, fileName);
-            default -> String.format(WEEKLY_SUBMITS, fileName);
+        return switch (uploadType) {
+            case DESCRIPTION -> String.format(STUDY_DESCRIPTIONS, uploadFileName);
+            case IMAGE -> String.format(WEEKLY_IMAGES, uploadFileName);
+            case ATTACHMENT -> String.format(WEEKLY_ATTACHMENTS, uploadFileName);
+            default -> String.format(WEEKLY_SUBMITS, uploadFileName);
         };
-    }
-
-    private String extractFileExtension(final String fileName) {
-        return fileName.substring(fileName.lastIndexOf("."));
     }
 }
