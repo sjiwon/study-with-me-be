@@ -10,8 +10,8 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.PARAMETER, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = ValidAttendanceStatusValidator.class)
-public @interface ValidAttendanceStatus {
+@Constraint(validatedBy = AttendanceStatusUpdateConstraintValidator.class)
+public @interface AttendanceStatusUpdateConstraint {
     String message() default "잘못된 요청입니다.";
 
     Class<?>[] groups() default {};

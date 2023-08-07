@@ -344,24 +344,24 @@ class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
                                     new AttendanceInformation(
                                             new StudyMember(1L, JIWON.getNickname()),
                                             List.of(
-                                                    new AttendanceInformation.AttendanceSummary(1, ATTENDANCE.getDescription()),
-                                                    new AttendanceInformation.AttendanceSummary(2, ATTENDANCE.getDescription()),
-                                                    new AttendanceInformation.AttendanceSummary(3, NON_ATTENDANCE.getDescription())
+                                                    new AttendanceInformation.AttendanceSummary(1, ATTENDANCE.getValue()),
+                                                    new AttendanceInformation.AttendanceSummary(2, ATTENDANCE.getValue()),
+                                                    new AttendanceInformation.AttendanceSummary(3, NON_ATTENDANCE.getValue())
                                             )
                                     ),
                                     new AttendanceInformation(
                                             new StudyMember(2L, GHOST.getNickname()),
                                             List.of(
-                                                    new AttendanceInformation.AttendanceSummary(1, ATTENDANCE.getDescription()),
-                                                    new AttendanceInformation.AttendanceSummary(2, LATE.getDescription()),
-                                                    new AttendanceInformation.AttendanceSummary(3, NON_ATTENDANCE.getDescription())
+                                                    new AttendanceInformation.AttendanceSummary(1, ATTENDANCE.getValue()),
+                                                    new AttendanceInformation.AttendanceSummary(2, LATE.getValue()),
+                                                    new AttendanceInformation.AttendanceSummary(3, NON_ATTENDANCE.getValue())
                                             )
                                     ),
                                     new AttendanceInformation(
                                             new StudyMember(3L, ANONYMOUS.getNickname()),
                                             List.of(
-                                                    new AttendanceInformation.AttendanceSummary(1, LATE.getDescription()),
-                                                    new AttendanceInformation.AttendanceSummary(2, ABSENCE.getDescription())
+                                                    new AttendanceInformation.AttendanceSummary(1, LATE.getValue()),
+                                                    new AttendanceInformation.AttendanceSummary(2, ABSENCE.getValue())
                                             )
                                     )
                             )

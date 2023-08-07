@@ -41,7 +41,7 @@ class StudyAttendanceApiControllerTest extends ControllerTest {
         private static final Long HOST_ID = 1L;
         private static final Long PARTICIPANT_ID = 2L;
         private static final Long ANONYMOUS_ID = 3L;
-        private static final ManualAttendanceRequest REQUEST = new ManualAttendanceRequest(1, ATTENDANCE.getDescription());
+        private static final ManualAttendanceRequest REQUEST = new ManualAttendanceRequest(1, ATTENDANCE.getValue());
 
         @BeforeEach
         void setUp() {
@@ -104,7 +104,7 @@ class StudyAttendanceApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
 
             // when
-            final ManualAttendanceRequest request = new ManualAttendanceRequest(1, NON_ATTENDANCE.getDescription());
+            final ManualAttendanceRequest request = new ManualAttendanceRequest(1, NON_ATTENDANCE.getValue());
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID, ANONYMOUS_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))

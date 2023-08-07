@@ -363,10 +363,10 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
                 () -> assertThat(summaryOfHost)
                         .map(AttendanceInformation.AttendanceSummary::attendanceStatus)
                         .containsExactly(
-                                ATTENDANCE.getDescription(),
-                                ATTENDANCE.getDescription(),
-                                ATTENDANCE.getDescription(),
-                                ATTENDANCE.getDescription()
+                                ATTENDANCE.getValue(),
+                                ATTENDANCE.getValue(),
+                                ATTENDANCE.getValue(),
+                                ATTENDANCE.getValue()
                         )
         );
 
@@ -379,10 +379,10 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
                 () -> assertThat(summaryOfMemberA)
                         .map(AttendanceInformation.AttendanceSummary::attendanceStatus)
                         .containsExactly(
-                                ATTENDANCE.getDescription(),
-                                LATE.getDescription(),
-                                ATTENDANCE.getDescription(),
-                                NON_ATTENDANCE.getDescription()
+                                ATTENDANCE.getValue(),
+                                LATE.getValue(),
+                                ATTENDANCE.getValue(),
+                                NON_ATTENDANCE.getValue()
                         )
         );
 
@@ -395,9 +395,9 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
                 () -> assertThat(summaryOfMemberC)
                         .map(AttendanceInformation.AttendanceSummary::attendanceStatus)
                         .containsExactly(
-                                ATTENDANCE.getDescription(),
-                                ATTENDANCE.getDescription(),
-                                LATE.getDescription()
+                                ATTENDANCE.getValue(),
+                                ATTENDANCE.getValue(),
+                                LATE.getValue()
                         )
         );
     }

@@ -352,7 +352,7 @@ public class StudyAcceptanceFixture {
                 .build(studyId, memberId)
                 .getPath();
 
-        final ManualAttendanceRequest request = new ManualAttendanceRequest(week, status.getDescription());
+        final ManualAttendanceRequest request = new ManualAttendanceRequest(week, status.getValue());
 
         return patchRequest(accessToken, request, uri);
     }
