@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1;
-import static com.kgu.studywithme.studyweekly.domain.submit.UploadType.FILE;
-import static com.kgu.studywithme.studyweekly.domain.submit.UploadType.LINK;
+import static com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType.FILE;
+import static com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType.LINK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -34,7 +34,7 @@ class StudyWeeklySubmitTest {
                 () -> assertThat(submit.getStudyWeekly()).isEqualTo(weekly),
                 () -> assertThat(submit.getUploadAssignment().getUploadFileName()).isNull(),
                 () -> assertThat(submit.getUploadAssignment().getLink()).isEqualTo("https://notion.com"),
-                () -> assertThat(submit.getUploadAssignment().getType()).isEqualTo(LINK)
+                () -> assertThat(submit.getUploadAssignment().getSubmitType()).isEqualTo(LINK)
         );
     }
 
@@ -48,7 +48,7 @@ class StudyWeeklySubmitTest {
                 () -> assertThat(submit.getStudyWeekly()).isEqualTo(weekly),
                 () -> assertThat(submit.getUploadAssignment().getUploadFileName()).isEqualTo("hello.pdf"),
                 () -> assertThat(submit.getUploadAssignment().getLink()).isEqualTo("uuid.pdf"),
-                () -> assertThat(submit.getUploadAssignment().getType()).isEqualTo(FILE)
+                () -> assertThat(submit.getUploadAssignment().getSubmitType()).isEqualTo(FILE)
         );
     }
 
@@ -68,7 +68,7 @@ class StudyWeeklySubmitTest {
                 () -> assertThat(submit.getStudyWeekly()).isEqualTo(weekly),
                 () -> assertThat(submit.getUploadAssignment().getUploadFileName()).isNull(),
                 () -> assertThat(submit.getUploadAssignment().getLink()).isEqualTo(newUploadAssignment.getLink()),
-                () -> assertThat(submit.getUploadAssignment().getType()).isEqualTo(newUploadAssignment.getType())
+                () -> assertThat(submit.getUploadAssignment().getSubmitType()).isEqualTo(newUploadAssignment.getSubmitType())
         );
     }
 }

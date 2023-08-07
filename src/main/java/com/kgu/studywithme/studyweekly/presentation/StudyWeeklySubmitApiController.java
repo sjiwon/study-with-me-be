@@ -4,6 +4,7 @@ import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.global.aop.CheckStudyParticipant;
 import com.kgu.studywithme.studyweekly.application.usecase.command.EditSubmittedWeeklyAssignmentUseCase;
 import com.kgu.studywithme.studyweekly.application.usecase.command.SubmitWeeklyAssignmentUseCase;
+import com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType;
 import com.kgu.studywithme.studyweekly.presentation.dto.request.EditSubmittedWeeklyAssignmentRequest;
 import com.kgu.studywithme.studyweekly.presentation.dto.request.SubmitWeeklyAssignmentRequest;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,7 +38,7 @@ public class StudyWeeklySubmitApiController {
                         memberId,
                         studyId,
                         weeklyId,
-                        request.type(),
+                        AssignmentSubmitType.from(request.type()),
                         request.file(),
                         request.link()
                 )
@@ -59,7 +60,7 @@ public class StudyWeeklySubmitApiController {
                         memberId,
                         studyId,
                         weeklyId,
-                        request.type(),
+                        AssignmentSubmitType.from(request.type()),
                         request.file(),
                         request.link()
                 )

@@ -1,5 +1,6 @@
 package com.kgu.studywithme.studyweekly.application.usecase.command;
 
+import com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface EditSubmittedWeeklyAssignmentUseCase {
@@ -9,7 +10,7 @@ public interface EditSubmittedWeeklyAssignmentUseCase {
             Long memberId,
             Long studyId,
             Long weeklyId,
-            String uploadType,
+            AssignmentSubmitType submitType,
             MultipartFile file,
             String link
     ) {

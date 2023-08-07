@@ -3,8 +3,8 @@ package com.kgu.studywithme.studyweekly.domain.submit;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.kgu.studywithme.studyweekly.domain.submit.UploadType.FILE;
-import static com.kgu.studywithme.studyweekly.domain.submit.UploadType.LINK;
+import static com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType.FILE;
+import static com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType.LINK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -18,7 +18,7 @@ class UploadAssignmentTest {
         assertAll(
                 () -> assertThat(uploadAssignment.getUploadFileName()).isNull(),
                 () -> assertThat(uploadAssignment.getLink()).isEqualTo("https://notion.com"),
-                () -> assertThat(uploadAssignment.getType()).isEqualTo(LINK)
+                () -> assertThat(uploadAssignment.getSubmitType()).isEqualTo(LINK)
         );
     }
 
@@ -30,7 +30,7 @@ class UploadAssignmentTest {
         assertAll(
                 () -> assertThat(uploadAssignment.getUploadFileName()).isEqualTo("hello.pdf"),
                 () -> assertThat(uploadAssignment.getLink()).isEqualTo("uuid.pdf"),
-                () -> assertThat(uploadAssignment.getType()).isEqualTo(FILE)
+                () -> assertThat(uploadAssignment.getSubmitType()).isEqualTo(FILE)
         );
     }
 }

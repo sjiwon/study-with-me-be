@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
-import static com.kgu.studywithme.studyweekly.domain.submit.UploadType.FILE;
-import static com.kgu.studywithme.studyweekly.domain.submit.UploadType.LINK;
+import static com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType.FILE;
+import static com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType.LINK;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,17 +24,17 @@ public class UploadAssignment {
     private String link;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "upload_type", nullable = false)
-    private UploadType type;
+    @Column(name = "submit_type", nullable = false)
+    private AssignmentSubmitType submitType;
 
     private UploadAssignment(
             final String uploadFileName,
             final String link,
-            final UploadType type
+            final AssignmentSubmitType submitType
     ) {
         this.uploadFileName = uploadFileName;
         this.link = link;
-        this.type = type;
+        this.submitType = submitType;
     }
 
     public static UploadAssignment withLink(final String link) {
@@ -57,14 +57,14 @@ public class UploadAssignment {
 
         if (!Objects.equals(uploadFileName, other.uploadFileName)) return false;
         if (!link.equals(other.link)) return false;
-        return type == other.type;
+        return submitType == other.submitType;
     }
 
     @Override
     public int hashCode() {
         int result = uploadFileName != null ? uploadFileName.hashCode() : 0;
         result = 31 * result + link.hashCode();
-        result = 31 * result + type.hashCode();
+        result = 31 * result + submitType.hashCode();
         return result;
     }
 }

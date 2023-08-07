@@ -16,9 +16,10 @@ public enum StudyWeeklyErrorCode implements ErrorCode {
     PERIOD_START_DATE_MUST_BE_BEFORE_END_DATE(BAD_REQUEST, "STUDY_WEEKLY_003", "시작일은 종료일 이전이어야 합니다."),
 
     // StudyWeeklySubmit
-    MISSING_SUBMISSION(BAD_REQUEST, "STUDY_WEEKLY_SUBMIT_001", "과제 제출물은 링크 또는 파일 중 하나를 반드시 업로드해야 합니다."),
-    DUPLICATE_SUBMISSION(BAD_REQUEST, "STUDY_WEEKLY_SUBMIT_002", "과제 제출물은 링크 또는 파일 중 한가지만 업로드해야 합니다."),
-    SUBMITTED_ASSIGNMENT_NOT_FOUND(NOT_FOUND, "STUDY_WEEKLY_SUBMIT_003", "제출한 과제가 존재하지 않습니다."),
+    INVALID_SUBMIT_TYPE(BAD_REQUEST, "STUDY_WEEKLY_SUBMIT_001", "과제 제출 타입은 링크(link), 파일(file) 중 하나입니다."),
+    MISSING_SUBMISSION(BAD_REQUEST, "STUDY_WEEKLY_SUBMIT_002", "과제 제출물은 링크 또는 파일 중 하나를 반드시 업로드해야 합니다."),
+    DUPLICATE_SUBMISSION(BAD_REQUEST, "STUDY_WEEKLY_SUBMIT_003", "과제 제출물은 링크 또는 파일 중 한가지만 업로드해야 합니다."),
+    SUBMITTED_ASSIGNMENT_NOT_FOUND(NOT_FOUND, "STUDY_WEEKLY_SUBMIT_004", "제출한 과제가 존재하지 않습니다."),
     ;
 
     private final HttpStatus status;

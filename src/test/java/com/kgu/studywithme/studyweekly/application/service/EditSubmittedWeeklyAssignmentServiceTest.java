@@ -31,6 +31,7 @@ import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY
 import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1_PREVIOUS;
 import static com.kgu.studywithme.common.utils.FileMockingUtils.createMultipleMockMultipartFile;
 import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
+import static com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType.LINK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -86,7 +87,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
                         host.getId(),
                         study.getId(),
                         currentWeekly.getId(),
-                        "link",
+                        LINK,
                         null,
                         null
                 )
@@ -109,7 +110,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
                         host.getId(),
                         study.getId(),
                         currentWeekly.getId(),
-                        "link",
+                        LINK,
                         file,
                         "https://notion.so"
                 )
@@ -136,7 +137,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
                         host.getId(),
                         study.getId(),
                         currentWeekly.getId(),
-                        "link",
+                        LINK,
                         null,
                         "https://notion.so"
                 )
@@ -169,7 +170,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
                         host.getId(),
                         study.getId(),
                         currentWeekly.getId(),
-                        "link",
+                        LINK,
                         null,
                         "https://notion.so"
                 )
@@ -203,7 +204,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
                         host.getId(),
                         study.getId(),
                         previousWeekly.getId(),
-                        "link",
+                        LINK,
                         null,
                         "https://notion.so"
                 )

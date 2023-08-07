@@ -11,6 +11,7 @@ import com.kgu.studywithme.studyweekly.application.usecase.command.EditSubmitted
 import com.kgu.studywithme.studyweekly.domain.Period;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
 import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
+import com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType;
 import com.kgu.studywithme.studyweekly.domain.submit.StudyWeeklySubmit;
 import com.kgu.studywithme.studyweekly.domain.submit.UploadAssignment;
 import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
@@ -23,6 +24,7 @@ import java.time.LocalDateTime;
 
 import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
 import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.LATE;
+import static com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType.FILE;
 
 @Service
 @StudyWithMeWritableTransactional
@@ -38,7 +40,7 @@ public class EditSubmittedWeeklyAssignmentService implements EditSubmittedWeekly
         validateAssignmentSubmissionExists(command.file(), command.link());
 
         final StudyWeeklySubmit submittedAssignment = getSubmittedAssignment(command.memberId(), command.studyId(), command.weeklyId());
-        final UploadAssignment assignment = uploadAssignment(command.uploadType(), command.file(), command.link());
+        final UploadAssignment assignment = uploadAssignment(command.submitType(), command.file(), command.link());
         submittedAssignment.editUpload(assignment);
 
         final Member member = queryMemberByIdService.findById(command.memberId());
@@ -72,11 +74,11 @@ public class EditSubmittedWeeklyAssignmentService implements EditSubmittedWeekly
     }
 
     private UploadAssignment uploadAssignment(
-            final String type,
+            final AssignmentSubmitType submitType,
             final MultipartFile file,
             final String link
     ) {
-        return type.equals("file")
+        return submitType == FILE
                 ? UploadAssignment.withFile(file.getOriginalFilename(), uploader.uploadWeeklySubmit(file))
                 : UploadAssignment.withLink(link);
     }
