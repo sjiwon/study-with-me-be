@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS study_weekly_submit
     id               BIGINT AUTO_INCREMENT PRIMARY KEY,
     week_id          BIGINT       NOT NULL,
     participant_id   BIGINT       NOT NULL,
-    upload_type      VARCHAR(10)  NOT NULL,
+    submit_type      VARCHAR(10)  NOT NULL,
     upload_file_name VARCHAR(200),
     link             VARCHAR(255) NOT NULL,
     created_at       DATETIME     NOT NULL,

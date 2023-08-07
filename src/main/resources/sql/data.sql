@@ -1035,7 +1035,7 @@ VALUES (1, 'hello.pdf', 'https://kr.object.ncloudstorage.com/study-with-me-uploa
        (16, '과제안내.pdf', 'https://study-with-me-upload.kr.object.ncloudstorage.com/attachments/8ab03fe1-4d0f-4fb9-8d65-cf47fc3018ed.pdf', NOW(), NOW()),
        (17, '과제안내.pdf', 'https://study-with-me-upload.kr.object.ncloudstorage.com/attachments/4b0e8768-6121-4622-98ff-1aae43574c1e.pdf', NOW(), NOW());
 
-INSERT INTO study_weekly_submit (week_id, participant_id, upload_type, upload_file_name, link, created_at, last_modified_at)
+INSERT INTO study_weekly_submit (week_id, participant_id, submit_type, upload_file_name, link, created_at, last_modified_at)
 VALUES (1, 1, 'FILE', 'hello3.png', 'https://kr.object.ncloudstorage.com/study-with-me-upload/submits/0754f61e-b400-47b7-bd5c-6f7c0b8ab088.pdf', '2023-06-06 09:42:17', '2023-06-06 09:42:17'),
        (1, 3, 'FILE', 'hello3.png', 'https://kr.object.ncloudstorage.com/study-with-me-upload/submits/0754f61e-b400-47b7-bd5c-6f7c0b8ab088.pdf', '2023-06-06 09:42:17', '2023-06-06 09:42:17'),
        (1, 4, 'FILE', 'hello3.png', 'https://kr.object.ncloudstorage.com/study-with-me-upload/submits/0754f61e-b400-47b7-bd5c-6f7c0b8ab088.pdf', '2023-06-06 09:42:17', '2023-06-06 09:42:17'),
