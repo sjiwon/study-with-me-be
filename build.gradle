@@ -59,6 +59,7 @@ dependencies {
     // AWS
     implementation "io.awspring.cloud:spring-cloud-aws-starter:3.0.1"
     implementation "io.awspring.cloud:spring-cloud-aws-starter-s3:3.0.1"
+    implementation "io.awspring.cloud:spring-cloud-aws-starter-parameter-store:3.0.1"
 
     // Redis
     implementation "org.springframework.boot:spring-boot-starter-data-redis"
