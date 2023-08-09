@@ -1,6 +1,7 @@
 spring:
   config:
     import:
+      - settings/application-logging.yml
       - settings/application-data.yml
       - settings/application-external.yml
       - settings/application-mail.yml
