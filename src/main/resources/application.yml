@@ -1,10 +1,11 @@
 spring:
   config:
     import:
-      - settings/application-jpa.yml
-      - settings/application-cloud.yml
+      - settings/application-data.yml
+      - settings/application-external.yml
       - settings/application-mail.yml
       - settings/application-oauth.yml
+      - settings/application-cloud.yml
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -21,13 +22,9 @@ spring:
       port: 6379
 
 jwt:
-  secret-key: testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
+  secret-key: 2da7acad220ffe59e6943c826ec1fcf879a4339521ff5837fa92aab485e94bcb # 테스트용 Secret Key
   access-token-validity: 7200
   refresh-token-validity: 1209600
-
-slack:
-  webhook:
-    url: ${SLACK_WEBHOOK_URL}
 
 springdoc:
   swagger-ui:
@@ -36,7 +33,7 @@ springdoc:
     operations-sorter: alpha
     tags-sorter: alpha
 
-logging:
-  level:
-    org.springframework.core:
-      LocalVariableTableParameterNameDiscoverer: error
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true

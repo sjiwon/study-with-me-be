@@ -7,5 +7,4 @@ spring:
       hibernate:
         show_sql: false
         format_sql: false
-        highlight_sql: true
         default_batch_fetch_size: 50

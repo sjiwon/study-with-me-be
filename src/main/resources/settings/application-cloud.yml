@@ -3,8 +3,5 @@ spring:
     aws:
       region:
         static: ap-northeast-2
-      credentials:
-        profile:
-          name: ${AWS_CREDENTIALS_PROFILE}
       s3:
         bucket: ${S3_BUCKET}

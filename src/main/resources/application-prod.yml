@@ -1,10 +1,12 @@
 spring:
   config:
     import:
-      - settings/application-jpa.yml
-      - settings/application-cloud.yml
+      - aws-parameterstore:/study-with-me/secret_prod/
+      - settings/application-data.yml
+      - settings/application-external.yml
       - settings/application-mail.yml
       - settings/application-oauth.yml
+      - settings/application-cloud.yml
 
   datasource:
     driver-class-name: ${RDS_DRIVER}
@@ -26,17 +28,8 @@ spring:
 
 jwt:
   secret-key: ${JWT_SECRET_KEY}
-  access-token-validity: 7200 # 2시간
-  refresh-token-validity: 1209600 # 2주
-
-slack:
-  webhook:
-    url: ${SLACK_WEBHOOK_URL}
-
-logging:
-  level:
-    org.springframework.core:
-      LocalVariableTableParameterNameDiscoverer: error
+  access-token-validity: 7200
+  refresh-token-validity: 129600
 
 decorator:
   datasource:
