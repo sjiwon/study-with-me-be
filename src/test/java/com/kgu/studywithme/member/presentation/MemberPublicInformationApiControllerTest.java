@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class MemberPublicInformationApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("사용자 기본 Public 정보 조회 API [GET /api/members/{memberId}]")
-    class getInformation {
+    class GetInformation {
         private static final String BASE_URL = "/api/members/{memberId}";
         private static final Long MEMBER_ID = 1L;
 
@@ -102,7 +102,7 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("사용자가 참여중인 스터디 리스트 조회 API [GET /api/members/{memberId}/studies/participate]")
-    class getParticipateStudy {
+    class GetParticipateStudy {
         private static final String BASE_URL = "/api/members/{memberId}/studies/participate";
         private static final Long MEMBER_ID = 1L;
 
@@ -163,7 +163,7 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("사용자가 졸업한 스터디 리스트 조회 API [GET /api/members/{memberId}/studies/graduated]")
-    class getGraduatedStudy {
+    class GetGraduatedStudy {
         private static final String BASE_URL = "/api/members/{memberId}/studies/graduated";
         private static final Long MEMBER_ID = 1L;
 
@@ -253,7 +253,7 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("사용자가 받은 리뷰 조회 API [GET /api/members/{memberId}/reviews]")
-    class getReviews {
+    class GetReviews {
         private static final String BASE_URL = "/api/members/{memberId}/reviews";
         private static final Long MEMBER_ID = 1L;
 
@@ -299,7 +299,7 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("사용자 출석률 조회 API [GET /api/members/{memberId}/attendances]")
-    class getAttendanceRatio {
+    class GetAttendanceRatio {
         private static final String BASE_URL = "/api/members/{memberId}/attendances";
         private static final Long MEMBER_ID = 1L;
 

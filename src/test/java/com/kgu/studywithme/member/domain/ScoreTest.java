@@ -39,7 +39,7 @@ class ScoreTest {
 
     @Nested
     @DisplayName("단순 출석에 대한 Score 업데이트")
-    class applySimpleAttendance {
+    class ApplySimpleAttendance {
         private Score score;
 
         @BeforeEach
@@ -80,7 +80,7 @@ class ScoreTest {
 
     @Nested
     @DisplayName("이전 출석 정보 수정에 따른 Score 업데이트")
-    class applyComplexAttendance {
+    class ApplyComplexAttendance {
         private Score score;
 
         @BeforeEach

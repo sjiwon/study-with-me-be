@@ -43,7 +43,7 @@ class GoogleOAuthConnectorTest {
 
     @Nested
     @DisplayName("Token 응답받기")
-    class getToken {
+    class GetToken {
         @Test
         @DisplayName("Google Server와의 통신 불량으로 인해 예외가 발생한다")
         void failure() {
@@ -85,7 +85,7 @@ class GoogleOAuthConnectorTest {
 
     @Nested
     @DisplayName("사용자 정보 응답받기")
-    class getUserInfo {
+    class GetUserInfo {
         @Test
         @DisplayName("Google Server와의 통신 불량으로 인해 예외가 발생한다")
         void failure() {

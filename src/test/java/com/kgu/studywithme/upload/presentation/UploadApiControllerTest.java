@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UploadApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("Weekly 설명 내부 이미지 업로드 API [POST /api/image] - AccessToken 필수")
-    class uploadWeeklyImage {
+    class UploadWeeklyImage {
         private static final String BASE_URL = "/api/image";
         private static final Long MEMBER_ID = 1L;
 
@@ -181,7 +181,7 @@ class UploadApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("스터디 설명 내부 이미지 업로드 API [POST /api/image] - AccessToken 필수")
-    class uploadStudyDescriptionImage {
+    class UploadStudyDescriptionImage {
         private static final String BASE_URL = "/api/image";
         private static final Long MEMBER_ID = 1L;
 

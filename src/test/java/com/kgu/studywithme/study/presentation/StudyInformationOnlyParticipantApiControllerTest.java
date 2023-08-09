@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("스터디 신청자 조회 API [GET /api/studies/{studyId}/applicants] - AccessToken 필수")
-    class getApplicants {
+    class GetApplicants {
         private static final String BASE_URL = "/api/studies/{studyId}/applicants";
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;
@@ -145,7 +145,7 @@ class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("스터디 공지사항 조회 API [GET /api/studies/{studyId}/notices] - AccessToken 필수")
-    class getNotices {
+    class GetNotices {
         private static final String BASE_URL = "/api/studies/{studyId}/notices";
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;
@@ -283,7 +283,7 @@ class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("스터디 출석 정보 조회 API [GET /api/studies/{studyId}/attendances] - AccessToken 필수")
-    class getAttendances {
+    class GetAttendances {
         private static final String BASE_URL = "/api/studies/{studyId}/attendances";
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;
@@ -402,7 +402,7 @@ class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("스터디 주차별 정보 조회 API [GET /api/studies/{studyId}/weeks] - AccessToken 필수")
-    class getWeeks {
+    class GetWeeks {
         private static final String BASE_URL = "/api/studies/{studyId}/weeks";
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;

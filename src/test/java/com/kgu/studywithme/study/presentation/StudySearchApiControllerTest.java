@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class StudySearchApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("각 카테고리별 스터디 조회 API [GET /api/studies]")
-    class queryStudyByCategory {
+    class QueryStudyByCategory {
         private static final String BASE_URL = "/api/studies";
 
         @Test
@@ -121,7 +121,7 @@ class StudySearchApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("사용자의 관심사에 따른 스터디 조회 API [GET /api/studies/recommend] - AccessToken 필수")
-    class queryStudyByRecommend {
+    class QueryStudyByRecommend {
         private static final String BASE_URL = "/api/studies/recommend";
         private static final Long MEMBER_ID = 1L;
 

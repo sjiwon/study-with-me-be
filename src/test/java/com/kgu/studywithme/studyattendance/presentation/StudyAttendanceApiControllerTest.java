@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class StudyAttendanceApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("수동 출석 API [PATCH /api/studies/{studyId}/attendance/{memberId}] - AccessToken 필수")
-    class manualCheckAttendance {
+    class ManualCheckAttendance {
         private static final String BASE_URL = "/api/studies/{studyId}/attendance/{memberId}";
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;

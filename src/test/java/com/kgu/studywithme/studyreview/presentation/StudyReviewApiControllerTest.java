@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class StudyReviewApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("스터디 리뷰 작성 API [POST /api/studies/{studyId}/review] - AccessToken 필수")
-    class write {
+    class Write {
         private static final String BASE_URL = "/api/studies/{studyId}/review";
         private static final Long STUDY_ID = 1L;
         private static final Long MEMBER_ID = 1L;
@@ -177,7 +177,7 @@ class StudyReviewApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("스터디 리뷰 수정 API [PATCH /api/studies/{studyId}/reviews/{reviewId}] - AccessToken 필수")
-    class update {
+    class Update {
         private static final String BASE_URL = "/api/studies/{studyId}/reviews/{reviewId}";
         private static final Long STUDY_ID = 1L;
         private static final Long REVIEW_ID = 1L;
@@ -276,7 +276,7 @@ class StudyReviewApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("스터디 리뷰 삭제 API [DELETE /api/studies/{studyId}/reviews/{reviewId}] - AccessToken 필수")
-    class remove {
+    class Remove {
         private static final String BASE_URL = "/api/studies/{studyId}/reviews/{reviewId}";
         private static final Long STUDY_ID = 1L;
         private static final Long REVIEW_ID = 1L;

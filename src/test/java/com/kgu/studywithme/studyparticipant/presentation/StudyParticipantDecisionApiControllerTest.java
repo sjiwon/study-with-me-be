@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class StudyParticipantDecisionApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("스터디 참여 승인 API [PATCH /api/studies/{studyId}/applicants/{applierId}/approve] - AccessToken 필수")
-    class approve {
+    class Approve {
         private static final String BASE_URL = "/api/studies/{studyId}/applicants/{applierId}/approve";
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;
@@ -250,7 +250,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("스터디 참여 거절 API [PATCH /api/studies/{studyId}/applicants/{applierId}/reject] - AccessToken 필수")
-    class reject {
+    class Reject {
         private static final String BASE_URL = "/api/studies/{studyId}/applicants/{applierId}/reject";
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;

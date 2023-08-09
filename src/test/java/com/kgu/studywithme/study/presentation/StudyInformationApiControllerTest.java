@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class StudyInformationApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("스터디 기본 정보 조회 API [GET /api/studies/{studyId}]")
-    class getInformation {
+    class GetInformation {
         private static final String BASE_URL = "/api/studies/{studyId}";
         private static final Long STUDY_ID = 1L;
 
@@ -119,7 +119,7 @@ class StudyInformationApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("스터디 리뷰 조회 API [GET /api/studies/{studyId}/reviews]")
-    class getReviews {
+    class GetReviews {
         private static final String BASE_URL = "/api/studies/{studyId}/reviews";
         private static final Long STUDY_ID = 1L;
 
@@ -185,7 +185,7 @@ class StudyInformationApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("스터디 참여자 조회 API [GET /api/studies/{studyId}/participants] - AccessToken 필수")
-    class getApproveParticipants {
+    class GetApproveParticipants {
         private static final String BASE_URL = "/api/studies/{studyId}/participants";
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;

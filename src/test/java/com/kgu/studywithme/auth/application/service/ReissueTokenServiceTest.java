@@ -42,7 +42,7 @@ class ReissueTokenServiceTest extends UseCaseTest {
 
     @Nested
     @DisplayName("토큰 재발급")
-    class reissueToken {
+    class ReissueToken {
         @Test
         @DisplayName("사용자 소유의 RefreshToken이 아니면 재발급을 할 수 없다")
         void throwExceptionByInvalidRefreshToken() {

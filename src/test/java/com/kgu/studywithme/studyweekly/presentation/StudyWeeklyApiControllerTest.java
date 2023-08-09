@@ -39,7 +39,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("스터디 주차 생성 API [POST /api/studies/{studyId}/week] - AccessToken 필수")
-    class createWeekly {
+    class CreateWeekly {
         private static final String BASE_URL = "/api/studies/{studyId}/week";
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;
@@ -197,7 +197,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("스터디 주차 수정 API [PATCH /api/studies/{studyId}/weeks/{weeklyId}] - AccessToken 필수")
-    class updateWeekly {
+    class UpdateWeekly {
         private static final String BASE_URL = "/api/studies/{studyId}/weeks/{weeklyId}";
         private static final Long STUDY_ID = 1L;
         private static final Long WEEKLY_ID = 1L;
@@ -429,7 +429,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("스터디 주차 삭제 API [DELETE /api/studies/{studyId}/weeks/{weeklyId}] - AccessToken 필수")
-    class deleteWeekly {
+    class DeleteWeekly {
         private static final String BASE_URL = "/api/studies/{studyId}/weeks/{weeklyId}";
         private static final Long STUDY_ID = 1L;
         private static final Long WEEKLY_ID = 1L;

@@ -27,7 +27,7 @@ class GraduationPolicyTest {
 
     @Nested
     @DisplayName("GraduationPoicy 수정")
-    class update {
+    class Update {
         private GraduationPolicy policy;
 
         @BeforeEach

@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class CategoryTest {
     @Nested
     @DisplayName("단건 카테고리 조회")
-    class findOne {
+    class FindOne {
         @Test
         @DisplayName("특정 카테고리를 조회한다")
         void findSpecificCategory() {
@@ -55,7 +55,7 @@ class CategoryTest {
 
     @Nested
     @DisplayName("N건 카테고리 조회")
-    class findMany {
+    class FindMany {
         @Test
         @DisplayName("카테고리들을 조회한다")
         void findSpecificCategory() {

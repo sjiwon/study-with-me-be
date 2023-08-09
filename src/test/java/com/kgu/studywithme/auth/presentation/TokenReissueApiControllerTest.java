@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class TokenReissueApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("토큰 재발급 API [POST /api/token/reissue] - RefreshToken 필수")
-    class reissueToken {
+    class ReissueToken {
         private static final String BASE_URL = "/api/token/reissue";
 
         @Test

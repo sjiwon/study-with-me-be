@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class StudyApplyApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("스터디 참여 신청 API [POST /api/studies/{studyId}/applicants] - AccessToken 필수")
-    class apply {
+    class Apply {
         private static final String BASE_URL = "/api/studies/{studyId}/applicants";
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;
@@ -231,7 +231,7 @@ class StudyApplyApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("스터디 참여 신청 취소 API [DELETE /api/studies/{studyId}/applicants] - AccessToken 필수")
-    class applyCancel {
+    class ApplyCancel {
         private static final String BASE_URL = "/api/studies/{studyId}/applicants";
         private static final Long STUDY_ID = 1L;
         private static final Long APPLIER_ID = 1L;

@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class DelegateHostAuthorityApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("스터디 팀장 권한 위임 API [PATCH /api/studies/{studyId}/participants/{participantId}/delegation] - AccessToken 필수")
-    class delegateAuthority {
+    class DelegateAuthority {
         private static final String BASE_URL = "/api/studies/{studyId}/participants/{participantId}/delegation";
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;

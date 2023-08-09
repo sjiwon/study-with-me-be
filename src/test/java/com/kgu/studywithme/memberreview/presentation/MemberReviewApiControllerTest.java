@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class MemberReviewApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("사용자 리뷰 작성 API [POST /api/members/{revieweeId}/review] - AccessToken 필수")
-    class writeMemberReview {
+    class WriteMemberReview {
         private static final String BASE_URL = "/api/members/{revieweeId}/review";
         private static final Long REVIEWEE_ID = 1L;
         private static final Long REVIEWER_ID = 2L;
@@ -223,7 +223,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("사용자 리뷰 수정 API [PATCH /api/members/{revieweeId}/review] - AccessToken 필수")
-    class updateMemberReview {
+    class UpdateMemberReview {
         private static final String BASE_URL = "/api/members/{revieweeId}/review";
         private static final Long REVIEWEE_ID = 1L;
         private static final Long REVIEWER_ID = 2L;

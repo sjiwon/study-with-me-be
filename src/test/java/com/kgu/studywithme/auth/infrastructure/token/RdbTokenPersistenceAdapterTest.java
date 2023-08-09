@@ -38,7 +38,7 @@ class RdbTokenPersistenceAdapterTest extends RepositoryTest {
 
     @Nested
     @DisplayName("RefreshToken 동기화")
-    class synchronizedRefreshToken {
+    class SynchronizedRefreshToken {
         @Test
         @DisplayName("RefreshToken을 보유하고 있지 않은 사용자에게는 새로운 RefreshToken을 발급한다")
         void reissueRefreshToken() {

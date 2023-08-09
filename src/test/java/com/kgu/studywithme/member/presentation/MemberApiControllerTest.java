@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class MemberApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("회원가입 API [POST /api/member]")
-    class signUp {
+    class SignUp {
         private static final String BASE_URL = "/api/member";
         private static final SignUpMemberRequest REQUEST = new SignUpMemberRequest(
                 JIWON.getName(),
@@ -174,7 +174,7 @@ class MemberApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("사용자 정보 수정 [PATCH /api/members/me] - AccessToken 필수")
-    class update {
+    class Update {
         private static final String BASE_URL = "/api/members/me";
         private static final Long MEMBER_ID = 1L;
         private static final UpdateMemberRequest REQUEST = new UpdateMemberRequest(

@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class OAuthApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("OAuth Authorization Code 요청을 위한 URI 조회 API [GET /api/oauth/access/{provider}]")
-    class getAuthorizationCodeForAccessGoogle {
+    class GetAuthorizationCodeForAccessGoogle {
         private static final String BASE_URL = "/api/oauth/access/{provider}";
         private static final String PROVIDER_GOOGLE = "google";
         private static final String REDIRECT_URL = "http://localhost:3000";
@@ -128,7 +128,7 @@ class OAuthApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("OAuth 로그인 API [POST /api/oauth/login/{provider}]")
-    class oAuthLogin {
+    class OAuthLogin {
         private static final String BASE_URL = "/api/oauth/login/{provider}";
         private static final String PROVIDER_GOOGLE = "google";
         private static final OAuthLoginRequest REQUEST = new OAuthLoginRequest(
@@ -245,7 +245,7 @@ class OAuthApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("로그아웃 API [POST /api/oauth/logout] - AccessToken 필수")
-    class logout {
+    class Logout {
         private static final String BASE_URL = "/api/oauth/logout";
 
         @Test
