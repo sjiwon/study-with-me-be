@@ -4,10 +4,10 @@ spring:
 
   mail:
     default-encoding: UTF-8
-    host: smtp.naver.com
-    port: 465
-    username: ${NAVER_EMAIL_USERNAME}
-    password: ${NAVER_EMAIL_PASSWORD}
+    host: smtp.gmail.com
+    port: 587
+    username: ${GOOGLE_EMAIL}
+    password: ${GOOGLE_APP_PASSWORD}
     properties:
       mail:
         mime:
