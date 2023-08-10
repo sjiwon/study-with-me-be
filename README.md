@@ -42,21 +42,17 @@
 
 ![Backend](https://github.com/sjiwon/study-with-me-be/assets/51479381/e102ebe6-6790-407b-839b-7cfa0e539fab)
 
-### Infra
-
-![Infra](https://github.com/sjiwon/study-with-me-be/assets/51479381/bf862ad2-5f86-43fc-bb7e-a6cb36ab08d8)
-
 <br>
 
 ## ⚙️ Infrastructure
 
-![사용자 요청 흐름도](https://github.com/kgu-capstone/study-with-me-be/assets/51479381/2c1c90bb-7538-45b0-bc2e-04c8f48e497c)
+> TBU...
 
 <br>
 
 ## 🔀 CI/CD Pipeline
 
-![BE CI-CD](https://github.com/kgu-capstone/study-with-me-be/assets/51479381/b8ef0c56-3d43-4767-8b9e-7bf78d6b06e7)
+> TBU...
 
 <br>
 
@@ -75,29 +71,37 @@
 - `docker-compose.yml` 실행
 
 ### 2) API Server (Local Profile)
-#### application.yml 변수
-- `NAVER_EMAIL_USERNAME` = 네이버 계정 이메일
-- `NAVER_EMAIL_PASSWORD` = 네이버 계정 비밀번호
-- `OAUTH_GOOGLE_CLIENT_ID` = Google OAuth Application Client Id
+#### yml 환경 변수
+
+##### settings/application-mail.yml
+
+- `GOOGLE_EMAIL` = 구글 계정 이메일
+- `GOOGLE_APP_PASSWORD` = 구글 앱 비밀번호
+
+##### settings/application-cloud.yml
+- `S3_BUCKET` = AWS S3 Bucket
+
+  - > S3 Credentials 관련 `{localUser}/.aws`에 AccessKey & SecretKey 정보 필수
+
+##### settings/application-oauth.yml
+
+- `OAUTH_GOOGLE_CLIENT_ID` = Google OAuth Application Client ID
 - `OAUTH_GOOGLE_CLIENT_SECRET` = Google OAuth Application Client Secret
 - `OAUTH_GOOGLE_REDIRECT_URL` = Google OAuth Application Redirect Url
-- `NCP_ACCESS_KEY` = Naver Cloud Platform Access Key
-- `NCP_SECRET_KEY` = Naver Cloud Platform Secret Key
-- `NCP_BUCKET_NAME` = Naver Cloud Platform Object Storage Bucket
+
+##### settings/application-external.yml
 - `SLACK_WEBHOOK_URL` = Slack Webhook Url
 
 #### (실행-1) 빌드된 JAR 파일 실행
 ```shell
 java -jar \
     -Dfile.encoding=UTF-8 \
-    -Dspring.mail.username="네이버 계정 이메일" \
-    -Dspring.mail.password="네이버 계정 비밀번호" \
+    -Dspring.mail.username="구글 계정 이메일" \
+    -Dspring.mail.password="구글 앱 비밀번호" \
+    -Dspring.cloud.aws.s3.bucket="AWS S3 Bucket" \
     -Doauth2.google.client-id="Google OAuth Application Client Id" \
     -Doauth2.google.client-secret="Google OAuth Application Client Secret" \
     -Doauth2.google.redirect-url="Google OAuth Application Redirect Url" \
-    -Dcloud.ncp.credentials.access-key="Naver Cloud Platform Access Key" \
-    -Dcloud.ncp.credentials.secret-key="Naver Cloud Platform Secret Key" \
-    -Dcloud.ncp.storage.bucket="Naver Cloud Platform Object Storage Bucket" \
     -Dslack.webhook.url="Slack Webhook Url" \
 ./build/libs/StudyWithMe.jar
 ```
