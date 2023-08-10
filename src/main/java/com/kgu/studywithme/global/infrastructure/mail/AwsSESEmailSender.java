@@ -2,7 +2,6 @@ package com.kgu.studywithme.global.infrastructure.mail;
 
 import com.kgu.studywithme.global.infrastructure.mail.utils.EmailMetadata;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.Context;
