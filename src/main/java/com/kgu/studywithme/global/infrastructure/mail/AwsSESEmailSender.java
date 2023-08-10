@@ -13,8 +13,7 @@ import software.amazon.awssdk.services.ses.model.*;
 import java.time.LocalDate;
 import java.util.Map;
 
-@Primary
-@Profile("default")
+@Profile("prod")
 @Component
 public class AwsSESEmailSender implements EmailSender {
     private final SesClient sesClient;
