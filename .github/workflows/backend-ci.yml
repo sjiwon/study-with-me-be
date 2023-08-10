@@ -11,8 +11,8 @@ on:
 
 jobs:
   build:
+    name: Build & Test
     runs-on: ubuntu-latest
-    name: Backend Build & Test
 
     steps:
       - name: Repository를 가져온다
@@ -23,6 +23,16 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
+
+      - name: Gradle 정보를 캐싱한다
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
 
       - name: Timezone을 Asia/Seoul로 설정한다
         uses: zcong1993/setup-timezone@master
