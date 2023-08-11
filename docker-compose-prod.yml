@@ -4,7 +4,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: app
+    container_name: application
+    image: sjiwon/study-with-me-be:latest
     expose:
       - "8080"
     ports:
