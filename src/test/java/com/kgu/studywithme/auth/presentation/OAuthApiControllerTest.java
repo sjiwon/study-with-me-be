@@ -158,9 +158,7 @@ class OAuthApiControllerTest extends ControllerTest {
                             jsonPath("$.name").exists(),
                             jsonPath("$.name").value(googleUserResponse.name()),
                             jsonPath("$.email").exists(),
-                            jsonPath("$.email").value(googleUserResponse.email()),
-                            jsonPath("$.profileImage").exists(),
-                            jsonPath("$.profileImage").value(googleUserResponse.profileImage())
+                            jsonPath("$.email").value(googleUserResponse.email())
                     )
                     .andDo(
                             document(
@@ -178,9 +176,7 @@ class OAuthApiControllerTest extends ControllerTest {
                                             fieldWithPath("name")
                                                     .description("회원가입 진행 시 이름 기본값 [Read-Only]"),
                                             fieldWithPath("email")
-                                                    .description("회원가입 진행 시 이메일 기본값 [Read-Only]"),
-                                            fieldWithPath("profileImage")
-                                                    .description("회원가입 진행 시 구글 프로필 이미지 기본값 [Read-Only]")
+                                                    .description("회원가입 진행 시 이메일 기본값 [Read-Only]")
                                     )
                             )
                     );

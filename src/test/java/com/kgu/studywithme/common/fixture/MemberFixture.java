@@ -128,7 +128,7 @@ public enum MemberFixture {
     }
 
     public GoogleUserResponse toGoogleUserResponse() {
-        return new GoogleUserResponse(name, email.getValue(), "google_profile_url");
+        return new GoogleUserResponse(name, email.getValue());
     }
 
     public LoginResponse toLoginResponse() {
