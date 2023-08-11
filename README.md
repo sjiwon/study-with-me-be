@@ -32,9 +32,6 @@
 
 ![8  스터디 졸업](https://github.com/kgu-capstone/study-with-me-be/assets/51479381/1e9527a1-d2a0-422b-90ff-d75322f1370e)
 
-
-#### [API 명세서 바로가기](https://sjiwon.notion.site/API-Docs-f2c3261488a24c56bf39f7cb6da23326?pvs=4)
-
 <br>
 
 ## 🛠 Tech Stacks
@@ -71,7 +68,6 @@
 - `docker-compose.yml` 실행
 
 ### 2) API Server (Local Profile)
-#### yml 환경 변수
 
 ##### settings/application-mail.yml
 
@@ -111,3 +107,7 @@ java -jar \
 ### [3) Swagger URL](http://localhost:8080/swagger-ui.html)
 
 - API 테스트 시 필요한 `Token`은 `src/main/resources/DummyToken.txt`에서 사용
+
+### [4) REST Docs](http://localhost:8080/docs/index.html)
+
+- Gradle `build` Task 실행 후 접속
