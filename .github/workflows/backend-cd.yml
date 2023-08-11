@@ -10,7 +10,7 @@ env:
   TAG: latest
 
 jobs:
-  build:
+  Build-Deploy:
     name: Build & Deploy
     runs-on: ubuntu-latest
 

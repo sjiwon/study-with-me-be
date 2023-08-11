@@ -10,7 +10,7 @@ on:
       - synchronize
 
 jobs:
-  build:
+  Build-Test:
     name: Build & Test
     runs-on: ubuntu-latest
 
