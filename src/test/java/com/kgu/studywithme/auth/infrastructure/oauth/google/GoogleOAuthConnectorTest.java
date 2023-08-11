@@ -74,11 +74,11 @@ class GoogleOAuthConnectorTest {
 
             // then
             assertAll(
-                    () -> assertThat(result.getTokenType()).isEqualTo(BEARER_TOKEN),
-                    () -> assertThat(result.getIdToken()).isEqualTo(ID_TOKEN),
-                    () -> assertThat(result.getAccessToken()).isEqualTo(ACCESS_TOKEN),
-                    () -> assertThat(result.getScope()).isEqualTo(SCOPE),
-                    () -> assertThat(result.getExpiresIn()).isEqualTo(EXPIRES_IN)
+                    () -> assertThat(result.tokenType()).isEqualTo(BEARER_TOKEN),
+                    () -> assertThat(result.idToken()).isEqualTo(ID_TOKEN),
+                    () -> assertThat(result.accessToken()).isEqualTo(ACCESS_TOKEN),
+                    () -> assertThat(result.scope()).isEqualTo(SCOPE),
+                    () -> assertThat(result.expiresIn()).isEqualTo(EXPIRES_IN)
             );
         }
     }
@@ -115,9 +115,9 @@ class GoogleOAuthConnectorTest {
 
             // then
             assertAll(
-                    () -> assertThat(result.getName()).isEqualTo(JIWON.getName()),
-                    () -> assertThat(result.getEmail()).isEqualTo(JIWON.getEmail().getValue()),
-                    () -> assertThat(result.getProfileImage()).isEqualTo("google_profile_url")
+                    () -> assertThat(result.name()).isEqualTo(JIWON.getName()),
+                    () -> assertThat(result.email()).isEqualTo(JIWON.getEmail().getValue()),
+                    () -> assertThat(result.profileImage()).isEqualTo("google_profile_url")
             );
         }
     }

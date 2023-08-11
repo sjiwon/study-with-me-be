@@ -3,13 +3,13 @@ package com.kgu.studywithme.auth.infrastructure.oauth.google.response;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kgu.studywithme.auth.infrastructure.oauth.OAuthTokenResponse;
 
-public class GoogleTokenResponse implements OAuthTokenResponse {
-    private final String tokenType;
-    private final String idToken;
-    private final String accessToken;
-    private final String scope;
-    private final Integer expiresIn;
-
+public record GoogleTokenResponse(
+        String tokenType,
+        String idToken,
+        String accessToken,
+        String scope,
+        Integer expiresIn
+) implements OAuthTokenResponse {
     public GoogleTokenResponse(
             @JsonProperty("token_type") final String tokenType,
             @JsonProperty("id_token") final String idToken,
@@ -22,26 +22,5 @@ public class GoogleTokenResponse implements OAuthTokenResponse {
         this.accessToken = accessToken;
         this.scope = scope;
         this.expiresIn = expiresIn;
-    }
-
-    public String getTokenType() {
-        return tokenType;
-    }
-
-    public String getIdToken() {
-        return idToken;
-    }
-
-    @Override
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public String getScope() {
-        return scope;
-    }
-
-    public Integer getExpiresIn() {
-        return expiresIn;
     }
 }

@@ -160,7 +160,7 @@ public enum OAuthFixture {
 
     public static OAuthUserResponse parseOAuthUserByAccessToken(final String accessToken) {
         return Arrays.stream(values())
-                .filter(value -> value.oAuthTokenResponse.getAccessToken().equals(accessToken))
+                .filter(value -> value.oAuthTokenResponse.accessToken().equals(accessToken))
                 .findFirst()
                 .orElseThrow(NoSuchElementException::new)
                 .oAuthUserResponse;

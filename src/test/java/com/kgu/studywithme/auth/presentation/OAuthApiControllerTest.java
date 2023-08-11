@@ -156,11 +156,11 @@ class OAuthApiControllerTest extends ControllerTest {
                     .andExpectAll(
                             status().isNotFound(),
                             jsonPath("$.name").exists(),
-                            jsonPath("$.name").value(googleUserResponse.getName()),
+                            jsonPath("$.name").value(googleUserResponse.name()),
                             jsonPath("$.email").exists(),
-                            jsonPath("$.email").value(googleUserResponse.getEmail()),
+                            jsonPath("$.email").value(googleUserResponse.email()),
                             jsonPath("$.profileImage").exists(),
-                            jsonPath("$.profileImage").value(googleUserResponse.getProfileImage())
+                            jsonPath("$.profileImage").value(googleUserResponse.profileImage())
                     )
                     .andDo(
                             document(
