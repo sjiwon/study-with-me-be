@@ -11,6 +11,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.List;
 
 import static com.kgu.studywithme.category.domain.Category.*;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentRequest;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -22,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CategoryApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("스터디 카테고리 조회 API [GET /api/categories]")
-    class findAllCategories {
+    class FindAllCategories {
         private static final String BASE_URL = "/api/categories";
 
         @Test

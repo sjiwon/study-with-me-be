@@ -1,15 +1,14 @@
 package com.kgu.studywithme.upload.utils;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.upload.exception.UploadErrorCode;
+import io.awspring.cloud.s3.ObjectMetadata;
+import io.awspring.cloud.s3.S3Template;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,14 +20,14 @@ import static com.kgu.studywithme.upload.utils.FileUploadType.*;
 @Slf4j
 @Component
 public class S3FileUploader implements FileUploader {
-    private final AmazonS3 amazonS3;
+    private final S3Template s3Template;
     private final String bucket;
 
     public S3FileUploader(
-            final AmazonS3 amazonS3,
-            @Value("${cloud.ncp.storage.bucket}") final String bucket
+            final S3Template s3Template,
+            @Value("${spring.cloud.aws.s3.bucket}") final String bucket
     ) {
-        this.amazonS3 = amazonS3;
+        this.s3Template = s3Template;
         this.bucket = bucket;
     }
 
@@ -66,40 +65,37 @@ public class S3FileUploader implements FileUploader {
             final FileUploadType type,
             final MultipartFile file
     ) {
-        final String fileName = createFileNameByType(type, file.getOriginalFilename());
-
-        final ObjectMetadata objectMetadata = new ObjectMetadata();
-        objectMetadata.setContentType(file.getContentType());
-        objectMetadata.setContentLength(file.getSize());
-
         try (final InputStream inputStream = file.getInputStream()) {
-            amazonS3.putObject(
-                    new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
-                            .withCannedAcl(CannedAccessControlList.PublicRead)
-            );
+            final String uploadFileName = createFileNameByType(type, file.getOriginalFilename());
+
+            final ObjectMetadata objectMetadata = ObjectMetadata.builder()
+                    .contentType(file.getContentType())
+                    .acl(ObjectCannedACL.PUBLIC_READ)
+                    .build();
+
+            return s3Template.upload(
+                    bucket,
+                    uploadFileName,
+                    inputStream,
+                    objectMetadata
+            ).getURL().toString();
         } catch (final IOException e) {
             log.error("S3 파일 업로드에 실패했습니다. {}", e.getMessage(), e);
             throw StudyWithMeException.type(UploadErrorCode.S3_UPLOAD_FAILURE);
         }
-
-        return amazonS3.getUrl(bucket, fileName).toString();
     }
 
     private String createFileNameByType(
-            final FileUploadType type,
-            final String originalFileName
+            final FileUploadType uploadType,
+            final String fileName
     ) {
-        final String fileName = UUID.randomUUID() + extractFileExtension(originalFileName);
+        final String uploadFileName = UUID.randomUUID() + FileExtension.getExtensionFromFileName(fileName).getValue();
 
-        return switch (type) {
-            case DESCRIPTION -> String.format(STUDY_DESCRIPTIONS, fileName);
-            case IMAGE -> String.format(WEEKLY_IMAGES, fileName);
-            case ATTACHMENT -> String.format(WEEKLY_ATTACHMENTS, fileName);
-            default -> String.format(WEEKLY_SUBMITS, fileName);
+        return switch (uploadType) {
+            case DESCRIPTION -> String.format(STUDY_DESCRIPTIONS, uploadFileName);
+            case IMAGE -> String.format(WEEKLY_IMAGES, uploadFileName);
+            case ATTACHMENT -> String.format(WEEKLY_ATTACHMENTS, uploadFileName);
+            default -> String.format(WEEKLY_SUBMITS, uploadFileName);
         };
-    }
-
-    private String extractFileExtension(final String fileName) {
-        return fileName.substring(fileName.lastIndexOf("."));
     }
 }

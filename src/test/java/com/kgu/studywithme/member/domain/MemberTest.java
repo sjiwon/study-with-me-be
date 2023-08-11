@@ -67,7 +67,7 @@ class MemberTest {
 
     @Nested
     @DisplayName("사용자 점수 업데이트")
-    class updateScore {
+    class UpdateScore {
         private Member member;
 
         @BeforeEach
@@ -77,7 +77,7 @@ class MemberTest {
 
         @Nested
         @DisplayName("단순 출석에 대한 점수 업데이트")
-        class applySimpleAttendance {
+        class ApplySimpleAttendance {
             @Test
             @DisplayName("출석에 대한 점수를 적용한다")
             void applyAttendance() {
@@ -114,7 +114,7 @@ class MemberTest {
 
         @Nested
         @DisplayName("이전 출석 정보 수정에 따른 점수 업데이트")
-        class applyComplexAttendance {
+        class ApplyComplexAttendance {
             @Test
             @DisplayName("출석 -> 지각으로 수정함에 따라 점수를 업데이트한다")
             void updateAttendanceToLate() {

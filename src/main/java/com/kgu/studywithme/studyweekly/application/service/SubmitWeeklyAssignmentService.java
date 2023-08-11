@@ -13,6 +13,7 @@ import com.kgu.studywithme.studyweekly.application.usecase.command.SubmitWeeklyA
 import com.kgu.studywithme.studyweekly.domain.Period;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
 import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
+import com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType;
 import com.kgu.studywithme.studyweekly.domain.submit.UploadAssignment;
 import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
 import com.kgu.studywithme.upload.utils.FileUploader;
@@ -24,6 +25,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.*;
+import static com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType.FILE;
 
 @Service
 @StudyWithMeWritableTransactional
@@ -76,16 +78,16 @@ public class SubmitWeeklyAssignmentService implements SubmitWeeklyAssignmentUseC
             final Member member,
             final Command command
     ) {
-        final UploadAssignment assignment = uploadAssignment(command.uploadType(), command.file(), command.link());
+        final UploadAssignment assignment = uploadAssignment(command.submitType(), command.file(), command.link());
         weekly.submitAssignment(member.getId(), assignment);
     }
 
     private UploadAssignment uploadAssignment(
-            final String type,
+            final AssignmentSubmitType submitType,
             final MultipartFile file,
             final String link
     ) {
-        return type.equals("file")
+        return submitType == FILE
                 ? UploadAssignment.withFile(file.getOriginalFilename(), uploader.uploadWeeklySubmit(file))
                 : UploadAssignment.withLink(link);
     }

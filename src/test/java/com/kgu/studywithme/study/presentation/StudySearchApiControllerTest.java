@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.kgu.studywithme.category.domain.Category.PROGRAMMING;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static com.kgu.studywithme.study.domain.RecruitmentStatus.IN_PROGRESS;
@@ -34,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class StudySearchApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("각 카테고리별 스터디 조회 API [GET /api/studies]")
-    class queryStudyByCategory {
+    class QueryStudyByCategory {
         private static final String BASE_URL = "/api/studies";
 
         @Test
@@ -120,7 +121,7 @@ class StudySearchApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("사용자의 관심사에 따른 스터디 조회 API [GET /api/studies/recommend] - AccessToken 필수")
-    class queryStudyByRecommend {
+    class QueryStudyByRecommend {
         private static final String BASE_URL = "/api/studies/recommend";
         private static final Long MEMBER_ID = 1L;
 

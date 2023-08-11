@@ -18,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 
 import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1;
 import static com.kgu.studywithme.common.utils.FileMockingUtils.createMultipleMockMultipartFile;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
@@ -38,7 +39,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("스터디 주차 생성 API [POST /api/studies/{studyId}/week] - AccessToken 필수")
-    class createWeekly {
+    class CreateWeekly {
         private static final String BASE_URL = "/api/studies/{studyId}/week";
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;
@@ -123,7 +124,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                                     .description("스터디 주차 자동 출석 여부")
                                                     .attributes(constraint("과제 존재 여부가 false면 자동 출석은 무조건 false"))
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -196,7 +197,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("스터디 주차 수정 API [PATCH /api/studies/{studyId}/weeks/{weeklyId}] - AccessToken 필수")
-    class updateWeekly {
+    class UpdateWeekly {
         private static final String BASE_URL = "/api/studies/{studyId}/weeks/{weeklyId}";
         private static final Long STUDY_ID = 1L;
         private static final Long WEEKLY_ID = 1L;
@@ -284,7 +285,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                                     .description("스터디 주차 자동 출석 여부")
                                                     .attributes(constraint("과제 존재 여부가 false면 자동 출석은 무조건 false"))
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -357,7 +358,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                                     .description("스터디 주차 자동 출석 여부")
                                                     .attributes(constraint("과제 존재 여부가 false면 자동 출석은 무조건 false"))
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -428,7 +429,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("스터디 주차 삭제 API [DELETE /api/studies/{studyId}/weeks/{weeklyId}] - AccessToken 필수")
-    class deleteWeekly {
+    class DeleteWeekly {
         private static final String BASE_URL = "/api/studies/{studyId}/weeks/{weeklyId}";
         private static final Long STUDY_ID = 1L;
         private static final Long WEEKLY_ID = 1L;
@@ -476,7 +477,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                             parameterWithName("weeklyId")
                                                     .description("삭제할 주차 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -519,7 +520,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                                             parameterWithName("weeklyId")
                                                     .description("삭제할 주차 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }

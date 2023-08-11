@@ -60,7 +60,7 @@ public class SwaggerConfiguration {
                 .build();
     }
 
-    public OpenApiCustomizer buildSecurityOpenApi() {
+    private OpenApiCustomizer buildSecurityOpenApi() {
         return openApi -> openApi
                 .addSecurityItem(
                         new SecurityRequirement()

@@ -3,11 +3,11 @@ name: Backend CD
 on:
   push:
     branches:
-      - main-x
+      - main
 
 jobs:
   build:
-    name: Backend Deploy
+    name: Build & Deploy
     runs-on: ubuntu-latest
 
     steps:
@@ -20,19 +20,20 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
+      - name: Gradle 정보를 캐싱한다
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
       - name: Timezone을 Asia/Seoul로 설정한다
         uses: zcong1993/setup-timezone@master
         with:
           timezone: Asia/Seoul
-
-      - name: Github Action Screts로부터 application-prod.yml을 가져온다
-        env:
-          PROD_YML: ${{ secrets.PROD_YML }}
-        run: |
-          cd ./src/main/resources
-          touch ./application-prod.yml
-          echo "$PROD_YML" | base64 --decode > ./application-prod.yml
-        shell: bash
 
       - name: Gradle 명령 실행을 위한 권한을 부여한다
         run: chmod +x gradlew
@@ -40,24 +41,31 @@ jobs:
       - name: Gradle build를 수행한다
         run: ./gradlew bootJar
 
-      - name: NCP Server로 빌드 파일을 전송한다
+      - name: Docker Image를 빌드한 후 Docker Hub에 Push한다
+        run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/study-with-me-be:latest .
+          docker images
+          docker push ${{ secrets.DOCKER_USERNAME }}/study-with-me-be:latest
+
+      - name: docker-compose-prod.yml을 EC2에 전송한다
         uses: appleboy/scp-action@master
         with:
-          username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          host: ${{ secrets.SSH_HOST }}
-          port: ${{ secrets.SSH_PORT }}
-          source: "./build/libs/StudyWithMe.jar, ./script/deploy.sh"
-          target: "/app"
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          source: ".docker-compose-prod.yml"
+          target: "/home/ec2-user/Study-With-Me-Backend"
 
-      - name: NCP Server에 SSH 접속 후 deploy.sh을 실행시킨다
+      - name: EC2 WAS 서버에 접속 후 Docker Image를 Pull하고 docker-compose를 실행한다
         uses: appleboy/ssh-action@master
         with:
-          username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          host: ${{ secrets.SSH_HOST }}
-          port: ${{ secrets.SSH_PORT }}
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
-            cd /app/script
-            sudo chmod +x deploy.sh
-            sudo ./deploy.sh
+            cd /home/ec2-user/Study-With-Me-Backend
+            sudo docker rm -f $(sudo docker ps -qa)
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/study-with-me-be:latest
+            sudo docker-compose -f docker-compose-prod.yml up -d
+            sudo docker image prune -f

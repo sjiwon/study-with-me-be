@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
@@ -27,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class DelegateHostAuthorityApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("스터디 팀장 권한 위임 API [PATCH /api/studies/{studyId}/participants/{participantId}/delegation] - AccessToken 필수")
-    class delegateAuthority {
+    class DelegateAuthority {
         private static final String BASE_URL = "/api/studies/{studyId}/participants/{participantId}/delegation";
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;
@@ -75,7 +76,7 @@ class DelegateHostAuthorityApiControllerTest extends ControllerTest {
                                             parameterWithName("participantId")
                                                     .description("권한을 위임할 사용자 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -118,7 +119,7 @@ class DelegateHostAuthorityApiControllerTest extends ControllerTest {
                                             parameterWithName("participantId")
                                                     .description("권한을 위임할 사용자 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -161,7 +162,7 @@ class DelegateHostAuthorityApiControllerTest extends ControllerTest {
                                             parameterWithName("participantId")
                                                     .description("권한을 위임할 사용자 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -204,7 +205,7 @@ class DelegateHostAuthorityApiControllerTest extends ControllerTest {
                                             parameterWithName("participantId")
                                                     .description("권한을 위임할 사용자 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }

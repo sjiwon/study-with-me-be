@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
@@ -34,13 +35,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class StudyAttendanceApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("수동 출석 API [PATCH /api/studies/{studyId}/attendance/{memberId}] - AccessToken 필수")
-    class manualCheckAttendance {
+    class ManualCheckAttendance {
         private static final String BASE_URL = "/api/studies/{studyId}/attendance/{memberId}";
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;
         private static final Long PARTICIPANT_ID = 2L;
         private static final Long ANONYMOUS_ID = 3L;
-        private static final ManualAttendanceRequest REQUEST = new ManualAttendanceRequest(1, ATTENDANCE.getDescription());
+        private static final ManualAttendanceRequest REQUEST = new ManualAttendanceRequest(1, ATTENDANCE.getValue());
 
         @BeforeEach
         void setUp() {
@@ -91,7 +92,7 @@ class StudyAttendanceApiControllerTest extends ControllerTest {
                                             fieldWithPath("status")
                                                     .description("출석 정보")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -103,7 +104,7 @@ class StudyAttendanceApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
 
             // when
-            final ManualAttendanceRequest request = new ManualAttendanceRequest(1, NON_ATTENDANCE.getDescription());
+            final ManualAttendanceRequest request = new ManualAttendanceRequest(1, NON_ATTENDANCE.getValue());
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID, ANONYMOUS_ID)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
@@ -141,7 +142,7 @@ class StudyAttendanceApiControllerTest extends ControllerTest {
                                             fieldWithPath("status")
                                                     .description("출석 정보")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -192,7 +193,7 @@ class StudyAttendanceApiControllerTest extends ControllerTest {
                                             fieldWithPath("status")
                                                     .description("출석 정보")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }

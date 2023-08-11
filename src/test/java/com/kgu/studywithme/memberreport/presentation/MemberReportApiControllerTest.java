@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
@@ -29,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class MemberReportApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("사용자 신고 API [POST /api/members/{reporteeId}/report] - AccessToken 필수")
-    class report {
+    class Report {
         private static final String BASE_URL = "/api/members/{reporteeId}/report";
         private static final Long REPORTEE_ID = 1L;
         private static final Long REPORTER_ID = 2L;
@@ -77,7 +78,7 @@ class MemberReportApiControllerTest extends ControllerTest {
                                             fieldWithPath("reason")
                                                     .description("신고 사유")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }

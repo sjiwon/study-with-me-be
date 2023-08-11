@@ -17,6 +17,7 @@ import java.util.List;
 
 import static com.kgu.studywithme.common.fixture.MemberFixture.*;
 import static com.kgu.studywithme.common.fixture.StudyFixture.LINE_INTERVIEW;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static com.kgu.studywithme.study.domain.RecruitmentStatus.IN_PROGRESS;
@@ -34,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class StudyInformationApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("스터디 기본 정보 조회 API [GET /api/studies/{studyId}]")
-    class getInformation {
+    class GetInformation {
         private static final String BASE_URL = "/api/studies/{studyId}";
         private static final Long STUDY_ID = 1L;
 
@@ -118,7 +119,7 @@ class StudyInformationApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("스터디 리뷰 조회 API [GET /api/studies/{studyId}/reviews]")
-    class getReviews {
+    class GetReviews {
         private static final String BASE_URL = "/api/studies/{studyId}/reviews";
         private static final Long STUDY_ID = 1L;
 
@@ -173,8 +174,7 @@ class StudyInformationApiControllerTest extends ControllerTest {
                                             fieldWithPath("reviews[].reviewer.id")
                                                     .description("리뷰어 ID(PK)"),
                                             fieldWithPath("reviews[].reviewer.nickname")
-                                                    .description("리뷰어 닉네임")
-                                                    .attributes(constraint("날짜 내림차순 정렬로 응답")),
+                                                    .description("리뷰어 닉네임"),
                                             fieldWithPath("graduateCount")
                                                     .description("졸업한 사람 수")
                                     )
@@ -185,7 +185,7 @@ class StudyInformationApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("스터디 참여자 조회 API [GET /api/studies/{studyId}/participants] - AccessToken 필수")
-    class getApproveParticipants {
+    class GetApproveParticipants {
         private static final String BASE_URL = "/api/studies/{studyId}/participants";
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;
@@ -241,7 +241,7 @@ class StudyInformationApiControllerTest extends ControllerTest {
         }
     }
 
-    private static StudyBasicInformation createStudyBasicInformation() {
+    private StudyBasicInformation createStudyBasicInformation() {
         return new StudyBasicInformation(
                 1L,
                 LINE_INTERVIEW.getName().getValue(),

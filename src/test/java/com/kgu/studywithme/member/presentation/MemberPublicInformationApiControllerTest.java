@@ -16,12 +16,11 @@ import java.util.List;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.JPA;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
-import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
-import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentRequest;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -33,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class MemberPublicInformationApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("사용자 기본 Public 정보 조회 API [GET /api/members/{memberId}]")
-    class getInformation {
+    class GetInformation {
         private static final String BASE_URL = "/api/members/{memberId}";
         private static final Long MEMBER_ID = 1L;
 
@@ -41,8 +40,6 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
         @DisplayName("사용자 기본 Public 정보를 조회한다")
         void success() throws Exception {
             // given
-            mockingToken(true, MEMBER_ID);
-
             final Member member = JIWON.toMember().apply(1L, LocalDateTime.now());
             final MemberPublicInformation response = new MemberPublicInformation(
                     member.getId(),
@@ -62,8 +59,7 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .get(BASE_URL, MEMBER_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
+                    .get(BASE_URL, MEMBER_ID);
 
             // then
             mockMvc.perform(requestBuilder)
@@ -73,7 +69,6 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
                                     "MemberApi/Query/Public/BasicInformation",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
-                                    getHeaderWithAccessToken(),
                                     pathParameters(
                                             parameterWithName("memberId")
                                                     .description("조회할 사용자 ID(PK)")
@@ -107,7 +102,7 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("사용자가 참여중인 스터디 리스트 조회 API [GET /api/members/{memberId}/studies/participate]")
-    class getParticipateStudy {
+    class GetParticipateStudy {
         private static final String BASE_URL = "/api/members/{memberId}/studies/participate";
         private static final Long MEMBER_ID = 1L;
 
@@ -115,7 +110,6 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
         @DisplayName("사용자가 참여중인 스터디 리스트를 조회한다")
         void success() throws Exception {
             // given
-            mockingToken(true, MEMBER_ID);
             given(queryParticipateStudyByIdUseCase.queryParticipateStudy(any()))
                     .willReturn(
                             List.of(
@@ -136,8 +130,7 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .get(BASE_URL, MEMBER_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
+                    .get(BASE_URL, MEMBER_ID);
 
             // then
             mockMvc.perform(requestBuilder)
@@ -147,16 +140,21 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
                                     "MemberApi/Query/Public/ParticipateStudy",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
-                                    getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("memberId").description("조회할 사용자 ID(PK)")
+                                            parameterWithName("memberId")
+                                                    .description("조회할 사용자 ID(PK)")
                                     ),
                                     responseFields(
-                                            fieldWithPath("result[].id").description("참여중인 스터디 ID(PK)"),
-                                            fieldWithPath("result[].name").description("참여중인 스터디명"),
-                                            fieldWithPath("result[].category").description("참여중인 스터디 카테고리"),
-                                            fieldWithPath("result[].thumbnail").description("참여중인 스터디 썸네일 이미지"),
-                                            fieldWithPath("result[].thumbnailBackground").description("참여중인 스터디 썸네일 배경색")
+                                            fieldWithPath("result[].id")
+                                                    .description("참여중인 스터디 ID(PK)"),
+                                            fieldWithPath("result[].name")
+                                                    .description("참여중인 스터디명"),
+                                            fieldWithPath("result[].category")
+                                                    .description("참여중인 스터디 카테고리"),
+                                            fieldWithPath("result[].thumbnail")
+                                                    .description("참여중인 스터디 썸네일 이미지"),
+                                            fieldWithPath("result[].thumbnailBackground")
+                                                    .description("참여중인 스터디 썸네일 배경색")
                                     )
                             )
                     );
@@ -165,7 +163,7 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("사용자가 졸업한 스터디 리스트 조회 API [GET /api/members/{memberId}/studies/graduated]")
-    class getGraduatedStudy {
+    class GetGraduatedStudy {
         private static final String BASE_URL = "/api/members/{memberId}/studies/graduated";
         private static final Long MEMBER_ID = 1L;
 
@@ -173,7 +171,6 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
         @DisplayName("사용자가 졸업한 스터디 리스트를 조회한다")
         void success() throws Exception {
             // given
-            mockingToken(true, MEMBER_ID);
             given(queryGraduatedStudyByIdUseCase.queryGraduatedStudy(any()))
                     .willReturn(
                             List.of(
@@ -208,8 +205,7 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .get(BASE_URL, MEMBER_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
+                    .get(BASE_URL, MEMBER_ID);
 
             // then
             mockMvc.perform(requestBuilder)
@@ -219,25 +215,35 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
                                     "MemberApi/Query/Public/GraduatedStudy",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
-                                    getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("memberId").description("조회할 사용자 ID(PK)")
+                                            parameterWithName("memberId")
+                                                    .description("조회할 사용자 ID(PK)")
                                     ),
                                     responseFields(
-                                            fieldWithPath("result[].id").description("졸업한 스터디 ID(PK)"),
-                                            fieldWithPath("result[].name").description("졸업한 스터디명"),
-                                            fieldWithPath("result[].category").description("졸업한 스터디 카테고리"),
-                                            fieldWithPath("result[].thumbnail").description("졸업한 스터디 썸네일 이미지"),
-                                            fieldWithPath("result[].thumbnailBackground").description("졸업한 스터디 썸네일 배경색"),
-                                            fieldWithPath("result[].review").description("작성한 리뷰")
+                                            fieldWithPath("result[].id")
+                                                    .description("졸업한 스터디 ID(PK)"),
+                                            fieldWithPath("result[].name")
+                                                    .description("졸업한 스터디명"),
+                                            fieldWithPath("result[].category")
+                                                    .description("졸업한 스터디 카테고리"),
+                                            fieldWithPath("result[].thumbnail")
+                                                    .description("졸업한 스터디 썸네일 이미지"),
+                                            fieldWithPath("result[].thumbnailBackground")
+                                                    .description("졸업한 스터디 썸네일 배경색"),
+                                            fieldWithPath("result[].review")
+                                                    .description("작성한 리뷰")
                                                     .optional(),
-                                            fieldWithPath("result[].review.id").description("작성한 리뷰 ID")
+                                            fieldWithPath("result[].review.id")
+                                                    .description("작성한 리뷰 ID")
                                                     .optional(),
-                                            fieldWithPath("result[].review.content").description("작성한 리뷰")
+                                            fieldWithPath("result[].review.content")
+                                                    .description("작성한 리뷰")
                                                     .optional(),
-                                            fieldWithPath("result[].review.writtenDate").description("리뷰 작성 날짜")
+                                            fieldWithPath("result[].review.writtenDate")
+                                                    .description("리뷰 작성 날짜")
                                                     .optional(),
-                                            fieldWithPath("result[].review.lastModifiedDate").description("리뷰 수정 날짜")
+                                            fieldWithPath("result[].review.lastModifiedDate")
+                                                    .description("리뷰 수정 날짜")
                                                     .optional()
                                     )
                             )
@@ -247,7 +253,7 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("사용자가 받은 리뷰 조회 API [GET /api/members/{memberId}/reviews]")
-    class getReviews {
+    class GetReviews {
         private static final String BASE_URL = "/api/members/{memberId}/reviews";
         private static final Long MEMBER_ID = 1L;
 
@@ -255,7 +261,6 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
         @DisplayName("사용자가 받은 리뷰를 조회한다")
         void success() throws Exception {
             // given
-            mockingToken(true, MEMBER_ID);
             given(queryReceivedReviewByIdUseCase.queryReceivedReview(any()))
                     .willReturn(
                             List.of(
@@ -267,8 +272,7 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .get(BASE_URL, MEMBER_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
+                    .get(BASE_URL, MEMBER_ID);
 
             // then
             mockMvc.perform(requestBuilder)
@@ -278,13 +282,15 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
                                     "MemberApi/Query/Public/ReceivedReview",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
-                                    getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("memberId").description("조회할 사용자 ID(PK)")
+                                            parameterWithName("memberId")
+                                                    .description("조회할 사용자 ID(PK)")
                                     ),
                                     responseFields(
-                                            fieldWithPath("result[].content").description("내용"),
-                                            fieldWithPath("result[].writtenDate").description("작성 날짜")
+                                            fieldWithPath("result[].content")
+                                                    .description("내용"),
+                                            fieldWithPath("result[].writtenDate")
+                                                    .description("작성 날짜")
                                     )
                             )
                     );
@@ -293,7 +299,7 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("사용자 출석률 조회 API [GET /api/members/{memberId}/attendances]")
-    class getAttendanceRatio {
+    class GetAttendanceRatio {
         private static final String BASE_URL = "/api/members/{memberId}/attendances";
         private static final Long MEMBER_ID = 1L;
 
@@ -301,7 +307,6 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
         @DisplayName("사용자의 출석률을 조회한다")
         void success() throws Exception {
             // given
-            mockingToken(true, MEMBER_ID);
             given(queryAttendanceRatioByIdUseCase.queryAttendanceRatio(any()))
                     .willReturn(
                             List.of(
@@ -314,8 +319,7 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .get(BASE_URL, MEMBER_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
+                    .get(BASE_URL, MEMBER_ID);
 
             // then
             mockMvc.perform(requestBuilder)
@@ -325,13 +329,15 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
                                     "MemberApi/Query/Public/AttendanceRatio",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
-                                    getHeaderWithAccessToken(),
                                     pathParameters(
-                                            parameterWithName("memberId").description("조회할 사용자 ID(PK)")
+                                            parameterWithName("memberId")
+                                                    .description("조회할 사용자 ID(PK)")
                                     ),
                                     responseFields(
-                                            fieldWithPath("result[].status").description("출석 상태"),
-                                            fieldWithPath("result[].count").description("출석 횟수")
+                                            fieldWithPath("result[].status")
+                                                    .description("출석 상태"),
+                                            fieldWithPath("result[].count")
+                                                    .description("출석 횟수")
                                     )
                             )
                     );

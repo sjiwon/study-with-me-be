@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class MemberReviewTest {
     @Nested
     @DisplayName("사용자 리뷰 수정")
-    class updateReview {
+    class UpdateReview {
         private MemberReview review;
 
         @BeforeEach

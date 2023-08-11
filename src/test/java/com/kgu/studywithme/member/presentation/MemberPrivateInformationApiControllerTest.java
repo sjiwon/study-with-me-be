@@ -18,6 +18,7 @@ import java.util.List;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.JPA;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
@@ -32,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class MemberPrivateInformationApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("사용자 기본 Private 정보 조회 API [GET /api/members/me] - AccessToken 필수")
-    class getInformation {
+    class GetInformation {
         private static final String BASE_URL = "/api/members/me";
         private static final Long MEMBER_ID = 1L;
 
@@ -108,7 +109,7 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("사용자가 신청한 스터디 리스트 조회 API [GET /api/members/me/studies/apply] - AccessToken 필수")
-    class getApplyStudy {
+    class GetApplyStudy {
         private static final String BASE_URL = "/api/members/me/studies/apply";
         private static final Long MEMBER_ID = 1L;
 
@@ -168,7 +169,7 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("사용자가 찜한 스터디 리스트 조회 API [GET /api/members/me/studies/favorite] - AccessToken 필수")
-    class getFavoriteStudy {
+    class GetFavoriteStudy {
         private static final String BASE_URL = "/api/members/me/studies/favorite";
         private static final Long MEMBER_ID = 1L;
 

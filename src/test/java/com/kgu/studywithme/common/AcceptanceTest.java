@@ -5,8 +5,9 @@ import com.kgu.studywithme.auth.infrastructure.oauth.google.GoogleOAuthUri;
 import com.kgu.studywithme.common.config.ExternalApiConfiguration;
 import com.kgu.studywithme.common.config.MySqlTestContainersConfiguration;
 import com.kgu.studywithme.common.config.RedisTestContainersConfiguration;
-import com.kgu.studywithme.common.stub.StubEmailSender;
 import com.kgu.studywithme.common.utils.DatabaseCleaner;
+import com.kgu.studywithme.global.infrastructure.mail.AwsSESEmailSender;
+import com.kgu.studywithme.global.infrastructure.mail.DefaultEmailSender;
 import com.kgu.studywithme.upload.utils.S3FileUploader;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.AfterEach;
@@ -41,7 +42,10 @@ public abstract class AcceptanceTest {
     private S3FileUploader s3FileUploaderMock;
 
     @MockBean
-    private StubEmailSender stubEmailSenderMock;
+    private DefaultEmailSender defaultEmailSenderMock;
+
+    @MockBean
+    private AwsSESEmailSender awsSESEmailSenderMock;
 
     @BeforeEach
     void setUp() {

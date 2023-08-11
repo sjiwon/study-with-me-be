@@ -12,15 +12,15 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-@DisplayName("StudyAttendance -> ValidAttendanceStatusValidator 테스트")
-class ValidAttendanceStatusValidatorTest {
-    private ValidAttendanceStatusValidator validator;
+@DisplayName("StudyAttendance -> AttendanceStatusUpdateConstraintValidator 테스트")
+class AttendanceStatusUpdateConstraintValidatorTest {
+    private AttendanceStatusUpdateConstraintValidator validator;
     private ConstraintValidatorContext context;
     private ConstraintValidatorContext.ConstraintViolationBuilder builder;
 
     @BeforeEach
     void setUp() {
-        validator = new ValidAttendanceStatusValidator();
+        validator = new AttendanceStatusUpdateConstraintValidator();
         context = mock(ConstraintValidatorContext.class);
         builder = mock(ConstraintValidatorContext.ConstraintViolationBuilder.class);
     }

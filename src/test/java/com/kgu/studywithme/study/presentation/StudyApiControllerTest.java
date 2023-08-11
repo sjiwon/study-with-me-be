@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static com.kgu.studywithme.common.fixture.StudyFixture.REAL_MYSQL;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
@@ -34,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class StudyApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("스터디 생성 API [POST /api/study] - AccessToken 필수")
-    class create {
+    class Create {
         private static final String BASE_URL = "/api/study";
         private static final Long HOST_ID = 1L;
         private static final CreateStudyRequest ONLINE_STUDY_REQUEST = new CreateStudyRequest(
@@ -124,7 +125,7 @@ class StudyApiControllerTest extends ControllerTest {
                                                     .description("해시태그")
                                                     .attributes(constraint("최소 1개 최대 5개"))
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -256,7 +257,7 @@ class StudyApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("스터디 정보 수정 API [PATCH /api/studies/{studyId}] - AccessToken 필수")
-    class update {
+    class Update {
         private static final String BASE_URL = "/api/studies/{studyId}";
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;
@@ -360,7 +361,7 @@ class StudyApiControllerTest extends ControllerTest {
                                                     .description("해시태그")
                                                     .attributes(constraint("최소 1개 최대 5개"))
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -434,7 +435,7 @@ class StudyApiControllerTest extends ControllerTest {
                                                     .description("해시태그")
                                                     .attributes(constraint("최소 1개 최대 5개"))
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -508,7 +509,7 @@ class StudyApiControllerTest extends ControllerTest {
                                                     .description("해시태그")
                                                     .attributes(constraint("최소 1개 최대 5개"))
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -582,7 +583,7 @@ class StudyApiControllerTest extends ControllerTest {
                                                     .description("해시태그")
                                                     .attributes(constraint("최소 1개 최대 5개"))
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -731,7 +732,7 @@ class StudyApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("스터디 종료 API [DELETE /api/studies/{studyId}] - AccessToken 필수")
-    class terminate {
+    class Terminate {
         private static final String BASE_URL = "/api/studies/{studyId}";
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;
@@ -776,7 +777,7 @@ class StudyApiControllerTest extends ControllerTest {
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }

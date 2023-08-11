@@ -299,14 +299,14 @@ public class StudyQueryAcceptanceTest extends AcceptanceTest {
                         .body("result", hasSize(2))
                         .body("result[0].member.id", is(hostId.intValue()))
                         .body("result[0].summaries[0].week", is(1))
-                        .body("result[0].summaries[0].attendanceStatus", is(NON_ATTENDANCE.getDescription()))
+                        .body("result[0].summaries[0].attendanceStatus", is(NON_ATTENDANCE.getValue()))
                         .body("result[0].summaries[1].week", is(2))
-                        .body("result[0].summaries[1].attendanceStatus", is(NON_ATTENDANCE.getDescription()))
+                        .body("result[0].summaries[1].attendanceStatus", is(NON_ATTENDANCE.getValue()))
                         .body("result[1].member.id", is(memberId.intValue()))
                         .body("result[1].summaries[0].week", is(1))
-                        .body("result[1].summaries[0].attendanceStatus", is(NON_ATTENDANCE.getDescription()))
+                        .body("result[1].summaries[0].attendanceStatus", is(NON_ATTENDANCE.getValue()))
                         .body("result[1].summaries[1].week", is(2))
-                        .body("result[1].summaries[1].attendanceStatus", is(NON_ATTENDANCE.getDescription()));
+                        .body("result[1].summaries[1].attendanceStatus", is(NON_ATTENDANCE.getValue()));
 
                 사용자에_대한_해당_주차_출석_정보를_수정한다(hostAccessToken, studyId, hostId, STUDY_WEEKLY_1.getWeek(), ATTENDANCE);
                 사용자에_대한_해당_주차_출석_정보를_수정한다(hostAccessToken, studyId, memberId, STUDY_WEEKLY_1.getWeek(), LATE);
@@ -315,14 +315,14 @@ public class StudyQueryAcceptanceTest extends AcceptanceTest {
                         .body("result", hasSize(2))
                         .body("result[0].member.id", is(hostId.intValue()))
                         .body("result[0].summaries[0].week", is(1))
-                        .body("result[0].summaries[0].attendanceStatus", is(ATTENDANCE.getDescription()))
+                        .body("result[0].summaries[0].attendanceStatus", is(ATTENDANCE.getValue()))
                         .body("result[0].summaries[1].week", is(2))
-                        .body("result[0].summaries[1].attendanceStatus", is(NON_ATTENDANCE.getDescription()))
+                        .body("result[0].summaries[1].attendanceStatus", is(NON_ATTENDANCE.getValue()))
                         .body("result[1].member.id", is(memberId.intValue()))
                         .body("result[1].summaries[0].week", is(1))
-                        .body("result[1].summaries[0].attendanceStatus", is(LATE.getDescription()))
+                        .body("result[1].summaries[0].attendanceStatus", is(LATE.getValue()))
                         .body("result[1].summaries[1].week", is(2))
-                        .body("result[1].summaries[1].attendanceStatus", is(NON_ATTENDANCE.getDescription()));
+                        .body("result[1].summaries[1].attendanceStatus", is(NON_ATTENDANCE.getValue()));
 
                 사용자에_대한_해당_주차_출석_정보를_수정한다(hostAccessToken, studyId, hostId, STUDY_WEEKLY_2.getWeek(), LATE);
                 사용자에_대한_해당_주차_출석_정보를_수정한다(hostAccessToken, studyId, memberId, STUDY_WEEKLY_2.getWeek(), ABSENCE);
@@ -331,14 +331,14 @@ public class StudyQueryAcceptanceTest extends AcceptanceTest {
                         .body("result", hasSize(2))
                         .body("result[0].member.id", is(hostId.intValue()))
                         .body("result[0].summaries[0].week", is(1))
-                        .body("result[0].summaries[0].attendanceStatus", is(ATTENDANCE.getDescription()))
+                        .body("result[0].summaries[0].attendanceStatus", is(ATTENDANCE.getValue()))
                         .body("result[0].summaries[1].week", is(2))
-                        .body("result[0].summaries[1].attendanceStatus", is(LATE.getDescription()))
+                        .body("result[0].summaries[1].attendanceStatus", is(LATE.getValue()))
                         .body("result[1].member.id", is(memberId.intValue()))
                         .body("result[1].summaries[0].week", is(1))
-                        .body("result[1].summaries[0].attendanceStatus", is(LATE.getDescription()))
+                        .body("result[1].summaries[0].attendanceStatus", is(LATE.getValue()))
                         .body("result[1].summaries[1].week", is(2))
-                        .body("result[1].summaries[1].attendanceStatus", is(ABSENCE.getDescription()));
+                        .body("result[1].summaries[1].attendanceStatus", is(ABSENCE.getValue()));
             }
         }
 

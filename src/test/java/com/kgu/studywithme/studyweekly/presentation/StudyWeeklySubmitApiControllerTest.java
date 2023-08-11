@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 import static com.kgu.studywithme.common.utils.FileMockingUtils.createSingleMockMultipartFile;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
@@ -30,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class StudyWeeklySubmitApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("스터디 주차별 과제 제출 API [POST /api/studies/{studyId}/weeks/{weeklyId}/assignment] - AccessToken 필수")
-    class submitWeeklyAssignment {
+    class SubmitWeeklyAssignment {
         private static final String BASE_URL = "/api/studies/{studyId}/weeks/{weeklyId}/assignment";
         private static final Long STUDY_ID = 1L;
         private static final Long WEEKLY_ID = 1L;
@@ -96,7 +97,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                                                     .description("제출할 링크")
                                                     .optional()
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -153,7 +154,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                                                     .description("제출할 링크")
                                                     .optional()
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -212,7 +213,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                                                     .description("제출할 링크")
                                                     .optional()
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -310,7 +311,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("스터디 주차별 제출한 과제 수정 API [POST /api/studies/{studyId}/weeks/{weeklyId}/assignment/edit] - AccessToken 필수")
-    class editSubmittedWeeklyAssignment {
+    class EditSubmittedWeeklyAssignment {
         private static final String BASE_URL = "/api/studies/{studyId}/weeks/{weeklyId}/assignment/edit";
         private static final Long STUDY_ID = 1L;
         private static final Long WEEKLY_ID = 1L;
@@ -376,7 +377,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                                                     .description("제출할 링크")
                                                     .optional()
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -433,7 +434,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                                                     .description("제출할 링크")
                                                     .optional()
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -492,7 +493,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                                                     .description("제출할 링크")
                                                     .optional()
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -551,7 +552,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                                                     .description("제출할 링크")
                                                     .optional()
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }

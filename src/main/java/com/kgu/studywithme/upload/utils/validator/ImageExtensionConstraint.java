@@ -1,4 +1,4 @@
-package com.kgu.studywithme.studyweekly.utils.validator;
+package com.kgu.studywithme.upload.utils.validator;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -10,9 +10,9 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.PARAMETER, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = ValidUploadTypeValidator.class)
-public @interface ValidUploadType {
-    String message() default "잘못된 요청입니다.";
+@Constraint(validatedBy = ImageExtensionConstraintValidator.class)
+public @interface ImageExtensionConstraint {
+    String message() default "";
 
     Class<?>[] groups() default {};
 

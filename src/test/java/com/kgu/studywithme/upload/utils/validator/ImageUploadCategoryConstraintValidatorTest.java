@@ -1,4 +1,4 @@
-package com.kgu.studywithme.studyweekly.utils.validator;
+package com.kgu.studywithme.upload.utils.validator;
 
 import jakarta.validation.ConstraintValidatorContext;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,20 +9,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.mock;
 
-@DisplayName("StudyWeekly -> ValidUploadTypeValidator 테스트")
-class ValidUploadTypeValidatorTest {
-    private ValidUploadTypeValidator validator;
+@DisplayName("Upload -> ValidImageUploadCategoryValidator 테스트")
+class ImageUploadCategoryConstraintValidatorTest {
+    private ImageUploadCategoryConstraintValidator validator;
     private ConstraintValidatorContext context;
 
     @BeforeEach
     void setUp() {
-        validator = new ValidUploadTypeValidator();
+        validator = new ImageUploadCategoryConstraintValidator();
         context = mock(ConstraintValidatorContext.class);
     }
 
     @Test
-    @DisplayName("허용하지 않는 업로드 타입이 들어오면 validator를 통과하지 못한다")
-    void notAllowedUploadType() {
+    @DisplayName("허용하지 않는 이미지 업로드 타입이 들어오면 validator를 통과하지 못한다")
+    void notAllowedStudyType() {
         // given
         final String unknown = "unknown";
 
@@ -34,15 +34,15 @@ class ValidUploadTypeValidatorTest {
     }
 
     @Test
-    @DisplayName("허용하는 업로드 타입이 들어오면 validator를 통과한다")
-    void allowedUploadType() {
+    @DisplayName("허용하는 이미지 업로드 타입이 들어오면 validator를 통과한다")
+    void allowedStudyType() {
         // given
-        final String link = "link";
-        final String file = "file";
+        final String weekly = "weekly";
+        final String description = "description";
 
         // when
-        final boolean actual1 = validator.isValid(link, context);
-        final boolean actual2 = validator.isValid(file, context);
+        final boolean actual1 = validator.isValid(weekly, context);
+        final boolean actual2 = validator.isValid(description, context);
 
         // then
         assertAll(

@@ -108,7 +108,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
 
     @Nested
     @DisplayName("각 카테고리 별 스터디 리스트 조회")
-    class fetchStudyByCategory {
+    class FetchStudyByCategory {
         @Test
         @DisplayName("최신순으로 프로그래밍 스터디 리스트를 조회한다")
         void date() {
@@ -486,7 +486,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
 
     @Nested
     @DisplayName("사용자의 관심사에 따른 스터디 리스트 조회 [Ex) 언어, 인터뷰, 프로그래밍]")
-    class fetchStudyByRecommend {
+    class FetchStudyByRecommend {
         @Test
         @DisplayName("최신순으로 스터디 리스트를 조회한다")
         void date() {

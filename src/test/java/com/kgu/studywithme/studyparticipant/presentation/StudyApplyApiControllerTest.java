@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
@@ -25,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class StudyApplyApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("스터디 참여 신청 API [POST /api/studies/{studyId}/applicants] - AccessToken 필수")
-    class apply {
+    class Apply {
         private static final String BASE_URL = "/api/studies/{studyId}/applicants";
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;
@@ -68,7 +69,7 @@ class StudyApplyApiControllerTest extends ControllerTest {
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -109,7 +110,7 @@ class StudyApplyApiControllerTest extends ControllerTest {
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -150,7 +151,7 @@ class StudyApplyApiControllerTest extends ControllerTest {
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -191,7 +192,7 @@ class StudyApplyApiControllerTest extends ControllerTest {
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -230,7 +231,7 @@ class StudyApplyApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("스터디 참여 신청 취소 API [DELETE /api/studies/{studyId}/applicants] - AccessToken 필수")
-    class applyCancel {
+    class ApplyCancel {
         private static final String BASE_URL = "/api/studies/{studyId}/applicants";
         private static final Long STUDY_ID = 1L;
         private static final Long APPLIER_ID = 1L;
@@ -272,7 +273,7 @@ class StudyApplyApiControllerTest extends ControllerTest {
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }

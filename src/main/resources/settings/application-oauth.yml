@@ -1,0 +1,10 @@
+oauth2:
+  google:
+    grant-type: authorization_code
+    client-id: ${OAUTH_GOOGLE_CLIENT_ID}
+    client-secret: ${OAUTH_GOOGLE_CLIENT_SECRET}
+    redirect-url: ${OAUTH_GOOGLE_REDIRECT_URL}
+    scope: openid, profile, email
+    auth-url: https://accounts.google.com/o/oauth2/v2/auth
+    token-url: https://www.googleapis.com/oauth2/v4/token
+    user-info-url: https://www.googleapis.com/oauth2/v3/userinfo

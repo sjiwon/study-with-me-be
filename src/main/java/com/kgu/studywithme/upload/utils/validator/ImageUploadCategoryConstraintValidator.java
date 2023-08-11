@@ -5,7 +5,7 @@ import jakarta.validation.ConstraintValidatorContext;
 
 import java.util.List;
 
-public class ValidImageUploadTypeValidator implements ConstraintValidator<ValidImageUploadType, String> {
+public class ImageUploadCategoryConstraintValidator implements ConstraintValidator<ImageUploadCategoryConstraint, String> {
     private static final List<String> ALLOWED_TYPE = List.of("weekly", "description");
 
     @Override

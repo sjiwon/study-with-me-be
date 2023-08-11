@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
@@ -30,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class StudyNoticeCommentApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("공지사항 댓글 작성 API [POST /api/notices/{noticeId}/comment] - AccessToken 필수")
-    class write {
+    class Write {
         private static final String BASE_URL = "/api/notices/{noticeId}/comment";
         private static final Long NOTICE_ID = 1L;
         private static final Long PARTICIPANT_ID = 1L;
@@ -79,7 +80,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
                                             fieldWithPath("content")
                                                     .description("댓글 내용")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -124,7 +125,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("공지사항 댓글 수정 API [PUT /api/notices/{noticeId}/comments/{commentId}] - AccessToken 필수")
-    class update {
+    class Update {
         private static final String BASE_URL = "/api/notices/{noticeId}/comments/{commentId}";
         private static final Long NOTICE_ID = 1L;
         private static final Long COMMENT_ID = 1L;
@@ -176,7 +177,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
                                             fieldWithPath("content")
                                                     .description("수정할 댓글 내용")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -223,7 +224,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("공지사항 댓글 삭제 API [DELETE /api/notices/{noticeId}/comments/{commentId}] - AccessToken 필수")
-    class delete {
+    class Delete {
         private static final String BASE_URL = "/api/notices/{noticeId}/comments/{commentId}";
         private static final Long NOTICE_ID = 1L;
         private static final Long COMMENT_ID = 1L;
@@ -268,7 +269,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
                                             parameterWithName("commentId")
                                                     .description("삭제할 댓글 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }

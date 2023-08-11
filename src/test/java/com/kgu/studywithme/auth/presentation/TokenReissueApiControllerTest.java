@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -22,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class TokenReissueApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("토큰 재발급 API [POST /api/token/reissue] - RefreshToken 필수")
-    class reissueToken {
+    class ReissueToken {
         private static final String BASE_URL = "/api/token/reissue";
 
         @Test
@@ -54,7 +55,7 @@ class TokenReissueApiControllerTest extends ControllerTest {
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithRefreshToken(),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -88,7 +89,7 @@ class TokenReissueApiControllerTest extends ControllerTest {
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithRefreshToken(),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }

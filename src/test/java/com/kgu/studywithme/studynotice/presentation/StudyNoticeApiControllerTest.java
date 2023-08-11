@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
@@ -29,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class StudyNoticeApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("공지사항 작성 API [POST /api/studies/{studyId}/notice] - AccessToken 필수")
-    class write {
+    class Write {
         private static final String BASE_URL = "/api/studies/{studyId}/notice";
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;
@@ -86,7 +87,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
                                             fieldWithPath("content")
                                                     .description("공지사항 내용")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -138,7 +139,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("공지사항 수정 API [PATCH /api/studies/{studyId}/notices/{noticeId}] - AccessToken 필수")
-    class update {
+    class Update {
         private static final String BASE_URL = "/api/studies/{studyId}/notices/{noticeId}";
         private static final Long STUDY_ID = 1L;
         private static final Long NOTICE_ID = 1L;
@@ -190,7 +191,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)"),
                                             parameterWithName("noticeId")
-                                                    .description("공지사항 ID(PK)")
+                                                    .description("수정할 공지사항 ID(PK)")
                                     ),
                                     requestFields(
                                             fieldWithPath("title")
@@ -198,7 +199,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
                                             fieldWithPath("content")
                                                     .description("수정할 공지사항 내용")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -232,7 +233,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)"),
                                             parameterWithName("noticeId")
-                                                    .description("공지사항 ID(PK)")
+                                                    .description("수정할 공지사항 ID(PK)")
                                     ),
                                     requestFields(
                                             fieldWithPath("title")
@@ -247,7 +248,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("공지사항 삭제 API [DELETE /api/studies/{studyId}/notices/{noticeId}] - AccessToken 필수")
-    class delete {
+    class Delete {
         private static final String BASE_URL = "/api/studies/{studyId}/notices/{noticeId}";
         private static final Long STUDY_ID = 1L;
         private static final Long NOTICE_ID = 1L;
@@ -295,7 +296,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
                                             parameterWithName("noticeId")
                                                     .description("삭제할 공지사항 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }

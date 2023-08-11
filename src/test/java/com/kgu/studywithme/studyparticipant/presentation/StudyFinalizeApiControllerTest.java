@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
@@ -73,7 +74,7 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -114,7 +115,7 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -200,7 +201,7 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -241,48 +242,7 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
-                            )
-                    );
-        }
-
-        @Test
-        @DisplayName("참여자가 아닌 사람은 해당 스터디를 졸업할 수 없다")
-        void throwExceptionByParticipantNotFound() throws Exception {
-            // given
-            mockingToken(true, PARTICIPANT_ID);
-            doThrow(StudyWithMeException.type(StudyParticipantErrorCode.PARTICIPANT_NOT_FOUND))
-                    .when(graduateStudyUseCase)
-                    .graduateStudy(any());
-
-            // when
-            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .patch(BASE_URL, STUDY_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
-
-            // then
-            final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.PARTICIPANT_NOT_FOUND;
-            mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isNotFound(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
-                    )
-                    .andDo(
-                            document(
-                                    "StudyApi/Participation/Graduate/Failure/Case3",
-                                    getDocumentRequest(),
-                                    getDocumentResponse(),
-                                    getHeaderWithAccessToken(),
-                                    pathParameters(
-                                            parameterWithName("studyId")
-                                                    .description("스터디 ID(PK)")
-                                    ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -315,7 +275,7 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "StudyApi/Participation/Graduate/Failure/Case4",
+                                    "StudyApi/Participation/Graduate/Failure/Case3",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
@@ -323,7 +283,7 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }

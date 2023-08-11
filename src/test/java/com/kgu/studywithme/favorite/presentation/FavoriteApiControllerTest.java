@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
@@ -26,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class FavoriteApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("찜 등록 API [POST /api/studies/{studyId}/like] - AccessToken 필수")
-    class like {
+    class LikeMarking {
         private static final String BASE_URL = "/api/studies/{studyId}/like";
         private static final Long STUDY_ID = 1L;
         private static final Long MEMBER_ID = 1L;
@@ -67,7 +68,7 @@ class FavoriteApiControllerTest extends ControllerTest {
                                             parameterWithName("studyId")
                                                     .description("찜 등록 할 스터디 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -104,7 +105,7 @@ class FavoriteApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("찜 취소 API [DELETE /api/studies/{studyId}/like] - AccessToken 필수")
-    class cancel {
+    class LikeCancellation {
         private static final String BASE_URL = "/api/studies/{studyId}/like";
         private static final Long STUDY_ID = 1L;
         private static final Long MEMBER_ID = 1L;
@@ -145,7 +146,7 @@ class FavoriteApiControllerTest extends ControllerTest {
                                             parameterWithName("studyId")
                                                     .description("찜 취소 할 스터디 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }

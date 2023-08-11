@@ -32,7 +32,7 @@ class NicknameTest {
 
     @Nested
     @DisplayName("닉네임 수정")
-    class update {
+    class Update {
         @Test
         @DisplayName("이전과 동일한 닉네임으로 수정할 수 없다")
         void throwExceptionByNicknameSameAsBefore() {

@@ -55,7 +55,7 @@ class InterestsTest {
 
     @Nested
     @DisplayName("Interests 업데이트")
-    class Upate {
+    class Update {
         private Interests interests;
 
         @BeforeEach

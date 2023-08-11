@@ -16,11 +16,11 @@ public enum AttendanceStatus {
     NON_ATTENDANCE("미출결"),
     ;
 
-    private final String description;
+    private final String value;
 
-    public static AttendanceStatus fromDescription(final String description) {
+    public static AttendanceStatus fromDescription(final String value) {
         return Arrays.stream(values())
-                .filter(status -> status.getDescription().equals(description))
+                .filter(status -> status.getValue().equals(value))
                 .findFirst()
                 .orElse(NON_ATTENDANCE);
     }

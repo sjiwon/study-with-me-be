@@ -37,7 +37,7 @@ class FavoriteManagerTest extends UseCaseTest {
 
     @Nested
     @DisplayName("찜 등록")
-    class likeMarking {
+    class LikeMarking {
         private final StudyLikeMarkingUseCase.Command command =
                 new StudyLikeMarkingUseCase.Command(
                         STUDY_ID,
@@ -84,7 +84,7 @@ class FavoriteManagerTest extends UseCaseTest {
 
     @Nested
     @DisplayName("찜 취소")
-    class likeCancellation {
+    class LikeCancellation {
         private final StudyLikeCancellationUseCase.Command command =
                 new StudyLikeCancellationUseCase.Command(
                         STUDY_ID,

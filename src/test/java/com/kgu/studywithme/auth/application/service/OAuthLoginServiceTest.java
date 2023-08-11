@@ -64,7 +64,7 @@ class OAuthLoginServiceTest extends UseCaseTest {
 
     @Nested
     @DisplayName("Google OAuth 로그인")
-    class googleLogin {
+    class GoogleLogin {
         private final Member member = JIWON.toMember().apply(1L, LocalDateTime.now());
         private final OAuthLoginUseCase.Command command =
                 new OAuthLoginUseCase.Command(

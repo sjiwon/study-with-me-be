@@ -1,0 +1,38 @@
+spring:
+  config:
+    import:
+      - aws-parameterstore:/study-with-me/secret_prod/
+      - settings/application-logging.yml
+      - settings/application-data.yml
+      - settings/application-external.yml
+      - settings/application-mail.yml
+      - settings/application-oauth.yml
+      - settings/application-cloud.yml
+
+  datasource:
+    driver-class-name: ${RDS_DRIVER}
+    url: ${RDS_URL}
+    username: ${RDS_USERNAME}
+    password: ${RDS_PASSWORD}
+
+  flyway:
+    enabled: true
+    encoding: UTF-8
+    baseline-on-migrate: true
+    baseline-version: 20230726
+    locations: classpath:db/migration
+
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
+  access-token-validity: 7200
+  refresh-token-validity: 129600
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: false

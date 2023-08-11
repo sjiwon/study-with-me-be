@@ -54,7 +54,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
 
     @Nested
     @DisplayName("Only 사용자 관련 조회")
-    class aboutMember {
+    class AboutMember {
         private Member member;
 
         @BeforeEach
@@ -191,7 +191,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
 
     @Nested
     @DisplayName("사용자 + 스터디 관련 조회")
-    class aboutStudy {
+    class AboutStudy {
         private Member member;
         private Study studyA;
         private Study studyB;

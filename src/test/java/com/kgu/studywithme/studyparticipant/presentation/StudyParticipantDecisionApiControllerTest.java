@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
@@ -32,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class StudyParticipantDecisionApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("스터디 참여 승인 API [PATCH /api/studies/{studyId}/applicants/{applierId}/approve] - AccessToken 필수")
-    class approve {
+    class Approve {
         private static final String BASE_URL = "/api/studies/{studyId}/applicants/{applierId}/approve";
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;
@@ -79,7 +80,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
                                             parameterWithName("applierId")
                                                     .description("참여 승인할 사용자 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -122,7 +123,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
                                             parameterWithName("applierId")
                                                     .description("참여 승인할 사용자 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -165,7 +166,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
                                             parameterWithName("applierId")
                                                     .description("참여 승인할 사용자 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -208,7 +209,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
                                             parameterWithName("applierId")
                                                     .description("참여 승인할 사용자 ID(PK)")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -249,7 +250,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("스터디 참여 거절 API [PATCH /api/studies/{studyId}/applicants/{applierId}/reject] - AccessToken 필수")
-    class reject {
+    class Reject {
         private static final String BASE_URL = "/api/studies/{studyId}/applicants/{applierId}/reject";
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;
@@ -297,13 +298,13 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
                                             parameterWithName("studyId")
                                                     .description("스터디 ID(PK)"),
                                             parameterWithName("applierId")
-                                                    .description("참여 승인할 사용자 ID(PK)")
+                                                    .description("참여 거절할 사용자 ID(PK)")
                                     ),
                                     requestFields(
                                             fieldWithPath("reason")
                                                     .description("참여 거절 사유")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -350,7 +351,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
                                             fieldWithPath("reason")
                                                     .description("참여 거절 사유")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -399,7 +400,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
                                             fieldWithPath("reason")
                                                     .description("참여 거절 사유")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }
@@ -448,7 +449,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
                                             fieldWithPath("reason")
                                                     .description("참여 거절 사유")
                                     ),
-                                    getExceptionResponseFiels()
+                                    getExceptionResponseFields()
                             )
                     );
         }

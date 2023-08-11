@@ -16,6 +16,16 @@ spring:
       host: localhost
       port: 6379
 
+  cloud:
+    aws:
+      region:
+        static: ap-northeast-2
+      credentials:
+        access-key: access-key
+        secret-key: secret-key
+      s3:
+        bucket: s3-bucket
+
   thymeleaf:
     cache: false
 
@@ -39,11 +49,6 @@ spring:
           ssl:
             enable: true
 
-jwt:
-  secret-key: abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc
-  access-token-validity: 1234
-  refresh-token-validity: 1234
-
 oauth2:
   google:
     grant-type: authorization_code
@@ -55,15 +60,10 @@ oauth2:
     token-url: https://www.googleapis.com/oauth2/v4/token
     user-info-url: https://www.googleapis.com/oauth2/v3/userinfo
 
-cloud:
-  ncp:
-    region: kr-standard
-    end-point: kr.object.ncloudstorage.com
-    credentials:
-      access-key: access-key
-      secret-key: secret-key
-    storage:
-      bucket: bucket-name
+jwt:
+  secret-key: testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
+  access-token-validity: 1234
+  refresh-token-validity: 1234
 
 slack:
   webhook:

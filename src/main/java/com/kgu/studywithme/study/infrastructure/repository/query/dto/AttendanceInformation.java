@@ -25,7 +25,7 @@ public record AttendanceInformation(
             this(
                     new StudyMember(id, nickname.getValue()),
                     week,
-                    attendanceStatus.getDescription()
+                    attendanceStatus.getValue()
             );
         }
     }
