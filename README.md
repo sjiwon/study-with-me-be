@@ -108,6 +108,11 @@ java -jar \
 
 - API 테스트 시 필요한 `Token`은 `src/main/resources/DummyToken.txt`에서 사용
 
+> OAuth `Authorization Code`를 파싱한 후 `/api/oauth/login/{provider}` 요청 시 Authorization Code에 존재하는 `%2F -> /`로 수정
+> - `%2F`는 HTTP URL Encoding으로 인한 결과로써 OAuth Provider가 인코딩된 값 인식 불가능
+> - 4%2F0Adeu5BXgIJvUdjU090jAGQEwm8WPb8VidZzvmS9OjNFLrfeTIW9B-jGB292k5PRf73w4XA -> 4/0Adeu5BXgIJvUdjU090jAGQEwm8WPb8VidZzvmS9OjNFLrfeTIW9B-jGB292k5PRf73w4XA
+>   - %2F -> /
+
 ### [4) REST Docs](http://localhost:8080/docs/index.html)
 
 - Gradle `build` Task 실행 후 접속
