@@ -1,13 +1,9 @@
 name: Backend CD
 
 on:
-  pull_request:
+  push:
     branches:
       - main
-  workflow_run:
-    workflows: [ "Backend CI" ]
-    types:
-      - completed
 
 jobs:
   build:
@@ -42,8 +38,8 @@ jobs:
       - name: Gradle 명령 실행을 위한 권한을 부여한다
         run: chmod +x gradlew
 
-      - name: Gradle build를 수행한다 (테스트 제외)
-        run: ./gradlew bootJar -x test
+      - name: Gradle build를 수행한다
+        run: ./gradlew bootJar
 
       - name: Docker Image를 빌드한 후 Docker Hub에 Push한다
         run: |
@@ -52,6 +48,15 @@ jobs:
           docker images
           docker push ${{ secrets.DOCKER_USERNAME }}/study-with-me-be:latest
 
+      - name: docker-compose-prod.yml을 EC2에 전송한다
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          source: ".docker-compose-prod.yml"
+          target: "/home/ec2-user/Study-With-Me-Backend"
+
       - name: EC2 WAS 서버에 접속 후 Docker Image를 Pull하고 docker-compose를 실행한다
         uses: appleboy/ssh-action@master
         with:
@@ -59,7 +64,8 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
-            docker rm -f $(docker ps -qa)
-            docker rmi ${{ secrets.DOCKER_USERNAME }}/study-with-me-be:latest
-            docker pull ${{ secrets.DOCKER_USERNAME }}/study-with-me-be:latest
-            docker-compose -f docker-compose-prod.yml up -d
+            cd /home/ec2-user/Study-With-Me-Backend
+            sudo docker rm -f $(sudo docker ps -qa)
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/study-with-me-be:latest
+            sudo docker-compose -f docker-compose-prod.yml up -d
+            sudo docker image prune -f
