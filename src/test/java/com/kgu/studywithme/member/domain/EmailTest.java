@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 @DisplayName("Member -> 도메인 [Email VO] 테스트")
 class EmailTest {
     @ParameterizedTest
-    @ValueSource(strings = {"", "abc", "@gmail.com", "abc@gmail", "abc@naver.com", "abc@kakao.com"})
+    @ValueSource(strings = {"", "abc", "@gmail.com", "@naver.com", "@kakao.com", "abc@gmail", "abc@naver", "abc@kakao"})
     @DisplayName("형식에 맞지 않는 Email이면 생성에 실패한다")
     void throwExceptionByInvalidEmailFormat(final String value) {
         assertThatThrownBy(() -> new Email(value))
@@ -21,7 +21,7 @@ class EmailTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"test1@gmail.com", "test2@gmail.com"})
+    @ValueSource(strings = {"hello@gmail.com", "hello@naver.com", "hello@kakao.com"})
     @DisplayName("Email을 생성한다")
     void construct(final String value) {
         assertDoesNotThrow(() -> new Email(value));

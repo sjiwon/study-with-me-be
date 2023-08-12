@@ -14,8 +14,8 @@ import java.util.regex.Pattern;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
 public class Email {
-    // 이메일 형식은 @gmail.com만 허용
-    private static final Pattern EMAIL_MATCHER = Pattern.compile("^[a-zA-Z0-9._%+-]+@gmail\\.com$");
+    // 이메일 형식은 [@gmail.com, @naver.com, @kakao.com]만 허용
+    private static final Pattern EMAIL_MATCHER = Pattern.compile("^[a-zA-Z0-9._%+-]+@(gmail\\.com|naver\\.com|kakao\\.com)$");
 
     @Column(name = "email", nullable = false, unique = true, updatable = false)
     private String value;
