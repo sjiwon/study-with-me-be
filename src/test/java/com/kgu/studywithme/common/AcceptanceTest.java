@@ -2,6 +2,10 @@ package com.kgu.studywithme.common;
 
 import com.kgu.studywithme.auth.infrastructure.oauth.google.GoogleOAuthConnector;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.GoogleOAuthUri;
+import com.kgu.studywithme.auth.infrastructure.oauth.kakao.KakaoOAuthConnector;
+import com.kgu.studywithme.auth.infrastructure.oauth.kakao.KakaoOAuthUri;
+import com.kgu.studywithme.auth.infrastructure.oauth.naver.NaverOAuthConnector;
+import com.kgu.studywithme.auth.infrastructure.oauth.naver.NaverOAuthUri;
 import com.kgu.studywithme.common.config.ExternalApiConfiguration;
 import com.kgu.studywithme.common.config.MySqlTestContainersConfiguration;
 import com.kgu.studywithme.common.config.RedisTestContainersConfiguration;
@@ -36,7 +40,19 @@ public abstract class AcceptanceTest {
     private GoogleOAuthUri googleOAuthUriMock;
 
     @MockBean
+    private NaverOAuthUri naverOAuthUriMock;
+
+    @MockBean
+    private KakaoOAuthUri kakaoOAuthUriMock;
+
+    @MockBean
     private GoogleOAuthConnector googleOAuthConnectorMock;
+
+    @MockBean
+    private NaverOAuthConnector naverOAuthConnectorMock;
+
+    @MockBean
+    private KakaoOAuthConnector kakaoOAuthConnectorMock;
 
     @MockBean
     private S3FileUploader s3FileUploaderMock;

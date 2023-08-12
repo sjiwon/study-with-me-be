@@ -7,7 +7,11 @@ import com.kgu.studywithme.global.aop.CheckStudyHost;
 import com.kgu.studywithme.study.application.usecase.command.CreateStudyUseCase;
 import com.kgu.studywithme.study.application.usecase.command.TerminateStudyUseCase;
 import com.kgu.studywithme.study.application.usecase.command.UpdateStudyUseCase;
-import com.kgu.studywithme.study.domain.*;
+import com.kgu.studywithme.study.domain.Capacity;
+import com.kgu.studywithme.study.domain.Description;
+import com.kgu.studywithme.study.domain.StudyName;
+import com.kgu.studywithme.study.domain.StudyThumbnail;
+import com.kgu.studywithme.study.domain.StudyType;
 import com.kgu.studywithme.study.presentation.dto.request.CreateStudyRequest;
 import com.kgu.studywithme.study.presentation.dto.request.UpdateStudyRequest;
 import com.kgu.studywithme.study.presentation.dto.response.StudyIdResponse;
@@ -16,7 +20,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Tag(name = "4-1. 스터디 API")

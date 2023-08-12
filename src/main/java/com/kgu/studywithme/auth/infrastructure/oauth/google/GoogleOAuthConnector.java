@@ -11,7 +11,6 @@ import com.kgu.studywithme.global.exception.StudyWithMeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
@@ -19,15 +18,16 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import static com.kgu.studywithme.auth.infrastructure.oauth.OAuthMetadata.CONTENT_TYPE_VALUE;
+import static com.kgu.studywithme.auth.infrastructure.oauth.OAuthMetadata.TOKEN_TYPE;
 import static com.kgu.studywithme.auth.utils.OAuthProvider.GOOGLE;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.HttpMethod.GET;
 
 @Component
 @RequiredArgsConstructor
 public class GoogleOAuthConnector implements OAuthConnector {
-    private static final String BEARER_TYPE = "Bearer";
-
     private final GoogleOAuthProperties properties;
     private final RestTemplate restTemplate;
 
@@ -39,10 +39,11 @@ public class GoogleOAuthConnector implements OAuthConnector {
     @Override
     public OAuthTokenResponse getToken(
             final String code,
-            final String redirectUri
+            final String redirectUri,
+            final String state
     ) {
         final HttpHeaders headers = createTokenRequestHeader();
-        final MultiValueMap<String, String> params = applyTokenRequestParams(code, redirectUri);
+        final MultiValueMap<String, String> params = applyTokenRequestParams(code, redirectUri, state);
 
         final HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
         return fetchGoogleToken(request).getBody();
@@ -50,20 +51,22 @@ public class GoogleOAuthConnector implements OAuthConnector {
 
     private HttpHeaders createTokenRequestHeader() {
         final HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.set(CONTENT_TYPE, CONTENT_TYPE_VALUE);
         return headers;
     }
 
     private MultiValueMap<String, String> applyTokenRequestParams(
             final String code,
-            final String redirectUri
+            final String redirectUri,
+            final String state
     ) {
         final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", properties.getGrantType());
-        params.add("client_id", properties.getClientId());
-        params.add("client_secret", properties.getClientSecret());
         params.add("code", code);
         params.add("redirect_uri", redirectUri);
+        params.add("state", state);
+        params.add("client_id", properties.getClientId());
+        params.add("client_secret", properties.getClientSecret());
         return params;
     }
 
@@ -86,7 +89,7 @@ public class GoogleOAuthConnector implements OAuthConnector {
 
     private HttpHeaders createUserInfoRequestHeader(final String accessToken) {
         final HttpHeaders headers = new HttpHeaders();
-        headers.set(AUTHORIZATION, String.join(" ", BEARER_TYPE, accessToken));
+        headers.set(AUTHORIZATION, String.join(" ", TOKEN_TYPE, accessToken));
         return headers;
     }
 

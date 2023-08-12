@@ -2,7 +2,11 @@ package com.kgu.studywithme.study.presentation;
 
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.*;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.AttendanceInformation;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.NoticeInformation;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.StudyApplicantInformation;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.StudyMember;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.WeeklyInformation;
 import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
 import com.kgu.studywithme.studyweekly.domain.submit.UploadAssignment;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,13 +19,22 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.kgu.studywithme.common.fixture.MemberFixture.*;
+import static com.kgu.studywithme.common.fixture.MemberFixture.ANONYMOUS;
+import static com.kgu.studywithme.common.fixture.MemberFixture.GHOST;
+import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyWeeklyAttachmentFixture.PDF_FILE;
 import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1;
-import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.constraint;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentRequest;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getExceptionResponseFields;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.*;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ABSENCE;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.LATE;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.NON_ATTENDANCE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;

@@ -15,9 +15,16 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.kgu.studywithme.common.fixture.MemberFixture.*;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY1;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY2;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY3;
+import static com.kgu.studywithme.common.fixture.MemberFixture.GHOST;
+import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.LINE_INTERVIEW;
-import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.constraint;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentRequest;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static com.kgu.studywithme.study.domain.RecruitmentStatus.IN_PROGRESS;

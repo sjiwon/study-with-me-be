@@ -9,7 +9,8 @@ public interface OAuthLoginUseCase {
     record Command(
             OAuthProvider provider,
             String code,
-            String redirectUrl
+            String redirectUrl,
+            String state
     ) {
     }
 }

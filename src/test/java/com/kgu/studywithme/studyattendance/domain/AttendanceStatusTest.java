@@ -3,7 +3,10 @@ package com.kgu.studywithme.studyattendance.domain;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.*;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ABSENCE;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.LATE;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.NON_ATTENDANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 

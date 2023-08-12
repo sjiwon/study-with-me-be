@@ -7,8 +7,17 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-import static com.kgu.studywithme.common.fixture.PeriodFixture.*;
-import static com.kgu.studywithme.common.fixture.StudyWeeklyAttachmentFixture.*;
+import static com.kgu.studywithme.common.fixture.PeriodFixture.WEEK_0;
+import static com.kgu.studywithme.common.fixture.PeriodFixture.WEEK_1;
+import static com.kgu.studywithme.common.fixture.PeriodFixture.WEEK_2;
+import static com.kgu.studywithme.common.fixture.PeriodFixture.WEEK_3;
+import static com.kgu.studywithme.common.fixture.PeriodFixture.WEEK_4;
+import static com.kgu.studywithme.common.fixture.PeriodFixture.WEEK_5;
+import static com.kgu.studywithme.common.fixture.PeriodFixture.WEEK_6;
+import static com.kgu.studywithme.common.fixture.StudyWeeklyAttachmentFixture.HWPX_FILE;
+import static com.kgu.studywithme.common.fixture.StudyWeeklyAttachmentFixture.IMG_FILE;
+import static com.kgu.studywithme.common.fixture.StudyWeeklyAttachmentFixture.PDF_FILE;
+import static com.kgu.studywithme.common.fixture.StudyWeeklyAttachmentFixture.TXT_FILE;
 
 @Getter
 @RequiredArgsConstructor

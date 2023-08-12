@@ -11,6 +11,8 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public enum OAuthProvider {
     GOOGLE("google"),
+    NAVER("naver"),
+    KAKAO("kakao"),
     ;
 
     private final String provider;

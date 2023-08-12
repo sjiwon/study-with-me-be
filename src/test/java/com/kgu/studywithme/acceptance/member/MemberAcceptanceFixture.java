@@ -12,7 +12,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.stream.Collectors;
 
-import static com.kgu.studywithme.acceptance.CommonRequestFixture.*;
+import static com.kgu.studywithme.acceptance.CommonRequestFixture.getRequest;
+import static com.kgu.studywithme.acceptance.CommonRequestFixture.patchRequest;
+import static com.kgu.studywithme.acceptance.CommonRequestFixture.postRequest;
 
 public class MemberAcceptanceFixture {
     public static ValidatableResponse 회원가입을_진행한다(final MemberFixture fixture) {

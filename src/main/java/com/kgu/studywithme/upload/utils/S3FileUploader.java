@@ -14,8 +14,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
-import static com.kgu.studywithme.upload.infrastructure.aws.BucketMetadata.*;
-import static com.kgu.studywithme.upload.utils.FileUploadType.*;
+import static com.kgu.studywithme.upload.infrastructure.aws.BucketMetadata.STUDY_DESCRIPTIONS;
+import static com.kgu.studywithme.upload.infrastructure.aws.BucketMetadata.WEEKLY_ATTACHMENTS;
+import static com.kgu.studywithme.upload.infrastructure.aws.BucketMetadata.WEEKLY_IMAGES;
+import static com.kgu.studywithme.upload.infrastructure.aws.BucketMetadata.WEEKLY_SUBMITS;
+import static com.kgu.studywithme.upload.utils.FileUploadType.ATTACHMENT;
+import static com.kgu.studywithme.upload.utils.FileUploadType.DESCRIPTION;
+import static com.kgu.studywithme.upload.utils.FileUploadType.IMAGE;
+import static com.kgu.studywithme.upload.utils.FileUploadType.SUBMIT;
 
 @Slf4j
 @Component

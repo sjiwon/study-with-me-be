@@ -1,7 +1,25 @@
 package com.kgu.studywithme.study.infrastructure.repository.query;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.*;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.AttendanceInformation;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.NoticeInformation;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.QAttendanceInformation_AttenadnceParticipant;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.QNoticeInformation;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.QNoticeInformation_CommentInformation;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.QReviewInformation_ReviewMetadata;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.QStudyApplicantInformation;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.QStudyBasicInformation;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.QStudyBasicInformation_ParticipantInformation;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.QStudyMember;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.QWeeklyInformation;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.QWeeklyInformation_WeeklyAttachment;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.QWeeklyInformation_WeeklySubmit;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.ReviewInformation;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.StudyApplicantInformation;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.StudyBasicInformation;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.StudyMember;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.StudyParticipantInformation;
+import com.kgu.studywithme.study.infrastructure.repository.query.dto.WeeklyInformation;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -15,7 +33,9 @@ import static com.kgu.studywithme.study.domain.hashtag.QHashtag.hashtag;
 import static com.kgu.studywithme.studyattendance.domain.QStudyAttendance.studyAttendance;
 import static com.kgu.studywithme.studynotice.domain.QStudyNotice.studyNotice;
 import static com.kgu.studywithme.studynotice.domain.comment.QStudyNoticeComment.studyNoticeComment;
-import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.*;
+import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPLY;
+import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPROVE;
+import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.GRADUATED;
 import static com.kgu.studywithme.studyparticipant.domain.QStudyParticipant.studyParticipant;
 import static com.kgu.studywithme.studyreview.domain.QStudyReview.studyReview;
 import static com.kgu.studywithme.studyweekly.domain.QStudyWeekly.studyWeekly;

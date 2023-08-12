@@ -8,7 +8,11 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.time.LocalDateTime;
 
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
-import static com.kgu.studywithme.common.fixture.StudyFixture.*;
+import static com.kgu.studywithme.common.fixture.StudyFixture.CHINESE;
+import static com.kgu.studywithme.common.fixture.StudyFixture.JAPANESE;
+import static com.kgu.studywithme.common.fixture.StudyFixture.KAKAO_INTERVIEW;
+import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
+import static com.kgu.studywithme.common.fixture.StudyFixture.TOSS_INTERVIEW;
 import static com.kgu.studywithme.study.domain.RecruitmentStatus.IN_PROGRESS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;

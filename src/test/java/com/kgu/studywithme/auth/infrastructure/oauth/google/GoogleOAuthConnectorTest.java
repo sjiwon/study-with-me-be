@@ -18,7 +18,14 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
-import static com.kgu.studywithme.common.utils.TokenUtils.*;
+import static com.kgu.studywithme.common.utils.OAuthUtils.AUTHORIZATION_CODE;
+import static com.kgu.studywithme.common.utils.OAuthUtils.REDIRECT_URI;
+import static com.kgu.studywithme.common.utils.OAuthUtils.STATE;
+import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
+import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
+import static com.kgu.studywithme.common.utils.TokenUtils.EXPIRES_IN;
+import static com.kgu.studywithme.common.utils.TokenUtils.ID_TOKEN;
+import static com.kgu.studywithme.common.utils.TokenUtils.SCOPE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -38,9 +45,6 @@ class GoogleOAuthConnectorTest {
     @MockBean
     private RestTemplate restTemplate;
 
-    private static final String AUTHORIZATION_CODE = "authoriation_code";
-    private static final String REDIRECT_URL = "http://localhost:8080/login/oauth2/code/google";
-
     @Nested
     @DisplayName("Token 응답받기")
     class GetToken {
@@ -53,7 +57,7 @@ class GoogleOAuthConnectorTest {
             )).willThrow(RestClientException.class);
 
             // when - then
-            assertThatThrownBy(() -> googleOAuthConnector.getToken(AUTHORIZATION_CODE, REDIRECT_URL))
+            assertThatThrownBy(() -> googleOAuthConnector.getToken(AUTHORIZATION_CODE, REDIRECT_URI, STATE))
                     .isInstanceOf(StudyWithMeException.class)
                     .hasMessage(AuthErrorCode.GOOGLE_OAUTH_EXCEPTION.getMessage());
         }
@@ -70,15 +74,15 @@ class GoogleOAuthConnectorTest {
 
             // when
             final GoogleTokenResponse result
-                    = (GoogleTokenResponse) googleOAuthConnector.getToken(AUTHORIZATION_CODE, REDIRECT_URL);
+                    = (GoogleTokenResponse) googleOAuthConnector.getToken(AUTHORIZATION_CODE, REDIRECT_URI, STATE);
 
             // then
             assertAll(
-                    () -> assertThat(result.getTokenType()).isEqualTo(BEARER_TOKEN),
-                    () -> assertThat(result.getIdToken()).isEqualTo(ID_TOKEN),
-                    () -> assertThat(result.getAccessToken()).isEqualTo(ACCESS_TOKEN),
-                    () -> assertThat(result.getScope()).isEqualTo(SCOPE),
-                    () -> assertThat(result.getExpiresIn()).isEqualTo(EXPIRES_IN)
+                    () -> assertThat(result.tokenType()).isEqualTo(BEARER_TOKEN),
+                    () -> assertThat(result.idToken()).isEqualTo(ID_TOKEN),
+                    () -> assertThat(result.accessToken()).isEqualTo(ACCESS_TOKEN),
+                    () -> assertThat(result.scope()).isEqualTo(SCOPE),
+                    () -> assertThat(result.expiresIn()).isEqualTo(EXPIRES_IN)
             );
         }
     }
@@ -115,9 +119,8 @@ class GoogleOAuthConnectorTest {
 
             // then
             assertAll(
-                    () -> assertThat(result.getName()).isEqualTo(JIWON.getName()),
-                    () -> assertThat(result.getEmail()).isEqualTo(JIWON.getEmail().getValue()),
-                    () -> assertThat(result.getProfileImage()).isEqualTo("google_profile_url")
+                    () -> assertThat(result.name()).isEqualTo(JIWON.getName()),
+                    () -> assertThat(result.email()).isEqualTo(JIWON.getEmail().getValue())
             );
         }
     }

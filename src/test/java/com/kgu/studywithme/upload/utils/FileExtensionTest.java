@@ -11,7 +11,18 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.stream.Stream;
 
-import static com.kgu.studywithme.upload.utils.FileExtension.*;
+import static com.kgu.studywithme.upload.utils.FileExtension.DOC;
+import static com.kgu.studywithme.upload.utils.FileExtension.DOCX;
+import static com.kgu.studywithme.upload.utils.FileExtension.GIF;
+import static com.kgu.studywithme.upload.utils.FileExtension.HWP;
+import static com.kgu.studywithme.upload.utils.FileExtension.HWPX;
+import static com.kgu.studywithme.upload.utils.FileExtension.JPEG;
+import static com.kgu.studywithme.upload.utils.FileExtension.JPG;
+import static com.kgu.studywithme.upload.utils.FileExtension.PDF;
+import static com.kgu.studywithme.upload.utils.FileExtension.PNG;
+import static com.kgu.studywithme.upload.utils.FileExtension.PPT;
+import static com.kgu.studywithme.upload.utils.FileExtension.PPTX;
+import static com.kgu.studywithme.upload.utils.FileExtension.TXT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

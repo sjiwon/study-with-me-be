@@ -1,6 +1,13 @@
 package com.kgu.studywithme.member.infrastructure.repository.query;
 
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.*;
+import com.kgu.studywithme.member.infrastructure.repository.query.dto.AppliedStudy;
+import com.kgu.studywithme.member.infrastructure.repository.query.dto.AttendanceRatio;
+import com.kgu.studywithme.member.infrastructure.repository.query.dto.GraduatedStudy;
+import com.kgu.studywithme.member.infrastructure.repository.query.dto.LikeMarkedStudy;
+import com.kgu.studywithme.member.infrastructure.repository.query.dto.MemberPrivateInformation;
+import com.kgu.studywithme.member.infrastructure.repository.query.dto.MemberPublicInformation;
+import com.kgu.studywithme.member.infrastructure.repository.query.dto.ParticipateStudy;
+import com.kgu.studywithme.member.infrastructure.repository.query.dto.ReceivedReview;
 
 import java.util.List;
 

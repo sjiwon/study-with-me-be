@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.kgu.studywithme.auth.utils.OAuthProvider.GOOGLE;
+import static com.kgu.studywithme.common.utils.OAuthUtils.REDIRECT_URI;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -52,7 +53,7 @@ class QueryOAuthLinkServiceTest extends UseCaseTest {
                 () -> queryOAuthLinkService.queryOAuthLink(
                         new QueryOAuthLinkUseCase.Query(
                                 null,
-                                "google-redirect-url"
+                                REDIRECT_URI
                         )
                 )
         )
@@ -67,20 +68,20 @@ class QueryOAuthLinkServiceTest extends UseCaseTest {
     void successGoogle() {
         // given
         given(googleOAuthUri.isSupported(GOOGLE)).willReturn(true);
-        given(googleOAuthUri.generate(any())).willReturn("google-oauth-uri");
+        given(googleOAuthUri.generate(any())).willReturn(REDIRECT_URI);
 
         // when
         final String uri = queryOAuthLinkService.queryOAuthLink(
                 new QueryOAuthLinkUseCase.Query(
                         GOOGLE,
-                        "google-redirect-url"
+                        REDIRECT_URI
                 )
         );
 
         // then
         assertAll(
                 () -> verify(googleOAuthUri, times(1)).generate(any()),
-                () -> assertThat(uri).isEqualTo("google-oauth-uri")
+                () -> assertThat(uri).isEqualTo(REDIRECT_URI)
         );
     }
 }

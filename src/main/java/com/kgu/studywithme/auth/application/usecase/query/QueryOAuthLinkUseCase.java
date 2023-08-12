@@ -7,7 +7,7 @@ public interface QueryOAuthLinkUseCase {
 
     record Query(
             OAuthProvider provider,
-            String redirectUrl
+            String redirectUri
     ) {
     }
 }

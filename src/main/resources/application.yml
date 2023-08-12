@@ -29,7 +29,7 @@ jwt:
 
 springdoc:
   swagger-ui:
-    path: /swagger-ui.html
+    path: /swagger
     display-request-duration: true
     operations-sorter: alpha
     tags-sorter: alpha

@@ -33,8 +33,8 @@ public class OAuthLoginService implements OAuthLoginUseCase {
     @Override
     public LoginResponse login(final Command command) {
         final OAuthConnector oAuthConnector = getOAuthConnectorByProvider(command.provider());
-        final OAuthTokenResponse token = oAuthConnector.getToken(command.code(), command.redirectUrl());
-        final OAuthUserResponse userInfo = oAuthConnector.getUserInfo(token.getAccessToken());
+        final OAuthTokenResponse token = oAuthConnector.getToken(command.code(), command.redirectUrl(), command.state());
+        final OAuthUserResponse userInfo = oAuthConnector.getUserInfo(token.accessToken());
 
         final Member member = findMemberOrException(userInfo);
         final String accessToken = jwtTokenProvider.createAccessToken(member.getId());
@@ -56,7 +56,7 @@ public class OAuthLoginService implements OAuthLoginUseCase {
     }
 
     private Member findMemberOrException(final OAuthUserResponse userInfo) {
-        return memberRepository.findByEmail(new Email(userInfo.getEmail()))
+        return memberRepository.findByEmail(new Email(userInfo.email()))
                 .orElseThrow(() -> new StudyWithMeOAuthException(userInfo));
     }
 }

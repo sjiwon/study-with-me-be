@@ -14,9 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static com.kgu.studywithme.common.fixture.MemberFixture.*;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY1;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY2;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY3;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY4;
+import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
-import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.*;
+import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPROVE;
+import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.GRADUATED;
+import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.LEAVE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 

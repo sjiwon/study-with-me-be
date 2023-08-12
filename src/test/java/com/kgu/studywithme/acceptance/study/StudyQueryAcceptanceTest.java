@@ -8,17 +8,40 @@ import org.junit.jupiter.api.Test;
 
 import java.time.format.DateTimeFormatter;
 
-import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.*;
-import static com.kgu.studywithme.common.fixture.MemberFixture.*;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.사용자에_대한_해당_주차_출석_정보를_수정한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_공지사항에_댓글을_작성한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_공지사항을_작성한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_공지사항을_조회한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_기본_정보를_조회한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_리뷰를_작성한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_리뷰를_조회한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_신청자를_조회한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_신청자에_대한_참여를_승인한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_주차를_생성한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_주차별_정보를_조회한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_참여_신청을_한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_참여자를_조회한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_출석_정보를_조회한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디를_졸업한다;
+import static com.kgu.studywithme.common.fixture.MemberFixture.ANONYMOUS;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY9;
+import static com.kgu.studywithme.common.fixture.MemberFixture.GHOST;
+import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.KAFKA;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1;
 import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_2;
 import static com.kgu.studywithme.study.domain.RecruitmentStatus.IN_PROGRESS;
 import static com.kgu.studywithme.study.exception.StudyErrorCode.MEMBER_IS_NOT_HOST;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.*;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ABSENCE;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.LATE;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.NON_ATTENDANCE;
 import static com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode.MEMBER_IS_NOT_PARTICIPANT;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.http.HttpStatus.OK;
 
 @DisplayName("[Acceptance Test] 스터디 정보 관련 기능")

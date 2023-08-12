@@ -2,7 +2,13 @@ package com.kgu.studywithme.auth.utils;
 
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
 import org.springframework.beans.factory.annotation.Value;

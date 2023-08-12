@@ -10,7 +10,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.List;
 
-import static com.kgu.studywithme.category.domain.Category.*;
+import static com.kgu.studywithme.category.domain.Category.APTITUDE_NCS;
+import static com.kgu.studywithme.category.domain.Category.CERTIFICATION;
+import static com.kgu.studywithme.category.domain.Category.ETC;
+import static com.kgu.studywithme.category.domain.Category.INTERVIEW;
+import static com.kgu.studywithme.category.domain.Category.LANGUAGE;
+import static com.kgu.studywithme.category.domain.Category.PROGRAMMING;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentRequest;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static org.mockito.BDDMockito.given;

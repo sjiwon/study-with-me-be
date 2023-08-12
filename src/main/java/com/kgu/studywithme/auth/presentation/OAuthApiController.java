@@ -14,7 +14,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "1-1. OAuth 인증 관련 API")
 @RestController
@@ -26,15 +32,15 @@ public class OAuthApiController {
     private final LogoutUseCase logoutUseCase;
 
     @Operation(summary = "Provider별 OAuth 인증을 위한 URL을 받는 EndPoint")
-    @GetMapping(value = "/access/{provider}", params = {"redirectUrl"})
+    @GetMapping(value = "/access/{provider}", params = {"redirectUri"})
     public ResponseEntity<ResponseWrapper<String>> queryOAuthLink(
             @PathVariable final String provider,
-            @RequestParam final String redirectUrl
+            @RequestParam final String redirectUri
     ) {
         final String oAuthLink = queryOAuthLinkUseCase.queryOAuthLink(
                 new QueryOAuthLinkUseCase.Query(
                         OAuthProvider.from(provider),
-                        redirectUrl
+                        redirectUri
                 )
         );
         return ResponseEntity.ok(ResponseWrapper.from(oAuthLink));
@@ -50,7 +56,8 @@ public class OAuthApiController {
                 new OAuthLoginUseCase.Command(
                         OAuthProvider.from(provider),
                         request.authorizationCode(),
-                        request.redirectUrl()
+                        request.redirectUri(),
+                        request.state()
                 )
         );
         return ResponseEntity.ok(response);

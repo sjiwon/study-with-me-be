@@ -7,7 +7,11 @@ import org.springframework.stereotype.Component;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import software.amazon.awssdk.services.ses.SesClient;
-import software.amazon.awssdk.services.ses.model.*;
+import software.amazon.awssdk.services.ses.model.Body;
+import software.amazon.awssdk.services.ses.model.Content;
+import software.amazon.awssdk.services.ses.model.Destination;
+import software.amazon.awssdk.services.ses.model.Message;
+import software.amazon.awssdk.services.ses.model.SendEmailRequest;
 
 import java.time.LocalDate;
 import java.util.Map;

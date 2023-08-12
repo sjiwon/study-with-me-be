@@ -17,9 +17,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.kgu.studywithme.common.fixture.MemberFixture.*;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY1;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY2;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY3;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY4;
+import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.*;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.LATE;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.NON_ATTENDANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 

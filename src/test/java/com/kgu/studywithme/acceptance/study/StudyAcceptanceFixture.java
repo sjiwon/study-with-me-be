@@ -21,7 +21,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.kgu.studywithme.acceptance.CommonRequestFixture.*;
+import static com.kgu.studywithme.acceptance.CommonRequestFixture.deleteRequest;
+import static com.kgu.studywithme.acceptance.CommonRequestFixture.getRequest;
+import static com.kgu.studywithme.acceptance.CommonRequestFixture.multipartRequest;
+import static com.kgu.studywithme.acceptance.CommonRequestFixture.patchRequest;
+import static com.kgu.studywithme.acceptance.CommonRequestFixture.postRequest;
 
 public class StudyAcceptanceFixture {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");

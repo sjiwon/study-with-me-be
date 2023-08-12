@@ -1,11 +1,12 @@
-# 여기서 구해볼래? `Backend`
+# 여기서 구해볼래? `Backend` (Refactoring)
+
+- [Origin Project](https://github.com/kgu-capstone/study-with-me-be)
+
 
 ## 🌙 소개
 #### 스터디 모집에서 진행 관리까지 케어하는 웹 애플리케이션 플랫폼
 
 ![1  설명](https://github.com/kgu-capstone/study-with-me-be/assets/51479381/dede40ea-94be-4577-9674-d3e35b7cb6c0)
-
-> 비용 문제로 인해 Naver Cloud Platform Server는 비활성화 상태
 
 <br>
 
@@ -53,15 +54,6 @@
 
 <br>
 
-## 👥 팀원
-|<img width="150px" src="https://avatars.githubusercontent.com/u/51479381?v=4"/>|<img width="150px" src="https://avatars.githubusercontent.com/u/109421279?v=4"/>|
-|:---:|:---:|
-|[서지원](https://github.com/sjiwon)|[양채린](https://github.com/chaeeerish)|
-
-> [Frontend Repository 보러가기](https://github.com/kgu-capstone/study-with-me-fe)
-
-<br>
-
 ## 🚩 실행 방식
 ### 1) MySQL DB & Redis
 
@@ -83,7 +75,13 @@
 
 - `OAUTH_GOOGLE_CLIENT_ID` = Google OAuth Application Client ID
 - `OAUTH_GOOGLE_CLIENT_SECRET` = Google OAuth Application Client Secret
-- `OAUTH_GOOGLE_REDIRECT_URL` = Google OAuth Application Redirect Url
+- `OAUTH_GOOGLE_REDIRECT_URI` = Google OAuth Application Redirect Uri
+- `OAUTH_NAVER_CLIENT_ID` = Naver OAuth Application Client ID
+- `OAUTH_NAVER_CLIENT_SECRET` = Naver OAuth Application Client Secret
+- `OAUTH_NAVER_REDIRECT_URI` = Naver OAuth Application Redirect Uri
+- `OAUTH_KAKAO_CLIENT_ID` = Kakao OAuth Application Client ID
+- `OAUTH_KAKAO_CLIENT_SECRET` = Kakao OAuth Application Client Secret
+- `OAUTH_KAKAO_REDIRECT_URI` = Kakao OAuth Application Redirect Uri
 
 ##### settings/application-external.yml
 - `SLACK_WEBHOOK_URL` = Slack Webhook Url
@@ -97,16 +95,27 @@ java -jar \
     -Dspring.cloud.aws.s3.bucket="AWS S3 Bucket" \
     -Doauth2.google.client-id="Google OAuth Application Client Id" \
     -Doauth2.google.client-secret="Google OAuth Application Client Secret" \
-    -Doauth2.google.redirect-url="Google OAuth Application Redirect Url" \
+    -Doauth2.google.redirect-uri="Google OAuth Application Redirect Uri" \
+    -Doauth2.naver.client-id="Naver OAuth Application Client Id" \
+    -Doauth2.naver.client-secret="kakao OAuth Application Client Secret" \
+    -Doauth2.naver.redirect-uri="kakao OAuth Application Redirect Uri" \
+    -Doauth2.kakao.client-id="Kakao OAuth Application Client Id" \
+    -Doauth2.kakao.client-secret="Kakao OAuth Application Client Secret" \
+    -Doauth2.kakao.redirect-uri="Kakao OAuth Application Redirect Uri" \
     -Dslack.webhook.url="Slack Webhook Url" \
 ./build/libs/StudyWithMe.jar
 ```
 
 #### (실행-2) IntelliJ 환경변수 설정 & 서버 ON
 
-### [3) Swagger URL](http://localhost:8080/swagger-ui.html)
+### [3) Swagger](http://localhost:8080/swagger-ui.html)
 
 - API 테스트 시 필요한 `Token`은 `src/main/resources/DummyToken.txt`에서 사용
+
+> Google OAuth `Authorization Code`를 파싱한 후 `/api/oauth/login/{google}` 요청 시 Authorization Code에 존재하는 `%2F -> /`로 수정
+> - `%2F`는 HTTP URL Encoding으로 인한 결과로써 OAuth Provider가 인코딩된 값 인식 불가능
+> - 4%2F0Adeu5BXgIJvUdjU090jAGQEwm8WPb8VidZzvmS9OjNFLrfeTIW9B-jGB292k5PRf73w4XA -> 4/0Adeu5BXgIJvUdjU090jAGQEwm8WPb8VidZzvmS9OjNFLrfeTIW9B-jGB292k5PRf73w4XA
+>   - %2F -> /
 
 ### [4) REST Docs](http://localhost:8080/docs/index.html)
 

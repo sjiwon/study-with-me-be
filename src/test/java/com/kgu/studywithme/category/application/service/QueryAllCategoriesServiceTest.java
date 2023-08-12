@@ -7,7 +7,12 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.kgu.studywithme.category.domain.Category.*;
+import static com.kgu.studywithme.category.domain.Category.APTITUDE_NCS;
+import static com.kgu.studywithme.category.domain.Category.CERTIFICATION;
+import static com.kgu.studywithme.category.domain.Category.ETC;
+import static com.kgu.studywithme.category.domain.Category.INTERVIEW;
+import static com.kgu.studywithme.category.domain.Category.LANGUAGE;
+import static com.kgu.studywithme.category.domain.Category.PROGRAMMING;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 

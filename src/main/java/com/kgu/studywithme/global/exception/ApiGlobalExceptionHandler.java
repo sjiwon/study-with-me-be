@@ -29,7 +29,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.kgu.studywithme.global.infrastructure.slack.SlackMetadata.*;
+import static com.kgu.studywithme.global.infrastructure.slack.SlackMetadata.DATETIME_FORMAT;
+import static com.kgu.studywithme.global.infrastructure.slack.SlackMetadata.LOG_COLOR;
+import static com.kgu.studywithme.global.infrastructure.slack.SlackMetadata.TITLE_ERROR_MESSAGE;
+import static com.kgu.studywithme.global.infrastructure.slack.SlackMetadata.TITLE_REQUEST_IP;
+import static com.kgu.studywithme.global.infrastructure.slack.SlackMetadata.TITLE_REQUEST_URL;
+import static com.kgu.studywithme.global.infrastructure.slack.SlackMetadata.XFF_HEADER;
 import static com.slack.api.webhook.WebhookPayloads.payload;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -66,11 +71,11 @@ public class ApiGlobalExceptionHandler {
     }
 
     @ExceptionHandler(StudyWithMeOAuthException.class)
-    public ResponseEntity<OAuthUserResponse> studyWithMeOAuthException(final StudyWithMeOAuthException e) {
+    public ResponseEntity<OAuthExceptionResponse> studyWithMeOAuthException(final StudyWithMeOAuthException e) {
         final OAuthUserResponse response = e.getResponse();
         return ResponseEntity
                 .status(NOT_FOUND)
-                .body(response);
+                .body(new OAuthExceptionResponse(response));
     }
 
     /**

@@ -6,7 +6,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.*;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.사용자에_대한_해당_주차_출석_정보를_수정한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_신청자에_대한_참여를_승인한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_주차를_생성한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_참여_신청을_한다;
 import static com.kgu.studywithme.common.fixture.MemberFixture.GHOST;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;

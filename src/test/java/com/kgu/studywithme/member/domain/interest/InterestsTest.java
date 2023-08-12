@@ -16,7 +16,10 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static com.kgu.studywithme.category.domain.Category.*;
+import static com.kgu.studywithme.category.domain.Category.APTITUDE_NCS;
+import static com.kgu.studywithme.category.domain.Category.ETC;
+import static com.kgu.studywithme.category.domain.Category.INTERVIEW;
+import static com.kgu.studywithme.category.domain.Category.PROGRAMMING;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

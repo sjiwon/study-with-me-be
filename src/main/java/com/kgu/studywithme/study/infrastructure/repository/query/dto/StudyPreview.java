@@ -1,7 +1,12 @@
 package com.kgu.studywithme.study.infrastructure.repository.query.dto;
 
 import com.kgu.studywithme.category.domain.Category;
-import com.kgu.studywithme.study.domain.*;
+import com.kgu.studywithme.study.domain.Capacity;
+import com.kgu.studywithme.study.domain.Description;
+import com.kgu.studywithme.study.domain.RecruitmentStatus;
+import com.kgu.studywithme.study.domain.StudyName;
+import com.kgu.studywithme.study.domain.StudyThumbnail;
+import com.kgu.studywithme.study.domain.StudyType;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

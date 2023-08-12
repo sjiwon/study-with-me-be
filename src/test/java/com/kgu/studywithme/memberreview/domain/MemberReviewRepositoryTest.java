@@ -11,7 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.kgu.studywithme.common.fixture.MemberFixture.*;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY1;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY2;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY3;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY4;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY5;
+import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 

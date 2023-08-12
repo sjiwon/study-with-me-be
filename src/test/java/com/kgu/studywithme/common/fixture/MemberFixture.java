@@ -5,7 +5,11 @@ import com.kgu.studywithme.auth.application.dto.LoginResponse;
 import com.kgu.studywithme.auth.application.dto.MemberInfo;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleUserResponse;
 import com.kgu.studywithme.category.domain.Category;
-import com.kgu.studywithme.member.domain.*;
+import com.kgu.studywithme.member.domain.Email;
+import com.kgu.studywithme.member.domain.Gender;
+import com.kgu.studywithme.member.domain.Member;
+import com.kgu.studywithme.member.domain.Nickname;
+import com.kgu.studywithme.member.domain.Region;
 import io.restassured.response.ValidatableResponse;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -14,12 +18,18 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import static com.kgu.studywithme.acceptance.auth.AuthAcceptanceFixture.Google_OAuth_로그인을_진행한다;
-import static com.kgu.studywithme.category.domain.Category.*;
+import static com.kgu.studywithme.category.domain.Category.APTITUDE_NCS;
+import static com.kgu.studywithme.category.domain.Category.CERTIFICATION;
+import static com.kgu.studywithme.category.domain.Category.ETC;
+import static com.kgu.studywithme.category.domain.Category.INTERVIEW;
+import static com.kgu.studywithme.category.domain.Category.LANGUAGE;
+import static com.kgu.studywithme.category.domain.Category.PROGRAMMING;
 import static com.kgu.studywithme.common.fixture.OAuthFixture.getAuthorizationCodeByIdentifier;
 import static com.kgu.studywithme.common.utils.OAuthUtils.GOOGLE_PROVIDER;
-import static com.kgu.studywithme.common.utils.OAuthUtils.REDIRECT_URL;
+import static com.kgu.studywithme.common.utils.OAuthUtils.REDIRECT_URI;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.REFRESH_TOKEN;
 import static com.kgu.studywithme.member.domain.Gender.MALE;
@@ -128,7 +138,16 @@ public enum MemberFixture {
     }
 
     public GoogleUserResponse toGoogleUserResponse() {
-        return new GoogleUserResponse(name, email.getValue(), "google_profile_url");
+        return new GoogleUserResponse(
+                name,
+                email.getValue(),
+                UUID.randomUUID().toString(),
+                UUID.randomUUID().toString(),
+                UUID.randomUUID().toString(),
+                UUID.randomUUID().toString(),
+                true,
+                UUID.randomUUID().toString()
+        );
     }
 
     public LoginResponse toLoginResponse() {
@@ -145,7 +164,8 @@ public enum MemberFixture {
         final ValidatableResponse response = Google_OAuth_로그인을_진행한다(
                 GOOGLE_PROVIDER,
                 getAuthorizationCodeByIdentifier(this.getEmail().getValue()),
-                REDIRECT_URL
+                REDIRECT_URI,
+                UUID.randomUUID().toString()
         );
 
         return response
@@ -164,7 +184,8 @@ public enum MemberFixture {
         final ValidatableResponse response = Google_OAuth_로그인을_진행한다(
                 GOOGLE_PROVIDER,
                 getAuthorizationCodeByIdentifier(this.getEmail().getValue()),
-                REDIRECT_URL
+                REDIRECT_URI,
+                UUID.randomUUID().toString()
         );
 
         return response

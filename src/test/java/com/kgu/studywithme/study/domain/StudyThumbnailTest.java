@@ -5,7 +5,12 @@ import com.kgu.studywithme.study.exception.StudyErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.kgu.studywithme.study.domain.StudyThumbnail.*;
+import static com.kgu.studywithme.study.domain.StudyThumbnail.IMAGE_APTITUDE_NCS_001;
+import static com.kgu.studywithme.study.domain.StudyThumbnail.IMAGE_CERTIFICATION_001;
+import static com.kgu.studywithme.study.domain.StudyThumbnail.IMAGE_ETC_001;
+import static com.kgu.studywithme.study.domain.StudyThumbnail.IMAGE_INTERVIEW_001;
+import static com.kgu.studywithme.study.domain.StudyThumbnail.IMAGE_LANGUAGE_001;
+import static com.kgu.studywithme.study.domain.StudyThumbnail.IMAGE_PROGRAMMING_001;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;

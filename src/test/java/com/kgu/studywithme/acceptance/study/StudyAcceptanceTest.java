@@ -7,7 +7,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.*;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디를_생성한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디를_수정한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디를_종료시킨다;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.JPA;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;

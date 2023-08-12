@@ -5,6 +5,8 @@ import com.kgu.studywithme.auth.utils.OAuthProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 import static com.kgu.studywithme.auth.utils.OAuthProvider.GOOGLE;
 
 @Component
@@ -23,6 +25,7 @@ public class GoogleOAuthUri implements OAuthUri {
                 + "response_type=code&"
                 + "client_id=" + properties.getClientId() + "&"
                 + "scope=" + String.join(" ", properties.getScope()) + "&"
-                + "redirect_uri=" + redirectUri;
+                + "redirect_uri=" + redirectUri + "&"
+                + "state=" + UUID.randomUUID().toString().replaceAll("-", "");
     }
 }

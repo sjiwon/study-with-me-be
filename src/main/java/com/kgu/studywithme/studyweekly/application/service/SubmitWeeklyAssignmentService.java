@@ -24,7 +24,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.*;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ABSENCE;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.LATE;
 import static com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType.FILE;
 
 @Service
