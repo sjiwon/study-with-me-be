@@ -2,7 +2,13 @@ package com.kgu.studywithme.studynotice.domain.comment;
 
 import com.kgu.studywithme.global.BaseEntity;
 import com.kgu.studywithme.studynotice.domain.StudyNotice;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -8,8 +8,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
-import static com.kgu.studywithme.common.utils.TokenUtils.*;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentRequest;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getExceptionResponseFields;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithRefreshToken;
+import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
+import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
+import static com.kgu.studywithme.common.utils.TokenUtils.REFRESH_TOKEN;
+import static com.kgu.studywithme.common.utils.TokenUtils.createTokenResponse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;

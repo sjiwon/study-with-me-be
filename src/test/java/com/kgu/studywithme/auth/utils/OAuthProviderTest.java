@@ -5,7 +5,9 @@ import com.kgu.studywithme.global.exception.StudyWithMeException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.kgu.studywithme.auth.utils.OAuthProvider.*;
+import static com.kgu.studywithme.auth.utils.OAuthProvider.GOOGLE;
+import static com.kgu.studywithme.auth.utils.OAuthProvider.KAKAO;
+import static com.kgu.studywithme.auth.utils.OAuthProvider.NAVER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;

@@ -2,7 +2,12 @@ package com.kgu.studywithme.studyweekly.domain.attachment;
 
 import com.kgu.studywithme.global.BaseEntity;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
-import jakarta.persistence.*;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

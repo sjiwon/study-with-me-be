@@ -27,8 +27,12 @@ import java.util.Optional;
 
 import static com.kgu.studywithme.auth.utils.OAuthProvider.GOOGLE;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
-import static com.kgu.studywithme.common.utils.OAuthUtils.*;
-import static com.kgu.studywithme.common.utils.TokenUtils.*;
+import static com.kgu.studywithme.common.utils.OAuthUtils.AUTHORIZATION_CODE;
+import static com.kgu.studywithme.common.utils.OAuthUtils.REDIRECT_URI;
+import static com.kgu.studywithme.common.utils.OAuthUtils.STATE;
+import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
+import static com.kgu.studywithme.common.utils.TokenUtils.REFRESH_TOKEN;
+import static com.kgu.studywithme.common.utils.TokenUtils.createGoogleTokenResponse;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;

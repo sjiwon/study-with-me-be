@@ -20,7 +20,9 @@ import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.PeriodFixture.WEEK_0;
 import static com.kgu.studywithme.common.fixture.StudyFixture.JPA;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
-import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.*;
+import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1;
+import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_2;
+import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_3;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 

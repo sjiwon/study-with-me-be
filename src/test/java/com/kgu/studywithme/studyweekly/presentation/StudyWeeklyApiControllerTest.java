@@ -18,7 +18,11 @@ import java.time.format.DateTimeFormatter;
 
 import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1;
 import static com.kgu.studywithme.common.utils.FileMockingUtils.createMultipleMockMultipartFile;
-import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.constraint;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentRequest;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getExceptionResponseFields;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
@@ -29,7 +33,11 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

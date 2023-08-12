@@ -8,7 +8,10 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Set;
 
-import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.*;
+import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPLY;
+import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPROVE;
+import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.GRADUATED;
+import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.LEAVE;
 import static com.kgu.studywithme.studyparticipant.domain.QStudyParticipant.studyParticipant;
 
 @StudyWithMeReadOnlyTransactional

@@ -6,11 +6,25 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.*;
-import static com.kgu.studywithme.common.fixture.MemberFixture.*;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_신청자에_대한_참여를_거절한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_신청자에_대한_참여를_승인한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_참여_신청을_취소한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_참여_신청을_한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_참여를_취소한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_팀장_권한을_위임한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디를_졸업한다;
+import static com.kgu.studywithme.common.fixture.MemberFixture.ANONYMOUS;
+import static com.kgu.studywithme.common.fixture.MemberFixture.GHOST;
+import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.KAFKA;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
-import static com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode.*;
+import static com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode.APPLIER_NOT_FOUND;
+import static com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode.HOST_CANNOT_GRADUATE_STUDY;
+import static com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode.HOST_CANNOT_LEAVE_STUDY;
+import static com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode.NON_PARTICIPANT_CANNOT_BE_HOST;
+import static com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode.PARTICIPANT_NOT_MEET_GRADUATION_POLICY;
+import static com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode.STUDY_CAPACITY_ALREADY_FULL;
+import static com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode.STUDY_HOST_CANNOT_APPLY;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 

@@ -29,7 +29,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.kgu.studywithme.global.infrastructure.slack.SlackMetadata.*;
+import static com.kgu.studywithme.global.infrastructure.slack.SlackMetadata.DATETIME_FORMAT;
+import static com.kgu.studywithme.global.infrastructure.slack.SlackMetadata.LOG_COLOR;
+import static com.kgu.studywithme.global.infrastructure.slack.SlackMetadata.TITLE_ERROR_MESSAGE;
+import static com.kgu.studywithme.global.infrastructure.slack.SlackMetadata.TITLE_REQUEST_IP;
+import static com.kgu.studywithme.global.infrastructure.slack.SlackMetadata.TITLE_REQUEST_URL;
+import static com.kgu.studywithme.global.infrastructure.slack.SlackMetadata.XFF_HEADER;
 import static com.slack.api.webhook.WebhookPayloads.payload;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 

@@ -15,7 +15,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.stream.Collectors;
 
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
-import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.*;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.constraint;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentRequest;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getExceptionResponseFields;
+import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static com.kgu.studywithme.member.domain.Gender.MALE;
@@ -26,7 +30,9 @@ import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

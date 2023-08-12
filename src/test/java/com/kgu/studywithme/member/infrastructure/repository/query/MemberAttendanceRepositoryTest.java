@@ -19,8 +19,14 @@ import java.util.List;
 
 import static com.kgu.studywithme.common.fixture.MemberFixture.GHOST;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
-import static com.kgu.studywithme.common.fixture.StudyFixture.*;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.*;
+import static com.kgu.studywithme.common.fixture.StudyFixture.EFFECTIVE_JAVA;
+import static com.kgu.studywithme.common.fixture.StudyFixture.JPA;
+import static com.kgu.studywithme.common.fixture.StudyFixture.KOTLIN;
+import static com.kgu.studywithme.common.fixture.StudyFixture.NETWORK;
+import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ABSENCE;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.LATE;
 import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPROVE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;

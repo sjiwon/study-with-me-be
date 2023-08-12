@@ -6,7 +6,10 @@ import jakarta.validation.ConstraintValidatorContext;
 
 import java.util.stream.Stream;
 
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.*;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ABSENCE;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.LATE;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.NON_ATTENDANCE;
 
 public class AttendanceStatusUpdateConstraintValidator implements ConstraintValidator<AttendanceStatusUpdateConstraint, String> {
     @Override

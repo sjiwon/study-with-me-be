@@ -18,8 +18,14 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
-import static com.kgu.studywithme.common.utils.OAuthUtils.*;
-import static com.kgu.studywithme.common.utils.TokenUtils.*;
+import static com.kgu.studywithme.common.utils.OAuthUtils.AUTHORIZATION_CODE;
+import static com.kgu.studywithme.common.utils.OAuthUtils.REDIRECT_URI;
+import static com.kgu.studywithme.common.utils.OAuthUtils.STATE;
+import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
+import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
+import static com.kgu.studywithme.common.utils.TokenUtils.EXPIRES_IN;
+import static com.kgu.studywithme.common.utils.TokenUtils.ID_TOKEN;
+import static com.kgu.studywithme.common.utils.TokenUtils.SCOPE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;

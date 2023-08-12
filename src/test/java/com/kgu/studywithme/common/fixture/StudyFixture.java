@@ -2,15 +2,37 @@ package com.kgu.studywithme.common.fixture;
 
 import com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture;
 import com.kgu.studywithme.category.domain.Category;
-import com.kgu.studywithme.study.domain.*;
+import com.kgu.studywithme.study.domain.Capacity;
+import com.kgu.studywithme.study.domain.Description;
+import com.kgu.studywithme.study.domain.Study;
+import com.kgu.studywithme.study.domain.StudyLocation;
+import com.kgu.studywithme.study.domain.StudyName;
+import com.kgu.studywithme.study.domain.StudyThumbnail;
+import com.kgu.studywithme.study.domain.StudyType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.kgu.studywithme.category.domain.Category.*;
-import static com.kgu.studywithme.study.domain.StudyThumbnail.*;
+import static com.kgu.studywithme.category.domain.Category.INTERVIEW;
+import static com.kgu.studywithme.category.domain.Category.LANGUAGE;
+import static com.kgu.studywithme.category.domain.Category.PROGRAMMING;
+import static com.kgu.studywithme.study.domain.StudyThumbnail.IMAGE_INTERVIEW_001;
+import static com.kgu.studywithme.study.domain.StudyThumbnail.IMAGE_INTERVIEW_002;
+import static com.kgu.studywithme.study.domain.StudyThumbnail.IMAGE_INTERVIEW_003;
+import static com.kgu.studywithme.study.domain.StudyThumbnail.IMAGE_INTERVIEW_004;
+import static com.kgu.studywithme.study.domain.StudyThumbnail.IMAGE_INTERVIEW_005;
+import static com.kgu.studywithme.study.domain.StudyThumbnail.IMAGE_LANGUAGE_001;
+import static com.kgu.studywithme.study.domain.StudyThumbnail.IMAGE_LANGUAGE_002;
+import static com.kgu.studywithme.study.domain.StudyThumbnail.IMAGE_LANGUAGE_003;
+import static com.kgu.studywithme.study.domain.StudyThumbnail.IMAGE_LANGUAGE_004;
+import static com.kgu.studywithme.study.domain.StudyThumbnail.IMAGE_LANGUAGE_005;
+import static com.kgu.studywithme.study.domain.StudyThumbnail.IMAGE_PROGRAMMING_001;
+import static com.kgu.studywithme.study.domain.StudyThumbnail.IMAGE_PROGRAMMING_002;
+import static com.kgu.studywithme.study.domain.StudyThumbnail.IMAGE_PROGRAMMING_003;
+import static com.kgu.studywithme.study.domain.StudyThumbnail.IMAGE_PROGRAMMING_004;
+import static com.kgu.studywithme.study.domain.StudyThumbnail.IMAGE_PROGRAMMING_005;
 import static com.kgu.studywithme.study.domain.StudyType.OFFLINE;
 import static com.kgu.studywithme.study.domain.StudyType.ONLINE;
 

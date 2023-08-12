@@ -9,8 +9,22 @@ import lombok.RequiredArgsConstructor;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
-import static com.kgu.studywithme.common.fixture.MemberFixture.*;
-import static com.kgu.studywithme.common.utils.TokenUtils.*;
+import static com.kgu.studywithme.common.fixture.MemberFixture.ANONYMOUS;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY1;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY2;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY3;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY4;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY5;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY6;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY7;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY8;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY9;
+import static com.kgu.studywithme.common.fixture.MemberFixture.GHOST;
+import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
+import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
+import static com.kgu.studywithme.common.utils.TokenUtils.EXPIRES_IN;
+import static com.kgu.studywithme.common.utils.TokenUtils.ID_TOKEN;
+import static com.kgu.studywithme.common.utils.TokenUtils.SCOPE;
 
 @Getter
 @RequiredArgsConstructor

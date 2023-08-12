@@ -3,7 +3,9 @@ package com.kgu.studywithme.memberreport.domain;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.kgu.studywithme.memberreport.domain.MemberReportStatus.*;
+import static com.kgu.studywithme.memberreport.domain.MemberReportStatus.APPROVE;
+import static com.kgu.studywithme.memberreport.domain.MemberReportStatus.RECEIVE;
+import static com.kgu.studywithme.memberreport.domain.MemberReportStatus.REJECT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 

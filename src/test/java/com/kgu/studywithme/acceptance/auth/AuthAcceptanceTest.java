@@ -5,14 +5,21 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static com.kgu.studywithme.acceptance.auth.AuthAcceptanceFixture.*;
+import static com.kgu.studywithme.acceptance.auth.AuthAcceptanceFixture.Google_OAuth_로그인을_진행한다;
+import static com.kgu.studywithme.acceptance.auth.AuthAcceptanceFixture.Google_OAuth_인증_URL를_생성한다;
+import static com.kgu.studywithme.acceptance.auth.AuthAcceptanceFixture.로그아웃을_진행한다;
+import static com.kgu.studywithme.acceptance.auth.AuthAcceptanceFixture.토큰을_재발급받는다;
 import static com.kgu.studywithme.acceptance.member.MemberAcceptanceFixture.회원가입을_진행한다;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.OAuthFixture.GOOGLE_JIWON;
-import static com.kgu.studywithme.common.utils.OAuthUtils.*;
+import static com.kgu.studywithme.common.utils.OAuthUtils.GOOGLE_PROVIDER;
+import static com.kgu.studywithme.common.utils.OAuthUtils.REDIRECT_URI;
+import static com.kgu.studywithme.common.utils.OAuthUtils.STATE;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.HttpStatus.OK;
 
 @DisplayName("[Acceptance Test] 인증 관련 기능")
 public class AuthAcceptanceTest extends AcceptanceTest {

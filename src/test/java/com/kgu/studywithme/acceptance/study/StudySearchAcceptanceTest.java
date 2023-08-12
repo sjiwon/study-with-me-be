@@ -16,12 +16,31 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.kgu.studywithme.acceptance.favorite.FavoriteAcceptanceFixture.스터디를_찜_등록한다;
-import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.*;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.관심사로_스터디를_조회한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_리뷰를_작성한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_신청자에_대한_참여를_승인한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_참여_신청을_한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디를_졸업한다;
+import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.카테고리로_스터디를_조회한다;
 import static com.kgu.studywithme.category.domain.Category.PROGRAMMING;
-import static com.kgu.studywithme.common.fixture.MemberFixture.*;
-import static com.kgu.studywithme.common.fixture.StudyFixture.*;
-import static com.kgu.studywithme.study.utils.PagingConstants.SortType.*;
-import static org.hamcrest.Matchers.*;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY1;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY2;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY3;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY4;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY5;
+import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
+import static com.kgu.studywithme.common.fixture.StudyFixture.JSP;
+import static com.kgu.studywithme.common.fixture.StudyFixture.LINE_INTERVIEW;
+import static com.kgu.studywithme.common.fixture.StudyFixture.OOP;
+import static com.kgu.studywithme.common.fixture.StudyFixture.RABBITMQ;
+import static com.kgu.studywithme.common.fixture.StudyFixture.REDIS;
+import static com.kgu.studywithme.common.fixture.StudyFixture.TOEIC;
+import static com.kgu.studywithme.study.utils.PagingConstants.SortType.DATE;
+import static com.kgu.studywithme.study.utils.PagingConstants.SortType.FAVORITE;
+import static com.kgu.studywithme.study.utils.PagingConstants.SortType.REVIEW;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.http.HttpStatus.OK;
 
 @DisplayName("[Acceptance Test] 스터디 조회 관련 기능")
