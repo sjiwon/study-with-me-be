@@ -12,6 +12,7 @@ import java.util.Arrays;
 public enum OAuthProvider {
     GOOGLE("google"),
     NAVER("naver"),
+    KAKAO("kakao"),
     ;
 
     private final String provider;
