@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.kgu.studywithme.auth.utils.OAuthProvider.GOOGLE;
+import static com.kgu.studywithme.auth.utils.OAuthProvider.NAVER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -24,7 +25,8 @@ class OAuthProviderTest {
     @DisplayName("주어진 Provider에 따른 OAuthProvider를 가져온다")
     void getSpecificOAuthProvider() {
         assertAll(
-                () -> assertThat(OAuthProvider.from("google")).isEqualTo(GOOGLE)
+                () -> assertThat(OAuthProvider.from("google")).isEqualTo(GOOGLE),
+                () -> assertThat(OAuthProvider.from("naver")).isEqualTo(NAVER)
         );
     }
 }
