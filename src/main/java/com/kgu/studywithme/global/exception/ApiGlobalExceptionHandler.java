@@ -66,11 +66,11 @@ public class ApiGlobalExceptionHandler {
     }
 
     @ExceptionHandler(StudyWithMeOAuthException.class)
-    public ResponseEntity<OAuthUserResponse> studyWithMeOAuthException(final StudyWithMeOAuthException e) {
+    public ResponseEntity<OAuthExceptionResponse> studyWithMeOAuthException(final StudyWithMeOAuthException e) {
         final OAuthUserResponse response = e.getResponse();
         return ResponseEntity
                 .status(NOT_FOUND)
-                .body(response);
+                .body(new OAuthExceptionResponse(response));
     }
 
     /**
