@@ -11,7 +11,6 @@ import com.kgu.studywithme.global.exception.StudyWithMeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
@@ -19,15 +18,16 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import static com.kgu.studywithme.auth.infrastructure.oauth.OAuthMetadata.CONTENT_TYPE_VALUE;
+import static com.kgu.studywithme.auth.infrastructure.oauth.OAuthMetadata.TOKEN_TYPE;
 import static com.kgu.studywithme.auth.utils.OAuthProvider.NAVER;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.HttpMethod.GET;
 
 @Component
 @RequiredArgsConstructor
 public class NaverOAuthConnector implements OAuthConnector {
-    private static final String BEARER_TYPE = "Bearer";
-
     private final NaverOAuthProperties properties;
     private final RestTemplate restTemplate;
 
@@ -51,7 +51,7 @@ public class NaverOAuthConnector implements OAuthConnector {
 
     private HttpHeaders createTokenRequestHeader() {
         final HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.set(CONTENT_TYPE, CONTENT_TYPE_VALUE);
         return headers;
     }
 
@@ -87,7 +87,7 @@ public class NaverOAuthConnector implements OAuthConnector {
 
     private HttpHeaders createUserInfoRequestHeader(final String accessToken) {
         final HttpHeaders headers = new HttpHeaders();
-        headers.set(AUTHORIZATION, String.join(" ", BEARER_TYPE, accessToken));
+        headers.set(AUTHORIZATION, String.join(" ", TOKEN_TYPE, accessToken));
         return headers;
     }
 
