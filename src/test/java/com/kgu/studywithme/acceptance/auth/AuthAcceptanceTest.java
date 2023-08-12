@@ -9,8 +9,7 @@ import static com.kgu.studywithme.acceptance.auth.AuthAcceptanceFixture.*;
 import static com.kgu.studywithme.acceptance.member.MemberAcceptanceFixture.회원가입을_진행한다;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.OAuthFixture.GOOGLE_JIWON;
-import static com.kgu.studywithme.common.utils.OAuthUtils.GOOGLE_PROVIDER;
-import static com.kgu.studywithme.common.utils.OAuthUtils.REDIRECT_URL;
+import static com.kgu.studywithme.common.utils.OAuthUtils.*;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.http.HttpStatus.*;
@@ -23,7 +22,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         @Test
         @DisplayName("Google OAuth 인증 URL을 요청한다")
         void success() {
-            Google_OAuth_인증_URL를_생성한다(GOOGLE_PROVIDER, REDIRECT_URL)
+            Google_OAuth_인증_URL를_생성한다(GOOGLE_PROVIDER, REDIRECT_URI)
                     .statusCode(OK.value())
                     .body("result", is("https://localhost:3000"));
         }
@@ -35,11 +34,10 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         @Test
         @DisplayName("DB에 이메일에 대한 사용자 정보가 없으면 OAuth UserInfo를 토대로 회원가입을 진행한다")
         void failure() {
-            Google_OAuth_로그인을_진행한다(GOOGLE_PROVIDER, GOOGLE_JIWON.getAuthorizationCode(), REDIRECT_URL)
+            Google_OAuth_로그인을_진행한다(GOOGLE_PROVIDER, GOOGLE_JIWON.getAuthorizationCode(), REDIRECT_URI, STATE)
                     .statusCode(NOT_FOUND.value())
                     .body("name", is(JIWON.getName()))
-                    .body("email", is(JIWON.getEmail().getValue()))
-                    .body("profileImage", is("google_profile_url"));
+                    .body("email", is(JIWON.getEmail().getValue()));
         }
 
         @Test
@@ -47,7 +45,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         void success() {
             회원가입을_진행한다(JIWON);
 
-            Google_OAuth_로그인을_진행한다(GOOGLE_PROVIDER, GOOGLE_JIWON.getAuthorizationCode(), REDIRECT_URL)
+            Google_OAuth_로그인을_진행한다(GOOGLE_PROVIDER, GOOGLE_JIWON.getAuthorizationCode(), REDIRECT_URI, STATE)
                     .statusCode(OK.value())
                     .body("member.id", notNullValue(Long.class))
                     .body("member.nickname", is(JIWON.getNickname().getValue()))

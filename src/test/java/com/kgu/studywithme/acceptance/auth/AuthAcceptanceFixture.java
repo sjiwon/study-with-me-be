@@ -10,11 +10,11 @@ import static com.kgu.studywithme.acceptance.CommonRequestFixture.postRequest;
 public class AuthAcceptanceFixture {
     public static ValidatableResponse Google_OAuth_인증_URL를_생성한다(
             final String oAuthProvider,
-            final String redirectUrl
+            final String redirectUri
     ) {
         final String uri = UriComponentsBuilder
-                .fromPath("/api/oauth/access/{provider}?redirectUrl={redirectUrl}")
-                .build(oAuthProvider, redirectUrl)
+                .fromPath("/api/oauth/access/{provider}?redirectUri={redirectUri}")
+                .build(oAuthProvider, redirectUri)
                 .getPath();
 
         return getRequest(uri);
@@ -23,14 +23,15 @@ public class AuthAcceptanceFixture {
     public static ValidatableResponse Google_OAuth_로그인을_진행한다(
             final String oAuthProvider,
             final String authorizationCode,
-            final String redirectUrl
+            final String redirectUri,
+            final String state
     ) {
         final String uri = UriComponentsBuilder
                 .fromPath("/api/oauth/login/{provider}")
                 .build(oAuthProvider)
                 .getPath();
 
-        final OAuthLoginRequest request = new OAuthLoginRequest(authorizationCode, redirectUrl);
+        final OAuthLoginRequest request = new OAuthLoginRequest(authorizationCode, redirectUri, state);
 
         return postRequest(request, uri);
     }

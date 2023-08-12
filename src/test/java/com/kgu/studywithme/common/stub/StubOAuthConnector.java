@@ -15,7 +15,7 @@ public class StubOAuthConnector implements OAuthConnector {
     }
 
     @Override
-    public OAuthTokenResponse getToken(final String code, final String redirectUri) {
+    public OAuthTokenResponse getToken(final String code, final String redirectUri, final String state) {
         return OAuthFixture.parseOAuthTokenByCode(code);
     }
 

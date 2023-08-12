@@ -24,10 +24,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import static com.kgu.studywithme.auth.utils.OAuthProvider.GOOGLE;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
+import static com.kgu.studywithme.common.utils.OAuthUtils.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -69,8 +69,9 @@ class OAuthLoginServiceTest extends UseCaseTest {
         private final OAuthLoginUseCase.Command command =
                 new OAuthLoginUseCase.Command(
                         GOOGLE,
-                        UUID.randomUUID().toString(),
-                        "http://localhost:3000"
+                        AUTHORIZATION_CODE,
+                        REDIRECT_URI,
+                        STATE
                 );
         private final GoogleTokenResponse googleTokenResponse = createGoogleTokenResponse();
         private final GoogleUserResponse googleUserResponse = JIWON.toGoogleUserResponse();
@@ -80,7 +81,7 @@ class OAuthLoginServiceTest extends UseCaseTest {
         void throwExceptionIfGoogleAuthUserNotInDB() {
             // given
             given(googleOAuthConnector.isSupported(any())).willReturn(true);
-            given(googleOAuthConnector.getToken(any(), any())).willReturn(googleTokenResponse);
+            given(googleOAuthConnector.getToken(any(), any(), any())).willReturn(googleTokenResponse);
             given(googleOAuthConnector.getUserInfo(any())).willReturn(googleUserResponse);
             given(memberRepository.findByEmail(any())).willReturn(Optional.empty());
 
@@ -94,7 +95,7 @@ class OAuthLoginServiceTest extends UseCaseTest {
                     () -> assertThat(exception.getResponse())
                             .usingRecursiveComparison()
                             .isEqualTo(googleUserResponse),
-                    () -> verify(googleOAuthConnector, times(1)).getToken(any(), any()),
+                    () -> verify(googleOAuthConnector, times(1)).getToken(any(), any(), any()),
                     () -> verify(googleOAuthConnector, times(1)).getUserInfo(any()),
                     () -> verify(memberRepository, times(1)).findByEmail(any()),
                     () -> verify(jwtTokenProvider, times(0)).createAccessToken(any()),
@@ -108,7 +109,7 @@ class OAuthLoginServiceTest extends UseCaseTest {
         void success() {
             // given
             given(googleOAuthConnector.isSupported(any())).willReturn(true);
-            given(googleOAuthConnector.getToken(any(), any())).willReturn(googleTokenResponse);
+            given(googleOAuthConnector.getToken(any(), any(), any())).willReturn(googleTokenResponse);
             given(googleOAuthConnector.getUserInfo(any())).willReturn(googleUserResponse);
             given(memberRepository.findByEmail(any())).willReturn(Optional.of(member));
             given(jwtTokenProvider.createAccessToken(any())).willReturn(ACCESS_TOKEN);
@@ -119,7 +120,7 @@ class OAuthLoginServiceTest extends UseCaseTest {
 
             // then
             assertAll(
-                    () -> verify(googleOAuthConnector, times(1)).getToken(any(), any()),
+                    () -> verify(googleOAuthConnector, times(1)).getToken(any(), any(), any()),
                     () -> verify(googleOAuthConnector, times(1)).getUserInfo(any()),
                     () -> verify(memberRepository, times(1)).findByEmail(any()),
                     () -> verify(jwtTokenProvider, times(1)).createAccessToken(any()),

@@ -39,10 +39,11 @@ public class GoogleOAuthConnector implements OAuthConnector {
     @Override
     public OAuthTokenResponse getToken(
             final String code,
-            final String redirectUri
+            final String redirectUri,
+            final String state
     ) {
         final HttpHeaders headers = createTokenRequestHeader();
-        final MultiValueMap<String, String> params = applyTokenRequestParams(code, redirectUri);
+        final MultiValueMap<String, String> params = applyTokenRequestParams(code, redirectUri, state);
 
         final HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
         return fetchGoogleToken(request).getBody();
@@ -56,14 +57,16 @@ public class GoogleOAuthConnector implements OAuthConnector {
 
     private MultiValueMap<String, String> applyTokenRequestParams(
             final String code,
-            final String redirectUri
+            final String redirectUri,
+            final String state
     ) {
         final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", properties.getGrantType());
-        params.add("client_id", properties.getClientId());
-        params.add("client_secret", properties.getClientSecret());
         params.add("code", code);
         params.add("redirect_uri", redirectUri);
+        params.add("state", state);
+        params.add("client_id", properties.getClientId());
+        params.add("client_secret", properties.getClientSecret());
         return params;
     }
 

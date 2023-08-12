@@ -18,6 +18,7 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
+import static com.kgu.studywithme.common.utils.OAuthUtils.*;
 import static com.kgu.studywithme.common.utils.TokenUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -38,9 +39,6 @@ class GoogleOAuthConnectorTest {
     @MockBean
     private RestTemplate restTemplate;
 
-    private static final String AUTHORIZATION_CODE = "authoriation_code";
-    private static final String REDIRECT_URL = "http://localhost:8080/login/oauth2/code/google";
-
     @Nested
     @DisplayName("Token 응답받기")
     class GetToken {
@@ -53,7 +51,7 @@ class GoogleOAuthConnectorTest {
             )).willThrow(RestClientException.class);
 
             // when - then
-            assertThatThrownBy(() -> googleOAuthConnector.getToken(AUTHORIZATION_CODE, REDIRECT_URL))
+            assertThatThrownBy(() -> googleOAuthConnector.getToken(AUTHORIZATION_CODE, REDIRECT_URI, STATE))
                     .isInstanceOf(StudyWithMeException.class)
                     .hasMessage(AuthErrorCode.GOOGLE_OAUTH_EXCEPTION.getMessage());
         }
@@ -70,7 +68,7 @@ class GoogleOAuthConnectorTest {
 
             // when
             final GoogleTokenResponse result
-                    = (GoogleTokenResponse) googleOAuthConnector.getToken(AUTHORIZATION_CODE, REDIRECT_URL);
+                    = (GoogleTokenResponse) googleOAuthConnector.getToken(AUTHORIZATION_CODE, REDIRECT_URI, STATE);
 
             // then
             assertAll(

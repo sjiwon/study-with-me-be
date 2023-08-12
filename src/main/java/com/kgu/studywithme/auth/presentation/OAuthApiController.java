@@ -26,15 +26,15 @@ public class OAuthApiController {
     private final LogoutUseCase logoutUseCase;
 
     @Operation(summary = "Provider별 OAuth 인증을 위한 URL을 받는 EndPoint")
-    @GetMapping(value = "/access/{provider}", params = {"redirectUrl"})
+    @GetMapping(value = "/access/{provider}", params = {"redirectUri"})
     public ResponseEntity<ResponseWrapper<String>> queryOAuthLink(
             @PathVariable final String provider,
-            @RequestParam final String redirectUrl
+            @RequestParam final String redirectUri
     ) {
         final String oAuthLink = queryOAuthLinkUseCase.queryOAuthLink(
                 new QueryOAuthLinkUseCase.Query(
                         OAuthProvider.from(provider),
-                        redirectUrl
+                        redirectUri
                 )
         );
         return ResponseEntity.ok(ResponseWrapper.from(oAuthLink));
@@ -50,7 +50,8 @@ public class OAuthApiController {
                 new OAuthLoginUseCase.Command(
                         OAuthProvider.from(provider),
                         request.authorizationCode(),
-                        request.redirectUrl()
+                        request.redirectUri(),
+                        request.state()
                 )
         );
         return ResponseEntity.ok(response);

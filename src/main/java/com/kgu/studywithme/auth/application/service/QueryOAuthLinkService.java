@@ -21,6 +21,6 @@ public class QueryOAuthLinkService implements QueryOAuthLinkUseCase {
                 .findFirst()
                 .orElseThrow(() -> StudyWithMeException.type(AuthErrorCode.INVALID_OAUTH_PROVIDER));
 
-        return findSpecificOAuthUri.generate(query.redirectUrl());
+        return findSpecificOAuthUri.generate(query.redirectUri());
     }
 }

@@ -23,7 +23,7 @@ class GoogleOAuthUriTest {
     @DisplayName("Google Authorization Server로부터 Access Token을 받기 위해서 선행적으로 Authorization Code를 요청하기 위한 URI를 생성한다")
     void generateAuthorizationCodeUri() {
         // when
-        final String uri = googleOAuthUri.generate(properties.getRedirectUrl());
+        final String uri = googleOAuthUri.generate(properties.getRedirectUri());
 
         // then
         final MultiValueMap<String, String> queryParams = UriComponentsBuilder
@@ -35,7 +35,8 @@ class GoogleOAuthUriTest {
                 () -> assertThat(queryParams.getFirst("response_type")).isEqualTo("code"),
                 () -> assertThat(queryParams.getFirst("client_id")).isEqualTo(properties.getClientId()),
                 () -> assertThat(queryParams.getFirst("scope")).isEqualTo(String.join(" ", properties.getScope())),
-                () -> assertThat(queryParams.getFirst("redirect_uri")).isEqualTo(properties.getRedirectUrl())
+                () -> assertThat(queryParams.getFirst("redirect_uri")).isEqualTo(properties.getRedirectUri()),
+                () -> assertThat(queryParams.getFirst("state")).isNotNull()
         );
     }
 }
