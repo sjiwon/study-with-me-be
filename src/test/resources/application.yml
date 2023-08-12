@@ -67,6 +67,14 @@ oauth2:
     auth-url: https://nid.naver.com/oauth2.0/authorize
     token-url: https://nid.naver.com/oauth2.0/token
     user-info-url: https://openapi.naver.com/v1/nid/me
+  kakao:
+    grant-type: authorization_code
+    client-id: client_id
+    client-secret: client_secret
+    redirect-uri: http://localhost:3000/login
+    auth-url: https://kauth.kakao.com/oauth/authorize
+    token-url: https://kauth.kakao.com/oauth/token
+    user-info-url: https://kapi.kakao.com/v2/user/me
 
 jwt:
   secret-key: testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
