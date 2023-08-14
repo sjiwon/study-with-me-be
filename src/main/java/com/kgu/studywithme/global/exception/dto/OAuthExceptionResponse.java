@@ -1,4 +1,4 @@
-package com.kgu.studywithme.global.exception;
+package com.kgu.studywithme.global.exception.dto;
 
 import com.kgu.studywithme.auth.infrastructure.oauth.OAuthUserResponse;
 

@@ -1,8 +1,14 @@
-package com.kgu.studywithme.global.exception;
+package com.kgu.studywithme.global.exception.handler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kgu.studywithme.auth.infrastructure.oauth.OAuthUserResponse;
+import com.kgu.studywithme.global.exception.ErrorCode;
+import com.kgu.studywithme.global.exception.GlobalErrorCode;
+import com.kgu.studywithme.global.exception.StudyWithMeException;
+import com.kgu.studywithme.global.exception.StudyWithMeOAuthException;
+import com.kgu.studywithme.global.exception.dto.ErrorResponse;
+import com.kgu.studywithme.global.exception.dto.OAuthExceptionResponse;
 import com.slack.api.Slack;
 import com.slack.api.model.Attachment;
 import com.slack.api.model.Field;
@@ -29,12 +35,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.kgu.studywithme.global.infrastructure.slack.SlackMetadata.DATETIME_FORMAT;
-import static com.kgu.studywithme.global.infrastructure.slack.SlackMetadata.LOG_COLOR;
-import static com.kgu.studywithme.global.infrastructure.slack.SlackMetadata.TITLE_ERROR_MESSAGE;
-import static com.kgu.studywithme.global.infrastructure.slack.SlackMetadata.TITLE_REQUEST_IP;
-import static com.kgu.studywithme.global.infrastructure.slack.SlackMetadata.TITLE_REQUEST_URL;
-import static com.kgu.studywithme.global.infrastructure.slack.SlackMetadata.XFF_HEADER;
+import static com.kgu.studywithme.global.exception.utils.SlackMetadata.DATETIME_FORMAT;
+import static com.kgu.studywithme.global.exception.utils.SlackMetadata.LOG_COLOR;
+import static com.kgu.studywithme.global.exception.utils.SlackMetadata.TITLE_ERROR_MESSAGE;
+import static com.kgu.studywithme.global.exception.utils.SlackMetadata.TITLE_REQUEST_IP;
+import static com.kgu.studywithme.global.exception.utils.SlackMetadata.TITLE_REQUEST_URL;
+import static com.kgu.studywithme.global.exception.utils.SlackMetadata.XFF_HEADER;
 import static com.slack.api.webhook.WebhookPayloads.payload;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 

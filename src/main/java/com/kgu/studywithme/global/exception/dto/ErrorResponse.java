@@ -1,5 +1,6 @@
-package com.kgu.studywithme.global.exception;
+package com.kgu.studywithme.global.exception.dto;
 
+import com.kgu.studywithme.global.exception.ErrorCode;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
