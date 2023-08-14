@@ -1,7 +1,7 @@
-package com.kgu.studywithme.global.infrastructure.file;
+package com.kgu.studywithme.file.domain;
 
+import com.kgu.studywithme.file.exception.FileErrorCode;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.upload.exception.UploadErrorCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -36,7 +36,7 @@ public enum FileExtension {
         return Arrays.stream(values())
                 .filter(extension -> extension.value.equals(fileExtension))
                 .findFirst()
-                .orElseThrow(() -> StudyWithMeException.type(UploadErrorCode.INVALID_FILE_EXTENSION));
+                .orElseThrow(() -> StudyWithMeException.type(FileErrorCode.INVALID_FILE_EXTENSION));
     }
 
     public static boolean isValidExtension(final String fileName) {

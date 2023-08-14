@@ -1,4 +1,4 @@
-package com.kgu.studywithme.global.infrastructure.file;
+package com.kgu.studywithme.file.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
