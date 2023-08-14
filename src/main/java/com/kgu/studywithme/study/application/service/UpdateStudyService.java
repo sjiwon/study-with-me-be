@@ -21,7 +21,7 @@ public class UpdateStudyService implements UpdateStudyUseCase {
     private final QueryStudyByIdService queryStudyByIdService;
 
     @Override
-    public void updateStudy(final Command command) {
+    public void invoke(final Command command) {
         validateNameIsUnique(command.studyId(), command.name());
 
         final Study study = queryStudyByIdService.findById(command.studyId());

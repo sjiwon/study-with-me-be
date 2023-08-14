@@ -15,7 +15,7 @@ public class ApplyCancellationService implements ApplyCancellationUseCase {
     private final StudyParticipantRepository studyParticipantRepository;
 
     @Override
-    public void applyCancellation(final Command command) {
+    public void invoke(final Command command) {
         validateRequesterIsApplier(command.studyId(), command.applierId());
         studyParticipantRepository.deleteApplier(command.studyId(), command.applierId());
     }

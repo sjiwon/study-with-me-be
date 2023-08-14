@@ -16,7 +16,7 @@ public class UpdateMemberReviewService implements UpdateMemberReviewUseCase {
     private final MemberReviewRepository memberReviewRepository;
 
     @Override
-    public void updateMemberReview(final Command command) {
+    public void invoke(final Command command) {
         final MemberReview memberReview = getPeerReview(command.reviewerId(), command.revieweeId());
         memberReview.updateReview(command.content());
     }

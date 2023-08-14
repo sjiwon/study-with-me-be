@@ -4,7 +4,7 @@ import com.kgu.studywithme.file.domain.RawFileData;
 import com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType;
 
 public interface SubmitWeeklyAssignmentUseCase {
-    void submitWeeklyAssignment(final Command command);
+    void invoke(final Command command);
 
     record Command(
             Long memberId,

@@ -2,6 +2,7 @@ package com.kgu.studywithme.memberreview.application.service;
 
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
+import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.memberreview.application.usecase.command.UpdateMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.domain.MemberReview;
 import com.kgu.studywithme.memberreview.domain.MemberReviewRepository;
@@ -14,6 +15,7 @@ import org.mockito.Mock;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -30,7 +32,9 @@ class UpdateMemberReviewServiceTest extends UseCaseTest {
     @Mock
     private MemberReviewRepository memberReviewRepository;
 
-    private final MemberReview memberReview = MemberReview.doReview(1L, 3L, "Good!!")
+    private final Member memberA = JIWON.toMember().apply(1L, LocalDateTime.now());
+    private final Member memberB = JIWON.toMember().apply(2L, LocalDateTime.now());
+    private final MemberReview memberReview = MemberReview.doReview(memberA.getId(), memberB.getId(), "Good!!")
             .apply(1L, LocalDateTime.now());
 
     @Test
@@ -40,8 +44,8 @@ class UpdateMemberReviewServiceTest extends UseCaseTest {
         given(memberReviewRepository.findByReviewerIdAndRevieweeId(any(), any())).willReturn(Optional.empty());
 
         // when - then
-        assertThatThrownBy(() -> updateMemberReviewService.updateMemberReview(
-                new UpdateMemberReviewUseCase.Command(1L, 2L, "Good!!")
+        assertThatThrownBy(() -> updateMemberReviewService.invoke(
+                new UpdateMemberReviewUseCase.Command(memberA.getId(), memberB.getId(), "Bad..")
         ))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberReviewErrorCode.MEMBER_REVIEW_NOT_FOUND.getMessage());
@@ -56,8 +60,8 @@ class UpdateMemberReviewServiceTest extends UseCaseTest {
         given(memberReviewRepository.findByReviewerIdAndRevieweeId(any(), any())).willReturn(Optional.of(memberReview));
 
         // when - then
-        assertThatThrownBy(() -> updateMemberReviewService.updateMemberReview(
-                new UpdateMemberReviewUseCase.Command(1L, 3L, memberReview.getContent())
+        assertThatThrownBy(() -> updateMemberReviewService.invoke(
+                new UpdateMemberReviewUseCase.Command(memberA.getId(), memberB.getId(), memberReview.getContent())
         ))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberReviewErrorCode.REVIEW_SAME_AS_BEFORE.getMessage());
@@ -72,7 +76,7 @@ class UpdateMemberReviewServiceTest extends UseCaseTest {
         given(memberReviewRepository.findByReviewerIdAndRevieweeId(any(), any())).willReturn(Optional.of(memberReview));
 
         // when
-        updateMemberReviewService.updateMemberReview(new UpdateMemberReviewUseCase.Command(1L, 3L, "Bad.."));
+        updateMemberReviewService.invoke(new UpdateMemberReviewUseCase.Command(memberA.getId(), memberB.getId(), "Bad.."));
 
         // then
         assertAll(

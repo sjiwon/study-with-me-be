@@ -62,7 +62,7 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
                             .map(Category::getName)
                             .toList()
             );
-            given(queryPublicInformationByIdUseCase.queryPublicInformation(any())).willReturn(response);
+            given(queryPublicInformationByIdUseCase.invoke(any())).willReturn(response);
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -117,7 +117,7 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
         @DisplayName("사용자가 참여중인 스터디 리스트를 조회한다")
         void success() throws Exception {
             // given
-            given(queryParticipateStudyByIdUseCase.queryParticipateStudy(any()))
+            given(queryParticipateStudyByIdUseCase.invoke(any()))
                     .willReturn(
                             List.of(
                                     new ParticipateStudy(
@@ -178,7 +178,7 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
         @DisplayName("사용자가 졸업한 스터디 리스트를 조회한다")
         void success() throws Exception {
             // given
-            given(queryGraduatedStudyByIdUseCase.queryGraduatedStudy(any()))
+            given(queryGraduatedStudyByIdUseCase.invoke(any()))
                     .willReturn(
                             List.of(
                                     new GraduatedStudy(
@@ -268,7 +268,7 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
         @DisplayName("사용자가 받은 리뷰를 조회한다")
         void success() throws Exception {
             // given
-            given(queryReceivedReviewByIdUseCase.queryReceivedReview(any()))
+            given(queryReceivedReviewByIdUseCase.invoke(any()))
                     .willReturn(
                             List.of(
                                     new ReceivedReview("Good Participant", LocalDateTime.now()),
@@ -314,7 +314,7 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
         @DisplayName("사용자의 출석률을 조회한다")
         void success() throws Exception {
             // given
-            given(queryAttendanceRatioByIdUseCase.queryAttendanceRatio(any()))
+            given(queryAttendanceRatioByIdUseCase.invoke(any()))
                     .willReturn(
                             List.of(
                                     new AttendanceRatio(ATTENDANCE, 13),

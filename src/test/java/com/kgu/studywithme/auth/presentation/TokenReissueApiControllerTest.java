@@ -105,7 +105,7 @@ class TokenReissueApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, 1L);
-            given(reissueTokenUseCase.reissueToken(any())).willReturn(createTokenResponse());
+            given(reissueTokenUseCase.invoke(any())).willReturn(createTokenResponse());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders

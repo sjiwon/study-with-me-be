@@ -25,7 +25,7 @@ public class TokenReissueApiController {
             @ExtractPayload final Long memberId,
             @ExtractToken final String refreshToken
     ) {
-        final TokenResponse tokenResponse = reissueTokenUseCase.reissueToken(
+        final TokenResponse tokenResponse = reissueTokenUseCase.invoke(
                 new ReissueTokenUseCase.Command(memberId, refreshToken)
         );
         return ResponseEntity.ok(tokenResponse);

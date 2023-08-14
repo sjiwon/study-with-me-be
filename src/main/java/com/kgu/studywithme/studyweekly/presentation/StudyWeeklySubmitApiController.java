@@ -41,7 +41,7 @@ public class StudyWeeklySubmitApiController {
             @PathVariable final Long weeklyId,
             @ModelAttribute @Valid final SubmitWeeklyAssignmentRequest request
     ) {
-        submitWeeklyAssignmentUseCase.submitWeeklyAssignment(
+        submitWeeklyAssignmentUseCase.invoke(
                 new SubmitWeeklyAssignmentUseCase.Command(
                         memberId,
                         studyId,
@@ -63,7 +63,7 @@ public class StudyWeeklySubmitApiController {
             @PathVariable final Long weeklyId,
             @ModelAttribute @Valid final EditSubmittedWeeklyAssignmentRequest request
     ) {
-        editSubmittedWeeklyAssignmentUseCase.editSubmittedWeeklyAssignment(
+        editSubmittedWeeklyAssignmentUseCase.invoke(
                 new EditSubmittedWeeklyAssignmentUseCase.Command(
                         memberId,
                         studyId,

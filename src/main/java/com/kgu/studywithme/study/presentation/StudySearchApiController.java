@@ -40,7 +40,7 @@ public class StudySearchApiController {
                 request.province(),
                 request.city()
         );
-        final StudyPagingResponse response = queryStudyByCategoryUseCase.queryStudyByCategory(
+        final StudyPagingResponse response = queryStudyByCategoryUseCase.invoke(
                 new QueryStudyByCategoryUseCase.Query(
                         condition,
                         getDefaultPageRequest(request.page())
@@ -63,7 +63,7 @@ public class StudySearchApiController {
                 request.province(),
                 request.city()
         );
-        final StudyPagingResponse response = queryStudyByRecommendUseCase.queryStudyByRecommend(
+        final StudyPagingResponse response = queryStudyByRecommendUseCase.invoke(
                 new QueryStudyByRecommendUseCase.Query(
                         condition,
                         getDefaultPageRequest(request.page())

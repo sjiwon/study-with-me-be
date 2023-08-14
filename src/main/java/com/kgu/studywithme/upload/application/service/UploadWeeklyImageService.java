@@ -11,7 +11,7 @@ public class UploadWeeklyImageService implements UploadWeeklyImageUseCase {
     private final FileUploader fileUploader;
 
     @Override
-    public String uploadWeeklyImage(final Command command) {
+    public String invoke(final Command command) {
         return fileUploader.uploadWeeklyImage(command.file());
     }
 }

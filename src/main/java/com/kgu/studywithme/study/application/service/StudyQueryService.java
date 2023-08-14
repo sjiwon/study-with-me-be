@@ -20,17 +20,17 @@ public class StudyQueryService implements
     private final StudyRepository studyRepository;
 
     @Override
-    public StudyBasicInformation queryBasicInformation(final QueryBasicInformationByIdUseCase.Query query) {
+    public StudyBasicInformation invoke(final QueryBasicInformationByIdUseCase.Query query) {
         return studyRepository.fetchBasicInformationById(query.studyId());
     }
 
     @Override
-    public ReviewInformation queryReview(final QueryReviewByIdUseCase.Query query) {
+    public ReviewInformation invoke(final QueryReviewByIdUseCase.Query query) {
         return studyRepository.fetchReviewById(query.studyId());
     }
 
     @Override
-    public StudyParticipantInformation queryParticipant(final QueryParticipantByIdUseCase.Query query) {
+    public StudyParticipantInformation invoke(final QueryParticipantByIdUseCase.Query query) {
         return studyRepository.fetchParticipantById(query.studyId());
     }
 }

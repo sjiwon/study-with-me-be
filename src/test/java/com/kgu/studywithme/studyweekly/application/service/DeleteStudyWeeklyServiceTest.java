@@ -36,11 +36,10 @@ class DeleteStudyWeeklyServiceTest extends UseCaseTest {
     private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L, LocalDateTime.now());
     private final StudyWeekly weekly = STUDY_WEEKLY_1.toWeekly(study.getId(), host.getId()).apply(1L, LocalDateTime.now());
-    private final DeleteStudyWeeklyUseCase.Command command =
-            new DeleteStudyWeeklyUseCase.Command(
-                    study.getId(),
-                    weekly.getId()
-            );
+    private final DeleteStudyWeeklyUseCase.Command command = new DeleteStudyWeeklyUseCase.Command(
+            study.getId(),
+            weekly.getId()
+    );
 
     @Test
     @DisplayName("가장 최신 주차가 아니면 해당 주차 정보를 삭제할 수 없다")
@@ -49,7 +48,7 @@ class DeleteStudyWeeklyServiceTest extends UseCaseTest {
         given(studyWeeklyRepository.isLatestWeek(any(), any())).willReturn(false);
 
         // when - then
-        assertThatThrownBy(() -> deleteStudyWeeklyService.deleteStudyWeekly(command))
+        assertThatThrownBy(() -> deleteStudyWeeklyService.invoke(command))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyWeeklyErrorCode.ONLY_LATEST_WEEKLY_CAN_DELETE.getMessage());
 
@@ -66,7 +65,7 @@ class DeleteStudyWeeklyServiceTest extends UseCaseTest {
         given(studyWeeklyRepository.isLatestWeek(any(), any())).willReturn(true);
 
         // when
-        deleteStudyWeeklyService.deleteStudyWeekly(command);
+        deleteStudyWeeklyService.invoke(command);
 
         // then
         assertAll(

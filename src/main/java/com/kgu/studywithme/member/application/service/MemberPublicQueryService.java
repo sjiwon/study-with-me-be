@@ -28,27 +28,27 @@ public class MemberPublicQueryService implements
     private final MemberRepository memberRepository;
 
     @Override
-    public MemberPublicInformation queryPublicInformation(final QueryPublicInformationByIdUseCase.Query query) {
+    public MemberPublicInformation invoke(final QueryPublicInformationByIdUseCase.Query query) {
         return memberRepository.fetchPublicInformationById(query.memberId());
     }
 
     @Override
-    public List<ParticipateStudy> queryParticipateStudy(final QueryParticipateStudyByIdUseCase.Query query) {
+    public List<ParticipateStudy> invoke(final QueryParticipateStudyByIdUseCase.Query query) {
         return memberRepository.fetchParticipateStudyById(query.memberId());
     }
 
     @Override
-    public List<GraduatedStudy> queryGraduatedStudy(final QueryGraduatedStudyByIdUseCase.Query query) {
+    public List<GraduatedStudy> invoke(final QueryGraduatedStudyByIdUseCase.Query query) {
         return memberRepository.fetchGraduatedStudyById(query.memberId());
     }
 
     @Override
-    public List<ReceivedReview> queryReceivedReview(final QueryReceivedReviewByIdUseCase.Query query) {
+    public List<ReceivedReview> invoke(final QueryReceivedReviewByIdUseCase.Query query) {
         return memberRepository.fetchReceivedReviewById(query.memberId());
     }
 
     @Override
-    public List<AttendanceRatio> queryAttendanceRatio(final QueryAttendanceRatioByIdUseCase.Query query) {
+    public List<AttendanceRatio> invoke(final QueryAttendanceRatioByIdUseCase.Query query) {
         return memberRepository.fetchAttendanceRatioById(query.memberId());
     }
 }

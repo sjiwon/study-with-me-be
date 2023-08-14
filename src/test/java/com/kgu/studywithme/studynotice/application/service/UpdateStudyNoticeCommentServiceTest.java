@@ -54,7 +54,7 @@ class UpdateStudyNoticeCommentServiceTest extends UseCaseTest {
         given(studyNoticeCommentRepository.findById(any())).willReturn(Optional.of(comment));
 
         // when - then
-        assertThatThrownBy(() -> updateStudyNoticeCommentService.updateNoticeComment(
+        assertThatThrownBy(() -> updateStudyNoticeCommentService.invoke(
                 new UpdateStudyNoticeCommentUseCase.Command(
                         comment.getId(),
                         anonymous.getId(),
@@ -74,7 +74,7 @@ class UpdateStudyNoticeCommentServiceTest extends UseCaseTest {
         given(studyNoticeCommentRepository.findById(any())).willReturn(Optional.of(comment));
 
         // when
-        updateStudyNoticeCommentService.updateNoticeComment(
+        updateStudyNoticeCommentService.invoke(
                 new UpdateStudyNoticeCommentUseCase.Command(
                         comment.getId(),
                         writer.getId(),

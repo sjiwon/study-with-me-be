@@ -40,7 +40,7 @@ public class StudyInformationOnlyParticipantApiController {
             @ExtractPayload final Long hostId,
             @PathVariable final Long studyId
     ) {
-        final List<StudyApplicantInformation> response = queryApplicantByIdUseCase.queryApplicant(
+        final List<StudyApplicantInformation> response = queryApplicantByIdUseCase.invoke(
                 new QueryApplicantByIdUseCase.Query(studyId)
         );
         return ResponseEntity.ok(ResponseWrapper.from(response));
@@ -53,7 +53,7 @@ public class StudyInformationOnlyParticipantApiController {
             @ExtractPayload final Long memberId,
             @PathVariable final Long studyId
     ) {
-        final List<NoticeInformation> response = queryNoticeByIdUseCase.queryNotice(
+        final List<NoticeInformation> response = queryNoticeByIdUseCase.invoke(
                 new QueryNoticeByIdUseCase.Query(studyId)
         );
         return ResponseEntity.ok(ResponseWrapper.from(response));
@@ -66,7 +66,7 @@ public class StudyInformationOnlyParticipantApiController {
             @ExtractPayload final Long memberId,
             @PathVariable final Long studyId
     ) {
-        final List<AttendanceInformation> response = queryAttendanceByIdUseCase.queryAttendance(
+        final List<AttendanceInformation> response = queryAttendanceByIdUseCase.invoke(
                 new QueryAttendanceByIdUseCase.Query(studyId)
         );
         return ResponseEntity.ok(ResponseWrapper.from(response));
@@ -79,7 +79,7 @@ public class StudyInformationOnlyParticipantApiController {
             @ExtractPayload final Long memberId,
             @PathVariable final Long studyId
     ) {
-        final List<WeeklyInformation> response = queryWeeklyByIdUseCase.queryWeekly(
+        final List<WeeklyInformation> response = queryWeeklyByIdUseCase.invoke(
                 new QueryWeeklyByIdUseCase.Query(studyId)
         );
         return ResponseEntity.ok(ResponseWrapper.from(response));

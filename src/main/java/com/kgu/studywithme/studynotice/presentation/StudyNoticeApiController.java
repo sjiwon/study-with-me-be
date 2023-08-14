@@ -38,7 +38,7 @@ public class StudyNoticeApiController {
             @PathVariable final Long studyId,
             @RequestBody @Valid final WriteStudyNoticeRequest request
     ) {
-        final Long noticeId = writeStudyNoticeUseCase.writeNotice(
+        final Long noticeId = writeStudyNoticeUseCase.invoke(
                 new WriteStudyNoticeUseCase.Command(
                         hostId,
                         studyId,
@@ -58,7 +58,7 @@ public class StudyNoticeApiController {
             @PathVariable final Long noticeId,
             @RequestBody @Valid final UpdateStudyNoticeRequest request
     ) {
-        updateStudyNoticeUseCase.updateNotice(
+        updateStudyNoticeUseCase.invoke(
                 new UpdateStudyNoticeUseCase.Command(
                         hostId,
                         noticeId,
@@ -77,7 +77,7 @@ public class StudyNoticeApiController {
             @PathVariable final Long studyId,
             @PathVariable final Long noticeId
     ) {
-        deleteStudyNoticeUseCase.deleteNotice(
+        deleteStudyNoticeUseCase.invoke(
                 new DeleteStudyNoticeUseCase.Command(hostId, noticeId)
         );
         return ResponseEntity.noContent().build();

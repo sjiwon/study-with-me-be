@@ -16,7 +16,7 @@ public class ReportMemberService implements ReportMemberUseCase {
     private final MemberReportRepository memberReportRepository;
 
     @Override
-    public Long report(final Command command) {
+    public Long invoke(final Command command) {
         validatePreviousReportIsStillPending(command.reporterId(), command.reporteeId());
 
         final MemberReport report

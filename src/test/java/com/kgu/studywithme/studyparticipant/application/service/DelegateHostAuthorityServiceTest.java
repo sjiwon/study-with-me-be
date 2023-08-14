@@ -56,11 +56,8 @@ class DelegateHostAuthorityServiceTest extends UseCaseTest {
         given(queryStudyByIdService.findById(any())).willReturn(study);
 
         // when - then
-        assertThatThrownBy(() -> delegateHostAuthorityService.delegateHostAuthority(
-                new DelegateHostAuthorityUseCase.Command(
-                        study.getId(),
-                        newHost.getId()
-                )
+        assertThatThrownBy(() -> delegateHostAuthorityService.invoke(
+                new DelegateHostAuthorityUseCase.Command(study.getId(), newHost.getId())
         ))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.STUDY_IS_TERMINATED.getMessage());
@@ -78,11 +75,8 @@ class DelegateHostAuthorityServiceTest extends UseCaseTest {
         given(queryStudyByIdService.findById(any())).willReturn(study);
 
         // when - then
-        assertThatThrownBy(() -> delegateHostAuthorityService.delegateHostAuthority(
-                new DelegateHostAuthorityUseCase.Command(
-                        study.getId(),
-                        host.getId()
-                )
+        assertThatThrownBy(() -> delegateHostAuthorityService.invoke(
+                new DelegateHostAuthorityUseCase.Command(study.getId(), host.getId())
         ))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.SELF_DELEGATING_NOT_ALLOWED.getMessage());
@@ -101,11 +95,8 @@ class DelegateHostAuthorityServiceTest extends UseCaseTest {
         given(studyParticipantRepository.isParticipant(any(), any())).willReturn(false);
 
         // when - then
-        assertThatThrownBy(() -> delegateHostAuthorityService.delegateHostAuthority(
-                new DelegateHostAuthorityUseCase.Command(
-                        study.getId(),
-                        newHost.getId()
-                )
+        assertThatThrownBy(() -> delegateHostAuthorityService.invoke(
+                new DelegateHostAuthorityUseCase.Command(study.getId(), newHost.getId())
         ))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.NON_PARTICIPANT_CANNOT_BE_HOST.getMessage());
@@ -127,12 +118,7 @@ class DelegateHostAuthorityServiceTest extends UseCaseTest {
         assertThat(study.getGraduationPolicy().getUpdateChance()).isEqualTo(1);
 
         // when
-        delegateHostAuthorityService.delegateHostAuthority(
-                new DelegateHostAuthorityUseCase.Command(
-                        study.getId(),
-                        newHost.getId()
-                )
-        );
+        delegateHostAuthorityService.invoke(new DelegateHostAuthorityUseCase.Command(study.getId(), newHost.getId()));
 
         // then
         assertAll(

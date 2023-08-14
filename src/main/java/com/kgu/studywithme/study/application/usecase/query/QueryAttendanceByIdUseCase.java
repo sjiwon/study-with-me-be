@@ -5,7 +5,7 @@ import com.kgu.studywithme.study.infrastructure.repository.query.dto.AttendanceI
 import java.util.List;
 
 public interface QueryAttendanceByIdUseCase {
-    List<AttendanceInformation> queryAttendance(final Query query);
+    List<AttendanceInformation> invoke(final Query query);
 
     record Query(
             Long studyId

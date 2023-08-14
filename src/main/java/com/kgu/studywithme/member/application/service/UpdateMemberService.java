@@ -17,7 +17,7 @@ public class UpdateMemberService implements UpdateMemberUseCase {
     private final MemberRepository memberRepository;
 
     @Override
-    public void update(final Command command) {
+    public void invoke(final Command command) {
         final Member member = queryMemberByIdService.findById(command.memberId());
         validateNicknameIsUnique(command.memberId(), command.nickname());
         validatePhoneIsUnique(command.memberId(), command.phone());

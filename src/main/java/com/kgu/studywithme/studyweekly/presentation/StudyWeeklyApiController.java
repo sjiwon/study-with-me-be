@@ -47,7 +47,7 @@ public class StudyWeeklyApiController {
             @PathVariable final Long studyId,
             @ModelAttribute @Valid final CreateStudyWeeklyRequest request
     ) {
-        final Long weeklyId = createStudyWeeklyUseCase.createStudyWeekly(
+        final Long weeklyId = createStudyWeeklyUseCase.invoke(
                 new CreateStudyWeeklyUseCase.Command(
                         studyId,
                         hostId,
@@ -71,7 +71,7 @@ public class StudyWeeklyApiController {
             @PathVariable final Long weeklyId,
             @ModelAttribute @Valid final UpdateStudyWeeklyRequest request
     ) {
-        updateStudyWeeklyUseCase.updateStudyWeekly(
+        updateStudyWeeklyUseCase.invoke(
                 new UpdateStudyWeeklyUseCase.Command(
                         weeklyId,
                         request.title(),
@@ -93,7 +93,7 @@ public class StudyWeeklyApiController {
             @PathVariable final Long studyId,
             @PathVariable final Long weeklyId
     ) {
-        deleteStudyWeeklyUseCase.deleteStudyWeekly(
+        deleteStudyWeeklyUseCase.invoke(
                 new DeleteStudyWeeklyUseCase.Command(
                         studyId,
                         weeklyId

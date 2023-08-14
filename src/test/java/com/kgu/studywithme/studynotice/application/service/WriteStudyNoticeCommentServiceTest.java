@@ -44,12 +44,11 @@ class WriteStudyNoticeCommentServiceTest extends UseCaseTest {
             "공지사항 제목",
             "공지사항 내용"
     ).apply(1L, LocalDateTime.now());
-    private final WriteStudyNoticeCommentUseCase.Command command =
-            new WriteStudyNoticeCommentUseCase.Command(
-                    1L,
-                    writer.getId(),
-                    "댓글!!"
-            );
+    private final WriteStudyNoticeCommentUseCase.Command command = new WriteStudyNoticeCommentUseCase.Command(
+            1L,
+            writer.getId(),
+            "댓글!!"
+    );
 
     @Test
     @DisplayName("스터디 참여자(status = APPROVE)가 아니면 공지사항에 댓글을 작성할 수 없다")
@@ -59,7 +58,7 @@ class WriteStudyNoticeCommentServiceTest extends UseCaseTest {
         given(studyParticipantRepository.isParticipant(any(), any())).willReturn(false);
 
         // when - then
-        assertThatThrownBy(() -> writeStudyNoticeCommentService.writeNoticeComment(command))
+        assertThatThrownBy(() -> writeStudyNoticeCommentService.invoke(command))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyNoticeErrorCode.ONLY_PARTICIPANT_CAN_WRITE_COMMENT.getMessage());
 
@@ -77,7 +76,7 @@ class WriteStudyNoticeCommentServiceTest extends UseCaseTest {
         given(studyParticipantRepository.isParticipant(any(), any())).willReturn(true);
 
         // when
-        writeStudyNoticeCommentService.writeNoticeComment(command);
+        writeStudyNoticeCommentService.invoke(command);
 
         // then
         assertAll(

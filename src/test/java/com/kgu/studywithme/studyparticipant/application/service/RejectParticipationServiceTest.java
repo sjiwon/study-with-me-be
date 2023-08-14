@@ -61,7 +61,7 @@ class RejectParticipationServiceTest extends UseCaseTest {
         given(studyParticipantRepository.findApplier(any(), any())).willReturn(Optional.empty());
 
         // when - then
-        assertThatThrownBy(() -> rejectParticipationService.rejectParticipation(
+        assertThatThrownBy(() -> rejectParticipationService.invoke(
                 new RejectParticipationUseCase.Command(
                         study.getId(),
                         applierWithAllowEmail.getId(),
@@ -88,7 +88,7 @@ class RejectParticipationServiceTest extends UseCaseTest {
         given(queryStudyByIdService.findById(any())).willReturn(study);
 
         // when - then
-        assertThatThrownBy(() -> rejectParticipationService.rejectParticipation(
+        assertThatThrownBy(() -> rejectParticipationService.invoke(
                 new RejectParticipationUseCase.Command(
                         study.getId(),
                         applierWithAllowEmail.getId(),
@@ -114,7 +114,7 @@ class RejectParticipationServiceTest extends UseCaseTest {
         given(queryStudyByIdService.findById(any())).willReturn(study);
 
         // when
-        rejectParticipationService.rejectParticipation(
+        rejectParticipationService.invoke(
                 new RejectParticipationUseCase.Command(
                         study.getId(),
                         applierWithAllowEmail.getId(),
@@ -139,7 +139,7 @@ class RejectParticipationServiceTest extends UseCaseTest {
         given(queryStudyByIdService.findById(any())).willReturn(study);
 
         // when
-        rejectParticipationService.rejectParticipation(
+        rejectParticipationService.invoke(
                 new RejectParticipationUseCase.Command(
                         study.getId(),
                         applierWithNotAllowEmail.getId(),

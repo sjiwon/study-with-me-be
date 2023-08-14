@@ -18,13 +18,13 @@ public class StudySearchService implements
     private final StudyRepository studyRepository;
 
     @Override
-    public StudyPagingResponse queryStudyByCategory(final QueryStudyByCategoryUseCase.Query query) {
+    public StudyPagingResponse invoke(final QueryStudyByCategoryUseCase.Query query) {
         final Slice<StudyPreview> result = studyRepository.fetchStudyByCategory(query.condition(), query.pageable());
         return new StudyPagingResponse(result.getContent(), result.hasNext());
     }
 
     @Override
-    public StudyPagingResponse queryStudyByRecommend(final QueryStudyByRecommendUseCase.Query query) {
+    public StudyPagingResponse invoke(final QueryStudyByRecommendUseCase.Query query) {
         final Slice<StudyPreview> result = studyRepository.fetchStudyByRecommend(query.condition(), query.pageable());
         return new StudyPagingResponse(result.getContent(), result.hasNext());
     }

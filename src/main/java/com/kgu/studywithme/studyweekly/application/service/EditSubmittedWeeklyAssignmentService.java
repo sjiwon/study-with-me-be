@@ -36,7 +36,7 @@ public class EditSubmittedWeeklyAssignmentService implements EditSubmittedWeekly
     private final FileUploader uploader;
 
     @Override
-    public void editSubmittedWeeklyAssignment(final Command command) {
+    public void invoke(final Command command) {
         validateAssignmentSubmissionExists(command.file(), command.link());
 
         final StudyWeeklySubmit submittedAssignment = getSubmittedAssignment(command.memberId(), command.studyId(), command.weeklyId());

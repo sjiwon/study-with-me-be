@@ -6,7 +6,7 @@ import com.kgu.studywithme.studyweekly.domain.Period;
 import java.util.List;
 
 public interface CreateStudyWeeklyUseCase {
-    Long createStudyWeekly(final Command command);
+    Long invoke(final Command command);
 
     record Command(
             Long studyId,

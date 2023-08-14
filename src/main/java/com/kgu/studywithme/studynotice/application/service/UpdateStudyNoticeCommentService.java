@@ -16,7 +16,7 @@ public class UpdateStudyNoticeCommentService implements UpdateStudyNoticeComment
     private final StudyNoticeCommentRepository studyNoticeCommentRepository;
 
     @Override
-    public void updateNoticeComment(final Command command) {
+    public void invoke(final Command command) {
         final StudyNoticeComment comment = findById(command.commentId());
         validateCommentWriter(comment, command.memberId());
 

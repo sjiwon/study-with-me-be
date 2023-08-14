@@ -39,7 +39,7 @@ public class SubmitWeeklyAssignmentService implements SubmitWeeklyAssignmentUseC
     private final FileUploader uploader;
 
     @Override
-    public void submitWeeklyAssignment(final Command command) {
+    public void invoke(final Command command) {
         validateAssignmentSubmissionExists(command.file(), command.link());
 
         final StudyWeekly weekly = getSpecificWeekly(command.weeklyId());

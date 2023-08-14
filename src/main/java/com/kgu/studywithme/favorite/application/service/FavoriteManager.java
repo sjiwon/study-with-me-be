@@ -17,7 +17,7 @@ public class FavoriteManager implements StudyLikeMarkingUseCase, StudyLikeCancel
     private final FavoriteRepository favoriteRepository;
 
     @Override
-    public Long likeMarking(final StudyLikeMarkingUseCase.Command command) {
+    public Long invoke(final StudyLikeMarkingUseCase.Command command) {
         validateLike(command.studyId(), command.memberId());
 
         final Favorite favoriteStudy = Favorite.favoriteMarking(command.studyId(), command.memberId());
@@ -34,7 +34,7 @@ public class FavoriteManager implements StudyLikeMarkingUseCase, StudyLikeCancel
     }
 
     @Override
-    public void likeCancellation(final StudyLikeCancellationUseCase.Command command) {
+    public void invoke(final StudyLikeCancellationUseCase.Command command) {
         validateCancel(command.studyId(), command.memberId());
         favoriteRepository.deleteByStudyIdAndMemberId(command.studyId(), command.memberId());
     }

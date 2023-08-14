@@ -39,7 +39,7 @@ class TerminateStudyServiceTest extends UseCaseTest {
         given(queryStudyByIdService.findById(any())).willReturn(study);
 
         // when
-        terminateStudyService.terminateStudy(command);
+        terminateStudyService.invoke(command);
 
         // then
         assertAll(

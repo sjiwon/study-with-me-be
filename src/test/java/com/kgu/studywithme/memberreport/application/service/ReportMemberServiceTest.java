@@ -34,8 +34,11 @@ class ReportMemberServiceTest extends UseCaseTest {
 
     private final Member memberA = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Member memberB = GHOST.toMember().apply(2L, LocalDateTime.now());
-    private final ReportMemberUseCase.Command command =
-            new ReportMemberUseCase.Command(memberA.getId(), memberB.getId(), "report...");
+    private final ReportMemberUseCase.Command command = new ReportMemberUseCase.Command(
+            memberA.getId(),
+            memberB.getId(),
+            "report..."
+    );
 
     @Test
     @DisplayName("이전에 신고한 내역이 여전히 처리중이라면 중복 신고를 하지 못한다")
@@ -44,7 +47,7 @@ class ReportMemberServiceTest extends UseCaseTest {
         given(memberReportRepository.isReportStillPending(any(), any())).willReturn(true);
 
         // when - then
-        assertThatThrownBy(() -> reportMemberService.report(command))
+        assertThatThrownBy(() -> reportMemberService.invoke(command))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberReportErrorCode.PREVIOUS_REPORT_IS_STILL_PENDING.getMessage());
 
@@ -66,7 +69,7 @@ class ReportMemberServiceTest extends UseCaseTest {
         given(memberReportRepository.save(any())).willReturn(memberReport);
 
         // when
-        final Long reportId = reportMemberService.report(command);
+        final Long reportId = reportMemberService.invoke(command);
 
         // then
         assertAll(

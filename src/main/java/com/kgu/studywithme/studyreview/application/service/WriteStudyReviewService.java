@@ -18,7 +18,7 @@ public class WriteStudyReviewService implements WriteStudyReviewUseCase {
     private final StudyReviewRepository studyReviewRepository;
 
     @Override
-    public Long writeStudyReview(final Command command) {
+    public Long invoke(final Command command) {
         validateMemberIsGraduatedStudy(command.studyId(), command.memberId());
         validateAlreadyWritten(command.studyId(), command.memberId());
 

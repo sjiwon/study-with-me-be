@@ -22,7 +22,7 @@ public class ManualAttendanceService implements ManualAttendanceUseCase {
     private final QueryMemberByIdService queryMemberByIdService;
 
     @Override
-    public void manualAttendance(final Command command) {
+    public void invoke(final Command command) {
         final StudyAttendance attendance = getParticipantAttendanceByWeek(
                 command.studyId(),
                 command.participantId(),

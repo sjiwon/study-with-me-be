@@ -64,7 +64,7 @@ class ApproveParticipationServiceTest extends UseCaseTest {
         given(studyParticipantRepository.findApplier(any(), any())).willReturn(Optional.empty());
 
         // when - then
-        assertThatThrownBy(() -> approveParticipationService.approveParticipation(
+        assertThatThrownBy(() -> approveParticipationService.invoke(
                 new ApproveParticipationUseCase.Command(
                         study.getId(),
                         applierWithAllowEmail.getId()
@@ -90,7 +90,7 @@ class ApproveParticipationServiceTest extends UseCaseTest {
         given(queryStudyByIdService.findById(any())).willReturn(study);
 
         // when - then
-        assertThatThrownBy(() -> approveParticipationService.approveParticipation(
+        assertThatThrownBy(() -> approveParticipationService.invoke(
                 new ApproveParticipationUseCase.Command(
                         study.getId(),
                         applierWithAllowEmail.getId()
@@ -119,7 +119,7 @@ class ApproveParticipationServiceTest extends UseCaseTest {
         }
 
         // when - then
-        assertThatThrownBy(() -> approveParticipationService.approveParticipation(
+        assertThatThrownBy(() -> approveParticipationService.invoke(
                 new ApproveParticipationUseCase.Command(
                         study.getId(),
                         applierWithAllowEmail.getId()
@@ -144,7 +144,7 @@ class ApproveParticipationServiceTest extends UseCaseTest {
         given(queryStudyByIdService.findById(any())).willReturn(study);
 
         // when
-        approveParticipationService.approveParticipation(
+        approveParticipationService.invoke(
                 new ApproveParticipationUseCase.Command(
                         study.getId(),
                         applierWithAllowEmail.getId()
@@ -169,7 +169,7 @@ class ApproveParticipationServiceTest extends UseCaseTest {
         given(queryStudyByIdService.findById(any())).willReturn(study);
 
         // when
-        approveParticipationService.approveParticipation(
+        approveParticipationService.invoke(
                 new ApproveParticipationUseCase.Command(
                         study.getId(),
                         applierWithNotAllowEmail.getId()

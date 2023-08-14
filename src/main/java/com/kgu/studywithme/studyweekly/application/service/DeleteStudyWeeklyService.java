@@ -15,7 +15,7 @@ public class DeleteStudyWeeklyService implements DeleteStudyWeeklyUseCase {
     private final StudyWeeklyRepository studyWeeklyRepository;
 
     @Override
-    public void deleteStudyWeekly(final Command command) {
+    public void invoke(final Command command) {
         validateSpecificWeekIsLatestWeek(command.studyId(), command.weeklyId());
         studyWeeklyRepository.deleteSpecificWeekly(command.studyId(), command.weeklyId());
     }

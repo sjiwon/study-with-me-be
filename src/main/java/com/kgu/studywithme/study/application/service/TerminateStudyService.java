@@ -13,7 +13,7 @@ public class TerminateStudyService implements TerminateStudyUseCase {
     private final QueryStudyByIdService queryStudyByIdService;
 
     @Override
-    public void terminateStudy(final Command command) {
+    public void invoke(final Command command) {
         final Study study = queryStudyByIdService.findById(command.studyId());
         study.terminate();
     }

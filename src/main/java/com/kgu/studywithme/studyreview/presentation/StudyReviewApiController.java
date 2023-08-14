@@ -36,7 +36,7 @@ public class StudyReviewApiController {
             @PathVariable final Long studyId,
             @RequestBody @Valid final WriteStudyReviewRequest request
     ) {
-        final Long reviewId = writeStudyReviewUseCase.writeStudyReview(
+        final Long reviewId = writeStudyReviewUseCase.invoke(
                 new WriteStudyReviewUseCase.Command(
                         studyId,
                         memberId,
@@ -54,7 +54,7 @@ public class StudyReviewApiController {
             @PathVariable final Long reviewId,
             @RequestBody @Valid final UpdateStudyReviewRequest request
     ) {
-        updateStudyReviewUseCase.updateStudyReview(
+        updateStudyReviewUseCase.invoke(
                 new UpdateStudyReviewUseCase.Command(
                         reviewId,
                         memberId,
@@ -71,7 +71,7 @@ public class StudyReviewApiController {
             @PathVariable final Long studyId,
             @PathVariable final Long reviewId
     ) {
-        deleteStudyReviewUseCase.deleteStudyReview(
+        deleteStudyReviewUseCase.invoke(
                 new DeleteStudyReviewUseCase.Command(
                         reviewId,
                         memberId

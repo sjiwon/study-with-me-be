@@ -5,7 +5,7 @@ import com.kgu.studywithme.study.utils.QueryStudyByCategoryCondition;
 import org.springframework.data.domain.Pageable;
 
 public interface QueryStudyByCategoryUseCase {
-    StudyPagingResponse queryStudyByCategory(final Query query);
+    StudyPagingResponse invoke(final Query query);
 
     record Query(
             QueryStudyByCategoryCondition condition,

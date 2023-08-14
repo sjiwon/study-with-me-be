@@ -44,7 +44,7 @@ class CategoryApiControllerTest extends ControllerTest {
                     new CategoryResponse(CERTIFICATION),
                     new CategoryResponse(ETC)
             );
-            given(queryAllCategoriesUseCase.findAllCategories()).willReturn(categories);
+            given(queryAllCategoriesUseCase.invoke()).willReturn(categories);
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders

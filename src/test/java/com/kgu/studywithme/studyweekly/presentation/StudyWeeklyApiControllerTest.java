@@ -142,7 +142,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            given(createStudyWeeklyUseCase.createStudyWeekly(any())).willReturn(1L);
+            given(createStudyWeeklyUseCase.invoke(any())).willReturn(1L);
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -305,7 +305,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyWeeklyErrorCode.WEEKLY_NOT_FOUND))
                     .when(updateStudyWeeklyUseCase)
-                    .updateStudyWeekly(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -378,7 +378,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
             doNothing()
                     .when(updateStudyWeeklyUseCase)
-                    .updateStudyWeekly(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -497,7 +497,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyWeeklyErrorCode.ONLY_LATEST_WEEKLY_CAN_DELETE))
                     .when(deleteStudyWeeklyUseCase)
-                    .deleteStudyWeekly(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders

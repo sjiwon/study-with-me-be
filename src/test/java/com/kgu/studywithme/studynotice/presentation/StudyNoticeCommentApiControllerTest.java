@@ -48,7 +48,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
             mockingToken(true, ANONYMOUS_ID);
             doThrow(StudyWithMeException.type(StudyNoticeErrorCode.ONLY_PARTICIPANT_CAN_WRITE_COMMENT))
                     .when(writeStudyNoticeCommentUseCase)
-                    .writeNoticeComment(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -95,7 +95,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
             mockingToken(true, PARTICIPANT_ID);
             doNothing()
                     .when(writeStudyNoticeCommentUseCase)
-                    .writeNoticeComment(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -143,7 +143,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
             mockingToken(true, ANONYMOUS_ID);
             doThrow(StudyWithMeException.type(StudyNoticeErrorCode.ONLY_WRITER_CAN_UPDATE_NOTICE_COMMENT))
                     .when(updateStudyNoticeCommentUseCase)
-                    .updateNoticeComment(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -192,7 +192,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
             mockingToken(true, PARTICIPANT_ID);
             doNothing()
                     .when(updateStudyNoticeCommentUseCase)
-                    .updateNoticeComment(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -241,7 +241,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
             mockingToken(true, ANONYMOUS_ID);
             doThrow(StudyWithMeException.type(StudyNoticeErrorCode.ONLY_WRITER_CAN_DELETE_NOTICE_COMMENT))
                     .when(deleteStudyNoticeCommentUseCase)
-                    .deleteNoticeComment(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -284,7 +284,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
             mockingToken(true, PARTICIPANT_ID);
             doNothing()
                     .when(deleteStudyNoticeCommentUseCase)
-                    .deleteNoticeComment(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders

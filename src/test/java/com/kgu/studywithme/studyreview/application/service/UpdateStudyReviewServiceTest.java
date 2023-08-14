@@ -51,7 +51,7 @@ class UpdateStudyReviewServiceTest extends UseCaseTest {
         given(studyReviewRepository.findById(any())).willReturn(Optional.of(review));
 
         // when - then
-        assertThatThrownBy(() -> updateStudyReviewService.updateStudyReview(
+        assertThatThrownBy(() -> updateStudyReviewService.invoke(
                 new UpdateStudyReviewUseCase.Command(
                         review.getId(),
                         anonymous.getId(),
@@ -71,7 +71,7 @@ class UpdateStudyReviewServiceTest extends UseCaseTest {
         given(studyReviewRepository.findById(any())).willReturn(Optional.of(review));
 
         // when
-        updateStudyReviewService.updateStudyReview(
+        updateStudyReviewService.invoke(
                 new UpdateStudyReviewUseCase.Command(
                         review.getId(),
                         member.getId(),

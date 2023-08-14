@@ -32,7 +32,7 @@ public class StudyAttendanceApiController {
             @PathVariable final Long memberId,
             @RequestBody @Valid final ManualAttendanceRequest request
     ) {
-        manualCheckAttendance.manualAttendance(
+        manualCheckAttendance.invoke(
                 new ManualAttendanceUseCase.Command(
                         studyId,
                         memberId,

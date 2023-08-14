@@ -25,22 +25,22 @@ public class StudyQueryOnlyParticipantService implements
     private final StudyRepository studyRepository;
 
     @Override
-    public List<StudyApplicantInformation> queryApplicant(final QueryApplicantByIdUseCase.Query query) {
+    public List<StudyApplicantInformation> invoke(final QueryApplicantByIdUseCase.Query query) {
         return studyRepository.fetchApplicantById(query.studyId());
     }
 
     @Override
-    public List<NoticeInformation> queryNotice(final QueryNoticeByIdUseCase.Query query) {
+    public List<NoticeInformation> invoke(final QueryNoticeByIdUseCase.Query query) {
         return studyRepository.fetchNoticeById(query.studyId());
     }
 
     @Override
-    public List<AttendanceInformation> queryAttendance(final QueryAttendanceByIdUseCase.Query query) {
+    public List<AttendanceInformation> invoke(final QueryAttendanceByIdUseCase.Query query) {
         return studyRepository.fetchAttendanceById(query.studyId());
     }
 
     @Override
-    public List<WeeklyInformation> queryWeekly(final QueryWeeklyByIdUseCase.Query query) {
+    public List<WeeklyInformation> invoke(final QueryWeeklyByIdUseCase.Query query) {
         return studyRepository.fetchWeeklyById(query.studyId());
     }
 }

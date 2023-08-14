@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class QueryAllCategoriesService implements QueryAllCategoriesUseCase {
     @Override
-    public List<CategoryResponse> findAllCategories() {
+    public List<CategoryResponse> invoke() {
         return Arrays.stream(Category.values())
                 .map(CategoryResponse::new)
                 .toList();

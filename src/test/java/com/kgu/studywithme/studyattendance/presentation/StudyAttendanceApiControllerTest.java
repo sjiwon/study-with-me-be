@@ -157,7 +157,7 @@ class StudyAttendanceApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyAttendanceErrorCode.ATTENDANCE_NOT_FOUND))
                     .when(manualAttendanceUseCase)
-                    .manualAttendance(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -208,7 +208,7 @@ class StudyAttendanceApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
             doNothing()
                     .when(manualAttendanceUseCase)
-                    .manualAttendance(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders

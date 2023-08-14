@@ -54,12 +54,7 @@ class ApplyStudyServiceTest extends UseCaseTest {
         given(queryStudyByIdService.findById(any())).willReturn(study);
 
         // when - then
-        assertThatThrownBy(() -> applyStudyService.apply(
-                new ApplyStudyUseCase.Command(
-                        study.getId(),
-                        applier.getId()
-                )
-        ))
+        assertThatThrownBy(() -> applyStudyService.invoke(new ApplyStudyUseCase.Command(study.getId(), applier.getId())))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.STUDY_IS_NOT_RECRUITING_NOW.getMessage());
 
@@ -78,12 +73,7 @@ class ApplyStudyServiceTest extends UseCaseTest {
         given(queryStudyByIdService.findById(any())).willReturn(study);
 
         // when - then
-        assertThatThrownBy(() -> applyStudyService.apply(
-                new ApplyStudyUseCase.Command(
-                        study.getId(),
-                        host.getId()
-                )
-        ))
+        assertThatThrownBy(() -> applyStudyService.invoke(new ApplyStudyUseCase.Command(study.getId(), host.getId())))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.STUDY_HOST_CANNOT_APPLY.getMessage());
 
@@ -103,12 +93,7 @@ class ApplyStudyServiceTest extends UseCaseTest {
         given(studyParticipantRepository.isApplierOrParticipant(any(), any())).willReturn(true);
 
         // when - then
-        assertThatThrownBy(() -> applyStudyService.apply(
-                new ApplyStudyUseCase.Command(
-                        study.getId(),
-                        applier.getId()
-                )
-        ))
+        assertThatThrownBy(() -> applyStudyService.invoke(new ApplyStudyUseCase.Command(study.getId(), applier.getId())))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.ALREADY_APPLY_OR_PARTICIPATE.getMessage());
 
@@ -129,12 +114,7 @@ class ApplyStudyServiceTest extends UseCaseTest {
         given(studyParticipantRepository.isAlreadyLeaveOrGraduatedParticipant(any(), any())).willReturn(true);
 
         // when - then
-        assertThatThrownBy(() -> applyStudyService.apply(
-                new ApplyStudyUseCase.Command(
-                        study.getId(),
-                        applier.getId()
-                )
-        ))
+        assertThatThrownBy(() -> applyStudyService.invoke(new ApplyStudyUseCase.Command(study.getId(), applier.getId())))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.ALREADY_LEAVE_OR_GRADUATED.getMessage());
 
@@ -155,12 +135,7 @@ class ApplyStudyServiceTest extends UseCaseTest {
         given(studyParticipantRepository.isAlreadyLeaveOrGraduatedParticipant(any(), any())).willReturn(false);
 
         // when
-        applyStudyService.apply(
-                new ApplyStudyUseCase.Command(
-                        study.getId(),
-                        applier.getId()
-                )
-        );
+        applyStudyService.invoke(new ApplyStudyUseCase.Command(study.getId(), applier.getId()));
 
         // then
         assertAll(

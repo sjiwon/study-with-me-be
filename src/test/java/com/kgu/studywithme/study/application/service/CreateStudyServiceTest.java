@@ -41,20 +41,19 @@ class CreateStudyServiceTest extends UseCaseTest {
     private StudyParticipantRepository studyParticipantRepository;
 
     private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
-    private final CreateStudyUseCase.Command command =
-            new CreateStudyUseCase.Command(
-                    host.getId(),
-                    OS.getName(),
-                    OS.getDescription(),
-                    OS.getCategory(),
-                    OS.getCapacity(),
-                    OS.getThumbnail(),
-                    OS.getType(),
-                    null,
-                    null,
-                    OS.getMinimumAttendanceForGraduation(),
-                    OS.getHashtags()
-            );
+    private final CreateStudyUseCase.Command command = new CreateStudyUseCase.Command(
+            host.getId(),
+            OS.getName(),
+            OS.getDescription(),
+            OS.getCategory(),
+            OS.getCapacity(),
+            OS.getThumbnail(),
+            OS.getType(),
+            null,
+            null,
+            OS.getMinimumAttendanceForGraduation(),
+            OS.getHashtags()
+    );
 
     @Test
     @DisplayName("이미 사용하고 있는 이름이면 스터디 생성에 실패한다")
@@ -63,7 +62,7 @@ class CreateStudyServiceTest extends UseCaseTest {
         given(studyRepository.isNameExists(any())).willReturn(true);
 
         // when - then
-        assertThatThrownBy(() -> createStudyService.createStudy(command))
+        assertThatThrownBy(() -> createStudyService.invoke(command))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyErrorCode.DUPLICATE_NAME.getMessage());
 
@@ -86,7 +85,7 @@ class CreateStudyServiceTest extends UseCaseTest {
         given(studyRepository.save(any())).willReturn(study);
 
         // when
-        final Long savedStudyId = createStudyService.createStudy(command);
+        final Long savedStudyId = createStudyService.invoke(command);
 
         // then
         assertAll(

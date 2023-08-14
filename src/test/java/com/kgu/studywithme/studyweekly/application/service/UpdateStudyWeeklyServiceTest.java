@@ -95,7 +95,7 @@ class UpdateStudyWeeklyServiceTest extends UseCaseTest {
         given(studyWeeklyRepository.findById(any())).willReturn(Optional.empty());
 
         // when - then
-        assertThatThrownBy(() -> updateStudyWeeklyService.updateStudyWeekly(command))
+        assertThatThrownBy(() -> updateStudyWeeklyService.invoke(command))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyWeeklyErrorCode.WEEKLY_NOT_FOUND.getMessage());
 
@@ -116,7 +116,7 @@ class UpdateStudyWeeklyServiceTest extends UseCaseTest {
         given(uploader.uploadWeeklyAttachment(fileData4)).willReturn(IMG_FILE.getLink());
 
         // when
-        updateStudyWeeklyService.updateStudyWeekly(command);
+        updateStudyWeeklyService.invoke(command);
 
         // then
         assertAll(

@@ -26,7 +26,7 @@ public class CreateStudyService implements CreateStudyUseCase {
     private final StudyParticipantRepository studyParticipantRepository;
 
     @Override
-    public Long createStudy(final Command command) {
+    public Long invoke(final Command command) {
         validateStudyNameIsUnique(command.name());
 
         final Member host = queryMemberByIdService.findById(command.hostId());

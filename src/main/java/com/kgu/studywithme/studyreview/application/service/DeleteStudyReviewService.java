@@ -16,7 +16,7 @@ public class DeleteStudyReviewService implements DeleteStudyReviewUseCase {
     private final StudyReviewRepository studyReviewRepository;
 
     @Override
-    public void deleteStudyReview(final Command command) {
+    public void invoke(final Command command) {
         final StudyReview review = findById(command.reviewId());
         validateMemberIsReviewWriter(review, command.memberId());
 

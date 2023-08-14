@@ -35,16 +35,15 @@ class UpdateMemberServiceTest extends UseCaseTest {
     private MemberRepository memberRepository;
 
     private final Member member = JIWON.toMember().apply(1L, LocalDateTime.now());
-    private final UpdateMemberUseCase.Command command =
-            new UpdateMemberUseCase.Command(
-                    member.getId(),
-                    GHOST.getNickname().getValue(),
-                    GHOST.getPhone(),
-                    GHOST.getRegion().getProvince(),
-                    GHOST.getRegion().getCity(),
-                    false,
-                    GHOST.getInterests()
-            );
+    private final UpdateMemberUseCase.Command command = new UpdateMemberUseCase.Command(
+            member.getId(),
+            GHOST.getNickname().getValue(),
+            GHOST.getPhone(),
+            GHOST.getRegion().getProvince(),
+            GHOST.getRegion().getCity(),
+            false,
+            GHOST.getInterests()
+    );
 
     @Test
     @DisplayName("다른 사람이 사용하고 있는 닉네임으로 수정할 수 없다")
@@ -54,7 +53,7 @@ class UpdateMemberServiceTest extends UseCaseTest {
         given(memberRepository.isNicknameUsedByOther(any(), any())).willReturn(true);
 
         // when - then
-        assertThatThrownBy(() -> memberUpdateService.update(command))
+        assertThatThrownBy(() -> memberUpdateService.invoke(command))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberErrorCode.DUPLICATE_NICKNAME.getMessage());
 
@@ -73,7 +72,7 @@ class UpdateMemberServiceTest extends UseCaseTest {
         given(memberRepository.isPhoneUsedByOther(any(), any())).willReturn(true);
 
         // when - then
-        assertThatThrownBy(() -> memberUpdateService.update(command))
+        assertThatThrownBy(() -> memberUpdateService.invoke(command))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberErrorCode.DUPLICATE_PHONE.getMessage());
 
@@ -92,7 +91,7 @@ class UpdateMemberServiceTest extends UseCaseTest {
         given(memberRepository.isPhoneUsedByOther(any(), any())).willReturn(false);
 
         // when
-        memberUpdateService.update(command);
+        memberUpdateService.invoke(command);
 
         // then
         assertAll(

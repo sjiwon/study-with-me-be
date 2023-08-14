@@ -13,7 +13,7 @@ public class DeleteStudyNoticeService implements DeleteStudyNoticeUseCase {
     private final StudyNoticeRepository studyNoticeRepository;
 
     @Override
-    public void deleteNotice(final Command command) {
+    public void invoke(final Command command) {
         studyNoticeRepository.deleteNotice(command.noticeId());
     }
 }

@@ -1,7 +1,7 @@
 package com.kgu.studywithme.studynotice.application.usecase.command;
 
 public interface UpdateStudyNoticeCommentUseCase {
-    void updateNoticeComment(final Command command);
+    void invoke(final Command command);
 
     record Command(
             Long commentId,

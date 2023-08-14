@@ -29,7 +29,7 @@ public class CreateStudyWeeklyService implements CreateStudyWeeklyUseCase {
     private final StudyAttendanceRepository studyAttendanceRepository;
 
     @Override
-    public Long createStudyWeekly(final Command command) {
+    public Long invoke(final Command command) {
         final List<UploadAttachment> attachments = uploadAttachments(command.files());
         final int nextWeek = studyWeeklyRepository.getNextWeek(command.studyId());
 

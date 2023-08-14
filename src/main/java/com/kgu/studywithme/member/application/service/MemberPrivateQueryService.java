@@ -22,17 +22,17 @@ public class MemberPrivateQueryService implements
     private final MemberRepository memberRepository;
 
     @Override
-    public MemberPrivateInformation queryPrivateInformation(final QueryPrivateInformationByIdUseCase.Query query) {
+    public MemberPrivateInformation invoke(final QueryPrivateInformationByIdUseCase.Query query) {
         return memberRepository.fetchPrivateInformationById(query.memberId());
     }
 
     @Override
-    public List<AppliedStudy> queryAppliedStudy(final QueryAppliedStudyByIdUseCase.Query query) {
+    public List<AppliedStudy> invoke(final QueryAppliedStudyByIdUseCase.Query query) {
         return memberRepository.fetchAppliedStudyById(query.memberId());
     }
 
     @Override
-    public List<LikeMarkedStudy> queryLikeMarkedStudy(final QueryLikeMarkedStudyByIdUseCase.Query query) {
+    public List<LikeMarkedStudy> invoke(final QueryLikeMarkedStudyByIdUseCase.Query query) {
         return memberRepository.fetchLikeMarkedStudyById(query.memberId());
     }
 }

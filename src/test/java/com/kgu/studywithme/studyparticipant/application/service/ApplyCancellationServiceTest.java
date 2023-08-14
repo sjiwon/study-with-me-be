@@ -33,8 +33,7 @@ class ApplyCancellationServiceTest extends UseCaseTest {
 
     private final Member member = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Study study = SPRING.toOnlineStudy(member.getId()).apply(1L, LocalDateTime.now());
-    private final ApplyCancellationUseCase.Command command
-            = new ApplyCancellationUseCase.Command(study.getId(), member.getId());
+    private final ApplyCancellationUseCase.Command command = new ApplyCancellationUseCase.Command(study.getId(), member.getId());
 
     @Test
     @DisplayName("스터디 신청자가 아니면 신청 취소를 할 수 없다")
@@ -43,7 +42,7 @@ class ApplyCancellationServiceTest extends UseCaseTest {
         given(studyParticipantRepository.isApplier(any(), any())).willReturn(false);
 
         // when - then
-        assertThatThrownBy(() -> applyCancellationService.applyCancellation(command))
+        assertThatThrownBy(() -> applyCancellationService.invoke(command))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.APPLIER_NOT_FOUND.getMessage());
 
@@ -60,7 +59,7 @@ class ApplyCancellationServiceTest extends UseCaseTest {
         given(studyParticipantRepository.isApplier(any(), any())).willReturn(true);
 
         // when
-        applyCancellationService.applyCancellation(command);
+        applyCancellationService.invoke(command);
 
         // then
         assertAll(

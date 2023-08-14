@@ -18,7 +18,7 @@ public class ReissueTokenService implements ReissueTokenUseCase {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    public TokenResponse reissueToken(final Command command) {
+    public TokenResponse invoke(final Command command) {
         if (!tokenPersistenceAdapter.isRefreshTokenExists(command.memberId(), command.refreshToken())) {
             throw StudyWithMeException.type(AuthErrorCode.INVALID_TOKEN);
         }

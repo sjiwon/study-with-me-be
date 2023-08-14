@@ -53,11 +53,8 @@ class DeleteStudyNoticeCommentServiceTest extends UseCaseTest {
         given(studyNoticeCommentRepository.findById(any())).willReturn(Optional.of(comment));
 
         // when - then
-        assertThatThrownBy(() -> deleteStudyNoticeCommentService.deleteNoticeComment(
-                new DeleteStudyNoticeCommentUseCase.Command(
-                        comment.getId(),
-                        anonymous.getId()
-                )
+        assertThatThrownBy(() -> deleteStudyNoticeCommentService.invoke(
+                new DeleteStudyNoticeCommentUseCase.Command(comment.getId(), anonymous.getId())
         ))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyNoticeErrorCode.ONLY_WRITER_CAN_DELETE_NOTICE_COMMENT.getMessage());
@@ -75,12 +72,7 @@ class DeleteStudyNoticeCommentServiceTest extends UseCaseTest {
         given(studyNoticeCommentRepository.findById(any())).willReturn(Optional.of(comment));
 
         // when
-        deleteStudyNoticeCommentService.deleteNoticeComment(
-                new DeleteStudyNoticeCommentUseCase.Command(
-                        comment.getId(),
-                        writer.getId()
-                )
-        );
+        deleteStudyNoticeCommentService.invoke(new DeleteStudyNoticeCommentUseCase.Command(comment.getId(), writer.getId()));
 
         // then
         assertAll(

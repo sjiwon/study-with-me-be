@@ -35,7 +35,7 @@ public class StudyNoticeCommentApiController {
             @PathVariable final Long noticeId,
             @RequestBody @Valid final WriteStudyNoticeCommentRequest request
     ) {
-        writeStudyNoticeCommentUseCase.writeNoticeComment(
+        writeStudyNoticeCommentUseCase.invoke(
                 new WriteStudyNoticeCommentUseCase.Command(
                         noticeId,
                         writerId,
@@ -53,7 +53,7 @@ public class StudyNoticeCommentApiController {
             @PathVariable final Long commentId,
             @RequestBody @Valid final UpdateStudyNoticeCommentRequest request
     ) {
-        updateStudyNoticeCommentUseCase.updateNoticeComment(
+        updateStudyNoticeCommentUseCase.invoke(
                 new UpdateStudyNoticeCommentUseCase.Command(
                         commentId,
                         memberId,
@@ -70,7 +70,7 @@ public class StudyNoticeCommentApiController {
             @PathVariable final Long noticeId,
             @PathVariable final Long commentId
     ) {
-        deleteStudyNoticeCommentUseCase.deleteNoticeComment(
+        deleteStudyNoticeCommentUseCase.invoke(
                 new DeleteStudyNoticeCommentUseCase.Command(
                         commentId,
                         memberId

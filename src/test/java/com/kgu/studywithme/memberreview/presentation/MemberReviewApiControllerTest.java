@@ -49,7 +49,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
             mockingToken(true, REVIEWEE_ID);
             doThrow(StudyWithMeException.type(MemberReviewErrorCode.SELF_REVIEW_NOT_ALLOWED))
                     .when(writeMemberReviewUseCase)
-                    .writeMemberReview(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -96,7 +96,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
             mockingToken(true, REVIEWER_ID);
             doThrow(StudyWithMeException.type(MemberReviewErrorCode.COMMON_STUDY_RECORD_NOT_FOUND))
                     .when(writeMemberReviewUseCase)
-                    .writeMemberReview(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -143,7 +143,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
             mockingToken(true, REVIEWER_ID);
             doThrow(StudyWithMeException.type(MemberReviewErrorCode.ALREADY_REVIEW))
                     .when(writeMemberReviewUseCase)
-                    .writeMemberReview(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -188,7 +188,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, REVIEWER_ID);
-            given(writeMemberReviewUseCase.writeMemberReview(any())).willReturn(1L);
+            given(writeMemberReviewUseCase.invoke(any())).willReturn(1L);
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -241,7 +241,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
             mockingToken(true, REVIEWER_ID);
             doThrow(StudyWithMeException.type(MemberReviewErrorCode.MEMBER_REVIEW_NOT_FOUND))
                     .when(updateMemberReviewUseCase)
-                    .updateMemberReview(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -288,7 +288,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
             mockingToken(true, REVIEWER_ID);
             doThrow(StudyWithMeException.type(MemberReviewErrorCode.REVIEW_SAME_AS_BEFORE))
                     .when(updateMemberReviewUseCase)
-                    .updateMemberReview(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -335,7 +335,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
             mockingToken(true, REVIEWER_ID);
             doNothing()
                     .when(updateMemberReviewUseCase)
-                    .updateMemberReview(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders

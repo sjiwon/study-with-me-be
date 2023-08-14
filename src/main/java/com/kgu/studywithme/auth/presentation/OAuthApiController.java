@@ -37,7 +37,7 @@ public class OAuthApiController {
             @PathVariable final String provider,
             @RequestParam final String redirectUri
     ) {
-        final String oAuthLink = queryOAuthLinkUseCase.queryOAuthLink(
+        final String oAuthLink = queryOAuthLinkUseCase.invoke(
                 new QueryOAuthLinkUseCase.Query(
                         OAuthProvider.from(provider),
                         redirectUri
@@ -52,7 +52,7 @@ public class OAuthApiController {
             @PathVariable final String provider,
             @RequestBody @Valid final OAuthLoginRequest request
     ) {
-        final LoginResponse response = oAuthLoginUseCase.login(
+        final LoginResponse response = oAuthLoginUseCase.invoke(
                 new OAuthLoginUseCase.Command(
                         OAuthProvider.from(provider),
                         request.authorizationCode(),
@@ -67,7 +67,7 @@ public class OAuthApiController {
     @CheckAuthUser
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(@ExtractPayload final Long memberId) {
-        logoutUseCase.logout(new LogoutUseCase.Command(memberId));
+        logoutUseCase.invoke(new LogoutUseCase.Command(memberId));
         return ResponseEntity.noContent().build();
     }
 }

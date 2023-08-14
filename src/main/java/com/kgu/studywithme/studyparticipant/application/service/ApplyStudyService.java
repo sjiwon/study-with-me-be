@@ -19,7 +19,7 @@ public class ApplyStudyService implements ApplyStudyUseCase {
     private final StudyParticipantRepository studyParticipantRepository;
 
     @Override
-    public void apply(final Command command) {
+    public void invoke(final Command command) {
         final Study study = queryStudyByIdService.findById(command.studyId());
         validateStudyIsRecruiting(study);
         validateApplierIsHost(study, command.applierId());

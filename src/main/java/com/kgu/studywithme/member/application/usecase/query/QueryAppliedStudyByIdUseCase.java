@@ -5,7 +5,7 @@ import com.kgu.studywithme.member.infrastructure.repository.query.dto.AppliedStu
 import java.util.List;
 
 public interface QueryAppliedStudyByIdUseCase {
-    List<AppliedStudy> queryAppliedStudy(final Query query);
+    List<AppliedStudy> invoke(final Query query);
 
     record Query(
             Long memberId

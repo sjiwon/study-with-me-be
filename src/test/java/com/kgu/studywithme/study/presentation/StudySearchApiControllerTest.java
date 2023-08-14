@@ -45,7 +45,7 @@ class StudySearchApiControllerTest extends ControllerTest {
         @DisplayName("카테고리로 스터디 리스트를 조회한다 [Ex) 프로그래밍]")
         void success() throws Exception {
             // given
-            given(queryStudyByCategoryUseCase.queryStudyByCategory(any()))
+            given(queryStudyByCategoryUseCase.invoke(any()))
                     .willReturn(new StudyPagingResponse(generateStudies(), true));
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -133,7 +133,7 @@ class StudySearchApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
-            given(queryStudyByRecommendUseCase.queryStudyByRecommend(any()))
+            given(queryStudyByRecommendUseCase.invoke(any()))
                     .willReturn(new StudyPagingResponse(generateStudies(), true));
 
             // when

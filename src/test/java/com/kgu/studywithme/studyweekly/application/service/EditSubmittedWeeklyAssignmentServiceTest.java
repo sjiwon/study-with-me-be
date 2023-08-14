@@ -84,7 +84,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
     @Test
     @DisplayName("과제 제출물은 링크 또는 파일 중 하나를 반드시 업로드해야 하고 그러지 않으면 제출한 과제 수정에 실패한다")
     void throwExceptionByMissingSubmission() {
-        assertThatThrownBy(() -> editSubmittedWeeklyAssignmentService.editSubmittedWeeklyAssignment(
+        assertThatThrownBy(() -> editSubmittedWeeklyAssignmentService.invoke(
                 new EditSubmittedWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),
@@ -107,7 +107,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
     @Test
     @DisplayName("과제 제출물은 링크 또는 파일 중 한가지만 업로드해야 하고 그러지 않으면 제출한 과제 수정에 실패한다")
     void throwExceptionByDuplicateSubmission() {
-        assertThatThrownBy(() -> editSubmittedWeeklyAssignmentService.editSubmittedWeeklyAssignment(
+        assertThatThrownBy(() -> editSubmittedWeeklyAssignmentService.invoke(
                 new EditSubmittedWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),
@@ -134,7 +134,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
         given(studyWeeklyRepository.getSubmittedAssignment(any(), any(), any())).willReturn(Optional.empty());
 
         // when - then
-        assertThatThrownBy(() -> editSubmittedWeeklyAssignmentService.editSubmittedWeeklyAssignment(
+        assertThatThrownBy(() -> editSubmittedWeeklyAssignmentService.invoke(
                 new EditSubmittedWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),
@@ -167,7 +167,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
         given(queryMemberByIdService.findById(any())).willReturn(host);
 
         // when
-        editSubmittedWeeklyAssignmentService.editSubmittedWeeklyAssignment(
+        editSubmittedWeeklyAssignmentService.invoke(
                 new EditSubmittedWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),
@@ -201,7 +201,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
         given(studyAttendanceRepository.getParticipantAttendanceByWeek(any(), any(), anyInt())).willReturn(Optional.of(attendance));
 
         // when
-        editSubmittedWeeklyAssignmentService.editSubmittedWeeklyAssignment(
+        editSubmittedWeeklyAssignmentService.invoke(
                 new EditSubmittedWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),

@@ -56,12 +56,7 @@ class LeaveParticipationServiceTest extends UseCaseTest {
         given(queryStudyByIdService.findById(any())).willReturn(study);
 
         // when - then
-        assertThatThrownBy(() -> leaveParticipationService.leaveParticipation(
-                new LeaveParticipationUseCase.Command(
-                        study.getId(),
-                        host.getId()
-                )
-        ))
+        assertThatThrownBy(() -> leaveParticipationService.invoke(new LeaveParticipationUseCase.Command(study.getId(), host.getId())))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.HOST_CANNOT_LEAVE_STUDY.getMessage());
 
@@ -78,12 +73,7 @@ class LeaveParticipationServiceTest extends UseCaseTest {
         given(queryStudyByIdService.findById(any())).willReturn(study);
 
         // when
-        leaveParticipationService.leaveParticipation(
-                new LeaveParticipationUseCase.Command(
-                        study.getId(),
-                        participant.getId()
-                )
-        );
+        leaveParticipationService.invoke(new LeaveParticipationUseCase.Command(study.getId(), participant.getId()));
 
         // then
         assertAll(

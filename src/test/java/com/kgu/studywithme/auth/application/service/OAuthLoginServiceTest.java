@@ -70,13 +70,12 @@ class OAuthLoginServiceTest extends UseCaseTest {
     @DisplayName("Google OAuth 로그인")
     class GoogleLogin {
         private final Member member = JIWON.toMember().apply(1L, LocalDateTime.now());
-        private final OAuthLoginUseCase.Command command =
-                new OAuthLoginUseCase.Command(
-                        GOOGLE,
-                        AUTHORIZATION_CODE,
-                        REDIRECT_URI,
-                        STATE
-                );
+        private final OAuthLoginUseCase.Command command = new OAuthLoginUseCase.Command(
+                GOOGLE,
+                AUTHORIZATION_CODE,
+                REDIRECT_URI,
+                STATE
+        );
         private final GoogleTokenResponse googleTokenResponse = createGoogleTokenResponse();
         private final GoogleUserResponse googleUserResponse = JIWON.toGoogleUserResponse();
 
@@ -92,7 +91,7 @@ class OAuthLoginServiceTest extends UseCaseTest {
             // when - then
             final StudyWithMeOAuthException exception = assertThrows(
                     StudyWithMeOAuthException.class,
-                    () -> oAuthLoginService.login(command)
+                    () -> oAuthLoginService.invoke(command)
             );
 
             assertAll(
@@ -120,7 +119,7 @@ class OAuthLoginServiceTest extends UseCaseTest {
             given(jwtTokenProvider.createRefreshToken(any())).willReturn(REFRESH_TOKEN);
 
             // when
-            final LoginResponse response = oAuthLoginService.login(command);
+            final LoginResponse response = oAuthLoginService.invoke(command);
 
             // then
             assertAll(

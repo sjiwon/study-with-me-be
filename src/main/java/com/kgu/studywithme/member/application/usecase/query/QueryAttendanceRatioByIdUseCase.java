@@ -5,7 +5,7 @@ import com.kgu.studywithme.member.infrastructure.repository.query.dto.Attendance
 import java.util.List;
 
 public interface QueryAttendanceRatioByIdUseCase {
-    List<AttendanceRatio> queryAttendanceRatio(final Query query);
+    List<AttendanceRatio> invoke(final Query query);
 
     record Query(
             Long memberId

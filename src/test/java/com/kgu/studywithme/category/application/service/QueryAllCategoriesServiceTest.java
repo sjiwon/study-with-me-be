@@ -24,7 +24,7 @@ class QueryAllCategoriesServiceTest extends UseCaseTest {
     @DisplayName("전체 스터디 카테고리를 조회한다")
     void findAllCategories() {
         // when
-        final List<CategoryResponse> categoryResponse = queryAllCategoriesService.findAllCategories();
+        final List<CategoryResponse> categoryResponse = queryAllCategoriesService.invoke();
 
         // then
         assertAll(

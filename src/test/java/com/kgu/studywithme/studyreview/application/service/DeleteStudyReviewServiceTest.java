@@ -50,11 +50,8 @@ class DeleteStudyReviewServiceTest extends UseCaseTest {
         given(studyReviewRepository.findById(any())).willReturn(Optional.of(review));
 
         // when - then
-        assertThatThrownBy(() -> deleteStudyReviewService.deleteStudyReview(
-                new DeleteStudyReviewUseCase.Command(
-                        review.getId(),
-                        anonymous.getId()
-                )
+        assertThatThrownBy(() -> deleteStudyReviewService.invoke(
+                new DeleteStudyReviewUseCase.Command(review.getId(), anonymous.getId())
         ))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyReviewErrorCode.ONLY_WRITER_CAN_DELETE.getMessage());
@@ -72,12 +69,7 @@ class DeleteStudyReviewServiceTest extends UseCaseTest {
         given(studyReviewRepository.findById(any())).willReturn(Optional.of(review));
 
         // when
-        deleteStudyReviewService.deleteStudyReview(
-                new DeleteStudyReviewUseCase.Command(
-                        review.getId(),
-                        member.getId()
-                )
-        );
+        deleteStudyReviewService.invoke(new DeleteStudyReviewUseCase.Command(review.getId(), member.getId()));
 
         // then
         assertAll(

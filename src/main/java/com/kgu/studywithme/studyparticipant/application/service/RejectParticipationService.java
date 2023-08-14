@@ -24,7 +24,7 @@ public class RejectParticipationService implements RejectParticipationUseCase {
     private final ApplicationEventPublisher eventPublisher;
 
     @Override
-    public void rejectParticipation(final Command command) {
+    public void invoke(final Command command) {
         final Member applier = getApplier(command.studyId(), command.applierId());
         final Study study = queryStudyByIdService.findById(command.studyId());
         validateStudyInProgress(study);

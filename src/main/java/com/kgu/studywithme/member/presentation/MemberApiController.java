@@ -35,7 +35,7 @@ public class MemberApiController {
     @Operation(summary = "회원가입 EndPoint")
     @PostMapping("/member")
     public ResponseEntity<MemberIdResponse> signUp(@RequestBody @Valid final SignUpMemberRequest request) {
-        final Long savedMemberId = signUpMemberUseCase.signUp(
+        final Long savedMemberId = signUpMemberUseCase.invoke(
                 new SignUpMemberUseCase.Command(
                         request.name(),
                         new Nickname(request.nickname()),
@@ -65,7 +65,7 @@ public class MemberApiController {
             @ExtractPayload final Long memberId,
             @RequestBody @Valid final UpdateMemberRequest request
     ) {
-        updateMemberUseCase.update(
+        updateMemberUseCase.invoke(
                 new UpdateMemberUseCase.Command(
                         memberId,
                         request.nickname(),

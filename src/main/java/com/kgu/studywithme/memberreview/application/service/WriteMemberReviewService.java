@@ -21,7 +21,7 @@ public class WriteMemberReviewService implements WriteMemberReviewUseCase {
     private final MemberRepository memberRepository;
 
     @Override
-    public Long writeMemberReview(final Command command) {
+    public Long invoke(final Command command) {
         validateSelfReview(command.reviewerId(), command.revieweeId());
         validateColleague(command.reviewerId(), command.revieweeId());
         validateAlreadyReviewed(command.reviewerId(), command.revieweeId());

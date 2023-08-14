@@ -81,7 +81,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
     @Test
     @DisplayName("과제 제출물은 링크 또는 파일 중 하나를 반드시 업로드해야 하고 그러지 않으면 과제 제출에 실패한다")
     void throwExceptionByMissingSubmission() {
-        assertThatThrownBy(() -> submitWeeklyAssignmentService.submitWeeklyAssignment(
+        assertThatThrownBy(() -> submitWeeklyAssignmentService.invoke(
                 new SubmitWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),
@@ -106,7 +106,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
     @Test
     @DisplayName("과제 제출물은 링크 또는 파일 중 한가지만 업로드해야 하고 그러지 않으면 과제 제출에 실패한다")
     void throwExceptionByDuplicateSubmission() {
-        assertThatThrownBy(() -> submitWeeklyAssignmentService.submitWeeklyAssignment(
+        assertThatThrownBy(() -> submitWeeklyAssignmentService.invoke(
                 new SubmitWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),
@@ -135,7 +135,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
         given(studyWeeklyRepository.findById(any())).willReturn(Optional.empty());
 
         // when - then
-        assertThatThrownBy(() -> submitWeeklyAssignmentService.submitWeeklyAssignment(
+        assertThatThrownBy(() -> submitWeeklyAssignmentService.invoke(
                 new SubmitWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),
@@ -165,7 +165,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
         given(studyParticipantRepository.findParticipant(any(), any())).willReturn(Optional.of(host));
 
         // when
-        submitWeeklyAssignmentService.submitWeeklyAssignment(
+        submitWeeklyAssignmentService.invoke(
                 new SubmitWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),
@@ -196,7 +196,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
         given(studyAttendanceRepository.getParticipantAttendanceByWeek(any(), any(), anyInt())).willReturn(Optional.of(attendance));
 
         // when
-        submitWeeklyAssignmentService.submitWeeklyAssignment(
+        submitWeeklyAssignmentService.invoke(
                 new SubmitWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),
@@ -227,7 +227,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
         given(uploader.uploadWeeklySubmit(fileData)).willReturn(TXT_FILE.getLink());
 
         // when
-        submitWeeklyAssignmentService.submitWeeklyAssignment(
+        submitWeeklyAssignmentService.invoke(
                 new SubmitWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),
@@ -259,7 +259,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
         given(studyAttendanceRepository.getParticipantAttendanceByWeek(any(), any(), anyInt())).willReturn(Optional.of(attendance));
 
         // when
-        submitWeeklyAssignmentService.submitWeeklyAssignment(
+        submitWeeklyAssignmentService.invoke(
                 new SubmitWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),

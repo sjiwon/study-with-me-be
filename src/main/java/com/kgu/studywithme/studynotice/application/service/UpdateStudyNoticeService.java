@@ -13,7 +13,7 @@ public class UpdateStudyNoticeService implements UpdateStudyNoticeUseCase {
     private final StudyNoticeRepository studyNoticeRepository;
 
     @Override
-    public void updateNotice(final Command command) {
+    public void invoke(final Command command) {
         studyNoticeRepository.updateNotice(command.noticeId(), command.title(), command.content());
     }
 }

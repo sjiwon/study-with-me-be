@@ -62,7 +62,7 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
                             .map(Category::getName)
                             .toList()
             );
-            given(queryPrivateInformationByIdUseCase.queryPrivateInformation(any())).willReturn(response);
+            given(queryPrivateInformationByIdUseCase.invoke(any())).willReturn(response);
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -120,7 +120,7 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
-            given(queryAppliedStudyByIdUseCase.queryAppliedStudy(any()))
+            given(queryAppliedStudyByIdUseCase.invoke(any()))
                     .willReturn(
                             List.of(
                                     new AppliedStudy(
@@ -180,7 +180,7 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
-            given(queryLikeMarkedStudyByIdUseCase.queryLikeMarkedStudy(any()))
+            given(queryLikeMarkedStudyByIdUseCase.invoke(any()))
                     .willReturn(
                             List.of(
                                     new LikeMarkedStudy(

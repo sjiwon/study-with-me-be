@@ -38,11 +38,7 @@ class FavoriteManagerTest extends UseCaseTest {
     @Nested
     @DisplayName("찜 등록")
     class LikeMarking {
-        private final StudyLikeMarkingUseCase.Command command =
-                new StudyLikeMarkingUseCase.Command(
-                        STUDY_ID,
-                        MEMBER_ID
-                );
+        private final StudyLikeMarkingUseCase.Command command = new StudyLikeMarkingUseCase.Command(STUDY_ID, MEMBER_ID);
 
         @Test
         @DisplayName("이미 찜 등록된 스터디를 찜할 수 없다")
@@ -51,7 +47,7 @@ class FavoriteManagerTest extends UseCaseTest {
             given(favoriteRepository.existsByStudyIdAndMemberId(any(), any())).willReturn(true);
 
             // when - then
-            assertThatThrownBy(() -> favoriteManager.likeMarking(command))
+            assertThatThrownBy(() -> favoriteManager.invoke(command))
                     .isInstanceOf(StudyWithMeException.class)
                     .hasMessage(FavoriteErrorCode.ALREADY_LIKE_MARKED.getMessage());
 
@@ -71,7 +67,7 @@ class FavoriteManagerTest extends UseCaseTest {
             given(favoriteRepository.save(any())).willReturn(favorite);
 
             // when
-            final Long savedFavoriteId = favoriteManager.likeMarking(command);
+            final Long savedFavoriteId = favoriteManager.invoke(command);
 
             // then
             assertAll(
@@ -85,11 +81,7 @@ class FavoriteManagerTest extends UseCaseTest {
     @Nested
     @DisplayName("찜 취소")
     class LikeCancellation {
-        private final StudyLikeCancellationUseCase.Command command =
-                new StudyLikeCancellationUseCase.Command(
-                        STUDY_ID,
-                        MEMBER_ID
-                );
+        private final StudyLikeCancellationUseCase.Command command = new StudyLikeCancellationUseCase.Command(STUDY_ID, MEMBER_ID);
 
         @Test
         @DisplayName("찜 등록이 되지 않은 스터디를 취소할 수 없다")
@@ -98,7 +90,7 @@ class FavoriteManagerTest extends UseCaseTest {
             given(favoriteRepository.existsByStudyIdAndMemberId(any(), any())).willReturn(false);
 
             // when - then
-            assertThatThrownBy(() -> favoriteManager.likeCancellation(command))
+            assertThatThrownBy(() -> favoriteManager.invoke(command))
                     .isInstanceOf(StudyWithMeException.class)
                     .hasMessage(FavoriteErrorCode.NEVER_LIKE_MARKED.getMessage());
 
@@ -115,7 +107,7 @@ class FavoriteManagerTest extends UseCaseTest {
             given(favoriteRepository.existsByStudyIdAndMemberId(STUDY_ID, MEMBER_ID)).willReturn(true);
 
             // when
-            favoriteManager.likeCancellation(command);
+            favoriteManager.invoke(command);
 
             // then
             assertAll(

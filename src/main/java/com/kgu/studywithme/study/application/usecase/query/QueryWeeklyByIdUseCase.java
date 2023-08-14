@@ -5,7 +5,7 @@ import com.kgu.studywithme.study.infrastructure.repository.query.dto.WeeklyInfor
 import java.util.List;
 
 public interface QueryWeeklyByIdUseCase {
-    List<WeeklyInformation> queryWeekly(final Query query);
+    List<WeeklyInformation> invoke(final Query query);
 
     record Query(
             Long studyId

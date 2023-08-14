@@ -5,7 +5,7 @@ import com.kgu.studywithme.study.infrastructure.repository.query.dto.StudyApplic
 import java.util.List;
 
 public interface QueryApplicantByIdUseCase {
-    List<StudyApplicantInformation> queryApplicant(final Query query);
+    List<StudyApplicantInformation> invoke(final Query query);
 
     record Query(
             Long studyId

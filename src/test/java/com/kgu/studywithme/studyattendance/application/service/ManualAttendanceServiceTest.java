@@ -60,12 +60,11 @@ class ManualAttendanceServiceTest extends UseCaseTest {
                 1,
                 NON_ATTENDANCE
         );
-        given(studyAttendanceRepository.getParticipantAttendanceByWeek(any(), any(), any()))
-                .willReturn(Optional.of(attendance));
+        given(studyAttendanceRepository.getParticipantAttendanceByWeek(any(), any(), any())).willReturn(Optional.of(attendance));
         given(queryMemberByIdService.findById(any())).willReturn(member);
 
         // when
-        manualAttendanceService.manualAttendance(
+        manualAttendanceService.invoke(
                 new ManualAttendanceUseCase.Command(
                         study.getId(),
                         member.getId(),
@@ -93,12 +92,11 @@ class ManualAttendanceServiceTest extends UseCaseTest {
                 1,
                 ABSENCE
         );
-        given(studyAttendanceRepository.getParticipantAttendanceByWeek(any(), any(), any()))
-                .willReturn(Optional.of(attendance));
+        given(studyAttendanceRepository.getParticipantAttendanceByWeek(any(), any(), any())).willReturn(Optional.of(attendance));
         given(queryMemberByIdService.findById(any())).willReturn(member);
 
         // when
-        manualAttendanceService.manualAttendance(
+        manualAttendanceService.invoke(
                 new ManualAttendanceUseCase.Command(
                         study.getId(),
                         member.getId(),

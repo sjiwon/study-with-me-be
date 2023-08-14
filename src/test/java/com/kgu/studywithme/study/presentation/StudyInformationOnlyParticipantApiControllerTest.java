@@ -105,7 +105,7 @@ class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            given(queryApplicantByIdUseCase.queryApplicant(any()))
+            given(queryApplicantByIdUseCase.invoke(any()))
                     .willReturn(
                             List.of(
                                     new StudyApplicantInformation(
@@ -213,7 +213,7 @@ class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            given(queryNoticeByIdUseCase.queryNotice(any()))
+            given(queryNoticeByIdUseCase.invoke(any()))
                     .willReturn(
                             List.of(
                                     new NoticeInformation(
@@ -351,7 +351,7 @@ class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            given(queryAttendanceByIdUseCase.queryAttendance(any()))
+            given(queryAttendanceByIdUseCase.invoke(any()))
                     .willReturn(
                             List.of(
                                     new AttendanceInformation(
@@ -470,7 +470,7 @@ class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            given(queryWeeklyByIdUseCase.queryWeekly(any()))
+            given(queryWeeklyByIdUseCase.invoke(any()))
                     .willReturn(
                             List.of(
                                     new WeeklyInformation(

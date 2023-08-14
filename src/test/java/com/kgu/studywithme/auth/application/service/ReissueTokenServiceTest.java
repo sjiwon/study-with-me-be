@@ -34,11 +34,7 @@ class ReissueTokenServiceTest extends UseCaseTest {
     @Mock
     private JwtTokenProvider jwtTokenProvider;
 
-    private final ReissueTokenUseCase.Command command =
-            new ReissueTokenUseCase.Command(
-                    1L,
-                    REFRESH_TOKEN
-            );
+    private final ReissueTokenUseCase.Command command = new ReissueTokenUseCase.Command(1L, REFRESH_TOKEN);
 
     @Nested
     @DisplayName("토큰 재발급")
@@ -50,7 +46,7 @@ class ReissueTokenServiceTest extends UseCaseTest {
             given(tokenPersistenceAdapter.isRefreshTokenExists(any(), any())).willReturn(false);
 
             // when - then
-            assertThatThrownBy(() -> tokenReissueService.reissueToken(command))
+            assertThatThrownBy(() -> tokenReissueService.invoke(command))
                     .isInstanceOf(StudyWithMeException.class)
                     .hasMessage(AuthErrorCode.INVALID_TOKEN.getMessage());
 
@@ -71,7 +67,7 @@ class ReissueTokenServiceTest extends UseCaseTest {
             given(jwtTokenProvider.createRefreshToken(any())).willReturn(REFRESH_TOKEN);
 
             // when
-            final TokenResponse response = tokenReissueService.reissueToken(command);
+            final TokenResponse response = tokenReissueService.invoke(command);
 
             // then
             assertAll(

@@ -31,7 +31,7 @@ public class OAuthLoginService implements OAuthLoginUseCase {
     private final TokenPersistenceAdapter tokenPersistenceAdapter;
 
     @Override
-    public LoginResponse login(final Command command) {
+    public LoginResponse invoke(final Command command) {
         final OAuthConnector oAuthConnector = getOAuthConnectorByProvider(command.provider());
         final OAuthTokenResponse token = oAuthConnector.getToken(command.code(), command.redirectUrl(), command.state());
         final OAuthUserResponse userInfo = oAuthConnector.getUserInfo(token.accessToken());

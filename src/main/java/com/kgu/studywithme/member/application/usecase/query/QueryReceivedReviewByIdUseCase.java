@@ -5,7 +5,7 @@ import com.kgu.studywithme.member.infrastructure.repository.query.dto.ReceivedRe
 import java.util.List;
 
 public interface QueryReceivedReviewByIdUseCase {
-    List<ReceivedReview> queryReceivedReview(final Query query);
+    List<ReceivedReview> invoke(final Query query);
 
     record Query(
             Long memberId

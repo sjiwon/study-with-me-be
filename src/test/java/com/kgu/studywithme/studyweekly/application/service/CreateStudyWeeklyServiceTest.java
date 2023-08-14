@@ -78,7 +78,7 @@ class CreateStudyWeeklyServiceTest extends UseCaseTest {
         given(studyParticipantRepository.findStudyParticipantIds(any())).willReturn(List.of(1L, 2L, 3L));
 
         // when
-        createStudyWeeklyService.createStudyWeekly(
+        createStudyWeeklyService.invoke(
                 new CreateStudyWeeklyUseCase.Command(
                         study.getId(),
                         host.getId(),

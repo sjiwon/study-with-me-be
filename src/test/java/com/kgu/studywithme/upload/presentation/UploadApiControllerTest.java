@@ -96,7 +96,7 @@ class UploadApiControllerTest extends ControllerTest {
             mockingToken(true, MEMBER_ID);
             doThrow(StudyWithMeException.type(FileErrorCode.FILE_IS_NOT_UPLOAD))
                     .when(uploadWeeklyImageUseCase)
-                    .uploadWeeklyImage(any());
+                    .invoke(any());
 
             // when
             final MultipartFile file = new MockMultipartFile("file", new byte[0]);
@@ -145,7 +145,7 @@ class UploadApiControllerTest extends ControllerTest {
             mockingToken(true, MEMBER_ID);
 
             final String uploadLink = "https://image-upload-link";
-            given(uploadWeeklyImageUseCase.uploadWeeklyImage(any())).willReturn(uploadLink);
+            given(uploadWeeklyImageUseCase.invoke(any())).willReturn(uploadLink);
 
             // when
             final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");
@@ -246,7 +246,7 @@ class UploadApiControllerTest extends ControllerTest {
             mockingToken(true, MEMBER_ID);
             doThrow(StudyWithMeException.type(FileErrorCode.FILE_IS_NOT_UPLOAD))
                     .when(uploadStudyDescriptionImageUseCase)
-                    .uploadStudyDescriptionImage(any());
+                    .invoke(any());
 
             // when
             final MultipartFile file = new MockMultipartFile("file", new byte[0]);
@@ -295,7 +295,7 @@ class UploadApiControllerTest extends ControllerTest {
             mockingToken(true, MEMBER_ID);
 
             final String uploadLink = "https://image-upload-link";
-            given(uploadStudyDescriptionImageUseCase.uploadStudyDescriptionImage(any())).willReturn(uploadLink);
+            given(uploadStudyDescriptionImageUseCase.invoke(any())).willReturn(uploadLink);
 
             // when
             final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");

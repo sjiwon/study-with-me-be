@@ -23,7 +23,7 @@ public class UpdateStudyWeeklyService implements UpdateStudyWeeklyUseCase {
     private final FileUploader uploader;
 
     @Override
-    public void updateStudyWeekly(final Command command) {
+    public void invoke(final Command command) {
         final StudyWeekly weekly = getSpecificWeekly(command.weeklyId());
         final List<UploadAttachment> attachments = uploadAttachments(command.files());
 

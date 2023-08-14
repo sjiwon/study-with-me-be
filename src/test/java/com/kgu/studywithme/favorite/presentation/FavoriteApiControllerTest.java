@@ -42,7 +42,7 @@ class FavoriteApiControllerTest extends ControllerTest {
             mockingToken(true, MEMBER_ID);
             doThrow(StudyWithMeException.type(FavoriteErrorCode.ALREADY_LIKE_MARKED))
                     .when(studyLikeMarkingUseCase)
-                    .likeMarking(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -81,7 +81,7 @@ class FavoriteApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
-            given(studyLikeMarkingUseCase.likeMarking(any())).willReturn(1L);
+            given(studyLikeMarkingUseCase.invoke(any())).willReturn(1L);
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -120,7 +120,7 @@ class FavoriteApiControllerTest extends ControllerTest {
             mockingToken(true, MEMBER_ID);
             doThrow(StudyWithMeException.type(FavoriteErrorCode.NEVER_LIKE_MARKED))
                     .when(studyLikeCancellationUseCase)
-                    .likeCancellation(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -161,7 +161,7 @@ class FavoriteApiControllerTest extends ControllerTest {
             mockingToken(true, MEMBER_ID);
             doNothing()
                     .when(studyLikeCancellationUseCase)
-                    .likeCancellation(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders

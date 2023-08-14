@@ -18,7 +18,7 @@ public class DelegateHostAuthorityService implements DelegateHostAuthorityUseCas
     private final StudyParticipantRepository studyParticipantRepository;
 
     @Override
-    public void delegateHostAuthority(final Command command) {
+    public void invoke(final Command command) {
         final Study study = queryStudyByIdService.findById(command.studyId());
         validateStudyInProgress(study);
         validateNewHostIsCurrentHost(study, command.newHostId());

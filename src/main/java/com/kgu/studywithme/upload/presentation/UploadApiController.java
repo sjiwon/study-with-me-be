@@ -46,9 +46,9 @@ public class UploadApiController {
         final RawFileData fileData = extractFileData(file);
 
         if ("weekly".equals(type)) {
-            return uploadWeeklyImageUseCase.uploadWeeklyImage(new UploadWeeklyImageUseCase.Command(fileData));
+            return uploadWeeklyImageUseCase.invoke(new UploadWeeklyImageUseCase.Command(fileData));
         }
-        return uploadStudyDescriptionImageUseCase.uploadStudyDescriptionImage(new UploadStudyDescriptionImageUseCase.Command(fileData));
+        return uploadStudyDescriptionImageUseCase.invoke(new UploadStudyDescriptionImageUseCase.Command(fileData));
     }
 
     private RawFileData extractFileData(final MultipartFile file) {

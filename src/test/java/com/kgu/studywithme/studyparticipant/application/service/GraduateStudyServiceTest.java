@@ -68,12 +68,7 @@ class GraduateStudyServiceTest extends UseCaseTest {
         given(queryStudyByIdService.findById(any())).willReturn(study);
 
         // when - then
-        assertThatThrownBy(() -> graduateStudyService.graduateStudy(
-                new GraduateStudyUseCase.Command(
-                        study.getId(),
-                        host.getId()
-                )
-        ))
+        assertThatThrownBy(() -> graduateStudyService.invoke(new GraduateStudyUseCase.Command(study.getId(), host.getId())))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.HOST_CANNOT_GRADUATE_STUDY.getMessage());
 
@@ -94,12 +89,7 @@ class GraduateStudyServiceTest extends UseCaseTest {
         given(studyParticipantRepository.findParticipant(any(), any())).willReturn(Optional.empty());
 
         // when - then
-        assertThatThrownBy(() -> graduateStudyService.graduateStudy(
-                new GraduateStudyUseCase.Command(
-                        study.getId(),
-                        applierWithAllowEmail.getId()
-                )
-        ))
+        assertThatThrownBy(() -> graduateStudyService.invoke(new GraduateStudyUseCase.Command(study.getId(), applierWithAllowEmail.getId())))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.PARTICIPANT_NOT_FOUND.getMessage());
 
@@ -117,18 +107,12 @@ class GraduateStudyServiceTest extends UseCaseTest {
     void throwExceptionByParticipantNotMeetGraduationPolicy() {
         // given
         given(queryStudyByIdService.findById(any())).willReturn(study);
-        given(studyParticipantRepository.findParticipant(any(), any()))
-                .willReturn(Optional.of(applierWithAllowEmail));
+        given(studyParticipantRepository.findParticipant(any(), any())).willReturn(Optional.of(applierWithAllowEmail));
         given(studyAttendanceRepository.getAttendanceCount(any(), any()))
                 .willReturn(study.getGraduationPolicy().getMinimumAttendance() - 1);
 
         // when - then
-        assertThatThrownBy(() -> graduateStudyService.graduateStudy(
-                new GraduateStudyUseCase.Command(
-                        study.getId(),
-                        applierWithAllowEmail.getId()
-                )
-        ))
+        assertThatThrownBy(() -> graduateStudyService.invoke(new GraduateStudyUseCase.Command(study.getId(), applierWithAllowEmail.getId())))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.PARTICIPANT_NOT_MEET_GRADUATION_POLICY.getMessage());
 
@@ -146,18 +130,12 @@ class GraduateStudyServiceTest extends UseCaseTest {
     void successA() {
         // given
         given(queryStudyByIdService.findById(any())).willReturn(study);
-        given(studyParticipantRepository.findParticipant(any(), any()))
-                .willReturn(Optional.of(applierWithAllowEmail));
+        given(studyParticipantRepository.findParticipant(any(), any())).willReturn(Optional.of(applierWithAllowEmail));
         given(studyAttendanceRepository.getAttendanceCount(any(), any()))
                 .willReturn(study.getGraduationPolicy().getMinimumAttendance());
 
         // when
-        graduateStudyService.graduateStudy(
-                new GraduateStudyUseCase.Command(
-                        study.getId(),
-                        applierWithAllowEmail.getId()
-                )
-        );
+        graduateStudyService.invoke(new GraduateStudyUseCase.Command(study.getId(), applierWithAllowEmail.getId()));
 
         // then
         assertAll(
@@ -175,18 +153,12 @@ class GraduateStudyServiceTest extends UseCaseTest {
     void successB() {
         // given
         given(queryStudyByIdService.findById(any())).willReturn(study);
-        given(studyParticipantRepository.findParticipant(any(), any()))
-                .willReturn(Optional.of(applierWithNotAllowEmail));
+        given(studyParticipantRepository.findParticipant(any(), any())).willReturn(Optional.of(applierWithNotAllowEmail));
         given(studyAttendanceRepository.getAttendanceCount(any(), any()))
                 .willReturn(study.getGraduationPolicy().getMinimumAttendance());
 
         // when
-        graduateStudyService.graduateStudy(
-                new GraduateStudyUseCase.Command(
-                        study.getId(),
-                        applierWithNotAllowEmail.getId()
-                )
-        );
+        graduateStudyService.invoke(new GraduateStudyUseCase.Command(study.getId(), applierWithNotAllowEmail.getId()));
 
         // then
         assertAll(

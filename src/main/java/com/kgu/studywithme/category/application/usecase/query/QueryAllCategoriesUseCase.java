@@ -5,5 +5,5 @@ import com.kgu.studywithme.category.application.dto.CategoryResponse;
 import java.util.List;
 
 public interface QueryAllCategoriesUseCase {
-    List<CategoryResponse> findAllCategories();
+    List<CategoryResponse> invoke();
 }

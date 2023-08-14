@@ -53,7 +53,7 @@ class WriteStudyReviewServiceTest extends UseCaseTest {
         given(studyParticipantRepository.isGraduatedParticipant(any(), any())).willReturn(false);
 
         // when - then
-        assertThatThrownBy(() -> writeStudyReviewService.writeStudyReview(command))
+        assertThatThrownBy(() -> writeStudyReviewService.invoke(command))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyReviewErrorCode.ONLY_GRADUATED_PARTICIPANT_CAN_WRITE_REVIEW.getMessage());
 
@@ -72,7 +72,7 @@ class WriteStudyReviewServiceTest extends UseCaseTest {
         given(studyReviewRepository.existsByStudyIdAndWriterId(any(), any())).willReturn(true);
 
         // when - then
-        assertThatThrownBy(() -> writeStudyReviewService.writeStudyReview(command))
+        assertThatThrownBy(() -> writeStudyReviewService.invoke(command))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyReviewErrorCode.ALREADY_WRITTEN.getMessage());
 
@@ -98,7 +98,7 @@ class WriteStudyReviewServiceTest extends UseCaseTest {
         given(studyReviewRepository.save(any())).willReturn(review);
 
         // when
-        final Long studyReviewId = writeStudyReviewService.writeStudyReview(command);
+        final Long studyReviewId = writeStudyReviewService.invoke(command);
 
         // then
         assertAll(

@@ -36,7 +36,7 @@ public class MemberPublicInformationApiController {
     @Operation(summary = "사용자 기본 Public 정보 조회 EndPoint")
     @GetMapping
     public ResponseEntity<MemberPublicInformation> getInformation(@PathVariable final Long memberId) {
-        final MemberPublicInformation response = queryPublicInformationByIdUseCase.queryPublicInformation(
+        final MemberPublicInformation response = queryPublicInformationByIdUseCase.invoke(
                 new QueryPublicInformationByIdUseCase.Query(memberId)
         );
         return ResponseEntity.ok(response);
@@ -45,7 +45,7 @@ public class MemberPublicInformationApiController {
     @Operation(summary = "사용자가 참여하고 있는 스터디 조회 EndPoint")
     @GetMapping("/studies/participate")
     public ResponseEntity<ResponseWrapper<List<ParticipateStudy>>> getParticipateStudy(@PathVariable final Long memberId) {
-        final List<ParticipateStudy> response = queryParticipateStudyByIdUseCase.queryParticipateStudy(
+        final List<ParticipateStudy> response = queryParticipateStudyByIdUseCase.invoke(
                 new QueryParticipateStudyByIdUseCase.Query(memberId)
         );
         return ResponseEntity.ok(ResponseWrapper.from(response));
@@ -54,7 +54,7 @@ public class MemberPublicInformationApiController {
     @Operation(summary = "사용자가 졸업한 스터디 조회 EndPoint")
     @GetMapping("/studies/graduated")
     public ResponseEntity<ResponseWrapper<List<GraduatedStudy>>> getGraduatedStudy(@PathVariable final Long memberId) {
-        final List<GraduatedStudy> response = queryGraduatedStudyByIdUseCase.queryGraduatedStudy(
+        final List<GraduatedStudy> response = queryGraduatedStudyByIdUseCase.invoke(
                 new QueryGraduatedStudyByIdUseCase.Query(memberId)
         );
         return ResponseEntity.ok(ResponseWrapper.from(response));
@@ -63,7 +63,7 @@ public class MemberPublicInformationApiController {
     @Operation(summary = "사용자가 받은 리뷰 조회 EndPoint")
     @GetMapping("/reviews")
     public ResponseEntity<ResponseWrapper<List<ReceivedReview>>> getReviews(@PathVariable final Long memberId) {
-        final List<ReceivedReview> response = queryReceivedReviewByIdUseCase.queryReceivedReview(
+        final List<ReceivedReview> response = queryReceivedReviewByIdUseCase.invoke(
                 new QueryReceivedReviewByIdUseCase.Query(memberId)
         );
         return ResponseEntity.ok(ResponseWrapper.from(response));
@@ -72,7 +72,7 @@ public class MemberPublicInformationApiController {
     @Operation(summary = "사용자 출석률 조회 EndPoint")
     @GetMapping("/attendances")
     public ResponseEntity<ResponseWrapper<List<AttendanceRatio>>> getAttendanceRatio(@PathVariable final Long memberId) {
-        final List<AttendanceRatio> response = queryAttendanceRatioByIdUseCase.queryAttendanceRatio(
+        final List<AttendanceRatio> response = queryAttendanceRatioByIdUseCase.invoke(
                 new QueryAttendanceRatioByIdUseCase.Query(memberId)
         );
         return ResponseEntity.ok(ResponseWrapper.from(response));

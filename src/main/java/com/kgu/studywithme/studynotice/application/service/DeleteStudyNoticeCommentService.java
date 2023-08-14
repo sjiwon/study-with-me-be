@@ -16,7 +16,7 @@ public class DeleteStudyNoticeCommentService implements DeleteStudyNoticeComment
     private final StudyNoticeCommentRepository studyNoticeCommentRepository;
 
     @Override
-    public void deleteNoticeComment(final Command command) {
+    public void invoke(final Command command) {
         final StudyNoticeComment comment = findById(command.commentId());
         validateCommentWriter(comment, command.memberId());
 

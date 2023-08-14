@@ -27,7 +27,7 @@ public class StudyInformationApiController {
     @Operation(summary = "스터디 기본 정보 조회 EndPoint")
     @GetMapping
     public ResponseEntity<StudyBasicInformation> getInformation(@PathVariable final Long studyId) {
-        final StudyBasicInformation response = queryBasicInformationByIdUseCase.queryBasicInformation(
+        final StudyBasicInformation response = queryBasicInformationByIdUseCase.invoke(
                 new QueryBasicInformationByIdUseCase.Query(studyId)
         );
         return ResponseEntity.ok(response);
@@ -36,7 +36,7 @@ public class StudyInformationApiController {
     @Operation(summary = "스터디 리뷰 조회 EndPoint")
     @GetMapping("/reviews")
     public ResponseEntity<ReviewInformation> getReviews(@PathVariable final Long studyId) {
-        final ReviewInformation response = queryReviewByIdUseCase.queryReview(
+        final ReviewInformation response = queryReviewByIdUseCase.invoke(
                 new QueryReviewByIdUseCase.Query(studyId)
         );
         return ResponseEntity.ok(response);
@@ -45,7 +45,7 @@ public class StudyInformationApiController {
     @Operation(summary = "스터디 참여자 조회 EndPoint")
     @GetMapping("/participants")
     public ResponseEntity<StudyParticipantInformation> getApproveParticipants(@PathVariable final Long studyId) {
-        final StudyParticipantInformation response = queryParticipantByIdUseCase.queryParticipant(
+        final StudyParticipantInformation response = queryParticipantByIdUseCase.invoke(
                 new QueryParticipantByIdUseCase.Query(studyId)
         );
         return ResponseEntity.ok(response);

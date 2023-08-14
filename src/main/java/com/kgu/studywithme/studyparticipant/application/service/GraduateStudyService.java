@@ -26,7 +26,7 @@ public class GraduateStudyService implements GraduateStudyUseCase {
     private final ApplicationEventPublisher eventPublisher;
 
     @Override
-    public void graduateStudy(final Command command) {
+    public void invoke(final Command command) {
         final Study study = queryStudyByIdService.findById(command.studyId());
         validateMemberIsHost(study, command.participantId());
 

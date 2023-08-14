@@ -39,21 +39,20 @@ class UpdateStudyServiceTest extends UseCaseTest {
 
     private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L, LocalDateTime.now());
-    private final UpdateStudyUseCase.Command command =
-            new UpdateStudyUseCase.Command(
-                    study.getId(),
-                    JPA.getName(),
-                    JPA.getDescription(),
-                    JPA.getCategory(),
-                    JPA.getCapacity(),
-                    JPA.getThumbnail(),
-                    JPA.getType(),
-                    null,
-                    null,
-                    true,
-                    JPA.getMinimumAttendanceForGraduation(),
-                    JPA.getHashtags()
-            );
+    private final UpdateStudyUseCase.Command command = new UpdateStudyUseCase.Command(
+            study.getId(),
+            JPA.getName(),
+            JPA.getDescription(),
+            JPA.getCategory(),
+            JPA.getCapacity(),
+            JPA.getThumbnail(),
+            JPA.getType(),
+            null,
+            null,
+            true,
+            JPA.getMinimumAttendanceForGraduation(),
+            JPA.getHashtags()
+    );
 
     @Test
     @DisplayName("다른 스터디가 사용하고 있는 이름으로 수정할 수 없다")
@@ -62,7 +61,7 @@ class UpdateStudyServiceTest extends UseCaseTest {
         given(studyRepository.isNameUsedByOther(any(), any())).willReturn(true);
 
         // when - then
-        assertThatThrownBy(() -> updateStudyService.updateStudy(command))
+        assertThatThrownBy(() -> updateStudyService.invoke(command))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyErrorCode.DUPLICATE_NAME.getMessage());
 
@@ -84,7 +83,7 @@ class UpdateStudyServiceTest extends UseCaseTest {
         }
 
         // when - then
-        assertThatThrownBy(() -> updateStudyService.updateStudy(command))
+        assertThatThrownBy(() -> updateStudyService.invoke(command))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyErrorCode.CAPACITY_CANNOT_COVER_CURRENT_PARTICIPANTS.getMessage());
 
@@ -102,7 +101,7 @@ class UpdateStudyServiceTest extends UseCaseTest {
         given(queryStudyByIdService.findById(any())).willReturn(study);
 
         // when
-        updateStudyService.updateStudy(command);
+        updateStudyService.invoke(command);
 
         // then
         assertAll(

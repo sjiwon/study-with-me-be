@@ -5,7 +5,7 @@ import com.kgu.studywithme.member.infrastructure.repository.query.dto.Participat
 import java.util.List;
 
 public interface QueryParticipateStudyByIdUseCase {
-    List<ParticipateStudy> queryParticipateStudy(final Query query);
+    List<ParticipateStudy> invoke(final Query query);
 
     record Query(
             Long memberId

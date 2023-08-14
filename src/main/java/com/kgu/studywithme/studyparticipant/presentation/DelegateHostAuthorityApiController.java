@@ -27,7 +27,7 @@ public class DelegateHostAuthorityApiController {
             @PathVariable final Long studyId,
             @PathVariable final Long participantId
     ) {
-        delegateHostAuthorityUseCase.delegateHostAuthority(
+        delegateHostAuthorityUseCase.invoke(
                 new DelegateHostAuthorityUseCase.Command(
                         studyId,
                         participantId

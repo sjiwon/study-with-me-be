@@ -50,7 +50,7 @@ class QueryOAuthLinkServiceTest extends UseCaseTest {
 
         // when - then
         assertThatThrownBy(
-                () -> queryOAuthLinkService.queryOAuthLink(
+                () -> queryOAuthLinkService.invoke(
                         new QueryOAuthLinkUseCase.Query(
                                 null,
                                 REDIRECT_URI
@@ -71,7 +71,7 @@ class QueryOAuthLinkServiceTest extends UseCaseTest {
         given(googleOAuthUri.generate(any())).willReturn(REDIRECT_URI);
 
         // when
-        final String uri = queryOAuthLinkService.queryOAuthLink(
+        final String uri = queryOAuthLinkService.invoke(
                 new QueryOAuthLinkUseCase.Query(
                         GOOGLE,
                         REDIRECT_URI

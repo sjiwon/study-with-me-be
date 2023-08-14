@@ -14,7 +14,7 @@ public class WriteStudyNoticeService implements WriteStudyNoticeUseCase {
     private final StudyNoticeRepository studyNoticeRepository;
 
     @Override
-    public Long writeNotice(final Command command) {
+    public Long invoke(final Command command) {
         final StudyNotice notice = StudyNotice.writeNotice(
                 command.studyId(),
                 command.hostId(),

@@ -26,8 +26,7 @@ class WriteStudyNoticeServiceTest extends UseCaseTest {
     @Mock
     private StudyNoticeRepository studyNoticeRepository;
 
-    private final WriteStudyNoticeUseCase.Command command =
-            new WriteStudyNoticeUseCase.Command(1L, 1L, "Notice 1", "Hello World");
+    private final WriteStudyNoticeUseCase.Command command = new WriteStudyNoticeUseCase.Command(1L, 1L, "Notice", "Hello");
 
     @Test
     @DisplayName("스터디 공지사항을 작성한다")
@@ -42,7 +41,7 @@ class WriteStudyNoticeServiceTest extends UseCaseTest {
         given(studyNoticeRepository.save(any())).willReturn(notice);
 
         // when
-        final Long noticeId = writeStudyNoticeService.writeNotice(command);
+        final Long noticeId = writeStudyNoticeService.invoke(command);
 
         // then
         assertAll(

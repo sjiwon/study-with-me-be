@@ -18,7 +18,7 @@ public class WriteStudyNoticeCommentService implements WriteStudyNoticeCommentUs
     private final StudyParticipantRepository studyParticipantRepository;
 
     @Override
-    public void writeNoticeComment(final Command command) {
+    public void invoke(final Command command) {
         final StudyNotice notice = findById(command.noticeId());
         validateWriterIsStudyParticipant(notice.getStudyId(), command.writerId());
 

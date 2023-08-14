@@ -17,7 +17,7 @@ public class SignUpMemberService implements SignUpMemberUseCase {
     private final MemberRepository memberRepository;
 
     @Override
-    public Long signUp(final Command command) {
+    public Long invoke(final Command command) {
         validateEmailIsUnique(command.email());
         validateNicknameIsUnique(command.nickname());
         validatePhoneIsUnique(command.phone());

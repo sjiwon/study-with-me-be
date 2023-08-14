@@ -54,7 +54,7 @@ class OAuthApiControllerTest extends ControllerTest {
             // given
             doThrow(StudyWithMeException.type(AuthErrorCode.INVALID_OAUTH_PROVIDER))
                     .when(queryOAuthLinkUseCase)
-                    .queryOAuthLink(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -96,7 +96,7 @@ class OAuthApiControllerTest extends ControllerTest {
         @DisplayName("Google OAuth Authorization Code 요청을 위한 URI를 생성한다")
         void successGoogle() throws Exception {
             // given
-            given(queryOAuthLinkUseCase.queryOAuthLink(any())).willReturn("https://url-for-authorization-code");
+            given(queryOAuthLinkUseCase.invoke(any())).willReturn("https://url-for-authorization-code");
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -147,7 +147,7 @@ class OAuthApiControllerTest extends ControllerTest {
             final GoogleUserResponse googleUserResponse = JIWON.toGoogleUserResponse();
             doThrow(new StudyWithMeOAuthException(googleUserResponse))
                     .when(oAuthLoginUseCase)
-                    .login(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -194,7 +194,7 @@ class OAuthApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             final LoginResponse loginResponse = JIWON.toLoginResponse();
-            given(oAuthLoginUseCase.login(any())).willReturn(loginResponse);
+            given(oAuthLoginUseCase.invoke(any())).willReturn(loginResponse);
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders

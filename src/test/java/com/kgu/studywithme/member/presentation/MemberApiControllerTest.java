@@ -64,7 +64,7 @@ class MemberApiControllerTest extends ControllerTest {
             // given
             doThrow(StudyWithMeException.type(MemberErrorCode.DUPLICATE_NICKNAME))
                     .when(signUpMemberUseCase)
-                    .signUp(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -124,7 +124,7 @@ class MemberApiControllerTest extends ControllerTest {
         @DisplayName("회원가입을 진행한다")
         void success() throws Exception {
             // given
-            given(signUpMemberUseCase.signUp(any())).willReturn(1L);
+            given(signUpMemberUseCase.invoke(any())).willReturn(1L);
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -202,7 +202,7 @@ class MemberApiControllerTest extends ControllerTest {
             mockingToken(true, MEMBER_ID);
             doNothing()
                     .when(updateMemberUseCase)
-                    .update(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders

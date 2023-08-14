@@ -35,7 +35,7 @@ public class MemberReviewApiController {
             @PathVariable final Long revieweeId,
             @RequestBody @Valid final WriteMemberReviewRequest request
     ) {
-        final Long reviewId = writeMemberReviewUseCase.writeMemberReview(
+        final Long reviewId = writeMemberReviewUseCase.invoke(
                 new WriteMemberReviewUseCase.Command(reviewerId, revieweeId, request.content())
         );
         return ResponseEntity.ok(new MemberReviewIdResponse(reviewId));
@@ -49,7 +49,7 @@ public class MemberReviewApiController {
             @PathVariable final Long revieweeId,
             @RequestBody @Valid final UpdateMemberReviewRequest request
     ) {
-        updateMemberReviewUseCase.updateMemberReview(
+        updateMemberReviewUseCase.invoke(
                 new UpdateMemberReviewUseCase.Command(reviewerId, revieweeId, request.content())
         );
         return ResponseEntity.noContent().build();

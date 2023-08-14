@@ -5,7 +5,7 @@ import com.kgu.studywithme.study.utils.QueryStudyByRecommendCondition;
 import org.springframework.data.domain.Pageable;
 
 public interface QueryStudyByRecommendUseCase {
-    StudyPagingResponse queryStudyByRecommend(final Query query);
+    StudyPagingResponse invoke(final Query query);
 
     record Query(
             QueryStudyByRecommendCondition condition,

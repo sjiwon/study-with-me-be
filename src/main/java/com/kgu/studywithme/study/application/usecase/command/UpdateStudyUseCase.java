@@ -10,7 +10,7 @@ import com.kgu.studywithme.study.domain.StudyType;
 import java.util.Set;
 
 public interface UpdateStudyUseCase {
-    void updateStudy(final Command command);
+    void invoke(final Command command);
 
     record Command(
             Long studyId,

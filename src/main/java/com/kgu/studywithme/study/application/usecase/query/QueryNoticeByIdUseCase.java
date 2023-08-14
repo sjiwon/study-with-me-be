@@ -5,7 +5,7 @@ import com.kgu.studywithme.study.infrastructure.repository.query.dto.NoticeInfor
 import java.util.List;
 
 public interface QueryNoticeByIdUseCase {
-    List<NoticeInformation> queryNotice(final Query query);
+    List<NoticeInformation> invoke(final Query query);
 
     record Query(
             Long studyId

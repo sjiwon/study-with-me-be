@@ -16,7 +16,7 @@ public class UpdateStudyReviewService implements UpdateStudyReviewUseCase {
     private final StudyReviewRepository studyReviewRepository;
 
     @Override
-    public void updateStudyReview(final Command command) {
+    public void invoke(final Command command) {
         final StudyReview review = findById(command.reviewId());
         validateMemberIsReviewWriter(review, command.memberId());
 

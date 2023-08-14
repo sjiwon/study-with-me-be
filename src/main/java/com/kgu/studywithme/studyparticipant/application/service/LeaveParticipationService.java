@@ -20,7 +20,7 @@ public class LeaveParticipationService implements LeaveParticipationUseCase {
     private final StudyParticipantRepository studyParticipantRepository;
 
     @Override
-    public void leaveParticipation(final Command command) {
+    public void invoke(final Command command) {
         final Study study = queryStudyByIdService.findById(command.studyId());
         validateMemberIsHost(study, command.participantId());
 
