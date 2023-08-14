@@ -1,6 +1,6 @@
-package com.kgu.studywithme.global.infrastructure.mail;
+package com.kgu.studywithme.mail.application.service;
 
-import com.kgu.studywithme.global.infrastructure.mail.utils.EmailMetadata;
+import com.kgu.studywithme.mail.utils.EmailMetadata;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;

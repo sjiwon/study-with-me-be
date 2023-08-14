@@ -1,6 +1,6 @@
-package com.kgu.studywithme.global.infrastructure.mail;
+package com.kgu.studywithme.mail.application.service;
 
-import com.kgu.studywithme.global.infrastructure.mail.utils.EmailMetadata;
+import com.kgu.studywithme.mail.utils.EmailMetadata;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Value;

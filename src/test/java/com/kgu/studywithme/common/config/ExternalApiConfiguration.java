@@ -7,7 +7,7 @@ import com.kgu.studywithme.common.stub.StubFileUploader;
 import com.kgu.studywithme.common.stub.StubOAuthConnector;
 import com.kgu.studywithme.common.stub.StubOAuthUri;
 import com.kgu.studywithme.file.application.service.FileUploader;
-import com.kgu.studywithme.global.infrastructure.mail.EmailSender;
+import com.kgu.studywithme.mail.application.service.EmailSender;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;

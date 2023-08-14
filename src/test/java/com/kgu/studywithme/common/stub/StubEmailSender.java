@@ -1,6 +1,6 @@
 package com.kgu.studywithme.common.stub;
 
-import com.kgu.studywithme.global.infrastructure.mail.EmailSender;
+import com.kgu.studywithme.mail.application.service.EmailSender;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
