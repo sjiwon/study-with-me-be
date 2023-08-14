@@ -1,7 +1,7 @@
 package com.kgu.studywithme.studyweekly.application.usecase.command;
 
+import com.kgu.studywithme.file.domain.RawFileData;
 import com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType;
-import org.springframework.web.multipart.MultipartFile;
 
 public interface EditSubmittedWeeklyAssignmentUseCase {
     void editSubmittedWeeklyAssignment(final Command command);
@@ -11,7 +11,7 @@ public interface EditSubmittedWeeklyAssignmentUseCase {
             Long studyId,
             Long weeklyId,
             AssignmentSubmitType submitType,
-            MultipartFile file,
+            RawFileData file,
             String link
     ) {
     }

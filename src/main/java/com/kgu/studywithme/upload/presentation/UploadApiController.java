@@ -1,5 +1,6 @@
 package com.kgu.studywithme.upload.presentation;
 
+import com.kgu.studywithme.file.domain.RawFileData;
 import com.kgu.studywithme.global.aop.CheckAuthUser;
 import com.kgu.studywithme.global.dto.ResponseWrapper;
 import com.kgu.studywithme.upload.application.usecase.command.UploadStudyDescriptionImageUseCase;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
@@ -40,12 +43,23 @@ public class UploadApiController {
             final String type,
             final MultipartFile file
     ) {
-        if ("weekly".equals(type)) {
-            return uploadWeeklyImageUseCase.uploadWeeklyImage(new UploadWeeklyImageUseCase.Command(file));
-        }
+        final RawFileData fileData = extractFileData(file);
 
-        return uploadStudyDescriptionImageUseCase.uploadStudyDescriptionImage(
-                new UploadStudyDescriptionImageUseCase.Command(file)
-        );
+        if ("weekly".equals(type)) {
+            return uploadWeeklyImageUseCase.uploadWeeklyImage(new UploadWeeklyImageUseCase.Command(fileData));
+        }
+        return uploadStudyDescriptionImageUseCase.uploadStudyDescriptionImage(new UploadStudyDescriptionImageUseCase.Command(fileData));
+    }
+
+    private RawFileData extractFileData(final MultipartFile file) {
+        try {
+            return new RawFileData(
+                    file.getInputStream(),
+                    file.getContentType(),
+                    file.getOriginalFilename()
+            );
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

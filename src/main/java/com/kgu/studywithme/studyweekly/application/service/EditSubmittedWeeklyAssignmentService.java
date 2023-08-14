@@ -1,8 +1,9 @@
 package com.kgu.studywithme.studyweekly.application.service;
 
+import com.kgu.studywithme.file.application.service.FileUploader;
+import com.kgu.studywithme.file.domain.RawFileData;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.global.infrastructure.file.FileUploader;
 import com.kgu.studywithme.member.application.service.QueryMemberByIdService;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
@@ -18,7 +19,6 @@ import com.kgu.studywithme.studyweekly.domain.submit.UploadAssignment;
 import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
@@ -52,7 +52,7 @@ public class EditSubmittedWeeklyAssignmentService implements EditSubmittedWeekly
     }
 
     private void validateAssignmentSubmissionExists(
-            final MultipartFile file,
+            final RawFileData file,
             final String link
     ) {
         if (file == null && link == null) {
@@ -75,11 +75,11 @@ public class EditSubmittedWeeklyAssignmentService implements EditSubmittedWeekly
 
     private UploadAssignment uploadAssignment(
             final AssignmentSubmitType submitType,
-            final MultipartFile file,
+            final RawFileData file,
             final String link
     ) {
         return submitType == FILE
-                ? UploadAssignment.withFile(file.getOriginalFilename(), uploader.uploadWeeklySubmit(file))
+                ? UploadAssignment.withFile(file.originalFileName(), uploader.uploadWeeklySubmit(file))
                 : UploadAssignment.withLink(link);
     }
 

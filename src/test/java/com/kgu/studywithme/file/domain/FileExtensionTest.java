@@ -1,7 +1,7 @@
-package com.kgu.studywithme.global.infrastructure.file;
+package com.kgu.studywithme.file.domain;
 
+import com.kgu.studywithme.file.exception.FileErrorCode;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.upload.exception.UploadErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -11,22 +11,22 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.stream.Stream;
 
-import static com.kgu.studywithme.global.infrastructure.file.FileExtension.DOC;
-import static com.kgu.studywithme.global.infrastructure.file.FileExtension.DOCX;
-import static com.kgu.studywithme.global.infrastructure.file.FileExtension.GIF;
-import static com.kgu.studywithme.global.infrastructure.file.FileExtension.HWP;
-import static com.kgu.studywithme.global.infrastructure.file.FileExtension.HWPX;
-import static com.kgu.studywithme.global.infrastructure.file.FileExtension.JPEG;
-import static com.kgu.studywithme.global.infrastructure.file.FileExtension.JPG;
-import static com.kgu.studywithme.global.infrastructure.file.FileExtension.PDF;
-import static com.kgu.studywithme.global.infrastructure.file.FileExtension.PNG;
-import static com.kgu.studywithme.global.infrastructure.file.FileExtension.PPT;
-import static com.kgu.studywithme.global.infrastructure.file.FileExtension.PPTX;
-import static com.kgu.studywithme.global.infrastructure.file.FileExtension.TXT;
+import static com.kgu.studywithme.file.domain.FileExtension.DOC;
+import static com.kgu.studywithme.file.domain.FileExtension.DOCX;
+import static com.kgu.studywithme.file.domain.FileExtension.GIF;
+import static com.kgu.studywithme.file.domain.FileExtension.HWP;
+import static com.kgu.studywithme.file.domain.FileExtension.HWPX;
+import static com.kgu.studywithme.file.domain.FileExtension.JPEG;
+import static com.kgu.studywithme.file.domain.FileExtension.JPG;
+import static com.kgu.studywithme.file.domain.FileExtension.PDF;
+import static com.kgu.studywithme.file.domain.FileExtension.PNG;
+import static com.kgu.studywithme.file.domain.FileExtension.PPT;
+import static com.kgu.studywithme.file.domain.FileExtension.PPTX;
+import static com.kgu.studywithme.file.domain.FileExtension.TXT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@DisplayName("Upload -> FileExtension 테스트")
+@DisplayName("File -> FileExtension 테스트")
 public class FileExtensionTest {
     @Nested
     @DisplayName("파일 확장자 추출")
@@ -37,7 +37,7 @@ public class FileExtensionTest {
         void throwExceptionByInvalidFileExtension(final String fileName) {
             assertThatThrownBy(() -> FileExtension.getExtensionFromFileName(fileName))
                     .isInstanceOf(StudyWithMeException.class)
-                    .hasMessage(UploadErrorCode.INVALID_FILE_EXTENSION.getMessage());
+                    .hasMessage(FileErrorCode.INVALID_FILE_EXTENSION.getMessage());
         }
 
         @ParameterizedTest

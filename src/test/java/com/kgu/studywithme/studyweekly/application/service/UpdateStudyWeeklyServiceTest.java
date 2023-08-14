@@ -1,8 +1,9 @@
 package com.kgu.studywithme.studyweekly.application.service;
 
 import com.kgu.studywithme.common.UseCaseTest;
+import com.kgu.studywithme.file.application.service.FileUploader;
+import com.kgu.studywithme.file.domain.RawFileData;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.global.infrastructure.file.FileUploader;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.studyweekly.application.usecase.command.UpdateStudyWeeklyUseCase;
@@ -55,30 +56,36 @@ class UpdateStudyWeeklyServiceTest extends UseCaseTest {
     private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L, LocalDateTime.now());
     private final StudyWeekly weekly = STUDY_WEEKLY_1.toWeekly(study.getId(), host.getId()).apply(1L, LocalDateTime.now());
 
-    private MultipartFile file1;
-    private MultipartFile file2;
-    private MultipartFile file3;
-    private MultipartFile file4;
-    private List<MultipartFile> files;
+    private RawFileData fileData1;
+    private RawFileData fileData2;
+    private RawFileData fileData3;
+    private RawFileData fileData4;
+    private List<RawFileData> fileDatas;
     private UpdateStudyWeeklyUseCase.Command command;
 
     @BeforeEach
     void setUp() throws IOException {
-        file1 = createMultipleMockMultipartFile("hello1.txt", "text/plain");
-        file2 = createMultipleMockMultipartFile("hello2.hwpx", "application/x-hwpml");
-        file3 = createMultipleMockMultipartFile("hello3.pdf", "application/pdf");
-        file4 = createMultipleMockMultipartFile("hello4.png", "image/png");
-        files = List.of(file1, file2, file3, file4);
-        command =
-                new UpdateStudyWeeklyUseCase.Command(
-                        weekly.getId(),
-                        STUDY_WEEKLY_2.getTitle(),
-                        STUDY_WEEKLY_2.getContent(),
-                        STUDY_WEEKLY_2.getPeriod().toPeriod(),
-                        STUDY_WEEKLY_2.isAssignmentExists(),
-                        STUDY_WEEKLY_2.isAutoAttendance(),
-                        files
-                );
+        final MultipartFile file1 = createMultipleMockMultipartFile("hello1.txt", "text/plain");
+        final MultipartFile file2 = createMultipleMockMultipartFile("hello2.hwpx", "application/x-hwpml");
+        final MultipartFile file3 = createMultipleMockMultipartFile("hello3.pdf", "application/pdf");
+        final MultipartFile file4 = createMultipleMockMultipartFile("hello4.png", "image/png");
+
+
+        fileData1 = new RawFileData(file1.getInputStream(), file1.getContentType(), file1.getOriginalFilename());
+        fileData2 = new RawFileData(file2.getInputStream(), file2.getContentType(), file2.getOriginalFilename());
+        fileData3 = new RawFileData(file3.getInputStream(), file3.getContentType(), file3.getOriginalFilename());
+        fileData4 = new RawFileData(file4.getInputStream(), file4.getContentType(), file4.getOriginalFilename());
+        fileDatas = List.of(fileData1, fileData2, fileData3, fileData4);
+
+        command = new UpdateStudyWeeklyUseCase.Command(
+                weekly.getId(),
+                STUDY_WEEKLY_2.getTitle(),
+                STUDY_WEEKLY_2.getContent(),
+                STUDY_WEEKLY_2.getPeriod().toPeriod(),
+                STUDY_WEEKLY_2.isAssignmentExists(),
+                STUDY_WEEKLY_2.isAutoAttendance(),
+                fileDatas
+        );
     }
 
     @Test
@@ -103,10 +110,10 @@ class UpdateStudyWeeklyServiceTest extends UseCaseTest {
     void success() {
         // given
         given(studyWeeklyRepository.findById(any())).willReturn(Optional.of(weekly));
-        given(uploader.uploadWeeklyAttachment(file1)).willReturn(TXT_FILE.getLink());
-        given(uploader.uploadWeeklyAttachment(file2)).willReturn(HWPX_FILE.getLink());
-        given(uploader.uploadWeeklyAttachment(file3)).willReturn(PDF_FILE.getLink());
-        given(uploader.uploadWeeklyAttachment(file4)).willReturn(IMG_FILE.getLink());
+        given(uploader.uploadWeeklyAttachment(fileData1)).willReturn(TXT_FILE.getLink());
+        given(uploader.uploadWeeklyAttachment(fileData2)).willReturn(HWPX_FILE.getLink());
+        given(uploader.uploadWeeklyAttachment(fileData3)).willReturn(PDF_FILE.getLink());
+        given(uploader.uploadWeeklyAttachment(fileData4)).willReturn(IMG_FILE.getLink());
 
         // when
         updateStudyWeeklyService.updateStudyWeekly(command);
@@ -114,7 +121,7 @@ class UpdateStudyWeeklyServiceTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyWeeklyRepository, times(1)).findById(any()),
-                () -> verify(uploader, times(files.size())).uploadWeeklyAttachment(any()),
+                () -> verify(uploader, times(fileDatas.size())).uploadWeeklyAttachment(any()),
                 () -> assertThat(weekly.getTitle()).isEqualTo(STUDY_WEEKLY_2.getTitle()),
                 () -> assertThat(weekly.getContent()).isEqualTo(STUDY_WEEKLY_2.getContent()),
                 () -> assertThat(weekly.getPeriod().getStartDate()).isEqualTo(STUDY_WEEKLY_2.getPeriod().getStartDate()),

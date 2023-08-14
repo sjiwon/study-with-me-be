@@ -1,7 +1,8 @@
 package com.kgu.studywithme.studyweekly.application.service;
 
 import com.kgu.studywithme.common.UseCaseTest;
-import com.kgu.studywithme.global.infrastructure.file.FileUploader;
+import com.kgu.studywithme.file.application.service.FileUploader;
+import com.kgu.studywithme.file.domain.RawFileData;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
@@ -52,23 +53,26 @@ class CreateStudyWeeklyServiceTest extends UseCaseTest {
     private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L, LocalDateTime.now());
     private final StudyWeekly weekly = STUDY_WEEKLY_1.toWeekly(study.getId(), host.getId());
-    private MultipartFile file1;
-    private MultipartFile file2;
-    private List<MultipartFile> files;
+    private RawFileData fileData1;
+    private RawFileData fileData2;
+    private List<RawFileData> fileDatas;
 
     @BeforeEach
     void setUp() throws IOException {
-        file1 = createMultipleMockMultipartFile("hello1.txt", "text/plain");
-        file2 = createMultipleMockMultipartFile("hello2.hwpx", "application/x-hwpml");
-        files = List.of(file1, file2);
+        final MultipartFile file1 = createMultipleMockMultipartFile("hello1.txt", "text/plain");
+        final MultipartFile file2 = createMultipleMockMultipartFile("hello2.hwpx", "application/x-hwpml");
+
+        fileData1 = new RawFileData(file1.getInputStream(), file1.getContentType(), file1.getOriginalFilename());
+        fileData2 = new RawFileData(file2.getInputStream(), file2.getContentType(), file2.getOriginalFilename());
+        fileDatas = List.of(fileData1, fileData2);
     }
 
     @Test
     @DisplayName("스터디 주차를 생성한다")
     void createWeekly() {
         // given
-        given(uploader.uploadWeeklyAttachment(file1)).willReturn(TXT_FILE.getLink());
-        given(uploader.uploadWeeklyAttachment(file2)).willReturn(HWPX_FILE.getLink());
+        given(uploader.uploadWeeklyAttachment(fileData1)).willReturn(TXT_FILE.getLink());
+        given(uploader.uploadWeeklyAttachment(fileData2)).willReturn(HWPX_FILE.getLink());
         given(studyWeeklyRepository.getNextWeek(any())).willReturn(1);
         given(studyWeeklyRepository.save(any())).willReturn(weekly);
         given(studyParticipantRepository.findStudyParticipantIds(any())).willReturn(List.of(1L, 2L, 3L));
@@ -83,13 +87,13 @@ class CreateStudyWeeklyServiceTest extends UseCaseTest {
                         STUDY_WEEKLY_1.getPeriod().toPeriod(),
                         STUDY_WEEKLY_1.isAssignmentExists(),
                         STUDY_WEEKLY_1.isAutoAttendance(),
-                        files
+                        fileDatas
                 )
         );
 
         // then
         assertAll(
-                () -> verify(uploader, times(files.size())).uploadWeeklyAttachment(any()),
+                () -> verify(uploader, times(fileDatas.size())).uploadWeeklyAttachment(any()),
                 () -> verify(studyWeeklyRepository, times(1)).getNextWeek(any()),
                 () -> verify(studyWeeklyRepository, times(1)).save(any()),
                 () -> verify(studyParticipantRepository, times(1)).findStudyParticipantIds(any()),

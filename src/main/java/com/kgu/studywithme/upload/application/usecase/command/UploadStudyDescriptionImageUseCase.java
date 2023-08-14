@@ -1,12 +1,12 @@
 package com.kgu.studywithme.upload.application.usecase.command;
 
-import org.springframework.web.multipart.MultipartFile;
+import com.kgu.studywithme.file.domain.RawFileData;
 
 public interface UploadStudyDescriptionImageUseCase {
     String uploadStudyDescriptionImage(final Command command);
 
     record Command(
-            MultipartFile file
+            RawFileData file
     ) {
     }
 }

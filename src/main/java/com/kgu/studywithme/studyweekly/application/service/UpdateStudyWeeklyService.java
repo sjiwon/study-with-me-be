@@ -1,8 +1,9 @@
 package com.kgu.studywithme.studyweekly.application.service;
 
+import com.kgu.studywithme.file.application.service.FileUploader;
+import com.kgu.studywithme.file.domain.RawFileData;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.global.infrastructure.file.FileUploader;
 import com.kgu.studywithme.studyweekly.application.usecase.command.UpdateStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
 import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
@@ -11,7 +12,6 @@ import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -42,7 +42,7 @@ public class UpdateStudyWeeklyService implements UpdateStudyWeeklyUseCase {
                 .orElseThrow(() -> StudyWithMeException.type(StudyWeeklyErrorCode.WEEKLY_NOT_FOUND));
     }
 
-    private List<UploadAttachment> uploadAttachments(final List<MultipartFile> files) {
+    private List<UploadAttachment> uploadAttachments(final List<RawFileData> files) {
         if (CollectionUtils.isEmpty(files)) {
             return List.of();
         }
@@ -50,7 +50,7 @@ public class UpdateStudyWeeklyService implements UpdateStudyWeeklyUseCase {
         return files.stream()
                 .map(file ->
                         new UploadAttachment(
-                                file.getOriginalFilename(),
+                                file.originalFileName(),
                                 uploader.uploadWeeklyAttachment(file)
                         )
                 )

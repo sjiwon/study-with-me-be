@@ -1,6 +1,7 @@
 package com.kgu.studywithme.studyweekly.presentation;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
+import com.kgu.studywithme.file.domain.RawFileData;
 import com.kgu.studywithme.global.aop.CheckStudyParticipant;
 import com.kgu.studywithme.studyweekly.application.usecase.command.EditSubmittedWeeklyAssignmentUseCase;
 import com.kgu.studywithme.studyweekly.application.usecase.command.SubmitWeeklyAssignmentUseCase;
@@ -17,6 +18,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
@@ -43,7 +47,7 @@ public class StudyWeeklySubmitApiController {
                         studyId,
                         weeklyId,
                         AssignmentSubmitType.from(request.type()),
-                        request.file(),
+                        extractFileData(request.file()),
                         request.link()
                 )
         );
@@ -65,10 +69,26 @@ public class StudyWeeklySubmitApiController {
                         studyId,
                         weeklyId,
                         AssignmentSubmitType.from(request.type()),
-                        request.file(),
+                        extractFileData(request.file()),
                         request.link()
                 )
         );
         return ResponseEntity.noContent().build();
+    }
+
+    private RawFileData extractFileData(final MultipartFile file) {
+        if (file == null || file.isEmpty()) {
+            return null;
+        }
+
+        try {
+            return new RawFileData(
+                    file.getInputStream(),
+                    file.getContentType(),
+                    file.getOriginalFilename()
+            );
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

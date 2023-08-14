@@ -1,7 +1,8 @@
 package com.kgu.studywithme.studyweekly.application.service;
 
+import com.kgu.studywithme.file.application.service.FileUploader;
+import com.kgu.studywithme.file.domain.RawFileData;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
-import com.kgu.studywithme.global.infrastructure.file.FileUploader;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
@@ -12,7 +13,6 @@ import com.kgu.studywithme.studyweekly.domain.attachment.UploadAttachment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ public class CreateStudyWeeklyService implements CreateStudyWeeklyUseCase {
         return weekly.getId();
     }
 
-    private List<UploadAttachment> uploadAttachments(final List<MultipartFile> files) {
+    private List<UploadAttachment> uploadAttachments(final List<RawFileData> files) {
         if (CollectionUtils.isEmpty(files)) {
             return List.of();
         }
@@ -46,7 +46,7 @@ public class CreateStudyWeeklyService implements CreateStudyWeeklyUseCase {
         return files.stream()
                 .map(file ->
                         new UploadAttachment(
-                                file.getOriginalFilename(),
+                                file.originalFileName(),
                                 uploader.uploadWeeklyAttachment(file)
                         )
                 )

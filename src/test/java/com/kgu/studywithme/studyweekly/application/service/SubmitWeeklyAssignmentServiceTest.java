@@ -1,8 +1,9 @@
 package com.kgu.studywithme.studyweekly.application.service;
 
 import com.kgu.studywithme.common.UseCaseTest;
+import com.kgu.studywithme.file.application.service.FileUploader;
+import com.kgu.studywithme.file.domain.RawFileData;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.global.infrastructure.file.FileUploader;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
@@ -67,12 +68,13 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
     private final StudyAttendance attendance = StudyAttendance.recordAttendance(host.getId(), host.getId(), 1, ABSENCE)
             .apply(1L, LocalDateTime.now());
 
-    private MultipartFile file;
+    private RawFileData fileData;
     private int previousScore;
 
     @BeforeEach
     void setUp() throws IOException {
-        file = createMultipleMockMultipartFile("hello1.txt", "text/plain");
+        final MultipartFile file = createMultipleMockMultipartFile("hello1.txt", "text/plain");
+        fileData = new RawFileData(file.getInputStream(), file.getContentType(), file.getOriginalFilename());
         previousScore = host.getScore();
     }
 
@@ -110,7 +112,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                         study.getId(),
                         currentWeekly.getId(),
                         LINK,
-                        file,
+                        fileData,
                         "https://notion.so"
                 )
         ))
@@ -222,7 +224,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
         // given
         given(studyWeeklyRepository.findById(any())).willReturn(Optional.of(currentWeekly));
         given(studyParticipantRepository.findParticipant(any(), any())).willReturn(Optional.of(host));
-        given(uploader.uploadWeeklySubmit(file)).willReturn(TXT_FILE.getLink());
+        given(uploader.uploadWeeklySubmit(fileData)).willReturn(TXT_FILE.getLink());
 
         // when
         submitWeeklyAssignmentService.submitWeeklyAssignment(
@@ -231,7 +233,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                         study.getId(),
                         currentWeekly.getId(),
                         FILE,
-                        file,
+                        fileData,
                         null
                 )
         );
@@ -253,7 +255,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
         // given
         given(studyWeeklyRepository.findById(any())).willReturn(Optional.of(previousWeekly));
         given(studyParticipantRepository.findParticipant(any(), any())).willReturn(Optional.of(host));
-        given(uploader.uploadWeeklySubmit(file)).willReturn(TXT_FILE.getLink());
+        given(uploader.uploadWeeklySubmit(fileData)).willReturn(TXT_FILE.getLink());
         given(studyAttendanceRepository.getParticipantAttendanceByWeek(any(), any(), anyInt())).willReturn(Optional.of(attendance));
 
         // when
@@ -263,7 +265,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                         study.getId(),
                         previousWeekly.getId(),
                         FILE,
-                        file,
+                        fileData,
                         null
                 )
         );

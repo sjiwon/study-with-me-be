@@ -1,8 +1,9 @@
 package com.kgu.studywithme.studyweekly.application.service;
 
 import com.kgu.studywithme.common.UseCaseTest;
+import com.kgu.studywithme.file.application.service.FileUploader;
+import com.kgu.studywithme.file.domain.RawFileData;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.global.infrastructure.file.FileUploader;
 import com.kgu.studywithme.member.application.service.QueryMemberByIdService;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.Study;
@@ -70,12 +71,13 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
             StudyAttendance.recordAttendance(host.getId(), host.getId(), 1, ATTENDANCE)
                     .apply(1L, LocalDateTime.now());
 
-    private MultipartFile file;
+    private RawFileData fileData;
     private int previousScore;
 
     @BeforeEach
     void setUp() throws IOException {
-        file = createMultipleMockMultipartFile("hello1.txt", "text/plain");
+        final MultipartFile file = createMultipleMockMultipartFile("hello1.txt", "text/plain");
+        fileData = new RawFileData(file.getInputStream(), file.getContentType(), file.getOriginalFilename());
         previousScore = host.getScore();
     }
 
@@ -111,7 +113,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
                         study.getId(),
                         currentWeekly.getId(),
                         LINK,
-                        file,
+                        fileData,
                         "https://notion.so"
                 )
         ))

@@ -1,7 +1,7 @@
 package com.kgu.studywithme.studyweekly.application.usecase.command;
 
+import com.kgu.studywithme.file.domain.RawFileData;
 import com.kgu.studywithme.studyweekly.domain.Period;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface UpdateStudyWeeklyUseCase {
             Period period,
             boolean assignmentExists,
             boolean autoAttendance,
-            List<MultipartFile> files
+            List<RawFileData> files
     ) {
     }
 }

@@ -1,9 +1,9 @@
 package com.kgu.studywithme.upload.presentation;
 
 import com.kgu.studywithme.common.ControllerTest;
+import com.kgu.studywithme.file.exception.FileErrorCode;
 import com.kgu.studywithme.global.exception.GlobalErrorCode;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.upload.exception.UploadErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -94,7 +94,7 @@ class UploadApiControllerTest extends ControllerTest {
         void throwExceptionByFileIsEmpty() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
-            doThrow(StudyWithMeException.type(UploadErrorCode.FILE_IS_EMPTY))
+            doThrow(StudyWithMeException.type(FileErrorCode.FILE_IS_NOT_UPLOAD))
                     .when(uploadWeeklyImageUseCase)
                     .uploadWeeklyImage(any());
 
@@ -107,7 +107,7 @@ class UploadApiControllerTest extends ControllerTest {
                     .queryParam("type", "weekly");
 
             // then
-            final UploadErrorCode expectedError = UploadErrorCode.FILE_IS_EMPTY;
+            final FileErrorCode expectedError = FileErrorCode.FILE_IS_NOT_UPLOAD;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
                             status().isBadRequest(),
@@ -244,7 +244,7 @@ class UploadApiControllerTest extends ControllerTest {
         void throwExceptionByFileIsEmpty() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
-            doThrow(StudyWithMeException.type(UploadErrorCode.FILE_IS_EMPTY))
+            doThrow(StudyWithMeException.type(FileErrorCode.FILE_IS_NOT_UPLOAD))
                     .when(uploadStudyDescriptionImageUseCase)
                     .uploadStudyDescriptionImage(any());
 
@@ -257,7 +257,7 @@ class UploadApiControllerTest extends ControllerTest {
                     .queryParam("type", "description");
 
             // then
-            final UploadErrorCode expectedError = UploadErrorCode.FILE_IS_EMPTY;
+            final FileErrorCode expectedError = FileErrorCode.FILE_IS_NOT_UPLOAD;
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
                             status().isBadRequest(),
