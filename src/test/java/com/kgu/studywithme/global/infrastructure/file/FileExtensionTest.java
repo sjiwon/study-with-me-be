@@ -1,4 +1,4 @@
-package com.kgu.studywithme.upload.utils;
+package com.kgu.studywithme.global.infrastructure.file;
 
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.upload.exception.UploadErrorCode;
@@ -11,18 +11,18 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.stream.Stream;
 
-import static com.kgu.studywithme.upload.utils.FileExtension.DOC;
-import static com.kgu.studywithme.upload.utils.FileExtension.DOCX;
-import static com.kgu.studywithme.upload.utils.FileExtension.GIF;
-import static com.kgu.studywithme.upload.utils.FileExtension.HWP;
-import static com.kgu.studywithme.upload.utils.FileExtension.HWPX;
-import static com.kgu.studywithme.upload.utils.FileExtension.JPEG;
-import static com.kgu.studywithme.upload.utils.FileExtension.JPG;
-import static com.kgu.studywithme.upload.utils.FileExtension.PDF;
-import static com.kgu.studywithme.upload.utils.FileExtension.PNG;
-import static com.kgu.studywithme.upload.utils.FileExtension.PPT;
-import static com.kgu.studywithme.upload.utils.FileExtension.PPTX;
-import static com.kgu.studywithme.upload.utils.FileExtension.TXT;
+import static com.kgu.studywithme.global.infrastructure.file.FileExtension.DOC;
+import static com.kgu.studywithme.global.infrastructure.file.FileExtension.DOCX;
+import static com.kgu.studywithme.global.infrastructure.file.FileExtension.GIF;
+import static com.kgu.studywithme.global.infrastructure.file.FileExtension.HWP;
+import static com.kgu.studywithme.global.infrastructure.file.FileExtension.HWPX;
+import static com.kgu.studywithme.global.infrastructure.file.FileExtension.JPEG;
+import static com.kgu.studywithme.global.infrastructure.file.FileExtension.JPG;
+import static com.kgu.studywithme.global.infrastructure.file.FileExtension.PDF;
+import static com.kgu.studywithme.global.infrastructure.file.FileExtension.PNG;
+import static com.kgu.studywithme.global.infrastructure.file.FileExtension.PPT;
+import static com.kgu.studywithme.global.infrastructure.file.FileExtension.PPTX;
+import static com.kgu.studywithme.global.infrastructure.file.FileExtension.TXT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

@@ -1,4 +1,4 @@
-package com.kgu.studywithme.upload.utils;
+package com.kgu.studywithme.global.infrastructure.file;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

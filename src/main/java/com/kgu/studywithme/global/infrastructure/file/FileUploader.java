@@ -1,4 +1,4 @@
-package com.kgu.studywithme.upload.utils;
+package com.kgu.studywithme.global.infrastructure.file;
 
 import org.springframework.web.multipart.MultipartFile;
 

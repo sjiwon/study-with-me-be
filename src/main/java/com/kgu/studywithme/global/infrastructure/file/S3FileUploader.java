@@ -1,4 +1,4 @@
-package com.kgu.studywithme.upload.utils;
+package com.kgu.studywithme.global.infrastructure.file;
 
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.upload.exception.UploadErrorCode;
@@ -14,14 +14,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
-import static com.kgu.studywithme.upload.infrastructure.aws.BucketMetadata.STUDY_DESCRIPTIONS;
-import static com.kgu.studywithme.upload.infrastructure.aws.BucketMetadata.WEEKLY_ATTACHMENTS;
-import static com.kgu.studywithme.upload.infrastructure.aws.BucketMetadata.WEEKLY_IMAGES;
-import static com.kgu.studywithme.upload.infrastructure.aws.BucketMetadata.WEEKLY_SUBMITS;
-import static com.kgu.studywithme.upload.utils.FileUploadType.ATTACHMENT;
-import static com.kgu.studywithme.upload.utils.FileUploadType.DESCRIPTION;
-import static com.kgu.studywithme.upload.utils.FileUploadType.IMAGE;
-import static com.kgu.studywithme.upload.utils.FileUploadType.SUBMIT;
+import static com.kgu.studywithme.global.infrastructure.file.FileUploadType.ATTACHMENT;
+import static com.kgu.studywithme.global.infrastructure.file.FileUploadType.DESCRIPTION;
+import static com.kgu.studywithme.global.infrastructure.file.FileUploadType.IMAGE;
+import static com.kgu.studywithme.global.infrastructure.file.FileUploadType.SUBMIT;
+import static com.kgu.studywithme.global.infrastructure.file.aws.BucketMetadata.STUDY_DESCRIPTIONS;
+import static com.kgu.studywithme.global.infrastructure.file.aws.BucketMetadata.WEEKLY_ATTACHMENTS;
+import static com.kgu.studywithme.global.infrastructure.file.aws.BucketMetadata.WEEKLY_IMAGES;
+import static com.kgu.studywithme.global.infrastructure.file.aws.BucketMetadata.WEEKLY_SUBMITS;
 
 @Slf4j
 @Component

@@ -1,7 +1,7 @@
 package com.kgu.studywithme.upload.application.service;
 
+import com.kgu.studywithme.global.infrastructure.file.FileUploader;
 import com.kgu.studywithme.upload.application.usecase.command.UploadStudyDescriptionImageUseCase;
-import com.kgu.studywithme.upload.utils.FileUploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
