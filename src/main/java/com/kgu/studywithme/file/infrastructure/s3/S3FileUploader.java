@@ -1,10 +1,10 @@
-package com.kgu.studywithme.file.application.service;
+package com.kgu.studywithme.file.infrastructure.s3;
 
+import com.kgu.studywithme.file.application.adapter.FileUploader;
 import com.kgu.studywithme.file.domain.FileExtension;
 import com.kgu.studywithme.file.domain.FileUploadType;
 import com.kgu.studywithme.file.domain.RawFileData;
 import com.kgu.studywithme.file.exception.FileErrorCode;
-import com.kgu.studywithme.file.utils.aws.BucketMetadata;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import io.awspring.cloud.s3.ObjectMetadata;
 import io.awspring.cloud.s3.S3Template;

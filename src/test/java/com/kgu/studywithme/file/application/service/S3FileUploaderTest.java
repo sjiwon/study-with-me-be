@@ -3,6 +3,7 @@ package com.kgu.studywithme.file.application.service;
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.file.domain.RawFileData;
 import com.kgu.studywithme.file.exception.FileErrorCode;
+import com.kgu.studywithme.file.infrastructure.s3.S3FileUploader;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import io.awspring.cloud.s3.S3Resource;
 import io.awspring.cloud.s3.S3Template;

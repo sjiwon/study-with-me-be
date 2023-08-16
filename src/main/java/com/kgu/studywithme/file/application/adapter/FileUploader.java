@@ -1,4 +1,4 @@
-package com.kgu.studywithme.file.application.service;
+package com.kgu.studywithme.file.application.adapter;
 
 import com.kgu.studywithme.file.domain.RawFileData;
 

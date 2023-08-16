@@ -10,7 +10,7 @@ import com.kgu.studywithme.common.config.ExternalApiConfiguration;
 import com.kgu.studywithme.common.config.MySqlTestContainersConfiguration;
 import com.kgu.studywithme.common.config.RedisTestContainersConfiguration;
 import com.kgu.studywithme.common.utils.DatabaseCleaner;
-import com.kgu.studywithme.file.application.service.S3FileUploader;
+import com.kgu.studywithme.file.infrastructure.s3.S3FileUploader;
 import com.kgu.studywithme.mail.application.service.AwsSESEmailSender;
 import com.kgu.studywithme.mail.application.service.DefaultEmailSender;
 import io.restassured.RestAssured;

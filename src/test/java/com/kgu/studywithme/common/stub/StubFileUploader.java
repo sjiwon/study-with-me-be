@@ -1,6 +1,6 @@
 package com.kgu.studywithme.common.stub;
 
-import com.kgu.studywithme.file.application.service.FileUploader;
+import com.kgu.studywithme.file.application.adapter.FileUploader;
 import com.kgu.studywithme.file.domain.RawFileData;
 
 public class StubFileUploader implements FileUploader {
