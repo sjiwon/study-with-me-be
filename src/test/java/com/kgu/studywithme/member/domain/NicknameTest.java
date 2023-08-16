@@ -20,7 +20,7 @@ class NicknameTest {
     void throwExceptionByInvalidNicknameFormat(final String value) {
         assertThatThrownBy(() -> new Nickname(value))
                 .isInstanceOf(StudyWithMeException.class)
-                .hasMessage(MemberErrorCode.INVALID_NICKNAME_FORMAT.getMessage());
+                .hasMessage(MemberErrorCode.INVALID_NICKNAME_PATTERN.getMessage());
     }
 
     @ParameterizedTest
