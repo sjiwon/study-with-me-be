@@ -1,7 +1,7 @@
 package com.kgu.studywithme.common.fixture;
 
-import com.kgu.studywithme.auth.infrastructure.oauth.OAuthTokenResponse;
-import com.kgu.studywithme.auth.infrastructure.oauth.OAuthUserResponse;
+import com.kgu.studywithme.auth.domain.oauth.OAuthTokenResponse;
+import com.kgu.studywithme.auth.domain.oauth.OAuthUserResponse;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleTokenResponse;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.EXPIRES_IN;
 import static com.kgu.studywithme.common.utils.TokenUtils.ID_TOKEN;
-import static com.kgu.studywithme.common.utils.TokenUtils.SCOPE;
+import static com.kgu.studywithme.common.utils.TokenUtils.REFRESH_TOKEN;
 
 @Getter
 @RequiredArgsConstructor
@@ -35,7 +35,7 @@ public enum OAuthFixture {
                     BEARER_TOKEN,
                     ID_TOKEN,
                     "JIWON_TOKEN",
-                    SCOPE,
+                    REFRESH_TOKEN,
                     EXPIRES_IN
             ), JIWON.toGoogleUserResponse()
     ),
@@ -45,7 +45,7 @@ public enum OAuthFixture {
                     BEARER_TOKEN,
                     ID_TOKEN,
                     "GHOST_TOKEN",
-                    SCOPE,
+                    REFRESH_TOKEN,
                     EXPIRES_IN
             ), GHOST.toGoogleUserResponse()
     ),
@@ -55,7 +55,7 @@ public enum OAuthFixture {
                     BEARER_TOKEN,
                     ID_TOKEN,
                     "ANONYMOUS_TOKEN",
-                    SCOPE,
+                    REFRESH_TOKEN,
                     EXPIRES_IN
             ), ANONYMOUS.toGoogleUserResponse()
     ),
@@ -65,7 +65,7 @@ public enum OAuthFixture {
                     BEARER_TOKEN,
                     ID_TOKEN,
                     "DUMMY1_TOKEN",
-                    SCOPE,
+                    REFRESH_TOKEN,
                     EXPIRES_IN
             ), DUMMY1.toGoogleUserResponse()
     ),
@@ -75,7 +75,7 @@ public enum OAuthFixture {
                     BEARER_TOKEN,
                     ID_TOKEN,
                     "DUMMY2_TOKEN",
-                    SCOPE,
+                    REFRESH_TOKEN,
                     EXPIRES_IN
             ), DUMMY2.toGoogleUserResponse()
     ),
@@ -85,7 +85,7 @@ public enum OAuthFixture {
                     BEARER_TOKEN,
                     ID_TOKEN,
                     "DUMMY3_TOKEN",
-                    SCOPE,
+                    REFRESH_TOKEN,
                     EXPIRES_IN
             ), DUMMY3.toGoogleUserResponse()
     ),
@@ -95,7 +95,7 @@ public enum OAuthFixture {
                     BEARER_TOKEN,
                     ID_TOKEN,
                     "DUMMY4_TOKEN",
-                    SCOPE,
+                    REFRESH_TOKEN,
                     EXPIRES_IN
             ), DUMMY4.toGoogleUserResponse()
     ),
@@ -105,7 +105,7 @@ public enum OAuthFixture {
                     BEARER_TOKEN,
                     ID_TOKEN,
                     "DUMMY5_TOKEN",
-                    SCOPE,
+                    REFRESH_TOKEN,
                     EXPIRES_IN
             ), DUMMY5.toGoogleUserResponse()
     ),
@@ -115,7 +115,7 @@ public enum OAuthFixture {
                     BEARER_TOKEN,
                     ID_TOKEN,
                     "DUMMY6_TOKEN",
-                    SCOPE,
+                    REFRESH_TOKEN,
                     EXPIRES_IN
             ), DUMMY6.toGoogleUserResponse()
     ),
@@ -125,7 +125,7 @@ public enum OAuthFixture {
                     BEARER_TOKEN,
                     ID_TOKEN,
                     "DUMMY7_TOKEN",
-                    SCOPE,
+                    REFRESH_TOKEN,
                     EXPIRES_IN
             ), DUMMY7.toGoogleUserResponse()
     ),
@@ -135,7 +135,7 @@ public enum OAuthFixture {
                     BEARER_TOKEN,
                     ID_TOKEN,
                     "DUMMY8_TOKEN",
-                    SCOPE,
+                    REFRESH_TOKEN,
                     EXPIRES_IN
             ), DUMMY8.toGoogleUserResponse()
     ),
@@ -145,7 +145,7 @@ public enum OAuthFixture {
                     BEARER_TOKEN,
                     ID_TOKEN,
                     "DUMMY9_TOKEN",
-                    SCOPE,
+                    REFRESH_TOKEN,
                     EXPIRES_IN
             ), DUMMY9.toGoogleUserResponse()
     ),

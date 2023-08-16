@@ -1,5 +1,6 @@
-package com.kgu.studywithme.auth.infrastructure.token;
+package com.kgu.studywithme.auth.infrastructure.persistence;
 
+import com.kgu.studywithme.auth.application.adapter.TokenPersistenceAdapter;
 import com.kgu.studywithme.auth.domain.Token;
 import com.kgu.studywithme.auth.domain.TokenRepository;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
@@ -24,23 +25,21 @@ public class RdbTokenPersistenceAdapter implements TokenPersistenceAdapter {
                 );
     }
 
-    @StudyWithMeWritableTransactional
     @Override
-    public void reissueRefreshTokenByRtrPolicy(
+    public void updateMemberRefreshToken(
             final Long memberId,
             final String refreshToken
     ) {
-        tokenRepository.reissueRefreshTokenByRtrPolicy(memberId, refreshToken);
-    }
-
-    @StudyWithMeWritableTransactional
-    @Override
-    public void deleteRefreshTokenByMemberId(final Long memberId) {
-        tokenRepository.deleteByMemberId(memberId);
+        tokenRepository.updateMemberRefreshToken(memberId, refreshToken);
     }
 
     @Override
-    public boolean isRefreshTokenExists(
+    public void deleteMemberRefreshToken(final Long memberId) {
+        tokenRepository.deleteMemberRefreshToken(memberId);
+    }
+
+    @Override
+    public boolean isMemberRefreshToken(
             final Long memberId,
             final String refreshToken
     ) {

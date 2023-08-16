@@ -1,8 +1,8 @@
 package com.kgu.studywithme.common.fixture;
 
 import com.kgu.studywithme.acceptance.member.MemberAcceptanceFixture;
-import com.kgu.studywithme.auth.application.dto.LoginResponse;
-import com.kgu.studywithme.auth.application.dto.MemberInfo;
+import com.kgu.studywithme.auth.domain.AuthMember;
+import com.kgu.studywithme.auth.domain.AuthToken;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleUserResponse;
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.member.domain.Email;
@@ -139,26 +139,25 @@ public enum MemberFixture {
 
     public GoogleUserResponse toGoogleUserResponse() {
         return new GoogleUserResponse(
-                name,
-                email.getValue(),
+                UUID.randomUUID().toString(),
+                this.name,
                 UUID.randomUUID().toString(),
                 UUID.randomUUID().toString(),
                 UUID.randomUUID().toString(),
-                UUID.randomUUID().toString(),
+                this.email.getValue(),
                 true,
-                UUID.randomUUID().toString()
+                "kr"
         );
     }
 
-    public LoginResponse toLoginResponse() {
-        return new LoginResponse(
-                new MemberInfo(toMember().apply(1L, LocalDateTime.now())),
-                ACCESS_TOKEN,
-                REFRESH_TOKEN
+    public AuthMember toAuthMember() {
+        return new AuthMember(
+                new AuthMember.MemberInfo(toMember().apply(1L, LocalDateTime.now())),
+                new AuthToken(ACCESS_TOKEN, REFRESH_TOKEN)
         );
     }
 
-    public LoginResponse 회원가입_후_Google_OAuth_로그인을_진행한다() {
+    public AuthMember 회원가입_후_Google_OAuth_로그인을_진행한다() {
         MemberAcceptanceFixture.회원가입을_진행한다(this);
 
         final ValidatableResponse response = Google_OAuth_로그인을_진행한다(
@@ -170,7 +169,7 @@ public enum MemberFixture {
 
         return response
                 .extract()
-                .as(LoginResponse.class);
+                .as(AuthMember.class);
     }
 
     public Long 회원가입을_진행한다() {
@@ -180,7 +179,7 @@ public enum MemberFixture {
                 .getLong("memberId");
     }
 
-    public LoginResponse 로그인을_진행한다() {
+    public AuthMember 로그인을_진행한다() {
         final ValidatableResponse response = Google_OAuth_로그인을_진행한다(
                 GOOGLE_PROVIDER,
                 getAuthorizationCodeByIdentifier(this.getEmail().getValue()),
@@ -190,6 +189,6 @@ public enum MemberFixture {
 
         return response
                 .extract()
-                .as(LoginResponse.class);
+                .as(AuthMember.class);
     }
 }

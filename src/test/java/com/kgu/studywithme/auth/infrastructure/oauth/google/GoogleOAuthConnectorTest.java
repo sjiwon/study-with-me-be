@@ -25,7 +25,7 @@ import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.EXPIRES_IN;
 import static com.kgu.studywithme.common.utils.TokenUtils.ID_TOKEN;
-import static com.kgu.studywithme.common.utils.TokenUtils.SCOPE;
+import static com.kgu.studywithme.common.utils.TokenUtils.REFRESH_TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -47,7 +47,7 @@ class GoogleOAuthConnectorTest {
 
     @Nested
     @DisplayName("Token 응답받기")
-    class GetToken {
+    class FetchToken {
         @Test
         @DisplayName("Google Server와의 통신 불량으로 인해 예외가 발생한다")
         void failure() {
@@ -57,7 +57,7 @@ class GoogleOAuthConnectorTest {
             )).willThrow(RestClientException.class);
 
             // when - then
-            assertThatThrownBy(() -> googleOAuthConnector.getToken(AUTHORIZATION_CODE, REDIRECT_URI, STATE))
+            assertThatThrownBy(() -> googleOAuthConnector.fetchToken(AUTHORIZATION_CODE, REDIRECT_URI, STATE))
                     .isInstanceOf(StudyWithMeException.class)
                     .hasMessage(AuthErrorCode.GOOGLE_OAUTH_EXCEPTION.getMessage());
         }
@@ -74,14 +74,14 @@ class GoogleOAuthConnectorTest {
 
             // when
             final GoogleTokenResponse result
-                    = (GoogleTokenResponse) googleOAuthConnector.getToken(AUTHORIZATION_CODE, REDIRECT_URI, STATE);
+                    = (GoogleTokenResponse) googleOAuthConnector.fetchToken(AUTHORIZATION_CODE, REDIRECT_URI, STATE);
 
             // then
             assertAll(
                     () -> assertThat(result.tokenType()).isEqualTo(BEARER_TOKEN),
                     () -> assertThat(result.idToken()).isEqualTo(ID_TOKEN),
                     () -> assertThat(result.accessToken()).isEqualTo(ACCESS_TOKEN),
-                    () -> assertThat(result.scope()).isEqualTo(SCOPE),
+                    () -> assertThat(result.refreshToken()).isEqualTo(REFRESH_TOKEN),
                     () -> assertThat(result.expiresIn()).isEqualTo(EXPIRES_IN)
             );
         }
@@ -89,7 +89,7 @@ class GoogleOAuthConnectorTest {
 
     @Nested
     @DisplayName("사용자 정보 응답받기")
-    class GetUserInfo {
+    class FetchUserInfo {
         @Test
         @DisplayName("Google Server와의 통신 불량으로 인해 예외가 발생한다")
         void failure() {
@@ -99,7 +99,7 @@ class GoogleOAuthConnectorTest {
             )).willThrow(RestClientException.class);
 
             // when - then
-            assertThatThrownBy(() -> googleOAuthConnector.getUserInfo(ACCESS_TOKEN))
+            assertThatThrownBy(() -> googleOAuthConnector.fetchUserInfo(ACCESS_TOKEN))
                     .isInstanceOf(StudyWithMeException.class)
                     .hasMessage(AuthErrorCode.GOOGLE_OAUTH_EXCEPTION.getMessage());
         }
@@ -115,7 +115,7 @@ class GoogleOAuthConnectorTest {
             )).willReturn(responseEntity);
 
             // when
-            final GoogleUserResponse result = (GoogleUserResponse) googleOAuthConnector.getUserInfo(ACCESS_TOKEN);
+            final GoogleUserResponse result = (GoogleUserResponse) googleOAuthConnector.fetchUserInfo(ACCESS_TOKEN);
 
             // then
             assertAll(

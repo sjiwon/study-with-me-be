@@ -1,6 +1,6 @@
 package com.kgu.studywithme.common.stub;
 
-import com.kgu.studywithme.auth.infrastructure.oauth.OAuthUri;
+import com.kgu.studywithme.auth.application.adapter.OAuthUri;
 import com.kgu.studywithme.auth.utils.OAuthProvider;
 
 import static com.kgu.studywithme.auth.utils.OAuthProvider.GOOGLE;

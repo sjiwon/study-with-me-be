@@ -1,6 +1,6 @@
 package com.kgu.studywithme.global.exception;
 
-import com.kgu.studywithme.auth.infrastructure.oauth.OAuthUserResponse;
+import com.kgu.studywithme.auth.domain.oauth.OAuthUserResponse;
 import lombok.Getter;
 
 @Getter

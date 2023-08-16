@@ -1,9 +1,9 @@
 package com.kgu.studywithme.auth.application.service;
 
-import com.kgu.studywithme.auth.application.dto.TokenResponse;
+import com.kgu.studywithme.auth.application.adapter.TokenPersistenceAdapter;
 import com.kgu.studywithme.auth.application.usecase.command.ReissueTokenUseCase;
+import com.kgu.studywithme.auth.domain.AuthToken;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
-import com.kgu.studywithme.auth.infrastructure.token.TokenPersistenceAdapter;
 import com.kgu.studywithme.auth.utils.JwtTokenProvider;
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
@@ -43,7 +43,7 @@ class ReissueTokenServiceTest extends UseCaseTest {
         @DisplayName("사용자 소유의 RefreshToken이 아니면 재발급을 할 수 없다")
         void throwExceptionByInvalidRefreshToken() {
             // given
-            given(tokenPersistenceAdapter.isRefreshTokenExists(any(), any())).willReturn(false);
+            given(tokenPersistenceAdapter.isMemberRefreshToken(any(), any())).willReturn(false);
 
             // when - then
             assertThatThrownBy(() -> tokenReissueService.invoke(command))
@@ -51,10 +51,10 @@ class ReissueTokenServiceTest extends UseCaseTest {
                     .hasMessage(AuthErrorCode.INVALID_TOKEN.getMessage());
 
             assertAll(
-                    () -> verify(tokenPersistenceAdapter, times(1)).isRefreshTokenExists(any(), any()),
+                    () -> verify(tokenPersistenceAdapter, times(1)).isMemberRefreshToken(any(), any()),
                     () -> verify(jwtTokenProvider, times(0)).createAccessToken(any()),
                     () -> verify(jwtTokenProvider, times(0)).createRefreshToken(any()),
-                    () -> verify(tokenPersistenceAdapter, times(0)).reissueRefreshTokenByRtrPolicy(any(), any())
+                    () -> verify(tokenPersistenceAdapter, times(0)).updateMemberRefreshToken(any(), any())
             );
         }
 
@@ -62,19 +62,19 @@ class ReissueTokenServiceTest extends UseCaseTest {
         @DisplayName("사용자 소유의 RefreshToken을 통해서 AccessToken과 RefreshToken을 재발급받는다")
         void success() {
             // given
-            given(tokenPersistenceAdapter.isRefreshTokenExists(any(), any())).willReturn(true);
+            given(tokenPersistenceAdapter.isMemberRefreshToken(any(), any())).willReturn(true);
             given(jwtTokenProvider.createAccessToken(any())).willReturn(ACCESS_TOKEN);
             given(jwtTokenProvider.createRefreshToken(any())).willReturn(REFRESH_TOKEN);
 
             // when
-            final TokenResponse response = tokenReissueService.invoke(command);
+            final AuthToken response = tokenReissueService.invoke(command);
 
             // then
             assertAll(
-                    () -> verify(tokenPersistenceAdapter, times(1)).isRefreshTokenExists(any(), any()),
+                    () -> verify(tokenPersistenceAdapter, times(1)).isMemberRefreshToken(any(), any()),
                     () -> verify(jwtTokenProvider, times(1)).createAccessToken(any()),
                     () -> verify(jwtTokenProvider, times(1)).createRefreshToken(any()),
-                    () -> verify(tokenPersistenceAdapter, times(1)).reissueRefreshTokenByRtrPolicy(any(), any()),
+                    () -> verify(tokenPersistenceAdapter, times(1)).updateMemberRefreshToken(any(), any()),
                     () -> assertThat(response.accessToken()).isEqualTo(ACCESS_TOKEN),
                     () -> assertThat(response.refreshToken()).isEqualTo(REFRESH_TOKEN)
             );

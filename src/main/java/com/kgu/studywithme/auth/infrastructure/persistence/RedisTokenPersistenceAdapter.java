@@ -1,12 +1,13 @@
-package com.kgu.studywithme.auth.infrastructure.token;
+package com.kgu.studywithme.auth.infrastructure.persistence;
 
+import com.kgu.studywithme.auth.application.adapter.TokenPersistenceAdapter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
 
-import static com.kgu.studywithme.auth.infrastructure.token.RedisTokenKey.TOKEN_KEY;
+import static com.kgu.studywithme.auth.domain.RedisTokenKey.REFRESH_TOKEN_KEY;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 @Primary
@@ -31,7 +32,7 @@ public class RedisTokenPersistenceAdapter implements TokenPersistenceAdapter {
             final String refreshToken
     ) {
         tokenOperations.set(
-                String.format(TOKEN_KEY.getValue(), memberId),
+                String.format(REFRESH_TOKEN_KEY.getValue(), memberId),
                 refreshToken,
                 tokenValidityInMilliseconds,
                 SECONDS
@@ -39,12 +40,12 @@ public class RedisTokenPersistenceAdapter implements TokenPersistenceAdapter {
     }
 
     @Override
-    public void reissueRefreshTokenByRtrPolicy(
+    public void updateMemberRefreshToken(
             final Long memberId,
             final String refreshToken
     ) {
         tokenOperations.set(
-                String.format(TOKEN_KEY.getValue(), memberId),
+                String.format(REFRESH_TOKEN_KEY.getValue(), memberId),
                 refreshToken,
                 tokenValidityInMilliseconds,
                 SECONDS
@@ -52,16 +53,16 @@ public class RedisTokenPersistenceAdapter implements TokenPersistenceAdapter {
     }
 
     @Override
-    public void deleteRefreshTokenByMemberId(final Long memberId) {
-        tokenStorage.delete(String.format(TOKEN_KEY.getValue(), memberId));
+    public void deleteMemberRefreshToken(final Long memberId) {
+        tokenStorage.delete(String.format(REFRESH_TOKEN_KEY.getValue(), memberId));
     }
 
     @Override
-    public boolean isRefreshTokenExists(
+    public boolean isMemberRefreshToken(
             final Long memberId,
             final String refreshToken
     ) {
-        final String validToken = tokenOperations.get(String.format(TOKEN_KEY.getValue(), memberId));
+        final String validToken = tokenOperations.get(String.format(REFRESH_TOKEN_KEY.getValue(), memberId));
         return refreshToken.equals(validToken);
     }
 }

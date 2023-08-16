@@ -1,4 +1,4 @@
-package com.kgu.studywithme.auth.infrastructure.token;
+package com.kgu.studywithme.auth.infrastructure.persistence;
 
 import com.kgu.studywithme.auth.domain.Token;
 import com.kgu.studywithme.auth.domain.TokenRepository;
@@ -40,7 +40,7 @@ class RdbTokenPersistenceAdapterTest extends RepositoryTest {
     @DisplayName("RefreshToken 동기화")
     class SynchronizedRefreshToken {
         @Test
-        @DisplayName("RefreshToken을 보유하고 있지 않은 사용자에게는 새로운 RefreshToken을 발급한다")
+        @DisplayName("RefreshToken을 보유하고 있지 않은 사용자는 새로운 RefreshToken을 발급한다")
         void reissueRefreshToken() {
             // when
             rdbTokenPersistenceAdapter.synchronizeRefreshToken(member.getId(), REFRESH_TOKEN);
@@ -51,7 +51,7 @@ class RdbTokenPersistenceAdapterTest extends RepositoryTest {
         }
 
         @Test
-        @DisplayName("RefreshToken을 보유하고 있는 사용자에게는 새로운 RefreshToken으로 업데이트한다")
+        @DisplayName("RefreshToken을 보유하고 있는 사용자는 새로운 RefreshToken으로 업데이트한다")
         void updateRefreshToken() {
             // given
             tokenRepository.save(Token.issueRefreshToken(member.getId(), REFRESH_TOKEN));
@@ -67,14 +67,14 @@ class RdbTokenPersistenceAdapterTest extends RepositoryTest {
     }
 
     @Test
-    @DisplayName("RTR정책에 의해서 RefreshToken을 재발급한다")
-    void reissueRefreshTokenByRtrPolicy() {
+    @DisplayName("사용자의 RefreshToken을 재발급한다")
+    void updateMemberRefreshToken() {
         // given
         tokenRepository.save(Token.issueRefreshToken(member.getId(), REFRESH_TOKEN));
 
         // when
         final String newRefreshToken = REFRESH_TOKEN + "new";
-        rdbTokenPersistenceAdapter.reissueRefreshTokenByRtrPolicy(member.getId(), newRefreshToken);
+        rdbTokenPersistenceAdapter.updateMemberRefreshToken(member.getId(), newRefreshToken);
 
         // then
         final Token findToken = tokenRepository.findByMemberId(member.getId()).orElseThrow();
@@ -83,12 +83,12 @@ class RdbTokenPersistenceAdapterTest extends RepositoryTest {
 
     @Test
     @DisplayName("사용자가 보유하고 있는 RefreshToken을 삭제한다")
-    void deleteRefreshTokenByMemberId() {
+    void deleteMemberRefreshToken() {
         // given
         tokenRepository.save(Token.issueRefreshToken(member.getId(), REFRESH_TOKEN));
 
         // when
-        rdbTokenPersistenceAdapter.deleteRefreshTokenByMemberId(member.getId());
+        rdbTokenPersistenceAdapter.deleteMemberRefreshToken(member.getId());
 
         // then
         assertThat(tokenRepository.findByMemberId(member.getId())).isEmpty();
@@ -96,13 +96,13 @@ class RdbTokenPersistenceAdapterTest extends RepositoryTest {
 
     @Test
     @DisplayName("사용자가 보유하고 있는 RefreshToken인지 확인한다")
-    void isRefreshTokenExists() {
+    void isMemberRefreshToken() {
         // given
         tokenRepository.save(Token.issueRefreshToken(member.getId(), REFRESH_TOKEN));
 
         // when
-        final boolean actual1 = rdbTokenPersistenceAdapter.isRefreshTokenExists(member.getId(), REFRESH_TOKEN);
-        final boolean actual2 = rdbTokenPersistenceAdapter.isRefreshTokenExists(member.getId(), REFRESH_TOKEN + "fake");
+        final boolean actual1 = rdbTokenPersistenceAdapter.isMemberRefreshToken(member.getId(), REFRESH_TOKEN);
+        final boolean actual2 = rdbTokenPersistenceAdapter.isMemberRefreshToken(member.getId(), REFRESH_TOKEN + "fake");
 
         // then
         assertAll(

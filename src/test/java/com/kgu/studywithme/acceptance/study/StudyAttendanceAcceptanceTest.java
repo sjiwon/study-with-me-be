@@ -25,9 +25,9 @@ public class StudyAttendanceAcceptanceTest extends AcceptanceTest {
 
     @BeforeEach
     void setUp() {
-        hostAccessToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행한다().accessToken();
+        hostAccessToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행한다().token().accessToken();
         memberId = GHOST.회원가입을_진행한다();
-        final String memberAccessToken = GHOST.로그인을_진행한다().accessToken();
+        final String memberAccessToken = GHOST.로그인을_진행한다().token().accessToken();
 
         studyId = SPRING.스터디를_생성한다(hostAccessToken);
         스터디_참여_신청을_한다(memberAccessToken, studyId);

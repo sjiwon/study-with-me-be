@@ -2,7 +2,7 @@ package com.kgu.studywithme.global.exception.handler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kgu.studywithme.auth.infrastructure.oauth.OAuthUserResponse;
+import com.kgu.studywithme.auth.domain.oauth.OAuthUserResponse;
 import com.kgu.studywithme.global.exception.ErrorCode;
 import com.kgu.studywithme.global.exception.GlobalErrorCode;
 import com.kgu.studywithme.global.exception.StudyWithMeException;

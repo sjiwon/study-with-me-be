@@ -57,8 +57,8 @@ public class AuthAcceptanceTest extends AcceptanceTest {
                     .body("member.id", notNullValue(Long.class))
                     .body("member.nickname", is(JIWON.getNickname().getValue()))
                     .body("member.email", is(JIWON.getEmail().getValue()))
-                    .body("refreshToken", notNullValue(String.class))
-                    .body("accessToken", notNullValue(String.class));
+                    .body("token.accessToken", notNullValue(String.class))
+                    .body("token.refreshToken", notNullValue(String.class));
         }
     }
 
@@ -68,7 +68,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         @Test
         @DisplayName("로그아웃을 진행한다")
         void success() {
-            final String accessToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행한다().accessToken();
+            final String accessToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행한다().token().accessToken();
             로그아웃을_진행한다(accessToken)
                     .statusCode(NO_CONTENT.value());
         }
@@ -80,11 +80,11 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         @Test
         @DisplayName("RefreshToken을 통해서 AccessToken + RefreshToken을 재발급받는다")
         void tokenReissueApi() {
-            final String refreshToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행한다().refreshToken();
+            final String refreshToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행한다().token().refreshToken();
             토큰을_재발급받는다(refreshToken)
                     .statusCode(OK.value())
-                    .body("refreshToken", notNullValue(String.class))
-                    .body("accessToken", notNullValue(String.class));
+                    .body("accessToken", notNullValue(String.class))
+                    .body("refreshToken", notNullValue(String.class));
         }
     }
 }

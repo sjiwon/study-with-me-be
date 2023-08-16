@@ -1,6 +1,6 @@
 package com.kgu.studywithme.auth.presentation;
 
-import com.kgu.studywithme.auth.application.dto.LoginResponse;
+import com.kgu.studywithme.auth.domain.AuthMember;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleUserResponse;
 import com.kgu.studywithme.auth.presentation.dto.request.OAuthLoginRequest;
@@ -193,7 +193,7 @@ class OAuthApiControllerTest extends ControllerTest {
         @DisplayName("Google OAuth 로그인을 진행할 때 해당 사용자가 DB에 존재하면 로그인에 성공하고 사용자 정보 및 토큰을 발급해준다")
         void success() throws Exception {
             // given
-            final LoginResponse loginResponse = JIWON.toLoginResponse();
+            final AuthMember loginResponse = JIWON.toAuthMember();
             given(oAuthLoginUseCase.invoke(any())).willReturn(loginResponse);
 
             // when
@@ -212,10 +212,10 @@ class OAuthApiControllerTest extends ControllerTest {
                             jsonPath("$.member.nickname").value(loginResponse.member().nickname()),
                             jsonPath("$.member.email").exists(),
                             jsonPath("$.member.email").value(loginResponse.member().email()),
-                            jsonPath("$.accessToken").exists(),
-                            jsonPath("$.accessToken").value(loginResponse.accessToken()),
-                            jsonPath("$.refreshToken").exists(),
-                            jsonPath("$.refreshToken").value(loginResponse.refreshToken())
+                            jsonPath("$.token.accessToken").exists(),
+                            jsonPath("$.token.accessToken").value(loginResponse.token().accessToken()),
+                            jsonPath("$.token.refreshToken").exists(),
+                            jsonPath("$.token.refreshToken").value(loginResponse.token().refreshToken())
                     )
                     .andDo(
                             document(
@@ -239,9 +239,9 @@ class OAuthApiControllerTest extends ControllerTest {
                                                     .description("사용자 닉네임"),
                                             fieldWithPath("member.email")
                                                     .description("사용자 이메일"),
-                                            fieldWithPath("accessToken")
+                                            fieldWithPath("token.accessToken")
                                                     .description("발급된 Access Token (Expire - 2시간)"),
-                                            fieldWithPath("refreshToken")
+                                            fieldWithPath("token.refreshToken")
                                                     .description("발급된 Refresh Token (Expire - 2주)")
                                     )
                             )

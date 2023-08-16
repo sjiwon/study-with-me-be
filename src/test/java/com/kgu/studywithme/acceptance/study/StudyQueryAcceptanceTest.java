@@ -52,7 +52,7 @@ public class StudyQueryAcceptanceTest extends AcceptanceTest {
     @BeforeEach
     void setUp() {
         hostId = JIWON.회원가입을_진행한다();
-        hostAccessToken = JIWON.로그인을_진행한다().accessToken();
+        hostAccessToken = JIWON.로그인을_진행한다().token().accessToken();
     }
 
     @Nested
@@ -93,7 +93,7 @@ public class StudyQueryAcceptanceTest extends AcceptanceTest {
                         .body("participants[0].id", is(hostId.intValue()));
 
                 final Long ghostId = GHOST.회원가입을_진행한다();
-                final String ghostAccessToken = GHOST.로그인을_진행한다().accessToken();
+                final String ghostAccessToken = GHOST.로그인을_진행한다().token().accessToken();
                 GHOST가_스터디에_참여한다(ghostId, ghostAccessToken);
                 스터디_기본_정보를_조회한다(studyId)
                         .statusCode(OK.value())
@@ -123,7 +123,7 @@ public class StudyQueryAcceptanceTest extends AcceptanceTest {
                         .body("graduateCount", is(0));
 
                 final Long ghostId = GHOST.회원가입을_진행한다();
-                final String ghostAccessToken = GHOST.로그인을_진행한다().accessToken();
+                final String ghostAccessToken = GHOST.로그인을_진행한다().token().accessToken();
                 GHOST가_스터디를_졸업한다(ghostId, ghostAccessToken);
                 스터디_리뷰를_조회한다(studyId)
                         .statusCode(OK.value())
@@ -155,7 +155,7 @@ public class StudyQueryAcceptanceTest extends AcceptanceTest {
             @BeforeEach
             void setUp() {
                 memberId = GHOST.회원가입을_진행한다();
-                final String memberAccessToken = GHOST.로그인을_진행한다().accessToken();
+                final String memberAccessToken = GHOST.로그인을_진행한다().token().accessToken();
                 스터디_참여_신청을_한다(memberAccessToken, studyId);
             }
 
@@ -198,9 +198,9 @@ public class StudyQueryAcceptanceTest extends AcceptanceTest {
             @BeforeEach
             void setUp() {
                 idOfMemberA = GHOST.회원가입을_진행한다();
-                accessTokenOfMemberA = GHOST.로그인을_진행한다().accessToken();
+                accessTokenOfMemberA = GHOST.로그인을_진행한다().token().accessToken();
                 idOfMemberB = ANONYMOUS.회원가입을_진행한다();
-                accessTokenOfMemberB = ANONYMOUS.로그인을_진행한다().accessToken();
+                accessTokenOfMemberB = ANONYMOUS.로그인을_진행한다().token().accessToken();
             }
 
             @Test
@@ -243,7 +243,7 @@ public class StudyQueryAcceptanceTest extends AcceptanceTest {
             @BeforeEach
             void setUp() {
                 memberId = GHOST.회원가입을_진행한다();
-                memberAccessToken = GHOST.로그인을_진행한다().accessToken();
+                memberAccessToken = GHOST.로그인을_진행한다().token().accessToken();
                 스터디_참여_신청을_한다(memberAccessToken, studyId);
             }
 
@@ -295,7 +295,7 @@ public class StudyQueryAcceptanceTest extends AcceptanceTest {
             @BeforeEach
             void setUp() {
                 memberId = GHOST.회원가입을_진행한다();
-                final String memberAccessToken = GHOST.로그인을_진행한다().accessToken();
+                final String memberAccessToken = GHOST.로그인을_진행한다().token().accessToken();
 
                 스터디_참여_신청을_한다(memberAccessToken, studyId);
                 스터디_신청자에_대한_참여를_승인한다(hostAccessToken, studyId, memberId);
@@ -307,7 +307,7 @@ public class StudyQueryAcceptanceTest extends AcceptanceTest {
             @Test
             @DisplayName("스터디 참여자가 아니면 공지사항을 조회할 수 없다")
             void memberIsNotParticipant() {
-                final String anonymousAccessToken = DUMMY9.회원가입_후_Google_OAuth_로그인을_진행한다().accessToken();
+                final String anonymousAccessToken = DUMMY9.회원가입_후_Google_OAuth_로그인을_진행한다().token().accessToken();
                 스터디_출석_정보를_조회한다(anonymousAccessToken, studyId)
                         .statusCode(MEMBER_IS_NOT_PARTICIPANT.getStatus().value())
                         .body("errorCode", is(MEMBER_IS_NOT_PARTICIPANT.getErrorCode()))
@@ -373,7 +373,7 @@ public class StudyQueryAcceptanceTest extends AcceptanceTest {
             @Test
             @DisplayName("스터디 참여자가 아니면 공지사항을 조회할 수 없다")
             void memberIsNotParticipant() {
-                final String anonymousAccessToken = DUMMY9.회원가입_후_Google_OAuth_로그인을_진행한다().accessToken();
+                final String anonymousAccessToken = DUMMY9.회원가입_후_Google_OAuth_로그인을_진행한다().token().accessToken();
                 스터디_주차별_정보를_조회한다(anonymousAccessToken, studyId)
                         .statusCode(MEMBER_IS_NOT_PARTICIPANT.getStatus().value())
                         .body("errorCode", is(MEMBER_IS_NOT_PARTICIPANT.getErrorCode()))

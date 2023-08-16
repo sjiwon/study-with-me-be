@@ -32,8 +32,8 @@ class TokenRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    @DisplayName("사용자 ID(PK)를 통해서 보유하고 있는 RefreshToken을 조회한다")
-    void findRefreshTokenWithMemberId() {
+    @DisplayName("사용자가 보유하고 있는 RefreshToken을 조회한다")
+    void findByMemberId() {
         // when
         final Optional<Token> emptyToken = tokenRepository.findByMemberId(member.getId() + 10000L);
         final Token findToken = tokenRepository.findByMemberId(member.getId()).orElseThrow();
@@ -47,11 +47,11 @@ class TokenRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    @DisplayName("RTR정책에 의해서 사용자가 보유하고 있는 RefreshToken을 재발급한다")
-    void reissueRefreshTokenByRtrPolicy() {
+    @DisplayName("사용자가 보유하고 있는 RefreshToken을 재발급한다")
+    void updateMemberRefreshToken() {
         // when
         final String newRefreshToken = REFRESH_TOKEN + "reissue";
-        tokenRepository.reissueRefreshTokenByRtrPolicy(member.getId(), newRefreshToken);
+        tokenRepository.updateMemberRefreshToken(member.getId(), newRefreshToken);
 
         // then
         final Token findToken = tokenRepository.findByMemberId(member.getId()).orElseThrow();
@@ -60,7 +60,7 @@ class TokenRepositoryTest extends RepositoryTest {
 
     @Test
     @DisplayName("사용자가 보유하고 있는 RefreshToken인지 확인한다")
-    void checkMemberHasSpecificRefreshToken() {
+    void existsByMemberIdAndRefreshToken() {
         // when
         final boolean actual1 = tokenRepository.existsByMemberIdAndRefreshToken(member.getId(), REFRESH_TOKEN);
         final boolean actual2 = tokenRepository.existsByMemberIdAndRefreshToken(member.getId(), "fake");
@@ -74,9 +74,9 @@ class TokenRepositoryTest extends RepositoryTest {
 
     @Test
     @DisplayName("사용자가 보유하고 있는 RefreshToken을 삭제한다")
-    void deleteByMemberId() {
+    void deleteMemberRefreshToken() {
         // when
-        tokenRepository.deleteByMemberId(member.getId());
+        tokenRepository.deleteMemberRefreshToken(member.getId());
 
         // then
         assertThat(tokenRepository.findByMemberId(member.getId())).isEmpty();

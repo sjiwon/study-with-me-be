@@ -55,7 +55,7 @@ public class MemberQueryAcceptanceTest extends AcceptanceTest {
     @BeforeEach
     void setUp() {
         memberId = JIWON.회원가입을_진행한다();
-        memberAccessToken = JIWON.로그인을_진행한다().accessToken();
+        memberAccessToken = JIWON.로그인을_진행한다().token().accessToken();
     }
 
     @Nested
@@ -125,9 +125,9 @@ public class MemberQueryAcceptanceTest extends AcceptanceTest {
 
             @BeforeEach
             void setUp() {
-                hostAccessToken = GHOST.회원가입_후_Google_OAuth_로그인을_진행한다().accessToken();
+                hostAccessToken = GHOST.회원가입_후_Google_OAuth_로그인을_진행한다().token().accessToken();
                 final Long participantId = ANONYMOUS.회원가입을_진행한다();
-                participantAccessToken = ANONYMOUS.로그인을_진행한다().accessToken();
+                participantAccessToken = ANONYMOUS.로그인을_진행한다().token().accessToken();
 
                 final Long studyId = SPRING.스터디를_생성한다(hostAccessToken);
                 스터디_참여_신청을_한다(memberAccessToken, studyId);
@@ -165,7 +165,7 @@ public class MemberQueryAcceptanceTest extends AcceptanceTest {
 
         @BeforeEach
         void setUp() {
-            hostAccessToken = GHOST.회원가입_후_Google_OAuth_로그인을_진행한다().accessToken();
+            hostAccessToken = GHOST.회원가입_후_Google_OAuth_로그인을_진행한다().token().accessToken();
             studies = Stream.of(LINE_INTERVIEW, SPRING, JPA, KOTLIN, KAFKA)
                     .map(study -> study.스터디를_생성한다(hostAccessToken))
                     .toList();
