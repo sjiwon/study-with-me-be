@@ -1,6 +1,4 @@
-package com.kgu.studywithme.category.application.dto;
-
-import com.kgu.studywithme.category.domain.Category;
+package com.kgu.studywithme.category.domain;
 
 public record CategoryResponse(
         Long id,
