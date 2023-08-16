@@ -15,7 +15,7 @@ public enum MemberErrorCode implements ErrorCode {
     INVALID_NICKNAME_PATTERN(BAD_REQUEST, "MEMBER_001", "닉네임 형식에 맞지 않습니다."),
     NICKNAME_SAME_AS_BEFORE(CONFLICT, "MEMBER_002", "이전과 동일한 닉네임으로 수정할 수 없습니다."),
     INVALID_EMAIL_PATTERN(BAD_REQUEST, "MEMBER_003", "구글, 네이버, 카카오 이메일만 허용합니다."),
-    INVALID_PHONE_PATTERN(BAD_REQUEST, "MEMBER_004", "전화번호는 xxx-xxxx-xxxx 형태여야 합니다."),
+    INVALID_PHONE_PATTERN(BAD_REQUEST, "MEMBER_004", "전화번호는 '-'로 구분해서 작성해주세요"),
     INVALID_GENDER(BAD_REQUEST, "MEMBER_005", "유효하지 않은 성별입니다."),
     ADDRESS_IS_BLANK(BAD_REQUEST, "MEMBER_006", "거주지를 정확하게 입력해주세요."),
     INTEREST_MUST_EXISTS_AT_LEAST_ONE(BAD_REQUEST, "MEMBER_007", "관심사는 적어도 1개 이상 등록해야 합니다."),
