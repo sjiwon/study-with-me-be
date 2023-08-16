@@ -97,8 +97,8 @@ java -jar \
     -Doauth2.google.client-secret="Google OAuth Application Client Secret" \
     -Doauth2.google.redirect-uri="Google OAuth Application Redirect Uri" \
     -Doauth2.naver.client-id="Naver OAuth Application Client Id" \
-    -Doauth2.naver.client-secret="kakao OAuth Application Client Secret" \
-    -Doauth2.naver.redirect-uri="kakao OAuth Application Redirect Uri" \
+    -Doauth2.naver.client-secret="Naver OAuth Application Client Secret" \
+    -Doauth2.naver.redirect-uri="Naver OAuth Application Redirect Uri" \
     -Doauth2.kakao.client-id="Kakao OAuth Application Client Id" \
     -Doauth2.kakao.client-secret="Kakao OAuth Application Client Secret" \
     -Doauth2.kakao.redirect-uri="Kakao OAuth Application Redirect Uri" \
