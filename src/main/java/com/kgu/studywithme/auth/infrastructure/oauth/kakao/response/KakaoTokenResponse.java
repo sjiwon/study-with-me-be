@@ -1,23 +1,15 @@
 package com.kgu.studywithme.auth.infrastructure.oauth.kakao.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kgu.studywithme.auth.infrastructure.oauth.OAuthTokenResponse;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.kgu.studywithme.auth.domain.oauth.OAuthTokenResponse;
 
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record KakaoTokenResponse(
         String tokenType,
         String accessToken,
-        String scope,
-        Integer expiresIn
+        long expiresIn,
+        String refreshToken,
+        long refreshTokenExpiresIn
 ) implements OAuthTokenResponse {
-    public KakaoTokenResponse(
-            @JsonProperty("token_type") final String tokenType,
-            @JsonProperty("access_token") final String accessToken,
-            @JsonProperty("scope") final String scope,
-            @JsonProperty("expires_in") final Integer expiresIn
-    ) {
-        this.tokenType = tokenType;
-        this.accessToken = accessToken;
-        this.scope = scope;
-        this.expiresIn = expiresIn;
-    }
 }

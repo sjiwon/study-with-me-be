@@ -1,47 +1,58 @@
 package com.kgu.studywithme.auth.infrastructure.oauth.kakao.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kgu.studywithme.auth.infrastructure.oauth.OAuthUserResponse;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.kgu.studywithme.auth.domain.oauth.OAuthUserResponse;
 
+import java.time.LocalDateTime;
+
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record KakaoUserResponse(
-        // required
-        String name,
-        String email,
-
-        // other
-        String id,
-        String profileImage,
-        String gender,
-        String ageRange
+        long id,
+        LocalDateTime connectedAt,
+        KakaoAccount kakaoAccount
 ) implements OAuthUserResponse {
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     public record KakaoAccount(
-            @JsonProperty("profile") Profile profile,
-            @JsonProperty("is_email_valid") boolean isEmailValid,
-            @JsonProperty("is_email_verified") boolean isEmailVerified,
-            @JsonProperty("email") String email,
-            @JsonProperty("gender") String gender,
-            @JsonProperty("age_range") String ageRange
+            Profile profile,
+            boolean profileNicknameNeedsAgreement,
+            boolean profileImageNeesAgreement,
+            String name,
+            boolean nameNeedsAgreement,
+            String email,
+            boolean emailNeedsAgreement,
+            boolean isEmailValid,
+            boolean isEmailVerified,
+            String ageRange,
+            boolean ageRangeNeedsAgreement,
+            String birthYear,
+            boolean birthYearNeedsAgreement,
+            String birthDay,
+            String birthDayType,
+            boolean birthDayNeedsAgreement,
+            String gender,
+            boolean genderNeedsAgreement,
+            String phoneNumber,
+            boolean phoneNumberNeedsAgreement
     ) {
-        public record Profile(
-                @JsonProperty("nickname") String nickname,
-                @JsonProperty("thumbnail_image_url") String thumbnailImage,
-                @JsonProperty("profile_image_url") String profileImage,
-                @JsonProperty("is_default_image") boolean isDefaultImage
-        ) {
-        }
     }
 
-    public KakaoUserResponse(
-            @JsonProperty("id") final String id,
-            @JsonProperty("kakao_account") final KakaoAccount kakaoAccount
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    public record Profile(
+            String nickname,
+            String thumbnailImageUrl,
+            String profileImageUrl,
+            boolean isDefaultImage
     ) {
-        this(
-                kakaoAccount.profile.nickname,
-                kakaoAccount.email,
-                id,
-                kakaoAccount.profile.profileImage,
-                kakaoAccount.gender,
-                kakaoAccount.ageRange
-        );
+    }
+
+    @Override
+    public String name() {
+        return kakaoAccount.profile.nickname;
+    }
+
+    @Override
+    public String email() {
+        return kakaoAccount.email;
     }
 }
