@@ -1,4 +1,4 @@
-package com.kgu.studywithme.mail.utils;
+package com.kgu.studywithme.mail.infrastructure.ses;
 
 import java.time.format.DateTimeFormatter;
 

@@ -1,4 +1,4 @@
-package com.kgu.studywithme.mail.application.service;
+package com.kgu.studywithme.mail.application.adapter;
 
 public interface EmailSender {
     void sendParticipationApproveMail(

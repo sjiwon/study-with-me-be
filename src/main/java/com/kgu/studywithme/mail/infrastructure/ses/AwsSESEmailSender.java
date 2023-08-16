@@ -1,32 +1,34 @@
-package com.kgu.studywithme.mail.application.service;
+package com.kgu.studywithme.mail.infrastructure.ses;
 
-import com.kgu.studywithme.mail.utils.EmailMetadata;
-import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.MimeMessage;
+import com.kgu.studywithme.mail.application.adapter.EmailSender;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
+import software.amazon.awssdk.services.ses.SesClient;
+import software.amazon.awssdk.services.ses.model.Body;
+import software.amazon.awssdk.services.ses.model.Content;
+import software.amazon.awssdk.services.ses.model.Destination;
+import software.amazon.awssdk.services.ses.model.Message;
+import software.amazon.awssdk.services.ses.model.SendEmailRequest;
 
 import java.time.LocalDate;
 import java.util.Map;
 
-@Profile("default")
+@Profile("prod")
 @Component
-public class DefaultEmailSender implements EmailSender {
-    private final JavaMailSender mailSender;
+public class AwsSESEmailSender implements EmailSender {
+    private final SesClient sesClient;
     private final SpringTemplateEngine templateEngine;
     private final String serviceEmail;
 
-    public DefaultEmailSender(
-            final JavaMailSender mailSender,
+    public AwsSESEmailSender(
+            final SesClient sesClient,
             final SpringTemplateEngine templateEngine,
             @Value("${spring.mail.username}") final String serviceEmail
     ) {
-        this.mailSender = mailSender;
+        this.sesClient = sesClient;
         this.templateEngine = templateEngine;
         this.serviceEmail = serviceEmail;
     }
@@ -36,7 +38,7 @@ public class DefaultEmailSender implements EmailSender {
             final String applierEmail,
             final String nickname,
             final String studyName
-    ) throws Exception {
+    ) {
         final Map<String, Object> variables = Map.of(
                 "nickname", nickname,
                 "studyName", studyName
@@ -57,7 +59,7 @@ public class DefaultEmailSender implements EmailSender {
             final String nickname,
             final String studyName,
             final String reason
-    ) throws Exception {
+    ) {
         final Map<String, Object> variables = Map.of(
                 "nickname", nickname,
                 "studyName", studyName,
@@ -78,7 +80,7 @@ public class DefaultEmailSender implements EmailSender {
             final String participantEmail,
             final String nickname,
             final String studyName
-    ) throws Exception {
+    ) {
         final Map<String, Object> variables = Map.of(
                 "nickname", nickname,
                 "studyName", studyName,
@@ -104,15 +106,47 @@ public class DefaultEmailSender implements EmailSender {
             final String subject,
             final String email,
             final String mailBody
-    ) throws Exception {
-        final MimeMessage message = mailSender.createMimeMessage();
-        final MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+    ) {
+        sesClient.sendEmail(createEmailRequest(subject, email, mailBody));
+    }
 
-        helper.setSubject(subject);
-        helper.setTo(email);
-        helper.setFrom(new InternetAddress(serviceEmail, "여기서 구해볼래?"));
-        helper.setText(mailBody, true);
+    private SendEmailRequest createEmailRequest(
+            final String subject,
+            final String email,
+            final String mailBody
+    ) {
+        return SendEmailRequest.builder()
+                .source(serviceEmail)
+                .destination(createDestination(email))
+                .message(createMessage(subject, mailBody))
+                .build();
+    }
 
-        mailSender.send(message);
+    private Destination createDestination(final String recipient) {
+        return Destination.builder()
+                .toAddresses(recipient)
+                .build();
+    }
+
+    private Message createMessage(
+            final String subject,
+            final String body
+    ) {
+        final Content mailSubject = createContent(subject);
+        final Body mailBody = Body.builder()
+                .html(createContent(body))
+                .build();
+
+        return Message.builder()
+                .subject(mailSubject)
+                .body(mailBody)
+                .build();
+    }
+
+    private Content createContent(final String data) {
+        return Content.builder()
+                .charset("UTF-8")
+                .data(data)
+                .build();
     }
 }
