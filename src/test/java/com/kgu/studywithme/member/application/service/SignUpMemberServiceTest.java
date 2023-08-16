@@ -2,7 +2,7 @@ package com.kgu.studywithme.member.application.service;
 
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.application.adapter.MemberDuplicateCheckRepository;
+import com.kgu.studywithme.member.application.adapter.MemberDuplicateCheckRepositoryAdapter;
 import com.kgu.studywithme.member.application.usecase.command.SignUpMemberUseCase;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
@@ -29,7 +29,7 @@ class SignUpMemberServiceTest extends UseCaseTest {
     private SignUpMemberService signUpMemberService;
 
     @Mock
-    private MemberDuplicateCheckRepository memberDuplicateCheckRepository;
+    private MemberDuplicateCheckRepositoryAdapter memberDuplicateCheckRepositoryAdapter;
 
     @Mock
     private MemberRepository memberRepository;
@@ -41,8 +41,7 @@ class SignUpMemberServiceTest extends UseCaseTest {
             JIWON.getBirth(),
             JIWON.getPhone(),
             JIWON.getGender(),
-            JIWON.getRegion(),
-            true,
+            JIWON.getAddress(),
             JIWON.getInterests()
     );
 
@@ -50,7 +49,7 @@ class SignUpMemberServiceTest extends UseCaseTest {
     @DisplayName("이미 사용하고 있는 이메일이면 회원가입에 실패한다")
     void throwExceptionByDuplicateEmail() {
         // given
-        given(memberDuplicateCheckRepository.isEmailExists(any())).willReturn(true);
+        given(memberDuplicateCheckRepositoryAdapter.isEmailExists(any())).willReturn(true);
 
         // when - then
         assertThatThrownBy(() -> signUpMemberService.invoke(command))
@@ -58,9 +57,9 @@ class SignUpMemberServiceTest extends UseCaseTest {
                 .hasMessage(MemberErrorCode.DUPLICATE_EMAIL.getMessage());
 
         assertAll(
-                () -> verify(memberDuplicateCheckRepository, times(1)).isEmailExists(any()),
-                () -> verify(memberDuplicateCheckRepository, times(0)).isNicknameExists(any()),
-                () -> verify(memberDuplicateCheckRepository, times(0)).isPhoneExists(any()),
+                () -> verify(memberDuplicateCheckRepositoryAdapter, times(1)).isEmailExists(any()),
+                () -> verify(memberDuplicateCheckRepositoryAdapter, times(0)).isNicknameExists(any()),
+                () -> verify(memberDuplicateCheckRepositoryAdapter, times(0)).isPhoneExists(any()),
                 () -> verify(memberRepository, times(0)).save(any())
         );
     }
@@ -69,8 +68,8 @@ class SignUpMemberServiceTest extends UseCaseTest {
     @DisplayName("이미 사용하고 있는 닉네임이면 회원가입에 실패한다")
     void throwExceptionByDuplicateNickname() {
         // given
-        given(memberDuplicateCheckRepository.isEmailExists(any())).willReturn(false);
-        given(memberDuplicateCheckRepository.isNicknameExists(any())).willReturn(true);
+        given(memberDuplicateCheckRepositoryAdapter.isEmailExists(any())).willReturn(false);
+        given(memberDuplicateCheckRepositoryAdapter.isNicknameExists(any())).willReturn(true);
 
         // when - then
         assertThatThrownBy(() -> signUpMemberService.invoke(command))
@@ -78,9 +77,9 @@ class SignUpMemberServiceTest extends UseCaseTest {
                 .hasMessage(MemberErrorCode.DUPLICATE_NICKNAME.getMessage());
 
         assertAll(
-                () -> verify(memberDuplicateCheckRepository, times(1)).isEmailExists(any()),
-                () -> verify(memberDuplicateCheckRepository, times(1)).isNicknameExists(any()),
-                () -> verify(memberDuplicateCheckRepository, times(0)).isPhoneExists(any()),
+                () -> verify(memberDuplicateCheckRepositoryAdapter, times(1)).isEmailExists(any()),
+                () -> verify(memberDuplicateCheckRepositoryAdapter, times(1)).isNicknameExists(any()),
+                () -> verify(memberDuplicateCheckRepositoryAdapter, times(0)).isPhoneExists(any()),
                 () -> verify(memberRepository, times(0)).save(any())
         );
     }
@@ -89,9 +88,9 @@ class SignUpMemberServiceTest extends UseCaseTest {
     @DisplayName("이미 사용하고 있는 전화번호면 회원가입에 실패한다")
     void throwExceptionByDuplicatePhone() {
         // given
-        given(memberDuplicateCheckRepository.isEmailExists(any())).willReturn(false);
-        given(memberDuplicateCheckRepository.isNicknameExists(any())).willReturn(false);
-        given(memberDuplicateCheckRepository.isPhoneExists(any())).willReturn(true);
+        given(memberDuplicateCheckRepositoryAdapter.isEmailExists(any())).willReturn(false);
+        given(memberDuplicateCheckRepositoryAdapter.isNicknameExists(any())).willReturn(false);
+        given(memberDuplicateCheckRepositoryAdapter.isPhoneExists(any())).willReturn(true);
 
         // when - then
         assertThatThrownBy(() -> signUpMemberService.invoke(command))
@@ -99,9 +98,9 @@ class SignUpMemberServiceTest extends UseCaseTest {
                 .hasMessage(MemberErrorCode.DUPLICATE_PHONE.getMessage());
 
         assertAll(
-                () -> verify(memberDuplicateCheckRepository, times(1)).isEmailExists(any()),
-                () -> verify(memberDuplicateCheckRepository, times(1)).isNicknameExists(any()),
-                () -> verify(memberDuplicateCheckRepository, times(1)).isPhoneExists(any()),
+                () -> verify(memberDuplicateCheckRepositoryAdapter, times(1)).isEmailExists(any()),
+                () -> verify(memberDuplicateCheckRepositoryAdapter, times(1)).isNicknameExists(any()),
+                () -> verify(memberDuplicateCheckRepositoryAdapter, times(1)).isPhoneExists(any()),
                 () -> verify(memberRepository, times(0)).save(any())
         );
     }
@@ -110,9 +109,9 @@ class SignUpMemberServiceTest extends UseCaseTest {
     @DisplayName("모든 중복 검사를 통과한다면 회원가입에 성공한다")
     void success() {
         // given
-        given(memberDuplicateCheckRepository.isEmailExists(any())).willReturn(false);
-        given(memberDuplicateCheckRepository.isNicknameExists(any())).willReturn(false);
-        given(memberDuplicateCheckRepository.isPhoneExists(any())).willReturn(false);
+        given(memberDuplicateCheckRepositoryAdapter.isEmailExists(any())).willReturn(false);
+        given(memberDuplicateCheckRepositoryAdapter.isNicknameExists(any())).willReturn(false);
+        given(memberDuplicateCheckRepositoryAdapter.isPhoneExists(any())).willReturn(false);
 
         final Member member = JIWON.toMember().apply(1L, LocalDateTime.now());
         given(memberRepository.save(any())).willReturn(member);
@@ -122,9 +121,9 @@ class SignUpMemberServiceTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(memberDuplicateCheckRepository, times(1)).isEmailExists(any()),
-                () -> verify(memberDuplicateCheckRepository, times(1)).isNicknameExists(any()),
-                () -> verify(memberDuplicateCheckRepository, times(1)).isPhoneExists(any()),
+                () -> verify(memberDuplicateCheckRepositoryAdapter, times(1)).isEmailExists(any()),
+                () -> verify(memberDuplicateCheckRepositoryAdapter, times(1)).isNicknameExists(any()),
+                () -> verify(memberDuplicateCheckRepositoryAdapter, times(1)).isPhoneExists(any()),
                 () -> verify(memberRepository, times(1)).save(any()),
                 () -> assertThat(savedMemberId).isEqualTo(member.getId())
         );

@@ -4,6 +4,6 @@ import com.kgu.studywithme.member.infrastructure.query.dto.StudyParticipateWeeks
 
 import java.util.List;
 
-public interface MemberAttendanceRepository {
+public interface MemberAttendanceRepositoryAdapter {
     List<StudyParticipateWeeks> findParticipateWeeksInStudyByMemberId(Long memberId);
 }

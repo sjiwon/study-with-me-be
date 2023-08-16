@@ -78,7 +78,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
     void setUp() throws IOException {
         final MultipartFile file = createMultipleMockMultipartFile("hello1.txt", "text/plain");
         fileData = new RawFileData(file.getInputStream(), file.getContentType(), file.getOriginalFilename());
-        previousScore = host.getScore();
+        previousScore = host.getScore().getValue();
     }
 
     @Test
@@ -183,7 +183,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
                 () -> verify(studyWeeklyRepository, times(1)).getSubmittedAssignment(any(), any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
-                () -> assertThat(host.getScore()).isEqualTo(previousScore) // Score 유지
+                () -> assertThat(host.getScore().getValue()).isEqualTo(previousScore) // Score 유지
         );
     }
 
@@ -217,7 +217,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
                 () -> verify(studyWeeklyRepository, times(1)).getSubmittedAssignment(any(), any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceRepository, times(1)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
-                () -> assertThat(host.getScore()).isEqualTo(previousScore - 2) // 출석 -> 지각
+                () -> assertThat(host.getScore().getValue()).isEqualTo(previousScore - 2) // 출석 -> 지각
         );
     }
 }

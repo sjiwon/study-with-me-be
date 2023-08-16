@@ -36,8 +36,8 @@ public class ApproveParticipationService implements ApproveParticipationUseCase 
         if (applier.isEmailOptIn()) {
             eventPublisher.publishEvent(
                     new StudyApprovedEvent(
-                            applier.getEmailValue(),
-                            applier.getNicknameValue(),
+                            applier.getEmail().getValue(),
+                            applier.getNickname().getValue(),
                             study.getNameValue()
                     )
             );

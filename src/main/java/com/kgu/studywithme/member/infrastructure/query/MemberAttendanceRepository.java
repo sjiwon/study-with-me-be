@@ -1,7 +1,7 @@
 package com.kgu.studywithme.member.infrastructure.query;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
-import com.kgu.studywithme.member.application.adapter.MemberAttendanceRepository;
+import com.kgu.studywithme.member.application.adapter.MemberAttendanceRepositoryAdapter;
 import com.kgu.studywithme.member.infrastructure.query.dto.QStudyParticipateWeeks;
 import com.kgu.studywithme.member.infrastructure.query.dto.StudyParticipateWeeks;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -15,7 +15,7 @@ import static com.kgu.studywithme.studyattendance.domain.QStudyAttendance.studyA
 @Repository
 @StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
-public class MemberAttendanceRepositoryImpl implements MemberAttendanceRepository {
+public class MemberAttendanceRepository implements MemberAttendanceRepositoryAdapter {
     private final JPAQueryFactory query;
 
     @Override

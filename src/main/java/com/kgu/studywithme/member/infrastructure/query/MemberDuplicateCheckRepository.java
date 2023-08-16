@@ -1,7 +1,7 @@
 package com.kgu.studywithme.member.infrastructure.query;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
-import com.kgu.studywithme.member.application.adapter.MemberDuplicateCheckRepository;
+import com.kgu.studywithme.member.application.adapter.MemberDuplicateCheckRepositoryAdapter;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -11,7 +11,7 @@ import static com.kgu.studywithme.member.domain.QMember.member;
 @Repository
 @StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
-public class MemberDuplicateCheckRepositoryImpl implements MemberDuplicateCheckRepository {
+public class MemberDuplicateCheckRepository implements MemberDuplicateCheckRepositoryAdapter {
     private final JPAQueryFactory query;
 
     @Override
@@ -49,7 +49,7 @@ public class MemberDuplicateCheckRepositoryImpl implements MemberDuplicateCheckR
         return query
                 .select(member.id)
                 .from(member)
-                .where(member.phone.eq(phone))
+                .where(member.phone.value.eq(phone))
                 .fetchFirst() != null;
     }
 
@@ -60,7 +60,7 @@ public class MemberDuplicateCheckRepositoryImpl implements MemberDuplicateCheckR
                 .from(member)
                 .where(
                         member.id.ne(memberId),
-                        member.phone.eq(phone)
+                        member.phone.value.eq(phone)
                 )
                 .fetchFirst() != null;
     }

@@ -2,7 +2,7 @@ package com.kgu.studywithme.member.infrastructure.query;
 
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
-import com.kgu.studywithme.member.application.adapter.MemberInformationRepository;
+import com.kgu.studywithme.member.application.adapter.MemberInformationRepositoryAdapter;
 import com.kgu.studywithme.member.infrastructure.query.dto.AppliedStudy;
 import com.kgu.studywithme.member.infrastructure.query.dto.AttendanceRatio;
 import com.kgu.studywithme.member.infrastructure.query.dto.GraduatedStudy;
@@ -41,7 +41,7 @@ import static com.kgu.studywithme.studyreview.domain.QStudyReview.studyReview;
 @Repository
 @StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
-public class MemberInformationRepositoryImpl implements MemberInformationRepository {
+public class MemberInformationRepository implements MemberInformationRepositoryAdapter {
     private final JPAQueryFactory query;
 
     @Override
@@ -55,7 +55,7 @@ public class MemberInformationRepositoryImpl implements MemberInformationReposit
                                 member.email,
                                 member.birth,
                                 member.gender,
-                                member.region,
+                                member.address,
                                 member.score
                         )
                 )
@@ -183,9 +183,8 @@ public class MemberInformationRepositoryImpl implements MemberInformationReposit
                                 member.birth,
                                 member.phone,
                                 member.gender,
-                                member.region,
-                                member.score,
-                                member.emailOptIn
+                                member.address,
+                                member.score
                         )
                 )
                 .from(member)

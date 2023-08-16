@@ -1,6 +1,5 @@
 package com.kgu.studywithme.member.application.service;
 
-import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
@@ -9,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
 public class QueryMemberByIdService {
     private final MemberRepository memberRepository;

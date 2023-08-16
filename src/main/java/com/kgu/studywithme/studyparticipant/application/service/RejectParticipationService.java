@@ -33,8 +33,8 @@ public class RejectParticipationService implements RejectParticipationUseCase {
         if (applier.isEmailOptIn()) {
             eventPublisher.publishEvent(
                     new StudyRejectedEvent(
-                            applier.getEmailValue(),
-                            applier.getNicknameValue(),
+                            applier.getEmail().getValue(),
+                            applier.getNickname().getValue(),
                             study.getNameValue(),
                             command.reason()
                     )

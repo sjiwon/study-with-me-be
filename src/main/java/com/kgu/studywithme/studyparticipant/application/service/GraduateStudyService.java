@@ -39,8 +39,8 @@ public class GraduateStudyService implements GraduateStudyUseCase {
         if (participant.isEmailOptIn()) {
             eventPublisher.publishEvent(
                     new StudyGraduatedEvent(
-                            participant.getEmailValue(),
-                            participant.getNicknameValue(),
+                            participant.getEmail().getValue(),
+                            participant.getNickname().getValue(),
                             study.getNameValue()
                     )
             );

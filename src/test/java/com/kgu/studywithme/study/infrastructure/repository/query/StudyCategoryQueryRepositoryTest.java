@@ -228,7 +228,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
 
         @Test
         @DisplayName("최신순 + 오프라인 지역으로 면접 스터디 리스트를 조회한다")
-        void dateWithRegion() {
+        void dateWithAddress() {
             // given
             initDataWithRegisterDate();
             final QueryStudyByCategoryCondition condition1 = new QueryStudyByCategoryCondition(
@@ -646,7 +646,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
 
         @Test
         @DisplayName("최신순 + 오프라인 지역으로 스터디 리스트를 조회한다")
-        void dateWithRegion() {
+        void dateWithAddress() {
             // given
             initDataWithRegisterDate();
             final QueryStudyByRecommendCondition condition1 = new QueryStudyByRecommendCondition(

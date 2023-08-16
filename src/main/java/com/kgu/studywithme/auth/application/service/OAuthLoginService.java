@@ -12,7 +12,6 @@ import com.kgu.studywithme.auth.utils.JwtTokenProvider;
 import com.kgu.studywithme.auth.utils.OAuthProvider;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.global.exception.StudyWithMeOAuthException;
-import com.kgu.studywithme.member.domain.Email;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -55,7 +54,7 @@ public class OAuthLoginService implements OAuthLoginUseCase {
     }
 
     private Member getMemberByOAuthUser(final OAuthUserResponse oAuthUser) {
-        return memberRepository.findByEmail(new Email(oAuthUser.email()))
+        return memberRepository.findByEmail(oAuthUser.email())
                 .orElseThrow(() -> new StudyWithMeOAuthException(oAuthUser));
     }
 

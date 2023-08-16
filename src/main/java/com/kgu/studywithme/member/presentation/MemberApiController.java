@@ -5,10 +5,11 @@ import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.global.aop.CheckAuthUser;
 import com.kgu.studywithme.member.application.usecase.command.SignUpMemberUseCase;
 import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
+import com.kgu.studywithme.member.domain.Address;
 import com.kgu.studywithme.member.domain.Email;
 import com.kgu.studywithme.member.domain.Gender;
 import com.kgu.studywithme.member.domain.Nickname;
-import com.kgu.studywithme.member.domain.Region;
+import com.kgu.studywithme.member.domain.Phone;
 import com.kgu.studywithme.member.presentation.dto.request.SignUpMemberRequest;
 import com.kgu.studywithme.member.presentation.dto.request.UpdateMemberRequest;
 import com.kgu.studywithme.member.presentation.dto.response.MemberIdResponse;
@@ -39,12 +40,11 @@ public class MemberApiController {
                 new SignUpMemberUseCase.Command(
                         request.name(),
                         new Nickname(request.nickname()),
-                        new Email(request.email()),
+                        new Email(request.email(), request.emailOptIn()),
                         request.birth(),
-                        request.phone(),
+                        new Phone(request.phone()),
                         Gender.from(request.gender()),
-                        new Region(request.province(), request.city()),
-                        request.emailOptIn(),
+                        new Address(request.province(), request.city()),
                         Category.of(request.interests())
                 )
         );

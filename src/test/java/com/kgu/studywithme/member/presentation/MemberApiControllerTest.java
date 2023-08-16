@@ -47,11 +47,11 @@ class MemberApiControllerTest extends ControllerTest {
                 JIWON.getNickname().getValue(),
                 JIWON.getEmail().getValue(),
                 JIWON.getBirth(),
-                JIWON.getPhone(),
+                JIWON.getPhone().getValue(),
                 MALE.getSimpleValue(),
-                JIWON.getRegion().getProvince(),
-                JIWON.getRegion().getCity(),
-                JIWON.isEmailOptIn(),
+                JIWON.getAddress().getProvince(),
+                JIWON.getAddress().getCity(),
+                JIWON.getEmail().isEmailOptIn(),
                 JIWON.getInterests()
                         .stream()
                         .map(Category::getId)
@@ -185,9 +185,9 @@ class MemberApiControllerTest extends ControllerTest {
         private static final Long MEMBER_ID = 1L;
         private static final UpdateMemberRequest REQUEST = new UpdateMemberRequest(
                 JIWON.getNickname().getValue(),
-                JIWON.getPhone(),
-                JIWON.getRegion().getProvince(),
-                JIWON.getRegion().getCity(),
+                JIWON.getPhone().getValue(),
+                JIWON.getAddress().getProvince(),
+                JIWON.getAddress().getCity(),
                 false,
                 JIWON.getInterests()
                         .stream()

@@ -1,10 +1,8 @@
-package com.kgu.studywithme.member.infrastructure.repository.query;
+package com.kgu.studywithme.member.infrastructure.query;
 
 import com.kgu.studywithme.common.RepositoryTest;
-import com.kgu.studywithme.member.application.adapter.MemberAttendanceRepository;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
-import com.kgu.studywithme.member.infrastructure.query.MemberAttendanceRepositoryImpl;
 import com.kgu.studywithme.member.infrastructure.query.dto.StudyParticipateWeeks;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.study.domain.StudyRepository;
@@ -34,7 +32,7 @@ import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPR
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@Import(MemberAttendanceRepositoryImpl.class)
+@Import(MemberAttendanceRepository.class)
 @DisplayName("Member -> MemberAttendanceRepository 테스트")
 class MemberAttendanceRepositoryTest extends RepositoryTest {
     @Autowired

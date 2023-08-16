@@ -30,7 +30,7 @@ public class Phone {
 
     private void validatePhonePattern(final String value) {
         if (isNotValidPattern(value)) {
-            throw StudyWithMeException.type(MemberErrorCode.INVALID_EMAIL_PATTERN);
+            throw StudyWithMeException.type(MemberErrorCode.INVALID_PHONE_PATTERN);
         }
     }
 

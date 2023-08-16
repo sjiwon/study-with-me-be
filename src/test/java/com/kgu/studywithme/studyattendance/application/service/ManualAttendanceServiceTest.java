@@ -46,7 +46,7 @@ class ManualAttendanceServiceTest extends UseCaseTest {
     @BeforeEach
     void setUp() {
         member = JIWON.toMember().apply(1L, LocalDateTime.now());
-        previousScore = member.getScore();
+        previousScore = member.getScore().getValue();
         study = SPRING.toOnlineStudy(member.getId()).apply(1L, LocalDateTime.now());
     }
 
@@ -78,7 +78,7 @@ class ManualAttendanceServiceTest extends UseCaseTest {
                 () -> verify(studyAttendanceRepository, times(1)).getParticipantAttendanceByWeek(any(), any(), any()),
                 () -> verify(queryMemberByIdService, times(1)).findById(any()),
                 () -> assertThat(attendance.getStatus()).isEqualTo(LATE),
-                () -> assertThat(member.getScore()).isEqualTo(previousScore - 1)
+                () -> assertThat(member.getScore().getValue()).isEqualTo(previousScore - 1)
         );
     }
 
@@ -110,7 +110,7 @@ class ManualAttendanceServiceTest extends UseCaseTest {
                 () -> verify(studyAttendanceRepository, times(1)).getParticipantAttendanceByWeek(any(), any(), any()),
                 () -> verify(queryMemberByIdService, times(1)).findById(any()),
                 () -> assertThat(attendance.getStatus()).isEqualTo(LATE),
-                () -> assertThat(member.getScore()).isEqualTo(previousScore + 4)
+                () -> assertThat(member.getScore().getValue()).isEqualTo(previousScore + 4)
         );
     }
 }

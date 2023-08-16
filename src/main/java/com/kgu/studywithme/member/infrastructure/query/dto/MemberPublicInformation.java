@@ -1,9 +1,9 @@
 package com.kgu.studywithme.member.infrastructure.query.dto;
 
+import com.kgu.studywithme.member.domain.Address;
 import com.kgu.studywithme.member.domain.Email;
 import com.kgu.studywithme.member.domain.Gender;
 import com.kgu.studywithme.member.domain.Nickname;
-import com.kgu.studywithme.member.domain.Region;
 import com.kgu.studywithme.member.domain.Score;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
@@ -21,7 +21,7 @@ public class MemberPublicInformation {
     private final String email;
     private final LocalDate birth;
     private final String gender;
-    private final Region region;
+    private final Address address;
     private final int score;
     private List<String> interests;
 
@@ -33,7 +33,7 @@ public class MemberPublicInformation {
             final Email email,
             final LocalDate birth,
             final Gender gender,
-            final Region region,
+            final Address address,
             final Score score
     ) {
         this.id = id;
@@ -42,7 +42,7 @@ public class MemberPublicInformation {
         this.email = email.getValue();
         this.birth = birth;
         this.gender = gender.getValue();
-        this.region = region;
+        this.address = address;
         this.score = score.getValue();
     }
 

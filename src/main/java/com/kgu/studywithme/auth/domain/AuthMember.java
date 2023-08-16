@@ -14,8 +14,8 @@ public record AuthMember(
         public MemberInfo(final Member member) {
             this(
                     member.getId(),
-                    member.getNicknameValue(),
-                    member.getEmailValue()
+                    member.getNickname().getValue(),
+                    member.getEmail().getValue()
             );
         }
     }

@@ -51,12 +51,12 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
             final MemberPublicInformation response = new MemberPublicInformation(
                     member.getId(),
                     member.getName(),
-                    member.getNicknameValue(),
-                    member.getEmailValue(),
+                    member.getNickname().getValue(),
+                    member.getEmail().getValue(),
                     member.getBirth(),
                     member.getGender().getValue(),
-                    member.getRegion(),
-                    member.getScore(),
+                    member.getAddress(),
+                    member.getScore().getValue(),
                     member.getInterests()
                             .stream()
                             .map(Category::getName)
@@ -93,9 +93,9 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
                                                     .description("사용자 생년월일"),
                                             fieldWithPath("gender")
                                                     .description("사용자 성별"),
-                                            fieldWithPath("region.province")
+                                            fieldWithPath("address.province")
                                                     .description("거주지 [경기도, 강원도, ...]"),
-                                            fieldWithPath("region.city")
+                                            fieldWithPath("address.city")
                                                     .description("거주지 [안양시, 수원시, ...]"),
                                             fieldWithPath("score")
                                                     .description("사용자 점수"),

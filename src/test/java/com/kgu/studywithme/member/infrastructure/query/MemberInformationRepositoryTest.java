@@ -1,13 +1,11 @@
-package com.kgu.studywithme.member.infrastructure.repository.query;
+package com.kgu.studywithme.member.infrastructure.query;
 
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.favorite.domain.Favorite;
 import com.kgu.studywithme.favorite.domain.FavoriteRepository;
-import com.kgu.studywithme.member.application.adapter.MemberInformationRepository;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
-import com.kgu.studywithme.member.infrastructure.query.MemberInformationRepositoryImpl;
 import com.kgu.studywithme.member.infrastructure.query.dto.AppliedStudy;
 import com.kgu.studywithme.member.infrastructure.query.dto.AttendanceRatio;
 import com.kgu.studywithme.member.infrastructure.query.dto.GraduatedStudy;
@@ -55,7 +53,7 @@ import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.GRAD
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@Import(MemberInformationRepositoryImpl.class)
+@Import(MemberInformationRepository.class)
 @DisplayName("Member -> MemberInformationRepository 테스트")
 class MemberInformationRepositoryTest extends RepositoryTest {
     @Autowired
@@ -99,12 +97,12 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             assertAll(
                     () -> assertThat(result.getId()).isEqualTo(member.getId()),
                     () -> assertThat(result.getName()).isEqualTo(member.getName()),
-                    () -> assertThat(result.getNickname()).isEqualTo(member.getNicknameValue()),
-                    () -> assertThat(result.getEmail()).isEqualTo(member.getEmailValue()),
+                    () -> assertThat(result.getNickname()).isEqualTo(member.getNickname().getValue()),
+                    () -> assertThat(result.getEmail()).isEqualTo(member.getEmail().getValue()),
                     () -> assertThat(result.getBirth()).isEqualTo(member.getBirth()),
                     () -> assertThat(result.getGender()).isEqualTo(member.getGender().getValue()),
-                    () -> assertThat(result.getRegion()).isEqualTo(member.getRegion()),
-                    () -> assertThat(result.getScore()).isEqualTo(member.getScore()),
+                    () -> assertThat(result.getAddress()).isEqualTo(member.getAddress()),
+                    () -> assertThat(result.getScore()).isEqualTo(member.getScore().getValue()),
                     () -> assertThat(result.getInterests())
                             .containsExactlyInAnyOrderElementsOf(
                                     member.getInterests()
@@ -125,14 +123,14 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             assertAll(
                     () -> assertThat(result.getId()).isEqualTo(member.getId()),
                     () -> assertThat(result.getName()).isEqualTo(member.getName()),
-                    () -> assertThat(result.getNickname()).isEqualTo(member.getNicknameValue()),
-                    () -> assertThat(result.getEmail()).isEqualTo(member.getEmailValue()),
-                    () -> assertThat(result.getBirth()).isEqualTo(member.getBirth()),
-                    () -> assertThat(result.getPhone()).isEqualTo(member.getPhone()),
-                    () -> assertThat(result.getGender()).isEqualTo(member.getGender().getValue()),
-                    () -> assertThat(result.getRegion()).isEqualTo(member.getRegion()),
-                    () -> assertThat(result.getScore()).isEqualTo(member.getScore()),
+                    () -> assertThat(result.getNickname()).isEqualTo(member.getNickname().getValue()),
+                    () -> assertThat(result.getEmail()).isEqualTo(member.getEmail().getValue()),
                     () -> assertThat(result.isEmailOptIn()).isEqualTo(member.isEmailOptIn()),
+                    () -> assertThat(result.getBirth()).isEqualTo(member.getBirth()),
+                    () -> assertThat(result.getPhone()).isEqualTo(member.getPhone().getValue()),
+                    () -> assertThat(result.getGender()).isEqualTo(member.getGender().getValue()),
+                    () -> assertThat(result.getAddress()).isEqualTo(member.getAddress()),
+                    () -> assertThat(result.getScore()).isEqualTo(member.getScore().getValue()),
                     () -> assertThat(result.getInterests())
                             .containsExactlyInAnyOrderElementsOf(
                                     member.getInterests()

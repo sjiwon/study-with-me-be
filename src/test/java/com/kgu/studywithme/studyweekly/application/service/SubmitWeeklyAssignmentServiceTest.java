@@ -75,7 +75,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
     void setUp() throws IOException {
         final MultipartFile file = createMultipleMockMultipartFile("hello1.txt", "text/plain");
         fileData = new RawFileData(file.getInputStream(), file.getContentType(), file.getOriginalFilename());
-        previousScore = host.getScore();
+        previousScore = host.getScore().getValue();
     }
 
     @Test
@@ -183,7 +183,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
                 () -> verify(studyAttendanceRepository, times(1)).updateParticipantStatus(any(), anyInt(), any(), any()),
-                () -> assertThat(host.getScore()).isEqualTo(previousScore + 1) // 출석 완료
+                () -> assertThat(host.getScore().getValue()).isEqualTo(previousScore + 1) // 출석 완료
         );
     }
 
@@ -214,7 +214,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceRepository, times(1)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
                 () -> verify(studyAttendanceRepository, times(1)).updateParticipantStatus(any(), anyInt(), any(), any()),
-                () -> assertThat(host.getScore()).isEqualTo(previousScore + 4) // 결석 -> 지각 처리로 수정 [-5 -> -1]
+                () -> assertThat(host.getScore().getValue()).isEqualTo(previousScore + 4) // 결석 -> 지각 처리로 수정 [-5 -> -1]
         );
     }
 
@@ -245,7 +245,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                 () -> verify(uploader, times(1)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
                 () -> verify(studyAttendanceRepository, times(1)).updateParticipantStatus(any(), anyInt(), any(), any()),
-                () -> assertThat(host.getScore()).isEqualTo(previousScore + 1) // 출석 완료
+                () -> assertThat(host.getScore().getValue()).isEqualTo(previousScore + 1) // 출석 완료
         );
     }
 
@@ -277,7 +277,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                 () -> verify(uploader, times(1)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceRepository, times(1)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
                 () -> verify(studyAttendanceRepository, times(1)).updateParticipantStatus(any(), anyInt(), any(), any()),
-                () -> assertThat(host.getScore()).isEqualTo(previousScore + 4) // 결석 -> 지각 처리로 수정 [-5 -> -1]
+                () -> assertThat(host.getScore().getValue()).isEqualTo(previousScore + 4) // 결석 -> 지각 처리로 수정 [-5 -> -1]
         );
     }
 }

@@ -118,7 +118,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
                 () -> assertThat(result.getMinimumAttendanceForGraduation()).isEqualTo(study.getMinimumAttendanceForGraduation()),
                 () -> assertThat(result.getRemainingOpportunityToUpdateGraduationPolicy()).isEqualTo(study.getGraduationPolicy().getUpdateChance()),
                 () -> assertThat(result.getHost().id()).isEqualTo(host.getId()),
-                () -> assertThat(result.getHost().nickname()).isEqualTo(host.getNicknameValue()),
+                () -> assertThat(result.getHost().nickname()).isEqualTo(host.getNickname().getValue()),
                 () -> assertThat(result.getParticipantMembers()).isEqualTo(3), // host, memberA, memberB
                 () -> assertThat(result.getHashtags()).containsExactlyInAnyOrderElementsOf(study.getHashtags()),
                 () -> assertThat(result.getParticipants())
@@ -460,7 +460,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
                 () -> assertThat(resultOfWeeklyC.isAssignmentExists()).isEqualTo(weeklyC.isAssignmentExists()),
                 () -> assertThat(resultOfWeeklyC.isAutoAttendance()).isEqualTo(weeklyC.isAutoAttendance()),
                 () -> assertThat(resultOfWeeklyC.getCreator().id()).isEqualTo(host.getId()),
-                () -> assertThat(resultOfWeeklyC.getCreator().nickname()).isEqualTo(host.getNicknameValue()),
+                () -> assertThat(resultOfWeeklyC.getCreator().nickname()).isEqualTo(host.getNickname().getValue()),
                 () -> assertThat(resultOfWeeklyC.getAttachments())
                         .map(WeeklyInformation.WeeklyAttachment::link)
                         .containsExactlyInAnyOrderElementsOf(
@@ -482,7 +482,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
                 () -> assertThat(resultOfWeeklyB.isAssignmentExists()).isEqualTo(weeklyB.isAssignmentExists()),
                 () -> assertThat(resultOfWeeklyB.isAutoAttendance()).isEqualTo(weeklyB.isAutoAttendance()),
                 () -> assertThat(resultOfWeeklyB.getCreator().id()).isEqualTo(host.getId()),
-                () -> assertThat(resultOfWeeklyB.getCreator().nickname()).isEqualTo(host.getNicknameValue()),
+                () -> assertThat(resultOfWeeklyB.getCreator().nickname()).isEqualTo(host.getNickname().getValue()),
                 () -> assertThat(resultOfWeeklyB.getAttachments())
                         .map(WeeklyInformation.WeeklyAttachment::link)
                         .containsExactlyInAnyOrderElementsOf(
@@ -512,7 +512,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
                 () -> assertThat(resultOfWeeklyA.isAssignmentExists()).isEqualTo(weeklyA.isAssignmentExists()),
                 () -> assertThat(resultOfWeeklyA.isAutoAttendance()).isEqualTo(weeklyA.isAutoAttendance()),
                 () -> assertThat(resultOfWeeklyA.getCreator().id()).isEqualTo(host.getId()),
-                () -> assertThat(resultOfWeeklyA.getCreator().nickname()).isEqualTo(host.getNicknameValue()),
+                () -> assertThat(resultOfWeeklyA.getCreator().nickname()).isEqualTo(host.getNickname().getValue()),
                 () -> assertThat(resultOfWeeklyA.getAttachments())
                         .map(WeeklyInformation.WeeklyAttachment::link)
                         .containsExactlyInAnyOrderElementsOf(

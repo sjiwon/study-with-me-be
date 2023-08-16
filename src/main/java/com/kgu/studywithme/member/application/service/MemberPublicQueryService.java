@@ -1,6 +1,6 @@
 package com.kgu.studywithme.member.application.service;
 
-import com.kgu.studywithme.member.application.adapter.MemberInformationRepository;
+import com.kgu.studywithme.member.application.adapter.MemberInformationRepositoryAdapter;
 import com.kgu.studywithme.member.application.usecase.query.QueryAttendanceRatioByIdUseCase;
 import com.kgu.studywithme.member.application.usecase.query.QueryGraduatedStudyByIdUseCase;
 import com.kgu.studywithme.member.application.usecase.query.QueryParticipateStudyByIdUseCase;
@@ -25,30 +25,30 @@ public class MemberPublicQueryService implements
         QueryReceivedReviewByIdUseCase,
         QueryAttendanceRatioByIdUseCase {
 
-    private final MemberInformationRepository memberInformationRepository;
+    private final MemberInformationRepositoryAdapter memberInformationRepositoryAdapter;
 
     @Override
     public MemberPublicInformation invoke(final QueryPublicInformationByIdUseCase.Query query) {
-        return memberInformationRepository.fetchPublicInformationById(query.memberId());
+        return memberInformationRepositoryAdapter.fetchPublicInformationById(query.memberId());
     }
 
     @Override
     public List<ParticipateStudy> invoke(final QueryParticipateStudyByIdUseCase.Query query) {
-        return memberInformationRepository.fetchParticipateStudyById(query.memberId());
+        return memberInformationRepositoryAdapter.fetchParticipateStudyById(query.memberId());
     }
 
     @Override
     public List<GraduatedStudy> invoke(final QueryGraduatedStudyByIdUseCase.Query query) {
-        return memberInformationRepository.fetchGraduatedStudyById(query.memberId());
+        return memberInformationRepositoryAdapter.fetchGraduatedStudyById(query.memberId());
     }
 
     @Override
     public List<ReceivedReview> invoke(final QueryReceivedReviewByIdUseCase.Query query) {
-        return memberInformationRepository.fetchReceivedReviewById(query.memberId());
+        return memberInformationRepositoryAdapter.fetchReceivedReviewById(query.memberId());
     }
 
     @Override
     public List<AttendanceRatio> invoke(final QueryAttendanceRatioByIdUseCase.Query query) {
-        return memberInformationRepository.fetchAttendanceRatioById(query.memberId());
+        return memberInformationRepositoryAdapter.fetchAttendanceRatioById(query.memberId());
     }
 }

@@ -11,7 +11,7 @@ import com.kgu.studywithme.member.infrastructure.query.dto.ReceivedReview;
 
 import java.util.List;
 
-public interface MemberInformationRepository {
+public interface MemberInformationRepositoryAdapter {
     // Public Information
     MemberPublicInformation fetchPublicInformationById(final Long memberId);
 

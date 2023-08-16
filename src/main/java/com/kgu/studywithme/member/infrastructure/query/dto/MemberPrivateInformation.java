@@ -1,9 +1,10 @@
 package com.kgu.studywithme.member.infrastructure.query.dto;
 
+import com.kgu.studywithme.member.domain.Address;
 import com.kgu.studywithme.member.domain.Email;
 import com.kgu.studywithme.member.domain.Gender;
 import com.kgu.studywithme.member.domain.Nickname;
-import com.kgu.studywithme.member.domain.Region;
+import com.kgu.studywithme.member.domain.Phone;
 import com.kgu.studywithme.member.domain.Score;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
@@ -21,12 +22,12 @@ public class MemberPrivateInformation {
     private final String name;
     private final String nickname;
     private final String email;
+    private final boolean emailOptIn;
     private final LocalDate birth;
     private final String phone;
     private final String gender;
-    private final Region region;
+    private final Address address;
     private final int score;
-    private final boolean emailOptIn;
     private List<String> interests;
 
     @QueryProjection
@@ -36,22 +37,21 @@ public class MemberPrivateInformation {
             final Nickname nickname,
             final Email email,
             final LocalDate birth,
-            final String phone,
+            final Phone phone,
             final Gender gender,
-            final Region region,
-            final Score score,
-            final boolean emailOptIn
+            final Address address,
+            final Score score
     ) {
         this.id = id;
         this.name = name;
         this.nickname = nickname.getValue();
         this.email = email.getValue();
+        this.emailOptIn = email.isEmailOptIn();
         this.birth = birth;
-        this.phone = phone;
+        this.phone = phone.getValue();
         this.gender = gender.getValue();
-        this.region = region;
+        this.address = address;
         this.score = score.getValue();
-        this.emailOptIn = emailOptIn;
     }
 
     public void applyInterests(final List<String> interests) {

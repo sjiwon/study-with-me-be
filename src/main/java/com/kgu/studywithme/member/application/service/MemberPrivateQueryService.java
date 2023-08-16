@@ -1,6 +1,6 @@
 package com.kgu.studywithme.member.application.service;
 
-import com.kgu.studywithme.member.application.adapter.MemberInformationRepository;
+import com.kgu.studywithme.member.application.adapter.MemberInformationRepositoryAdapter;
 import com.kgu.studywithme.member.application.usecase.query.QueryAppliedStudyByIdUseCase;
 import com.kgu.studywithme.member.application.usecase.query.QueryLikeMarkedStudyByIdUseCase;
 import com.kgu.studywithme.member.application.usecase.query.QueryPrivateInformationByIdUseCase;
@@ -19,20 +19,20 @@ public class MemberPrivateQueryService implements
         QueryAppliedStudyByIdUseCase,
         QueryLikeMarkedStudyByIdUseCase {
 
-    private final MemberInformationRepository memberInformationRepository;
+    private final MemberInformationRepositoryAdapter memberInformationRepositoryAdapter;
 
     @Override
     public MemberPrivateInformation invoke(final QueryPrivateInformationByIdUseCase.Query query) {
-        return memberInformationRepository.fetchPrivateInformationById(query.memberId());
+        return memberInformationRepositoryAdapter.fetchPrivateInformationById(query.memberId());
     }
 
     @Override
     public List<AppliedStudy> invoke(final QueryAppliedStudyByIdUseCase.Query query) {
-        return memberInformationRepository.fetchAppliedStudyById(query.memberId());
+        return memberInformationRepositoryAdapter.fetchAppliedStudyById(query.memberId());
     }
 
     @Override
     public List<LikeMarkedStudy> invoke(final QueryLikeMarkedStudyByIdUseCase.Query query) {
-        return memberInformationRepository.fetchLikeMarkedStudyById(query.memberId());
+        return memberInformationRepositoryAdapter.fetchLikeMarkedStudyById(query.memberId());
     }
 }

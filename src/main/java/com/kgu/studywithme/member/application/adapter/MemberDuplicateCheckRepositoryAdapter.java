@@ -1,6 +1,6 @@
 package com.kgu.studywithme.member.application.adapter;
 
-public interface MemberDuplicateCheckRepository {
+public interface MemberDuplicateCheckRepositoryAdapter {
     boolean isEmailExists(String email);
 
     boolean isNicknameExists(String nickname);
