@@ -12,14 +12,14 @@ import org.springframework.util.StringUtils;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
-public class Region {
+public class Address {
     @Column(name = "province", nullable = false)
     private String province;
 
     @Column(name = "city", nullable = false)
     private String city;
 
-    public Region(
+    public Address(
             final String province,
             final String city
     ) {
@@ -28,20 +28,12 @@ public class Region {
         this.city = city;
     }
 
-    public Region update(
-            final String province,
-            final String city
-    ) {
-        validateProvinceAndCityIsNotEmpty(province, city);
-        return new Region(province, city);
-    }
-
     private void validateProvinceAndCityIsNotEmpty(
             final String province,
             final String city
     ) {
         if (isEmptyText(province) || isEmptyText(city)) {
-            throw StudyWithMeException.type(MemberErrorCode.REGION_IS_BLANK);
+            throw StudyWithMeException.type(MemberErrorCode.ADDRESS_IS_BLANK);
         }
     }
 
@@ -54,7 +46,7 @@ public class Region {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        final Region other = (Region) o;
+        final Address other = (Address) o;
 
         if (!province.equals(other.province)) return false;
         return city.equals(other.city);
