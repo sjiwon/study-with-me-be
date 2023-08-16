@@ -1,9 +1,10 @@
 package com.kgu.studywithme.auth.infrastructure.oauth.kakao;
 
-import com.kgu.studywithme.auth.infrastructure.oauth.OAuthUri;
+import com.kgu.studywithme.auth.application.adapter.OAuthUri;
 import com.kgu.studywithme.auth.utils.OAuthProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.UUID;
 
@@ -21,11 +22,14 @@ public class KakaoOAuthUri implements OAuthUri {
 
     @Override
     public String generate(final String redirectUri) {
-        return properties.getAuthUrl() + "?"
-                + "response_type=code&"
-                + "client_id=" + properties.getClientId() + "&"
-                + "scope=" + String.join(" ", properties.getScope()) + "&"
-                + "redirect_uri=" + redirectUri + "&"
-                + "state=" + UUID.randomUUID().toString().replaceAll("-", "");
+        return UriComponentsBuilder
+                .fromUriString(properties.getAuthUrl())
+                .queryParam("response_type", "code")
+                .queryParam("client_id", properties.getClientId())
+                .queryParam("scope", String.join(" ", properties.getScope()))
+                .queryParam("redirect_uri", redirectUri)
+                .queryParam("state", UUID.randomUUID().toString().replaceAll("-", ""))
+                .build()
+                .toUriString();
     }
 }

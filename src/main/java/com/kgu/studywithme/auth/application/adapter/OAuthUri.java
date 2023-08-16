@@ -1,4 +1,4 @@
-package com.kgu.studywithme.auth.infrastructure.oauth;
+package com.kgu.studywithme.auth.application.adapter;
 
 import com.kgu.studywithme.auth.utils.OAuthProvider;
 
