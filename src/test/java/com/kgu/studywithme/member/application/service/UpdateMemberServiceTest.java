@@ -2,9 +2,9 @@ package com.kgu.studywithme.member.application.service;
 
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
+import com.kgu.studywithme.member.application.adapter.MemberDuplicateCheckRepository;
 import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,7 +32,7 @@ class UpdateMemberServiceTest extends UseCaseTest {
     private QueryMemberByIdService queryMemberByIdService;
 
     @Mock
-    private MemberRepository memberRepository;
+    private MemberDuplicateCheckRepository memberDuplicateCheckRepository;
 
     private final Member member = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final UpdateMemberUseCase.Command command = new UpdateMemberUseCase.Command(
@@ -50,7 +50,7 @@ class UpdateMemberServiceTest extends UseCaseTest {
     void throwExceptionByDuplicateNickname() {
         // given
         given(queryMemberByIdService.findById(any())).willReturn(member);
-        given(memberRepository.isNicknameUsedByOther(any(), any())).willReturn(true);
+        given(memberDuplicateCheckRepository.isNicknameUsedByOther(any(), any())).willReturn(true);
 
         // when - then
         assertThatThrownBy(() -> memberUpdateService.invoke(command))
@@ -58,8 +58,8 @@ class UpdateMemberServiceTest extends UseCaseTest {
                 .hasMessage(MemberErrorCode.DUPLICATE_NICKNAME.getMessage());
 
         assertAll(
-                () -> verify(memberRepository, times(1)).isNicknameUsedByOther(any(), any()),
-                () -> verify(memberRepository, times(0)).isPhoneUsedByOther(any(), any())
+                () -> verify(memberDuplicateCheckRepository, times(1)).isNicknameUsedByOther(any(), any()),
+                () -> verify(memberDuplicateCheckRepository, times(0)).isPhoneUsedByOther(any(), any())
         );
     }
 
@@ -68,8 +68,8 @@ class UpdateMemberServiceTest extends UseCaseTest {
     void throwExceptionByDuplicatePhone() {
         // given
         given(queryMemberByIdService.findById(any())).willReturn(member);
-        given(memberRepository.isNicknameUsedByOther(any(), any())).willReturn(false);
-        given(memberRepository.isPhoneUsedByOther(any(), any())).willReturn(true);
+        given(memberDuplicateCheckRepository.isNicknameUsedByOther(any(), any())).willReturn(false);
+        given(memberDuplicateCheckRepository.isPhoneUsedByOther(any(), any())).willReturn(true);
 
         // when - then
         assertThatThrownBy(() -> memberUpdateService.invoke(command))
@@ -77,8 +77,8 @@ class UpdateMemberServiceTest extends UseCaseTest {
                 .hasMessage(MemberErrorCode.DUPLICATE_PHONE.getMessage());
 
         assertAll(
-                () -> verify(memberRepository, times(1)).isNicknameUsedByOther(any(), any()),
-                () -> verify(memberRepository, times(1)).isPhoneUsedByOther(any(), any())
+                () -> verify(memberDuplicateCheckRepository, times(1)).isNicknameUsedByOther(any(), any()),
+                () -> verify(memberDuplicateCheckRepository, times(1)).isPhoneUsedByOther(any(), any())
         );
     }
 
@@ -87,16 +87,16 @@ class UpdateMemberServiceTest extends UseCaseTest {
     void success() {
         // given
         given(queryMemberByIdService.findById(any())).willReturn(member);
-        given(memberRepository.isNicknameUsedByOther(any(), any())).willReturn(false);
-        given(memberRepository.isPhoneUsedByOther(any(), any())).willReturn(false);
+        given(memberDuplicateCheckRepository.isNicknameUsedByOther(any(), any())).willReturn(false);
+        given(memberDuplicateCheckRepository.isPhoneUsedByOther(any(), any())).willReturn(false);
 
         // when
         memberUpdateService.invoke(command);
 
         // then
         assertAll(
-                () -> verify(memberRepository, times(1)).isNicknameUsedByOther(any(), any()),
-                () -> verify(memberRepository, times(1)).isPhoneUsedByOther(any(), any()),
+                () -> verify(memberDuplicateCheckRepository, times(1)).isNicknameUsedByOther(any(), any()),
+                () -> verify(memberDuplicateCheckRepository, times(1)).isPhoneUsedByOther(any(), any()),
                 () -> assertThat(member.getNicknameValue()).isEqualTo(command.nickname()),
                 () -> assertThat(member.getPhone()).isEqualTo(command.phone()),
                 () -> assertThat(member.getRegionProvince()).isEqualTo(command.province()),

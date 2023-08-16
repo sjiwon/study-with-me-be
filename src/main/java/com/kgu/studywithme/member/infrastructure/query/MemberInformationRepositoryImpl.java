@@ -1,26 +1,28 @@
-package com.kgu.studywithme.member.infrastructure.repository.query;
+package com.kgu.studywithme.member.infrastructure.query;
 
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.AppliedStudy;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.AttendanceRatio;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.GraduatedStudy;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.LikeMarkedStudy;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.MemberPrivateInformation;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.MemberPublicInformation;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.ParticipateStudy;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.QAppliedStudy;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.QAttendanceRatio;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.QGraduatedStudy;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.QLikeMarkedStudy;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.QMemberPrivateInformation;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.QMemberPublicInformation;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.QParticipateStudy;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.QReceivedReview;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.ReceivedReview;
+import com.kgu.studywithme.member.application.adapter.MemberInformationRepository;
+import com.kgu.studywithme.member.infrastructure.query.dto.AppliedStudy;
+import com.kgu.studywithme.member.infrastructure.query.dto.AttendanceRatio;
+import com.kgu.studywithme.member.infrastructure.query.dto.GraduatedStudy;
+import com.kgu.studywithme.member.infrastructure.query.dto.LikeMarkedStudy;
+import com.kgu.studywithme.member.infrastructure.query.dto.MemberPrivateInformation;
+import com.kgu.studywithme.member.infrastructure.query.dto.MemberPublicInformation;
+import com.kgu.studywithme.member.infrastructure.query.dto.ParticipateStudy;
+import com.kgu.studywithme.member.infrastructure.query.dto.QAppliedStudy;
+import com.kgu.studywithme.member.infrastructure.query.dto.QAttendanceRatio;
+import com.kgu.studywithme.member.infrastructure.query.dto.QGraduatedStudy;
+import com.kgu.studywithme.member.infrastructure.query.dto.QLikeMarkedStudy;
+import com.kgu.studywithme.member.infrastructure.query.dto.QMemberPrivateInformation;
+import com.kgu.studywithme.member.infrastructure.query.dto.QMemberPublicInformation;
+import com.kgu.studywithme.member.infrastructure.query.dto.QParticipateStudy;
+import com.kgu.studywithme.member.infrastructure.query.dto.QReceivedReview;
+import com.kgu.studywithme.member.infrastructure.query.dto.ReceivedReview;
 import com.kgu.studywithme.studyattendance.domain.AttendanceStatus;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -36,6 +38,7 @@ import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.GRAD
 import static com.kgu.studywithme.studyparticipant.domain.QStudyParticipant.studyParticipant;
 import static com.kgu.studywithme.studyreview.domain.QStudyReview.studyReview;
 
+@Repository
 @StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
 public class MemberInformationRepositoryImpl implements MemberInformationRepository {

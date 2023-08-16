@@ -2,9 +2,9 @@ package com.kgu.studywithme.member.application.service;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
+import com.kgu.studywithme.member.application.adapter.MemberDuplicateCheckRepository;
 import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UpdateMemberService implements UpdateMemberUseCase {
     private final QueryMemberByIdService queryMemberByIdService;
-    private final MemberRepository memberRepository;
+    private final MemberDuplicateCheckRepository memberDuplicateCheckRepository;
 
     @Override
     public void invoke(final Command command) {
@@ -36,7 +36,7 @@ public class UpdateMemberService implements UpdateMemberUseCase {
             final Long memberId,
             final String nickname
     ) {
-        if (memberRepository.isNicknameUsedByOther(memberId, nickname)) {
+        if (memberDuplicateCheckRepository.isNicknameUsedByOther(memberId, nickname)) {
             throw StudyWithMeException.type(MemberErrorCode.DUPLICATE_NICKNAME);
         }
     }
@@ -45,7 +45,7 @@ public class UpdateMemberService implements UpdateMemberUseCase {
             final Long memberId,
             final String phone
     ) {
-        if (memberRepository.isPhoneUsedByOther(memberId, phone)) {
+        if (memberDuplicateCheckRepository.isPhoneUsedByOther(memberId, phone)) {
             throw StudyWithMeException.type(MemberErrorCode.DUPLICATE_PHONE);
         }
     }

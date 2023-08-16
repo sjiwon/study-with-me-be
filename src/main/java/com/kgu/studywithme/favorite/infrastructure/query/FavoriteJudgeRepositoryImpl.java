@@ -1,6 +1,7 @@
 package com.kgu.studywithme.favorite.infrastructure.query;
 
 import com.kgu.studywithme.favorite.application.adapter.FavoriteJudgeRepository;
+import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import static com.kgu.studywithme.favorite.domain.QFavorite.favorite;
 
 @Repository
+@StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
 public class FavoriteJudgeRepositoryImpl implements FavoriteJudgeRepository {
     private final JPAQueryFactory query;

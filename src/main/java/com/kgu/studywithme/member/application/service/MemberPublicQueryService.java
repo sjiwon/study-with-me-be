@@ -1,16 +1,16 @@
 package com.kgu.studywithme.member.application.service;
 
+import com.kgu.studywithme.member.application.adapter.MemberInformationRepository;
 import com.kgu.studywithme.member.application.usecase.query.QueryAttendanceRatioByIdUseCase;
 import com.kgu.studywithme.member.application.usecase.query.QueryGraduatedStudyByIdUseCase;
 import com.kgu.studywithme.member.application.usecase.query.QueryParticipateStudyByIdUseCase;
 import com.kgu.studywithme.member.application.usecase.query.QueryPublicInformationByIdUseCase;
 import com.kgu.studywithme.member.application.usecase.query.QueryReceivedReviewByIdUseCase;
-import com.kgu.studywithme.member.domain.MemberRepository;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.AttendanceRatio;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.GraduatedStudy;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.MemberPublicInformation;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.ParticipateStudy;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.ReceivedReview;
+import com.kgu.studywithme.member.infrastructure.query.dto.AttendanceRatio;
+import com.kgu.studywithme.member.infrastructure.query.dto.GraduatedStudy;
+import com.kgu.studywithme.member.infrastructure.query.dto.MemberPublicInformation;
+import com.kgu.studywithme.member.infrastructure.query.dto.ParticipateStudy;
+import com.kgu.studywithme.member.infrastructure.query.dto.ReceivedReview;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,30 +25,30 @@ public class MemberPublicQueryService implements
         QueryReceivedReviewByIdUseCase,
         QueryAttendanceRatioByIdUseCase {
 
-    private final MemberRepository memberRepository;
+    private final MemberInformationRepository memberInformationRepository;
 
     @Override
     public MemberPublicInformation invoke(final QueryPublicInformationByIdUseCase.Query query) {
-        return memberRepository.fetchPublicInformationById(query.memberId());
+        return memberInformationRepository.fetchPublicInformationById(query.memberId());
     }
 
     @Override
     public List<ParticipateStudy> invoke(final QueryParticipateStudyByIdUseCase.Query query) {
-        return memberRepository.fetchParticipateStudyById(query.memberId());
+        return memberInformationRepository.fetchParticipateStudyById(query.memberId());
     }
 
     @Override
     public List<GraduatedStudy> invoke(final QueryGraduatedStudyByIdUseCase.Query query) {
-        return memberRepository.fetchGraduatedStudyById(query.memberId());
+        return memberInformationRepository.fetchGraduatedStudyById(query.memberId());
     }
 
     @Override
     public List<ReceivedReview> invoke(final QueryReceivedReviewByIdUseCase.Query query) {
-        return memberRepository.fetchReceivedReviewById(query.memberId());
+        return memberInformationRepository.fetchReceivedReviewById(query.memberId());
     }
 
     @Override
     public List<AttendanceRatio> invoke(final QueryAttendanceRatioByIdUseCase.Query query) {
-        return memberRepository.fetchAttendanceRatioById(query.memberId());
+        return memberInformationRepository.fetchAttendanceRatioById(query.memberId());
     }
 }

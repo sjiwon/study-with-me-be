@@ -2,9 +2,9 @@ package com.kgu.studywithme.memberreview.application.service;
 
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
+import com.kgu.studywithme.member.application.adapter.MemberAttendanceRepository;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.domain.MemberRepository;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.StudyParticipateWeeks;
+import com.kgu.studywithme.member.infrastructure.query.dto.StudyParticipateWeeks;
 import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.domain.MemberReview;
 import com.kgu.studywithme.memberreview.domain.MemberReviewRepository;
@@ -32,10 +32,10 @@ class WriteMemberReviewServiceTest extends UseCaseTest {
     private WriteMemberReviewService writeMemberReviewService;
 
     @Mock
-    private MemberReviewRepository memberReviewRepository;
+    private MemberAttendanceRepository memberAttendanceRepository;
 
     @Mock
-    private MemberRepository memberRepository;
+    private MemberReviewRepository memberReviewRepository;
 
 
     private final Member memberA = JIWON.toMember().apply(1L, LocalDateTime.now());
@@ -59,7 +59,7 @@ class WriteMemberReviewServiceTest extends UseCaseTest {
                 .hasMessage(MemberReviewErrorCode.SELF_REVIEW_NOT_ALLOWED.getMessage());
 
         assertAll(
-                () -> verify(memberRepository, times(0)).findParticipateWeeksInStudyByMemberId(any()),
+                () -> verify(memberAttendanceRepository, times(0)).findParticipateWeeksInStudyByMemberId(any()),
                 () -> verify(memberReviewRepository, times(0)).existsByReviewerIdAndRevieweeId(any(), any()),
                 () -> verify(memberReviewRepository, times(0)).save(any())
         );
@@ -69,8 +69,8 @@ class WriteMemberReviewServiceTest extends UseCaseTest {
     @DisplayName("함께 스터디를 진행한 기록이 없다면 리뷰를 남길 수 없다")
     void throwExceptionByCommonStudyRecordNotFound() {
         // given
-        given(memberRepository.findParticipateWeeksInStudyByMemberId(memberA.getId())).willReturn(List.of(new StudyParticipateWeeks(1L, 1)));
-        given(memberRepository.findParticipateWeeksInStudyByMemberId(memberB.getId())).willReturn(List.of(new StudyParticipateWeeks(2L, 1)));
+        given(memberAttendanceRepository.findParticipateWeeksInStudyByMemberId(memberA.getId())).willReturn(List.of(new StudyParticipateWeeks(1L, 1)));
+        given(memberAttendanceRepository.findParticipateWeeksInStudyByMemberId(memberB.getId())).willReturn(List.of(new StudyParticipateWeeks(2L, 1)));
 
         // when - then
         assertThatThrownBy(() -> writeMemberReviewService.invoke(command))
@@ -78,7 +78,7 @@ class WriteMemberReviewServiceTest extends UseCaseTest {
                 .hasMessage(MemberReviewErrorCode.COMMON_STUDY_RECORD_NOT_FOUND.getMessage());
 
         assertAll(
-                () -> verify(memberRepository, times(2)).findParticipateWeeksInStudyByMemberId(any()),
+                () -> verify(memberAttendanceRepository, times(2)).findParticipateWeeksInStudyByMemberId(any()),
                 () -> verify(memberReviewRepository, times(0)).existsByReviewerIdAndRevieweeId(any(), any()),
                 () -> verify(memberReviewRepository, times(0)).save(any())
         );
@@ -88,8 +88,8 @@ class WriteMemberReviewServiceTest extends UseCaseTest {
     @DisplayName("해당 사용자에 대해 2번 이상 리뷰를 남길 수 없다")
     void throwExceptionByAlreadyReview() {
         // given
-        given(memberRepository.findParticipateWeeksInStudyByMemberId(memberA.getId())).willReturn(List.of(new StudyParticipateWeeks(1L, 1)));
-        given(memberRepository.findParticipateWeeksInStudyByMemberId(memberB.getId())).willReturn(List.of(new StudyParticipateWeeks(1L, 1)));
+        given(memberAttendanceRepository.findParticipateWeeksInStudyByMemberId(memberA.getId())).willReturn(List.of(new StudyParticipateWeeks(1L, 1)));
+        given(memberAttendanceRepository.findParticipateWeeksInStudyByMemberId(memberB.getId())).willReturn(List.of(new StudyParticipateWeeks(1L, 1)));
         given(memberReviewRepository.existsByReviewerIdAndRevieweeId(any(), any())).willReturn(true);
 
         // when - then
@@ -98,7 +98,7 @@ class WriteMemberReviewServiceTest extends UseCaseTest {
                 .hasMessage(MemberReviewErrorCode.ALREADY_REVIEW.getMessage());
 
         assertAll(
-                () -> verify(memberRepository, times(2)).findParticipateWeeksInStudyByMemberId(any()),
+                () -> verify(memberAttendanceRepository, times(2)).findParticipateWeeksInStudyByMemberId(any()),
                 () -> verify(memberReviewRepository, times(1)).existsByReviewerIdAndRevieweeId(any(), any()),
                 () -> verify(memberReviewRepository, times(0)).save(any())
         );
@@ -108,8 +108,8 @@ class WriteMemberReviewServiceTest extends UseCaseTest {
     @DisplayName("리뷰를 작성한다")
     void success() {
         // given
-        given(memberRepository.findParticipateWeeksInStudyByMemberId(memberA.getId())).willReturn(List.of(new StudyParticipateWeeks(1L, 1)));
-        given(memberRepository.findParticipateWeeksInStudyByMemberId(memberB.getId())).willReturn(List.of(new StudyParticipateWeeks(1L, 1)));
+        given(memberAttendanceRepository.findParticipateWeeksInStudyByMemberId(memberA.getId())).willReturn(List.of(new StudyParticipateWeeks(1L, 1)));
+        given(memberAttendanceRepository.findParticipateWeeksInStudyByMemberId(memberB.getId())).willReturn(List.of(new StudyParticipateWeeks(1L, 1)));
         given(memberReviewRepository.existsByReviewerIdAndRevieweeId(any(), any())).willReturn(false);
 
         final MemberReview memberReview = MemberReview.doReview(memberA.getId(), memberB.getId(), "Good").apply(1L, LocalDateTime.now());
@@ -120,7 +120,7 @@ class WriteMemberReviewServiceTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(memberRepository, times(2)).findParticipateWeeksInStudyByMemberId(any()),
+                () -> verify(memberAttendanceRepository, times(2)).findParticipateWeeksInStudyByMemberId(any()),
                 () -> verify(memberReviewRepository, times(1)).existsByReviewerIdAndRevieweeId(any(), any()),
                 () -> verify(memberReviewRepository, times(1)).save(any()),
                 () -> assertThat(memberReviewId).isEqualTo(memberReview.getId())

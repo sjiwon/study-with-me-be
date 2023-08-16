@@ -2,8 +2,8 @@ package com.kgu.studywithme.memberreview.application.service;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.domain.MemberRepository;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.StudyParticipateWeeks;
+import com.kgu.studywithme.member.application.adapter.MemberAttendanceRepository;
+import com.kgu.studywithme.member.infrastructure.query.dto.StudyParticipateWeeks;
 import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.domain.MemberReview;
 import com.kgu.studywithme.memberreview.domain.MemberReviewRepository;
@@ -17,8 +17,8 @@ import java.util.List;
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class WriteMemberReviewService implements WriteMemberReviewUseCase {
+    private final MemberAttendanceRepository memberAttendanceRepository;
     private final MemberReviewRepository memberReviewRepository;
-    private final MemberRepository memberRepository;
 
     @Override
     public Long invoke(final Command command) {
@@ -44,9 +44,9 @@ public class WriteMemberReviewService implements WriteMemberReviewUseCase {
             final Long revieweeId
     ) {
         final List<StudyParticipateWeeks> reviewerMetadata
-                = memberRepository.findParticipateWeeksInStudyByMemberId(reviewerId);
+                = memberAttendanceRepository.findParticipateWeeksInStudyByMemberId(reviewerId);
         final List<StudyParticipateWeeks> revieweeMetadata
-                = memberRepository.findParticipateWeeksInStudyByMemberId(revieweeId);
+                = memberAttendanceRepository.findParticipateWeeksInStudyByMemberId(revieweeId);
 
         final boolean hasCommonMetadata =
                 reviewerMetadata.stream()

@@ -1,9 +1,11 @@
 package com.kgu.studywithme.member.infrastructure.repository.query;
 
 import com.kgu.studywithme.common.RepositoryTest;
+import com.kgu.studywithme.member.application.adapter.MemberAttendanceRepository;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.StudyParticipateWeeks;
+import com.kgu.studywithme.member.infrastructure.query.MemberAttendanceRepositoryImpl;
+import com.kgu.studywithme.member.infrastructure.query.dto.StudyParticipateWeeks;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.study.domain.StudyRepository;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
@@ -14,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 
 import java.util.List;
 
@@ -31,8 +34,12 @@ import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPR
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+@Import(MemberAttendanceRepositoryImpl.class)
 @DisplayName("Member -> MemberAttendanceRepository 테스트")
 class MemberAttendanceRepositoryTest extends RepositoryTest {
+    @Autowired
+    private MemberAttendanceRepository memberAttendanceRepository;
+
     @Autowired
     private MemberRepository memberRepository;
 
@@ -89,7 +96,7 @@ class MemberAttendanceRepositoryTest extends RepositoryTest {
                 )
         );
 
-        final List<StudyParticipateWeeks> participateWeeks1 = memberRepository.findParticipateWeeksInStudyByMemberId(member.getId());
+        final List<StudyParticipateWeeks> participateWeeks1 = memberAttendanceRepository.findParticipateWeeksInStudyByMemberId(member.getId());
         assertAll(
                 () -> assertThat(groupingWeeksByStudyId(participateWeeks1, studyA.getId())).containsExactlyInAnyOrder(1),
                 () -> assertThat(groupingWeeksByStudyId(participateWeeks1, studyB.getId())).containsExactlyInAnyOrder(1),
@@ -107,7 +114,7 @@ class MemberAttendanceRepositoryTest extends RepositoryTest {
                 )
         );
 
-        final List<StudyParticipateWeeks> participateWeeks2 = memberRepository.findParticipateWeeksInStudyByMemberId(member.getId());
+        final List<StudyParticipateWeeks> participateWeeks2 = memberAttendanceRepository.findParticipateWeeksInStudyByMemberId(member.getId());
         assertAll(
                 () -> assertThat(groupingWeeksByStudyId(participateWeeks2, studyA.getId())).containsExactlyInAnyOrder(1, 2),
                 () -> assertThat(groupingWeeksByStudyId(participateWeeks2, studyB.getId())).containsExactlyInAnyOrder(1),
@@ -119,7 +126,7 @@ class MemberAttendanceRepositoryTest extends RepositoryTest {
         /* Week 3 */
         studyAttendanceRepository.save(StudyAttendance.recordAttendance(studyA.getId(), member.getId(), 3, ATTENDANCE));
 
-        final List<StudyParticipateWeeks> participateWeeks3 = memberRepository.findParticipateWeeksInStudyByMemberId(member.getId());
+        final List<StudyParticipateWeeks> participateWeeks3 = memberAttendanceRepository.findParticipateWeeksInStudyByMemberId(member.getId());
         assertAll(
                 () -> assertThat(groupingWeeksByStudyId(participateWeeks3, studyA.getId())).containsExactlyInAnyOrder(1, 2, 3),
                 () -> assertThat(groupingWeeksByStudyId(participateWeeks3, studyB.getId())).containsExactlyInAnyOrder(1),

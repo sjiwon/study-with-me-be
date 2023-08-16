@@ -1,6 +1,6 @@
 package com.kgu.studywithme.member.application.usecase.query;
 
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.AppliedStudy;
+import com.kgu.studywithme.member.infrastructure.query.dto.AppliedStudy;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.kgu.studywithme.member.infrastructure.repository.query.dto;
+package com.kgu.studywithme.member.infrastructure.query.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 

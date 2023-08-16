@@ -4,16 +4,18 @@ import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.favorite.domain.Favorite;
 import com.kgu.studywithme.favorite.domain.FavoriteRepository;
+import com.kgu.studywithme.member.application.adapter.MemberInformationRepository;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.AppliedStudy;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.AttendanceRatio;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.GraduatedStudy;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.LikeMarkedStudy;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.MemberPrivateInformation;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.MemberPublicInformation;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.ParticipateStudy;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.ReceivedReview;
+import com.kgu.studywithme.member.infrastructure.query.MemberInformationRepositoryImpl;
+import com.kgu.studywithme.member.infrastructure.query.dto.AppliedStudy;
+import com.kgu.studywithme.member.infrastructure.query.dto.AttendanceRatio;
+import com.kgu.studywithme.member.infrastructure.query.dto.GraduatedStudy;
+import com.kgu.studywithme.member.infrastructure.query.dto.LikeMarkedStudy;
+import com.kgu.studywithme.member.infrastructure.query.dto.MemberPrivateInformation;
+import com.kgu.studywithme.member.infrastructure.query.dto.MemberPublicInformation;
+import com.kgu.studywithme.member.infrastructure.query.dto.ParticipateStudy;
+import com.kgu.studywithme.member.infrastructure.query.dto.ReceivedReview;
 import com.kgu.studywithme.memberreview.domain.MemberReview;
 import com.kgu.studywithme.memberreview.domain.MemberReviewRepository;
 import com.kgu.studywithme.study.domain.Study;
@@ -28,6 +30,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 
 import java.util.List;
 
@@ -52,8 +55,12 @@ import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.GRAD
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+@Import(MemberInformationRepositoryImpl.class)
 @DisplayName("Member -> MemberInformationRepository 테스트")
 class MemberInformationRepositoryTest extends RepositoryTest {
+    @Autowired
+    private MemberInformationRepository memberInformationRepository;
+
     @Autowired
     private MemberRepository memberRepository;
 
@@ -86,7 +93,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
         @DisplayName("사용자 기본 Public 정보를 조회한다")
         void fetchPublicInformationById() {
             // when
-            final MemberPublicInformation result = memberRepository.fetchPublicInformationById(member.getId());
+            final MemberPublicInformation result = memberInformationRepository.fetchPublicInformationById(member.getId());
 
             // then
             assertAll(
@@ -112,7 +119,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
         @DisplayName("사용자 기본 Private 정보를 조회한다")
         void fetchPrivateInformationById() {
             // when
-            final MemberPrivateInformation result = memberRepository.fetchPrivateInformationById(member.getId());
+            final MemberPrivateInformation result = memberInformationRepository.fetchPrivateInformationById(member.getId());
 
             // then
             assertAll(
@@ -163,7 +170,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final List<ReceivedReview> result1 = memberRepository.fetchReceivedReviewById(member.getId());
+            final List<ReceivedReview> result1 = memberInformationRepository.fetchReceivedReviewById(member.getId());
             assertAll(
                     () -> assertThat(result1).hasSize(3),
                     () -> assertThat(result1)
@@ -193,7 +200,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final List<ReceivedReview> result2 = memberRepository.fetchReceivedReviewById(member.getId());
+            final List<ReceivedReview> result2 = memberInformationRepository.fetchReceivedReviewById(member.getId());
             assertAll(
                     () -> assertThat(result2).hasSize(5),
                     () -> assertThat(result2)
@@ -243,7 +250,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final List<AppliedStudy> result1 = memberRepository.fetchAppliedStudyById(member.getId());
+            final List<AppliedStudy> result1 = memberInformationRepository.fetchAppliedStudyById(member.getId());
             assertThat(result1)
                     .map(AppliedStudy::id)
                     .containsExactly(studyC.getId(), studyB.getId(), studyA.getId());
@@ -257,7 +264,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             );
             studyParticipantRepository.updateParticipantStatus(studyB.getId(), member.getId(), APPROVE);
 
-            final List<AppliedStudy> result2 = memberRepository.fetchAppliedStudyById(member.getId());
+            final List<AppliedStudy> result2 = memberInformationRepository.fetchAppliedStudyById(member.getId());
             assertThat(result2)
                     .map(AppliedStudy::id)
                     .containsExactly(studyE.getId(), studyD.getId(), studyC.getId(), studyA.getId());
@@ -275,7 +282,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final List<ParticipateStudy> result1 = memberRepository.fetchParticipateStudyById(member.getId());
+            final List<ParticipateStudy> result1 = memberInformationRepository.fetchParticipateStudyById(member.getId());
             assertThat(result1)
                     .map(ParticipateStudy::id)
                     .containsExactly(studyC.getId(), studyB.getId(), studyA.getId());
@@ -289,7 +296,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             );
             studyParticipantRepository.updateParticipantStatus(studyC.getId(), member.getId(), GRADUATED);
 
-            final List<ParticipateStudy> result2 = memberRepository.fetchParticipateStudyById(member.getId());
+            final List<ParticipateStudy> result2 = memberInformationRepository.fetchParticipateStudyById(member.getId());
             assertThat(result2)
                     .map(ParticipateStudy::id)
                     .containsExactly(studyE.getId(), studyD.getId(), studyB.getId(), studyA.getId());
@@ -307,7 +314,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final List<GraduatedStudy> result1 = memberRepository.fetchGraduatedStudyById(member.getId());
+            final List<GraduatedStudy> result1 = memberInformationRepository.fetchGraduatedStudyById(member.getId());
             assertThat(result1).isEmpty();
 
             /* studyD, studyE 추가 참여 -> studyA, studyC 졸업 */
@@ -320,7 +327,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             studyParticipantRepository.updateParticipantStatus(studyA.getId(), member.getId(), GRADUATED);
             studyParticipantRepository.updateParticipantStatus(studyC.getId(), member.getId(), GRADUATED);
 
-            final List<GraduatedStudy> result2 = memberRepository.fetchGraduatedStudyById(member.getId());
+            final List<GraduatedStudy> result2 = memberInformationRepository.fetchGraduatedStudyById(member.getId());
             assertThat(result2)
                     .map(GraduatedStudy::id)
                     .containsExactly(studyC.getId(), studyA.getId());
@@ -351,7 +358,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final List<AttendanceRatio> result1 = memberRepository.fetchAttendanceRatioById(member.getId());
+            final List<AttendanceRatio> result1 = memberInformationRepository.fetchAttendanceRatioById(member.getId());
             assertAll(
                     () -> assertThat(findCountByAttendanceStatus(result1, ATTENDANCE)).isEqualTo(3),
                     () -> assertThat(findCountByAttendanceStatus(result1, LATE)).isEqualTo(1),
@@ -370,7 +377,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final List<AttendanceRatio> result2 = memberRepository.fetchAttendanceRatioById(member.getId());
+            final List<AttendanceRatio> result2 = memberInformationRepository.fetchAttendanceRatioById(member.getId());
             assertAll(
                     () -> assertThat(findCountByAttendanceStatus(result2, ATTENDANCE)).isEqualTo(5),
                     () -> assertThat(findCountByAttendanceStatus(result2, LATE)).isEqualTo(1),
@@ -402,7 +409,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final List<LikeMarkedStudy> result1 = memberRepository.fetchLikeMarkedStudyById(member.getId());
+            final List<LikeMarkedStudy> result1 = memberInformationRepository.fetchLikeMarkedStudyById(member.getId());
             assertThat(result1)
                     .map(LikeMarkedStudy::id)
                     .containsExactly(studyC.getId(), studyB.getId(), studyA.getId());
@@ -415,7 +422,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final List<LikeMarkedStudy> result2 = memberRepository.fetchLikeMarkedStudyById(member.getId());
+            final List<LikeMarkedStudy> result2 = memberInformationRepository.fetchLikeMarkedStudyById(member.getId());
             assertThat(result2)
                     .map(LikeMarkedStudy::id)
                     .containsExactly(studyE.getId(), studyD.getId(), studyC.getId(), studyB.getId(), studyA.getId());

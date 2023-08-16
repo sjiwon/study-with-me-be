@@ -6,11 +6,11 @@ import com.kgu.studywithme.member.application.usecase.query.QueryGraduatedStudyB
 import com.kgu.studywithme.member.application.usecase.query.QueryParticipateStudyByIdUseCase;
 import com.kgu.studywithme.member.application.usecase.query.QueryPublicInformationByIdUseCase;
 import com.kgu.studywithme.member.application.usecase.query.QueryReceivedReviewByIdUseCase;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.AttendanceRatio;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.GraduatedStudy;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.MemberPublicInformation;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.ParticipateStudy;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.ReceivedReview;
+import com.kgu.studywithme.member.infrastructure.query.dto.AttendanceRatio;
+import com.kgu.studywithme.member.infrastructure.query.dto.GraduatedStudy;
+import com.kgu.studywithme.member.infrastructure.query.dto.MemberPublicInformation;
+import com.kgu.studywithme.member.infrastructure.query.dto.ParticipateStudy;
+import com.kgu.studywithme.member.infrastructure.query.dto.ReceivedReview;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
