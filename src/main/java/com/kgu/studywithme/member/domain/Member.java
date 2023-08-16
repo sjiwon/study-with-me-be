@@ -36,21 +36,18 @@ public class Member extends BaseEntity<Member> {
     @Column(name = "birth", nullable = false, updatable = false)
     private LocalDate birth;
 
-    @Column(name = "phone", nullable = false, unique = true)
-    private String phone;
+    @Embedded
+    private Phone phone;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "gender", nullable = false)
     private Gender gender;
 
     @Embedded
-    private Region region;
+    private Address address;
 
     @Embedded
     private Score score;
-
-    @Column(name = "is_email_opt_in", nullable = false)
-    private boolean emailOptIn;
 
     @Embedded
     private Interests interests;
@@ -60,10 +57,9 @@ public class Member extends BaseEntity<Member> {
             final Nickname nickname,
             final Email email,
             final LocalDate birth,
-            final String phone,
+            final Phone phone,
             final Gender gender,
-            final Region region,
-            final boolean emailOptIn,
+            final Address address,
             final Set<Category> interests
     ) {
         this.name = name;
@@ -72,9 +68,8 @@ public class Member extends BaseEntity<Member> {
         this.birth = birth;
         this.phone = phone;
         this.gender = gender;
-        this.region = region;
+        this.address = address;
         this.score = Score.initScore();
-        this.emailOptIn = emailOptIn;
         this.interests = new Interests(this, interests);
     }
 
@@ -83,13 +78,12 @@ public class Member extends BaseEntity<Member> {
             final Nickname nickname,
             final Email email,
             final LocalDate birth,
-            final String phone,
+            final Phone phone,
             final Gender gender,
-            final Region region,
-            final boolean emailOptIn,
+            final Address address,
             final Set<Category> interests
     ) {
-        return new Member(name, nickname, email, birth, phone, gender, region, emailOptIn, interests);
+        return new Member(name, nickname, email, birth, phone, gender, address, interests);
     }
 
     public void update(
@@ -101,9 +95,9 @@ public class Member extends BaseEntity<Member> {
             final Set<Category> interests
     ) {
         this.nickname = this.nickname.update(nickname);
-        this.phone = phone;
-        this.region = this.region.update(province, city);
-        this.emailOptIn = emailOptIn;
+        this.phone = new Phone(phone);
+        this.address = new Address(province, city);
+        this.email = this.email.updateEmailOptIn(emailOptIn);
         this.interests.update(this, interests);
     }
 
@@ -147,25 +141,8 @@ public class Member extends BaseEntity<Member> {
         }
     }
 
-    // Add Getter
-    public String getNicknameValue() {
-        return nickname.getValue();
-    }
-
-    public String getEmailValue() {
-        return email.getValue();
-    }
-
-    public String getRegionProvince() {
-        return region.getProvince();
-    }
-
-    public String getRegionCity() {
-        return region.getCity();
-    }
-
-    public int getScore() {
-        return score.getValue();
+    public boolean isEmailOptIn() {
+        return email.isEmailOptIn();
     }
 
     public List<Category> getInterests() {
