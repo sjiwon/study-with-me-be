@@ -1,6 +1,6 @@
 package com.kgu.studywithme.favorite.infrastructure.query;
 
-import com.kgu.studywithme.favorite.application.adapter.FavoriteJudgeRepository;
+import com.kgu.studywithme.favorite.application.adapter.FavoriteJudgeRepositoryAdapter;
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -12,7 +12,7 @@ import static com.kgu.studywithme.favorite.domain.QFavorite.favorite;
 @Repository
 @StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
-public class FavoriteJudgeRepositoryImpl implements FavoriteJudgeRepository {
+public class FavoriteJudgeRepository implements FavoriteJudgeRepositoryAdapter {
     private final JPAQueryFactory query;
 
     @Override

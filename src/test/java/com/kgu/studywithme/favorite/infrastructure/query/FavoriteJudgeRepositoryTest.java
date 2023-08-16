@@ -1,7 +1,6 @@
 package com.kgu.studywithme.favorite.infrastructure.query;
 
 import com.kgu.studywithme.common.RepositoryTest;
-import com.kgu.studywithme.favorite.application.adapter.FavoriteJudgeRepository;
 import com.kgu.studywithme.favorite.domain.Favorite;
 import com.kgu.studywithme.favorite.domain.FavoriteRepository;
 import com.kgu.studywithme.member.domain.Member;
@@ -20,7 +19,7 @@ import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@Import(FavoriteJudgeRepositoryImpl.class)
+@Import(FavoriteJudgeRepository.class)
 @DisplayName("Favorite -> FavoriteJudgeRepository 테스트")
 public class FavoriteJudgeRepositoryTest extends RepositoryTest {
     @Autowired
