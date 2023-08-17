@@ -2,7 +2,6 @@ package com.kgu.studywithme.auth.infrastructure.persistence;
 
 import com.kgu.studywithme.auth.application.adapter.TokenPersistenceAdapter;
 import com.kgu.studywithme.auth.domain.Token;
-import com.kgu.studywithme.auth.domain.TokenRepository;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RequiredArgsConstructor
 public class RdbTokenPersistenceAdapter implements TokenPersistenceAdapter {
-    private final TokenRepository tokenRepository;
+    private final TokenJpaRepository tokenJpaRepository;
 
     @StudyWithMeWritableTransactional
     @Override
@@ -18,10 +17,10 @@ public class RdbTokenPersistenceAdapter implements TokenPersistenceAdapter {
             final Long memberId,
             final String refreshToken
     ) {
-        tokenRepository.findByMemberId(memberId)
+        tokenJpaRepository.findByMemberId(memberId)
                 .ifPresentOrElse(
                         token -> token.updateRefreshToken(refreshToken),
-                        () -> tokenRepository.save(Token.issueRefreshToken(memberId, refreshToken))
+                        () -> tokenJpaRepository.save(Token.issueRefreshToken(memberId, refreshToken))
                 );
     }
 
@@ -30,12 +29,12 @@ public class RdbTokenPersistenceAdapter implements TokenPersistenceAdapter {
             final Long memberId,
             final String refreshToken
     ) {
-        tokenRepository.updateMemberRefreshToken(memberId, refreshToken);
+        tokenJpaRepository.updateMemberRefreshToken(memberId, refreshToken);
     }
 
     @Override
     public void deleteMemberRefreshToken(final Long memberId) {
-        tokenRepository.deleteMemberRefreshToken(memberId);
+        tokenJpaRepository.deleteMemberRefreshToken(memberId);
     }
 
     @Override
@@ -43,6 +42,6 @@ public class RdbTokenPersistenceAdapter implements TokenPersistenceAdapter {
             final Long memberId,
             final String refreshToken
     ) {
-        return tokenRepository.existsByMemberIdAndRefreshToken(memberId, refreshToken);
+        return tokenJpaRepository.existsByMemberIdAndRefreshToken(memberId, refreshToken);
     }
 }
