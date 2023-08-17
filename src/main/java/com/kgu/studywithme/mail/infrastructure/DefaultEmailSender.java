@@ -1,6 +1,7 @@
-package com.kgu.studywithme.mail.infrastructure.ses;
+package com.kgu.studywithme.mail.infrastructure;
 
 import com.kgu.studywithme.mail.application.adapter.EmailSender;
+import com.kgu.studywithme.mail.infrastructure.ses.EmailMetadata;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Value;
