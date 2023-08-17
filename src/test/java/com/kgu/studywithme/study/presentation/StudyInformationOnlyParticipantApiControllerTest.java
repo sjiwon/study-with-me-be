@@ -2,11 +2,11 @@ package com.kgu.studywithme.study.presentation;
 
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.AttendanceInformation;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.NoticeInformation;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.StudyApplicantInformation;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.StudyMember;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.WeeklyInformation;
+import com.kgu.studywithme.study.infrastructure.query.dto.AttendanceInformation;
+import com.kgu.studywithme.study.infrastructure.query.dto.NoticeInformation;
+import com.kgu.studywithme.study.infrastructure.query.dto.StudyApplicantInformation;
+import com.kgu.studywithme.study.infrastructure.query.dto.StudyMember;
+import com.kgu.studywithme.study.infrastructure.query.dto.WeeklyInformation;
 import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
 import com.kgu.studywithme.studyweekly.domain.submit.UploadAssignment;
 import org.junit.jupiter.api.BeforeEach;

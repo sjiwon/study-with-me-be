@@ -1,6 +1,6 @@
 package com.kgu.studywithme.studyattendance.domain;
 
-import com.kgu.studywithme.studyattendance.infrastructure.repository.query.StudyAttendanceHandlingRepository;
+import com.kgu.studywithme.studyattendance.infrastructure.query.StudyAttendanceHandlingRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

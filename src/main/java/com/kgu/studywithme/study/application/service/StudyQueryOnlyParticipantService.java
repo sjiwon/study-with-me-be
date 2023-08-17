@@ -5,10 +5,10 @@ import com.kgu.studywithme.study.application.usecase.query.QueryAttendanceByIdUs
 import com.kgu.studywithme.study.application.usecase.query.QueryNoticeByIdUseCase;
 import com.kgu.studywithme.study.application.usecase.query.QueryWeeklyByIdUseCase;
 import com.kgu.studywithme.study.domain.StudyRepository;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.AttendanceInformation;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.NoticeInformation;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.StudyApplicantInformation;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.WeeklyInformation;
+import com.kgu.studywithme.study.infrastructure.query.dto.AttendanceInformation;
+import com.kgu.studywithme.study.infrastructure.query.dto.NoticeInformation;
+import com.kgu.studywithme.study.infrastructure.query.dto.StudyApplicantInformation;
+import com.kgu.studywithme.study.infrastructure.query.dto.WeeklyInformation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

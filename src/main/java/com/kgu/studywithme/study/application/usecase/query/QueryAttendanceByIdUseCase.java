@@ -1,6 +1,6 @@
 package com.kgu.studywithme.study.application.usecase.query;
 
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.AttendanceInformation;
+import com.kgu.studywithme.study.infrastructure.query.dto.AttendanceInformation;
 
 import java.util.List;
 

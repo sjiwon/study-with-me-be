@@ -4,7 +4,7 @@ import com.kgu.studywithme.study.application.dto.StudyPagingResponse;
 import com.kgu.studywithme.study.application.usecase.query.QueryStudyByCategoryUseCase;
 import com.kgu.studywithme.study.application.usecase.query.QueryStudyByRecommendUseCase;
 import com.kgu.studywithme.study.domain.StudyRepository;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.StudyPreview;
+import com.kgu.studywithme.study.infrastructure.query.dto.StudyPreview;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;

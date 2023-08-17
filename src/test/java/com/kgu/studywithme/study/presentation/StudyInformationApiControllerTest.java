@@ -1,10 +1,10 @@
 package com.kgu.studywithme.study.presentation;
 
 import com.kgu.studywithme.common.ControllerTest;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.ReviewInformation;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.StudyBasicInformation;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.StudyMember;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.StudyParticipantInformation;
+import com.kgu.studywithme.study.infrastructure.query.dto.ReviewInformation;
+import com.kgu.studywithme.study.infrastructure.query.dto.StudyBasicInformation;
+import com.kgu.studywithme.study.infrastructure.query.dto.StudyMember;
+import com.kgu.studywithme.study.infrastructure.query.dto.StudyParticipantInformation;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

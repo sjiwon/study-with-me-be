@@ -2,9 +2,9 @@ package com.kgu.studywithme.studyattendance.infrastructure.scheduler;
 
 import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
-import com.kgu.studywithme.studyattendance.infrastructure.repository.query.dto.NonAttendanceWeekly;
+import com.kgu.studywithme.studyattendance.infrastructure.query.dto.NonAttendanceWeekly;
 import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
-import com.kgu.studywithme.studyweekly.infrastructure.repository.query.dto.AutoAttendanceAndFinishedWeekly;
+import com.kgu.studywithme.studyweekly.infrastructure.query.dto.AutoAttendanceAndFinishedWeekly;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
