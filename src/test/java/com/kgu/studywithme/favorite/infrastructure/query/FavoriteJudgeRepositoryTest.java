@@ -2,7 +2,7 @@ package com.kgu.studywithme.favorite.infrastructure.query;
 
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.favorite.domain.Favorite;
-import com.kgu.studywithme.favorite.domain.FavoriteRepository;
+import com.kgu.studywithme.favorite.infrastructure.persistence.FavoriteJpaRepository;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.study.domain.Study;
@@ -32,7 +32,7 @@ public class FavoriteJudgeRepositoryTest extends RepositoryTest {
     private StudyRepository studyRepository;
 
     @Autowired
-    private FavoriteRepository favoriteRepository;
+    private FavoriteJpaRepository favoriteJpaRepository;
 
     private Member member;
     private Study studyA;
@@ -49,7 +49,7 @@ public class FavoriteJudgeRepositoryTest extends RepositoryTest {
     @DisplayName("해당 스터디를 이미 찜했는지 확인한다")
     void alreadyLikeMarked() {
         // given
-        favoriteRepository.save(Favorite.favoriteMarking(studyA.getId(), member.getId()));
+        favoriteJpaRepository.save(Favorite.favoriteMarking(studyA.getId(), member.getId()));
 
         // when
         final boolean actual1 = favoriteJudgeRepository.alreadyLikeMarked(studyA.getId(), member.getId());
@@ -66,7 +66,7 @@ public class FavoriteJudgeRepositoryTest extends RepositoryTest {
     @DisplayName("해당 스터디를 찜한 적 없는지 확인한다")
     void neverLikeMarked() {
         // given
-        favoriteRepository.save(Favorite.favoriteMarking(studyA.getId(), member.getId()));
+        favoriteJpaRepository.save(Favorite.favoriteMarking(studyA.getId(), member.getId()));
 
         // when
         final boolean actual1 = favoriteJudgeRepository.neverLikeMarked(studyA.getId(), member.getId());

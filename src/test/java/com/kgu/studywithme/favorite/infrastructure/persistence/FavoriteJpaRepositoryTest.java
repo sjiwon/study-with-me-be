@@ -1,6 +1,7 @@
-package com.kgu.studywithme.favorite.domain;
+package com.kgu.studywithme.favorite.infrastructure.persistence;
 
 import com.kgu.studywithme.common.RepositoryTest;
+import com.kgu.studywithme.favorite.domain.Favorite;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.study.domain.Study;
@@ -14,10 +15,10 @@ import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("Favorite -> FavoriteRepository 테스트")
-class FavoriteRepositoryTest extends RepositoryTest {
+@DisplayName("Favorite -> FavoriteJpaRepository 테스트")
+class FavoriteJpaRepositoryTest extends RepositoryTest {
     @Autowired
-    private FavoriteRepository favoriteRepository;
+    private FavoriteJpaRepository favoriteJpaRepository;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -36,15 +37,15 @@ class FavoriteRepositoryTest extends RepositoryTest {
 
     @Test
     @DisplayName("특정 스터디에 대한 사용자 찜 현황을 삭제한다")
-    void deleteByStudyIdAndMemberId() {
+    void cancelLikeMarking() {
         // given
-        final Favorite favorite = favoriteRepository.save(Favorite.favoriteMarking(study.getId(), member.getId()));
-        assertThat(favoriteRepository.existsById(favorite.getId())).isTrue();
+        final Favorite favorite = favoriteJpaRepository.save(Favorite.favoriteMarking(study.getId(), member.getId()));
+        assertThat(favoriteJpaRepository.existsById(favorite.getId())).isTrue();
 
         // when
-        favoriteRepository.deleteLikeMarking(study.getId(), member.getId());
+        favoriteJpaRepository.cancelLikeMarking(study.getId(), member.getId());
 
         // then
-        assertThat(favoriteRepository.existsById(favorite.getId())).isFalse();
+        assertThat(favoriteJpaRepository.existsById(favorite.getId())).isFalse();
     }
 }

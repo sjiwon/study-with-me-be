@@ -2,7 +2,7 @@ package com.kgu.studywithme.study.infrastructure.repository.query;
 
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.favorite.domain.Favorite;
-import com.kgu.studywithme.favorite.domain.FavoriteRepository;
+import com.kgu.studywithme.favorite.infrastructure.persistence.FavoriteJpaRepository;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.study.domain.Study;
@@ -83,7 +83,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
     private StudyReviewRepository studyReviewRepository;
 
     @Autowired
-    private FavoriteRepository favoriteRepository;
+    private FavoriteJpaRepository favoriteJpaRepository;
 
     private static final Pageable PAGE_REQUEST_1 = getDefaultPageRequest(0);
     private static final Pageable PAGE_REQUEST_2 = getDefaultPageRequest(1);
@@ -1096,7 +1096,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
         likeMarking(programming[9], member[0], member[1], member[2], member[3], member[4], member[5], member[6], member[7], member[8]);
         likeMarking(programming[10], member[0], member[1], member[2], member[3]);
         likeMarking(programming[11], member[0], member[1], member[2], member[3]);
-        favoriteRepository.saveAll(favorites);
+        favoriteJpaRepository.saveAll(favorites);
     }
 
     private void initDataWithReviews() {

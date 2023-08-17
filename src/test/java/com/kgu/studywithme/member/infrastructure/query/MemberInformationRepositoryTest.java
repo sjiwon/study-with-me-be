@@ -3,7 +3,7 @@ package com.kgu.studywithme.member.infrastructure.query;
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.favorite.domain.Favorite;
-import com.kgu.studywithme.favorite.domain.FavoriteRepository;
+import com.kgu.studywithme.favorite.infrastructure.persistence.FavoriteJpaRepository;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.member.infrastructure.query.dto.AppliedStudy;
@@ -75,7 +75,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
     private StudyAttendanceRepository studyAttendanceRepository;
 
     @Autowired
-    private FavoriteRepository favoriteRepository;
+    private FavoriteJpaRepository favoriteJpaRepository;
 
     @Nested
     @DisplayName("Only 사용자 관련 조회")
@@ -399,7 +399,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
         @DisplayName("찜 등록한 스터디 정보를 조회한다")
         void fetchLikeMarkedStudyById() {
             /* studyA, studyB, studyC 찜 */
-            favoriteRepository.saveAll(
+            favoriteJpaRepository.saveAll(
                     List.of(
                             Favorite.favoriteMarking(studyA.getId(), member.getId()),
                             Favorite.favoriteMarking(studyB.getId(), member.getId()),
@@ -413,7 +413,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
                     .containsExactly(studyC.getId(), studyB.getId(), studyA.getId());
 
             /* studyD, studyE 추가 찜 */
-            favoriteRepository.saveAll(
+            favoriteJpaRepository.saveAll(
                     List.of(
                             Favorite.favoriteMarking(studyD.getId(), member.getId()),
                             Favorite.favoriteMarking(studyE.getId(), member.getId())

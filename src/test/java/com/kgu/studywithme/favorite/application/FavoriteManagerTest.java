@@ -7,8 +7,8 @@ import com.kgu.studywithme.favorite.application.service.StudyLikeMarkingService;
 import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeCancellationUseCase;
 import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeMarkingUseCase;
 import com.kgu.studywithme.favorite.domain.Favorite;
-import com.kgu.studywithme.favorite.domain.FavoriteRepository;
 import com.kgu.studywithme.favorite.exception.FavoriteErrorCode;
+import com.kgu.studywithme.favorite.infrastructure.persistence.FavoriteJpaRepository;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -38,7 +38,7 @@ class FavoriteManagerTest extends UseCaseTest {
     private FavoriteJudgeRepositoryAdapter favoriteJudgeRepositoryAdapter;
 
     @Mock
-    private FavoriteRepository favoriteRepository;
+    private FavoriteJpaRepository favoriteJpaRepository;
 
     private static final Long STUDY_ID = 1L;
     private static final Long MEMBER_ID = 1L;
@@ -61,7 +61,7 @@ class FavoriteManagerTest extends UseCaseTest {
 
             assertAll(
                     () -> verify(favoriteJudgeRepositoryAdapter, times(1)).alreadyLikeMarked(any(), any()),
-                    () -> verify(favoriteRepository, times(0)).save(any())
+                    () -> verify(favoriteJpaRepository, times(0)).save(any())
             );
         }
 
@@ -72,7 +72,7 @@ class FavoriteManagerTest extends UseCaseTest {
             given(favoriteJudgeRepositoryAdapter.alreadyLikeMarked(any(), any())).willReturn(false);
 
             final Favorite favorite = Favorite.favoriteMarking(STUDY_ID, MEMBER_ID).apply(1L, LocalDateTime.now());
-            given(favoriteRepository.save(any())).willReturn(favorite);
+            given(favoriteJpaRepository.save(any())).willReturn(favorite);
 
             // when
             final Long savedFavoriteId = studyLikeMarkingService.invoke(command);
@@ -80,7 +80,7 @@ class FavoriteManagerTest extends UseCaseTest {
             // then
             assertAll(
                     () -> verify(favoriteJudgeRepositoryAdapter, times(1)).alreadyLikeMarked(any(), any()),
-                    () -> verify(favoriteRepository, times(1)).save(any()),
+                    () -> verify(favoriteJpaRepository, times(1)).save(any()),
                     () -> assertThat(savedFavoriteId).isEqualTo(favorite.getId())
             );
         }
@@ -104,7 +104,7 @@ class FavoriteManagerTest extends UseCaseTest {
 
             assertAll(
                     () -> verify(favoriteJudgeRepositoryAdapter, times(1)).neverLikeMarked(any(), any()),
-                    () -> verify(favoriteRepository, times(0)).deleteLikeMarking(any(), any())
+                    () -> verify(favoriteJpaRepository, times(0)).cancelLikeMarking(any(), any())
             );
         }
 
@@ -120,7 +120,7 @@ class FavoriteManagerTest extends UseCaseTest {
             // then
             assertAll(
                     () -> verify(favoriteJudgeRepositoryAdapter, times(1)).neverLikeMarked(any(), any()),
-                    () -> verify(favoriteRepository, times(1)).deleteLikeMarking(any(), any())
+                    () -> verify(favoriteJpaRepository, times(1)).cancelLikeMarking(any(), any())
             );
         }
     }
