@@ -1,24 +1,24 @@
 package com.kgu.studywithme.memberreview.application.service;
 
-import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.application.adapter.MemberAttendanceRepositoryAdapter;
 import com.kgu.studywithme.member.infrastructure.query.dto.StudyParticipateWeeks;
+import com.kgu.studywithme.memberreview.application.adapter.MemberReviewHandlingRepositoryAdapter;
 import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.domain.MemberReview;
-import com.kgu.studywithme.memberreview.domain.MemberReviewRepository;
 import com.kgu.studywithme.memberreview.exception.MemberReviewErrorCode;
+import com.kgu.studywithme.memberreview.infrastructure.persistence.MemberReviewJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class WriteMemberReviewService implements WriteMemberReviewUseCase {
     private final MemberAttendanceRepositoryAdapter memberAttendanceRepositoryAdapter;
-    private final MemberReviewRepository memberReviewRepository;
+    private final MemberReviewHandlingRepositoryAdapter memberReviewHandlingRepositoryAdapter;
+    private final MemberReviewJpaRepository memberReviewJpaRepository;
 
     @Override
     public Long invoke(final Command command) {
@@ -27,7 +27,7 @@ public class WriteMemberReviewService implements WriteMemberReviewUseCase {
         validateAlreadyReviewed(command.reviewerId(), command.revieweeId());
 
         final MemberReview memberReview = MemberReview.doReview(command.reviewerId(), command.revieweeId(), command.content());
-        return memberReviewRepository.save(memberReview).getId();
+        return memberReviewJpaRepository.save(memberReview).getId();
     }
 
     private void validateSelfReview(
@@ -72,7 +72,7 @@ public class WriteMemberReviewService implements WriteMemberReviewUseCase {
             final Long reviewerId,
             final Long revieweeId
     ) {
-        if (memberReviewRepository.existsByReviewerIdAndRevieweeId(reviewerId, revieweeId)) {
+        if (memberReviewHandlingRepositoryAdapter.alreadyReviewedForMember(reviewerId, revieweeId)) {
             throw StudyWithMeException.type(MemberReviewErrorCode.ALREADY_REVIEW);
         }
     }

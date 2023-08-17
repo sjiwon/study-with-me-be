@@ -15,7 +15,7 @@ import com.kgu.studywithme.member.infrastructure.query.dto.MemberPublicInformati
 import com.kgu.studywithme.member.infrastructure.query.dto.ParticipateStudy;
 import com.kgu.studywithme.member.infrastructure.query.dto.ReceivedReview;
 import com.kgu.studywithme.memberreview.domain.MemberReview;
-import com.kgu.studywithme.memberreview.domain.MemberReviewRepository;
+import com.kgu.studywithme.memberreview.infrastructure.persistence.MemberReviewJpaRepository;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.study.domain.StudyRepository;
 import com.kgu.studywithme.studyattendance.domain.AttendanceStatus;
@@ -63,7 +63,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
     private MemberJpaRepository memberJpaRepository;
 
     @Autowired
-    private MemberReviewRepository memberReviewRepository;
+    private MemberReviewJpaRepository memberReviewJpaRepository;
 
     @Autowired
     private StudyRepository studyRepository;
@@ -148,7 +148,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             final Member reviewerA = memberJpaRepository.save(DUMMY1.toMember());
             final Member reviewerB = memberJpaRepository.save(DUMMY2.toMember());
             final Member reviewerC = memberJpaRepository.save(DUMMY3.toMember());
-            memberReviewRepository.saveAll(
+            memberReviewJpaRepository.saveAll(
                     List.of(
                             MemberReview.doReview(
                                     reviewerA.getId(),
@@ -183,7 +183,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             /* 추가 Review 2건 */
             final Member reviewerD = memberJpaRepository.save(DUMMY4.toMember());
             final Member reviewerE = memberJpaRepository.save(DUMMY5.toMember());
-            memberReviewRepository.saveAll(
+            memberReviewJpaRepository.saveAll(
                     List.of(
                             MemberReview.doReview(
                                     reviewerD.getId(),
