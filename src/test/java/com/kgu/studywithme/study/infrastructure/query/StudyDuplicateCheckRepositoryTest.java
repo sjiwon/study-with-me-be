@@ -2,7 +2,7 @@ package com.kgu.studywithme.study.infrastructure.query;
 
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.domain.MemberRepository;
+import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.study.domain.StudyRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,14 +22,14 @@ class StudyDuplicateCheckRepositoryTest extends RepositoryTest {
     private StudyRepository studyRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberJpaRepository memberJpaRepository;
 
     private Study studyA;
     private Study studyB;
 
     @BeforeEach
     void setUp() {
-        final Member host = memberRepository.save(JIWON.toMember());
+        final Member host = memberJpaRepository.save(JIWON.toMember());
         studyA = studyRepository.save(SPRING.toOnlineStudy(host.getId()));
         studyB = studyRepository.save(JPA.toOnlineStudy(host.getId()));
     }

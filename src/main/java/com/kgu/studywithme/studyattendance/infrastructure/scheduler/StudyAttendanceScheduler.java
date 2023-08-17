@@ -1,6 +1,6 @@
 package com.kgu.studywithme.studyattendance.infrastructure.scheduler;
 
-import com.kgu.studywithme.member.domain.MemberRepository;
+import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
 import com.kgu.studywithme.studyattendance.infrastructure.query.dto.NonAttendanceWeekly;
 import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
@@ -22,7 +22,7 @@ import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ABSENC
 public class StudyAttendanceScheduler {
     private final StudyWeeklyRepository studyWeeklyRepository;
     private final StudyAttendanceRepository studyAttendanceRepository;
-    private final MemberRepository memberRepository;
+    private final MemberJpaRepository memberJpaRepository;
 
     @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
     public void processAbsenceCheckScheduler() {
@@ -40,7 +40,7 @@ public class StudyAttendanceScheduler {
                 studyAttendanceRepository.updateParticipantStatus(studyId, specificWeek, participantIds, ABSENCE);
             }
         });
-        memberRepository.applyScoreToAbsenceParticipant(absenceParticipantIds);
+        memberJpaRepository.applyScoreToAbsenceParticipant(absenceParticipantIds);
     }
 
     private Set<Long> extractNonAttendanceParticipantIds(

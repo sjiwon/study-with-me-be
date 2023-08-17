@@ -4,7 +4,7 @@ import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.file.application.adapter.FileUploader;
 import com.kgu.studywithme.file.domain.RawFileData;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.application.service.QueryMemberByIdService;
+import com.kgu.studywithme.member.application.adapter.MemberReadAdapter;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
@@ -54,7 +54,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
     private StudyAttendanceRepository studyAttendanceRepository;
 
     @Mock
-    private QueryMemberByIdService queryMemberByIdService;
+    private MemberReadAdapter memberReadAdapter;
 
     @Mock
     private FileUploader uploader;
@@ -164,7 +164,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
                 UploadAssignment.withLink("https://notion.so")
         ).apply(1L, LocalDateTime.now());
         given(studyWeeklyRepository.getSubmittedAssignment(any(), any(), any())).willReturn(Optional.of(submittedAssignment));
-        given(queryMemberByIdService.findById(any())).willReturn(host);
+        given(memberReadAdapter.getById(any())).willReturn(host);
 
         // when
         editSubmittedWeeklyAssignmentService.invoke(
@@ -197,7 +197,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
                 UploadAssignment.withLink("https://notion.so")
         ).apply(1L, LocalDateTime.now());
         given(studyWeeklyRepository.getSubmittedAssignment(any(), any(), any())).willReturn(Optional.of(submittedAssignment));
-        given(queryMemberByIdService.findById(any())).willReturn(host);
+        given(memberReadAdapter.getById(any())).willReturn(host);
         given(studyAttendanceRepository.getParticipantAttendanceByWeek(any(), any(), anyInt())).willReturn(Optional.of(attendance));
 
         // when

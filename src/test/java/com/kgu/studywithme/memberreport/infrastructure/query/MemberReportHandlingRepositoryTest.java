@@ -2,7 +2,7 @@ package com.kgu.studywithme.memberreport.infrastructure.query;
 
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.domain.MemberRepository;
+import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
 import com.kgu.studywithme.memberreport.domain.MemberReport;
 import com.kgu.studywithme.memberreport.domain.MemberReportRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("MemberReport -> MemberReportHandlingRepository 테스트")
 class MemberReportHandlingRepositoryTest extends RepositoryTest {
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberJpaRepository memberJpaRepository;
 
     @Autowired
     private MemberReportRepository memberReportRepository;
@@ -27,8 +27,8 @@ class MemberReportHandlingRepositoryTest extends RepositoryTest {
 
     @BeforeEach
     void setUp() {
-        memberA = memberRepository.save(JIWON.toMember());
-        memberB = memberRepository.save(GHOST.toMember());
+        memberA = memberJpaRepository.save(JIWON.toMember());
+        memberB = memberJpaRepository.save(GHOST.toMember());
     }
 
     @Test

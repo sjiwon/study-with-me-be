@@ -2,7 +2,7 @@ package com.kgu.studywithme.study.application.service;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.application.service.QueryMemberByIdService;
+import com.kgu.studywithme.member.application.adapter.MemberReadAdapter;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.application.usecase.command.CreateStudyUseCase;
 import com.kgu.studywithme.study.domain.Study;
@@ -21,7 +21,7 @@ import static com.kgu.studywithme.study.domain.StudyType.ONLINE;
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class CreateStudyService implements CreateStudyUseCase {
-    private final QueryMemberByIdService queryMemberByIdService;
+    private final MemberReadAdapter memberReadAdapter;
     private final StudyRepository studyRepository;
     private final StudyParticipantRepository studyParticipantRepository;
 
@@ -29,7 +29,7 @@ public class CreateStudyService implements CreateStudyUseCase {
     public Long invoke(final Command command) {
         validateStudyNameIsUnique(command.name());
 
-        final Member host = queryMemberByIdService.findById(command.hostId());
+        final Member host = memberReadAdapter.getById(command.hostId());
         final Study study = studyRepository.save(buildStudy(command, host));
 
         final StudyParticipant participant = StudyParticipant.applyHost(study.getId(), command.hostId());

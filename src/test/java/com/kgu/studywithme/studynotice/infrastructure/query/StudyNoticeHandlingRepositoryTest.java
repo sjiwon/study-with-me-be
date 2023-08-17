@@ -3,7 +3,7 @@ package com.kgu.studywithme.studynotice.infrastructure.query;
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.global.BaseEntity;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.domain.MemberRepository;
+import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.study.domain.StudyRepository;
 import com.kgu.studywithme.studynotice.domain.StudyNotice;
@@ -32,7 +32,7 @@ class StudyNoticeHandlingRepositoryTest extends RepositoryTest {
     private StudyNoticeCommentRepository studyNoticeCommentRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberJpaRepository memberJpaRepository;
 
     @Autowired
     private StudyRepository studyRepository;
@@ -45,7 +45,7 @@ class StudyNoticeHandlingRepositoryTest extends RepositoryTest {
 
     @BeforeEach
     void setUp() {
-        writer = memberRepository.save(JIWON.toMember());
+        writer = memberJpaRepository.save(JIWON.toMember());
         study = studyRepository.save(SPRING.toOnlineStudy(writer.getId()));
     }
 

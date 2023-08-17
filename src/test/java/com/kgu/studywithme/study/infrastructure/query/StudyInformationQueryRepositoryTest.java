@@ -2,7 +2,7 @@ package com.kgu.studywithme.study.infrastructure.query;
 
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.domain.MemberRepository;
+import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.study.domain.StudyRepository;
 import com.kgu.studywithme.study.infrastructure.query.dto.AttendanceInformation;
@@ -56,7 +56,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
     private StudyRepository studyRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberJpaRepository memberJpaRepository;
 
     @Autowired
     private StudyReviewRepository studyReviewRepository;
@@ -81,10 +81,10 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
 
     @BeforeEach
     void setUp() {
-        host = memberRepository.save(JIWON.toMember());
-        memberA = memberRepository.save(DUMMY1.toMember());
-        memberB = memberRepository.save(DUMMY2.toMember());
-        memberC = memberRepository.save(DUMMY3.toMember());
+        host = memberJpaRepository.save(JIWON.toMember());
+        memberA = memberJpaRepository.save(DUMMY1.toMember());
+        memberB = memberJpaRepository.save(DUMMY2.toMember());
+        memberC = memberJpaRepository.save(DUMMY3.toMember());
 
         study = studyRepository.save(SPRING.toOnlineStudy(host.getId()));
     }

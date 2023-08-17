@@ -2,7 +2,7 @@ package com.kgu.studywithme.studyattendance.infrastructure.query;
 
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.domain.MemberRepository;
+import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.study.domain.StudyRepository;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
@@ -35,7 +35,7 @@ class StudyAttendanceHandlingRepositoryTest extends RepositoryTest {
     private StudyAttendanceRepository studyAttendanceRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberJpaRepository memberJpaRepository;
 
     @Autowired
     private StudyRepository studyRepository;
@@ -45,11 +45,11 @@ class StudyAttendanceHandlingRepositoryTest extends RepositoryTest {
 
     @BeforeEach
     void setUp() {
-        member[0] = memberRepository.save(JIWON.toMember());
-        member[1] = memberRepository.save(DUMMY1.toMember());
-        member[2] = memberRepository.save(DUMMY2.toMember());
-        member[3] = memberRepository.save(DUMMY3.toMember());
-        member[4] = memberRepository.save(DUMMY4.toMember());
+        member[0] = memberJpaRepository.save(JIWON.toMember());
+        member[1] = memberJpaRepository.save(DUMMY1.toMember());
+        member[2] = memberJpaRepository.save(DUMMY2.toMember());
+        member[3] = memberJpaRepository.save(DUMMY3.toMember());
+        member[4] = memberJpaRepository.save(DUMMY4.toMember());
         study = studyRepository.save(SPRING.toOnlineStudy(member[0].getId()));
     }
 

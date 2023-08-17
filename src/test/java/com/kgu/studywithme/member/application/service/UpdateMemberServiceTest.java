@@ -3,6 +3,7 @@ package com.kgu.studywithme.member.application.service;
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.application.adapter.MemberDuplicateCheckRepositoryAdapter;
+import com.kgu.studywithme.member.application.adapter.MemberReadAdapter;
 import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
@@ -29,7 +30,7 @@ class UpdateMemberServiceTest extends UseCaseTest {
     private UpdateMemberService memberUpdateService;
 
     @Mock
-    private QueryMemberByIdService queryMemberByIdService;
+    private MemberReadAdapter memberReadAdapter;
 
     @Mock
     private MemberDuplicateCheckRepositoryAdapter memberDuplicateCheckRepositoryAdapter;
@@ -49,7 +50,7 @@ class UpdateMemberServiceTest extends UseCaseTest {
     @DisplayName("다른 사람이 사용하고 있는 닉네임으로 수정할 수 없다")
     void throwExceptionByDuplicateNickname() {
         // given
-        given(queryMemberByIdService.findById(any())).willReturn(member);
+        given(memberReadAdapter.getById(any())).willReturn(member);
         given(memberDuplicateCheckRepositoryAdapter.isNicknameUsedByOther(any(), any())).willReturn(true);
 
         // when - then
@@ -67,7 +68,7 @@ class UpdateMemberServiceTest extends UseCaseTest {
     @DisplayName("다른 사람이 사용하고 있는 전화번호로 수정할 수 없다")
     void throwExceptionByDuplicatePhone() {
         // given
-        given(queryMemberByIdService.findById(any())).willReturn(member);
+        given(memberReadAdapter.getById(any())).willReturn(member);
         given(memberDuplicateCheckRepositoryAdapter.isNicknameUsedByOther(any(), any())).willReturn(false);
         given(memberDuplicateCheckRepositoryAdapter.isPhoneUsedByOther(any(), any())).willReturn(true);
 
@@ -86,7 +87,7 @@ class UpdateMemberServiceTest extends UseCaseTest {
     @DisplayName("사용자 정보를 수정한다")
     void success() {
         // given
-        given(queryMemberByIdService.findById(any())).willReturn(member);
+        given(memberReadAdapter.getById(any())).willReturn(member);
         given(memberDuplicateCheckRepositoryAdapter.isNicknameUsedByOther(any(), any())).willReturn(false);
         given(memberDuplicateCheckRepositoryAdapter.isPhoneUsedByOther(any(), any())).willReturn(false);
 

@@ -4,7 +4,7 @@ import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.favorite.domain.Favorite;
 import com.kgu.studywithme.favorite.infrastructure.persistence.FavoriteJpaRepository;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.domain.MemberRepository;
+import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.study.domain.StudyRepository;
 import com.kgu.studywithme.study.infrastructure.query.dto.StudyPreview;
@@ -77,7 +77,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
     private StudyRepository studyRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberJpaRepository memberJpaRepository;
 
     @Autowired
     private StudyReviewRepository studyReviewRepository;
@@ -100,17 +100,17 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
 
     @BeforeEach
     void setUp() {
-        host = memberRepository.save(JIWON.toMember());
+        host = memberJpaRepository.save(JIWON.toMember());
 
-        member[0] = memberRepository.save(DUMMY1.toMember());
-        member[1] = memberRepository.save(DUMMY2.toMember());
-        member[2] = memberRepository.save(DUMMY3.toMember());
-        member[3] = memberRepository.save(DUMMY4.toMember());
-        member[4] = memberRepository.save(DUMMY5.toMember());
-        member[5] = memberRepository.save(DUMMY6.toMember());
-        member[6] = memberRepository.save(DUMMY7.toMember());
-        member[7] = memberRepository.save(DUMMY8.toMember());
-        member[8] = memberRepository.save(DUMMY9.toMember());
+        member[0] = memberJpaRepository.save(DUMMY1.toMember());
+        member[1] = memberJpaRepository.save(DUMMY2.toMember());
+        member[2] = memberJpaRepository.save(DUMMY3.toMember());
+        member[3] = memberJpaRepository.save(DUMMY4.toMember());
+        member[4] = memberJpaRepository.save(DUMMY5.toMember());
+        member[5] = memberJpaRepository.save(DUMMY6.toMember());
+        member[6] = memberJpaRepository.save(DUMMY7.toMember());
+        member[7] = memberJpaRepository.save(DUMMY8.toMember());
+        member[8] = memberJpaRepository.save(DUMMY9.toMember());
 
         language[0] = TOEIC.toOnlineStudy(host.getId());
         language[1] = TOEFL.toOnlineStudy(host.getId());

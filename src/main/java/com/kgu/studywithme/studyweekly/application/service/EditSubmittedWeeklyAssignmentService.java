@@ -4,7 +4,7 @@ import com.kgu.studywithme.file.application.adapter.FileUploader;
 import com.kgu.studywithme.file.domain.RawFileData;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.application.service.QueryMemberByIdService;
+import com.kgu.studywithme.member.application.adapter.MemberReadAdapter;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
@@ -32,7 +32,7 @@ import static com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType
 public class EditSubmittedWeeklyAssignmentService implements EditSubmittedWeeklyAssignmentUseCase {
     private final StudyWeeklyRepository studyWeeklyRepository;
     private final StudyAttendanceRepository studyAttendanceRepository;
-    private final QueryMemberByIdService queryMemberByIdService;
+    private final MemberReadAdapter memberReadAdapter;
     private final FileUploader uploader;
 
     @Override
@@ -43,7 +43,7 @@ public class EditSubmittedWeeklyAssignmentService implements EditSubmittedWeekly
         final UploadAssignment assignment = uploadAssignment(command.submitType(), command.file(), command.link());
         submittedAssignment.editUpload(assignment);
 
-        final Member member = queryMemberByIdService.findById(command.memberId());
+        final Member member = memberReadAdapter.getById(command.memberId());
         validateSubmitTimeAndApplyLateSubmissionPenalty(
                 submittedAssignment.getStudyWeekly(),
                 member,

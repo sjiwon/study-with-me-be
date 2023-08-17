@@ -5,8 +5,8 @@ import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.application.adapter.MemberDuplicateCheckRepositoryAdapter;
 import com.kgu.studywithme.member.application.usecase.command.SignUpMemberUseCase;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
+import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -32,7 +32,7 @@ class SignUpMemberServiceTest extends UseCaseTest {
     private MemberDuplicateCheckRepositoryAdapter memberDuplicateCheckRepositoryAdapter;
 
     @Mock
-    private MemberRepository memberRepository;
+    private MemberJpaRepository memberJpaRepository;
 
     private final SignUpMemberUseCase.Command command = new SignUpMemberUseCase.Command(
             JIWON.getName(),
@@ -60,7 +60,7 @@ class SignUpMemberServiceTest extends UseCaseTest {
                 () -> verify(memberDuplicateCheckRepositoryAdapter, times(1)).isEmailExists(any()),
                 () -> verify(memberDuplicateCheckRepositoryAdapter, times(0)).isNicknameExists(any()),
                 () -> verify(memberDuplicateCheckRepositoryAdapter, times(0)).isPhoneExists(any()),
-                () -> verify(memberRepository, times(0)).save(any())
+                () -> verify(memberJpaRepository, times(0)).save(any())
         );
     }
 
@@ -80,7 +80,7 @@ class SignUpMemberServiceTest extends UseCaseTest {
                 () -> verify(memberDuplicateCheckRepositoryAdapter, times(1)).isEmailExists(any()),
                 () -> verify(memberDuplicateCheckRepositoryAdapter, times(1)).isNicknameExists(any()),
                 () -> verify(memberDuplicateCheckRepositoryAdapter, times(0)).isPhoneExists(any()),
-                () -> verify(memberRepository, times(0)).save(any())
+                () -> verify(memberJpaRepository, times(0)).save(any())
         );
     }
 
@@ -101,7 +101,7 @@ class SignUpMemberServiceTest extends UseCaseTest {
                 () -> verify(memberDuplicateCheckRepositoryAdapter, times(1)).isEmailExists(any()),
                 () -> verify(memberDuplicateCheckRepositoryAdapter, times(1)).isNicknameExists(any()),
                 () -> verify(memberDuplicateCheckRepositoryAdapter, times(1)).isPhoneExists(any()),
-                () -> verify(memberRepository, times(0)).save(any())
+                () -> verify(memberJpaRepository, times(0)).save(any())
         );
     }
 
@@ -114,7 +114,7 @@ class SignUpMemberServiceTest extends UseCaseTest {
         given(memberDuplicateCheckRepositoryAdapter.isPhoneExists(any())).willReturn(false);
 
         final Member member = JIWON.toMember().apply(1L, LocalDateTime.now());
-        given(memberRepository.save(any())).willReturn(member);
+        given(memberJpaRepository.save(any())).willReturn(member);
 
         // when
         final Long savedMemberId = signUpMemberService.invoke(command);
@@ -124,7 +124,7 @@ class SignUpMemberServiceTest extends UseCaseTest {
                 () -> verify(memberDuplicateCheckRepositoryAdapter, times(1)).isEmailExists(any()),
                 () -> verify(memberDuplicateCheckRepositoryAdapter, times(1)).isNicknameExists(any()),
                 () -> verify(memberDuplicateCheckRepositoryAdapter, times(1)).isPhoneExists(any()),
-                () -> verify(memberRepository, times(1)).save(any()),
+                () -> verify(memberJpaRepository, times(1)).save(any()),
                 () -> assertThat(savedMemberId).isEqualTo(member.getId())
         );
     }

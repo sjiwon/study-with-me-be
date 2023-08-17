@@ -5,7 +5,7 @@ import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.favorite.domain.Favorite;
 import com.kgu.studywithme.favorite.infrastructure.persistence.FavoriteJpaRepository;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.domain.MemberRepository;
+import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
 import com.kgu.studywithme.member.infrastructure.query.dto.AppliedStudy;
 import com.kgu.studywithme.member.infrastructure.query.dto.AttendanceRatio;
 import com.kgu.studywithme.member.infrastructure.query.dto.GraduatedStudy;
@@ -60,7 +60,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
     private MemberInformationRepository memberInformationRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberJpaRepository memberJpaRepository;
 
     @Autowired
     private MemberReviewRepository memberReviewRepository;
@@ -84,7 +84,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
 
         @BeforeEach
         void setUp() {
-            member = memberRepository.save(JIWON.toMember());
+            member = memberJpaRepository.save(JIWON.toMember());
         }
 
         @Test
@@ -145,9 +145,9 @@ class MemberInformationRepositoryTest extends RepositoryTest {
         @DisplayName("받은 리뷰 내역을 조회한다")
         void fetchReceivedReviewById() {
             /* Review 3건 */
-            final Member reviewerA = memberRepository.save(DUMMY1.toMember());
-            final Member reviewerB = memberRepository.save(DUMMY2.toMember());
-            final Member reviewerC = memberRepository.save(DUMMY3.toMember());
+            final Member reviewerA = memberJpaRepository.save(DUMMY1.toMember());
+            final Member reviewerB = memberJpaRepository.save(DUMMY2.toMember());
+            final Member reviewerC = memberJpaRepository.save(DUMMY3.toMember());
             memberReviewRepository.saveAll(
                     List.of(
                             MemberReview.doReview(
@@ -181,8 +181,8 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             );
 
             /* 추가 Review 2건 */
-            final Member reviewerD = memberRepository.save(DUMMY4.toMember());
-            final Member reviewerE = memberRepository.save(DUMMY5.toMember());
+            final Member reviewerD = memberJpaRepository.save(DUMMY4.toMember());
+            final Member reviewerE = memberJpaRepository.save(DUMMY5.toMember());
             memberReviewRepository.saveAll(
                     List.of(
                             MemberReview.doReview(
@@ -226,9 +226,9 @@ class MemberInformationRepositoryTest extends RepositoryTest {
 
         @BeforeEach
         void setUp() {
-            member = memberRepository.save(JIWON.toMember());
+            member = memberJpaRepository.save(JIWON.toMember());
 
-            final Member host = memberRepository.save(GHOST.toMember());
+            final Member host = memberJpaRepository.save(GHOST.toMember());
             studyA = studyRepository.save(SPRING.toOnlineStudy(host.getId()));
             studyB = studyRepository.save(JPA.toOnlineStudy(host.getId()));
             studyC = studyRepository.save(KOTLIN.toOnlineStudy(host.getId()));

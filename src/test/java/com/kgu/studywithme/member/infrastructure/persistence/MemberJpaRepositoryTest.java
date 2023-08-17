@@ -1,6 +1,8 @@
-package com.kgu.studywithme.member.domain;
+package com.kgu.studywithme.member.infrastructure.persistence;
 
 import com.kgu.studywithme.common.RepositoryTest;
+import com.kgu.studywithme.member.domain.Member;
+import com.kgu.studywithme.member.domain.Score;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,10 +18,10 @@ import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Member -> MemberRepository 테스트")
-class MemberRepositoryTest extends RepositoryTest {
+@DisplayName("Member -> MemberJpaRepository 테스트")
+class MemberJpaRepositoryTest extends RepositoryTest {
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberJpaRepository memberJpaRepository;
 
     private Member memberA;
     private Member memberB;
@@ -27,17 +29,17 @@ class MemberRepositoryTest extends RepositoryTest {
 
     @BeforeEach
     void setUp() {
-        memberA = memberRepository.save(JIWON.toMember());
-        memberB = memberRepository.save(GHOST.toMember());
-        memberC = memberRepository.save(ANONYMOUS.toMember());
+        memberA = memberJpaRepository.save(JIWON.toMember());
+        memberB = memberJpaRepository.save(GHOST.toMember());
+        memberC = memberJpaRepository.save(ANONYMOUS.toMember());
     }
 
     @Test
     @DisplayName("이메일로 사용자를 조회한다")
     void findByEmail() {
         // when
-        final Member findMember = memberRepository.findByEmail(memberA.getEmail().getValue()).orElseThrow();
-        final Optional<Member> emptyMember = memberRepository.findByEmail("diff" + memberA.getEmail().getValue());
+        final Member findMember = memberJpaRepository.findByEmail(memberA.getEmail().getValue()).orElseThrow();
+        final Optional<Member> emptyMember = memberJpaRepository.findByEmail("diff" + memberA.getEmail().getValue());
 
         // then
         assertAll(
@@ -55,10 +57,10 @@ class MemberRepositoryTest extends RepositoryTest {
         final int scoreOfMemberC = memberC.getScore().getValue();
 
         // when
-        memberRepository.applyScoreToAbsenceParticipant(Set.of(memberB.getId(), memberC.getId()));
+        memberJpaRepository.applyScoreToAbsenceParticipant(Set.of(memberB.getId(), memberC.getId()));
 
         // then
-        final List<Member> members = memberRepository.findAll();
+        final List<Member> members = memberJpaRepository.findAll();
         assertThat(members)
                 .map(Member::getScore)
                 .map(Score::getValue)

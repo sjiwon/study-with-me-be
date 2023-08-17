@@ -2,7 +2,7 @@ package com.kgu.studywithme.study.application.service;
 
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.application.service.QueryMemberByIdService;
+import com.kgu.studywithme.member.application.adapter.MemberReadAdapter;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.application.usecase.command.CreateStudyUseCase;
 import com.kgu.studywithme.study.domain.Study;
@@ -32,7 +32,7 @@ class CreateStudyServiceTest extends UseCaseTest {
     private CreateStudyService createStudyService;
 
     @Mock
-    private QueryMemberByIdService queryMemberByIdService;
+    private MemberReadAdapter memberReadAdapter;
 
     @Mock
     private StudyRepository studyRepository;
@@ -68,7 +68,7 @@ class CreateStudyServiceTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(studyRepository, times(1)).isNameExists(any()),
-                () -> verify(queryMemberByIdService, times(0)).findById(any()),
+                () -> verify(memberReadAdapter, times(0)).getById(any()),
                 () -> verify(studyRepository, times(0)).save(any()),
                 () -> verify(studyParticipantRepository, times(0)).save(any())
         );
@@ -79,7 +79,7 @@ class CreateStudyServiceTest extends UseCaseTest {
     void success() {
         // given
         given(studyRepository.isNameExists(any())).willReturn(false);
-        given(queryMemberByIdService.findById(any())).willReturn(host);
+        given(memberReadAdapter.getById(any())).willReturn(host);
 
         final Study study = OS.toOnlineStudy(host.getId()).apply(1L, LocalDateTime.now());
         given(studyRepository.save(any())).willReturn(study);
@@ -90,7 +90,7 @@ class CreateStudyServiceTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyRepository, times(1)).isNameExists(any()),
-                () -> verify(queryMemberByIdService, times(1)).findById(any()),
+                () -> verify(memberReadAdapter, times(1)).getById(any()),
                 () -> verify(studyRepository, times(1)).save(any()),
                 () -> verify(studyParticipantRepository, times(1)).save(any()),
                 () -> assertThat(savedStudyId).isEqualTo(study.getId())

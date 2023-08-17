@@ -1,7 +1,7 @@
 package com.kgu.studywithme.studyattendance.application.service;
 
 import com.kgu.studywithme.common.UseCaseTest;
-import com.kgu.studywithme.member.application.service.QueryMemberByIdService;
+import com.kgu.studywithme.member.application.adapter.MemberReadAdapter;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.studyattendance.application.usecase.command.ManualAttendanceUseCase;
@@ -37,7 +37,7 @@ class ManualAttendanceServiceTest extends UseCaseTest {
     private StudyAttendanceRepository studyAttendanceRepository;
 
     @Mock
-    private QueryMemberByIdService queryMemberByIdService;
+    private MemberReadAdapter memberReadAdapter;
 
     private Member member;
     private int previousScore;
@@ -61,7 +61,7 @@ class ManualAttendanceServiceTest extends UseCaseTest {
                 NON_ATTENDANCE
         );
         given(studyAttendanceRepository.getParticipantAttendanceByWeek(any(), any(), any())).willReturn(Optional.of(attendance));
-        given(queryMemberByIdService.findById(any())).willReturn(member);
+        given(memberReadAdapter.getById(any())).willReturn(member);
 
         // when
         manualAttendanceService.invoke(
@@ -76,7 +76,7 @@ class ManualAttendanceServiceTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyAttendanceRepository, times(1)).getParticipantAttendanceByWeek(any(), any(), any()),
-                () -> verify(queryMemberByIdService, times(1)).findById(any()),
+                () -> verify(memberReadAdapter, times(1)).getById(any()),
                 () -> assertThat(attendance.getStatus()).isEqualTo(LATE),
                 () -> assertThat(member.getScore().getValue()).isEqualTo(previousScore - 1)
         );
@@ -93,7 +93,7 @@ class ManualAttendanceServiceTest extends UseCaseTest {
                 ABSENCE
         );
         given(studyAttendanceRepository.getParticipantAttendanceByWeek(any(), any(), any())).willReturn(Optional.of(attendance));
-        given(queryMemberByIdService.findById(any())).willReturn(member);
+        given(memberReadAdapter.getById(any())).willReturn(member);
 
         // when
         manualAttendanceService.invoke(
@@ -108,7 +108,7 @@ class ManualAttendanceServiceTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyAttendanceRepository, times(1)).getParticipantAttendanceByWeek(any(), any(), any()),
-                () -> verify(queryMemberByIdService, times(1)).findById(any()),
+                () -> verify(memberReadAdapter, times(1)).getById(any()),
                 () -> assertThat(attendance.getStatus()).isEqualTo(LATE),
                 () -> assertThat(member.getScore().getValue()).isEqualTo(previousScore + 4)
         );

@@ -2,7 +2,7 @@ package com.kgu.studywithme.member.infrastructure.query;
 
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.domain.MemberRepository;
+import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
 import com.kgu.studywithme.member.infrastructure.query.dto.StudyParticipateWeeks;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.study.domain.StudyRepository;
@@ -39,7 +39,7 @@ class MemberAttendanceRepositoryTest extends RepositoryTest {
     private MemberAttendanceRepository memberAttendanceRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberJpaRepository memberJpaRepository;
 
     @Autowired
     private StudyRepository studyRepository;
@@ -59,9 +59,9 @@ class MemberAttendanceRepositoryTest extends RepositoryTest {
 
     @BeforeEach
     void setUp() {
-        member = memberRepository.save(JIWON.toMember());
+        member = memberJpaRepository.save(JIWON.toMember());
 
-        final Member host = memberRepository.save(GHOST.toMember());
+        final Member host = memberJpaRepository.save(GHOST.toMember());
         studyA = studyRepository.save(SPRING.toOnlineStudy(host.getId()));
         studyB = studyRepository.save(JPA.toOnlineStudy(host.getId()));
         studyC = studyRepository.save(KOTLIN.toOnlineStudy(host.getId()));

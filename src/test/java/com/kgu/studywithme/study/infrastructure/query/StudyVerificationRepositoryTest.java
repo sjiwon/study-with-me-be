@@ -2,7 +2,7 @@ package com.kgu.studywithme.study.infrastructure.query;
 
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.domain.MemberRepository;
+import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.study.domain.StudyRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +22,7 @@ class StudyVerificationRepositoryTest extends RepositoryTest {
     private StudyRepository studyRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberJpaRepository memberJpaRepository;
 
     private Member host;
     private Member anonymous;
@@ -30,8 +30,8 @@ class StudyVerificationRepositoryTest extends RepositoryTest {
 
     @BeforeEach
     void setUp() {
-        host = memberRepository.save(JIWON.toMember());
-        anonymous = memberRepository.save(ANONYMOUS.toMember());
+        host = memberJpaRepository.save(JIWON.toMember());
+        anonymous = memberJpaRepository.save(ANONYMOUS.toMember());
         study = studyRepository.save(SPRING.toOnlineStudy(host.getId()));
     }
 

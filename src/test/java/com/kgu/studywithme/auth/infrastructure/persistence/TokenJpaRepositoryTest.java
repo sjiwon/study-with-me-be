@@ -3,7 +3,7 @@ package com.kgu.studywithme.auth.infrastructure.persistence;
 import com.kgu.studywithme.auth.domain.Token;
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.domain.MemberRepository;
+import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,13 +22,13 @@ class TokenJpaRepositoryTest extends RepositoryTest {
     private TokenJpaRepository tokenJpaRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberJpaRepository memberJpaRepository;
 
     private Member member;
 
     @BeforeEach
     void setUp() {
-        member = memberRepository.save(JIWON.toMember());
+        member = memberJpaRepository.save(JIWON.toMember());
         tokenJpaRepository.save(Token.issueRefreshToken(member.getId(), REFRESH_TOKEN));
     }
 

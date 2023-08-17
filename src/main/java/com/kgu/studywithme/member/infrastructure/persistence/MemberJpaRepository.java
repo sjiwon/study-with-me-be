@@ -1,6 +1,7 @@
-package com.kgu.studywithme.member.domain;
+package com.kgu.studywithme.member.infrastructure.persistence;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
+import com.kgu.studywithme.member.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -9,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 import java.util.Set;
 
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberJpaRepository extends JpaRepository<Member, Long> {
     @StudyWithMeWritableTransactional
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("UPDATE Member m" +

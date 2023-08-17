@@ -2,7 +2,7 @@ package com.kgu.studywithme.memberreview.domain;
 
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.domain.MemberRepository;
+import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,19 +26,19 @@ public class MemberReviewRepositoryTest extends RepositoryTest {
     private MemberReviewRepository memberReviewRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberJpaRepository memberJpaRepository;
 
     private Member reviewee;
     private final Member[] reviewers = new Member[5];
 
     @BeforeEach
     void setUp() {
-        reviewee = memberRepository.save(JIWON.toMember());
-        reviewers[0] = memberRepository.save(DUMMY1.toMember());
-        reviewers[1] = memberRepository.save(DUMMY2.toMember());
-        reviewers[2] = memberRepository.save(DUMMY3.toMember());
-        reviewers[3] = memberRepository.save(DUMMY4.toMember());
-        reviewers[4] = memberRepository.save(DUMMY5.toMember());
+        reviewee = memberJpaRepository.save(JIWON.toMember());
+        reviewers[0] = memberJpaRepository.save(DUMMY1.toMember());
+        reviewers[1] = memberJpaRepository.save(DUMMY2.toMember());
+        reviewers[2] = memberJpaRepository.save(DUMMY3.toMember());
+        reviewers[3] = memberJpaRepository.save(DUMMY4.toMember());
+        reviewers[4] = memberJpaRepository.save(DUMMY5.toMember());
     }
 
     @Test
