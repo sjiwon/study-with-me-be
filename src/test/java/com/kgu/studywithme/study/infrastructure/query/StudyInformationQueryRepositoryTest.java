@@ -16,7 +16,7 @@ import com.kgu.studywithme.study.infrastructure.query.dto.WeeklyInformation;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
 import com.kgu.studywithme.studyattendance.infrastructure.persistence.StudyAttendanceJpaRepository;
 import com.kgu.studywithme.studynotice.domain.StudyNotice;
-import com.kgu.studywithme.studynotice.domain.StudyNoticeRepository;
+import com.kgu.studywithme.studynotice.infrastructure.persistence.StudyNoticeJpaRepository;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipant;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import com.kgu.studywithme.studyreview.domain.StudyReview;
@@ -70,7 +70,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
     private StudyParticipantRepository studyParticipantRepository;
 
     @Autowired
-    private StudyNoticeRepository studyNoticeRepository;
+    private StudyNoticeJpaRepository studyNoticeJpaRepository;
 
     @Autowired
     private StudyAttendanceJpaRepository studyAttendanceJpaRepository;
@@ -282,7 +282,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
     @DisplayName("스터디 공지사항을 조회한다")
     void fetchNoticeById() {
         /* 공지사항 2건 */
-        final StudyNotice notice1 = studyNoticeRepository.save(StudyNotice.writeNotice(
+        final StudyNotice notice1 = studyNoticeJpaRepository.save(StudyNotice.writeNotice(
                 study.getId(),
                 host.getId(),
                 "Notice 1",
@@ -292,7 +292,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
         notice1.addComment(memberB.getId(), "OK");
         notice1.addComment(memberC.getId(), "OK");
 
-        final StudyNotice notice2 = studyNoticeRepository.save(StudyNotice.writeNotice(
+        final StudyNotice notice2 = studyNoticeJpaRepository.save(StudyNotice.writeNotice(
                 study.getId(),
                 host.getId(),
                 "Notice 2",

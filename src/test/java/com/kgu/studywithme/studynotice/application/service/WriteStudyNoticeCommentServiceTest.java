@@ -5,9 +5,9 @@ import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.studynotice.application.usecase.command.WriteStudyNoticeCommentUseCase;
 import com.kgu.studywithme.studynotice.domain.StudyNotice;
-import com.kgu.studywithme.studynotice.domain.StudyNoticeRepository;
 import com.kgu.studywithme.studynotice.domain.comment.StudyNoticeComment;
 import com.kgu.studywithme.studynotice.exception.StudyNoticeErrorCode;
+import com.kgu.studywithme.studynotice.infrastructure.persistence.StudyNoticeJpaRepository;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,7 +32,7 @@ class WriteStudyNoticeCommentServiceTest extends UseCaseTest {
     private WriteStudyNoticeCommentService writeStudyNoticeCommentService;
 
     @Mock
-    private StudyNoticeRepository studyNoticeRepository;
+    private StudyNoticeJpaRepository studyNoticeJpaRepository;
 
     @Mock
     private StudyParticipantRepository studyParticipantRepository;
@@ -54,7 +54,7 @@ class WriteStudyNoticeCommentServiceTest extends UseCaseTest {
     @DisplayName("스터디 참여자(status = APPROVE)가 아니면 공지사항에 댓글을 작성할 수 없다")
     void throwExceptionByWriterIsNotStudyParticipant() {
         // given
-        given(studyNoticeRepository.findById(any())).willReturn(Optional.of(notice));
+        given(studyNoticeJpaRepository.findById(any())).willReturn(Optional.of(notice));
         given(studyParticipantRepository.isParticipant(any(), any())).willReturn(false);
 
         // when - then
@@ -63,7 +63,7 @@ class WriteStudyNoticeCommentServiceTest extends UseCaseTest {
                 .hasMessage(StudyNoticeErrorCode.ONLY_PARTICIPANT_CAN_WRITE_COMMENT.getMessage());
 
         assertAll(
-                () -> verify(studyNoticeRepository, times(1)).findById(any()),
+                () -> verify(studyNoticeJpaRepository, times(1)).findById(any()),
                 () -> verify(studyParticipantRepository, times(1)).isParticipant(any(), any())
         );
     }
@@ -72,7 +72,7 @@ class WriteStudyNoticeCommentServiceTest extends UseCaseTest {
     @DisplayName("공지사항에 댓글을 작성한다")
     void success() {
         // given
-        given(studyNoticeRepository.findById(any())).willReturn(Optional.of(notice));
+        given(studyNoticeJpaRepository.findById(any())).willReturn(Optional.of(notice));
         given(studyParticipantRepository.isParticipant(any(), any())).willReturn(true);
 
         // when
@@ -80,7 +80,7 @@ class WriteStudyNoticeCommentServiceTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyNoticeRepository, times(1)).findById(any()),
+                () -> verify(studyNoticeJpaRepository, times(1)).findById(any()),
                 () -> verify(studyParticipantRepository, times(1)).isParticipant(any(), any()),
                 () -> assertThat(notice.getComments()).hasSize(1),
                 () -> assertThat(notice.getComments())

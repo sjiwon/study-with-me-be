@@ -3,7 +3,7 @@ package com.kgu.studywithme.studynotice.application.service;
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.studynotice.application.usecase.command.WriteStudyNoticeUseCase;
 import com.kgu.studywithme.studynotice.domain.StudyNotice;
-import com.kgu.studywithme.studynotice.domain.StudyNoticeRepository;
+import com.kgu.studywithme.studynotice.infrastructure.persistence.StudyNoticeJpaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -24,7 +24,7 @@ class WriteStudyNoticeServiceTest extends UseCaseTest {
     private WriteStudyNoticeService writeStudyNoticeService;
 
     @Mock
-    private StudyNoticeRepository studyNoticeRepository;
+    private StudyNoticeJpaRepository studyNoticeJpaRepository;
 
     private final WriteStudyNoticeUseCase.Command command = new WriteStudyNoticeUseCase.Command(1L, 1L, "Notice", "Hello");
 
@@ -38,14 +38,14 @@ class WriteStudyNoticeServiceTest extends UseCaseTest {
                 command.title(),
                 command.content()
         ).apply(1L, LocalDateTime.now());
-        given(studyNoticeRepository.save(any())).willReturn(notice);
+        given(studyNoticeJpaRepository.save(any())).willReturn(notice);
 
         // when
         final Long noticeId = writeStudyNoticeService.invoke(command);
 
         // then
         assertAll(
-                () -> verify(studyNoticeRepository, times(1)).save(any()),
+                () -> verify(studyNoticeJpaRepository, times(1)).save(any()),
                 () -> assertThat(noticeId).isEqualTo(notice.getId())
         );
     }

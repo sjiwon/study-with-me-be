@@ -1,19 +1,17 @@
 package com.kgu.studywithme.studynotice.application.service;
 
-import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
+import com.kgu.studywithme.studynotice.application.adapter.StudyNoticeHandlingRepositoryAdapter;
 import com.kgu.studywithme.studynotice.application.usecase.command.DeleteStudyNoticeUseCase;
-import com.kgu.studywithme.studynotice.domain.StudyNoticeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class DeleteStudyNoticeService implements DeleteStudyNoticeUseCase {
-    private final StudyNoticeRepository studyNoticeRepository;
+    private final StudyNoticeHandlingRepositoryAdapter studyNoticeHandlingRepositoryAdapter;
 
     @Override
     public void invoke(final Command command) {
-        studyNoticeRepository.deleteNotice(command.noticeId());
+        studyNoticeHandlingRepositoryAdapter.deleteNotice(command.noticeId());
     }
 }

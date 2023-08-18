@@ -6,8 +6,8 @@ import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.studynotice.application.usecase.command.UpdateStudyNoticeCommentUseCase;
 import com.kgu.studywithme.studynotice.domain.StudyNotice;
 import com.kgu.studywithme.studynotice.domain.comment.StudyNoticeComment;
-import com.kgu.studywithme.studynotice.domain.comment.StudyNoticeCommentRepository;
 import com.kgu.studywithme.studynotice.exception.StudyNoticeErrorCode;
+import com.kgu.studywithme.studynotice.infrastructure.persistence.comment.StudyNoticeCommentJpaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -31,7 +31,7 @@ class UpdateStudyNoticeCommentServiceTest extends UseCaseTest {
     private UpdateStudyNoticeCommentService updateStudyNoticeCommentService;
 
     @Mock
-    private StudyNoticeCommentRepository studyNoticeCommentRepository;
+    private StudyNoticeCommentJpaRepository studyNoticeCommentJpaRepository;
 
     private final Member writer = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Member anonymous = JIWON.toMember().apply(2L, LocalDateTime.now());
@@ -51,7 +51,7 @@ class UpdateStudyNoticeCommentServiceTest extends UseCaseTest {
     @DisplayName("댓글 작성자가 아니면 수정할 수 없다")
     void throwExceptionByMemberIsNotWriter() {
         // given
-        given(studyNoticeCommentRepository.findById(any())).willReturn(Optional.of(comment));
+        given(studyNoticeCommentJpaRepository.findById(any())).willReturn(Optional.of(comment));
 
         // when - then
         assertThatThrownBy(() -> updateStudyNoticeCommentService.invoke(
@@ -64,14 +64,14 @@ class UpdateStudyNoticeCommentServiceTest extends UseCaseTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyNoticeErrorCode.ONLY_WRITER_CAN_UPDATE_NOTICE_COMMENT.getMessage());
 
-        verify(studyNoticeCommentRepository, times(1)).findById(any());
+        verify(studyNoticeCommentJpaRepository, times(1)).findById(any());
     }
 
     @Test
     @DisplayName("공지사항 댓글을 수정한다")
     void success() {
         // given
-        given(studyNoticeCommentRepository.findById(any())).willReturn(Optional.of(comment));
+        given(studyNoticeCommentJpaRepository.findById(any())).willReturn(Optional.of(comment));
 
         // when
         updateStudyNoticeCommentService.invoke(
@@ -84,7 +84,7 @@ class UpdateStudyNoticeCommentServiceTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyNoticeCommentRepository, times(1)).findById(any()),
+                () -> verify(studyNoticeCommentJpaRepository, times(1)).findById(any()),
                 () -> assertThat(comment.getContent()).isEqualTo("댓글 수정")
         );
     }
