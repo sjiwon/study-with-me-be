@@ -11,18 +11,17 @@ import com.kgu.studywithme.study.infrastructure.query.dto.StudyPreview;
 import com.kgu.studywithme.study.utils.PagingConstants.SortType;
 import com.kgu.studywithme.study.utils.QueryStudyByCategoryCondition;
 import com.kgu.studywithme.study.utils.QueryStudyByRecommendCondition;
-import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.ConstructorExpression;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
 
-import java.util.LinkedList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.kgu.studywithme.favorite.domain.QFavorite.favorite;
@@ -42,35 +41,18 @@ public class StudyCategoryQueryRepository implements StudyCategoryQueryRepositor
             final QueryStudyByCategoryCondition condition,
             final Pageable pageable
     ) {
-        final JPAQuery<StudyPreview> fetchQuery = query
-                .select(
-                        new QStudyPreview(
-                                study.id,
-                                study.name,
-                                study.description,
-                                study.category,
-                                study.thumbnail,
-                                study.type,
-                                study.recruitmentStatus,
-                                study.capacity,
-                                study.participants,
-                                study.createdAt
-                        )
-                )
-                .from(study)
-                .where(
+        final List<StudyPreview> result = projectionStudyPreview(
+                condition.sort(),
+                pageable,
+                Arrays.asList(
                         studyCategoryEq(condition.category()),
                         studyTypeEq(condition.type()),
                         studyLocationProvinceEq(condition.province()),
                         studyLocationCityEq(condition.city()),
                         studyIsNotTerminated()
                 )
-                .groupBy(study.id)
-                .orderBy(orderBySortType(condition.sort()).toArray(OrderSpecifier[]::new))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
+        );
 
-        final List<StudyPreview> result = makeFetchQueryResult(fetchQuery, condition.sort());
         final Long totalCount = query
                 .select(study.id.count())
                 .from(study)
@@ -86,7 +68,7 @@ public class StudyCategoryQueryRepository implements StudyCategoryQueryRepositor
         return new SliceImpl<>(
                 result,
                 pageable,
-                validateHasNext(pageable, result.size(), totalCount)
+                hasNext(pageable, result.size(), totalCount)
         );
     }
 
@@ -101,35 +83,18 @@ public class StudyCategoryQueryRepository implements StudyCategoryQueryRepositor
                 .where(interest.member.id.eq(condition.memberId()))
                 .fetch();
 
-        final JPAQuery<StudyPreview> fetchQuery = query
-                .select(
-                        new QStudyPreview(
-                                study.id,
-                                study.name,
-                                study.description,
-                                study.category,
-                                study.thumbnail,
-                                study.type,
-                                study.recruitmentStatus,
-                                study.capacity,
-                                study.participants,
-                                study.createdAt
-                        )
-                )
-                .from(study)
-                .where(
+        final List<StudyPreview> result = projectionStudyPreview(
+                condition.sort(),
+                pageable,
+                Arrays.asList(
                         studyCategoryIn(memberInterests),
                         studyTypeEq(condition.type()),
                         studyLocationProvinceEq(condition.province()),
                         studyLocationCityEq(condition.city()),
                         studyIsNotTerminated()
                 )
-                .groupBy(study.id)
-                .orderBy(orderBySortType(condition.sort()).toArray(OrderSpecifier[]::new))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
+        );
 
-        final List<StudyPreview> result = makeFetchQueryResult(fetchQuery, condition.sort());
         final Long totalCount = query
                 .select(study.id.count())
                 .from(study)
@@ -145,27 +110,36 @@ public class StudyCategoryQueryRepository implements StudyCategoryQueryRepositor
         return new SliceImpl<>(
                 result,
                 pageable,
-                validateHasNext(pageable, result.size(), totalCount)
+                hasNext(pageable, result.size(), totalCount)
         );
     }
 
-    private List<OrderSpecifier<?>> orderBySortType(final SortType sort) {
-        final List<OrderSpecifier<?>> orderBy = new LinkedList<>();
-
-        switch (sort) {
-            case FAVORITE -> orderBy.addAll(List.of(favorite.count().desc(), study.id.desc()));
-            case REVIEW -> orderBy.addAll(List.of(studyReview.count().desc(), study.id.desc()));
-            default -> orderBy.add(study.id.desc());
-        }
-
-        return orderBy;
+    private List<StudyPreview> projectionStudyPreview(
+            final SortType sortType,
+            final Pageable pageable,
+            final List<BooleanExpression> whereConditions
+    ) {
+        return switch (sortType) {
+            case DATE -> projectionByDate(pageable, whereConditions);
+            case FAVORITE -> projectionByFavoriteCount(pageable, whereConditions);
+            default -> projectionByReviewCount(pageable, whereConditions);
+        };
     }
 
-    private List<StudyPreview> makeFetchQueryResult(
-            final JPAQuery<StudyPreview> fetchQuery,
-            final SortType sort
+    private List<StudyPreview> projectionByDate(
+            final Pageable pageable,
+            final List<BooleanExpression> whereConditions
     ) {
-        final List<StudyPreview> result = addJoinBySortType(fetchQuery, sort);
+        final List<StudyPreview> result = query
+                .select(studyPreviewProjection())
+                .from(study)
+                .where(whereConditions.toArray(Predicate[]::new))
+                .groupBy(study.id)
+                .orderBy(study.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
         final List<Long> studyIds = result.stream()
                 .map(StudyPreview::getId)
                 .toList();
@@ -175,19 +149,67 @@ public class StudyCategoryQueryRepository implements StudyCategoryQueryRepositor
         return result;
     }
 
-    private List<StudyPreview> addJoinBySortType(
-            final JPAQuery<StudyPreview> fetchQuery,
-            final SortType sort
+    private List<StudyPreview> projectionByFavoriteCount(
+            final Pageable pageable,
+            final List<BooleanExpression> whereConditions
     ) {
-        return switch (sort) {
-            case FAVORITE -> fetchQuery
-                    .leftJoin(favorite).on(favorite.studyId.eq(study.id))
-                    .fetch();
-            case REVIEW -> fetchQuery
-                    .leftJoin(studyReview).on(studyReview.studyId.eq(study.id))
-                    .fetch();
-            default -> fetchQuery.fetch();
-        };
+        final List<StudyPreview> result = query
+                .select(studyPreviewProjection())
+                .from(study)
+                .leftJoin(favorite).on(favorite.studyId.eq(study.id))
+                .where(whereConditions.toArray(Predicate[]::new))
+                .groupBy(study.id)
+                .orderBy(favorite.count().desc(), study.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        final List<Long> studyIds = result.stream()
+                .map(StudyPreview::getId)
+                .toList();
+
+        applyStudyHashtags(result, studyIds);
+        applyLikeMarkingMembers(result, studyIds);
+        return result;
+    }
+
+    private List<StudyPreview> projectionByReviewCount(
+            final Pageable pageable,
+            final List<BooleanExpression> whereConditions
+    ) {
+        final List<StudyPreview> result = query
+                .select(studyPreviewProjection())
+                .from(study)
+                .leftJoin(studyReview).on(studyReview.studyId.eq(study.id))
+                .where(whereConditions.toArray(Predicate[]::new))
+                .groupBy(study.id)
+                .orderBy(studyReview.count().desc(), study.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        final List<Long> studyIds = result.stream()
+                .map(StudyPreview::getId)
+                .toList();
+
+        applyStudyHashtags(result, studyIds);
+        applyLikeMarkingMembers(result, studyIds);
+        return result;
+    }
+
+    private ConstructorExpression<StudyPreview> studyPreviewProjection() {
+        return new QStudyPreview(
+                study.id,
+                study.name,
+                study.description,
+                study.category,
+                study.thumbnail,
+                study.type,
+                study.recruitmentStatus,
+                study.capacity,
+                study.participants,
+                study.createdAt
+        );
     }
 
     private void applyStudyHashtags(
@@ -244,7 +266,7 @@ public class StudyCategoryQueryRepository implements StudyCategoryQueryRepositor
                 .toList();
     }
 
-    private boolean validateHasNext(
+    private boolean hasNext(
             final Pageable pageable,
             final int contentSize,
             final Long totalCount
@@ -265,11 +287,7 @@ public class StudyCategoryQueryRepository implements StudyCategoryQueryRepositor
     }
 
     private BooleanExpression studyTypeEq(final String type) {
-        if (!StringUtils.hasText(type)) {
-            return null;
-        }
-
-        return study.type.eq(StudyType.from(type));
+        return (type != null) ? study.type.eq(StudyType.from(type)) : null;
     }
 
     private BooleanExpression studyLocationProvinceEq(final String province) {
