@@ -4,7 +4,7 @@ import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
 import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.study.domain.StudyRepository;
+import com.kgu.studywithme.study.infrastructure.persistence.StudyJpaRepository;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
 import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
 import com.kgu.studywithme.studyweekly.domain.submit.UploadAssignment;
@@ -35,7 +35,7 @@ class StudyWeeklyHandlingRepositoryTest extends RepositoryTest {
     private MemberJpaRepository memberJpaRepository;
 
     @Autowired
-    private StudyRepository studyRepository;
+    private StudyJpaRepository studyJpaRepository;
 
     private Member host;
     private Study studyA;
@@ -44,8 +44,8 @@ class StudyWeeklyHandlingRepositoryTest extends RepositoryTest {
     @BeforeEach
     void setUp() {
         host = memberJpaRepository.save(JIWON.toMember());
-        studyA = studyRepository.save(SPRING.toOnlineStudy(host.getId()));
-        studyB = studyRepository.save(JPA.toOnlineStudy(host.getId()));
+        studyA = studyJpaRepository.save(SPRING.toOnlineStudy(host.getId()));
+        studyB = studyJpaRepository.save(JPA.toOnlineStudy(host.getId()));
     }
 
     @Test

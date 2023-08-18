@@ -3,7 +3,7 @@ package com.kgu.studywithme.studyparticipant.application.service;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.study.application.service.QueryStudyByIdService;
+import com.kgu.studywithme.study.application.adapter.StudyReadAdapter;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.GraduateStudyUseCase;
@@ -20,14 +20,14 @@ import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.GRAD
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class GraduateStudyService implements GraduateStudyUseCase {
-    private final QueryStudyByIdService queryStudyByIdService;
+    private final StudyReadAdapter studyReadAdapter;
     private final StudyParticipantRepository studyParticipantRepository;
     private final StudyAttendanceRepository studyAttendanceRepository;
     private final ApplicationEventPublisher eventPublisher;
 
     @Override
     public void invoke(final Command command) {
-        final Study study = queryStudyByIdService.findById(command.studyId());
+        final Study study = studyReadAdapter.getById(command.studyId());
         validateMemberIsHost(study, command.participantId());
 
         final Member participant = getParticipant(command.studyId(), command.participantId());
@@ -41,7 +41,7 @@ public class GraduateStudyService implements GraduateStudyUseCase {
                     new StudyGraduatedEvent(
                             participant.getEmail().getValue(),
                             participant.getNickname().getValue(),
-                            study.getNameValue()
+                            study.getName().getValue()
                     )
             );
         }

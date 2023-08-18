@@ -82,7 +82,7 @@ public class StudyBasicInformation {
             final StudyLocation location,
             final RecruitmentStatus recruitmentStatus,
             final Capacity capacity,
-            final int participantMembers,
+            final int currentParticipants,
             final int minimumAttendanceForGraduation,
             final int remainingOpportunityToUpdateGraduationPolicy,
             final Long hostId,
@@ -97,7 +97,7 @@ public class StudyBasicInformation {
         this.location = location;
         this.recruitmentStatus = recruitmentStatus;
         this.maxMember = capacity.getValue();
-        this.participantMembers = participantMembers;
+        this.participantMembers = currentParticipants;
         this.minimumAttendanceForGraduation = minimumAttendanceForGraduation;
         this.remainingOpportunityToUpdateGraduationPolicy = remainingOpportunityToUpdateGraduationPolicy;
         this.host = new StudyMember(hostId, nickname.getValue());

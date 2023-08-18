@@ -1,4 +1,4 @@
-package com.kgu.studywithme.study.application.dto;
+package com.kgu.studywithme.study.application.service.dto;
 
 import com.kgu.studywithme.study.infrastructure.query.dto.StudyPreview;
 

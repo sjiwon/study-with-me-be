@@ -35,6 +35,7 @@ import com.kgu.studywithme.memberreport.presentation.MemberReportApiController;
 import com.kgu.studywithme.memberreview.application.usecase.command.UpdateMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.presentation.MemberReviewApiController;
+import com.kgu.studywithme.study.application.adapter.StudyVerificationRepositoryAdapter;
 import com.kgu.studywithme.study.application.usecase.command.CreateStudyUseCase;
 import com.kgu.studywithme.study.application.usecase.command.TerminateStudyUseCase;
 import com.kgu.studywithme.study.application.usecase.command.UpdateStudyUseCase;
@@ -47,7 +48,6 @@ import com.kgu.studywithme.study.application.usecase.query.QueryReviewByIdUseCas
 import com.kgu.studywithme.study.application.usecase.query.QueryStudyByCategoryUseCase;
 import com.kgu.studywithme.study.application.usecase.query.QueryStudyByRecommendUseCase;
 import com.kgu.studywithme.study.application.usecase.query.QueryWeeklyByIdUseCase;
-import com.kgu.studywithme.study.domain.StudyRepository;
 import com.kgu.studywithme.study.presentation.StudyApiController;
 import com.kgu.studywithme.study.presentation.StudyInformationApiController;
 import com.kgu.studywithme.study.presentation.StudyInformationOnlyParticipantApiController;
@@ -182,7 +182,7 @@ public abstract class ControllerTest {
 
     // AOP Validation
     @MockBean
-    private StudyRepository studyRepository;
+    private StudyVerificationRepositoryAdapter studyVerificationRepositoryAdapter1;
 
     @MockBean
     private StudyParticipantRepository studyParticipantRepository;
@@ -412,7 +412,7 @@ public abstract class ControllerTest {
             final Long memberId,
             final boolean isValid
     ) {
-        given(studyRepository.isHost(studyId, memberId)).willReturn(isValid);
+        given(studyVerificationRepositoryAdapter1.isHost(studyId, memberId)).willReturn(isValid);
     }
 
     protected void mockingForStudyParticipant(

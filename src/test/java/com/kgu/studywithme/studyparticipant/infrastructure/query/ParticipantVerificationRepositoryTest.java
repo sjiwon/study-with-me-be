@@ -4,7 +4,7 @@ import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
 import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.study.domain.StudyRepository;
+import com.kgu.studywithme.study.infrastructure.persistence.StudyJpaRepository;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipant;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +35,7 @@ class ParticipantVerificationRepositoryTest extends RepositoryTest {
     private MemberJpaRepository memberJpaRepository;
 
     @Autowired
-    private StudyRepository studyRepository;
+    private StudyJpaRepository studyJpaRepository;
 
     private Member host;
     private Member applier;
@@ -52,7 +52,7 @@ class ParticipantVerificationRepositoryTest extends RepositoryTest {
         leaveMember = memberJpaRepository.save(DUMMY3.toMember());
         graduatedMember = memberJpaRepository.save(DUMMY4.toMember());
 
-        study = studyRepository.save(SPRING.toOnlineStudy(host.getId()));
+        study = studyJpaRepository.save(SPRING.toOnlineStudy(host.getId()));
         studyParticipantRepository.saveAll(
                 List.of(
                         StudyParticipant.applyHost(study.getId(), host.getId()),

@@ -5,7 +5,7 @@ import com.kgu.studywithme.global.BaseEntity;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.study.domain.hashtag.Hashtag;
 import com.kgu.studywithme.study.domain.hashtag.Hashtags;
-import com.kgu.studywithme.study.exception.StudyErrorCode;
+import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -45,8 +45,8 @@ public class Study extends BaseEntity<Study> {
     @Embedded
     private Capacity capacity;
 
-    @Column(name = "participant_members", nullable = false)
-    private int participantMembers;
+    @Column(name = "participants", nullable = false)
+    private int participants;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "image", nullable = false)
@@ -76,8 +76,8 @@ public class Study extends BaseEntity<Study> {
             final Long hostId,
             final StudyName name,
             final Description description,
-            final Capacity capacity,
             final Category category,
+            final Capacity capacity,
             final StudyThumbnail thumbnail,
             final StudyType type,
             final StudyLocation location,
@@ -87,9 +87,9 @@ public class Study extends BaseEntity<Study> {
         this.hostId = hostId;
         this.name = name;
         this.description = description;
-        this.capacity = capacity;
-        this.participantMembers = 1; // host
         this.category = category;
+        this.capacity = capacity;
+        this.participants = 1; // host
         this.thumbnail = thumbnail;
         this.type = type;
         this.location = location;
@@ -103,8 +103,8 @@ public class Study extends BaseEntity<Study> {
             final Long hostId,
             final StudyName name,
             final Description description,
-            final Capacity capacity,
             final Category category,
+            final Capacity capacity,
             final StudyThumbnail thumbnail,
             final int minimumAttendanceForGraduation,
             final Set<String> hashtags
@@ -113,8 +113,8 @@ public class Study extends BaseEntity<Study> {
                 hostId,
                 name,
                 description,
-                capacity,
                 category,
+                capacity,
                 thumbnail,
                 ONLINE,
                 null,
@@ -127,8 +127,8 @@ public class Study extends BaseEntity<Study> {
             final Long hostId,
             final StudyName name,
             final Description description,
-            final Capacity capacity,
             final Category category,
+            final Capacity capacity,
             final StudyThumbnail thumbnail,
             final StudyLocation location,
             final int minimumAttendanceForGraduation,
@@ -138,8 +138,8 @@ public class Study extends BaseEntity<Study> {
                 hostId,
                 name,
                 description,
-                capacity,
                 category,
+                capacity,
                 thumbnail,
                 OFFLINE,
                 location,
@@ -149,9 +149,9 @@ public class Study extends BaseEntity<Study> {
     }
 
     public void update(
-            final StudyName name,
-            final Description description,
-            final Capacity capacity,
+            final String name,
+            final String description,
+            final int capacity,
             final Category category,
             final StudyThumbnail thumbnail,
             final StudyType type,
@@ -161,10 +161,9 @@ public class Study extends BaseEntity<Study> {
             final int minimumAttendanceForGraduation,
             final Set<String> hashtags
     ) {
-        validateCapacityCanCoverCurrentParticipants(capacity);
-        this.name = name;
-        this.description = description;
-        this.capacity = capacity;
+        this.name = new StudyName(name);
+        this.description = new Description(description);
+        this.capacity = this.capacity.update(capacity, participants);
         this.category = category;
         this.thumbnail = thumbnail;
         this.type = type;
@@ -172,12 +171,6 @@ public class Study extends BaseEntity<Study> {
         this.recruitmentStatus = recruitmentStatus;
         this.graduationPolicy = this.graduationPolicy.update(minimumAttendanceForGraduation);
         this.hashtags.update(this, hashtags);
-    }
-
-    private void validateCapacityCanCoverCurrentParticipants(final Capacity capacity) {
-        if (capacity.isLessThan(participantMembers)) {
-            throw StudyWithMeException.type(StudyErrorCode.CAPACITY_CANNOT_COVER_CURRENT_PARTICIPANTS);
-        }
     }
 
     public boolean isHost(final Long memberId) {
@@ -201,37 +194,23 @@ public class Study extends BaseEntity<Study> {
         terminated = true;
     }
 
-    public boolean isCapacityFull() {
-        return capacity.isEqualOrLessThan(participantMembers);
+    public void addParticipant() {
+        validateStudyCapacityIsAvailable();
+        participants++;
+    }
+
+    private void validateStudyCapacityIsAvailable() {
+        if (capacity.isFull(participants)) {
+            throw StudyWithMeException.type(StudyParticipantErrorCode.STUDY_CAPACITY_ALREADY_FULL);
+        }
+    }
+
+    public void removeParticipant() {
+        participants--;
     }
 
     public boolean isParticipantMeetGraduationPolicy(final int attendanceCount) {
         return graduationPolicy.isGraduationRequirementsFulfilled(attendanceCount);
-    }
-
-    public void addParticipant() {
-        participantMembers++;
-    }
-
-    public void removeParticipant() {
-        participantMembers--;
-    }
-
-    // Add Getter
-    public String getNameValue() {
-        return name.getValue();
-    }
-
-    public String getDescriptionValue() {
-        return description.getValue();
-    }
-
-    public int getCapacity() {
-        return capacity.getValue();
-    }
-
-    public int getMinimumAttendanceForGraduation() {
-        return graduationPolicy.getMinimumAttendance();
     }
 
     public List<String> getHashtags() {

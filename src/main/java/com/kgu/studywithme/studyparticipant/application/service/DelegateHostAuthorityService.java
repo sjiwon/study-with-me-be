@@ -2,7 +2,7 @@ package com.kgu.studywithme.studyparticipant.application.service;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.study.application.service.QueryStudyByIdService;
+import com.kgu.studywithme.study.application.adapter.StudyReadAdapter;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.DelegateHostAuthorityUseCase;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
@@ -14,12 +14,12 @@ import org.springframework.stereotype.Service;
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class DelegateHostAuthorityService implements DelegateHostAuthorityUseCase {
-    private final QueryStudyByIdService queryStudyByIdService;
+    private final StudyReadAdapter studyReadAdapter;
     private final StudyParticipantRepository studyParticipantRepository;
 
     @Override
     public void invoke(final Command command) {
-        final Study study = queryStudyByIdService.findById(command.studyId());
+        final Study study = studyReadAdapter.getById(command.studyId());
         validateStudyInProgress(study);
         validateNewHostIsCurrentHost(study, command.newHostId());
         validateNewHostIsParticipant(command.studyId(), command.newHostId());

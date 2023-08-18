@@ -3,7 +3,7 @@ package com.kgu.studywithme.studyparticipant.application.service;
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.study.application.service.QueryStudyByIdService;
+import com.kgu.studywithme.study.application.adapter.StudyReadAdapter;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.RejectParticipationUseCase;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
@@ -36,7 +36,7 @@ class RejectParticipationServiceTest extends UseCaseTest {
     private RejectParticipationService rejectParticipationService;
 
     @Mock
-    private QueryStudyByIdService queryStudyByIdService;
+    private StudyReadAdapter studyReadAdapter;
 
     @Mock
     private StudyParticipantRepository studyParticipantRepository;
@@ -73,7 +73,7 @@ class RejectParticipationServiceTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(studyParticipantRepository, times(1)).findApplier(any(), any()),
-                () -> verify(queryStudyByIdService, times(0)).findById(any()),
+                () -> verify(studyReadAdapter, times(0)).getById(any()),
                 () -> verify(studyParticipantRepository, times(0)).updateParticipantStatus(any(), any(), any()),
                 () -> verify(eventPublisher, times(0)).publishEvent(any(StudyRejectedEvent.class))
         );
@@ -85,7 +85,7 @@ class RejectParticipationServiceTest extends UseCaseTest {
         // given
         study.terminate();
         given(studyParticipantRepository.findApplier(any(), any())).willReturn(Optional.of(applierWithAllowEmail));
-        given(queryStudyByIdService.findById(any())).willReturn(study);
+        given(studyReadAdapter.getById(any())).willReturn(study);
 
         // when - then
         assertThatThrownBy(() -> rejectParticipationService.invoke(
@@ -100,7 +100,7 @@ class RejectParticipationServiceTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(studyParticipantRepository, times(1)).findApplier(any(), any()),
-                () -> verify(queryStudyByIdService, times(1)).findById(any()),
+                () -> verify(studyReadAdapter, times(1)).getById(any()),
                 () -> verify(studyParticipantRepository, times(0)).updateParticipantStatus(any(), any(), any()),
                 () -> verify(eventPublisher, times(0)).publishEvent(any(StudyRejectedEvent.class))
         );
@@ -111,7 +111,7 @@ class RejectParticipationServiceTest extends UseCaseTest {
     void successA() {
         // given
         given(studyParticipantRepository.findApplier(any(), any())).willReturn(Optional.of(applierWithAllowEmail));
-        given(queryStudyByIdService.findById(any())).willReturn(study);
+        given(studyReadAdapter.getById(any())).willReturn(study);
 
         // when
         rejectParticipationService.invoke(
@@ -125,7 +125,7 @@ class RejectParticipationServiceTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyParticipantRepository, times(1)).findApplier(any(), any()),
-                () -> verify(queryStudyByIdService, times(1)).findById(any()),
+                () -> verify(studyReadAdapter, times(1)).getById(any()),
                 () -> verify(studyParticipantRepository, times(1)).updateParticipantStatus(any(), any(), any()),
                 () -> verify(eventPublisher, times(1)).publishEvent(any(StudyRejectedEvent.class))
         );
@@ -136,7 +136,7 @@ class RejectParticipationServiceTest extends UseCaseTest {
     void successB() {
         // given
         given(studyParticipantRepository.findApplier(any(), any())).willReturn(Optional.of(applierWithNotAllowEmail));
-        given(queryStudyByIdService.findById(any())).willReturn(study);
+        given(studyReadAdapter.getById(any())).willReturn(study);
 
         // when
         rejectParticipationService.invoke(
@@ -150,7 +150,7 @@ class RejectParticipationServiceTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyParticipantRepository, times(1)).findApplier(any(), any()),
-                () -> verify(queryStudyByIdService, times(1)).findById(any()),
+                () -> verify(studyReadAdapter, times(1)).getById(any()),
                 () -> verify(studyParticipantRepository, times(1)).updateParticipantStatus(any(), any(), any()),
                 () -> verify(eventPublisher, times(0)).publishEvent(any(StudyRejectedEvent.class))
         );

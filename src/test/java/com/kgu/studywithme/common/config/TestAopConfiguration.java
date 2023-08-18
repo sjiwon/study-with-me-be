@@ -3,7 +3,7 @@ package com.kgu.studywithme.common.config;
 import com.kgu.studywithme.global.aop.CheckAuthUserAspect;
 import com.kgu.studywithme.global.aop.CheckStudyHostAspect;
 import com.kgu.studywithme.global.aop.CheckStudyParticipantAspect;
-import com.kgu.studywithme.study.domain.StudyRepository;
+import com.kgu.studywithme.study.application.adapter.StudyVerificationRepositoryAdapter;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -14,7 +14,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @RequiredArgsConstructor
 @EnableAspectJAutoProxy
 public class TestAopConfiguration {
-    private final StudyRepository studyRepository;
+    private final StudyVerificationRepositoryAdapter studyVerificationRepositoryAdapter;
     private final StudyParticipantRepository studyParticipantRepository;
 
     @Bean
@@ -24,7 +24,7 @@ public class TestAopConfiguration {
 
     @Bean
     public CheckStudyHostAspect checkStudyHostAspect() {
-        return new CheckStudyHostAspect(studyRepository);
+        return new CheckStudyHostAspect(studyVerificationRepositoryAdapter);
     }
 
     @Bean

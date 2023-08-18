@@ -5,7 +5,7 @@ import com.kgu.studywithme.favorite.domain.Favorite;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
 import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.study.domain.StudyRepository;
+import com.kgu.studywithme.study.infrastructure.persistence.StudyJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ class FavoriteJpaRepositoryTest extends RepositoryTest {
     private MemberJpaRepository memberJpaRepository;
 
     @Autowired
-    private StudyRepository studyRepository;
+    private StudyJpaRepository studyJpaRepository;
 
     private Member member;
     private Study study;
@@ -32,7 +32,7 @@ class FavoriteJpaRepositoryTest extends RepositoryTest {
     @BeforeEach
     void setUp() {
         member = memberJpaRepository.save(JIWON.toMember());
-        study = studyRepository.save(SPRING.toOnlineStudy(member.getId()));
+        study = studyJpaRepository.save(SPRING.toOnlineStudy(member.getId()));
     }
 
     @Test

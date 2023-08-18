@@ -5,7 +5,7 @@ import com.kgu.studywithme.global.BaseEntity;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
 import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.study.domain.StudyRepository;
+import com.kgu.studywithme.study.infrastructure.persistence.StudyJpaRepository;
 import com.kgu.studywithme.studynotice.domain.StudyNotice;
 import com.kgu.studywithme.studynotice.domain.StudyNoticeRepository;
 import com.kgu.studywithme.studynotice.domain.comment.StudyNoticeCommentRepository;
@@ -35,7 +35,7 @@ class StudyNoticeHandlingRepositoryTest extends RepositoryTest {
     private MemberJpaRepository memberJpaRepository;
 
     @Autowired
-    private StudyRepository studyRepository;
+    private StudyJpaRepository studyJpaRepository;
 
     @PersistenceContext
     private EntityManager em;
@@ -46,7 +46,7 @@ class StudyNoticeHandlingRepositoryTest extends RepositoryTest {
     @BeforeEach
     void setUp() {
         writer = memberJpaRepository.save(JIWON.toMember());
-        study = studyRepository.save(SPRING.toOnlineStudy(writer.getId()));
+        study = studyJpaRepository.save(SPRING.toOnlineStudy(writer.getId()));
     }
 
     @Test

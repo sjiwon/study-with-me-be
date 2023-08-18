@@ -2,7 +2,7 @@ package com.kgu.studywithme.studyparticipant.application.service;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.study.application.service.QueryStudyByIdService;
+import com.kgu.studywithme.study.application.adapter.StudyReadAdapter;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.ApplyStudyUseCase;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipant;
@@ -15,12 +15,12 @@ import org.springframework.stereotype.Service;
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class ApplyStudyService implements ApplyStudyUseCase {
-    private final QueryStudyByIdService queryStudyByIdService;
+    private final StudyReadAdapter studyReadAdapter;
     private final StudyParticipantRepository studyParticipantRepository;
 
     @Override
     public void invoke(final Command command) {
-        final Study study = queryStudyByIdService.findById(command.studyId());
+        final Study study = studyReadAdapter.getById(command.studyId());
         validateStudyIsRecruiting(study);
         validateApplierIsHost(study, command.applierId());
         validateApplierIsAlreadyRelatedToStudy(study, command.applierId());

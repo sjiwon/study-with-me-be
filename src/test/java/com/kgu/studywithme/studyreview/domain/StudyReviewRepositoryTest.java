@@ -4,7 +4,7 @@ import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
 import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.study.domain.StudyRepository;
+import com.kgu.studywithme.study.infrastructure.persistence.StudyJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ class StudyReviewRepositoryTest extends RepositoryTest {
     private MemberJpaRepository memberJpaRepository;
 
     @Autowired
-    private StudyRepository studyRepository;
+    private StudyJpaRepository studyJpaRepository;
 
     private Member member;
     private Study studyA;
@@ -34,8 +34,8 @@ class StudyReviewRepositoryTest extends RepositoryTest {
     @BeforeEach
     void setUp() {
         member = memberJpaRepository.save(JIWON.toMember());
-        studyA = studyRepository.save(SPRING.toOnlineStudy(member.getId()));
-        studyB = studyRepository.save(JPA.toOnlineStudy(member.getId()));
+        studyA = studyJpaRepository.save(SPRING.toOnlineStudy(member.getId()));
+        studyB = studyJpaRepository.save(JPA.toOnlineStudy(member.getId()));
     }
 
     @Test

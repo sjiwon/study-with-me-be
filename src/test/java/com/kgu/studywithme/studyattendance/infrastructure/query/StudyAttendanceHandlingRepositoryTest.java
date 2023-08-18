@@ -4,7 +4,7 @@ import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
 import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.study.domain.StudyRepository;
+import com.kgu.studywithme.study.infrastructure.persistence.StudyJpaRepository;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
 import com.kgu.studywithme.studyattendance.infrastructure.query.dto.NonAttendanceWeekly;
@@ -38,7 +38,7 @@ class StudyAttendanceHandlingRepositoryTest extends RepositoryTest {
     private MemberJpaRepository memberJpaRepository;
 
     @Autowired
-    private StudyRepository studyRepository;
+    private StudyJpaRepository studyJpaRepository;
 
     private final Member[] member = new Member[5];
     private Study study;
@@ -50,7 +50,7 @@ class StudyAttendanceHandlingRepositoryTest extends RepositoryTest {
         member[2] = memberJpaRepository.save(DUMMY2.toMember());
         member[3] = memberJpaRepository.save(DUMMY3.toMember());
         member[4] = memberJpaRepository.save(DUMMY4.toMember());
-        study = studyRepository.save(SPRING.toOnlineStudy(member[0].getId()));
+        study = studyJpaRepository.save(SPRING.toOnlineStudy(member[0].getId()));
     }
 
     @Test

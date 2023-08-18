@@ -5,7 +5,7 @@ import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
 import com.kgu.studywithme.member.infrastructure.query.dto.StudyParticipateWeeks;
 import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.study.domain.StudyRepository;
+import com.kgu.studywithme.study.infrastructure.persistence.StudyJpaRepository;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipant;
@@ -42,7 +42,7 @@ class MemberAttendanceRepositoryTest extends RepositoryTest {
     private MemberJpaRepository memberJpaRepository;
 
     @Autowired
-    private StudyRepository studyRepository;
+    private StudyJpaRepository studyJpaRepository;
 
     @Autowired
     private StudyParticipantRepository studyParticipantRepository;
@@ -62,11 +62,11 @@ class MemberAttendanceRepositoryTest extends RepositoryTest {
         member = memberJpaRepository.save(JIWON.toMember());
 
         final Member host = memberJpaRepository.save(GHOST.toMember());
-        studyA = studyRepository.save(SPRING.toOnlineStudy(host.getId()));
-        studyB = studyRepository.save(JPA.toOnlineStudy(host.getId()));
-        studyC = studyRepository.save(KOTLIN.toOnlineStudy(host.getId()));
-        studyD = studyRepository.save(NETWORK.toOnlineStudy(host.getId()));
-        studyE = studyRepository.save(EFFECTIVE_JAVA.toOnlineStudy(host.getId()));
+        studyA = studyJpaRepository.save(SPRING.toOnlineStudy(host.getId()));
+        studyB = studyJpaRepository.save(JPA.toOnlineStudy(host.getId()));
+        studyC = studyJpaRepository.save(KOTLIN.toOnlineStudy(host.getId()));
+        studyD = studyJpaRepository.save(NETWORK.toOnlineStudy(host.getId()));
+        studyE = studyJpaRepository.save(EFFECTIVE_JAVA.toOnlineStudy(host.getId()));
     }
 
     @Test

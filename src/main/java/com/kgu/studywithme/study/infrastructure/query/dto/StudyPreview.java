@@ -57,7 +57,7 @@ public class StudyPreview {
             final StudyType type,
             final RecruitmentStatus recruitmentStatus,
             final Capacity capacity,
-            final int participantMembers,
+            final int currentParticipants,
             final LocalDateTime creationDate
     ) {
         this.id = id;
@@ -68,7 +68,7 @@ public class StudyPreview {
         this.type = type;
         this.recruitmentStatus = recruitmentStatus;
         this.maxMember = capacity.getValue();
-        this.participantMembers = participantMembers;
+        this.participantMembers = currentParticipants;
         this.creationDate = creationDate;
     }
 

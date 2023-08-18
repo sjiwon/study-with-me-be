@@ -3,7 +3,7 @@ package com.kgu.studywithme.studyparticipant.application.service;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.study.application.service.QueryStudyByIdService;
+import com.kgu.studywithme.study.application.adapter.StudyReadAdapter;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.RejectParticipationUseCase;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
@@ -19,14 +19,14 @@ import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.REJE
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class RejectParticipationService implements RejectParticipationUseCase {
-    private final QueryStudyByIdService queryStudyByIdService;
+    private final StudyReadAdapter studyReadAdapter;
     private final StudyParticipantRepository studyParticipantRepository;
     private final ApplicationEventPublisher eventPublisher;
 
     @Override
     public void invoke(final Command command) {
         final Member applier = getApplier(command.studyId(), command.applierId());
-        final Study study = queryStudyByIdService.findById(command.studyId());
+        final Study study = studyReadAdapter.getById(command.studyId());
         validateStudyInProgress(study);
 
         studyParticipantRepository.updateParticipantStatus(command.studyId(), command.applierId(), REJECT);
@@ -35,7 +35,7 @@ public class RejectParticipationService implements RejectParticipationUseCase {
                     new StudyRejectedEvent(
                             applier.getEmail().getValue(),
                             applier.getNickname().getValue(),
-                            study.getNameValue(),
+                            study.getName().getValue(),
                             command.reason()
                     )
             );

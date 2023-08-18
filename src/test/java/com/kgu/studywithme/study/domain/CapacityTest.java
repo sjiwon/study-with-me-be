@@ -3,12 +3,10 @@ package com.kgu.studywithme.study.domain;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -32,35 +30,36 @@ class CapacityTest {
         assertDoesNotThrow(() -> new Capacity(value));
     }
 
-    @ParameterizedTest
-    @MethodSource("isEqualOrLessThan")
-    @DisplayName("비교값에 대해서 Capacity가 같거나 더 작음을 판별한다")
-    void isEqualOrLessThan(final int compareValue, final boolean expected) {
-        final Capacity capacity = new Capacity(2);
-        assertThat(capacity.isEqualOrLessThan(compareValue)).isEqualTo(expected);
-    }
+    @Nested
+    @DisplayName("Capacity 업데이트")
+    class Update {
+        @Test
+        @DisplayName("수정하려는 Capacity는 현재 스터디 참여자 수보다 높아야 한다")
+        void throwExceptionByCapacityCannotCoverCurrentParticipants() {
+            // given
+            final Capacity capacity = new Capacity(5);
+            final int newCapacity = 2;
+            final int currentParticipants = 3;
 
-    private static Stream<Arguments> isEqualOrLessThan() {
-        return Stream.of(
-                Arguments.of(3, true),
-                Arguments.of(2, true),
-                Arguments.of(1, false)
-        );
-    }
+            // when - then
+            assertThatThrownBy(() -> capacity.update(newCapacity, currentParticipants))
+                    .isInstanceOf(StudyWithMeException.class)
+                    .hasMessage(StudyErrorCode.CAPACITY_CANNOT_COVER_CURRENT_PARTICIPANTS.getMessage());
+        }
 
-    @ParameterizedTest
-    @MethodSource("isLessThan")
-    @DisplayName("비교값에 대해서 Capacity가 더 작음을 판별한다")
-    void isLessThan(final int compareValue, final boolean expected) {
-        final Capacity capacity = new Capacity(2);
-        assertThat(capacity.isLessThan(compareValue)).isEqualTo(expected);
-    }
+        @Test
+        @DisplayName("Capacity를 업데이트한다")
+        void success() {
+            // given
+            final Capacity capacity = new Capacity(5);
+            final int newCapacity = 3;
+            final int currentParticipants = 3;
 
-    private static Stream<Arguments> isLessThan() {
-        return Stream.of(
-                Arguments.of(3, true),
-                Arguments.of(2, false),
-                Arguments.of(1, false)
-        );
+            // when
+            final Capacity updateCapacity = capacity.update(newCapacity, currentParticipants);
+
+            // then
+            assertThat(updateCapacity.getValue()).isEqualTo(3);
+        }
     }
 }

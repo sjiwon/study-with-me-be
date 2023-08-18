@@ -1,7 +1,7 @@
 package com.kgu.studywithme.study.presentation;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
-import com.kgu.studywithme.study.application.dto.StudyPagingResponse;
+import com.kgu.studywithme.study.application.service.dto.StudyPagingResponse;
 import com.kgu.studywithme.study.application.usecase.query.QueryStudyByCategoryUseCase;
 import com.kgu.studywithme.study.application.usecase.query.QueryStudyByRecommendUseCase;
 import com.kgu.studywithme.study.presentation.dto.request.QueryStudyByCategoryRequest;

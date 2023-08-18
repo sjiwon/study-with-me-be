@@ -81,10 +81,10 @@ public class StudyApiController {
         updateStudyUseCase.invoke(
                 new UpdateStudyUseCase.Command(
                         studyId,
-                        new StudyName(request.name()),
-                        new Description(request.description()),
+                        request.name(),
+                        request.description(),
                         Category.from(request.category()),
-                        new Capacity(request.capacity()),
+                        request.capacity(),
                         StudyThumbnail.from(request.thumbnail()),
                         StudyType.from(request.type()),
                         request.province(),

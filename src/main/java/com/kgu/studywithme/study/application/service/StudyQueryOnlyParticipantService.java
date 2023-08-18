@@ -1,10 +1,10 @@
 package com.kgu.studywithme.study.application.service;
 
+import com.kgu.studywithme.study.application.adapter.StudyInformationQueryRepositoryAdapter;
 import com.kgu.studywithme.study.application.usecase.query.QueryApplicantByIdUseCase;
 import com.kgu.studywithme.study.application.usecase.query.QueryAttendanceByIdUseCase;
 import com.kgu.studywithme.study.application.usecase.query.QueryNoticeByIdUseCase;
 import com.kgu.studywithme.study.application.usecase.query.QueryWeeklyByIdUseCase;
-import com.kgu.studywithme.study.domain.StudyRepository;
 import com.kgu.studywithme.study.infrastructure.query.dto.AttendanceInformation;
 import com.kgu.studywithme.study.infrastructure.query.dto.NoticeInformation;
 import com.kgu.studywithme.study.infrastructure.query.dto.StudyApplicantInformation;
@@ -22,25 +22,25 @@ public class StudyQueryOnlyParticipantService implements
         QueryAttendanceByIdUseCase,
         QueryWeeklyByIdUseCase {
 
-    private final StudyRepository studyRepository;
+    private final StudyInformationQueryRepositoryAdapter studyInformationQueryRepositoryAdapter;
 
     @Override
     public List<StudyApplicantInformation> invoke(final QueryApplicantByIdUseCase.Query query) {
-        return studyRepository.fetchApplicantById(query.studyId());
+        return studyInformationQueryRepositoryAdapter.fetchApplicantById(query.studyId());
     }
 
     @Override
     public List<NoticeInformation> invoke(final QueryNoticeByIdUseCase.Query query) {
-        return studyRepository.fetchNoticeById(query.studyId());
+        return studyInformationQueryRepositoryAdapter.fetchNoticeById(query.studyId());
     }
 
     @Override
     public List<AttendanceInformation> invoke(final QueryAttendanceByIdUseCase.Query query) {
-        return studyRepository.fetchAttendanceById(query.studyId());
+        return studyInformationQueryRepositoryAdapter.fetchAttendanceById(query.studyId());
     }
 
     @Override
     public List<WeeklyInformation> invoke(final QueryWeeklyByIdUseCase.Query query) {
-        return studyRepository.fetchWeeklyById(query.studyId());
+        return studyInformationQueryRepositoryAdapter.fetchWeeklyById(query.studyId());
     }
 }

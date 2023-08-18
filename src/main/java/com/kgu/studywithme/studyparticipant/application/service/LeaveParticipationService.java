@@ -2,7 +2,7 @@ package com.kgu.studywithme.studyparticipant.application.service;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.study.application.service.QueryStudyByIdService;
+import com.kgu.studywithme.study.application.adapter.StudyReadAdapter;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.LeaveParticipationUseCase;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
@@ -16,12 +16,12 @@ import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.LEAV
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class LeaveParticipationService implements LeaveParticipationUseCase {
-    private final QueryStudyByIdService queryStudyByIdService;
+    private final StudyReadAdapter studyReadAdapter;
     private final StudyParticipantRepository studyParticipantRepository;
 
     @Override
     public void invoke(final Command command) {
-        final Study study = queryStudyByIdService.findById(command.studyId());
+        final Study study = studyReadAdapter.getById(command.studyId());
         validateMemberIsHost(study, command.participantId());
 
         studyParticipantRepository.updateParticipantStatus(command.studyId(), command.participantId(), LEAVE);
