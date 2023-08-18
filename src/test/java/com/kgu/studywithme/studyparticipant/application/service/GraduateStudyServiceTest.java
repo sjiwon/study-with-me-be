@@ -5,7 +5,7 @@ import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.application.adapter.StudyReadAdapter;
 import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
+import com.kgu.studywithme.studyattendance.application.adapter.StudyAttendanceHandlingRepositoryAdapter;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.GraduateStudyUseCase;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import com.kgu.studywithme.studyparticipant.event.StudyGraduatedEvent;
@@ -44,7 +44,7 @@ class GraduateStudyServiceTest extends UseCaseTest {
     private StudyParticipantRepository studyParticipantRepository;
 
     @Mock
-    private StudyAttendanceRepository studyAttendanceRepository;
+    private StudyAttendanceHandlingRepositoryAdapter studyAttendanceHandlingRepositoryAdapter;
 
     @Mock
     private ApplicationEventPublisher eventPublisher;
@@ -75,7 +75,7 @@ class GraduateStudyServiceTest extends UseCaseTest {
         assertAll(
                 () -> verify(studyReadAdapter, times(1)).getById(any()),
                 () -> verify(studyParticipantRepository, times(0)).findParticipant(any(), any()),
-                () -> verify(studyAttendanceRepository, times(0)).getAttendanceCount(any(), any()),
+                () -> verify(studyAttendanceHandlingRepositoryAdapter, times(0)).getAttendanceCount(any(), any()),
                 () -> verify(studyParticipantRepository, times(0)).updateParticipantStatus(any(), any(), any()),
                 () -> verify(eventPublisher, times(0)).publishEvent(any(StudyGraduatedEvent.class))
         );
@@ -96,7 +96,7 @@ class GraduateStudyServiceTest extends UseCaseTest {
         assertAll(
                 () -> verify(studyReadAdapter, times(1)).getById(any()),
                 () -> verify(studyParticipantRepository, times(1)).findParticipant(any(), any()),
-                () -> verify(studyAttendanceRepository, times(0)).getAttendanceCount(any(), any()),
+                () -> verify(studyAttendanceHandlingRepositoryAdapter, times(0)).getAttendanceCount(any(), any()),
                 () -> verify(studyParticipantRepository, times(0)).updateParticipantStatus(any(), any(), any()),
                 () -> verify(eventPublisher, times(0)).publishEvent(any(StudyGraduatedEvent.class))
         );
@@ -108,7 +108,7 @@ class GraduateStudyServiceTest extends UseCaseTest {
         // given
         given(studyReadAdapter.getById(any())).willReturn(study);
         given(studyParticipantRepository.findParticipant(any(), any())).willReturn(Optional.of(applierWithAllowEmail));
-        given(studyAttendanceRepository.getAttendanceCount(any(), any()))
+        given(studyAttendanceHandlingRepositoryAdapter.getAttendanceCount(any(), any()))
                 .willReturn(study.getGraduationPolicy().getMinimumAttendance() - 1);
 
         // when - then
@@ -119,7 +119,7 @@ class GraduateStudyServiceTest extends UseCaseTest {
         assertAll(
                 () -> verify(studyReadAdapter, times(1)).getById(any()),
                 () -> verify(studyParticipantRepository, times(1)).findParticipant(any(), any()),
-                () -> verify(studyAttendanceRepository, times(1)).getAttendanceCount(any(), any()),
+                () -> verify(studyAttendanceHandlingRepositoryAdapter, times(1)).getAttendanceCount(any(), any()),
                 () -> verify(studyParticipantRepository, times(0)).updateParticipantStatus(any(), any(), any()),
                 () -> verify(eventPublisher, times(0)).publishEvent(any(StudyGraduatedEvent.class))
         );
@@ -131,7 +131,7 @@ class GraduateStudyServiceTest extends UseCaseTest {
         // given
         given(studyReadAdapter.getById(any())).willReturn(study);
         given(studyParticipantRepository.findParticipant(any(), any())).willReturn(Optional.of(applierWithAllowEmail));
-        given(studyAttendanceRepository.getAttendanceCount(any(), any()))
+        given(studyAttendanceHandlingRepositoryAdapter.getAttendanceCount(any(), any()))
                 .willReturn(study.getGraduationPolicy().getMinimumAttendance());
 
         // when
@@ -141,7 +141,7 @@ class GraduateStudyServiceTest extends UseCaseTest {
         assertAll(
                 () -> verify(studyReadAdapter, times(1)).getById(any()),
                 () -> verify(studyParticipantRepository, times(1)).findParticipant(any(), any()),
-                () -> verify(studyAttendanceRepository, times(1)).getAttendanceCount(any(), any()),
+                () -> verify(studyAttendanceHandlingRepositoryAdapter, times(1)).getAttendanceCount(any(), any()),
                 () -> verify(studyParticipantRepository, times(1)).updateParticipantStatus(any(), any(), any()),
                 () -> verify(eventPublisher, times(1)).publishEvent(any(StudyGraduatedEvent.class)),
                 () -> assertThat(study.getParticipants()).isEqualTo(previousParticipantMembers - 1)
@@ -154,7 +154,7 @@ class GraduateStudyServiceTest extends UseCaseTest {
         // given
         given(studyReadAdapter.getById(any())).willReturn(study);
         given(studyParticipantRepository.findParticipant(any(), any())).willReturn(Optional.of(applierWithNotAllowEmail));
-        given(studyAttendanceRepository.getAttendanceCount(any(), any()))
+        given(studyAttendanceHandlingRepositoryAdapter.getAttendanceCount(any(), any()))
                 .willReturn(study.getGraduationPolicy().getMinimumAttendance());
 
         // when
@@ -164,7 +164,7 @@ class GraduateStudyServiceTest extends UseCaseTest {
         assertAll(
                 () -> verify(studyReadAdapter, times(1)).getById(any()),
                 () -> verify(studyParticipantRepository, times(1)).findParticipant(any(), any()),
-                () -> verify(studyAttendanceRepository, times(1)).getAttendanceCount(any(), any()),
+                () -> verify(studyAttendanceHandlingRepositoryAdapter, times(1)).getAttendanceCount(any(), any()),
                 () -> verify(studyParticipantRepository, times(1)).updateParticipantStatus(any(), any(), any()),
                 () -> verify(eventPublisher, times(0)).publishEvent(any(StudyGraduatedEvent.class)),
                 () -> assertThat(study.getParticipants()).isEqualTo(previousParticipantMembers - 1)

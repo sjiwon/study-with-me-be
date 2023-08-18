@@ -7,7 +7,7 @@ import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
-import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
+import com.kgu.studywithme.studyattendance.infrastructure.persistence.StudyAttendanceJpaRepository;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import com.kgu.studywithme.studyweekly.application.usecase.command.SubmitWeeklyAssignmentUseCase;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
@@ -54,7 +54,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
     private StudyParticipantRepository studyParticipantRepository;
 
     @Mock
-    private StudyAttendanceRepository studyAttendanceRepository;
+    private StudyAttendanceJpaRepository studyAttendanceJpaRepository;
 
     @Mock
     private FileUploader uploader;
@@ -98,8 +98,8 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                 () -> verify(studyWeeklyRepository, times(0)).findById(any()),
                 () -> verify(studyParticipantRepository, times(0)).findParticipant(any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
-                () -> verify(studyAttendanceRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
-                () -> verify(studyAttendanceRepository, times(0)).updateParticipantStatus(any(), anyInt(), any(), any())
+                () -> verify(studyAttendanceJpaRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
+                () -> verify(studyAttendanceJpaRepository, times(0)).updateParticipantStatus(any(), anyInt(), any(), any())
         );
     }
 
@@ -123,8 +123,8 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                 () -> verify(studyWeeklyRepository, times(0)).findById(any()),
                 () -> verify(studyParticipantRepository, times(0)).findParticipant(any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
-                () -> verify(studyAttendanceRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
-                () -> verify(studyAttendanceRepository, times(0)).updateParticipantStatus(any(), anyInt(), any(), any())
+                () -> verify(studyAttendanceJpaRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
+                () -> verify(studyAttendanceJpaRepository, times(0)).updateParticipantStatus(any(), anyInt(), any(), any())
         );
     }
 
@@ -152,8 +152,8 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                 () -> verify(studyWeeklyRepository, times(1)).findById(any()),
                 () -> verify(studyParticipantRepository, times(0)).findParticipant(any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
-                () -> verify(studyAttendanceRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
-                () -> verify(studyAttendanceRepository, times(0)).updateParticipantStatus(any(), anyInt(), any(), any())
+                () -> verify(studyAttendanceJpaRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
+                () -> verify(studyAttendanceJpaRepository, times(0)).updateParticipantStatus(any(), anyInt(), any(), any())
         );
     }
 
@@ -181,8 +181,8 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                 () -> verify(studyWeeklyRepository, times(1)).findById(any()),
                 () -> verify(studyParticipantRepository, times(1)).findParticipant(any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
-                () -> verify(studyAttendanceRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
-                () -> verify(studyAttendanceRepository, times(1)).updateParticipantStatus(any(), anyInt(), any(), any()),
+                () -> verify(studyAttendanceJpaRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
+                () -> verify(studyAttendanceJpaRepository, times(1)).updateParticipantStatus(any(), anyInt(), any(), any()),
                 () -> assertThat(host.getScore().getValue()).isEqualTo(previousScore + 1) // 출석 완료
         );
     }
@@ -193,7 +193,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
         // given
         given(studyWeeklyRepository.findById(any())).willReturn(Optional.of(previousWeekly));
         given(studyParticipantRepository.findParticipant(any(), any())).willReturn(Optional.of(host));
-        given(studyAttendanceRepository.getParticipantAttendanceByWeek(any(), any(), anyInt())).willReturn(Optional.of(attendance));
+        given(studyAttendanceJpaRepository.getParticipantAttendanceByWeek(any(), any(), anyInt())).willReturn(Optional.of(attendance));
 
         // when
         submitWeeklyAssignmentService.invoke(
@@ -212,8 +212,8 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                 () -> verify(studyWeeklyRepository, times(1)).findById(any()),
                 () -> verify(studyParticipantRepository, times(1)).findParticipant(any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
-                () -> verify(studyAttendanceRepository, times(1)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
-                () -> verify(studyAttendanceRepository, times(1)).updateParticipantStatus(any(), anyInt(), any(), any()),
+                () -> verify(studyAttendanceJpaRepository, times(1)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
+                () -> verify(studyAttendanceJpaRepository, times(1)).updateParticipantStatus(any(), anyInt(), any(), any()),
                 () -> assertThat(host.getScore().getValue()).isEqualTo(previousScore + 4) // 결석 -> 지각 처리로 수정 [-5 -> -1]
         );
     }
@@ -243,8 +243,8 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                 () -> verify(studyWeeklyRepository, times(1)).findById(any()),
                 () -> verify(studyParticipantRepository, times(1)).findParticipant(any(), any()),
                 () -> verify(uploader, times(1)).uploadWeeklySubmit(any()),
-                () -> verify(studyAttendanceRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
-                () -> verify(studyAttendanceRepository, times(1)).updateParticipantStatus(any(), anyInt(), any(), any()),
+                () -> verify(studyAttendanceJpaRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
+                () -> verify(studyAttendanceJpaRepository, times(1)).updateParticipantStatus(any(), anyInt(), any(), any()),
                 () -> assertThat(host.getScore().getValue()).isEqualTo(previousScore + 1) // 출석 완료
         );
     }
@@ -256,7 +256,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
         given(studyWeeklyRepository.findById(any())).willReturn(Optional.of(previousWeekly));
         given(studyParticipantRepository.findParticipant(any(), any())).willReturn(Optional.of(host));
         given(uploader.uploadWeeklySubmit(fileData)).willReturn(TXT_FILE.getLink());
-        given(studyAttendanceRepository.getParticipantAttendanceByWeek(any(), any(), anyInt())).willReturn(Optional.of(attendance));
+        given(studyAttendanceJpaRepository.getParticipantAttendanceByWeek(any(), any(), anyInt())).willReturn(Optional.of(attendance));
 
         // when
         submitWeeklyAssignmentService.invoke(
@@ -275,8 +275,8 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                 () -> verify(studyWeeklyRepository, times(1)).findById(any()),
                 () -> verify(studyParticipantRepository, times(1)).findParticipant(any(), any()),
                 () -> verify(uploader, times(1)).uploadWeeklySubmit(any()),
-                () -> verify(studyAttendanceRepository, times(1)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
-                () -> verify(studyAttendanceRepository, times(1)).updateParticipantStatus(any(), anyInt(), any(), any()),
+                () -> verify(studyAttendanceJpaRepository, times(1)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
+                () -> verify(studyAttendanceJpaRepository, times(1)).updateParticipantStatus(any(), anyInt(), any(), any()),
                 () -> assertThat(host.getScore().getValue()).isEqualTo(previousScore + 4) // 결석 -> 지각 처리로 수정 [-5 -> -1]
         );
     }

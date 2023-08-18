@@ -5,7 +5,7 @@ import com.kgu.studywithme.file.application.adapter.FileUploader;
 import com.kgu.studywithme.file.domain.RawFileData;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
+import com.kgu.studywithme.studyattendance.infrastructure.persistence.StudyAttendanceJpaRepository;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import com.kgu.studywithme.studyweekly.application.usecase.command.CreateStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
@@ -48,7 +48,7 @@ class CreateStudyWeeklyServiceTest extends UseCaseTest {
     private StudyParticipantRepository studyParticipantRepository;
 
     @Mock
-    private StudyAttendanceRepository studyAttendanceRepository;
+    private StudyAttendanceJpaRepository studyAttendanceJpaRepository;
 
     private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L, LocalDateTime.now());
@@ -97,7 +97,7 @@ class CreateStudyWeeklyServiceTest extends UseCaseTest {
                 () -> verify(studyWeeklyRepository, times(1)).getNextWeek(any()),
                 () -> verify(studyWeeklyRepository, times(1)).save(any()),
                 () -> verify(studyParticipantRepository, times(1)).findStudyParticipantIds(any()),
-                () -> verify(studyAttendanceRepository, times(1)).saveAll(any())
+                () -> verify(studyAttendanceJpaRepository, times(1)).saveAll(any())
         );
     }
 }

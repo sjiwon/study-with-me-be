@@ -8,7 +8,7 @@ import com.kgu.studywithme.member.application.adapter.MemberReadAdapter;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
-import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
+import com.kgu.studywithme.studyattendance.infrastructure.persistence.StudyAttendanceJpaRepository;
 import com.kgu.studywithme.studyweekly.application.usecase.command.EditSubmittedWeeklyAssignmentUseCase;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
 import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
@@ -51,7 +51,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
     private StudyWeeklyRepository studyWeeklyRepository;
 
     @Mock
-    private StudyAttendanceRepository studyAttendanceRepository;
+    private StudyAttendanceJpaRepository studyAttendanceJpaRepository;
 
     @Mock
     private MemberReadAdapter memberReadAdapter;
@@ -100,7 +100,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
         assertAll(
                 () -> verify(studyWeeklyRepository, times(0)).getSubmittedAssignment(any(), any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
-                () -> verify(studyAttendanceRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt())
+                () -> verify(studyAttendanceJpaRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt())
         );
     }
 
@@ -123,7 +123,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
         assertAll(
                 () -> verify(studyWeeklyRepository, times(0)).getSubmittedAssignment(any(), any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
-                () -> verify(studyAttendanceRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt())
+                () -> verify(studyAttendanceJpaRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt())
         );
     }
 
@@ -150,7 +150,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
         assertAll(
                 () -> verify(studyWeeklyRepository, times(1)).getSubmittedAssignment(any(), any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
-                () -> verify(studyAttendanceRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt())
+                () -> verify(studyAttendanceJpaRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt())
         );
     }
 
@@ -182,7 +182,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
         assertAll(
                 () -> verify(studyWeeklyRepository, times(1)).getSubmittedAssignment(any(), any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
-                () -> verify(studyAttendanceRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
+                () -> verify(studyAttendanceJpaRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
                 () -> assertThat(host.getScore().getValue()).isEqualTo(previousScore) // Score 유지
         );
     }
@@ -198,7 +198,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
         ).apply(1L, LocalDateTime.now());
         given(studyWeeklyRepository.getSubmittedAssignment(any(), any(), any())).willReturn(Optional.of(submittedAssignment));
         given(memberReadAdapter.getById(any())).willReturn(host);
-        given(studyAttendanceRepository.getParticipantAttendanceByWeek(any(), any(), anyInt())).willReturn(Optional.of(attendance));
+        given(studyAttendanceJpaRepository.getParticipantAttendanceByWeek(any(), any(), anyInt())).willReturn(Optional.of(attendance));
 
         // when
         editSubmittedWeeklyAssignmentService.invoke(
@@ -216,7 +216,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
         assertAll(
                 () -> verify(studyWeeklyRepository, times(1)).getSubmittedAssignment(any(), any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
-                () -> verify(studyAttendanceRepository, times(1)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
+                () -> verify(studyAttendanceJpaRepository, times(1)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
                 () -> assertThat(host.getScore().getValue()).isEqualTo(previousScore - 2) // 출석 -> 지각
         );
     }

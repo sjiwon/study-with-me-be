@@ -6,16 +6,15 @@ import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.study.infrastructure.persistence.StudyJpaRepository;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
-import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
+import com.kgu.studywithme.studyattendance.infrastructure.persistence.StudyAttendanceJpaRepository;
 import com.kgu.studywithme.studyattendance.infrastructure.query.dto.NonAttendanceWeekly;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY1;
 import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY2;
@@ -29,10 +28,14 @@ import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.NON_AT
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+@Import(StudyAttendanceHandlingRepository.class)
 @DisplayName("StudyAttendance -> StudyAttendanceHandlingRepository 테스트")
 class StudyAttendanceHandlingRepositoryTest extends RepositoryTest {
     @Autowired
-    private StudyAttendanceRepository studyAttendanceRepository;
+    private StudyAttendanceHandlingRepository studyAttendanceHandlingRepository;
+
+    @Autowired
+    private StudyAttendanceJpaRepository studyAttendanceJpaRepository;
 
     @Autowired
     private MemberJpaRepository memberJpaRepository;
@@ -54,112 +57,32 @@ class StudyAttendanceHandlingRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    @DisplayName("특정 스터디에서 사용자의 특정 주차 출석 정보를 조회한다")
-    void getParticipantAttendanceByWeek() {
-        // given
-        final StudyAttendance attendance = studyAttendanceRepository.save(
-                StudyAttendance.recordAttendance(
-                        study.getId(),
-                        member[0].getId(),
-                        1,
-                        ATTENDANCE
-                )
-        );
-
-        // when
-        final Optional<StudyAttendance> findStudyAttendance = studyAttendanceRepository.getParticipantAttendanceByWeek(
-                study.getId(),
-                member[0].getId(),
-                attendance.getWeek()
-        );
-        final Optional<StudyAttendance> emptyStudyAttendance = studyAttendanceRepository.getParticipantAttendanceByWeek(
-                study.getId(),
-                member[0].getId(),
-                attendance.getWeek() + 1
-        );
-
-        // then
-        assertAll(
-                () -> assertThat(findStudyAttendance).isPresent(),
-                () -> assertThat(emptyStudyAttendance).isEmpty()
-        );
-    }
-
-    @Test
-    @DisplayName("스터디 참여자들 중에서 일부 참여자들의 특정 주차 출석 상태를 일괄 업데이트한다")
-    void updateParticipantStatus() {
-        // given
-        studyAttendanceRepository.saveAll(
-                List.of(
-                        StudyAttendance.recordAttendance(study.getId(), member[0].getId(), 1, NON_ATTENDANCE),
-                        StudyAttendance.recordAttendance(study.getId(), member[1].getId(), 1, NON_ATTENDANCE),
-                        StudyAttendance.recordAttendance(study.getId(), member[2].getId(), 1, NON_ATTENDANCE),
-                        StudyAttendance.recordAttendance(study.getId(), member[3].getId(), 1, NON_ATTENDANCE),
-                        StudyAttendance.recordAttendance(study.getId(), member[4].getId(), 1, NON_ATTENDANCE)
-                )
-        );
-
-        // when
-        final Set<Long> participantIds = Set.of(member[1].getId(), member[3].getId());
-        studyAttendanceRepository.updateParticipantStatus(
-                study.getId(),
-                1,
-                participantIds,
-                ATTENDANCE
-        );
-
-        // then
-        final List<StudyAttendance> attendances = studyAttendanceRepository.findAll();
-
-        assertAll(
-                () -> assertThat(attendances)
-                        .map(StudyAttendance::getParticipantId)
-                        .containsExactly(
-                                member[0].getId(),
-                                member[1].getId(),
-                                member[2].getId(),
-                                member[3].getId(),
-                                member[4].getId()
-                        ),
-                () -> assertThat(attendances)
-                        .map(StudyAttendance::getStatus)
-                        .containsExactly(
-                                NON_ATTENDANCE,
-                                ATTENDANCE,
-                                NON_ATTENDANCE,
-                                ATTENDANCE,
-                                NON_ATTENDANCE
-                        )
-        );
-    }
-
-    @Test
     @DisplayName("사용자의 스터디 출석 횟수를 조회한다")
     void getAttendanceCount() {
         /* 출석 1회 */
-        studyAttendanceRepository.save(
+        studyAttendanceJpaRepository.save(
                 StudyAttendance.recordAttendance(study.getId(), member[0].getId(), 1, ATTENDANCE)
         );
-        assertThat(studyAttendanceRepository.getAttendanceCount(study.getId(), member[0].getId())).isEqualTo(1);
+        assertThat(studyAttendanceHandlingRepository.getAttendanceCount(study.getId(), member[0].getId())).isEqualTo(1);
 
         /* 출석 1회 + 지각 1회 */
-        studyAttendanceRepository.save(
+        studyAttendanceJpaRepository.save(
                 StudyAttendance.recordAttendance(study.getId(), member[0].getId(), 2, LATE)
         );
-        assertThat(studyAttendanceRepository.getAttendanceCount(study.getId(), member[0].getId())).isEqualTo(1);
+        assertThat(studyAttendanceHandlingRepository.getAttendanceCount(study.getId(), member[0].getId())).isEqualTo(1);
 
         /* 출석 2회 + 지각 1회 */
-        studyAttendanceRepository.save(
+        studyAttendanceJpaRepository.save(
                 StudyAttendance.recordAttendance(study.getId(), member[0].getId(), 3, ATTENDANCE)
         );
-        assertThat(studyAttendanceRepository.getAttendanceCount(study.getId(), member[0].getId())).isEqualTo(2);
+        assertThat(studyAttendanceHandlingRepository.getAttendanceCount(study.getId(), member[0].getId())).isEqualTo(2);
     }
 
     @Test
     @DisplayName("미출석 주차 정보들을 조회한다")
     void findNonAttendanceInformation() {
         /* 1주차 */
-        studyAttendanceRepository.saveAll(
+        studyAttendanceJpaRepository.saveAll(
                 List.of(
                         StudyAttendance.recordAttendance(study.getId(), member[0].getId(), 1, NON_ATTENDANCE),
                         StudyAttendance.recordAttendance(study.getId(), member[1].getId(), 1, NON_ATTENDANCE),
@@ -169,7 +92,7 @@ class StudyAttendanceHandlingRepositoryTest extends RepositoryTest {
                 )
         );
 
-        final List<NonAttendanceWeekly> result1 = studyAttendanceRepository.findNonAttendanceInformation();
+        final List<NonAttendanceWeekly> result1 = studyAttendanceHandlingRepository.findNonAttendanceInformation();
         assertAll(
                 () -> assertThat(result1)
                         .map(NonAttendanceWeekly::studyId)
@@ -183,7 +106,7 @@ class StudyAttendanceHandlingRepositoryTest extends RepositoryTest {
         );
 
         /* 2주차 */
-        studyAttendanceRepository.saveAll(
+        studyAttendanceJpaRepository.saveAll(
                 List.of(
                         StudyAttendance.recordAttendance(study.getId(), member[0].getId(), 2, ATTENDANCE),
                         StudyAttendance.recordAttendance(study.getId(), member[1].getId(), 2, NON_ATTENDANCE),
@@ -193,7 +116,7 @@ class StudyAttendanceHandlingRepositoryTest extends RepositoryTest {
                 )
         );
 
-        final List<NonAttendanceWeekly> result2 = studyAttendanceRepository.findNonAttendanceInformation();
+        final List<NonAttendanceWeekly> result2 = studyAttendanceHandlingRepository.findNonAttendanceInformation();
         assertAll(
                 () -> assertThat(result2)
                         .map(NonAttendanceWeekly::studyId)

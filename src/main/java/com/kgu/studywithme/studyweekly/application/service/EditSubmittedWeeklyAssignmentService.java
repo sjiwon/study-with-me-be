@@ -7,8 +7,8 @@ import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.application.adapter.MemberReadAdapter;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
-import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
 import com.kgu.studywithme.studyattendance.exception.StudyAttendanceErrorCode;
+import com.kgu.studywithme.studyattendance.infrastructure.persistence.StudyAttendanceJpaRepository;
 import com.kgu.studywithme.studyweekly.application.usecase.command.EditSubmittedWeeklyAssignmentUseCase;
 import com.kgu.studywithme.studyweekly.domain.Period;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
@@ -31,7 +31,7 @@ import static com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType
 @RequiredArgsConstructor
 public class EditSubmittedWeeklyAssignmentService implements EditSubmittedWeeklyAssignmentUseCase {
     private final StudyWeeklyRepository studyWeeklyRepository;
-    private final StudyAttendanceRepository studyAttendanceRepository;
+    private final StudyAttendanceJpaRepository studyAttendanceJpaRepository;
     private final MemberReadAdapter memberReadAdapter;
     private final FileUploader uploader;
 
@@ -107,7 +107,7 @@ public class EditSubmittedWeeklyAssignmentService implements EditSubmittedWeekly
             final Long participantId,
             final int week
     ) {
-        return studyAttendanceRepository.getParticipantAttendanceByWeek(studyId, participantId, week)
+        return studyAttendanceJpaRepository.getParticipantAttendanceByWeek(studyId, participantId, week)
                 .orElseThrow(() -> StudyWithMeException.type(StudyAttendanceErrorCode.ATTENDANCE_NOT_FOUND));
     }
 }

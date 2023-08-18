@@ -14,7 +14,7 @@ import com.kgu.studywithme.study.infrastructure.query.dto.StudyMember;
 import com.kgu.studywithme.study.infrastructure.query.dto.StudyParticipantInformation;
 import com.kgu.studywithme.study.infrastructure.query.dto.WeeklyInformation;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
-import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
+import com.kgu.studywithme.studyattendance.infrastructure.persistence.StudyAttendanceJpaRepository;
 import com.kgu.studywithme.studynotice.domain.StudyNotice;
 import com.kgu.studywithme.studynotice.domain.StudyNoticeRepository;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipant;
@@ -73,7 +73,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
     private StudyNoticeRepository studyNoticeRepository;
 
     @Autowired
-    private StudyAttendanceRepository studyAttendanceRepository;
+    private StudyAttendanceJpaRepository studyAttendanceJpaRepository;
 
     @Autowired
     private StudyWeeklyRepository studyWeeklyRepository;
@@ -346,7 +346,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
         );
         IntStream.range(0, 2).forEach(i -> study.addParticipant());
 
-        studyAttendanceRepository.saveAll(
+        studyAttendanceJpaRepository.saveAll(
                 List.of(
                         StudyAttendance.recordAttendance(study.getId(), host.getId(), 1, ATTENDANCE),
                         StudyAttendance.recordAttendance(study.getId(), host.getId(), 2, ATTENDANCE),

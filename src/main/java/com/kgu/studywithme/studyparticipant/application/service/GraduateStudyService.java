@@ -5,7 +5,7 @@ import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.application.adapter.StudyReadAdapter;
 import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
+import com.kgu.studywithme.studyattendance.application.adapter.StudyAttendanceHandlingRepositoryAdapter;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.GraduateStudyUseCase;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import com.kgu.studywithme.studyparticipant.event.StudyGraduatedEvent;
@@ -22,7 +22,7 @@ import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.GRAD
 public class GraduateStudyService implements GraduateStudyUseCase {
     private final StudyReadAdapter studyReadAdapter;
     private final StudyParticipantRepository studyParticipantRepository;
-    private final StudyAttendanceRepository studyAttendanceRepository;
+    private final StudyAttendanceHandlingRepositoryAdapter studyAttendanceHandlingRepositoryAdapter;
     private final ApplicationEventPublisher eventPublisher;
 
     @Override
@@ -33,8 +33,8 @@ public class GraduateStudyService implements GraduateStudyUseCase {
         final Member participant = getParticipant(command.studyId(), command.participantId());
         validateParticipantMeetGraduationPolicy(study, participant);
 
-        studyParticipantRepository.updateParticipantStatus(command.studyId(), command.participantId(), GRADUATED);
         study.removeParticipant();
+        studyParticipantRepository.updateParticipantStatus(command.studyId(), command.participantId(), GRADUATED);
 
         if (participant.isEmailOptIn()) {
             eventPublisher.publishEvent(
@@ -59,7 +59,7 @@ public class GraduateStudyService implements GraduateStudyUseCase {
     }
 
     private void validateParticipantMeetGraduationPolicy(final Study study, final Member participant) {
-        final int attendanceCount = studyAttendanceRepository.getAttendanceCount(study.getId(), participant.getId());
+        final int attendanceCount = studyAttendanceHandlingRepositoryAdapter.getAttendanceCount(study.getId(), participant.getId());
 
         if (!study.isParticipantMeetGraduationPolicy(attendanceCount)) {
             throw StudyWithMeException.type(StudyParticipantErrorCode.PARTICIPANT_NOT_MEET_GRADUATION_POLICY);

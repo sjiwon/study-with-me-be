@@ -7,7 +7,7 @@ import com.kgu.studywithme.member.infrastructure.query.dto.StudyParticipateWeeks
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.study.infrastructure.persistence.StudyJpaRepository;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
-import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
+import com.kgu.studywithme.studyattendance.infrastructure.persistence.StudyAttendanceJpaRepository;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipant;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,7 +48,7 @@ class MemberAttendanceRepositoryTest extends RepositoryTest {
     private StudyParticipantRepository studyParticipantRepository;
 
     @Autowired
-    private StudyAttendanceRepository studyAttendanceRepository;
+    private StudyAttendanceJpaRepository studyAttendanceJpaRepository;
 
     private Member member;
     private Study studyA;
@@ -84,7 +84,7 @@ class MemberAttendanceRepositoryTest extends RepositoryTest {
         );
 
         /* Week 1 */
-        studyAttendanceRepository.saveAll(
+        studyAttendanceJpaRepository.saveAll(
                 List.of(
                         StudyAttendance.recordAttendance(studyA.getId(), member.getId(), 1, ATTENDANCE),
                         StudyAttendance.recordAttendance(studyB.getId(), member.getId(), 1, ATTENDANCE),
@@ -104,7 +104,7 @@ class MemberAttendanceRepositoryTest extends RepositoryTest {
         );
 
         /* Week 2 */
-        studyAttendanceRepository.saveAll(
+        studyAttendanceJpaRepository.saveAll(
                 List.of(
                         StudyAttendance.recordAttendance(studyA.getId(), member.getId(), 2, ATTENDANCE),
                         StudyAttendance.recordAttendance(studyD.getId(), member.getId(), 2, ATTENDANCE),
@@ -122,7 +122,7 @@ class MemberAttendanceRepositoryTest extends RepositoryTest {
         );
 
         /* Week 3 */
-        studyAttendanceRepository.save(StudyAttendance.recordAttendance(studyA.getId(), member.getId(), 3, ATTENDANCE));
+        studyAttendanceJpaRepository.save(StudyAttendance.recordAttendance(studyA.getId(), member.getId(), 3, ATTENDANCE));
 
         final List<StudyParticipateWeeks> participateWeeks3 = memberAttendanceRepository.findParticipateWeeksInStudyByMemberId(member.getId());
         assertAll(
