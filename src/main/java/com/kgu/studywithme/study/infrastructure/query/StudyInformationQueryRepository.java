@@ -166,10 +166,12 @@ public class StudyInformationQueryRepository implements StudyInformationQueryRep
                 .innerJoin(studyParticipant).on(studyParticipant.memberId.eq(member.id))
                 .where(
                         studyParticipant.studyId.eq(studyId),
-                        studyParticipant.memberId.ne(host.id()),
                         studyParticipant.status.eq(APPROVE)
                 )
-                .fetch();
+                .fetch()
+                .stream()
+                .filter(studyMember -> !studyMember.id().equals(host.id()))
+                .toList();
 
         return new StudyParticipantInformation(host, participants);
     }

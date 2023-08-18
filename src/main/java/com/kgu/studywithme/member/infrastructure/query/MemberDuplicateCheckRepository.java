@@ -2,6 +2,7 @@ package com.kgu.studywithme.member.infrastructure.query;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.member.application.adapter.MemberDuplicateCheckRepositoryAdapter;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -19,7 +20,7 @@ public class MemberDuplicateCheckRepository implements MemberDuplicateCheckRepos
         return query
                 .select(member.id)
                 .from(member)
-                .where(member.email.value.eq(email))
+                .where(emailEq(email))
                 .fetchFirst() != null;
     }
 
@@ -28,20 +29,19 @@ public class MemberDuplicateCheckRepository implements MemberDuplicateCheckRepos
         return query
                 .select(member.id)
                 .from(member)
-                .where(member.nickname.value.eq(nickname))
+                .where(nicknameEq(nickname))
                 .fetchFirst() != null;
     }
 
     @Override
     public boolean isNicknameUsedByOther(final Long memberId, final String nickname) {
-        return query
+        final Long nicknameUsedMemberId = query
                 .select(member.id)
                 .from(member)
-                .where(
-                        member.id.ne(memberId),
-                        member.nickname.value.eq(nickname)
-                )
-                .fetchFirst() != null;
+                .where(nicknameEq(nickname))
+                .fetchFirst();
+
+        return nicknameUsedMemberId != null && !nicknameUsedMemberId.equals(memberId);
     }
 
     @Override
@@ -49,19 +49,30 @@ public class MemberDuplicateCheckRepository implements MemberDuplicateCheckRepos
         return query
                 .select(member.id)
                 .from(member)
-                .where(member.phone.value.eq(phone))
+                .where(phoneNumberEq(phone))
                 .fetchFirst() != null;
     }
 
     @Override
     public boolean isPhoneUsedByOther(final Long memberId, final String phone) {
-        return query
+        final Long phoneUsedMemberId = query
                 .select(member.id)
                 .from(member)
-                .where(
-                        member.id.ne(memberId),
-                        member.phone.value.eq(phone)
-                )
-                .fetchFirst() != null;
+                .where(phoneNumberEq(phone))
+                .fetchFirst();
+
+        return phoneUsedMemberId != null && !phoneUsedMemberId.equals(memberId);
+    }
+
+    private BooleanExpression emailEq(final String email) {
+        return member.email.value.eq(email);
+    }
+
+    private BooleanExpression nicknameEq(final String nickname) {
+        return member.nickname.value.eq(nickname);
+    }
+
+    private BooleanExpression phoneNumberEq(final String phone) {
+        return member.phone.value.eq(phone);
     }
 }

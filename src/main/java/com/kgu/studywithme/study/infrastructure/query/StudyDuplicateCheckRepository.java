@@ -20,23 +20,22 @@ public class StudyDuplicateCheckRepository implements StudyDuplicateCheckReposit
         return query
                 .select(study.id)
                 .from(study)
-                .where(nameEq(name))
+                .where(studyNameEq(name))
                 .fetchFirst() != null;
     }
 
     @Override
     public boolean isNameUsedByOther(final Long studyId, final String name) {
-        return query
+        final Long nameUsedStudyId = query
                 .select(study.id)
                 .from(study)
-                .where(
-                        study.id.ne(studyId),
-                        nameEq(name)
-                )
-                .fetchFirst() != null;
+                .where(studyNameEq(name))
+                .fetchFirst();
+
+        return nameUsedStudyId != null && !nameUsedStudyId.equals(studyId);
     }
 
-    private BooleanExpression nameEq(final String name) {
+    private BooleanExpression studyNameEq(final String name) {
         return study.name.value.eq(name);
     }
 }
