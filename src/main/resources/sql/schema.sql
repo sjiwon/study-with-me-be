@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS study
     description          TEXT         NOT NULL,
     category             VARCHAR(20)  NOT NULL,
     capacity             INT          NOT NULL,
-    participant_members  INT          NOT NULL,
+    participants         INT          NOT NULL,
     image                VARCHAR(100) NOT NULL,
     study_type           VARCHAR(10)  NOT NULL,
     province             VARCHAR(100),
