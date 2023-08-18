@@ -6,7 +6,7 @@ import com.kgu.studywithme.favorite.infrastructure.persistence.FavoriteJpaReposi
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
 import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.study.domain.StudyRepository;
+import com.kgu.studywithme.study.infrastructure.persistence.StudyJpaRepository;
 import com.kgu.studywithme.study.infrastructure.query.dto.StudyPreview;
 import com.kgu.studywithme.study.utils.QueryStudyByCategoryCondition;
 import com.kgu.studywithme.study.utils.QueryStudyByRecommendCondition;
@@ -17,6 +17,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -71,10 +72,14 @@ import static com.kgu.studywithme.study.utils.PagingConstants.getDefaultPageRequ
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+@Import(StudyCategoryQueryRepository.class)
 @DisplayName("Study -> StudyCategoryQueryRepository 테스트")
 class StudyCategoryQueryRepositoryTest extends RepositoryTest {
     @Autowired
-    private StudyRepository studyRepository;
+    private StudyCategoryQueryRepository studyCategoryQueryRepository;
+
+    @Autowired
+    private StudyJpaRepository studyJpaRepository;
 
     @Autowired
     private MemberJpaRepository memberJpaRepository;
@@ -157,7 +162,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final Slice<StudyPreview> result1 = studyRepository.fetchStudyByCategory(onlineCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result1 = studyCategoryQueryRepository.fetchStudyByCategory(onlineCondition, PAGE_REQUEST_1);
             assertThat(result1.hasNext()).isTrue();
             assertThatStudiesMatch(
                     result1.getContent(),
@@ -171,7 +176,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final Slice<StudyPreview> result2 = studyRepository.fetchStudyByCategory(onlineCondition, PAGE_REQUEST_2);
+            final Slice<StudyPreview> result2 = studyCategoryQueryRepository.fetchStudyByCategory(onlineCondition, PAGE_REQUEST_2);
             assertThat(result2.hasNext()).isFalse();
             assertThatStudiesMatch(
                     result2.getContent(),
@@ -187,7 +192,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final Slice<StudyPreview> result3 = studyRepository.fetchStudyByCategory(offlineCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result3 = studyCategoryQueryRepository.fetchStudyByCategory(offlineCondition, PAGE_REQUEST_1);
             assertThat(result3.hasNext()).isFalse();
             assertThatStudiesMatch(
                     result3.getContent(),
@@ -203,7 +208,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final Slice<StudyPreview> result4 = studyRepository.fetchStudyByCategory(totalCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result4 = studyCategoryQueryRepository.fetchStudyByCategory(totalCondition, PAGE_REQUEST_1);
             assertThat(result4.hasNext()).isTrue();
             assertThatStudiesMatch(
                     result4.getContent(),
@@ -217,7 +222,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final Slice<StudyPreview> result5 = studyRepository.fetchStudyByCategory(totalCondition, PAGE_REQUEST_2);
+            final Slice<StudyPreview> result5 = studyCategoryQueryRepository.fetchStudyByCategory(totalCondition, PAGE_REQUEST_2);
             assertThat(result5.hasNext()).isFalse();
             assertThatStudiesMatch(
                     result5.getContent(),
@@ -254,9 +259,9 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
             );
 
             // 서울 특별시 & 강남구
-            final Slice<StudyPreview> result1 = studyRepository.fetchStudyByCategory(condition1, PAGE_REQUEST_1);
-            final Slice<StudyPreview> result2 = studyRepository.fetchStudyByCategory(condition2, PAGE_REQUEST_1);
-            final Slice<StudyPreview> result3 = studyRepository.fetchStudyByCategory(condition3, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result1 = studyCategoryQueryRepository.fetchStudyByCategory(condition1, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result2 = studyCategoryQueryRepository.fetchStudyByCategory(condition2, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result3 = studyCategoryQueryRepository.fetchStudyByCategory(condition3, PAGE_REQUEST_1);
             assertThat(result1.hasNext()).isFalse();
             assertThat(result2.hasNext()).isFalse();
             assertThat(result3.hasNext()).isFalse();
@@ -292,7 +297,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final Slice<StudyPreview> result1 = studyRepository.fetchStudyByCategory(onlineCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result1 = studyCategoryQueryRepository.fetchStudyByCategory(onlineCondition, PAGE_REQUEST_1);
             assertThat(result1.hasNext()).isTrue();
             assertThatStudiesMatch(
                     result1.getContent(),
@@ -331,7 +336,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final Slice<StudyPreview> result2 = studyRepository.fetchStudyByCategory(onlineCondition, PAGE_REQUEST_2);
+            final Slice<StudyPreview> result2 = studyCategoryQueryRepository.fetchStudyByCategory(onlineCondition, PAGE_REQUEST_2);
             assertThat(result2.hasNext()).isFalse();
             assertThatStudiesMatch(
                     result2.getContent(),
@@ -350,7 +355,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final Slice<StudyPreview> result3 = studyRepository.fetchStudyByCategory(offlineCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result3 = studyCategoryQueryRepository.fetchStudyByCategory(offlineCondition, PAGE_REQUEST_1);
             assertThat(result3.hasNext()).isFalse();
             assertThatStudiesMatch(
                     result3.getContent(),
@@ -375,7 +380,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final Slice<StudyPreview> result4 = studyRepository.fetchStudyByCategory(totalCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result4 = studyCategoryQueryRepository.fetchStudyByCategory(totalCondition, PAGE_REQUEST_1);
             assertThat(result4.hasNext()).isTrue();
             assertThatStudiesMatch(
                     result4.getContent(),
@@ -420,7 +425,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final Slice<StudyPreview> result5 = studyRepository.fetchStudyByCategory(totalCondition, PAGE_REQUEST_2);
+            final Slice<StudyPreview> result5 = studyCategoryQueryRepository.fetchStudyByCategory(totalCondition, PAGE_REQUEST_2);
             assertThat(result5.hasNext()).isFalse();
             assertThatStudiesMatch(
                     result5.getContent(),
@@ -448,7 +453,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final Slice<StudyPreview> result1 = studyRepository.fetchStudyByCategory(onlineCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result1 = studyCategoryQueryRepository.fetchStudyByCategory(onlineCondition, PAGE_REQUEST_1);
             assertThat(result1.hasNext()).isTrue();
             assertThatStudiesMatch(
                     result1.getContent(),
@@ -462,7 +467,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final Slice<StudyPreview> result2 = studyRepository.fetchStudyByCategory(onlineCondition, PAGE_REQUEST_2);
+            final Slice<StudyPreview> result2 = studyCategoryQueryRepository.fetchStudyByCategory(onlineCondition, PAGE_REQUEST_2);
             assertThat(result2.hasNext()).isFalse();
             assertThatStudiesMatch(
                     result2.getContent(),
@@ -478,7 +483,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final Slice<StudyPreview> result3 = studyRepository.fetchStudyByCategory(offlineCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result3 = studyCategoryQueryRepository.fetchStudyByCategory(offlineCondition, PAGE_REQUEST_1);
             assertThat(result3.hasNext()).isFalse();
             assertThatStudiesMatch(
                     result3.getContent(),
@@ -494,7 +499,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final Slice<StudyPreview> result4 = studyRepository.fetchStudyByCategory(totalCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result4 = studyCategoryQueryRepository.fetchStudyByCategory(totalCondition, PAGE_REQUEST_1);
             assertThat(result4.hasNext()).isTrue();
             assertThatStudiesMatch(
                     result4.getContent(),
@@ -508,7 +513,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final Slice<StudyPreview> result5 = studyRepository.fetchStudyByCategory(totalCondition, PAGE_REQUEST_2);
+            final Slice<StudyPreview> result5 = studyCategoryQueryRepository.fetchStudyByCategory(totalCondition, PAGE_REQUEST_2);
             assertThat(result5.hasNext()).isFalse();
             assertThatStudiesMatch(
                     result5.getContent(),
@@ -535,7 +540,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final Slice<StudyPreview> result1 = studyRepository.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result1 = studyCategoryQueryRepository.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_1);
             assertThat(result1.hasNext()).isTrue();
             assertThatStudiesMatch(
                     result1.getContent(),
@@ -549,7 +554,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final Slice<StudyPreview> result2 = studyRepository.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_2);
+            final Slice<StudyPreview> result2 = studyCategoryQueryRepository.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_2);
             assertThat(result2.hasNext()).isTrue();
             assertThatStudiesMatch(
                     result2.getContent(),
@@ -563,7 +568,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final Slice<StudyPreview> result3 = studyRepository.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_3);
+            final Slice<StudyPreview> result3 = studyCategoryQueryRepository.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_3);
             assertThat(result3.hasNext()).isFalse();
             assertThatStudiesMatch(
                     result3.getContent(),
@@ -579,7 +584,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final Slice<StudyPreview> result4 = studyRepository.fetchStudyByRecommend(offlineCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result4 = studyCategoryQueryRepository.fetchStudyByRecommend(offlineCondition, PAGE_REQUEST_1);
             assertThat(result4.hasNext()).isFalse();
             assertThatStudiesMatch(
                     result4.getContent(),
@@ -601,7 +606,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final Slice<StudyPreview> result5 = studyRepository.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result5 = studyCategoryQueryRepository.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_1);
             assertThat(result5.hasNext()).isTrue();
             assertThatStudiesMatch(
                     result5.getContent(),
@@ -615,7 +620,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final Slice<StudyPreview> result6 = studyRepository.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_2);
+            final Slice<StudyPreview> result6 = studyCategoryQueryRepository.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_2);
             assertThat(result6.hasNext()).isTrue();
             assertThatStudiesMatch(
                     result6.getContent(),
@@ -629,7 +634,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final Slice<StudyPreview> result7 = studyRepository.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_3);
+            final Slice<StudyPreview> result7 = studyCategoryQueryRepository.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_3);
             assertThat(result7.hasNext()).isFalse();
             assertThatStudiesMatch(
                     result7.getContent(),
@@ -672,9 +677,9 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
             );
 
             // 서울 특별시 & 강남구
-            final Slice<StudyPreview> result1 = studyRepository.fetchStudyByRecommend(condition1, PAGE_REQUEST_1);
-            final Slice<StudyPreview> result2 = studyRepository.fetchStudyByRecommend(condition2, PAGE_REQUEST_1);
-            final Slice<StudyPreview> result3 = studyRepository.fetchStudyByRecommend(condition3, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result1 = studyCategoryQueryRepository.fetchStudyByRecommend(condition1, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result2 = studyCategoryQueryRepository.fetchStudyByRecommend(condition2, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result3 = studyCategoryQueryRepository.fetchStudyByRecommend(condition3, PAGE_REQUEST_1);
             assertThat(result1.hasNext()).isFalse();
             assertThat(result2.hasNext()).isFalse();
             assertThat(result3.hasNext()).isFalse();
@@ -710,7 +715,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final Slice<StudyPreview> result1 = studyRepository.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result1 = studyCategoryQueryRepository.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_1);
             assertThat(result1.hasNext()).isTrue();
             assertThatStudiesMatch(
                     result1.getContent(),
@@ -754,7 +759,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final Slice<StudyPreview> result2 = studyRepository.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_2);
+            final Slice<StudyPreview> result2 = studyCategoryQueryRepository.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_2);
             assertThat(result2.hasNext()).isTrue();
             assertThatStudiesMatch(
                     result2.getContent(),
@@ -774,7 +779,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final Slice<StudyPreview> result3 = studyRepository.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_3);
+            final Slice<StudyPreview> result3 = studyCategoryQueryRepository.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_3);
             assertThat(result3.hasNext()).isFalse();
             assertThatStudiesMatch(
                     result3.getContent(),
@@ -790,7 +795,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final Slice<StudyPreview> result4 = studyRepository.fetchStudyByRecommend(offlineCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result4 = studyCategoryQueryRepository.fetchStudyByRecommend(offlineCondition, PAGE_REQUEST_1);
             assertThat(result4.hasNext()).isFalse();
             assertThatStudiesMatch(
                     result4.getContent(),
@@ -826,7 +831,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final Slice<StudyPreview> result5 = studyRepository.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result5 = studyCategoryQueryRepository.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_1);
             assertThat(result5.hasNext()).isTrue();
             assertThatStudiesMatch(
                     result5.getContent(),
@@ -870,7 +875,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final Slice<StudyPreview> result6 = studyRepository.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_2);
+            final Slice<StudyPreview> result6 = studyCategoryQueryRepository.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_2);
             assertThat(result6.hasNext()).isTrue();
             assertThatStudiesMatch(
                     result6.getContent(),
@@ -899,7 +904,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final Slice<StudyPreview> result7 = studyRepository.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_3);
+            final Slice<StudyPreview> result7 = studyCategoryQueryRepository.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_3);
             assertThat(result7.hasNext()).isFalse();
             assertThatStudiesMatch(
                     result7.getContent(),
@@ -934,7 +939,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final Slice<StudyPreview> result1 = studyRepository.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result1 = studyCategoryQueryRepository.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_1);
             assertThat(result1.hasNext()).isTrue();
             assertThatStudiesMatch(
                     result1.getContent(),
@@ -948,7 +953,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final Slice<StudyPreview> result2 = studyRepository.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_2);
+            final Slice<StudyPreview> result2 = studyCategoryQueryRepository.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_2);
             assertThat(result2.hasNext()).isTrue();
             assertThatStudiesMatch(
                     result2.getContent(),
@@ -962,7 +967,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final Slice<StudyPreview> result3 = studyRepository.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_3);
+            final Slice<StudyPreview> result3 = studyCategoryQueryRepository.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_3);
             assertThat(result3.hasNext()).isFalse();
             assertThatStudiesMatch(
                     result3.getContent(),
@@ -978,7 +983,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final Slice<StudyPreview> result4 = studyRepository.fetchStudyByRecommend(offlineCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result4 = studyCategoryQueryRepository.fetchStudyByRecommend(offlineCondition, PAGE_REQUEST_1);
             assertThat(result4.hasNext()).isFalse();
             assertThatStudiesMatch(
                     result4.getContent(),
@@ -1000,7 +1005,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final Slice<StudyPreview> result5 = studyRepository.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result5 = studyCategoryQueryRepository.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_1);
             assertThat(result5.hasNext()).isTrue();
             assertThatStudiesMatch(
                     result5.getContent(),
@@ -1014,7 +1019,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final Slice<StudyPreview> result6 = studyRepository.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_2);
+            final Slice<StudyPreview> result6 = studyCategoryQueryRepository.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_2);
             assertThat(result6.hasNext()).isTrue();
             assertThatStudiesMatch(
                     result6.getContent(),
@@ -1028,7 +1033,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final Slice<StudyPreview> result7 = studyRepository.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_3);
+            final Slice<StudyPreview> result7 = studyCategoryQueryRepository.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_3);
             assertThat(result7.hasNext()).isFalse();
             assertThatStudiesMatch(
                     result7.getContent(),
@@ -1063,7 +1068,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
             buffer.add(study);
         }
 
-        studyRepository.saveAll(buffer);
+        studyJpaRepository.saveAll(buffer);
     }
 
     private void initDataWithFavorite() {
@@ -1168,15 +1173,15 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
 
             assertAll(
                     () -> assertThat(preview.getId()).isEqualTo(expect.getId()),
-                    () -> assertThat(preview.getName()).isEqualTo(expect.getNameValue()),
-                    () -> assertThat(preview.getDescription()).isEqualTo(expect.getDescriptionValue()),
+                    () -> assertThat(preview.getName()).isEqualTo(expect.getName().getValue()),
+                    () -> assertThat(preview.getDescription()).isEqualTo(expect.getDescription().getValue()),
                     () -> assertThat(preview.getCategory()).isEqualTo(expect.getCategory().getName()),
                     () -> assertThat(preview.getThumbnail().name()).isEqualTo(expect.getThumbnail().getImageName()),
                     () -> assertThat(preview.getThumbnail().background()).isEqualTo(expect.getThumbnail().getBackground()),
                     () -> assertThat(preview.getType()).isEqualTo(expect.getType()),
                     () -> assertThat(preview.getRecruitmentStatus()).isEqualTo(expect.getRecruitmentStatus()),
-                    () -> assertThat(preview.getMaxMember()).isEqualTo(expect.getCapacity()),
-                    () -> assertThat(preview.getParticipantMembers()).isEqualTo(expect.getParticipantMembers()),
+                    () -> assertThat(preview.getMaxMember()).isEqualTo(expect.getCapacity().getValue()),
+                    () -> assertThat(preview.getParticipantMembers()).isEqualTo(expect.getParticipants()),
                     () -> assertThat(preview.getHashtags()).containsExactlyInAnyOrderElementsOf(expect.getHashtags()),
                     () -> assertThat(preview.getLikeMarkingMembers()).containsExactlyInAnyOrderElementsOf(likeMarkingMemberIds)
             );
