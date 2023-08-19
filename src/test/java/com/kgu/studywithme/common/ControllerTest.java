@@ -88,6 +88,7 @@ import com.kgu.studywithme.studyweekly.presentation.StudyWeeklyApiController;
 import com.kgu.studywithme.studyweekly.presentation.StudyWeeklySubmitApiController;
 import com.kgu.studywithme.upload.presentation.UploadApiController;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -109,6 +110,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
+@Tag("Controller")
 @WebMvcTest({
         // Auth
         OAuthApiController.class,

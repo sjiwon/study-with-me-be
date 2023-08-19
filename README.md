@@ -120,3 +120,11 @@ java -jar \
 ### [4) REST Docs](http://localhost:8080/docs/index.html)
 
 - Gradle `build` Task 실행 후 접속
+
+### 5) 테스트 코드
+
+- Acceptance Test -> `@Tag("Acceptance")`
+- Controller Test -> `@Tag("Controller")`
+- UseCase Test -> `@Tag("UseCase")`
+- Repository Test -> `@Tag("Repository")`
+- Redis Test -> `@Tag("Redis")`
