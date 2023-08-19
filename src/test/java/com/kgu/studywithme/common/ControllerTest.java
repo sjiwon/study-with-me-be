@@ -16,6 +16,7 @@ import com.kgu.studywithme.common.config.TestAopConfiguration;
 import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeCancellationUseCase;
 import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeMarkingUseCase;
 import com.kgu.studywithme.favorite.presentation.FavoriteApiController;
+import com.kgu.studywithme.file.application.adapter.FileUploader;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.application.usecase.command.SignUpMemberUseCase;
 import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
@@ -85,8 +86,6 @@ import com.kgu.studywithme.studyweekly.application.usecase.command.SubmitWeeklyA
 import com.kgu.studywithme.studyweekly.application.usecase.command.UpdateStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.presentation.StudyWeeklyApiController;
 import com.kgu.studywithme.studyweekly.presentation.StudyWeeklySubmitApiController;
-import com.kgu.studywithme.upload.application.usecase.command.UploadStudyDescriptionImageUseCase;
-import com.kgu.studywithme.upload.application.usecase.command.UploadWeeklyImageUseCase;
 import com.kgu.studywithme.upload.presentation.UploadApiController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -365,10 +364,7 @@ public abstract class ControllerTest {
 
     // Upload
     @MockBean
-    protected UploadWeeklyImageUseCase uploadWeeklyImageUseCase;
-
-    @MockBean
-    protected UploadStudyDescriptionImageUseCase uploadStudyDescriptionImageUseCase;
+    protected FileUploader fileUploader;
 
     @BeforeEach
     void setUp(

@@ -93,7 +93,7 @@ class UploadApiControllerTest extends ControllerTest {
             mockingToken(true, MEMBER_ID);
 
             final String uploadLink = "https://image-upload-link";
-            given(uploadWeeklyImageUseCase.invoke(any())).willReturn(uploadLink);
+            given(fileUploader.uploadWeeklyImage(any())).willReturn(uploadLink);
 
             // when
             final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");
@@ -194,7 +194,7 @@ class UploadApiControllerTest extends ControllerTest {
             mockingToken(true, MEMBER_ID);
 
             final String uploadLink = "https://image-upload-link";
-            given(uploadStudyDescriptionImageUseCase.invoke(any())).willReturn(uploadLink);
+            given(fileUploader.uploadStudyDescriptionImage(any())).willReturn(uploadLink);
 
             // when
             final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");

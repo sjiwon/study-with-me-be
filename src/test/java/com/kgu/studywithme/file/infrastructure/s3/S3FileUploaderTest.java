@@ -1,9 +1,7 @@
-package com.kgu.studywithme.file.application.service;
+package com.kgu.studywithme.file.infrastructure.s3;
 
 import com.kgu.studywithme.common.UseCaseTest;
-import com.kgu.studywithme.file.domain.RawFileData;
 import com.kgu.studywithme.file.exception.FileErrorCode;
-import com.kgu.studywithme.file.infrastructure.s3.S3FileUploader;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import io.awspring.cloud.s3.S3Resource;
 import io.awspring.cloud.s3.S3Template;
@@ -13,6 +11,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -44,7 +43,14 @@ class S3FileUploaderTest extends UseCaseTest {
     private static final String IMAGE = "images";
     private static final String ATTACHMENT = "attachments";
     private static final String SUBMIT = "submits";
-    private static final RawFileData NULL_FILE_DATA = null;
+    private static final MultipartFile NULL_FILE = null;
+    private static final MultipartFile EMPTY_FILE =
+            new MockMultipartFile(
+                    "file",
+                    "hello.png",
+                    "image/png",
+                    new byte[]{}
+            );
 
     @BeforeEach
     void setUp() {
@@ -57,9 +63,14 @@ class S3FileUploaderTest extends UseCaseTest {
         @Test
         @DisplayName("파일을 전송하지 않았거나 파일의 사이즈가 0이면 업로드가 불가능하다")
         void throwExceptionByFileIsEmpty() {
-            assertThatThrownBy(() -> uploader.uploadStudyDescriptionImage(NULL_FILE_DATA))
-                    .isInstanceOf(StudyWithMeException.class)
-                    .hasMessage(FileErrorCode.FILE_IS_NOT_UPLOAD.getMessage());
+            assertAll(
+                    () -> assertThatThrownBy(() -> uploader.uploadStudyDescriptionImage(NULL_FILE))
+                            .isInstanceOf(StudyWithMeException.class)
+                            .hasMessage(FileErrorCode.FILE_IS_NOT_UPLOAD.getMessage()),
+                    () -> assertThatThrownBy(() -> uploader.uploadStudyDescriptionImage(EMPTY_FILE))
+                            .isInstanceOf(StudyWithMeException.class)
+                            .hasMessage(FileErrorCode.FILE_IS_NOT_UPLOAD.getMessage())
+            );
         }
 
         @Test
@@ -72,8 +83,7 @@ class S3FileUploaderTest extends UseCaseTest {
 
             // when
             final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");
-            final RawFileData fileData = new RawFileData(file.getInputStream(), file.getContentType(), file.getOriginalFilename());
-            final String uploadUrl = uploader.uploadStudyDescriptionImage(fileData);
+            final String uploadUrl = uploader.uploadStudyDescriptionImage(file);
 
             // then
             assertAll(
@@ -89,9 +99,14 @@ class S3FileUploaderTest extends UseCaseTest {
         @Test
         @DisplayName("파일을 전송하지 않았거나 파일의 사이즈가 0이면 업로드가 불가능하다")
         void throwExceptionByFileIsEmpty() {
-            assertThatThrownBy(() -> uploader.uploadWeeklyImage(NULL_FILE_DATA))
-                    .isInstanceOf(StudyWithMeException.class)
-                    .hasMessage(FileErrorCode.FILE_IS_NOT_UPLOAD.getMessage());
+            assertAll(
+                    () -> assertThatThrownBy(() -> uploader.uploadWeeklyImage(NULL_FILE))
+                            .isInstanceOf(StudyWithMeException.class)
+                            .hasMessage(FileErrorCode.FILE_IS_NOT_UPLOAD.getMessage()),
+                    () -> assertThatThrownBy(() -> uploader.uploadWeeklyImage(EMPTY_FILE))
+                            .isInstanceOf(StudyWithMeException.class)
+                            .hasMessage(FileErrorCode.FILE_IS_NOT_UPLOAD.getMessage())
+            );
         }
 
         @Test
@@ -104,8 +119,7 @@ class S3FileUploaderTest extends UseCaseTest {
 
             // when
             final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");
-            final RawFileData fileData = new RawFileData(file.getInputStream(), file.getContentType(), file.getOriginalFilename());
-            final String uploadUrl = uploader.uploadWeeklyImage(fileData);
+            final String uploadUrl = uploader.uploadWeeklyImage(file);
 
             // then
             assertAll(
@@ -121,9 +135,14 @@ class S3FileUploaderTest extends UseCaseTest {
         @Test
         @DisplayName("파일을 전송하지 않았거나 파일의 사이즈가 0이면 업로드가 불가능하다")
         void throwExceptionByFileIsEmpty() {
-            assertThatThrownBy(() -> uploader.uploadWeeklyAttachment(NULL_FILE_DATA))
-                    .isInstanceOf(StudyWithMeException.class)
-                    .hasMessage(FileErrorCode.FILE_IS_NOT_UPLOAD.getMessage());
+            assertAll(
+                    () -> assertThatThrownBy(() -> uploader.uploadWeeklyAttachment(NULL_FILE))
+                            .isInstanceOf(StudyWithMeException.class)
+                            .hasMessage(FileErrorCode.FILE_IS_NOT_UPLOAD.getMessage()),
+                    () -> assertThatThrownBy(() -> uploader.uploadWeeklyAttachment(EMPTY_FILE))
+                            .isInstanceOf(StudyWithMeException.class)
+                            .hasMessage(FileErrorCode.FILE_IS_NOT_UPLOAD.getMessage())
+            );
         }
 
         @Test
@@ -136,8 +155,7 @@ class S3FileUploaderTest extends UseCaseTest {
 
             // when
             final MultipartFile file = createSingleMockMultipartFile("hello1.txt", "text/plain");
-            final RawFileData fileData = new RawFileData(file.getInputStream(), file.getContentType(), file.getOriginalFilename());
-            final String uploadUrl = uploader.uploadWeeklyAttachment(fileData);
+            final String uploadUrl = uploader.uploadWeeklyAttachment(file);
 
             // then
             assertAll(
@@ -153,9 +171,14 @@ class S3FileUploaderTest extends UseCaseTest {
         @Test
         @DisplayName("파일을 전송하지 않았거나 파일의 사이즈가 0이면 업로드가 불가능하다")
         void throwExceptionByFileIsEmpty() {
-            assertThatThrownBy(() -> uploader.uploadWeeklySubmit(NULL_FILE_DATA))
-                    .isInstanceOf(StudyWithMeException.class)
-                    .hasMessage(FileErrorCode.FILE_IS_NOT_UPLOAD.getMessage());
+            assertAll(
+                    () -> assertThatThrownBy(() -> uploader.uploadWeeklySubmit(NULL_FILE))
+                            .isInstanceOf(StudyWithMeException.class)
+                            .hasMessage(FileErrorCode.FILE_IS_NOT_UPLOAD.getMessage()),
+                    () -> assertThatThrownBy(() -> uploader.uploadWeeklySubmit(EMPTY_FILE))
+                            .isInstanceOf(StudyWithMeException.class)
+                            .hasMessage(FileErrorCode.FILE_IS_NOT_UPLOAD.getMessage())
+            );
         }
 
         @Test
@@ -168,8 +191,7 @@ class S3FileUploaderTest extends UseCaseTest {
 
             // when
             final MultipartFile file = createSingleMockMultipartFile("hello3.pdf", "application/pdf");
-            final RawFileData fileData = new RawFileData(file.getInputStream(), file.getContentType(), file.getOriginalFilename());
-            final String uploadUrl = uploader.uploadWeeklySubmit(fileData);
+            final String uploadUrl = uploader.uploadWeeklySubmit(file);
 
             // then
             assertAll(
@@ -188,10 +210,9 @@ class S3FileUploaderTest extends UseCaseTest {
                 .upload(any(), any(), any(), any());
 
         final MultipartFile file = createSingleMockMultipartFile("hello3.pdf", "application/pdf");
-        final RawFileData fileData = new RawFileData(file.getInputStream(), file.getContentType(), file.getOriginalFilename());
 
         // when - then
-        assertThatThrownBy(() -> uploader.uploadWeeklySubmit(fileData))
+        assertThatThrownBy(() -> uploader.uploadWeeklySubmit(file))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(FileErrorCode.S3_UPLOAD_FAILURE.getMessage());
 

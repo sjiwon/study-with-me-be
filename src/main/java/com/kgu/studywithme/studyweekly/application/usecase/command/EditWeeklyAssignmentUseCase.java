@@ -1,7 +1,7 @@
 package com.kgu.studywithme.studyweekly.application.usecase.command;
 
-import com.kgu.studywithme.file.domain.RawFileData;
 import com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType;
+import com.kgu.studywithme.studyweekly.domain.submit.UploadAssignment;
 
 public interface EditWeeklyAssignmentUseCase {
     void invoke(final Command command);
@@ -11,7 +11,7 @@ public interface EditWeeklyAssignmentUseCase {
             Long studyId,
             Long weeklyId,
             AssignmentSubmitType submitType,
-            RawFileData file,
+            UploadAssignment file,
             String link
     ) {
     }

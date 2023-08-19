@@ -1,7 +1,5 @@
 package com.kgu.studywithme.studyweekly.application.service;
 
-import com.kgu.studywithme.file.application.adapter.FileUploader;
-import com.kgu.studywithme.file.domain.RawFileData;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.studyweekly.application.adapter.StudyWeeklyHandlingRepositoryAdapter;
@@ -22,7 +20,6 @@ import static com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType
 @RequiredArgsConstructor
 public class EditWeeklyAssignmentService implements EditWeeklyAssignmentUseCase {
     private final StudyWeeklyHandlingRepositoryAdapter studyWeeklyHandlingRepositoryAdapter;
-    private final FileUploader uploader;
     private final ApplicationEventPublisher eventPublisher;
 
     @Override
@@ -37,7 +34,7 @@ public class EditWeeklyAssignmentService implements EditWeeklyAssignmentUseCase 
     }
 
     private void validateAssignmentSubmissionExists(
-            final RawFileData file,
+            final UploadAssignment file,
             final String link
     ) {
         if (file == null && link == null) {
@@ -60,11 +57,12 @@ public class EditWeeklyAssignmentService implements EditWeeklyAssignmentUseCase 
 
     private UploadAssignment uploadAssignment(
             final AssignmentSubmitType submitType,
-            final RawFileData file,
+            final UploadAssignment file,
             final String link
     ) {
-        return submitType == FILE
-                ? UploadAssignment.withFile(file.originalFileName(), uploader.uploadWeeklySubmit(file))
-                : UploadAssignment.withLink(link);
+        if (submitType == FILE) {
+            return file;
+        }
+        return UploadAssignment.withLink(link);
     }
 }

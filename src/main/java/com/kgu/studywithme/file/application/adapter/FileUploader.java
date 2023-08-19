@@ -1,25 +1,25 @@
 package com.kgu.studywithme.file.application.adapter;
 
-import com.kgu.studywithme.file.domain.RawFileData;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface FileUploader {
     /**
      * 스터디 생성 시 설명 내부 이미지 업로드
      */
-    String uploadStudyDescriptionImage(final RawFileData file);
+    String uploadStudyDescriptionImage(final MultipartFile file);
 
     /**
      * Weekly 글 내부 이미지 업로드
      */
-    String uploadWeeklyImage(final RawFileData file);
+    String uploadWeeklyImage(final MultipartFile file);
 
     /**
      * Weekly 글 첨부파일 업로드
      */
-    String uploadWeeklyAttachment(final RawFileData file);
+    String uploadWeeklyAttachment(final MultipartFile file);
 
     /**
      * Weekly 과제 업로드
      */
-    String uploadWeeklySubmit(final RawFileData file);
+    String uploadWeeklySubmit(final MultipartFile file);
 }

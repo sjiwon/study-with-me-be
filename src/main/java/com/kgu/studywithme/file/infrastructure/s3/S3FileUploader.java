@@ -3,7 +3,6 @@ package com.kgu.studywithme.file.infrastructure.s3;
 import com.kgu.studywithme.file.application.adapter.FileUploader;
 import com.kgu.studywithme.file.domain.FileExtension;
 import com.kgu.studywithme.file.domain.FileUploadType;
-import com.kgu.studywithme.file.domain.RawFileData;
 import com.kgu.studywithme.file.exception.FileErrorCode;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import io.awspring.cloud.s3.ObjectMetadata;
@@ -11,6 +10,7 @@ import io.awspring.cloud.s3.S3Template;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
 
 import java.io.IOException;
@@ -32,44 +32,44 @@ public class S3FileUploader implements FileUploader {
     }
 
     @Override
-    public String uploadStudyDescriptionImage(final RawFileData file) {
+    public String uploadStudyDescriptionImage(final MultipartFile file) {
         validateFileExists(file);
         return uploadFile(FileUploadType.DESCRIPTION, file);
     }
 
     @Override
-    public String uploadWeeklyImage(final RawFileData file) {
+    public String uploadWeeklyImage(final MultipartFile file) {
         validateFileExists(file);
         return uploadFile(FileUploadType.IMAGE, file);
     }
 
     @Override
-    public String uploadWeeklyAttachment(final RawFileData file) {
+    public String uploadWeeklyAttachment(final MultipartFile file) {
         validateFileExists(file);
         return uploadFile(FileUploadType.ATTACHMENT, file);
     }
 
     @Override
-    public String uploadWeeklySubmit(final RawFileData file) {
+    public String uploadWeeklySubmit(final MultipartFile file) {
         validateFileExists(file);
         return uploadFile(FileUploadType.SUBMIT, file);
     }
 
-    private void validateFileExists(final RawFileData file) {
-        if (file == null) {
+    private void validateFileExists(final MultipartFile file) {
+        if (file == null || file.isEmpty()) {
             throw StudyWithMeException.type(FileErrorCode.FILE_IS_NOT_UPLOAD);
         }
     }
 
     private String uploadFile(
-            final FileUploadType type,
-            final RawFileData file
+            final FileUploadType uploadType,
+            final MultipartFile file
     ) {
-        try (final InputStream inputStream = file.content()) {
-            final String uploadFileName = createFileNameByType(type, file.originalFileName());
+        try (final InputStream inputStream = file.getInputStream()) {
+            final String uploadFileName = createFileNameByType(uploadType, file.getOriginalFilename());
 
             final ObjectMetadata objectMetadata = ObjectMetadata.builder()
-                    .contentType(file.contentType())
+                    .contentType(file.getContentType())
                     .acl(ObjectCannedACL.PUBLIC_READ)
                     .build();
 
