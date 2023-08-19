@@ -24,6 +24,6 @@ public class MemberReportHandlingRepository implements MemberReportHandlingRepos
                         memberReport.reporterId.eq(reporterId),
                         memberReport.reporteeId.eq(reporteeId)
                 )
-                .fetchOne() == RECEIVE;
+                .fetchFirst() == RECEIVE;
     }
 }

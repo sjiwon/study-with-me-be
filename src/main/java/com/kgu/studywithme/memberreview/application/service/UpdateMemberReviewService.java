@@ -2,10 +2,10 @@ package com.kgu.studywithme.memberreview.application.service;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.memberreview.application.adapter.MemberReviewHandlingRepositoryAdapter;
 import com.kgu.studywithme.memberreview.application.usecase.command.UpdateMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.domain.MemberReview;
 import com.kgu.studywithme.memberreview.exception.MemberReviewErrorCode;
+import com.kgu.studywithme.memberreview.infrastructure.persistence.MemberReviewJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class UpdateMemberReviewService implements UpdateMemberReviewUseCase {
-    private final MemberReviewHandlingRepositoryAdapter memberReviewHandlingRepositoryAdapter;
+    private final MemberReviewJpaRepository memberReviewJpaRepository;
 
     @Override
     public void invoke(final Command command) {
@@ -25,7 +25,7 @@ public class UpdateMemberReviewService implements UpdateMemberReviewUseCase {
             final Long reviewerId,
             final Long revieweeId
     ) {
-        return memberReviewHandlingRepositoryAdapter.getWrittenReviewForReviewee(reviewerId, revieweeId)
+        return memberReviewJpaRepository.getWrittenReviewForReviewee(reviewerId, revieweeId)
                 .orElseThrow(() -> StudyWithMeException.type(MemberReviewErrorCode.MEMBER_REVIEW_NOT_FOUND));
     }
 }

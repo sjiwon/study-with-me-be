@@ -22,6 +22,7 @@ import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY4;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.LATE;
 import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.NON_ATTENDANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -128,5 +129,27 @@ public class StudyAttendanceJpaRepositoryTest extends RepositoryTest {
                                 NON_ATTENDANCE
                         )
         );
+    }
+
+    @Test
+    @DisplayName("사용자의 스터디 출석 횟수를 조회한다")
+    void getAttendanceCount() {
+        /* 출석 1회 */
+        studyAttendanceJpaRepository.save(
+                StudyAttendance.recordAttendance(study.getId(), member[0].getId(), 1, ATTENDANCE)
+        );
+        assertThat(studyAttendanceJpaRepository.getAttendanceCount(study.getId(), member[0].getId())).isEqualTo(1);
+
+        /* 출석 1회 + 지각 1회 */
+        studyAttendanceJpaRepository.save(
+                StudyAttendance.recordAttendance(study.getId(), member[0].getId(), 2, LATE)
+        );
+        assertThat(studyAttendanceJpaRepository.getAttendanceCount(study.getId(), member[0].getId())).isEqualTo(1);
+
+        /* 출석 2회 + 지각 1회 */
+        studyAttendanceJpaRepository.save(
+                StudyAttendance.recordAttendance(study.getId(), member[0].getId(), 3, ATTENDANCE)
+        );
+        assertThat(studyAttendanceJpaRepository.getAttendanceCount(study.getId(), member[0].getId())).isEqualTo(2);
     }
 }

@@ -6,7 +6,7 @@ import com.kgu.studywithme.file.domain.RawFileData;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.studyattendance.infrastructure.persistence.StudyAttendanceJpaRepository;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
+import com.kgu.studywithme.studyparticipant.infrastructure.persistence.StudyParticipantJpaRepository;
 import com.kgu.studywithme.studyweekly.application.usecase.command.CreateStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
 import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
@@ -45,7 +45,7 @@ class CreateStudyWeeklyServiceTest extends UseCaseTest {
     private StudyWeeklyRepository studyWeeklyRepository;
 
     @Mock
-    private StudyParticipantRepository studyParticipantRepository;
+    private StudyParticipantJpaRepository studyParticipantJpaRepository;
 
     @Mock
     private StudyAttendanceJpaRepository studyAttendanceJpaRepository;
@@ -75,7 +75,7 @@ class CreateStudyWeeklyServiceTest extends UseCaseTest {
         given(uploader.uploadWeeklyAttachment(fileData2)).willReturn(HWPX_FILE.getLink());
         given(studyWeeklyRepository.getNextWeek(any())).willReturn(1);
         given(studyWeeklyRepository.save(any())).willReturn(weekly);
-        given(studyParticipantRepository.findStudyParticipantIds(any())).willReturn(List.of(1L, 2L, 3L));
+        given(studyParticipantJpaRepository.findStudyParticipantIds(any())).willReturn(List.of(1L, 2L, 3L));
 
         // when
         createStudyWeeklyService.invoke(
@@ -96,7 +96,7 @@ class CreateStudyWeeklyServiceTest extends UseCaseTest {
                 () -> verify(uploader, times(fileDatas.size())).uploadWeeklyAttachment(any()),
                 () -> verify(studyWeeklyRepository, times(1)).getNextWeek(any()),
                 () -> verify(studyWeeklyRepository, times(1)).save(any()),
-                () -> verify(studyParticipantRepository, times(1)).findStudyParticipantIds(any()),
+                () -> verify(studyParticipantJpaRepository, times(1)).findStudyParticipantIds(any()),
                 () -> verify(studyAttendanceJpaRepository, times(1)).saveAll(any())
         );
     }

@@ -5,7 +5,5 @@ import com.kgu.studywithme.studyattendance.infrastructure.query.dto.NonAttendanc
 import java.util.List;
 
 public interface StudyAttendanceHandlingRepositoryAdapter {
-    int getAttendanceCount(final Long studyId, final Long participantId);
-
     List<NonAttendanceWeekly> findNonAttendanceInformation();
 }

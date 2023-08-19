@@ -2,7 +2,7 @@ package com.kgu.studywithme.studyreview.application.service;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
+import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantVerificationRepositoryAdapter;
 import com.kgu.studywithme.studyreview.application.usecase.command.WriteStudyReviewUseCase;
 import com.kgu.studywithme.studyreview.domain.StudyReview;
 import com.kgu.studywithme.studyreview.domain.StudyReviewRepository;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class WriteStudyReviewService implements WriteStudyReviewUseCase {
-    private final StudyParticipantRepository studyParticipantRepository;
+    private final ParticipantVerificationRepositoryAdapter participantVerificationRepositoryAdapter;
     private final StudyReviewRepository studyReviewRepository;
 
     @Override
@@ -34,7 +34,7 @@ public class WriteStudyReviewService implements WriteStudyReviewUseCase {
             final Long studyId,
             final Long memberId
     ) {
-        if (!studyParticipantRepository.isGraduatedParticipant(studyId, memberId)) {
+        if (!participantVerificationRepositoryAdapter.isGraduatedParticipant(studyId, memberId)) {
             throw StudyWithMeException.type(StudyReviewErrorCode.ONLY_GRADUATED_PARTICIPANT_CAN_WRITE_REVIEW);
         }
     }

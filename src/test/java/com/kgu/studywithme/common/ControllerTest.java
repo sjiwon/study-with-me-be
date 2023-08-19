@@ -62,6 +62,7 @@ import com.kgu.studywithme.studynotice.application.usecase.command.WriteStudyNot
 import com.kgu.studywithme.studynotice.application.usecase.command.WriteStudyNoticeUseCase;
 import com.kgu.studywithme.studynotice.presentation.StudyNoticeApiController;
 import com.kgu.studywithme.studynotice.presentation.StudyNoticeCommentApiController;
+import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantVerificationRepositoryAdapter;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.ApplyCancellationUseCase;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.ApplyStudyUseCase;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.ApproveParticipationUseCase;
@@ -69,7 +70,6 @@ import com.kgu.studywithme.studyparticipant.application.usecase.command.Delegate
 import com.kgu.studywithme.studyparticipant.application.usecase.command.GraduateStudyUseCase;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.LeaveParticipationUseCase;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.RejectParticipationUseCase;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import com.kgu.studywithme.studyparticipant.presentation.DelegateHostAuthorityApiController;
 import com.kgu.studywithme.studyparticipant.presentation.StudyApplyApiController;
 import com.kgu.studywithme.studyparticipant.presentation.StudyFinalizeApiController;
@@ -182,10 +182,10 @@ public abstract class ControllerTest {
 
     // AOP Validation
     @MockBean
-    private StudyVerificationRepositoryAdapter studyVerificationRepositoryAdapter1;
+    private StudyVerificationRepositoryAdapter studyVerificationRepositoryAdapter;
 
     @MockBean
-    private StudyParticipantRepository studyParticipantRepository;
+    private ParticipantVerificationRepositoryAdapter participantVerificationRepositoryAdapter;
 
     // Auth
     @MockBean
@@ -412,7 +412,7 @@ public abstract class ControllerTest {
             final Long memberId,
             final boolean isValid
     ) {
-        given(studyVerificationRepositoryAdapter1.isHost(studyId, memberId)).willReturn(isValid);
+        given(studyVerificationRepositoryAdapter.isHost(studyId, memberId)).willReturn(isValid);
     }
 
     protected void mockingForStudyParticipant(
@@ -420,6 +420,6 @@ public abstract class ControllerTest {
             final Long memberId,
             final boolean isValid
     ) {
-        given(studyParticipantRepository.isParticipant(studyId, memberId)).willReturn(isValid);
+        given(participantVerificationRepositoryAdapter.isParticipant(studyId, memberId)).willReturn(isValid);
     }
 }

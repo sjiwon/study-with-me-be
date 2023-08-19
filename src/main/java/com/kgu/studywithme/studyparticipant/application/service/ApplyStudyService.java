@@ -1,22 +1,22 @@
 package com.kgu.studywithme.studyparticipant.application.service;
 
-import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.study.application.adapter.StudyReadAdapter;
 import com.kgu.studywithme.study.domain.Study;
+import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantVerificationRepositoryAdapter;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.ApplyStudyUseCase;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipant;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
+import com.kgu.studywithme.studyparticipant.infrastructure.persistence.StudyParticipantJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class ApplyStudyService implements ApplyStudyUseCase {
     private final StudyReadAdapter studyReadAdapter;
-    private final StudyParticipantRepository studyParticipantRepository;
+    private final ParticipantVerificationRepositoryAdapter participantVerificationRepositoryAdapter;
+    private final StudyParticipantJpaRepository studyParticipantJpaRepository;
 
     @Override
     public void invoke(final Command command) {
@@ -26,7 +26,7 @@ public class ApplyStudyService implements ApplyStudyUseCase {
         validateApplierIsAlreadyRelatedToStudy(study, command.applierId());
 
         final StudyParticipant participant = StudyParticipant.applyInStudy(command.studyId(), command.applierId());
-        studyParticipantRepository.save(participant);
+        studyParticipantJpaRepository.save(participant);
     }
 
     private void validateStudyIsRecruiting(final Study study) {
@@ -42,11 +42,11 @@ public class ApplyStudyService implements ApplyStudyUseCase {
     }
 
     private void validateApplierIsAlreadyRelatedToStudy(final Study study, final Long applierId) {
-        if (studyParticipantRepository.isApplierOrParticipant(study.getId(), applierId)) {
+        if (participantVerificationRepositoryAdapter.isApplierOrParticipant(study.getId(), applierId)) {
             throw StudyWithMeException.type(StudyParticipantErrorCode.ALREADY_APPLY_OR_PARTICIPATE);
         }
 
-        if (studyParticipantRepository.isAlreadyLeaveOrGraduatedParticipant(study.getId(), applierId)) {
+        if (participantVerificationRepositoryAdapter.isAlreadyLeaveOrGraduatedParticipant(study.getId(), applierId)) {
             throw StudyWithMeException.type(StudyParticipantErrorCode.ALREADY_LEAVE_OR_GRADUATED);
         }
     }

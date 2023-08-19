@@ -4,8 +4,8 @@ import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.study.application.adapter.StudyReadAdapter;
 import com.kgu.studywithme.study.domain.Study;
+import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantVerificationRepositoryAdapter;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.DelegateHostAuthorityUseCase;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DelegateHostAuthorityService implements DelegateHostAuthorityUseCase {
     private final StudyReadAdapter studyReadAdapter;
-    private final StudyParticipantRepository studyParticipantRepository;
+    private final ParticipantVerificationRepositoryAdapter participantVerificationRepositoryAdapter;
 
     @Override
     public void invoke(final Command command) {
@@ -40,7 +40,7 @@ public class DelegateHostAuthorityService implements DelegateHostAuthorityUseCas
     }
 
     private void validateNewHostIsParticipant(final Long studyId, final Long newHostId) {
-        if (!studyParticipantRepository.isParticipant(studyId, newHostId)) {
+        if (!participantVerificationRepositoryAdapter.isParticipant(studyId, newHostId)) {
             throw StudyWithMeException.type(StudyParticipantErrorCode.NON_PARTICIPANT_CANNOT_BE_HOST);
         }
     }

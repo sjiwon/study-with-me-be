@@ -6,7 +6,7 @@ import com.kgu.studywithme.studynotice.application.usecase.command.WriteStudyNot
 import com.kgu.studywithme.studynotice.domain.StudyNotice;
 import com.kgu.studywithme.studynotice.exception.StudyNoticeErrorCode;
 import com.kgu.studywithme.studynotice.infrastructure.persistence.StudyNoticeJpaRepository;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
+import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantVerificationRepositoryAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class WriteStudyNoticeCommentService implements WriteStudyNoticeCommentUseCase {
     private final StudyNoticeJpaRepository studyNoticeJpaRepository;
-    private final StudyParticipantRepository studyParticipantRepository;
+    private final ParticipantVerificationRepositoryAdapter participantVerificationRepositoryAdapter;
 
     @Override
     public void invoke(final Command command) {
@@ -31,7 +31,7 @@ public class WriteStudyNoticeCommentService implements WriteStudyNoticeCommentUs
     }
 
     private void validateWriterIsStudyParticipant(final Long studyId, final Long writerId) {
-        if (!studyParticipantRepository.isParticipant(studyId, writerId)) {
+        if (!participantVerificationRepositoryAdapter.isParticipant(studyId, writerId)) {
             throw StudyWithMeException.type(StudyNoticeErrorCode.ONLY_PARTICIPANT_CAN_WRITE_COMMENT);
         }
     }

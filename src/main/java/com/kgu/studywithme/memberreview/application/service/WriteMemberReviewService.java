@@ -3,7 +3,6 @@ package com.kgu.studywithme.memberreview.application.service;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.application.adapter.MemberAttendanceRepositoryAdapter;
 import com.kgu.studywithme.member.infrastructure.query.dto.StudyParticipateWeeks;
-import com.kgu.studywithme.memberreview.application.adapter.MemberReviewHandlingRepositoryAdapter;
 import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.domain.MemberReview;
 import com.kgu.studywithme.memberreview.exception.MemberReviewErrorCode;
@@ -17,7 +16,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WriteMemberReviewService implements WriteMemberReviewUseCase {
     private final MemberAttendanceRepositoryAdapter memberAttendanceRepositoryAdapter;
-    private final MemberReviewHandlingRepositoryAdapter memberReviewHandlingRepositoryAdapter;
     private final MemberReviewJpaRepository memberReviewJpaRepository;
 
     @Override
@@ -72,7 +70,7 @@ public class WriteMemberReviewService implements WriteMemberReviewUseCase {
             final Long reviewerId,
             final Long revieweeId
     ) {
-        if (memberReviewHandlingRepositoryAdapter.alreadyReviewedForMember(reviewerId, revieweeId)) {
+        if (memberReviewJpaRepository.existsByReviewerIdAndRevieweeId(reviewerId, revieweeId)) {
             throw StudyWithMeException.type(MemberReviewErrorCode.ALREADY_REVIEW);
         }
     }

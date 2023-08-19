@@ -5,7 +5,6 @@ import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.application.adapter.MemberAttendanceRepositoryAdapter;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.infrastructure.query.dto.StudyParticipateWeeks;
-import com.kgu.studywithme.memberreview.application.adapter.MemberReviewHandlingRepositoryAdapter;
 import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.domain.MemberReview;
 import com.kgu.studywithme.memberreview.exception.MemberReviewErrorCode;
@@ -36,9 +35,6 @@ class WriteMemberReviewServiceTest extends UseCaseTest {
     private MemberAttendanceRepositoryAdapter memberAttendanceRepositoryAdapter;
 
     @Mock
-    private MemberReviewHandlingRepositoryAdapter memberReviewHandlingRepositoryAdapter;
-
-    @Mock
     private MemberReviewJpaRepository memberReviewJpaRepository;
 
 
@@ -64,7 +60,7 @@ class WriteMemberReviewServiceTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(memberAttendanceRepositoryAdapter, times(0)).findParticipateWeeksInStudyByMemberId(any()),
-                () -> verify(memberReviewHandlingRepositoryAdapter, times(0)).alreadyReviewedForMember(any(), any()),
+                () -> verify(memberReviewJpaRepository, times(0)).existsByReviewerIdAndRevieweeId(any(), any()),
                 () -> verify(memberReviewJpaRepository, times(0)).save(any())
         );
     }
@@ -85,7 +81,7 @@ class WriteMemberReviewServiceTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(memberAttendanceRepositoryAdapter, times(2)).findParticipateWeeksInStudyByMemberId(any()),
-                () -> verify(memberReviewHandlingRepositoryAdapter, times(0)).alreadyReviewedForMember(any(), any()),
+                () -> verify(memberReviewJpaRepository, times(0)).existsByReviewerIdAndRevieweeId(any(), any()),
                 () -> verify(memberReviewJpaRepository, times(0)).save(any())
         );
     }
@@ -98,7 +94,7 @@ class WriteMemberReviewServiceTest extends UseCaseTest {
                 .willReturn(List.of(new StudyParticipateWeeks(1L, 1)));
         given(memberAttendanceRepositoryAdapter.findParticipateWeeksInStudyByMemberId(memberB.getId()))
                 .willReturn(List.of(new StudyParticipateWeeks(1L, 1)));
-        given(memberReviewHandlingRepositoryAdapter.alreadyReviewedForMember(any(), any())).willReturn(true);
+        given(memberReviewJpaRepository.existsByReviewerIdAndRevieweeId(any(), any())).willReturn(true);
 
         // when - then
         assertThatThrownBy(() -> writeMemberReviewService.invoke(command))
@@ -107,7 +103,7 @@ class WriteMemberReviewServiceTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(memberAttendanceRepositoryAdapter, times(2)).findParticipateWeeksInStudyByMemberId(any()),
-                () -> verify(memberReviewHandlingRepositoryAdapter, times(1)).alreadyReviewedForMember(any(), any()),
+                () -> verify(memberReviewJpaRepository, times(1)).existsByReviewerIdAndRevieweeId(any(), any()),
                 () -> verify(memberReviewJpaRepository, times(0)).save(any())
         );
     }
@@ -120,7 +116,7 @@ class WriteMemberReviewServiceTest extends UseCaseTest {
                 .willReturn(List.of(new StudyParticipateWeeks(1L, 1)));
         given(memberAttendanceRepositoryAdapter.findParticipateWeeksInStudyByMemberId(memberB.getId()))
                 .willReturn(List.of(new StudyParticipateWeeks(1L, 1)));
-        given(memberReviewHandlingRepositoryAdapter.alreadyReviewedForMember(any(), any())).willReturn(false);
+        given(memberReviewJpaRepository.existsByReviewerIdAndRevieweeId(any(), any())).willReturn(false);
 
         final MemberReview memberReview = MemberReview.doReview(memberA.getId(), memberB.getId(), "Good").apply(1L, LocalDateTime.now());
         given(memberReviewJpaRepository.save(any())).willReturn(memberReview);
@@ -131,7 +127,7 @@ class WriteMemberReviewServiceTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(memberAttendanceRepositoryAdapter, times(2)).findParticipateWeeksInStudyByMemberId(any()),
-                () -> verify(memberReviewHandlingRepositoryAdapter, times(1)).alreadyReviewedForMember(any(), any()),
+                () -> verify(memberReviewJpaRepository, times(1)).existsByReviewerIdAndRevieweeId(any(), any()),
                 () -> verify(memberReviewJpaRepository, times(1)).save(any()),
                 () -> assertThat(memberReviewId).isEqualTo(memberReview.getId())
         );

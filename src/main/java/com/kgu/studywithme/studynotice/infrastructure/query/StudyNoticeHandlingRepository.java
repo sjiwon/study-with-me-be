@@ -38,7 +38,6 @@ public class StudyNoticeHandlingRepository implements StudyNoticeHandlingReposit
                 .where(studyNoticeComment.notice.id.eq(noticeId))
                 .execute();
 
-
         // 2. delete notice
         query.delete(studyNotice)
                 .where(studyNotice.id.eq(noticeId))

@@ -9,7 +9,7 @@ import com.kgu.studywithme.study.application.usecase.command.CreateStudyUseCase;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
 import com.kgu.studywithme.study.infrastructure.persistence.StudyJpaRepository;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
+import com.kgu.studywithme.studyparticipant.infrastructure.persistence.StudyParticipantJpaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -42,7 +42,7 @@ class CreateStudyServiceTest extends UseCaseTest {
     private StudyJpaRepository studyJpaRepository;
 
     @Mock
-    private StudyParticipantRepository studyParticipantRepository;
+    private StudyParticipantJpaRepository studyParticipantJpaRepository;
 
     private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final CreateStudyUseCase.Command command = new CreateStudyUseCase.Command(
@@ -74,7 +74,7 @@ class CreateStudyServiceTest extends UseCaseTest {
                 () -> verify(studyDuplicateCheckRepositoryAdapter, times(1)).isNameExists(any()),
                 () -> verify(memberReadAdapter, times(0)).getById(any()),
                 () -> verify(studyJpaRepository, times(0)).save(any()),
-                () -> verify(studyParticipantRepository, times(0)).save(any())
+                () -> verify(studyParticipantJpaRepository, times(0)).save(any())
         );
     }
 
@@ -96,7 +96,7 @@ class CreateStudyServiceTest extends UseCaseTest {
                 () -> verify(studyDuplicateCheckRepositoryAdapter, times(1)).isNameExists(any()),
                 () -> verify(memberReadAdapter, times(1)).getById(any()),
                 () -> verify(studyJpaRepository, times(1)).save(any()),
-                () -> verify(studyParticipantRepository, times(1)).save(any()),
+                () -> verify(studyParticipantJpaRepository, times(1)).save(any()),
                 () -> assertThat(savedStudyId).isEqualTo(study.getId())
         );
     }

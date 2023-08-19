@@ -8,7 +8,7 @@ import com.kgu.studywithme.studynotice.domain.StudyNotice;
 import com.kgu.studywithme.studynotice.domain.comment.StudyNoticeComment;
 import com.kgu.studywithme.studynotice.exception.StudyNoticeErrorCode;
 import com.kgu.studywithme.studynotice.infrastructure.persistence.StudyNoticeJpaRepository;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
+import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantVerificationRepositoryAdapter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -35,7 +35,7 @@ class WriteStudyNoticeCommentServiceTest extends UseCaseTest {
     private StudyNoticeJpaRepository studyNoticeJpaRepository;
 
     @Mock
-    private StudyParticipantRepository studyParticipantRepository;
+    private ParticipantVerificationRepositoryAdapter participantVerificationRepositoryAdapter;
 
     private final Member writer = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final StudyNotice notice = StudyNotice.writeNotice(
@@ -55,7 +55,7 @@ class WriteStudyNoticeCommentServiceTest extends UseCaseTest {
     void throwExceptionByWriterIsNotStudyParticipant() {
         // given
         given(studyNoticeJpaRepository.findById(any())).willReturn(Optional.of(notice));
-        given(studyParticipantRepository.isParticipant(any(), any())).willReturn(false);
+        given(participantVerificationRepositoryAdapter.isParticipant(any(), any())).willReturn(false);
 
         // when - then
         assertThatThrownBy(() -> writeStudyNoticeCommentService.invoke(command))
@@ -64,7 +64,7 @@ class WriteStudyNoticeCommentServiceTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(studyNoticeJpaRepository, times(1)).findById(any()),
-                () -> verify(studyParticipantRepository, times(1)).isParticipant(any(), any())
+                () -> verify(participantVerificationRepositoryAdapter, times(1)).isParticipant(any(), any())
         );
     }
 
@@ -73,7 +73,7 @@ class WriteStudyNoticeCommentServiceTest extends UseCaseTest {
     void success() {
         // given
         given(studyNoticeJpaRepository.findById(any())).willReturn(Optional.of(notice));
-        given(studyParticipantRepository.isParticipant(any(), any())).willReturn(true);
+        given(participantVerificationRepositoryAdapter.isParticipant(any(), any())).willReturn(true);
 
         // when
         writeStudyNoticeCommentService.invoke(command);
@@ -81,7 +81,7 @@ class WriteStudyNoticeCommentServiceTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyNoticeJpaRepository, times(1)).findById(any()),
-                () -> verify(studyParticipantRepository, times(1)).isParticipant(any(), any()),
+                () -> verify(participantVerificationRepositoryAdapter, times(1)).isParticipant(any(), any()),
                 () -> assertThat(notice.getComments()).hasSize(1),
                 () -> assertThat(notice.getComments())
                         .map(StudyNoticeComment::getWriterId)

@@ -5,8 +5,8 @@ import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.study.application.adapter.StudyReadAdapter;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.LeaveParticipationUseCase;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
+import com.kgu.studywithme.studyparticipant.infrastructure.persistence.StudyParticipantJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.LEAV
 @RequiredArgsConstructor
 public class LeaveParticipationService implements LeaveParticipationUseCase {
     private final StudyReadAdapter studyReadAdapter;
-    private final StudyParticipantRepository studyParticipantRepository;
+    private final StudyParticipantJpaRepository studyParticipantJpaRepository;
 
     @Override
     public void invoke(final Command command) {
@@ -25,7 +25,7 @@ public class LeaveParticipationService implements LeaveParticipationUseCase {
         validateMemberIsHost(study, command.participantId());
 
         study.removeParticipant();
-        studyParticipantRepository.updateParticipantStatus(command.studyId(), command.participantId(), LEAVE);
+        studyParticipantJpaRepository.updateParticipantStatus(command.studyId(), command.participantId(), LEAVE);
     }
 
     private void validateMemberIsHost(final Study study, final Long participantId) {

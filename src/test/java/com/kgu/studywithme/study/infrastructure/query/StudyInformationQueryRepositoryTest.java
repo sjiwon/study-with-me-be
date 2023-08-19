@@ -18,7 +18,7 @@ import com.kgu.studywithme.studyattendance.infrastructure.persistence.StudyAtten
 import com.kgu.studywithme.studynotice.domain.StudyNotice;
 import com.kgu.studywithme.studynotice.infrastructure.persistence.StudyNoticeJpaRepository;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipant;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
+import com.kgu.studywithme.studyparticipant.infrastructure.persistence.StudyParticipantJpaRepository;
 import com.kgu.studywithme.studyreview.domain.StudyReview;
 import com.kgu.studywithme.studyreview.domain.StudyReviewRepository;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
@@ -67,7 +67,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
     private StudyReviewRepository studyReviewRepository;
 
     @Autowired
-    private StudyParticipantRepository studyParticipantRepository;
+    private StudyParticipantJpaRepository studyParticipantJpaRepository;
 
     @Autowired
     private StudyNoticeJpaRepository studyNoticeJpaRepository;
@@ -98,7 +98,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
     @DisplayName("스터디 기본 정보를 조회한다")
     void fetchBasicInformationById() {
         /* host, memberA, memberB 참여 승인 & memberC 신청 대기 */
-        studyParticipantRepository.saveAll(
+        studyParticipantJpaRepository.saveAll(
                 List.of(
                         StudyParticipant.applyHost(study.getId(), host.getId()),
                         StudyParticipant.applyParticipant(study.getId(), memberA.getId(), APPROVE),
@@ -136,7 +136,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
     @DisplayName("스터디 리뷰를 조회한다")
     void fetchReviewById() {
         /* 졸업자 3명 */
-        studyParticipantRepository.saveAll(
+        studyParticipantJpaRepository.saveAll(
                 List.of(
                         StudyParticipant.applyHost(study.getId(), host.getId()),
                         StudyParticipant.applyParticipant(study.getId(), memberA.getId(), GRADUATED),
@@ -183,7 +183,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
     @DisplayName("스터디 참여자를 조회한다")
     void fetchParticipantById() {
         /* 신청자 3명 */
-        studyParticipantRepository.saveAll(
+        studyParticipantJpaRepository.saveAll(
                 List.of(
                         StudyParticipant.applyHost(study.getId(), host.getId()),
                         StudyParticipant.applyInStudy(study.getId(), memberA.getId()),
@@ -199,8 +199,8 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
         );
 
         /* memberA, memberC 참여 승인 */
-        studyParticipantRepository.updateParticipantStatus(study.getId(), memberA.getId(), APPROVE);
-        studyParticipantRepository.updateParticipantStatus(study.getId(), memberC.getId(), APPROVE);
+        studyParticipantJpaRepository.updateParticipantStatus(study.getId(), memberA.getId(), APPROVE);
+        studyParticipantJpaRepository.updateParticipantStatus(study.getId(), memberC.getId(), APPROVE);
         IntStream.range(0, 2).forEach(i -> study.addParticipant());
 
         final StudyParticipantInformation result2 = studyInformationQueryRepository.fetchParticipantById(study.getId());
@@ -212,7 +212,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
         );
 
         /* memberB 참여 승인 */
-        studyParticipantRepository.updateParticipantStatus(study.getId(), memberB.getId(), APPROVE);
+        studyParticipantJpaRepository.updateParticipantStatus(study.getId(), memberB.getId(), APPROVE);
         IntStream.range(0, 1).forEach(i -> study.addParticipant());
 
         final StudyParticipantInformation result3 = studyInformationQueryRepository.fetchParticipantById(study.getId());
@@ -224,7 +224,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
         );
 
         /* memberC 졸업 */
-        studyParticipantRepository.updateParticipantStatus(study.getId(), memberC.getId(), GRADUATED);
+        studyParticipantJpaRepository.updateParticipantStatus(study.getId(), memberC.getId(), GRADUATED);
         IntStream.range(0, 1).forEach(i -> study.removeParticipant());
 
         final StudyParticipantInformation result4 = studyInformationQueryRepository.fetchParticipantById(study.getId());
@@ -240,7 +240,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
     @DisplayName("스터디 신청자를 조회한다")
     void fetchApplicantById() {
         /* 신청자 3명 */
-        studyParticipantRepository.saveAll(
+        studyParticipantJpaRepository.saveAll(
                 List.of(
                         StudyParticipant.applyHost(study.getId(), host.getId()),
                         StudyParticipant.applyInStudy(study.getId(), memberA.getId()),
@@ -258,8 +258,8 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
         );
 
         /* memberA, memberC 참여 승인 */
-        studyParticipantRepository.updateParticipantStatus(study.getId(), memberA.getId(), APPROVE);
-        studyParticipantRepository.updateParticipantStatus(study.getId(), memberC.getId(), APPROVE);
+        studyParticipantJpaRepository.updateParticipantStatus(study.getId(), memberA.getId(), APPROVE);
+        studyParticipantJpaRepository.updateParticipantStatus(study.getId(), memberC.getId(), APPROVE);
         IntStream.range(0, 2).forEach(i -> study.addParticipant());
 
         final List<StudyApplicantInformation> result2 = studyInformationQueryRepository.fetchApplicantById(study.getId());
@@ -271,7 +271,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
         );
 
         /* memberB 참여 승인 */
-        studyParticipantRepository.updateParticipantStatus(study.getId(), memberB.getId(), APPROVE);
+        studyParticipantJpaRepository.updateParticipantStatus(study.getId(), memberB.getId(), APPROVE);
         IntStream.range(0, 1).forEach(i -> study.addParticipant());
 
         final List<StudyApplicantInformation> result3 = studyInformationQueryRepository.fetchApplicantById(study.getId());
@@ -332,7 +332,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
     @DisplayName("스터디 참여자들의 출석 정보를 조회한다 [Only Approved Participant]")
     void fetchAttendanceById() {
         /* host, memberA, memberC 참여 승인 & memberB 신청 대기 */
-        studyParticipantRepository.saveAll(
+        studyParticipantJpaRepository.saveAll(
                 List.of(
                         StudyParticipant.applyHost(study.getId(), host.getId())
                                 .apply(1L, LocalDateTime.now().minusDays(4)),

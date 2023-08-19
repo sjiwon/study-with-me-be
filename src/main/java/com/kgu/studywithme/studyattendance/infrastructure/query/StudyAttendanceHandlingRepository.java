@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
 import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.NON_ATTENDANCE;
 import static com.kgu.studywithme.studyattendance.domain.QStudyAttendance.studyAttendance;
 
@@ -21,20 +20,6 @@ import static com.kgu.studywithme.studyattendance.domain.QStudyAttendance.studyA
 @RequiredArgsConstructor
 public class StudyAttendanceHandlingRepository implements StudyAttendanceHandlingRepositoryAdapter {
     private final JPAQueryFactory query;
-
-    @Override
-    public int getAttendanceCount(final Long studyId, final Long participantId) {
-        return query
-                .select(studyAttendance.count())
-                .from(studyAttendance)
-                .where(
-                        studyIdEq(studyId),
-                        participantIdEq(participantId),
-                        statusEq(ATTENDANCE)
-                )
-                .fetchOne()
-                .intValue();
-    }
 
     @Override
     public List<NonAttendanceWeekly> findNonAttendanceInformation() {

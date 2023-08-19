@@ -11,7 +11,7 @@ import com.kgu.studywithme.study.domain.StudyName;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
 import com.kgu.studywithme.study.infrastructure.persistence.StudyJpaRepository;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipant;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
+import com.kgu.studywithme.studyparticipant.infrastructure.persistence.StudyParticipantJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +23,7 @@ public class CreateStudyService implements CreateStudyUseCase {
     private final MemberReadAdapter memberReadAdapter;
     private final StudyDuplicateCheckRepositoryAdapter studyDuplicateCheckRepositoryAdapter;
     private final StudyJpaRepository studyJpaRepository;
-    private final StudyParticipantRepository studyParticipantRepository;
+    private final StudyParticipantJpaRepository studyParticipantJpaRepository;
 
     @Override
     public Long invoke(final Command command) {
@@ -74,6 +74,6 @@ public class CreateStudyService implements CreateStudyUseCase {
 
     private void applyHostToParticipant(final Study study, final Member host) {
         final StudyParticipant participant = StudyParticipant.applyHost(study.getId(), host.getId());
-        studyParticipantRepository.save(participant);
+        studyParticipantJpaRepository.save(participant);
     }
 }

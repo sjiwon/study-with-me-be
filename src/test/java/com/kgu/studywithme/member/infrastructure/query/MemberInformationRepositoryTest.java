@@ -22,7 +22,7 @@ import com.kgu.studywithme.studyattendance.domain.AttendanceStatus;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
 import com.kgu.studywithme.studyattendance.infrastructure.persistence.StudyAttendanceJpaRepository;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipant;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
+import com.kgu.studywithme.studyparticipant.infrastructure.persistence.StudyParticipantJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -69,7 +69,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
     private StudyJpaRepository studyJpaRepository;
 
     @Autowired
-    private StudyParticipantRepository studyParticipantRepository;
+    private StudyParticipantJpaRepository studyParticipantJpaRepository;
 
     @Autowired
     private StudyAttendanceJpaRepository studyAttendanceJpaRepository;
@@ -240,7 +240,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
         @DisplayName("신청한 스터디 정보를 조회한다")
         void fetchAppliedStudyById() {
             /* studyA, studyB, studyC 신청 */
-            studyParticipantRepository.saveAll(
+            studyParticipantJpaRepository.saveAll(
                     List.of(
                             StudyParticipant.applyInStudy(studyA.getId(), member.getId()),
                             StudyParticipant.applyInStudy(studyB.getId(), member.getId()),
@@ -254,13 +254,13 @@ class MemberInformationRepositoryTest extends RepositoryTest {
                     .containsExactly(studyC.getId(), studyB.getId(), studyA.getId());
 
             /* studyD, studyE 추가 신청 -> studyB 승인 */
-            studyParticipantRepository.saveAll(
+            studyParticipantJpaRepository.saveAll(
                     List.of(
                             StudyParticipant.applyInStudy(studyD.getId(), member.getId()),
                             StudyParticipant.applyInStudy(studyE.getId(), member.getId())
                     )
             );
-            studyParticipantRepository.updateParticipantStatus(studyB.getId(), member.getId(), APPROVE);
+            studyParticipantJpaRepository.updateParticipantStatus(studyB.getId(), member.getId(), APPROVE);
 
             final List<AppliedStudy> result2 = memberInformationRepository.fetchAppliedStudyById(member.getId());
             assertThat(result2)
@@ -272,7 +272,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
         @DisplayName("참여중인 스터디 정보를 조회한다")
         void fetchParticipateStudyById() {
             /* studyA, studyB, studyC 참여 */
-            studyParticipantRepository.saveAll(
+            studyParticipantJpaRepository.saveAll(
                     List.of(
                             StudyParticipant.applyParticipant(studyA.getId(), member.getId(), APPROVE),
                             StudyParticipant.applyParticipant(studyB.getId(), member.getId(), APPROVE),
@@ -286,13 +286,13 @@ class MemberInformationRepositoryTest extends RepositoryTest {
                     .containsExactly(studyC.getId(), studyB.getId(), studyA.getId());
 
             /* studyD, studyE 추가 참여 -> studyC 졸업 */
-            studyParticipantRepository.saveAll(
+            studyParticipantJpaRepository.saveAll(
                     List.of(
                             StudyParticipant.applyParticipant(studyD.getId(), member.getId(), APPROVE),
                             StudyParticipant.applyParticipant(studyE.getId(), member.getId(), APPROVE)
                     )
             );
-            studyParticipantRepository.updateParticipantStatus(studyC.getId(), member.getId(), GRADUATED);
+            studyParticipantJpaRepository.updateParticipantStatus(studyC.getId(), member.getId(), GRADUATED);
 
             final List<ParticipateStudy> result2 = memberInformationRepository.fetchParticipateStudyById(member.getId());
             assertThat(result2)
@@ -304,7 +304,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
         @DisplayName("졸업한 스터디 정보를 조회한다")
         void fetchGraduatedStudyById() {
             /* studyA, studyB, studyC 참여 */
-            studyParticipantRepository.saveAll(
+            studyParticipantJpaRepository.saveAll(
                     List.of(
                             StudyParticipant.applyParticipant(studyA.getId(), member.getId(), APPROVE),
                             StudyParticipant.applyParticipant(studyB.getId(), member.getId(), APPROVE),
@@ -316,14 +316,14 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             assertThat(result1).isEmpty();
 
             /* studyD, studyE 추가 참여 -> studyA, studyC 졸업 */
-            studyParticipantRepository.saveAll(
+            studyParticipantJpaRepository.saveAll(
                     List.of(
                             StudyParticipant.applyParticipant(studyD.getId(), member.getId(), APPROVE),
                             StudyParticipant.applyParticipant(studyE.getId(), member.getId(), APPROVE)
                     )
             );
-            studyParticipantRepository.updateParticipantStatus(studyA.getId(), member.getId(), GRADUATED);
-            studyParticipantRepository.updateParticipantStatus(studyC.getId(), member.getId(), GRADUATED);
+            studyParticipantJpaRepository.updateParticipantStatus(studyA.getId(), member.getId(), GRADUATED);
+            studyParticipantJpaRepository.updateParticipantStatus(studyC.getId(), member.getId(), GRADUATED);
 
             final List<GraduatedStudy> result2 = memberInformationRepository.fetchGraduatedStudyById(member.getId());
             assertThat(result2)
@@ -335,7 +335,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
         @DisplayName("전체 스터디 출석률을 조회한다")
         void fetchAttendanceRatioById() {
             /* 모든 스터디 참여 */
-            studyParticipantRepository.saveAll(
+            studyParticipantJpaRepository.saveAll(
                     List.of(
                             StudyParticipant.applyParticipant(studyA.getId(), member.getId(), APPROVE),
                             StudyParticipant.applyParticipant(studyB.getId(), member.getId(), APPROVE),

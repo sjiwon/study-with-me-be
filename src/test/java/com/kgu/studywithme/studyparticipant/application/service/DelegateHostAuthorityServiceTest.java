@@ -5,8 +5,8 @@ import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.application.adapter.StudyReadAdapter;
 import com.kgu.studywithme.study.domain.Study;
+import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantVerificationRepositoryAdapter;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.DelegateHostAuthorityUseCase;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -37,7 +37,7 @@ class DelegateHostAuthorityServiceTest extends UseCaseTest {
     private StudyReadAdapter studyReadAdapter;
 
     @Mock
-    private StudyParticipantRepository studyParticipantRepository;
+    private ParticipantVerificationRepositoryAdapter participantVerificationRepositoryAdapter;
 
     private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Member newHost = GHOST.toMember().apply(2L, LocalDateTime.now());
@@ -64,7 +64,7 @@ class DelegateHostAuthorityServiceTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(studyReadAdapter, times(1)).getById(any()),
-                () -> verify(studyParticipantRepository, times(0)).isParticipant(any(), any())
+                () -> verify(participantVerificationRepositoryAdapter, times(0)).isParticipant(any(), any())
         );
     }
 
@@ -83,7 +83,7 @@ class DelegateHostAuthorityServiceTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(studyReadAdapter, times(1)).getById(any()),
-                () -> verify(studyParticipantRepository, times(0)).isParticipant(any(), any())
+                () -> verify(participantVerificationRepositoryAdapter, times(0)).isParticipant(any(), any())
         );
     }
 
@@ -92,7 +92,7 @@ class DelegateHostAuthorityServiceTest extends UseCaseTest {
     void throwExceptionByNewHostIsNotParticipant() {
         // given
         given(studyReadAdapter.getById(any())).willReturn(study);
-        given(studyParticipantRepository.isParticipant(any(), any())).willReturn(false);
+        given(participantVerificationRepositoryAdapter.isParticipant(any(), any())).willReturn(false);
 
         // when - then
         assertThatThrownBy(() -> delegateHostAuthorityService.invoke(
@@ -103,7 +103,7 @@ class DelegateHostAuthorityServiceTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(studyReadAdapter, times(1)).getById(any()),
-                () -> verify(studyParticipantRepository, times(1)).isParticipant(any(), any())
+                () -> verify(participantVerificationRepositoryAdapter, times(1)).isParticipant(any(), any())
         );
     }
 
@@ -112,7 +112,7 @@ class DelegateHostAuthorityServiceTest extends UseCaseTest {
     void success() {
         // given
         given(studyReadAdapter.getById(any())).willReturn(study);
-        given(studyParticipantRepository.isParticipant(any(), any())).willReturn(true);
+        given(participantVerificationRepositoryAdapter.isParticipant(any(), any())).willReturn(true);
 
         ReflectionTestUtils.setField(study.getGraduationPolicy(), "updateChance", 1);
         assertThat(study.getGraduationPolicy().getUpdateChance()).isEqualTo(1);
@@ -123,7 +123,7 @@ class DelegateHostAuthorityServiceTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyReadAdapter, times(1)).getById(any()),
-                () -> verify(studyParticipantRepository, times(1)).isParticipant(any(), any()),
+                () -> verify(participantVerificationRepositoryAdapter, times(1)).isParticipant(any(), any()),
                 () -> assertThat(study.getGraduationPolicy().getUpdateChance()).isEqualTo(3) // default chance = 3
         );
     }

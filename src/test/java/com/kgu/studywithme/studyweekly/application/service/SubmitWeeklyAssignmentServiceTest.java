@@ -8,7 +8,7 @@ import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
 import com.kgu.studywithme.studyattendance.infrastructure.persistence.StudyAttendanceJpaRepository;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
+import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantReadAdapter;
 import com.kgu.studywithme.studyweekly.application.usecase.command.SubmitWeeklyAssignmentUseCase;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
 import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
@@ -51,7 +51,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
     private StudyWeeklyRepository studyWeeklyRepository;
 
     @Mock
-    private StudyParticipantRepository studyParticipantRepository;
+    private ParticipantReadAdapter participantReadAdapter;
 
     @Mock
     private StudyAttendanceJpaRepository studyAttendanceJpaRepository;
@@ -96,7 +96,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(studyWeeklyRepository, times(0)).findById(any()),
-                () -> verify(studyParticipantRepository, times(0)).findParticipant(any(), any()),
+                () -> verify(participantReadAdapter, times(0)).getParticipant(any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceJpaRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
                 () -> verify(studyAttendanceJpaRepository, times(0)).updateParticipantStatus(any(), anyInt(), any(), any())
@@ -121,7 +121,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(studyWeeklyRepository, times(0)).findById(any()),
-                () -> verify(studyParticipantRepository, times(0)).findParticipant(any(), any()),
+                () -> verify(participantReadAdapter, times(0)).getParticipant(any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceJpaRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
                 () -> verify(studyAttendanceJpaRepository, times(0)).updateParticipantStatus(any(), anyInt(), any(), any())
@@ -150,7 +150,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(studyWeeklyRepository, times(1)).findById(any()),
-                () -> verify(studyParticipantRepository, times(0)).findParticipant(any(), any()),
+                () -> verify(participantReadAdapter, times(0)).getParticipant(any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceJpaRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
                 () -> verify(studyAttendanceJpaRepository, times(0)).updateParticipantStatus(any(), anyInt(), any(), any())
@@ -162,7 +162,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
     void successWithLinkA() {
         // given
         given(studyWeeklyRepository.findById(any())).willReturn(Optional.of(currentWeekly));
-        given(studyParticipantRepository.findParticipant(any(), any())).willReturn(Optional.of(host));
+        given(participantReadAdapter.getParticipant(any(), any())).willReturn(host);
 
         // when
         submitWeeklyAssignmentService.invoke(
@@ -179,7 +179,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyWeeklyRepository, times(1)).findById(any()),
-                () -> verify(studyParticipantRepository, times(1)).findParticipant(any(), any()),
+                () -> verify(participantReadAdapter, times(1)).getParticipant(any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceJpaRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
                 () -> verify(studyAttendanceJpaRepository, times(1)).updateParticipantStatus(any(), anyInt(), any(), any()),
@@ -192,7 +192,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
     void successWithLinkB() {
         // given
         given(studyWeeklyRepository.findById(any())).willReturn(Optional.of(previousWeekly));
-        given(studyParticipantRepository.findParticipant(any(), any())).willReturn(Optional.of(host));
+        given(participantReadAdapter.getParticipant(any(), any())).willReturn(host);
         given(studyAttendanceJpaRepository.getParticipantAttendanceByWeek(any(), any(), anyInt())).willReturn(Optional.of(attendance));
 
         // when
@@ -210,7 +210,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyWeeklyRepository, times(1)).findById(any()),
-                () -> verify(studyParticipantRepository, times(1)).findParticipant(any(), any()),
+                () -> verify(participantReadAdapter, times(1)).getParticipant(any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceJpaRepository, times(1)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
                 () -> verify(studyAttendanceJpaRepository, times(1)).updateParticipantStatus(any(), anyInt(), any(), any()),
@@ -223,7 +223,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
     void successWithFileA() {
         // given
         given(studyWeeklyRepository.findById(any())).willReturn(Optional.of(currentWeekly));
-        given(studyParticipantRepository.findParticipant(any(), any())).willReturn(Optional.of(host));
+        given(participantReadAdapter.getParticipant(any(), any())).willReturn(host);
         given(uploader.uploadWeeklySubmit(fileData)).willReturn(TXT_FILE.getLink());
 
         // when
@@ -241,7 +241,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyWeeklyRepository, times(1)).findById(any()),
-                () -> verify(studyParticipantRepository, times(1)).findParticipant(any(), any()),
+                () -> verify(participantReadAdapter, times(1)).getParticipant(any(), any()),
                 () -> verify(uploader, times(1)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceJpaRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
                 () -> verify(studyAttendanceJpaRepository, times(1)).updateParticipantStatus(any(), anyInt(), any(), any()),
@@ -254,7 +254,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
     void successWithFileB() {
         // given
         given(studyWeeklyRepository.findById(any())).willReturn(Optional.of(previousWeekly));
-        given(studyParticipantRepository.findParticipant(any(), any())).willReturn(Optional.of(host));
+        given(participantReadAdapter.getParticipant(any(), any())).willReturn(host);
         given(uploader.uploadWeeklySubmit(fileData)).willReturn(TXT_FILE.getLink());
         given(studyAttendanceJpaRepository.getParticipantAttendanceByWeek(any(), any(), anyInt())).willReturn(Optional.of(attendance));
 
@@ -273,7 +273,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyWeeklyRepository, times(1)).findById(any()),
-                () -> verify(studyParticipantRepository, times(1)).findParticipant(any(), any()),
+                () -> verify(participantReadAdapter, times(1)).getParticipant(any(), any()),
                 () -> verify(uploader, times(1)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceJpaRepository, times(1)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
                 () -> verify(studyAttendanceJpaRepository, times(1)).updateParticipantStatus(any(), anyInt(), any(), any()),

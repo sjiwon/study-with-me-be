@@ -9,8 +9,7 @@ import com.kgu.studywithme.studyattendance.domain.AttendanceStatus;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
 import com.kgu.studywithme.studyattendance.exception.StudyAttendanceErrorCode;
 import com.kgu.studywithme.studyattendance.infrastructure.persistence.StudyAttendanceJpaRepository;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
-import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
+import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantReadAdapter;
 import com.kgu.studywithme.studyweekly.application.usecase.command.SubmitWeeklyAssignmentUseCase;
 import com.kgu.studywithme.studyweekly.domain.Period;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
@@ -34,7 +33,7 @@ import static com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType
 @RequiredArgsConstructor
 public class SubmitWeeklyAssignmentService implements SubmitWeeklyAssignmentUseCase {
     private final StudyWeeklyRepository studyWeeklyRepository;
-    private final StudyParticipantRepository studyParticipantRepository;
+    private final ParticipantReadAdapter participantReadAdapter;
     private final StudyAttendanceJpaRepository studyAttendanceJpaRepository;
     private final FileUploader uploader;
 
@@ -43,7 +42,7 @@ public class SubmitWeeklyAssignmentService implements SubmitWeeklyAssignmentUseC
         validateAssignmentSubmissionExists(command.file(), command.link());
 
         final StudyWeekly weekly = getSpecificWeekly(command.weeklyId());
-        final Member member = getParticipant(command.studyId(), command.memberId());
+        final Member member = participantReadAdapter.getParticipant(command.studyId(), command.memberId());
 
         submitAssignment(weekly, member, command);
         processAttendanceBasedOnAutoAttendanceFlag(weekly, member, command.studyId());
@@ -65,14 +64,6 @@ public class SubmitWeeklyAssignmentService implements SubmitWeeklyAssignmentUseC
     private StudyWeekly getSpecificWeekly(final Long weeklyId) {
         return studyWeeklyRepository.findById(weeklyId)
                 .orElseThrow(() -> StudyWithMeException.type(StudyWeeklyErrorCode.WEEKLY_NOT_FOUND));
-    }
-
-    private Member getParticipant(
-            final Long studyId,
-            final Long participantId
-    ) {
-        return studyParticipantRepository.findParticipant(studyId, participantId)
-                .orElseThrow(() -> StudyWithMeException.type(StudyParticipantErrorCode.PARTICIPANT_NOT_FOUND));
     }
 
     private void submitAssignment(

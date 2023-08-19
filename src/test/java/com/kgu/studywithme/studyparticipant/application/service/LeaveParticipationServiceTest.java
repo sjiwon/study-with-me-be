@@ -6,8 +6,8 @@ import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.application.adapter.StudyReadAdapter;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.LeaveParticipationUseCase;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
+import com.kgu.studywithme.studyparticipant.infrastructure.persistence.StudyParticipantJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,7 +36,7 @@ class LeaveParticipationServiceTest extends UseCaseTest {
     private StudyReadAdapter studyReadAdapter;
 
     @Mock
-    private StudyParticipantRepository studyParticipantRepository;
+    private StudyParticipantJpaRepository studyParticipantJpaRepository;
 
     private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Member participant = GHOST.toMember().apply(2L, LocalDateTime.now());
@@ -62,7 +62,7 @@ class LeaveParticipationServiceTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(studyReadAdapter, times(1)).getById(any()),
-                () -> verify(studyParticipantRepository, times(0)).updateParticipantStatus(any(), any(), any())
+                () -> verify(studyParticipantJpaRepository, times(0)).updateParticipantStatus(any(), any(), any())
         );
     }
 
@@ -78,7 +78,7 @@ class LeaveParticipationServiceTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyReadAdapter, times(1)).getById(any()),
-                () -> verify(studyParticipantRepository, times(1)).updateParticipantStatus(any(), any(), any()),
+                () -> verify(studyParticipantJpaRepository, times(1)).updateParticipantStatus(any(), any(), any()),
                 () -> assertThat(study.getParticipants()).isEqualTo(previousParticipantMembers - 1)
         );
     }

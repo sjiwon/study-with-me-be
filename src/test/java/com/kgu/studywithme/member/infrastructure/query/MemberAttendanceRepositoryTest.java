@@ -9,7 +9,7 @@ import com.kgu.studywithme.study.infrastructure.persistence.StudyJpaRepository;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
 import com.kgu.studywithme.studyattendance.infrastructure.persistence.StudyAttendanceJpaRepository;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipant;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
+import com.kgu.studywithme.studyparticipant.infrastructure.persistence.StudyParticipantJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,7 +45,7 @@ class MemberAttendanceRepositoryTest extends RepositoryTest {
     private StudyJpaRepository studyJpaRepository;
 
     @Autowired
-    private StudyParticipantRepository studyParticipantRepository;
+    private StudyParticipantJpaRepository studyParticipantJpaRepository;
 
     @Autowired
     private StudyAttendanceJpaRepository studyAttendanceJpaRepository;
@@ -73,7 +73,7 @@ class MemberAttendanceRepositoryTest extends RepositoryTest {
     @DisplayName("사용자가 출석을 진행한 모든 스터디의 주차를 조회한다")
     void findParticipateWeeksInStudyByMemberId() {
         /* 모든 스터디 참여 */
-        studyParticipantRepository.saveAll(
+        studyParticipantJpaRepository.saveAll(
                 List.of(
                         StudyParticipant.applyParticipant(studyA.getId(), member.getId(), APPROVE),
                         StudyParticipant.applyParticipant(studyB.getId(), member.getId(), APPROVE),
