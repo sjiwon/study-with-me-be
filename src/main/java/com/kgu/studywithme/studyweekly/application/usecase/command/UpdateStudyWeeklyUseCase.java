@@ -1,12 +1,12 @@
 package com.kgu.studywithme.studyweekly.application.usecase.command;
 
 import com.kgu.studywithme.studyweekly.domain.Period;
-import org.springframework.web.multipart.MultipartFile;
+import com.kgu.studywithme.studyweekly.domain.attachment.UploadAttachment;
 
 import java.util.List;
 
 public interface UpdateStudyWeeklyUseCase {
-    void updateStudyWeekly(final Command command);
+    void invoke(final Command command);
 
     record Command(
             Long weeklyId,
@@ -15,7 +15,7 @@ public interface UpdateStudyWeeklyUseCase {
             Period period,
             boolean assignmentExists,
             boolean autoAttendance,
-            List<MultipartFile> files
+            List<UploadAttachment> attachments
     ) {
     }
 }

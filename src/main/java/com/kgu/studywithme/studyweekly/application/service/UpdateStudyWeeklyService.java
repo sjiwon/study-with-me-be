@@ -4,28 +4,20 @@ import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.studyweekly.application.usecase.command.UpdateStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
-import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
-import com.kgu.studywithme.studyweekly.domain.attachment.UploadAttachment;
 import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
-import com.kgu.studywithme.upload.utils.FileUploader;
+import com.kgu.studywithme.studyweekly.infrastructure.persistence.StudyWeeklyJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @Service
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class UpdateStudyWeeklyService implements UpdateStudyWeeklyUseCase {
-    private final StudyWeeklyRepository studyWeeklyRepository;
-    private final FileUploader uploader;
+    private final StudyWeeklyJpaRepository studyWeeklyJpaRepository;
 
     @Override
-    public void updateStudyWeekly(final Command command) {
+    public void invoke(final Command command) {
         final StudyWeekly weekly = getSpecificWeekly(command.weeklyId());
-        final List<UploadAttachment> attachments = uploadAttachments(command.files());
 
         weekly.update(
                 command.title(),
@@ -33,27 +25,12 @@ public class UpdateStudyWeeklyService implements UpdateStudyWeeklyUseCase {
                 command.period(),
                 command.assignmentExists(),
                 command.autoAttendance(),
-                attachments
+                command.attachments()
         );
     }
 
     private StudyWeekly getSpecificWeekly(final Long weeklyId) {
-        return studyWeeklyRepository.findById(weeklyId)
+        return studyWeeklyJpaRepository.findById(weeklyId)
                 .orElseThrow(() -> StudyWithMeException.type(StudyWeeklyErrorCode.WEEKLY_NOT_FOUND));
-    }
-
-    private List<UploadAttachment> uploadAttachments(final List<MultipartFile> files) {
-        if (CollectionUtils.isEmpty(files)) {
-            return List.of();
-        }
-
-        return files.stream()
-                .map(file ->
-                        new UploadAttachment(
-                                file.getOriginalFilename(),
-                                uploader.uploadWeeklyAttachment(file)
-                        )
-                )
-                .toList();
     }
 }

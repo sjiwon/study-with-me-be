@@ -89,7 +89,7 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
             mockingToken(true, PARTICIPANT_ID);
             doThrow(StudyWithMeException.type(StudyParticipantErrorCode.HOST_CANNOT_LEAVE_STUDY))
                     .when(leaveParticipationUseCase)
-                    .leaveParticipation(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -130,7 +130,7 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
             mockingToken(true, PARTICIPANT_ID);
             doNothing()
                     .when(leaveParticipationUseCase)
-                    .leaveParticipation(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -216,7 +216,7 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
             mockingToken(true, PARTICIPANT_ID);
             doThrow(StudyWithMeException.type(StudyParticipantErrorCode.HOST_CANNOT_GRADUATE_STUDY))
                     .when(graduateStudyUseCase)
-                    .graduateStudy(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -257,7 +257,7 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
             mockingToken(true, PARTICIPANT_ID);
             doThrow(StudyWithMeException.type(StudyParticipantErrorCode.PARTICIPANT_NOT_MEET_GRADUATION_POLICY))
                     .when(graduateStudyUseCase)
-                    .graduateStudy(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -298,7 +298,7 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
             mockingToken(true, PARTICIPANT_ID);
             doNothing()
                     .when(graduateStudyUseCase)
-                    .graduateStudy(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders

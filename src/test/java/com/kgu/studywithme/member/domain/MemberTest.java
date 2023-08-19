@@ -26,12 +26,12 @@ class MemberTest {
                 () -> assertThat(member.getName()).isEqualTo(JIWON.getName()),
                 () -> assertThat(member.getNickname()).isEqualTo(JIWON.getNickname()),
                 () -> assertThat(member.getEmail()).isEqualTo(JIWON.getEmail()),
+                () -> assertThat(member.isEmailOptIn()).isEqualTo(JIWON.getEmail().isEmailOptIn()),
                 () -> assertThat(member.getBirth()).isEqualTo(JIWON.getBirth()),
                 () -> assertThat(member.getPhone()).isEqualTo(JIWON.getPhone()),
                 () -> assertThat(member.getGender()).isEqualTo(JIWON.getGender()),
-                () -> assertThat(member.getRegion()).isEqualTo(JIWON.getRegion()),
-                () -> assertThat(member.getScore()).isEqualTo(80),
-                () -> assertThat(member.isEmailOptIn()).isEqualTo(JIWON.isEmailOptIn()),
+                () -> assertThat(member.getAddress()).isEqualTo(JIWON.getAddress()),
+                () -> assertThat(member.getScore().getValue()).isEqualTo(80),
                 () -> assertThat(member.getInterests()).containsExactlyInAnyOrderElementsOf(JIWON.getInterests())
         );
     }
@@ -45,10 +45,10 @@ class MemberTest {
         // when
         member.update(
                 ANONYMOUS.getNickname().getValue(),
-                ANONYMOUS.getPhone(),
-                ANONYMOUS.getRegion().getProvince(),
-                ANONYMOUS.getRegion().getCity(),
-                ANONYMOUS.isEmailOptIn(),
+                ANONYMOUS.getPhone().getValue(),
+                ANONYMOUS.getAddress().getProvince(),
+                ANONYMOUS.getAddress().getCity(),
+                ANONYMOUS.getEmail().isEmailOptIn(),
                 ANONYMOUS.getInterests()
         );
 
@@ -57,12 +57,12 @@ class MemberTest {
                 () -> assertThat(member.getName()).isEqualTo(JIWON.getName()),
                 () -> assertThat(member.getNickname()).isEqualTo(ANONYMOUS.getNickname()),
                 () -> assertThat(member.getEmail()).isEqualTo(JIWON.getEmail()),
+                () -> assertThat(member.isEmailOptIn()).isEqualTo(ANONYMOUS.getEmail().isEmailOptIn()),
                 () -> assertThat(member.getBirth()).isEqualTo(JIWON.getBirth()),
                 () -> assertThat(member.getPhone()).isEqualTo(ANONYMOUS.getPhone()),
                 () -> assertThat(member.getGender()).isEqualTo(JIWON.getGender()),
-                () -> assertThat(member.getRegion()).isEqualTo(ANONYMOUS.getRegion()),
-                () -> assertThat(member.getScore()).isEqualTo(80),
-                () -> assertThat(member.isEmailOptIn()).isEqualTo(ANONYMOUS.isEmailOptIn()),
+                () -> assertThat(member.getAddress()).isEqualTo(ANONYMOUS.getAddress()),
+                () -> assertThat(member.getScore().getValue()).isEqualTo(80),
                 () -> assertThat(member.getInterests()).containsExactlyInAnyOrderElementsOf(ANONYMOUS.getInterests())
         );
     }
@@ -90,7 +90,7 @@ class MemberTest {
                 member.applyScoreByAttendanceStatus(ATTENDANCE); // 75 + 1
 
                 // then
-                assertThat(member.getScore()).isEqualTo(76);
+                assertThat(member.getScore().getValue()).isEqualTo(76);
             }
 
             @Test
@@ -100,7 +100,7 @@ class MemberTest {
                 member.applyScoreByAttendanceStatus(LATE); // 80 - 1
 
                 // then
-                assertThat(member.getScore()).isEqualTo(79);
+                assertThat(member.getScore().getValue()).isEqualTo(79);
             }
 
             @Test
@@ -110,7 +110,7 @@ class MemberTest {
                 member.applyScoreByAttendanceStatus(ABSENCE); // 80 - 5
 
                 // then
-                assertThat(member.getScore()).isEqualTo(75);
+                assertThat(member.getScore().getValue()).isEqualTo(75);
             }
         }
 
@@ -124,7 +124,7 @@ class MemberTest {
                 member.applyScoreByAttendanceStatus(ATTENDANCE, LATE); // 80 - 1 - 1
 
                 // then
-                assertThat(member.getScore()).isEqualTo(78);
+                assertThat(member.getScore().getValue()).isEqualTo(78);
             }
 
             @Test
@@ -134,7 +134,7 @@ class MemberTest {
                 member.applyScoreByAttendanceStatus(ATTENDANCE, ABSENCE); // 80 - 1 - 5
 
                 // then
-                assertThat(member.getScore()).isEqualTo(74);
+                assertThat(member.getScore().getValue()).isEqualTo(74);
             }
 
             @Test
@@ -144,7 +144,7 @@ class MemberTest {
                 member.applyScoreByAttendanceStatus(LATE, ATTENDANCE); // 80 + 1 + 1
 
                 // then
-                assertThat(member.getScore()).isEqualTo(82);
+                assertThat(member.getScore().getValue()).isEqualTo(82);
             }
 
             @Test
@@ -154,7 +154,7 @@ class MemberTest {
                 member.applyScoreByAttendanceStatus(LATE, ABSENCE); // 80 + 1 - 5
 
                 // then
-                assertThat(member.getScore()).isEqualTo(76);
+                assertThat(member.getScore().getValue()).isEqualTo(76);
             }
 
             @Test
@@ -164,7 +164,7 @@ class MemberTest {
                 member.applyScoreByAttendanceStatus(ABSENCE, ATTENDANCE); // 80 + 5 + 1
 
                 // then
-                assertThat(member.getScore()).isEqualTo(86);
+                assertThat(member.getScore().getValue()).isEqualTo(86);
             }
 
             @Test
@@ -174,7 +174,7 @@ class MemberTest {
                 member.applyScoreByAttendanceStatus(ABSENCE, LATE); // 80 + 5 - 1
 
                 // then
-                assertThat(member.getScore()).isEqualTo(84);
+                assertThat(member.getScore().getValue()).isEqualTo(84);
             }
         }
     }

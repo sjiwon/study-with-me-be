@@ -1,9 +1,10 @@
 package com.kgu.studywithme.auth.infrastructure.oauth.naver;
 
-import com.kgu.studywithme.auth.infrastructure.oauth.OAuthUri;
+import com.kgu.studywithme.auth.application.adapter.OAuthUri;
 import com.kgu.studywithme.auth.utils.OAuthProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.UUID;
 
@@ -21,10 +22,13 @@ public class NaverOAuthUri implements OAuthUri {
 
     @Override
     public String generate(final String redirectUri) {
-        return properties.getAuthUrl() + "?"
-                + "response_type=code&"
-                + "client_id=" + properties.getClientId() + "&"
-                + "redirect_uri=" + redirectUri + "&"
-                + "state=" + UUID.randomUUID().toString().replaceAll("-", "");
+        return UriComponentsBuilder
+                .fromUriString(properties.getAuthUrl())
+                .queryParam("response_type", "code")
+                .queryParam("client_id", properties.getClientId())
+                .queryParam("redirect_uri", redirectUri)
+                .queryParam("state", UUID.randomUUID().toString().replaceAll("-", ""))
+                .build()
+                .toUriString();
     }
 }

@@ -1,6 +1,6 @@
 package com.kgu.studywithme.category.presentation;
 
-import com.kgu.studywithme.category.application.dto.CategoryResponse;
+import com.kgu.studywithme.category.domain.CategoryResponse;
 import com.kgu.studywithme.common.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -44,7 +44,7 @@ class CategoryApiControllerTest extends ControllerTest {
                     new CategoryResponse(CERTIFICATION),
                     new CategoryResponse(ETC)
             );
-            given(queryAllCategoriesUseCase.findAllCategories()).willReturn(categories);
+            given(queryAllCategoriesUseCase.invoke()).willReturn(categories);
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders

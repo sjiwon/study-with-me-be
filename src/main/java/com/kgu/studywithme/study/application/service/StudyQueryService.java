@@ -1,12 +1,12 @@
 package com.kgu.studywithme.study.application.service;
 
+import com.kgu.studywithme.study.application.adapter.StudyInformationQueryRepositoryAdapter;
 import com.kgu.studywithme.study.application.usecase.query.QueryBasicInformationByIdUseCase;
 import com.kgu.studywithme.study.application.usecase.query.QueryParticipantByIdUseCase;
 import com.kgu.studywithme.study.application.usecase.query.QueryReviewByIdUseCase;
-import com.kgu.studywithme.study.domain.StudyRepository;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.ReviewInformation;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.StudyBasicInformation;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.StudyParticipantInformation;
+import com.kgu.studywithme.study.infrastructure.query.dto.ReviewInformation;
+import com.kgu.studywithme.study.infrastructure.query.dto.StudyBasicInformation;
+import com.kgu.studywithme.study.infrastructure.query.dto.StudyParticipantInformation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,20 +17,20 @@ public class StudyQueryService implements
         QueryReviewByIdUseCase,
         QueryParticipantByIdUseCase {
 
-    private final StudyRepository studyRepository;
+    private final StudyInformationQueryRepositoryAdapter studyInformationQueryRepositoryAdapter;
 
     @Override
-    public StudyBasicInformation queryBasicInformation(final QueryBasicInformationByIdUseCase.Query query) {
-        return studyRepository.fetchBasicInformationById(query.studyId());
+    public StudyBasicInformation invoke(final QueryBasicInformationByIdUseCase.Query query) {
+        return studyInformationQueryRepositoryAdapter.fetchBasicInformationById(query.studyId());
     }
 
     @Override
-    public ReviewInformation queryReview(final QueryReviewByIdUseCase.Query query) {
-        return studyRepository.fetchReviewById(query.studyId());
+    public ReviewInformation invoke(final QueryReviewByIdUseCase.Query query) {
+        return studyInformationQueryRepositoryAdapter.fetchReviewById(query.studyId());
     }
 
     @Override
-    public StudyParticipantInformation queryParticipant(final QueryParticipantByIdUseCase.Query query) {
-        return studyRepository.fetchParticipantById(query.studyId());
+    public StudyParticipantInformation invoke(final QueryParticipantByIdUseCase.Query query) {
+        return studyInformationQueryRepositoryAdapter.fetchParticipantById(query.studyId());
     }
 }

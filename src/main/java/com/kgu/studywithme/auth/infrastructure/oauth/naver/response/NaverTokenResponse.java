@@ -1,20 +1,14 @@
 package com.kgu.studywithme.auth.infrastructure.oauth.naver.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kgu.studywithme.auth.infrastructure.oauth.OAuthTokenResponse;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.kgu.studywithme.auth.domain.oauth.OAuthTokenResponse;
 
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record NaverTokenResponse(
         String tokenType,
         String accessToken,
-        Integer expiresIn
+        String refreshToken,
+        long expiresIn
 ) implements OAuthTokenResponse {
-    public NaverTokenResponse(
-            @JsonProperty("token_type") final String tokenType,
-            @JsonProperty("access_token") final String accessToken,
-            @JsonProperty("expires_in") final Integer expiresIn
-    ) {
-        this.tokenType = tokenType;
-        this.accessToken = accessToken;
-        this.expiresIn = expiresIn;
-    }
 }

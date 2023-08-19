@@ -2,13 +2,13 @@ package com.kgu.studywithme.studyattendance.application.service;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.application.service.QueryMemberByIdService;
+import com.kgu.studywithme.member.application.adapter.MemberReadAdapter;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.studyattendance.application.usecase.command.ManualAttendanceUseCase;
 import com.kgu.studywithme.studyattendance.domain.AttendanceStatus;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
-import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
 import com.kgu.studywithme.studyattendance.exception.StudyAttendanceErrorCode;
+import com.kgu.studywithme.studyattendance.infrastructure.persistence.StudyAttendanceJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +18,11 @@ import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.NON_AT
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class ManualAttendanceService implements ManualAttendanceUseCase {
-    private final StudyAttendanceRepository studyAttendanceRepository;
-    private final QueryMemberByIdService queryMemberByIdService;
+    private final StudyAttendanceJpaRepository studyAttendanceJpaRepository;
+    private final MemberReadAdapter memberReadAdapter;
 
     @Override
-    public void manualAttendance(final Command command) {
+    public void invoke(final Command command) {
         final StudyAttendance attendance = getParticipantAttendanceByWeek(
                 command.studyId(),
                 command.participantId(),
@@ -39,7 +39,7 @@ public class ManualAttendanceService implements ManualAttendanceUseCase {
             final Long participantId,
             final Integer week
     ) {
-        return studyAttendanceRepository.getParticipantAttendanceByWeek(studyId, participantId, week)
+        return studyAttendanceJpaRepository.getParticipantAttendanceByWeek(studyId, participantId, week)
                 .orElseThrow(() -> StudyWithMeException.type(StudyAttendanceErrorCode.ATTENDANCE_NOT_FOUND));
     }
 
@@ -48,7 +48,7 @@ public class ManualAttendanceService implements ManualAttendanceUseCase {
             final AttendanceStatus previousStatus,
             final AttendanceStatus currentStatus
     ) {
-        final Member participant = queryMemberByIdService.findById(participantId);
+        final Member participant = memberReadAdapter.getById(participantId);
 
         if (previousStatus == NON_ATTENDANCE) {
             participant.applyScoreByAttendanceStatus(currentStatus);

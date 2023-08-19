@@ -2,8 +2,6 @@ package com.kgu.studywithme.upload.presentation;
 
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.global.exception.GlobalErrorCode;
-import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.upload.exception.UploadErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -22,7 +20,6 @@ import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -71,56 +68,7 @@ class UploadApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "UploadApi/Image/Weekly/Failure/Case1",
-                                    getDocumentRequest(),
-                                    getDocumentResponse(),
-                                    getHeaderWithAccessToken(),
-                                    requestParts(
-                                            partWithName("file")
-                                                    .description("스터디 Weekly 설명에 포함되는 이미지")
-                                    ),
-                                    queryParameters(
-                                            parameterWithName("type")
-                                                    .description("이미지 업로드 타입")
-                                                    .attributes(constraint("주차별 이미지 = weekly / 스터디 설명 이미지 = description"))
-                                    ),
-                                    getExceptionResponseFields()
-                            )
-                    );
-        }
-
-        @Test
-        @DisplayName("이미지를 전송하지 않거나 크기가 0인 이미지면 업로드를 실패한다")
-        void throwExceptionByFileIsEmpty() throws Exception {
-            // given
-            mockingToken(true, MEMBER_ID);
-            doThrow(StudyWithMeException.type(UploadErrorCode.FILE_IS_EMPTY))
-                    .when(uploadWeeklyImageUseCase)
-                    .uploadWeeklyImage(any());
-
-            // when
-            final MultipartFile file = new MockMultipartFile("file", new byte[0]);
-            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .multipart(BASE_URL)
-                    .file((MockMultipartFile) file)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .queryParam("type", "weekly");
-
-            // then
-            final UploadErrorCode expectedError = UploadErrorCode.FILE_IS_EMPTY;
-            mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isBadRequest(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
-                    )
-                    .andDo(
-                            document(
-                                    "UploadApi/Image/Weekly/Failure/Case2",
+                                    "UploadApi/Image/Weekly/Failure",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
@@ -145,7 +93,7 @@ class UploadApiControllerTest extends ControllerTest {
             mockingToken(true, MEMBER_ID);
 
             final String uploadLink = "https://image-upload-link";
-            given(uploadWeeklyImageUseCase.uploadWeeklyImage(any())).willReturn(uploadLink);
+            given(fileUploader.uploadWeeklyImage(any())).willReturn(uploadLink);
 
             // when
             final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");
@@ -221,56 +169,7 @@ class UploadApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "UploadApi/Image/Description/Failure/Case1",
-                                    getDocumentRequest(),
-                                    getDocumentResponse(),
-                                    getHeaderWithAccessToken(),
-                                    requestParts(
-                                            partWithName("file")
-                                                    .description("스터디 설명에 포함되는 이미지")
-                                    ),
-                                    queryParameters(
-                                            parameterWithName("type")
-                                                    .description("이미지 업로드 타입")
-                                                    .attributes(constraint("주차별 이미지 = weekly / 스터디 설명 이미지 = description"))
-                                    ),
-                                    getExceptionResponseFields()
-                            )
-                    );
-        }
-
-        @Test
-        @DisplayName("이미지를 전송하지 않거나 크기가 0인 이미지면 업로드를 실패한다")
-        void throwExceptionByFileIsEmpty() throws Exception {
-            // given
-            mockingToken(true, MEMBER_ID);
-            doThrow(StudyWithMeException.type(UploadErrorCode.FILE_IS_EMPTY))
-                    .when(uploadStudyDescriptionImageUseCase)
-                    .uploadStudyDescriptionImage(any());
-
-            // when
-            final MultipartFile file = new MockMultipartFile("file", new byte[0]);
-            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .multipart(BASE_URL)
-                    .file((MockMultipartFile) file)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .queryParam("type", "description");
-
-            // then
-            final UploadErrorCode expectedError = UploadErrorCode.FILE_IS_EMPTY;
-            mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isBadRequest(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
-                    )
-                    .andDo(
-                            document(
-                                    "UploadApi/Image/Description/Failure/Case2",
+                                    "UploadApi/Image/Description/Failure",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
@@ -295,7 +194,7 @@ class UploadApiControllerTest extends ControllerTest {
             mockingToken(true, MEMBER_ID);
 
             final String uploadLink = "https://image-upload-link";
-            given(uploadStudyDescriptionImageUseCase.uploadStudyDescriptionImage(any())).willReturn(uploadLink);
+            given(fileUploader.uploadStudyDescriptionImage(any())).willReturn(uploadLink);
 
             // when
             final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");

@@ -1,9 +1,9 @@
 package com.kgu.studywithme.auth.application.usecase.command;
 
-import com.kgu.studywithme.auth.application.dto.TokenResponse;
+import com.kgu.studywithme.auth.domain.AuthToken;
 
 public interface ReissueTokenUseCase {
-    TokenResponse reissueToken(final Command command);
+    AuthToken invoke(final Command command);
 
     record Command(
             Long memberId,

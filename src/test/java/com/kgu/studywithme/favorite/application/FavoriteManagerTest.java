@@ -1,12 +1,14 @@
 package com.kgu.studywithme.favorite.application;
 
 import com.kgu.studywithme.common.UseCaseTest;
-import com.kgu.studywithme.favorite.application.service.FavoriteManager;
+import com.kgu.studywithme.favorite.application.adapter.FavoriteJudgeRepositoryAdapter;
+import com.kgu.studywithme.favorite.application.service.StudyLikeCancellationService;
+import com.kgu.studywithme.favorite.application.service.StudyLikeMarkingService;
 import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeCancellationUseCase;
 import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeMarkingUseCase;
 import com.kgu.studywithme.favorite.domain.Favorite;
-import com.kgu.studywithme.favorite.domain.FavoriteRepository;
 import com.kgu.studywithme.favorite.exception.FavoriteErrorCode;
+import com.kgu.studywithme.favorite.infrastructure.persistence.FavoriteJpaRepository;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -24,13 +26,19 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@DisplayName("Favorite -> FavoriteManager 테스트")
+@DisplayName("Favorite -> StudyLikeMarkingService, StudyLikeCancellationService 테스트")
 class FavoriteManagerTest extends UseCaseTest {
     @InjectMocks
-    private FavoriteManager favoriteManager;
+    private StudyLikeMarkingService studyLikeMarkingService;
+
+    @InjectMocks
+    private StudyLikeCancellationService studyLikeCancellationService;
 
     @Mock
-    private FavoriteRepository favoriteRepository;
+    private FavoriteJudgeRepositoryAdapter favoriteJudgeRepositoryAdapter;
+
+    @Mock
+    private FavoriteJpaRepository favoriteJpaRepository;
 
     private static final Long STUDY_ID = 1L;
     private static final Long MEMBER_ID = 1L;
@@ -38,26 +46,22 @@ class FavoriteManagerTest extends UseCaseTest {
     @Nested
     @DisplayName("찜 등록")
     class LikeMarking {
-        private final StudyLikeMarkingUseCase.Command command =
-                new StudyLikeMarkingUseCase.Command(
-                        STUDY_ID,
-                        MEMBER_ID
-                );
+        private final StudyLikeMarkingUseCase.Command command = new StudyLikeMarkingUseCase.Command(STUDY_ID, MEMBER_ID);
 
         @Test
         @DisplayName("이미 찜 등록된 스터디를 찜할 수 없다")
         void throwExceptionByAlreadyLikeMarked() {
             // given
-            given(favoriteRepository.existsByStudyIdAndMemberId(any(), any())).willReturn(true);
+            given(favoriteJudgeRepositoryAdapter.alreadyLikeMarked(any(), any())).willReturn(true);
 
             // when - then
-            assertThatThrownBy(() -> favoriteManager.likeMarking(command))
+            assertThatThrownBy(() -> studyLikeMarkingService.invoke(command))
                     .isInstanceOf(StudyWithMeException.class)
                     .hasMessage(FavoriteErrorCode.ALREADY_LIKE_MARKED.getMessage());
 
             assertAll(
-                    () -> verify(favoriteRepository, times(1)).existsByStudyIdAndMemberId(any(), any()),
-                    () -> verify(favoriteRepository, times(0)).save(any())
+                    () -> verify(favoriteJudgeRepositoryAdapter, times(1)).alreadyLikeMarked(any(), any()),
+                    () -> verify(favoriteJpaRepository, times(0)).save(any())
             );
         }
 
@@ -65,18 +69,18 @@ class FavoriteManagerTest extends UseCaseTest {
         @DisplayName("해당 스터디를 찜 등록한다")
         void success() {
             // given
-            given(favoriteRepository.existsByStudyIdAndMemberId(any(), any())).willReturn(false);
+            given(favoriteJudgeRepositoryAdapter.alreadyLikeMarked(any(), any())).willReturn(false);
 
             final Favorite favorite = Favorite.favoriteMarking(STUDY_ID, MEMBER_ID).apply(1L, LocalDateTime.now());
-            given(favoriteRepository.save(any())).willReturn(favorite);
+            given(favoriteJpaRepository.save(any())).willReturn(favorite);
 
             // when
-            final Long savedFavoriteId = favoriteManager.likeMarking(command);
+            final Long savedFavoriteId = studyLikeMarkingService.invoke(command);
 
             // then
             assertAll(
-                    () -> verify(favoriteRepository, times(1)).existsByStudyIdAndMemberId(any(), any()),
-                    () -> verify(favoriteRepository, times(1)).save(any()),
+                    () -> verify(favoriteJudgeRepositoryAdapter, times(1)).alreadyLikeMarked(any(), any()),
+                    () -> verify(favoriteJpaRepository, times(1)).save(any()),
                     () -> assertThat(savedFavoriteId).isEqualTo(favorite.getId())
             );
         }
@@ -85,26 +89,22 @@ class FavoriteManagerTest extends UseCaseTest {
     @Nested
     @DisplayName("찜 취소")
     class LikeCancellation {
-        private final StudyLikeCancellationUseCase.Command command =
-                new StudyLikeCancellationUseCase.Command(
-                        STUDY_ID,
-                        MEMBER_ID
-                );
+        private final StudyLikeCancellationUseCase.Command command = new StudyLikeCancellationUseCase.Command(STUDY_ID, MEMBER_ID);
 
         @Test
         @DisplayName("찜 등록이 되지 않은 스터디를 취소할 수 없다")
         void throwExceptionByNeverLikeMarked() {
             // given
-            given(favoriteRepository.existsByStudyIdAndMemberId(any(), any())).willReturn(false);
+            given(favoriteJudgeRepositoryAdapter.neverLikeMarked(any(), any())).willReturn(true);
 
             // when - then
-            assertThatThrownBy(() -> favoriteManager.likeCancellation(command))
+            assertThatThrownBy(() -> studyLikeCancellationService.invoke(command))
                     .isInstanceOf(StudyWithMeException.class)
                     .hasMessage(FavoriteErrorCode.NEVER_LIKE_MARKED.getMessage());
 
             assertAll(
-                    () -> verify(favoriteRepository, times(1)).existsByStudyIdAndMemberId(any(), any()),
-                    () -> verify(favoriteRepository, times(0)).deleteByStudyIdAndMemberId(any(), any())
+                    () -> verify(favoriteJudgeRepositoryAdapter, times(1)).neverLikeMarked(any(), any()),
+                    () -> verify(favoriteJpaRepository, times(0)).cancelLikeMarking(any(), any())
             );
         }
 
@@ -112,15 +112,15 @@ class FavoriteManagerTest extends UseCaseTest {
         @DisplayName("해당 스터디에 대해서 등록한 찜을 취소한다")
         void success() {
             // given
-            given(favoriteRepository.existsByStudyIdAndMemberId(STUDY_ID, MEMBER_ID)).willReturn(true);
+            given(favoriteJudgeRepositoryAdapter.neverLikeMarked(STUDY_ID, MEMBER_ID)).willReturn(false);
 
             // when
-            favoriteManager.likeCancellation(command);
+            studyLikeCancellationService.invoke(command);
 
             // then
             assertAll(
-                    () -> verify(favoriteRepository, times(1)).existsByStudyIdAndMemberId(any(), any()),
-                    () -> verify(favoriteRepository, times(1)).deleteByStudyIdAndMemberId(any(), any())
+                    () -> verify(favoriteJudgeRepositoryAdapter, times(1)).neverLikeMarked(any(), any()),
+                    () -> verify(favoriteJpaRepository, times(1)).cancelLikeMarking(any(), any())
             );
         }
     }

@@ -91,7 +91,7 @@ class DelegateHostAuthorityApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyParticipantErrorCode.STUDY_IS_TERMINATED))
                     .when(delegateHostAuthorityUseCase)
-                    .delegateHostAuthority(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -134,7 +134,7 @@ class DelegateHostAuthorityApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyParticipantErrorCode.SELF_DELEGATING_NOT_ALLOWED))
                     .when(delegateHostAuthorityUseCase)
-                    .delegateHostAuthority(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -177,7 +177,7 @@ class DelegateHostAuthorityApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyParticipantErrorCode.NON_PARTICIPANT_CANNOT_BE_HOST))
                     .when(delegateHostAuthorityUseCase)
-                    .delegateHostAuthority(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -220,7 +220,7 @@ class DelegateHostAuthorityApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
             doNothing()
                     .when(delegateHostAuthorityUseCase)
-                    .delegateHostAuthority(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders

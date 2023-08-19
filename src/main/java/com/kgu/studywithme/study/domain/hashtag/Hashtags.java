@@ -29,11 +29,7 @@ public class Hashtags {
             final Set<String> hashtags
     ) {
         validateHashtagCount(hashtags);
-        this.hashtags.addAll(
-                hashtags.stream()
-                        .map(value -> Hashtag.applyHashtag(study, value))
-                        .toList()
-        );
+        applyHashtags(study, hashtags);
     }
 
     public void update(
@@ -41,12 +37,9 @@ public class Hashtags {
             final Set<String> hashtags
     ) {
         validateHashtagCount(hashtags);
+
         this.hashtags.clear();
-        this.hashtags.addAll(
-                hashtags.stream()
-                        .map(value -> Hashtag.applyHashtag(study, value))
-                        .toList()
-        );
+        applyHashtags(study, hashtags);
     }
 
     private void validateHashtagCount(final Set<String> hashtags) {
@@ -57,5 +50,16 @@ public class Hashtags {
         if (hashtags.size() > MAX_COUNT) {
             throw StudyWithMeException.type(StudyErrorCode.HASHTAG_MUST_NOT_EXISTS_MORE_THAN_FIVE);
         }
+    }
+
+    private void applyHashtags(
+            final Study study,
+            final Set<String> hashtags
+    ) {
+        this.hashtags.addAll(
+                hashtags.stream()
+                        .map(value -> Hashtag.applyHashtag(study, value))
+                        .toList()
+        );
     }
 }

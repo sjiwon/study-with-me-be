@@ -1,6 +1,6 @@
 package com.kgu.studywithme.common.stub;
 
-import com.kgu.studywithme.upload.utils.FileUploader;
+import com.kgu.studywithme.file.application.adapter.FileUploader;
 import org.springframework.web.multipart.MultipartFile;
 
 public class StubFileUploader implements FileUploader {

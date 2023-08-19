@@ -3,11 +3,11 @@ package com.kgu.studywithme.member.presentation;
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.AttendanceRatio;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.GraduatedStudy;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.MemberPublicInformation;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.ParticipateStudy;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.ReceivedReview;
+import com.kgu.studywithme.member.infrastructure.query.dto.AttendanceRatio;
+import com.kgu.studywithme.member.infrastructure.query.dto.GraduatedStudy;
+import com.kgu.studywithme.member.infrastructure.query.dto.MemberPublicInformation;
+import com.kgu.studywithme.member.infrastructure.query.dto.ParticipateStudy;
+import com.kgu.studywithme.member.infrastructure.query.dto.ReceivedReview;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -51,18 +51,18 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
             final MemberPublicInformation response = new MemberPublicInformation(
                     member.getId(),
                     member.getName(),
-                    member.getNicknameValue(),
-                    member.getEmailValue(),
+                    member.getNickname().getValue(),
+                    member.getEmail().getValue(),
                     member.getBirth(),
                     member.getGender().getValue(),
-                    member.getRegion(),
-                    member.getScore(),
+                    member.getAddress(),
+                    member.getScore().getValue(),
                     member.getInterests()
                             .stream()
                             .map(Category::getName)
                             .toList()
             );
-            given(queryPublicInformationByIdUseCase.queryPublicInformation(any())).willReturn(response);
+            given(queryPublicInformationByIdUseCase.invoke(any())).willReturn(response);
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -93,9 +93,9 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
                                                     .description("사용자 생년월일"),
                                             fieldWithPath("gender")
                                                     .description("사용자 성별"),
-                                            fieldWithPath("region.province")
+                                            fieldWithPath("address.province")
                                                     .description("거주지 [경기도, 강원도, ...]"),
-                                            fieldWithPath("region.city")
+                                            fieldWithPath("address.city")
                                                     .description("거주지 [안양시, 수원시, ...]"),
                                             fieldWithPath("score")
                                                     .description("사용자 점수"),
@@ -117,7 +117,7 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
         @DisplayName("사용자가 참여중인 스터디 리스트를 조회한다")
         void success() throws Exception {
             // given
-            given(queryParticipateStudyByIdUseCase.queryParticipateStudy(any()))
+            given(queryParticipateStudyByIdUseCase.invoke(any()))
                     .willReturn(
                             List.of(
                                     new ParticipateStudy(
@@ -178,7 +178,7 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
         @DisplayName("사용자가 졸업한 스터디 리스트를 조회한다")
         void success() throws Exception {
             // given
-            given(queryGraduatedStudyByIdUseCase.queryGraduatedStudy(any()))
+            given(queryGraduatedStudyByIdUseCase.invoke(any()))
                     .willReturn(
                             List.of(
                                     new GraduatedStudy(
@@ -268,7 +268,7 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
         @DisplayName("사용자가 받은 리뷰를 조회한다")
         void success() throws Exception {
             // given
-            given(queryReceivedReviewByIdUseCase.queryReceivedReview(any()))
+            given(queryReceivedReviewByIdUseCase.invoke(any()))
                     .willReturn(
                             List.of(
                                     new ReceivedReview("Good Participant", LocalDateTime.now()),
@@ -314,7 +314,7 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
         @DisplayName("사용자의 출석률을 조회한다")
         void success() throws Exception {
             // given
-            given(queryAttendanceRatioByIdUseCase.queryAttendanceRatio(any()))
+            given(queryAttendanceRatioByIdUseCase.invoke(any()))
                     .willReturn(
                             List.of(
                                     new AttendanceRatio(ATTENDANCE, 13),

@@ -3,9 +3,9 @@ package com.kgu.studywithme.study.presentation;
 import com.kgu.studywithme.study.application.usecase.query.QueryBasicInformationByIdUseCase;
 import com.kgu.studywithme.study.application.usecase.query.QueryParticipantByIdUseCase;
 import com.kgu.studywithme.study.application.usecase.query.QueryReviewByIdUseCase;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.ReviewInformation;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.StudyBasicInformation;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.StudyParticipantInformation;
+import com.kgu.studywithme.study.infrastructure.query.dto.ReviewInformation;
+import com.kgu.studywithme.study.infrastructure.query.dto.StudyBasicInformation;
+import com.kgu.studywithme.study.infrastructure.query.dto.StudyParticipantInformation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class StudyInformationApiController {
     @Operation(summary = "스터디 기본 정보 조회 EndPoint")
     @GetMapping
     public ResponseEntity<StudyBasicInformation> getInformation(@PathVariable final Long studyId) {
-        final StudyBasicInformation response = queryBasicInformationByIdUseCase.queryBasicInformation(
+        final StudyBasicInformation response = queryBasicInformationByIdUseCase.invoke(
                 new QueryBasicInformationByIdUseCase.Query(studyId)
         );
         return ResponseEntity.ok(response);
@@ -36,7 +36,7 @@ public class StudyInformationApiController {
     @Operation(summary = "스터디 리뷰 조회 EndPoint")
     @GetMapping("/reviews")
     public ResponseEntity<ReviewInformation> getReviews(@PathVariable final Long studyId) {
-        final ReviewInformation response = queryReviewByIdUseCase.queryReview(
+        final ReviewInformation response = queryReviewByIdUseCase.invoke(
                 new QueryReviewByIdUseCase.Query(studyId)
         );
         return ResponseEntity.ok(response);
@@ -45,7 +45,7 @@ public class StudyInformationApiController {
     @Operation(summary = "스터디 참여자 조회 EndPoint")
     @GetMapping("/participants")
     public ResponseEntity<StudyParticipantInformation> getApproveParticipants(@PathVariable final Long studyId) {
-        final StudyParticipantInformation response = queryParticipantByIdUseCase.queryParticipant(
+        final StudyParticipantInformation response = queryParticipantByIdUseCase.invoke(
                 new QueryParticipantByIdUseCase.Query(studyId)
         );
         return ResponseEntity.ok(response);

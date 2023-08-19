@@ -28,7 +28,7 @@ public class MemberReportApiController {
             @PathVariable final Long reporteeId,
             @RequestBody @Valid final ReportMemberRequest request
     ) {
-        reportMemberUseCase.report(new ReportMemberUseCase.Command(reporterId, reporteeId, request.reason()));
+        reportMemberUseCase.invoke(new ReportMemberUseCase.Command(reporterId, reporteeId, request.reason()));
         return ResponseEntity.noContent().build();
     }
 }

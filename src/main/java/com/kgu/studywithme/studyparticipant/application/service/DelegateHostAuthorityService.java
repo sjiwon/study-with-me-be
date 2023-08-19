@@ -2,10 +2,10 @@ package com.kgu.studywithme.studyparticipant.application.service;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.study.application.service.QueryStudyByIdService;
+import com.kgu.studywithme.study.application.adapter.StudyReadAdapter;
 import com.kgu.studywithme.study.domain.Study;
+import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantVerificationRepositoryAdapter;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.DelegateHostAuthorityUseCase;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,12 +14,12 @@ import org.springframework.stereotype.Service;
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class DelegateHostAuthorityService implements DelegateHostAuthorityUseCase {
-    private final QueryStudyByIdService queryStudyByIdService;
-    private final StudyParticipantRepository studyParticipantRepository;
+    private final StudyReadAdapter studyReadAdapter;
+    private final ParticipantVerificationRepositoryAdapter participantVerificationRepositoryAdapter;
 
     @Override
-    public void delegateHostAuthority(final Command command) {
-        final Study study = queryStudyByIdService.findById(command.studyId());
+    public void invoke(final Command command) {
+        final Study study = studyReadAdapter.getById(command.studyId());
         validateStudyInProgress(study);
         validateNewHostIsCurrentHost(study, command.newHostId());
         validateNewHostIsParticipant(command.studyId(), command.newHostId());
@@ -40,7 +40,7 @@ public class DelegateHostAuthorityService implements DelegateHostAuthorityUseCas
     }
 
     private void validateNewHostIsParticipant(final Long studyId, final Long newHostId) {
-        if (!studyParticipantRepository.isParticipant(studyId, newHostId)) {
+        if (!participantVerificationRepositoryAdapter.isParticipant(studyId, newHostId)) {
             throw StudyWithMeException.type(StudyParticipantErrorCode.NON_PARTICIPANT_CANNOT_BE_HOST);
         }
     }

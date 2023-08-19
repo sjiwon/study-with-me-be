@@ -45,7 +45,7 @@ public class StudyApiController {
             @ExtractPayload final Long hostId,
             @RequestBody @Valid final CreateStudyRequest request
     ) {
-        final Long savedStudyId = createStudyUseCase.createStudy(
+        final Long savedStudyId = createStudyUseCase.invoke(
                 new CreateStudyUseCase.Command(
                         hostId,
                         new StudyName(request.name()),
@@ -78,13 +78,13 @@ public class StudyApiController {
             @PathVariable final Long studyId,
             @RequestBody @Valid final UpdateStudyRequest request
     ) {
-        updateStudyUseCase.updateStudy(
+        updateStudyUseCase.invoke(
                 new UpdateStudyUseCase.Command(
                         studyId,
-                        new StudyName(request.name()),
-                        new Description(request.description()),
+                        request.name(),
+                        request.description(),
                         Category.from(request.category()),
-                        new Capacity(request.capacity()),
+                        request.capacity(),
                         StudyThumbnail.from(request.thumbnail()),
                         StudyType.from(request.type()),
                         request.province(),
@@ -104,7 +104,7 @@ public class StudyApiController {
             @ExtractPayload final Long hostId,
             @PathVariable final Long studyId
     ) {
-        terminateStudyUseCase.terminateStudy(new TerminateStudyUseCase.Command(studyId));
+        terminateStudyUseCase.invoke(new TerminateStudyUseCase.Command(studyId));
         return ResponseEntity.noContent().build();
     }
 }

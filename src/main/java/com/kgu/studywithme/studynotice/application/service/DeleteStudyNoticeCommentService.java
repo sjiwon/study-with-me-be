@@ -1,30 +1,28 @@
 package com.kgu.studywithme.studynotice.application.service;
 
-import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.studynotice.application.usecase.command.DeleteStudyNoticeCommentUseCase;
 import com.kgu.studywithme.studynotice.domain.comment.StudyNoticeComment;
-import com.kgu.studywithme.studynotice.domain.comment.StudyNoticeCommentRepository;
 import com.kgu.studywithme.studynotice.exception.StudyNoticeErrorCode;
+import com.kgu.studywithme.studynotice.infrastructure.persistence.comment.StudyNoticeCommentJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class DeleteStudyNoticeCommentService implements DeleteStudyNoticeCommentUseCase {
-    private final StudyNoticeCommentRepository studyNoticeCommentRepository;
+    private final StudyNoticeCommentJpaRepository studyNoticeCommentJpaRepository;
 
     @Override
-    public void deleteNoticeComment(final Command command) {
+    public void invoke(final Command command) {
         final StudyNoticeComment comment = findById(command.commentId());
         validateCommentWriter(comment, command.memberId());
 
-        studyNoticeCommentRepository.delete(comment);
+        studyNoticeCommentJpaRepository.delete(comment);
     }
 
     private StudyNoticeComment findById(final Long commentId) {
-        return studyNoticeCommentRepository.findById(commentId)
+        return studyNoticeCommentJpaRepository.findById(commentId)
                 .orElseThrow(() -> StudyWithMeException.type(StudyNoticeErrorCode.NOTICE_COMMENT_NOT_FOUND));
     }
 

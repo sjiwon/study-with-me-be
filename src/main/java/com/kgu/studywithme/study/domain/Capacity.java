@@ -23,22 +23,29 @@ public class Capacity {
         this.value = value;
     }
 
+    public Capacity update(final int value, final int currentParticipants) {
+        validateCapacityCanCoverCurrentParticipants(value, currentParticipants);
+        return new Capacity(value);
+    }
+
     private void validateCapacityIsInRange(final int value) {
         if (isOutOfRange(value)) {
             throw StudyWithMeException.type(StudyErrorCode.CAPACITY_IS_OUT_OF_RANGE);
         }
     }
 
-    private boolean isOutOfRange(final int capacity) {
-        return (capacity < MINIMUM) || (MAXIMUM < capacity);
+    private boolean isOutOfRange(final int value) {
+        return (value < MINIMUM) || (MAXIMUM < value);
     }
 
-    public boolean isEqualOrLessThan(final int compareValue) {
-        return value <= compareValue;
+    private void validateCapacityCanCoverCurrentParticipants(final int value, final int currentParticipants) {
+        if (value < currentParticipants) {
+            throw StudyWithMeException.type(StudyErrorCode.CAPACITY_CANNOT_COVER_CURRENT_PARTICIPANTS);
+        }
     }
 
-    public boolean isLessThan(final int compareValue) {
-        return value < compareValue;
+    public boolean isFull(final int currentParticipants) {
+        return value == currentParticipants;
     }
 
     @Override

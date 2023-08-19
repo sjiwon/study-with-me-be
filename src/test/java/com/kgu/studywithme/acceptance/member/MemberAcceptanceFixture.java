@@ -29,10 +29,10 @@ public class MemberAcceptanceFixture {
                 fixture.getNickname().getValue(),
                 fixture.getEmail().getValue(),
                 fixture.getBirth(),
-                fixture.getPhone(),
+                fixture.getPhone().getValue(),
                 fixture.getGender().getSimpleValue(),
-                fixture.getRegion().getProvince(),
-                fixture.getRegion().getCity(),
+                fixture.getAddress().getProvince(),
+                fixture.getAddress().getCity(),
                 true,
                 fixture.getInterests()
                         .stream()
@@ -55,10 +55,10 @@ public class MemberAcceptanceFixture {
 
         final UpdateMemberRequest request = new UpdateMemberRequest(
                 fixture.getNickname().getValue(),
-                fixture.getPhone(),
-                fixture.getRegion().getProvince(),
-                fixture.getRegion().getCity(),
-                fixture.isEmailOptIn(),
+                fixture.getPhone().getValue(),
+                fixture.getAddress().getProvince(),
+                fixture.getAddress().getCity(),
+                fixture.getEmail().isEmailOptIn(),
                 fixture.getInterests()
                         .stream()
                         .map(Category::getId)

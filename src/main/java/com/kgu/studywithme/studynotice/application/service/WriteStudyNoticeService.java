@@ -1,20 +1,18 @@
 package com.kgu.studywithme.studynotice.application.service;
 
-import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.studynotice.application.usecase.command.WriteStudyNoticeUseCase;
 import com.kgu.studywithme.studynotice.domain.StudyNotice;
-import com.kgu.studywithme.studynotice.domain.StudyNoticeRepository;
+import com.kgu.studywithme.studynotice.infrastructure.persistence.StudyNoticeJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class WriteStudyNoticeService implements WriteStudyNoticeUseCase {
-    private final StudyNoticeRepository studyNoticeRepository;
+    private final StudyNoticeJpaRepository studyNoticeJpaRepository;
 
     @Override
-    public Long writeNotice(final Command command) {
+    public Long invoke(final Command command) {
         final StudyNotice notice = StudyNotice.writeNotice(
                 command.studyId(),
                 command.hostId(),
@@ -22,6 +20,6 @@ public class WriteStudyNoticeService implements WriteStudyNoticeUseCase {
                 command.content()
         );
 
-        return studyNoticeRepository.save(notice).getId();
+        return studyNoticeJpaRepository.save(notice).getId();
     }
 }

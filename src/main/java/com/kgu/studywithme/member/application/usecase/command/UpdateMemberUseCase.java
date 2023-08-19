@@ -5,7 +5,7 @@ import com.kgu.studywithme.category.domain.Category;
 import java.util.Set;
 
 public interface UpdateMemberUseCase {
-    void update(final Command command);
+    void invoke(final Command command);
 
     record Command(
             Long memberId,

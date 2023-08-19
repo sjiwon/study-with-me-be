@@ -1,12 +1,12 @@
 package com.kgu.studywithme.member.application.service;
 
+import com.kgu.studywithme.member.application.adapter.MemberInformationRepositoryAdapter;
 import com.kgu.studywithme.member.application.usecase.query.QueryAppliedStudyByIdUseCase;
 import com.kgu.studywithme.member.application.usecase.query.QueryLikeMarkedStudyByIdUseCase;
 import com.kgu.studywithme.member.application.usecase.query.QueryPrivateInformationByIdUseCase;
-import com.kgu.studywithme.member.domain.MemberRepository;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.AppliedStudy;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.LikeMarkedStudy;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.MemberPrivateInformation;
+import com.kgu.studywithme.member.infrastructure.query.dto.AppliedStudy;
+import com.kgu.studywithme.member.infrastructure.query.dto.LikeMarkedStudy;
+import com.kgu.studywithme.member.infrastructure.query.dto.MemberPrivateInformation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,20 +19,20 @@ public class MemberPrivateQueryService implements
         QueryAppliedStudyByIdUseCase,
         QueryLikeMarkedStudyByIdUseCase {
 
-    private final MemberRepository memberRepository;
+    private final MemberInformationRepositoryAdapter memberInformationRepositoryAdapter;
 
     @Override
-    public MemberPrivateInformation queryPrivateInformation(final QueryPrivateInformationByIdUseCase.Query query) {
-        return memberRepository.fetchPrivateInformationById(query.memberId());
+    public MemberPrivateInformation invoke(final QueryPrivateInformationByIdUseCase.Query query) {
+        return memberInformationRepositoryAdapter.fetchPrivateInformationById(query.memberId());
     }
 
     @Override
-    public List<AppliedStudy> queryAppliedStudy(final QueryAppliedStudyByIdUseCase.Query query) {
-        return memberRepository.fetchAppliedStudyById(query.memberId());
+    public List<AppliedStudy> invoke(final QueryAppliedStudyByIdUseCase.Query query) {
+        return memberInformationRepositoryAdapter.fetchAppliedStudyById(query.memberId());
     }
 
     @Override
-    public List<LikeMarkedStudy> queryLikeMarkedStudy(final QueryLikeMarkedStudyByIdUseCase.Query query) {
-        return memberRepository.fetchLikeMarkedStudyById(query.memberId());
+    public List<LikeMarkedStudy> invoke(final QueryLikeMarkedStudyByIdUseCase.Query query) {
+        return memberInformationRepositoryAdapter.fetchLikeMarkedStudyById(query.memberId());
     }
 }

@@ -3,10 +3,10 @@ package com.kgu.studywithme.studyparticipant.application.service;
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.study.application.service.QueryStudyByIdService;
+import com.kgu.studywithme.study.application.adapter.StudyReadAdapter;
 import com.kgu.studywithme.study.domain.Study;
+import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantVerificationRepositoryAdapter;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.DelegateHostAuthorityUseCase;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -34,10 +34,10 @@ class DelegateHostAuthorityServiceTest extends UseCaseTest {
     private DelegateHostAuthorityService delegateHostAuthorityService;
 
     @Mock
-    private QueryStudyByIdService queryStudyByIdService;
+    private StudyReadAdapter studyReadAdapter;
 
     @Mock
-    private StudyParticipantRepository studyParticipantRepository;
+    private ParticipantVerificationRepositoryAdapter participantVerificationRepositoryAdapter;
 
     private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Member newHost = GHOST.toMember().apply(2L, LocalDateTime.now());
@@ -53,21 +53,18 @@ class DelegateHostAuthorityServiceTest extends UseCaseTest {
     void throwExceptionByStudyIsTerminated() {
         // given
         study.terminate();
-        given(queryStudyByIdService.findById(any())).willReturn(study);
+        given(studyReadAdapter.getById(any())).willReturn(study);
 
         // when - then
-        assertThatThrownBy(() -> delegateHostAuthorityService.delegateHostAuthority(
-                new DelegateHostAuthorityUseCase.Command(
-                        study.getId(),
-                        newHost.getId()
-                )
+        assertThatThrownBy(() -> delegateHostAuthorityService.invoke(
+                new DelegateHostAuthorityUseCase.Command(study.getId(), newHost.getId())
         ))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.STUDY_IS_TERMINATED.getMessage());
 
         assertAll(
-                () -> verify(queryStudyByIdService, times(1)).findById(any()),
-                () -> verify(studyParticipantRepository, times(0)).isParticipant(any(), any())
+                () -> verify(studyReadAdapter, times(1)).getById(any()),
+                () -> verify(participantVerificationRepositoryAdapter, times(0)).isParticipant(any(), any())
         );
     }
 
@@ -75,21 +72,18 @@ class DelegateHostAuthorityServiceTest extends UseCaseTest {
     @DisplayName("팀장 권한을 기존 팀장(Self Invoke)에게 위임할 수 없다")
     void throwExceptionByNewHostIsCurrentHost() {
         // given
-        given(queryStudyByIdService.findById(any())).willReturn(study);
+        given(studyReadAdapter.getById(any())).willReturn(study);
 
         // when - then
-        assertThatThrownBy(() -> delegateHostAuthorityService.delegateHostAuthority(
-                new DelegateHostAuthorityUseCase.Command(
-                        study.getId(),
-                        host.getId()
-                )
+        assertThatThrownBy(() -> delegateHostAuthorityService.invoke(
+                new DelegateHostAuthorityUseCase.Command(study.getId(), host.getId())
         ))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.SELF_DELEGATING_NOT_ALLOWED.getMessage());
 
         assertAll(
-                () -> verify(queryStudyByIdService, times(1)).findById(any()),
-                () -> verify(studyParticipantRepository, times(0)).isParticipant(any(), any())
+                () -> verify(studyReadAdapter, times(1)).getById(any()),
+                () -> verify(participantVerificationRepositoryAdapter, times(0)).isParticipant(any(), any())
         );
     }
 
@@ -97,22 +91,19 @@ class DelegateHostAuthorityServiceTest extends UseCaseTest {
     @DisplayName("스터디 참여자가 아니면 팀장 권한을 위임할 수 없다")
     void throwExceptionByNewHostIsNotParticipant() {
         // given
-        given(queryStudyByIdService.findById(any())).willReturn(study);
-        given(studyParticipantRepository.isParticipant(any(), any())).willReturn(false);
+        given(studyReadAdapter.getById(any())).willReturn(study);
+        given(participantVerificationRepositoryAdapter.isParticipant(any(), any())).willReturn(false);
 
         // when - then
-        assertThatThrownBy(() -> delegateHostAuthorityService.delegateHostAuthority(
-                new DelegateHostAuthorityUseCase.Command(
-                        study.getId(),
-                        newHost.getId()
-                )
+        assertThatThrownBy(() -> delegateHostAuthorityService.invoke(
+                new DelegateHostAuthorityUseCase.Command(study.getId(), newHost.getId())
         ))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.NON_PARTICIPANT_CANNOT_BE_HOST.getMessage());
 
         assertAll(
-                () -> verify(queryStudyByIdService, times(1)).findById(any()),
-                () -> verify(studyParticipantRepository, times(1)).isParticipant(any(), any())
+                () -> verify(studyReadAdapter, times(1)).getById(any()),
+                () -> verify(participantVerificationRepositoryAdapter, times(1)).isParticipant(any(), any())
         );
     }
 
@@ -120,24 +111,19 @@ class DelegateHostAuthorityServiceTest extends UseCaseTest {
     @DisplayName("팀장 권한을 위임한다 -> 졸업 요건 수정 기회 초기화")
     void success() {
         // given
-        given(queryStudyByIdService.findById(any())).willReturn(study);
-        given(studyParticipantRepository.isParticipant(any(), any())).willReturn(true);
+        given(studyReadAdapter.getById(any())).willReturn(study);
+        given(participantVerificationRepositoryAdapter.isParticipant(any(), any())).willReturn(true);
 
         ReflectionTestUtils.setField(study.getGraduationPolicy(), "updateChance", 1);
         assertThat(study.getGraduationPolicy().getUpdateChance()).isEqualTo(1);
 
         // when
-        delegateHostAuthorityService.delegateHostAuthority(
-                new DelegateHostAuthorityUseCase.Command(
-                        study.getId(),
-                        newHost.getId()
-                )
-        );
+        delegateHostAuthorityService.invoke(new DelegateHostAuthorityUseCase.Command(study.getId(), newHost.getId()));
 
         // then
         assertAll(
-                () -> verify(queryStudyByIdService, times(1)).findById(any()),
-                () -> verify(studyParticipantRepository, times(1)).isParticipant(any(), any()),
+                () -> verify(studyReadAdapter, times(1)).getById(any()),
+                () -> verify(participantVerificationRepositoryAdapter, times(1)).isParticipant(any(), any()),
                 () -> assertThat(study.getGraduationPolicy().getUpdateChance()).isEqualTo(3) // default chance = 3
         );
     }

@@ -76,7 +76,7 @@ class StudyApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyErrorCode.DUPLICATE_NAME))
                     .when(createStudyUseCase)
-                    .createStudy(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -141,7 +141,7 @@ class StudyApiControllerTest extends ControllerTest {
         void successOnline() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            given(createStudyUseCase.createStudy(any())).willReturn(1L);
+            given(createStudyUseCase.invoke(any())).willReturn(1L);
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -203,7 +203,7 @@ class StudyApiControllerTest extends ControllerTest {
         void successOffline() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            given(createStudyUseCase.createStudy(any())).willReturn(1L);
+            given(createStudyUseCase.invoke(any())).willReturn(1L);
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -379,7 +379,7 @@ class StudyApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyErrorCode.DUPLICATE_NAME))
                     .when(updateStudyUseCase)
-                    .updateStudy(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -453,7 +453,7 @@ class StudyApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyErrorCode.CAPACITY_CANNOT_COVER_CURRENT_PARTICIPANTS))
                     .when(updateStudyUseCase)
-                    .updateStudy(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -527,7 +527,7 @@ class StudyApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyErrorCode.NO_CHANCE_TO_UPDATE_GRADUATION_POLICY))
                     .when(updateStudyUseCase)
-                    .updateStudy(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -601,7 +601,7 @@ class StudyApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
             doNothing()
                     .when(updateStudyUseCase)
-                    .updateStudy(any());
+                    .invoke(any());
 
             // when
             final UpdateStudyRequest request = new UpdateStudyRequest(
@@ -678,7 +678,7 @@ class StudyApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
             doNothing()
                     .when(updateStudyUseCase)
-                    .updateStudy(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders

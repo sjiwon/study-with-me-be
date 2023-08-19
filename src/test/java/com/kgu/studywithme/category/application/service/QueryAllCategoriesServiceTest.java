@@ -1,6 +1,6 @@
 package com.kgu.studywithme.category.application.service;
 
-import com.kgu.studywithme.category.application.dto.CategoryResponse;
+import com.kgu.studywithme.category.domain.CategoryResponse;
 import com.kgu.studywithme.common.UseCaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ class QueryAllCategoriesServiceTest extends UseCaseTest {
     @DisplayName("전체 스터디 카테고리를 조회한다")
     void findAllCategories() {
         // when
-        final List<CategoryResponse> categoryResponse = queryAllCategoriesService.findAllCategories();
+        final List<CategoryResponse> categoryResponse = queryAllCategoriesService.invoke();
 
         // then
         assertAll(

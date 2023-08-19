@@ -22,7 +22,7 @@ public class FavoriteAcceptanceTest extends AcceptanceTest {
 
     @BeforeEach
     void setUp() {
-        accessToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행한다().accessToken();
+        accessToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행한다().token().accessToken();
         studyId = 스터디를_생성하고_PK를_얻는다(accessToken, SPRING);
     }
 

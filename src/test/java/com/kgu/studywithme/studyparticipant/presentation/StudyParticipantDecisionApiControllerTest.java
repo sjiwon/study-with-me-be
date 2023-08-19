@@ -95,7 +95,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyParticipantErrorCode.APPLIER_NOT_FOUND))
                     .when(approveParticipationUseCase)
-                    .approveParticipation(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -138,7 +138,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyParticipantErrorCode.STUDY_IS_TERMINATED))
                     .when(approveParticipationUseCase)
-                    .approveParticipation(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -181,7 +181,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyParticipantErrorCode.STUDY_CAPACITY_ALREADY_FULL))
                     .when(approveParticipationUseCase)
-                    .approveParticipation(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -224,7 +224,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
             doNothing()
                     .when(approveParticipationUseCase)
-                    .approveParticipation(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -366,7 +366,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyParticipantErrorCode.APPLIER_NOT_FOUND))
                     .when(rejectParticipationUseCase)
-                    .rejectParticipation(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -415,7 +415,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyParticipantErrorCode.STUDY_IS_TERMINATED))
                     .when(rejectParticipationUseCase)
-                    .rejectParticipation(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -464,7 +464,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
             doNothing()
                     .when(rejectParticipationUseCase)
-                    .rejectParticipation(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders

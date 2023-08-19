@@ -28,7 +28,7 @@ public class StudyFinalizeApiController {
             @ExtractPayload final Long memberId,
             @PathVariable final Long studyId
     ) {
-        leaveParticipationUseCase.leaveParticipation(
+        leaveParticipationUseCase.invoke(
                 new LeaveParticipationUseCase.Command(
                         studyId,
                         memberId
@@ -44,7 +44,7 @@ public class StudyFinalizeApiController {
             @ExtractPayload final Long memberId,
             @PathVariable final Long studyId
     ) {
-        graduateStudyUseCase.graduateStudy(
+        graduateStudyUseCase.invoke(
                 new GraduateStudyUseCase.Command(
                         studyId,
                         memberId

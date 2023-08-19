@@ -2,8 +2,8 @@ package com.kgu.studywithme.study.presentation;
 
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.common.ControllerTest;
-import com.kgu.studywithme.study.application.dto.StudyPagingResponse;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.StudyPreview;
+import com.kgu.studywithme.study.application.service.dto.StudyPagingResponse;
+import com.kgu.studywithme.study.infrastructure.query.dto.StudyPreview;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -45,7 +45,7 @@ class StudySearchApiControllerTest extends ControllerTest {
         @DisplayName("카테고리로 스터디 리스트를 조회한다 [Ex) 프로그래밍]")
         void success() throws Exception {
             // given
-            given(queryStudyByCategoryUseCase.queryStudyByCategory(any()))
+            given(queryStudyByCategoryUseCase.invoke(any()))
                     .willReturn(new StudyPagingResponse(generateStudies(), true));
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -133,7 +133,7 @@ class StudySearchApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
-            given(queryStudyByRecommendUseCase.queryStudyByRecommend(any()))
+            given(queryStudyByRecommendUseCase.invoke(any()))
                     .willReturn(new StudyPagingResponse(generateStudies(), true));
 
             // when

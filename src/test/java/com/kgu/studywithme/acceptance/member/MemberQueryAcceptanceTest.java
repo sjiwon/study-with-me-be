@@ -2,7 +2,7 @@ package com.kgu.studywithme.acceptance.member;
 
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.common.AcceptanceTest;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.GraduatedStudy;
+import com.kgu.studywithme.member.infrastructure.query.dto.GraduatedStudy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -55,7 +55,7 @@ public class MemberQueryAcceptanceTest extends AcceptanceTest {
     @BeforeEach
     void setUp() {
         memberId = JIWON.회원가입을_진행한다();
-        memberAccessToken = JIWON.로그인을_진행한다().accessToken();
+        memberAccessToken = JIWON.로그인을_진행한다().token().accessToken();
     }
 
     @Nested
@@ -73,13 +73,13 @@ public class MemberQueryAcceptanceTest extends AcceptanceTest {
                         .body("name", is(JIWON.getName()))
                         .body("nickname", is(JIWON.getNickname().getValue()))
                         .body("email", is(JIWON.getEmail().getValue()))
+                        .body("emailOptIn", is(JIWON.getEmail().isEmailOptIn()))
                         .body("birth", is(JIWON.getBirth().toString()))
-                        .body("phone", is(JIWON.getPhone()))
+                        .body("phone", is(JIWON.getPhone().getValue()))
                         .body("gender", is(JIWON.getGender().getValue()))
-                        .body("region.province", is(JIWON.getRegion().getProvince()))
-                        .body("region.city", is(JIWON.getRegion().getCity()))
+                        .body("address.province", is(JIWON.getAddress().getProvince()))
+                        .body("address.city", is(JIWON.getAddress().getCity()))
                         .body("score", is(80))
-                        .body("emailOptIn", is(JIWON.isEmailOptIn()))
                         .body("interests", containsInAnyOrder(
                                 JIWON.getInterests()
                                         .stream()
@@ -104,8 +104,8 @@ public class MemberQueryAcceptanceTest extends AcceptanceTest {
                         .body("email", is(JIWON.getEmail().getValue()))
                         .body("birth", is(JIWON.getBirth().toString()))
                         .body("gender", is(JIWON.getGender().getValue()))
-                        .body("region.province", is(JIWON.getRegion().getProvince()))
-                        .body("region.city", is(JIWON.getRegion().getCity()))
+                        .body("address.province", is(JIWON.getAddress().getProvince()))
+                        .body("address.city", is(JIWON.getAddress().getCity()))
                         .body("score", is(80))
                         .body("interests", containsInAnyOrder(
                                 JIWON.getInterests()
@@ -125,9 +125,9 @@ public class MemberQueryAcceptanceTest extends AcceptanceTest {
 
             @BeforeEach
             void setUp() {
-                hostAccessToken = GHOST.회원가입_후_Google_OAuth_로그인을_진행한다().accessToken();
+                hostAccessToken = GHOST.회원가입_후_Google_OAuth_로그인을_진행한다().token().accessToken();
                 final Long participantId = ANONYMOUS.회원가입을_진행한다();
-                participantAccessToken = ANONYMOUS.로그인을_진행한다().accessToken();
+                participantAccessToken = ANONYMOUS.로그인을_진행한다().token().accessToken();
 
                 final Long studyId = SPRING.스터디를_생성한다(hostAccessToken);
                 스터디_참여_신청을_한다(memberAccessToken, studyId);
@@ -165,7 +165,7 @@ public class MemberQueryAcceptanceTest extends AcceptanceTest {
 
         @BeforeEach
         void setUp() {
-            hostAccessToken = GHOST.회원가입_후_Google_OAuth_로그인을_진행한다().accessToken();
+            hostAccessToken = GHOST.회원가입_후_Google_OAuth_로그인을_진행한다().token().accessToken();
             studies = Stream.of(LINE_INTERVIEW, SPRING, JPA, KOTLIN, KAFKA)
                     .map(study -> study.스터디를_생성한다(hostAccessToken))
                     .toList();

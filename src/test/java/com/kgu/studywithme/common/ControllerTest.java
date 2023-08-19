@@ -16,6 +16,7 @@ import com.kgu.studywithme.common.config.TestAopConfiguration;
 import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeCancellationUseCase;
 import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeMarkingUseCase;
 import com.kgu.studywithme.favorite.presentation.FavoriteApiController;
+import com.kgu.studywithme.file.application.adapter.FileUploader;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.application.usecase.command.SignUpMemberUseCase;
 import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
@@ -35,6 +36,7 @@ import com.kgu.studywithme.memberreport.presentation.MemberReportApiController;
 import com.kgu.studywithme.memberreview.application.usecase.command.UpdateMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.presentation.MemberReviewApiController;
+import com.kgu.studywithme.study.application.adapter.StudyVerificationRepositoryAdapter;
 import com.kgu.studywithme.study.application.usecase.command.CreateStudyUseCase;
 import com.kgu.studywithme.study.application.usecase.command.TerminateStudyUseCase;
 import com.kgu.studywithme.study.application.usecase.command.UpdateStudyUseCase;
@@ -47,7 +49,6 @@ import com.kgu.studywithme.study.application.usecase.query.QueryReviewByIdUseCas
 import com.kgu.studywithme.study.application.usecase.query.QueryStudyByCategoryUseCase;
 import com.kgu.studywithme.study.application.usecase.query.QueryStudyByRecommendUseCase;
 import com.kgu.studywithme.study.application.usecase.query.QueryWeeklyByIdUseCase;
-import com.kgu.studywithme.study.domain.StudyRepository;
 import com.kgu.studywithme.study.presentation.StudyApiController;
 import com.kgu.studywithme.study.presentation.StudyInformationApiController;
 import com.kgu.studywithme.study.presentation.StudyInformationOnlyParticipantApiController;
@@ -62,6 +63,7 @@ import com.kgu.studywithme.studynotice.application.usecase.command.WriteStudyNot
 import com.kgu.studywithme.studynotice.application.usecase.command.WriteStudyNoticeUseCase;
 import com.kgu.studywithme.studynotice.presentation.StudyNoticeApiController;
 import com.kgu.studywithme.studynotice.presentation.StudyNoticeCommentApiController;
+import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantVerificationRepositoryAdapter;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.ApplyCancellationUseCase;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.ApplyStudyUseCase;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.ApproveParticipationUseCase;
@@ -69,7 +71,6 @@ import com.kgu.studywithme.studyparticipant.application.usecase.command.Delegate
 import com.kgu.studywithme.studyparticipant.application.usecase.command.GraduateStudyUseCase;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.LeaveParticipationUseCase;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.RejectParticipationUseCase;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import com.kgu.studywithme.studyparticipant.presentation.DelegateHostAuthorityApiController;
 import com.kgu.studywithme.studyparticipant.presentation.StudyApplyApiController;
 import com.kgu.studywithme.studyparticipant.presentation.StudyFinalizeApiController;
@@ -80,15 +81,14 @@ import com.kgu.studywithme.studyreview.application.usecase.command.WriteStudyRev
 import com.kgu.studywithme.studyreview.presentation.StudyReviewApiController;
 import com.kgu.studywithme.studyweekly.application.usecase.command.CreateStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.application.usecase.command.DeleteStudyWeeklyUseCase;
-import com.kgu.studywithme.studyweekly.application.usecase.command.EditSubmittedWeeklyAssignmentUseCase;
+import com.kgu.studywithme.studyweekly.application.usecase.command.EditWeeklyAssignmentUseCase;
 import com.kgu.studywithme.studyweekly.application.usecase.command.SubmitWeeklyAssignmentUseCase;
 import com.kgu.studywithme.studyweekly.application.usecase.command.UpdateStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.presentation.StudyWeeklyApiController;
 import com.kgu.studywithme.studyweekly.presentation.StudyWeeklySubmitApiController;
-import com.kgu.studywithme.upload.application.usecase.command.UploadStudyDescriptionImageUseCase;
-import com.kgu.studywithme.upload.application.usecase.command.UploadWeeklyImageUseCase;
 import com.kgu.studywithme.upload.presentation.UploadApiController;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -110,6 +110,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
+@Tag("Controller")
 @WebMvcTest({
         // Auth
         OAuthApiController.class,
@@ -182,10 +183,10 @@ public abstract class ControllerTest {
 
     // AOP Validation
     @MockBean
-    private StudyRepository studyRepository;
+    private StudyVerificationRepositoryAdapter studyVerificationRepositoryAdapter;
 
     @MockBean
-    private StudyParticipantRepository studyParticipantRepository;
+    private ParticipantVerificationRepositoryAdapter participantVerificationRepositoryAdapter;
 
     // Auth
     @MockBean
@@ -351,7 +352,7 @@ public abstract class ControllerTest {
     protected SubmitWeeklyAssignmentUseCase submitWeeklyAssignmentUseCase;
 
     @MockBean
-    protected EditSubmittedWeeklyAssignmentUseCase editSubmittedWeeklyAssignmentUseCase;
+    protected EditWeeklyAssignmentUseCase editWeeklyAssignmentUseCase;
 
     // StudyReview
     @MockBean
@@ -365,10 +366,7 @@ public abstract class ControllerTest {
 
     // Upload
     @MockBean
-    protected UploadWeeklyImageUseCase uploadWeeklyImageUseCase;
-
-    @MockBean
-    protected UploadStudyDescriptionImageUseCase uploadStudyDescriptionImageUseCase;
+    protected FileUploader fileUploader;
 
     @BeforeEach
     void setUp(
@@ -412,7 +410,7 @@ public abstract class ControllerTest {
             final Long memberId,
             final boolean isValid
     ) {
-        given(studyRepository.isHost(studyId, memberId)).willReturn(isValid);
+        given(studyVerificationRepositoryAdapter.isHost(studyId, memberId)).willReturn(isValid);
     }
 
     protected void mockingForStudyParticipant(
@@ -420,6 +418,6 @@ public abstract class ControllerTest {
             final Long memberId,
             final boolean isValid
     ) {
-        given(studyParticipantRepository.isParticipant(studyId, memberId)).willReturn(isValid);
+        given(participantVerificationRepositoryAdapter.isParticipant(studyId, memberId)).willReturn(isValid);
     }
 }

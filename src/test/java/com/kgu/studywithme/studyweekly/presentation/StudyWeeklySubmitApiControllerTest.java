@@ -117,7 +117,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyWeeklyErrorCode.MISSING_SUBMISSION))
                     .when(submitWeeklyAssignmentUseCase)
-                    .submitWeeklyAssignment(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -174,7 +174,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyWeeklyErrorCode.DUPLICATE_SUBMISSION))
                     .when(submitWeeklyAssignmentUseCase)
-                    .submitWeeklyAssignment(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -396,8 +396,8 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
             // given
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyWeeklyErrorCode.MISSING_SUBMISSION))
-                    .when(editSubmittedWeeklyAssignmentUseCase)
-                    .editSubmittedWeeklyAssignment(any());
+                    .when(editWeeklyAssignmentUseCase)
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -453,8 +453,8 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
             // given
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyWeeklyErrorCode.DUPLICATE_SUBMISSION))
-                    .when(editSubmittedWeeklyAssignmentUseCase)
-                    .editSubmittedWeeklyAssignment(any());
+                    .when(editWeeklyAssignmentUseCase)
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -512,8 +512,8 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
             // given
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyWeeklyErrorCode.SUBMITTED_ASSIGNMENT_NOT_FOUND))
-                    .when(editSubmittedWeeklyAssignmentUseCase)
-                    .editSubmittedWeeklyAssignment(any());
+                    .when(editWeeklyAssignmentUseCase)
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders

@@ -2,9 +2,10 @@ package com.kgu.studywithme.member.application.service;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
+import com.kgu.studywithme.member.application.adapter.MemberDuplicateCheckRepositoryAdapter;
+import com.kgu.studywithme.member.application.adapter.MemberReadAdapter;
 import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,12 +14,12 @@ import org.springframework.stereotype.Service;
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class UpdateMemberService implements UpdateMemberUseCase {
-    private final QueryMemberByIdService queryMemberByIdService;
-    private final MemberRepository memberRepository;
+    private final MemberReadAdapter memberReadAdapter;
+    private final MemberDuplicateCheckRepositoryAdapter memberDuplicateCheckRepositoryAdapter;
 
     @Override
-    public void update(final Command command) {
-        final Member member = queryMemberByIdService.findById(command.memberId());
+    public void invoke(final Command command) {
+        final Member member = memberReadAdapter.getById(command.memberId());
         validateNicknameIsUnique(command.memberId(), command.nickname());
         validatePhoneIsUnique(command.memberId(), command.phone());
 
@@ -36,7 +37,7 @@ public class UpdateMemberService implements UpdateMemberUseCase {
             final Long memberId,
             final String nickname
     ) {
-        if (memberRepository.isNicknameUsedByOther(memberId, nickname)) {
+        if (memberDuplicateCheckRepositoryAdapter.isNicknameUsedByOther(memberId, nickname)) {
             throw StudyWithMeException.type(MemberErrorCode.DUPLICATE_NICKNAME);
         }
     }
@@ -45,7 +46,7 @@ public class UpdateMemberService implements UpdateMemberUseCase {
             final Long memberId,
             final String phone
     ) {
-        if (memberRepository.isPhoneUsedByOther(memberId, phone)) {
+        if (memberDuplicateCheckRepositoryAdapter.isPhoneUsedByOther(memberId, phone)) {
             throw StudyWithMeException.type(MemberErrorCode.DUPLICATE_PHONE);
         }
     }

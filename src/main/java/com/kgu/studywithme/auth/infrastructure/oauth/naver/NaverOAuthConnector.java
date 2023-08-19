@@ -1,9 +1,9 @@
 package com.kgu.studywithme.auth.infrastructure.oauth.naver;
 
+import com.kgu.studywithme.auth.application.adapter.OAuthConnector;
+import com.kgu.studywithme.auth.domain.oauth.OAuthTokenResponse;
+import com.kgu.studywithme.auth.domain.oauth.OAuthUserResponse;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
-import com.kgu.studywithme.auth.infrastructure.oauth.OAuthConnector;
-import com.kgu.studywithme.auth.infrastructure.oauth.OAuthTokenResponse;
-import com.kgu.studywithme.auth.infrastructure.oauth.OAuthUserResponse;
 import com.kgu.studywithme.auth.infrastructure.oauth.naver.response.NaverTokenResponse;
 import com.kgu.studywithme.auth.infrastructure.oauth.naver.response.NaverUserResponse;
 import com.kgu.studywithme.auth.utils.OAuthProvider;
@@ -37,7 +37,7 @@ public class NaverOAuthConnector implements OAuthConnector {
     }
 
     @Override
-    public OAuthTokenResponse getToken(
+    public OAuthTokenResponse fetchToken(
             final String code,
             final String redirectUri,
             final String state
@@ -79,7 +79,7 @@ public class NaverOAuthConnector implements OAuthConnector {
     }
 
     @Override
-    public OAuthUserResponse getUserInfo(final String accessToken) {
+    public OAuthUserResponse fetchUserInfo(final String accessToken) {
         final HttpHeaders headers = createUserInfoRequestHeader(accessToken);
         final HttpEntity<Void> request = new HttpEntity<>(headers);
         return fetchNaverUserInfo(request).getBody();

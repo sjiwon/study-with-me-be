@@ -2,10 +2,10 @@ package com.kgu.studywithme.study.application.service;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
+import com.kgu.studywithme.study.application.adapter.StudyDuplicateCheckRepositoryAdapter;
+import com.kgu.studywithme.study.application.adapter.StudyReadAdapter;
 import com.kgu.studywithme.study.application.usecase.command.UpdateStudyUseCase;
 import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.study.domain.StudyName;
-import com.kgu.studywithme.study.domain.StudyRepository;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,14 +17,14 @@ import static com.kgu.studywithme.study.domain.RecruitmentStatus.IN_PROGRESS;
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class UpdateStudyService implements UpdateStudyUseCase {
-    private final StudyRepository studyRepository;
-    private final QueryStudyByIdService queryStudyByIdService;
+    private final StudyDuplicateCheckRepositoryAdapter studyDuplicateCheckRepositoryAdapter;
+    private final StudyReadAdapter studyReadAdapter;
 
     @Override
-    public void updateStudy(final Command command) {
+    public void invoke(final Command command) {
         validateNameIsUnique(command.studyId(), command.name());
 
-        final Study study = queryStudyByIdService.findById(command.studyId());
+        final Study study = studyReadAdapter.getById(command.studyId());
         study.update(
                 command.name(),
                 command.description(),
@@ -40,8 +40,8 @@ public class UpdateStudyService implements UpdateStudyUseCase {
         );
     }
 
-    private void validateNameIsUnique(final Long studyId, final StudyName name) {
-        if (studyRepository.isNameUsedByOther(studyId, name.getValue())) {
+    private void validateNameIsUnique(final Long studyId, final String name) {
+        if (studyDuplicateCheckRepositoryAdapter.isNameUsedByOther(studyId, name)) {
             throw StudyWithMeException.type(StudyErrorCode.DUPLICATE_NAME);
         }
     }

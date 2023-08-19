@@ -32,7 +32,7 @@ public class StudyParticipantDecisionApiController {
             @PathVariable final Long studyId,
             @PathVariable final Long applierId
     ) {
-        approveParticipationUseCase.approveParticipation(
+        approveParticipationUseCase.invoke(
                 new ApproveParticipationUseCase.Command(
                         studyId,
                         applierId
@@ -50,7 +50,7 @@ public class StudyParticipantDecisionApiController {
             @PathVariable final Long applierId,
             @RequestBody @Valid final RejectParticipationRequest request
     ) {
-        rejectParticipationUseCase.rejectParticipation(
+        rejectParticipationUseCase.invoke(
                 new RejectParticipationUseCase.Command(
                         studyId,
                         applierId,

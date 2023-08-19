@@ -497,7 +497,7 @@ VALUES (1, 48, '매 순간 집중해서 스터디했습니다.', NOW(), NOW()),
        (100, 24, '스터디에 집중해서 참여했습니다.', NOW(), NOW());
 
 
-INSERT INTO study (host_id, name, description, category, image, study_type, province, city, recruitment_status, capacity, participant_members, minimum_attendance, policy_update_chance, is_terminated, created_at, last_modified_at)
+INSERT INTO study (host_id, name, description, category, image, study_type, province, city, recruitment_status, capacity, participants, minimum_attendance, policy_update_chance, is_terminated, created_at, last_modified_at)
 VALUES (1, 'Spring World', '<p>스프링 스터디입니다.</p><p>열심히 참여하실분 환영해요</p>', 'PROGRAMMING', 'IMAGE_PROGRAMMING_002', 'ONLINE', null, null, 'IN_PROGRESS', 7, 5, 20, 3, 0, NOW(), NOW()),
        (1, 'Interview World', '<p>카카오 기술 면접 오프라인 스터디입니다.</p>', 'INTERVIEW', 'IMAGE_INTERVIEW_004', 'OFFLINE', '경기도', '성남시', 'IN_PROGRESS', 6, 2, 10, 3, 0, NOW(), NOW()),
        (1, '컴공 정보처리기능사 스터디', '<p>컴공졸업을 위한 정보처리기능사 스터디입니다.</p>', 'CERTIFICATION', 'IMAGE_CERTIFICATION_001', 'ONLINE', null, null, 'IN_PROGRESS', 4, 1, 2, 3, 0, NOW(), NOW()),

@@ -26,8 +26,7 @@ class AttendanceStatusTest {
 
     @Test
     @DisplayName("AttendanceStatus의 Description 목록을 가져온다")
-    void getAttendanceDescriptions() {
-        assertThat(AttendanceStatus.getAttendanceStatuses())
-                .containsExactlyInAnyOrder(ATTENDANCE, LATE, ABSENCE, NON_ATTENDANCE);
+    void getAttendanceStatuses() {
+        assertThat(AttendanceStatus.getAttendanceStatuses()).containsExactlyInAnyOrder(ATTENDANCE, LATE, ABSENCE, NON_ATTENDANCE);
     }
 }

@@ -2,11 +2,11 @@ package com.kgu.studywithme.study.presentation;
 
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.AttendanceInformation;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.NoticeInformation;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.StudyApplicantInformation;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.StudyMember;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.WeeklyInformation;
+import com.kgu.studywithme.study.infrastructure.query.dto.AttendanceInformation;
+import com.kgu.studywithme.study.infrastructure.query.dto.NoticeInformation;
+import com.kgu.studywithme.study.infrastructure.query.dto.StudyApplicantInformation;
+import com.kgu.studywithme.study.infrastructure.query.dto.StudyMember;
+import com.kgu.studywithme.study.infrastructure.query.dto.WeeklyInformation;
 import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
 import com.kgu.studywithme.studyweekly.domain.submit.UploadAssignment;
 import org.junit.jupiter.api.BeforeEach;
@@ -105,7 +105,7 @@ class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            given(queryApplicantByIdUseCase.queryApplicant(any()))
+            given(queryApplicantByIdUseCase.invoke(any()))
                     .willReturn(
                             List.of(
                                     new StudyApplicantInformation(
@@ -213,7 +213,7 @@ class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            given(queryNoticeByIdUseCase.queryNotice(any()))
+            given(queryNoticeByIdUseCase.invoke(any()))
                     .willReturn(
                             List.of(
                                     new NoticeInformation(
@@ -351,7 +351,7 @@ class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            given(queryAttendanceByIdUseCase.queryAttendance(any()))
+            given(queryAttendanceByIdUseCase.invoke(any()))
                     .willReturn(
                             List.of(
                                     new AttendanceInformation(
@@ -470,7 +470,7 @@ class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            given(queryWeeklyByIdUseCase.queryWeekly(any()))
+            given(queryWeeklyByIdUseCase.invoke(any()))
                     .willReturn(
                             List.of(
                                     new WeeklyInformation(

@@ -1,8 +1,8 @@
 package com.kgu.studywithme.common.stub;
 
-import com.kgu.studywithme.auth.infrastructure.oauth.OAuthConnector;
-import com.kgu.studywithme.auth.infrastructure.oauth.OAuthTokenResponse;
-import com.kgu.studywithme.auth.infrastructure.oauth.OAuthUserResponse;
+import com.kgu.studywithme.auth.application.adapter.OAuthConnector;
+import com.kgu.studywithme.auth.domain.oauth.OAuthTokenResponse;
+import com.kgu.studywithme.auth.domain.oauth.OAuthUserResponse;
 import com.kgu.studywithme.auth.utils.OAuthProvider;
 import com.kgu.studywithme.common.fixture.OAuthFixture;
 
@@ -15,12 +15,12 @@ public class StubOAuthConnector implements OAuthConnector {
     }
 
     @Override
-    public OAuthTokenResponse getToken(final String code, final String redirectUri, final String state) {
+    public OAuthTokenResponse fetchToken(final String code, final String redirectUri, final String state) {
         return OAuthFixture.parseOAuthTokenByCode(code);
     }
 
     @Override
-    public OAuthUserResponse getUserInfo(final String accessToken) {
+    public OAuthUserResponse fetchUserInfo(final String accessToken) {
         return OAuthFixture.parseOAuthUserByAccessToken(accessToken);
     }
 }

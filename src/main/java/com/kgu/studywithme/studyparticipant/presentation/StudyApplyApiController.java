@@ -27,7 +27,7 @@ public class StudyApplyApiController {
             @ExtractPayload final Long memberId,
             @PathVariable final Long studyId
     ) {
-        applyStudyUseCase.apply(
+        applyStudyUseCase.invoke(
                 new ApplyStudyUseCase.Command(
                         studyId,
                         memberId
@@ -42,7 +42,7 @@ public class StudyApplyApiController {
             @ExtractPayload final Long applierId,
             @PathVariable final Long studyId
     ) {
-        applyCancellationUseCase.applyCancellation(
+        applyCancellationUseCase.invoke(
                 new ApplyCancellationUseCase.Command(
                         studyId,
                         applierId

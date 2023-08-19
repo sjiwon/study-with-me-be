@@ -50,7 +50,7 @@ class StudyReviewApiControllerTest extends ControllerTest {
             mockingToken(true, ANONYMOUS_ID);
             doThrow(StudyWithMeException.type(StudyReviewErrorCode.ONLY_GRADUATED_PARTICIPANT_CAN_WRITE_REVIEW))
                     .when(writeStudyReviewUseCase)
-                    .writeStudyReview(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -97,7 +97,7 @@ class StudyReviewApiControllerTest extends ControllerTest {
             mockingToken(true, ANONYMOUS_ID);
             doThrow(StudyWithMeException.type(StudyReviewErrorCode.ALREADY_WRITTEN))
                     .when(writeStudyReviewUseCase)
-                    .writeStudyReview(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -142,7 +142,7 @@ class StudyReviewApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
-            given(writeStudyReviewUseCase.writeStudyReview(any())).willReturn(1L);
+            given(writeStudyReviewUseCase.invoke(any())).willReturn(1L);
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -197,7 +197,7 @@ class StudyReviewApiControllerTest extends ControllerTest {
             mockingToken(true, ANONYMOUS_ID);
             doThrow(StudyWithMeException.type(StudyReviewErrorCode.ONLY_WRITER_CAN_UPDATE))
                     .when(updateStudyReviewUseCase)
-                    .updateStudyReview(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -246,7 +246,7 @@ class StudyReviewApiControllerTest extends ControllerTest {
             mockingToken(true, WRITER_ID);
             doNothing()
                     .when(updateStudyReviewUseCase)
-                    .updateStudyReview(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -295,7 +295,7 @@ class StudyReviewApiControllerTest extends ControllerTest {
             mockingToken(true, ANONYMOUS_ID);
             doThrow(StudyWithMeException.type(StudyReviewErrorCode.ONLY_WRITER_CAN_DELETE))
                     .when(deleteStudyReviewUseCase)
-                    .deleteStudyReview(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -338,7 +338,7 @@ class StudyReviewApiControllerTest extends ControllerTest {
             mockingToken(true, WRITER_ID);
             doNothing()
                     .when(deleteStudyReviewUseCase)
-                    .deleteStudyReview(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders

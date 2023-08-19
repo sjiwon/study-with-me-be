@@ -1,7 +1,11 @@
 package com.kgu.studywithme.study.domain;
 
+import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Member;
+import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -15,6 +19,7 @@ import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static com.kgu.studywithme.common.fixture.StudyFixture.TOSS_INTERVIEW;
 import static com.kgu.studywithme.study.domain.RecruitmentStatus.IN_PROGRESS;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("Study -> 도메인 [Study] 테스트")
@@ -31,12 +36,13 @@ class StudyTest {
                 () -> assertThat(onlineStudy.getName()).isEqualTo(SPRING.getName()),
                 () -> assertThat(onlineStudy.getDescription()).isEqualTo(SPRING.getDescription()),
                 () -> assertThat(onlineStudy.getCategory()).isEqualTo(SPRING.getCategory()),
-                () -> assertThat(onlineStudy.getCapacity()).isEqualTo(SPRING.getCapacity().getValue()),
+                () -> assertThat(onlineStudy.getCapacity()).isEqualTo(SPRING.getCapacity()),
+                () -> assertThat(onlineStudy.getParticipants()).isEqualTo(1),
                 () -> assertThat(onlineStudy.getThumbnail()).isEqualTo(SPRING.getThumbnail()),
                 () -> assertThat(onlineStudy.getType()).isEqualTo(SPRING.getType()),
                 () -> assertThat(onlineStudy.getLocation()).isNull(),
                 () -> assertThat(onlineStudy.getRecruitmentStatus()).isEqualTo(IN_PROGRESS),
-                () -> assertThat(onlineStudy.getMinimumAttendanceForGraduation()).isEqualTo(SPRING.getMinimumAttendanceForGraduation()),
+                () -> assertThat(onlineStudy.getGraduationPolicy().getMinimumAttendance()).isEqualTo(SPRING.getMinimumAttendanceForGraduation()),
                 () -> assertThat(onlineStudy.getGraduationPolicy().getUpdateChance()).isEqualTo(3),
                 () -> assertThat(onlineStudy.isTerminated()).isFalse(),
                 () -> assertThat(onlineStudy.getHashtags()).containsExactlyInAnyOrderElementsOf(SPRING.getHashtags()),
@@ -44,12 +50,13 @@ class StudyTest {
                 () -> assertThat(offlineStudy.getName()).isEqualTo(TOSS_INTERVIEW.getName()),
                 () -> assertThat(offlineStudy.getDescription()).isEqualTo(TOSS_INTERVIEW.getDescription()),
                 () -> assertThat(offlineStudy.getCategory()).isEqualTo(TOSS_INTERVIEW.getCategory()),
-                () -> assertThat(offlineStudy.getCapacity()).isEqualTo(TOSS_INTERVIEW.getCapacity().getValue()),
+                () -> assertThat(offlineStudy.getCapacity()).isEqualTo(TOSS_INTERVIEW.getCapacity()),
+                () -> assertThat(offlineStudy.getParticipants()).isEqualTo(1),
                 () -> assertThat(offlineStudy.getThumbnail()).isEqualTo(TOSS_INTERVIEW.getThumbnail()),
                 () -> assertThat(offlineStudy.getType()).isEqualTo(TOSS_INTERVIEW.getType()),
                 () -> assertThat(offlineStudy.getLocation()).isEqualTo(TOSS_INTERVIEW.getLocation()),
                 () -> assertThat(offlineStudy.getRecruitmentStatus()).isEqualTo(IN_PROGRESS),
-                () -> assertThat(offlineStudy.getMinimumAttendanceForGraduation()).isEqualTo(TOSS_INTERVIEW.getMinimumAttendanceForGraduation()),
+                () -> assertThat(offlineStudy.getGraduationPolicy().getMinimumAttendance()).isEqualTo(TOSS_INTERVIEW.getMinimumAttendanceForGraduation()),
                 () -> assertThat(offlineStudy.getGraduationPolicy().getUpdateChance()).isEqualTo(3),
                 () -> assertThat(offlineStudy.isTerminated()).isFalse(),
                 () -> assertThat(offlineStudy.getHashtags()).containsExactlyInAnyOrderElementsOf(TOSS_INTERVIEW.getHashtags())
@@ -65,9 +72,9 @@ class StudyTest {
 
         // when
         onlineStudy.update(
-                CHINESE.getName(),
-                CHINESE.getDescription(),
-                CHINESE.getCapacity(),
+                CHINESE.getName().getValue(),
+                CHINESE.getDescription().getValue(),
+                CHINESE.getCapacity().getValue(),
                 CHINESE.getCategory(),
                 CHINESE.getThumbnail(),
                 CHINESE.getType(),
@@ -78,9 +85,9 @@ class StudyTest {
         );
 
         offlineStudy.update(
-                KAKAO_INTERVIEW.getName(),
-                KAKAO_INTERVIEW.getDescription(),
-                KAKAO_INTERVIEW.getCapacity(),
+                KAKAO_INTERVIEW.getName().getValue(),
+                KAKAO_INTERVIEW.getDescription().getValue(),
+                KAKAO_INTERVIEW.getCapacity().getValue(),
                 KAKAO_INTERVIEW.getCategory(),
                 KAKAO_INTERVIEW.getThumbnail(),
                 KAKAO_INTERVIEW.getType(),
@@ -96,24 +103,26 @@ class StudyTest {
                 () -> assertThat(onlineStudy.getName()).isEqualTo(CHINESE.getName()),
                 () -> assertThat(onlineStudy.getDescription()).isEqualTo(CHINESE.getDescription()),
                 () -> assertThat(onlineStudy.getCategory()).isEqualTo(CHINESE.getCategory()),
-                () -> assertThat(onlineStudy.getCapacity()).isEqualTo(CHINESE.getCapacity().getValue()),
+                () -> assertThat(onlineStudy.getCapacity()).isEqualTo(CHINESE.getCapacity()),
+                () -> assertThat(onlineStudy.getParticipants()).isEqualTo(1), // host
                 () -> assertThat(onlineStudy.getThumbnail()).isEqualTo(CHINESE.getThumbnail()),
                 () -> assertThat(onlineStudy.getType()).isEqualTo(CHINESE.getType()),
                 () -> assertThat(onlineStudy.getLocation()).isNull(),
                 () -> assertThat(onlineStudy.getRecruitmentStatus()).isEqualTo(IN_PROGRESS),
-                () -> assertThat(onlineStudy.getMinimumAttendanceForGraduation()).isEqualTo(CHINESE.getMinimumAttendanceForGraduation()),
+                () -> assertThat(onlineStudy.getGraduationPolicy().getMinimumAttendance()).isEqualTo(CHINESE.getMinimumAttendanceForGraduation()),
                 () -> assertThat(onlineStudy.getGraduationPolicy().getUpdateChance()).isEqualTo(2),
                 () -> assertThat(onlineStudy.getHashtags()).containsExactlyInAnyOrderElementsOf(CHINESE.getHashtags()),
 
                 () -> assertThat(offlineStudy.getName()).isEqualTo(KAKAO_INTERVIEW.getName()),
                 () -> assertThat(offlineStudy.getDescription()).isEqualTo(KAKAO_INTERVIEW.getDescription()),
                 () -> assertThat(offlineStudy.getCategory()).isEqualTo(KAKAO_INTERVIEW.getCategory()),
-                () -> assertThat(offlineStudy.getCapacity()).isEqualTo(KAKAO_INTERVIEW.getCapacity().getValue()),
+                () -> assertThat(offlineStudy.getCapacity()).isEqualTo(KAKAO_INTERVIEW.getCapacity()),
+                () -> assertThat(offlineStudy.getParticipants()).isEqualTo(1), // host
                 () -> assertThat(offlineStudy.getThumbnail()).isEqualTo(KAKAO_INTERVIEW.getThumbnail()),
                 () -> assertThat(offlineStudy.getType()).isEqualTo(KAKAO_INTERVIEW.getType()),
                 () -> assertThat(offlineStudy.getLocation()).isEqualTo(KAKAO_INTERVIEW.getLocation()),
                 () -> assertThat(offlineStudy.getRecruitmentStatus()).isEqualTo(IN_PROGRESS),
-                () -> assertThat(offlineStudy.getMinimumAttendanceForGraduation()).isEqualTo(KAKAO_INTERVIEW.getMinimumAttendanceForGraduation()),
+                () -> assertThat(offlineStudy.getGraduationPolicy().getMinimumAttendance()).isEqualTo(KAKAO_INTERVIEW.getMinimumAttendanceForGraduation()),
                 () -> assertThat(offlineStudy.getGraduationPolicy().getUpdateChance()).isEqualTo(2),
                 () -> assertThat(offlineStudy.getHashtags()).containsExactlyInAnyOrderElementsOf(KAKAO_INTERVIEW.getHashtags())
         );
@@ -183,28 +192,61 @@ class StudyTest {
         assertThat(study.isTerminated()).isTrue();
     }
 
-    @Test
-    @DisplayName("스터디 정원이 꽉 찼는지 확인한다")
-    void isCapacityFull() {
-        // given
-        final Study study = JAPANESE.toOnlineStudy(host.getId()); // capacity = 5
+    @Nested
+    @DisplayName("신청자 참여 승인 / 참여자 참여 취소 or 졸업")
+    class AddOrRemoveParticipant {
+        private Study study;
 
-        /* capacity = 5 & participantMembers = 1 */
-        assertThat(study.isCapacityFull()).isFalse();
-
-        /* capacity = 5 & participantMembers = 6 */
-        for (int i = 0; i < 5; i++) {
-            study.addParticipant();
+        @BeforeEach
+        void setUp() {
+            study = JAPANESE.toOnlineStudy(host.getId());
         }
-        assertThat(study.isCapacityFull()).isTrue();
 
-        /* capacity = 5 & participantMembers = 5 */
-        study.removeParticipant();
-        assertThat(study.isCapacityFull()).isTrue();
+        @Nested
+        @DisplayName("신청자 참여 승인")
+        class AddParticipant {
+            @Test
+            @DisplayName("스터디 정원이 가득 찼음에 따라 더이상 신청자를 승인할 수 없다")
+            void throwExceptionByCapacityAlreadyFull() {
+                // given
+                final int capacity = study.getCapacity().getValue();
+                for (int i = 0; i < capacity - 1; i++) {
+                    study.addParticipant();
 
-        /* capacity = 5 & participantMembers = 4 */
-        study.removeParticipant();
-        assertThat(study.isCapacityFull()).isFalse();
+                }
+
+                // when - then
+                assertThatThrownBy(study::addParticipant)
+                        .isInstanceOf(StudyWithMeException.class)
+                        .hasMessage(StudyParticipantErrorCode.STUDY_CAPACITY_ALREADY_FULL.getMessage());
+            }
+
+            @Test
+            @DisplayName("신청자에 대해서 참여를 승인한다")
+            void success() {
+                // when
+                study.addParticipant();
+
+                // then
+                assertThat(study.getParticipants()).isEqualTo(2); // host + 1 participant
+            }
+        }
+
+        @Test
+        @DisplayName("참여자가 스터디를 나간다 (취소 or 졸업)")
+        void removeParticipant() {
+            // given
+            study.addParticipant();
+            study.addParticipant();
+            study.addParticipant(); // participants = 4
+            assertThat(study.getParticipants()).isEqualTo(4);
+
+            // when
+            study.removeParticipant();
+
+            // then
+            assertThat(study.getParticipants()).isEqualTo(4 - 1);
+        }
     }
 
     @Test
@@ -212,7 +254,7 @@ class StudyTest {
     void isParticipantMeetGraduationPolicy() {
         // given
         final Study study = SPRING.toOnlineStudy(host.getId());
-        final int minimumAttendanceForGraduation = study.getMinimumAttendanceForGraduation();
+        final int minimumAttendanceForGraduation = study.getGraduationPolicy().getMinimumAttendance();
 
         // when
         final boolean actual1 = study.isParticipantMeetGraduationPolicy(minimumAttendanceForGraduation - 1);

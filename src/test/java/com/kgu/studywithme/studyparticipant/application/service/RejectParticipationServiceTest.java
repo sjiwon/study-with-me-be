@@ -3,12 +3,13 @@ package com.kgu.studywithme.studyparticipant.application.service;
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.study.application.service.QueryStudyByIdService;
+import com.kgu.studywithme.study.application.adapter.StudyReadAdapter;
 import com.kgu.studywithme.study.domain.Study;
+import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantReadAdapter;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.RejectParticipationUseCase;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import com.kgu.studywithme.studyparticipant.event.StudyRejectedEvent;
 import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
+import com.kgu.studywithme.studyparticipant.infrastructure.persistence.StudyParticipantJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,6 @@ import org.mockito.Mock;
 import org.springframework.context.ApplicationEventPublisher;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 import static com.kgu.studywithme.common.fixture.MemberFixture.ANONYMOUS;
 import static com.kgu.studywithme.common.fixture.MemberFixture.GHOST;
@@ -27,6 +27,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -36,10 +37,13 @@ class RejectParticipationServiceTest extends UseCaseTest {
     private RejectParticipationService rejectParticipationService;
 
     @Mock
-    private QueryStudyByIdService queryStudyByIdService;
+    private ParticipantReadAdapter participantReadAdapter;
 
     @Mock
-    private StudyParticipantRepository studyParticipantRepository;
+    private StudyReadAdapter studyReadAdapter;
+
+    @Mock
+    private StudyParticipantJpaRepository studyParticipantJpaRepository;
 
     @Mock
     private ApplicationEventPublisher eventPublisher;
@@ -58,10 +62,12 @@ class RejectParticipationServiceTest extends UseCaseTest {
     @DisplayName("스터디 신청자가 아닌 사용자에 대해서 참여 거절을 할 수 없다")
     void throwExceptionByApplierNotFound() {
         // given
-        given(studyParticipantRepository.findApplier(any(), any())).willReturn(Optional.empty());
+        doThrow(StudyWithMeException.type(StudyParticipantErrorCode.APPLIER_NOT_FOUND))
+                .when(participantReadAdapter)
+                .getApplier(any(), any());
 
         // when - then
-        assertThatThrownBy(() -> rejectParticipationService.rejectParticipation(
+        assertThatThrownBy(() -> rejectParticipationService.invoke(
                 new RejectParticipationUseCase.Command(
                         study.getId(),
                         applierWithAllowEmail.getId(),
@@ -72,9 +78,9 @@ class RejectParticipationServiceTest extends UseCaseTest {
                 .hasMessage(StudyParticipantErrorCode.APPLIER_NOT_FOUND.getMessage());
 
         assertAll(
-                () -> verify(studyParticipantRepository, times(1)).findApplier(any(), any()),
-                () -> verify(queryStudyByIdService, times(0)).findById(any()),
-                () -> verify(studyParticipantRepository, times(0)).updateParticipantStatus(any(), any(), any()),
+                () -> verify(participantReadAdapter, times(1)).getApplier(any(), any()),
+                () -> verify(studyReadAdapter, times(0)).getById(any()),
+                () -> verify(studyParticipantJpaRepository, times(0)).updateParticipantStatus(any(), any(), any()),
                 () -> verify(eventPublisher, times(0)).publishEvent(any(StudyRejectedEvent.class))
         );
     }
@@ -84,11 +90,11 @@ class RejectParticipationServiceTest extends UseCaseTest {
     void throwExceptionByStudyIsTerminated() {
         // given
         study.terminate();
-        given(studyParticipantRepository.findApplier(any(), any())).willReturn(Optional.of(applierWithAllowEmail));
-        given(queryStudyByIdService.findById(any())).willReturn(study);
+        given(participantReadAdapter.getApplier(any(), any())).willReturn(applierWithAllowEmail);
+        given(studyReadAdapter.getById(any())).willReturn(study);
 
         // when - then
-        assertThatThrownBy(() -> rejectParticipationService.rejectParticipation(
+        assertThatThrownBy(() -> rejectParticipationService.invoke(
                 new RejectParticipationUseCase.Command(
                         study.getId(),
                         applierWithAllowEmail.getId(),
@@ -99,9 +105,9 @@ class RejectParticipationServiceTest extends UseCaseTest {
                 .hasMessage(StudyParticipantErrorCode.STUDY_IS_TERMINATED.getMessage());
 
         assertAll(
-                () -> verify(studyParticipantRepository, times(1)).findApplier(any(), any()),
-                () -> verify(queryStudyByIdService, times(1)).findById(any()),
-                () -> verify(studyParticipantRepository, times(0)).updateParticipantStatus(any(), any(), any()),
+                () -> verify(participantReadAdapter, times(1)).getApplier(any(), any()),
+                () -> verify(studyReadAdapter, times(1)).getById(any()),
+                () -> verify(studyParticipantJpaRepository, times(0)).updateParticipantStatus(any(), any(), any()),
                 () -> verify(eventPublisher, times(0)).publishEvent(any(StudyRejectedEvent.class))
         );
     }
@@ -110,11 +116,11 @@ class RejectParticipationServiceTest extends UseCaseTest {
     @DisplayName("스터디 참여를 거절한다 [이메일 수신 동의에 의한 이메일 발송 이벤트 O]")
     void successA() {
         // given
-        given(studyParticipantRepository.findApplier(any(), any())).willReturn(Optional.of(applierWithAllowEmail));
-        given(queryStudyByIdService.findById(any())).willReturn(study);
+        given(participantReadAdapter.getApplier(any(), any())).willReturn(applierWithAllowEmail);
+        given(studyReadAdapter.getById(any())).willReturn(study);
 
         // when
-        rejectParticipationService.rejectParticipation(
+        rejectParticipationService.invoke(
                 new RejectParticipationUseCase.Command(
                         study.getId(),
                         applierWithAllowEmail.getId(),
@@ -124,9 +130,9 @@ class RejectParticipationServiceTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyParticipantRepository, times(1)).findApplier(any(), any()),
-                () -> verify(queryStudyByIdService, times(1)).findById(any()),
-                () -> verify(studyParticipantRepository, times(1)).updateParticipantStatus(any(), any(), any()),
+                () -> verify(participantReadAdapter, times(1)).getApplier(any(), any()),
+                () -> verify(studyReadAdapter, times(1)).getById(any()),
+                () -> verify(studyParticipantJpaRepository, times(1)).updateParticipantStatus(any(), any(), any()),
                 () -> verify(eventPublisher, times(1)).publishEvent(any(StudyRejectedEvent.class))
         );
     }
@@ -135,11 +141,11 @@ class RejectParticipationServiceTest extends UseCaseTest {
     @DisplayName("스터디 참여를 거절한다 [이메일 수신 비동의에 의한 이메일 발송 이벤트 X]")
     void successB() {
         // given
-        given(studyParticipantRepository.findApplier(any(), any())).willReturn(Optional.of(applierWithNotAllowEmail));
-        given(queryStudyByIdService.findById(any())).willReturn(study);
+        given(participantReadAdapter.getApplier(any(), any())).willReturn(applierWithNotAllowEmail);
+        given(studyReadAdapter.getById(any())).willReturn(study);
 
         // when
-        rejectParticipationService.rejectParticipation(
+        rejectParticipationService.invoke(
                 new RejectParticipationUseCase.Command(
                         study.getId(),
                         applierWithNotAllowEmail.getId(),
@@ -149,9 +155,9 @@ class RejectParticipationServiceTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyParticipantRepository, times(1)).findApplier(any(), any()),
-                () -> verify(queryStudyByIdService, times(1)).findById(any()),
-                () -> verify(studyParticipantRepository, times(1)).updateParticipantStatus(any(), any(), any()),
+                () -> verify(participantReadAdapter, times(1)).getApplier(any(), any()),
+                () -> verify(studyReadAdapter, times(1)).getById(any()),
+                () -> verify(studyParticipantJpaRepository, times(1)).updateParticipantStatus(any(), any(), any()),
                 () -> verify(eventPublisher, times(0)).publishEvent(any(StudyRejectedEvent.class))
         );
     }

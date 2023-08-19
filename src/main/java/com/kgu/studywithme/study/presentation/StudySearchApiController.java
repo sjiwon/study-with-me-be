@@ -1,7 +1,7 @@
 package com.kgu.studywithme.study.presentation;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
-import com.kgu.studywithme.study.application.dto.StudyPagingResponse;
+import com.kgu.studywithme.study.application.service.dto.StudyPagingResponse;
 import com.kgu.studywithme.study.application.usecase.query.QueryStudyByCategoryUseCase;
 import com.kgu.studywithme.study.application.usecase.query.QueryStudyByRecommendUseCase;
 import com.kgu.studywithme.study.presentation.dto.request.QueryStudyByCategoryRequest;
@@ -40,7 +40,7 @@ public class StudySearchApiController {
                 request.province(),
                 request.city()
         );
-        final StudyPagingResponse response = queryStudyByCategoryUseCase.queryStudyByCategory(
+        final StudyPagingResponse response = queryStudyByCategoryUseCase.invoke(
                 new QueryStudyByCategoryUseCase.Query(
                         condition,
                         getDefaultPageRequest(request.page())
@@ -63,7 +63,7 @@ public class StudySearchApiController {
                 request.province(),
                 request.city()
         );
-        final StudyPagingResponse response = queryStudyByRecommendUseCase.queryStudyByRecommend(
+        final StudyPagingResponse response = queryStudyByRecommendUseCase.invoke(
                 new QueryStudyByRecommendUseCase.Query(
                         condition,
                         getDefaultPageRequest(request.page())

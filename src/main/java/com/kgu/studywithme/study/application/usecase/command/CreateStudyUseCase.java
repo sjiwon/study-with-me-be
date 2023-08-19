@@ -10,7 +10,7 @@ import com.kgu.studywithme.study.domain.StudyType;
 import java.util.Set;
 
 public interface CreateStudyUseCase {
-    Long createStudy(final Command command);
+    Long invoke(final Command command);
 
     record Command(
             Long hostId,

@@ -29,7 +29,7 @@ public class FavoriteApiController {
             @ExtractPayload final Long memberId,
             @PathVariable final Long studyId
     ) {
-        studyLikeMarkingUseCase.likeMarking(new StudyLikeMarkingUseCase.Command(studyId, memberId));
+        studyLikeMarkingUseCase.invoke(new StudyLikeMarkingUseCase.Command(studyId, memberId));
         return ResponseEntity.noContent().build();
     }
 
@@ -40,7 +40,7 @@ public class FavoriteApiController {
             @ExtractPayload final Long memberId,
             @PathVariable final Long studyId
     ) {
-        studyLikeCancellationUseCase.likeCancellation(new StudyLikeCancellationUseCase.Command(studyId, memberId));
+        studyLikeCancellationUseCase.invoke(new StudyLikeCancellationUseCase.Command(studyId, memberId));
         return ResponseEntity.noContent().build();
     }
 }

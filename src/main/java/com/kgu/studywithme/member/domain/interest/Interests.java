@@ -27,11 +27,7 @@ public class Interests {
             final Set<Category> interests
     ) {
         validateInterestsIsEmpty(interests);
-        this.interests.addAll(
-                interests.stream()
-                        .map(value -> Interest.applyInterest(member, value))
-                        .toList()
-        );
+        applyInterests(member, interests);
     }
 
     public void update(
@@ -39,17 +35,25 @@ public class Interests {
             final Set<Category> interests
     ) {
         validateInterestsIsEmpty(interests);
+
         this.interests.clear();
-        this.interests.addAll(
-                interests.stream()
-                        .map(value -> Interest.applyInterest(member, value))
-                        .toList()
-        );
+        applyInterests(member, interests);
     }
 
     private void validateInterestsIsEmpty(final Set<Category> interests) {
         if (interests.isEmpty()) {
             throw StudyWithMeException.type(MemberErrorCode.INTEREST_MUST_EXISTS_AT_LEAST_ONE);
         }
+    }
+
+    private void applyInterests(
+            final Member member,
+            final Set<Category> interests
+    ) {
+        this.interests.addAll(
+                interests.stream()
+                        .map(value -> Interest.applyInterest(member, value))
+                        .toList()
+        );
     }
 }

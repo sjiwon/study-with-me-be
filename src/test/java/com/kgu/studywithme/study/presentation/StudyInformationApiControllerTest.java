@@ -1,10 +1,10 @@
 package com.kgu.studywithme.study.presentation;
 
 import com.kgu.studywithme.common.ControllerTest;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.ReviewInformation;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.StudyBasicInformation;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.StudyMember;
-import com.kgu.studywithme.study.infrastructure.repository.query.dto.StudyParticipantInformation;
+import com.kgu.studywithme.study.infrastructure.query.dto.ReviewInformation;
+import com.kgu.studywithme.study.infrastructure.query.dto.StudyBasicInformation;
+import com.kgu.studywithme.study.infrastructure.query.dto.StudyMember;
+import com.kgu.studywithme.study.infrastructure.query.dto.StudyParticipantInformation;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -50,7 +50,7 @@ class StudyInformationApiControllerTest extends ControllerTest {
         @DisplayName("스터디 기본 정보를 조회한다")
         void success() throws Exception {
             // given
-            given(queryBasicInformationByIdUseCase.queryBasicInformation(any())).willReturn(createStudyBasicInformation());
+            given(queryBasicInformationByIdUseCase.invoke(any())).willReturn(createStudyBasicInformation());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -134,7 +134,7 @@ class StudyInformationApiControllerTest extends ControllerTest {
         @DisplayName("스터디 리뷰를 조회한다")
         void success() throws Exception {
             // given
-            given(queryReviewByIdUseCase.queryReview(any()))
+            given(queryReviewByIdUseCase.invoke(any()))
                     .willReturn(
                             new ReviewInformation(
                                     List.of(
@@ -202,7 +202,7 @@ class StudyInformationApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            given(queryParticipantByIdUseCase.queryParticipant(any()))
+            given(queryParticipantByIdUseCase.invoke(any()))
                     .willReturn(
                             new StudyParticipantInformation(
                                     new StudyMember(1L, JIWON.getNickname()),

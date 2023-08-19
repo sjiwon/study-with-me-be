@@ -46,7 +46,7 @@ class MemberReportApiControllerTest extends ControllerTest {
             mockingToken(true, REPORTER_ID);
             doThrow(StudyWithMeException.type(MemberReportErrorCode.PREVIOUS_REPORT_IS_STILL_PENDING))
                     .when(reportMemberUseCase)
-                    .report(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -91,7 +91,7 @@ class MemberReportApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, REPORTER_ID);
-            given(reportMemberUseCase.report(any())).willReturn(1L);
+            given(reportMemberUseCase.invoke(any())).willReturn(1L);
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders

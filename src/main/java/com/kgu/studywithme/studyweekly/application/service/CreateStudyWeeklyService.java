@@ -1,61 +1,35 @@
 package com.kgu.studywithme.studyweekly.application.service;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
-import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
-import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
+import com.kgu.studywithme.studyweekly.application.adapter.StudyWeeklyHandlingRepositoryAdapter;
 import com.kgu.studywithme.studyweekly.application.usecase.command.CreateStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
-import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
-import com.kgu.studywithme.studyweekly.domain.attachment.UploadAttachment;
-import com.kgu.studywithme.upload.utils.FileUploader;
+import com.kgu.studywithme.studyweekly.event.WeeklyCreatedEvent;
+import com.kgu.studywithme.studyweekly.infrastructure.persistence.StudyWeeklyJpaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.NON_ATTENDANCE;
 
 @Service
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class CreateStudyWeeklyService implements CreateStudyWeeklyUseCase {
-    private final FileUploader uploader;
-    private final StudyWeeklyRepository studyWeeklyRepository;
-    private final StudyParticipantRepository studyParticipantRepository;
-    private final StudyAttendanceRepository studyAttendanceRepository;
+    private final StudyWeeklyHandlingRepositoryAdapter studyWeeklyHandlingRepositoryAdapter;
+    private final StudyWeeklyJpaRepository studyWeeklyJpaRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
-    public Long createStudyWeekly(final Command command) {
-        final List<UploadAttachment> attachments = uploadAttachments(command.files());
-        final int nextWeek = studyWeeklyRepository.getNextWeek(command.studyId());
+    public Long invoke(final Command command) {
+        final int nextWeek = studyWeeklyHandlingRepositoryAdapter.getNextWeek(command.studyId());
 
-        final StudyWeekly weekly = studyWeeklyRepository.save(createWeekly(command, attachments, nextWeek));
-        applyParticipantsAttendanceToNextWeek(weekly);
+        final StudyWeekly weekly = studyWeeklyJpaRepository.save(createWeekly(command, nextWeek));
+        eventPublisher.publishEvent(new WeeklyCreatedEvent(command.studyId(), weekly.getWeek()));
+
         return weekly.getId();
-    }
-
-    private List<UploadAttachment> uploadAttachments(final List<MultipartFile> files) {
-        if (CollectionUtils.isEmpty(files)) {
-            return List.of();
-        }
-
-        return files.stream()
-                .map(file ->
-                        new UploadAttachment(
-                                file.getOriginalFilename(),
-                                uploader.uploadWeeklyAttachment(file)
-                        )
-                )
-                .toList();
     }
 
     private StudyWeekly createWeekly(
             final Command command,
-            final List<UploadAttachment> attachments,
             final int nextWeek
     ) {
         if (command.assignmentExists()) {
@@ -67,7 +41,7 @@ public class CreateStudyWeeklyService implements CreateStudyWeeklyUseCase {
                     nextWeek,
                     command.period(),
                     command.autoAttendance(),
-                    attachments
+                    command.attachments()
             );
         }
 
@@ -78,23 +52,7 @@ public class CreateStudyWeeklyService implements CreateStudyWeeklyUseCase {
                 command.content(),
                 nextWeek,
                 command.period(),
-                attachments
+                command.attachments()
         );
-    }
-
-    private void applyParticipantsAttendanceToNextWeek(final StudyWeekly weekly) {
-        final List<StudyAttendance> participantsAttendance = new ArrayList<>();
-        final List<Long> studyParticipantIds = studyParticipantRepository.findStudyParticipantIds(weekly.getStudyId());
-        studyParticipantIds.forEach(
-                studyParticipantId -> participantsAttendance.add(
-                        StudyAttendance.recordAttendance(
-                                weekly.getStudyId(),
-                                studyParticipantId,
-                                weekly.getWeek(),
-                                NON_ATTENDANCE
-                        )
-                )
-        );
-        studyAttendanceRepository.saveAll(participantsAttendance);
     }
 }

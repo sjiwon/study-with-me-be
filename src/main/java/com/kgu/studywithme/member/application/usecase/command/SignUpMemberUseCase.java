@@ -1,27 +1,27 @@
 package com.kgu.studywithme.member.application.usecase.command;
 
 import com.kgu.studywithme.category.domain.Category;
+import com.kgu.studywithme.member.domain.Address;
 import com.kgu.studywithme.member.domain.Email;
 import com.kgu.studywithme.member.domain.Gender;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.Nickname;
-import com.kgu.studywithme.member.domain.Region;
+import com.kgu.studywithme.member.domain.Phone;
 
 import java.time.LocalDate;
 import java.util.Set;
 
 public interface SignUpMemberUseCase {
-    Long signUp(final Command command);
+    Long invoke(final Command command);
 
     record Command(
             String name,
             Nickname nickname,
             Email email,
             LocalDate birth,
-            String phone,
+            Phone phone,
             Gender gender,
-            Region region,
-            boolean emailOptIn,
+            Address address,
             Set<Category> interests
     ) {
         public Member toDomain() {
@@ -32,8 +32,7 @@ public interface SignUpMemberUseCase {
                     birth,
                     phone,
                     gender,
-                    region,
-                    emailOptIn,
+                    address,
                     interests
             );
         }

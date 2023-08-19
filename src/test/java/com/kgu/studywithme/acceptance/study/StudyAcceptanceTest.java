@@ -22,7 +22,7 @@ public class StudyAcceptanceTest extends AcceptanceTest {
 
     @BeforeEach
     void setUp() {
-        hostAccessToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행한다().accessToken();
+        hostAccessToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행한다().token().accessToken();
     }
 
     @Nested

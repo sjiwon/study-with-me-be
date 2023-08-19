@@ -102,7 +102,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            given(writeStudyNoticeUseCase.writeNotice(any())).willReturn(1L);
+            given(writeStudyNoticeUseCase.invoke(any())).willReturn(1L);
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -216,7 +216,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
             doNothing()
                     .when(updateStudyNoticeUseCase)
-                    .updateNotice(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -313,7 +313,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
             mockingToken(true, HOST_ID);
             doNothing()
                     .when(deleteStudyNoticeUseCase)
-                    .deleteNotice(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders

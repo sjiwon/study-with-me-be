@@ -3,9 +3,9 @@ package com.kgu.studywithme.member.presentation;
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.AppliedStudy;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.LikeMarkedStudy;
-import com.kgu.studywithme.member.infrastructure.repository.query.dto.MemberPrivateInformation;
+import com.kgu.studywithme.member.infrastructure.query.dto.AppliedStudy;
+import com.kgu.studywithme.member.infrastructure.query.dto.LikeMarkedStudy;
+import com.kgu.studywithme.member.infrastructure.query.dto.MemberPrivateInformation;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -49,20 +49,20 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
             final MemberPrivateInformation response = new MemberPrivateInformation(
                     member.getId(),
                     member.getName(),
-                    member.getNicknameValue(),
-                    member.getEmailValue(),
-                    member.getBirth(),
-                    member.getPhone(),
-                    member.getGender().getValue(),
-                    member.getRegion(),
-                    member.getScore(),
+                    member.getNickname().getValue(),
+                    member.getEmail().getValue(),
                     member.isEmailOptIn(),
+                    member.getBirth(),
+                    member.getPhone().getValue(),
+                    member.getGender().getValue(),
+                    member.getAddress(),
+                    member.getScore().getValue(),
                     member.getInterests()
                             .stream()
                             .map(Category::getName)
                             .toList()
             );
-            given(queryPrivateInformationByIdUseCase.queryPrivateInformation(any())).willReturn(response);
+            given(queryPrivateInformationByIdUseCase.invoke(any())).willReturn(response);
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -87,20 +87,20 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
                                                     .description("사용자 닉네임"),
                                             fieldWithPath("email")
                                                     .description("사용자 이메일"),
+                                            fieldWithPath("emailOptIn")
+                                                    .description("이메일 수신 동의 여부"),
                                             fieldWithPath("birth")
                                                     .description("사용자 생년월일"),
                                             fieldWithPath("phone")
                                                     .description("사용자 전화번호"),
                                             fieldWithPath("gender")
                                                     .description("사용자 성별"),
-                                            fieldWithPath("region.province")
+                                            fieldWithPath("address.province")
                                                     .description("거주지 [경기도, 강원도, ...]"),
-                                            fieldWithPath("region.city")
+                                            fieldWithPath("address.city")
                                                     .description("거주지 [안양시, 수원시, ...]"),
                                             fieldWithPath("score")
                                                     .description("사용자 점수"),
-                                            fieldWithPath("emailOptIn")
-                                                    .description("이메일 수신 동의 여부"),
                                             fieldWithPath("interests[]")
                                                     .description("사용자 관심사 목록")
                                     )
@@ -120,7 +120,7 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
-            given(queryAppliedStudyByIdUseCase.queryAppliedStudy(any()))
+            given(queryAppliedStudyByIdUseCase.invoke(any()))
                     .willReturn(
                             List.of(
                                     new AppliedStudy(
@@ -180,7 +180,7 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
-            given(queryLikeMarkedStudyByIdUseCase.queryLikeMarkedStudy(any()))
+            given(queryLikeMarkedStudyByIdUseCase.invoke(any()))
                     .willReturn(
                             List.of(
                                     new LikeMarkedStudy(

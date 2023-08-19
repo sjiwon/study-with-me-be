@@ -47,11 +47,11 @@ class MemberApiControllerTest extends ControllerTest {
                 JIWON.getNickname().getValue(),
                 JIWON.getEmail().getValue(),
                 JIWON.getBirth(),
-                JIWON.getPhone(),
+                JIWON.getPhone().getValue(),
                 MALE.getSimpleValue(),
-                JIWON.getRegion().getProvince(),
-                JIWON.getRegion().getCity(),
-                JIWON.isEmailOptIn(),
+                JIWON.getAddress().getProvince(),
+                JIWON.getAddress().getCity(),
+                JIWON.getEmail().isEmailOptIn(),
                 JIWON.getInterests()
                         .stream()
                         .map(Category::getId)
@@ -64,7 +64,7 @@ class MemberApiControllerTest extends ControllerTest {
             // given
             doThrow(StudyWithMeException.type(MemberErrorCode.DUPLICATE_NICKNAME))
                     .when(signUpMemberUseCase)
-                    .signUp(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -124,7 +124,7 @@ class MemberApiControllerTest extends ControllerTest {
         @DisplayName("회원가입을 진행한다")
         void success() throws Exception {
             // given
-            given(signUpMemberUseCase.signUp(any())).willReturn(1L);
+            given(signUpMemberUseCase.invoke(any())).willReturn(1L);
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -185,9 +185,9 @@ class MemberApiControllerTest extends ControllerTest {
         private static final Long MEMBER_ID = 1L;
         private static final UpdateMemberRequest REQUEST = new UpdateMemberRequest(
                 JIWON.getNickname().getValue(),
-                JIWON.getPhone(),
-                JIWON.getRegion().getProvince(),
-                JIWON.getRegion().getCity(),
+                JIWON.getPhone().getValue(),
+                JIWON.getAddress().getProvince(),
+                JIWON.getAddress().getCity(),
                 false,
                 JIWON.getInterests()
                         .stream()
@@ -202,7 +202,7 @@ class MemberApiControllerTest extends ControllerTest {
             mockingToken(true, MEMBER_ID);
             doNothing()
                     .when(updateMemberUseCase)
-                    .update(any());
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders

@@ -1,10 +1,11 @@
 package com.kgu.studywithme.studyattendance.infrastructure.scheduler;
 
-import com.kgu.studywithme.member.domain.MemberRepository;
-import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
-import com.kgu.studywithme.studyattendance.infrastructure.repository.query.dto.NonAttendanceWeekly;
-import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
-import com.kgu.studywithme.studyweekly.infrastructure.repository.query.dto.AutoAttendanceAndFinishedWeekly;
+import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
+import com.kgu.studywithme.studyattendance.application.adapter.StudyAttendanceHandlingRepositoryAdapter;
+import com.kgu.studywithme.studyattendance.infrastructure.persistence.StudyAttendanceJpaRepository;
+import com.kgu.studywithme.studyattendance.infrastructure.query.dto.NonAttendanceWeekly;
+import com.kgu.studywithme.studyweekly.application.adapter.StudyWeeklyHandlingRepositoryAdapter;
+import com.kgu.studywithme.studyweekly.infrastructure.query.dto.AutoAttendanceAndFinishedWeekly;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -20,15 +21,16 @@ import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ABSENC
 @Component
 @RequiredArgsConstructor
 public class StudyAttendanceScheduler {
-    private final StudyWeeklyRepository studyWeeklyRepository;
-    private final StudyAttendanceRepository studyAttendanceRepository;
-    private final MemberRepository memberRepository;
+    private final StudyWeeklyHandlingRepositoryAdapter studyWeeklyHandlingRepositoryAdapter;
+    private final StudyAttendanceHandlingRepositoryAdapter studyAttendanceHandlingRepositoryAdapter;
+    private final StudyAttendanceJpaRepository studyAttendanceJpaRepository;
+    private final MemberJpaRepository memberJpaRepository;
 
     @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
     public void processAbsenceCheckScheduler() {
         final Set<Long> absenceParticipantIds = new HashSet<>();
-        final List<AutoAttendanceAndFinishedWeekly> weeks = studyWeeklyRepository.findAutoAttendanceAndFinishedWeekly();
-        final List<NonAttendanceWeekly> attendances = studyAttendanceRepository.findNonAttendanceInformation();
+        final List<AutoAttendanceAndFinishedWeekly> weeks = studyWeeklyHandlingRepositoryAdapter.findAutoAttendanceAndFinishedWeekly();
+        final List<NonAttendanceWeekly> attendances = studyAttendanceHandlingRepositoryAdapter.findNonAttendanceInformation();
 
         weeks.forEach(week -> {
             final Long studyId = week.studyId();
@@ -37,10 +39,10 @@ public class StudyAttendanceScheduler {
 
             if (hasCandidates(participantIds)) {
                 absenceParticipantIds.addAll(participantIds);
-                studyAttendanceRepository.updateParticipantStatus(studyId, specificWeek, participantIds, ABSENCE);
+                studyAttendanceJpaRepository.updateParticipantStatus(studyId, specificWeek, participantIds, ABSENCE);
             }
         });
-        memberRepository.applyScoreToAbsenceParticipant(absenceParticipantIds);
+        memberJpaRepository.applyScoreToAbsenceParticipant(absenceParticipantIds);
     }
 
     private Set<Long> extractNonAttendanceParticipantIds(
