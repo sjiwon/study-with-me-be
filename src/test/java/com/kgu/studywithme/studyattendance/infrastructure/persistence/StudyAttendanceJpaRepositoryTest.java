@@ -22,7 +22,6 @@ import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY4;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.LATE;
 import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.NON_ATTENDANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -38,17 +37,17 @@ public class StudyAttendanceJpaRepositoryTest extends RepositoryTest {
     @Autowired
     private StudyJpaRepository studyJpaRepository;
 
-    private final Member[] member = new Member[5];
+    private final Member[] members = new Member[5];
     private Study study;
 
     @BeforeEach
     void setUp() {
-        member[0] = memberJpaRepository.save(JIWON.toMember());
-        member[1] = memberJpaRepository.save(DUMMY1.toMember());
-        member[2] = memberJpaRepository.save(DUMMY2.toMember());
-        member[3] = memberJpaRepository.save(DUMMY3.toMember());
-        member[4] = memberJpaRepository.save(DUMMY4.toMember());
-        study = studyJpaRepository.save(SPRING.toOnlineStudy(member[0].getId()));
+        members[0] = memberJpaRepository.save(JIWON.toMember());
+        members[1] = memberJpaRepository.save(DUMMY1.toMember());
+        members[2] = memberJpaRepository.save(DUMMY2.toMember());
+        members[3] = memberJpaRepository.save(DUMMY3.toMember());
+        members[4] = memberJpaRepository.save(DUMMY4.toMember());
+        study = studyJpaRepository.save(SPRING.toOnlineStudy(members[0].getId()));
     }
 
     @Test
@@ -58,7 +57,7 @@ public class StudyAttendanceJpaRepositoryTest extends RepositoryTest {
         final StudyAttendance attendance = studyAttendanceJpaRepository.save(
                 StudyAttendance.recordAttendance(
                         study.getId(),
-                        member[0].getId(),
+                        members[0].getId(),
                         1,
                         ATTENDANCE
                 )
@@ -67,12 +66,12 @@ public class StudyAttendanceJpaRepositoryTest extends RepositoryTest {
         // when
         final Optional<StudyAttendance> findStudyAttendance = studyAttendanceJpaRepository.getParticipantAttendanceByWeek(
                 study.getId(),
-                member[0].getId(),
+                members[0].getId(),
                 attendance.getWeek()
         );
         final Optional<StudyAttendance> emptyStudyAttendance = studyAttendanceJpaRepository.getParticipantAttendanceByWeek(
                 study.getId(),
-                member[0].getId(),
+                members[0].getId(),
                 attendance.getWeek() + 1
         );
 
@@ -89,16 +88,16 @@ public class StudyAttendanceJpaRepositoryTest extends RepositoryTest {
         // given
         studyAttendanceJpaRepository.saveAll(
                 List.of(
-                        StudyAttendance.recordAttendance(study.getId(), member[0].getId(), 1, NON_ATTENDANCE),
-                        StudyAttendance.recordAttendance(study.getId(), member[1].getId(), 1, NON_ATTENDANCE),
-                        StudyAttendance.recordAttendance(study.getId(), member[2].getId(), 1, NON_ATTENDANCE),
-                        StudyAttendance.recordAttendance(study.getId(), member[3].getId(), 1, NON_ATTENDANCE),
-                        StudyAttendance.recordAttendance(study.getId(), member[4].getId(), 1, NON_ATTENDANCE)
+                        StudyAttendance.recordAttendance(study.getId(), members[0].getId(), 1, NON_ATTENDANCE),
+                        StudyAttendance.recordAttendance(study.getId(), members[1].getId(), 1, NON_ATTENDANCE),
+                        StudyAttendance.recordAttendance(study.getId(), members[2].getId(), 1, NON_ATTENDANCE),
+                        StudyAttendance.recordAttendance(study.getId(), members[3].getId(), 1, NON_ATTENDANCE),
+                        StudyAttendance.recordAttendance(study.getId(), members[4].getId(), 1, NON_ATTENDANCE)
                 )
         );
 
         // when
-        final Set<Long> participantIds = Set.of(member[1].getId(), member[3].getId());
+        final Set<Long> participantIds = Set.of(members[1].getId(), members[3].getId());
         studyAttendanceJpaRepository.updateParticipantStatus(
                 study.getId(),
                 1,
@@ -113,11 +112,11 @@ public class StudyAttendanceJpaRepositoryTest extends RepositoryTest {
                 () -> assertThat(attendances)
                         .map(StudyAttendance::getParticipantId)
                         .containsExactly(
-                                member[0].getId(),
-                                member[1].getId(),
-                                member[2].getId(),
-                                member[3].getId(),
-                                member[4].getId()
+                                members[0].getId(),
+                                members[1].getId(),
+                                members[2].getId(),
+                                members[3].getId(),
+                                members[4].getId()
                         ),
                 () -> assertThat(attendances)
                         .map(StudyAttendance::getStatus)
@@ -129,27 +128,5 @@ public class StudyAttendanceJpaRepositoryTest extends RepositoryTest {
                                 NON_ATTENDANCE
                         )
         );
-    }
-
-    @Test
-    @DisplayName("사용자의 스터디 출석 횟수를 조회한다")
-    void getAttendanceCount() {
-        /* 출석 1회 */
-        studyAttendanceJpaRepository.save(
-                StudyAttendance.recordAttendance(study.getId(), member[0].getId(), 1, ATTENDANCE)
-        );
-        assertThat(studyAttendanceJpaRepository.getAttendanceCount(study.getId(), member[0].getId())).isEqualTo(1);
-
-        /* 출석 1회 + 지각 1회 */
-        studyAttendanceJpaRepository.save(
-                StudyAttendance.recordAttendance(study.getId(), member[0].getId(), 2, LATE)
-        );
-        assertThat(studyAttendanceJpaRepository.getAttendanceCount(study.getId(), member[0].getId())).isEqualTo(1);
-
-        /* 출석 2회 + 지각 1회 */
-        studyAttendanceJpaRepository.save(
-                StudyAttendance.recordAttendance(study.getId(), member[0].getId(), 3, ATTENDANCE)
-        );
-        assertThat(studyAttendanceJpaRepository.getAttendanceCount(study.getId(), member[0].getId())).isEqualTo(2);
     }
 }

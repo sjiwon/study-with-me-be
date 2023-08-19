@@ -9,4 +9,6 @@ public interface StudyAttendanceHandlingRepositoryAdapter {
     List<NonAttendanceWeekly> findNonAttendanceInformation();
 
     List<StudyAttendanceWeekly> findParticipateWeeksInStudyByMemberId(final Long memberId);
+
+    int getAttendanceCount(final Long studyId, final Long participantId);
 }

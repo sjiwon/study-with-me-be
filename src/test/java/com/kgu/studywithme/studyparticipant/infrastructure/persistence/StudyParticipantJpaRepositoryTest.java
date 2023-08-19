@@ -47,33 +47,53 @@ public class StudyParticipantJpaRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    @DisplayName("스터디 신청자를 조회한다")
+    @DisplayName("스터디 참여자를 ParticipantStatus에 따라 조회한다")
     void findApplier() {
         studyParticipantJpaRepository.save(StudyParticipant.applyInStudy(study.getId(), applier.getId()));
-        assertThat(studyParticipantJpaRepository.findApplier(study.getId(), applier.getId())).isPresent();
+        assertAll(
+                () -> assertThat(studyParticipantJpaRepository.findParticipantByStatus(study.getId(), applier.getId(), APPLY)).isPresent(),
+                () -> assertThat(studyParticipantJpaRepository.findParticipantByStatus(study.getId(), applier.getId(), APPROVE)).isEmpty(),
+                () -> assertThat(studyParticipantJpaRepository.findParticipantByStatus(study.getId(), applier.getId(), GRADUATED)).isEmpty()
+        );
 
         studyParticipantJpaRepository.updateParticipantStatus(study.getId(), applier.getId(), APPROVE);
-        assertThat(studyParticipantJpaRepository.findApplier(study.getId(), applier.getId())).isEmpty();
+        assertAll(
+                () -> assertThat(studyParticipantJpaRepository.findParticipantByStatus(study.getId(), applier.getId(), APPLY)).isEmpty(),
+                () -> assertThat(studyParticipantJpaRepository.findParticipantByStatus(study.getId(), applier.getId(), APPROVE)).isPresent(),
+                () -> assertThat(studyParticipantJpaRepository.findParticipantByStatus(study.getId(), applier.getId(), GRADUATED)).isEmpty()
+        );
+
+        studyParticipantJpaRepository.updateParticipantStatus(study.getId(), applier.getId(), GRADUATED);
+        assertAll(
+                () -> assertThat(studyParticipantJpaRepository.findParticipantByStatus(study.getId(), applier.getId(), APPLY)).isEmpty(),
+                () -> assertThat(studyParticipantJpaRepository.findParticipantByStatus(study.getId(), applier.getId(), APPROVE)).isEmpty(),
+                () -> assertThat(studyParticipantJpaRepository.findParticipantByStatus(study.getId(), applier.getId(), GRADUATED)).isPresent()
+        );
     }
 
     @Test
-    @DisplayName("스터디 참여자들의 ID(PK)를 조회한다")
+    @DisplayName("스터디 참여자들의 ID(PK)를 ParticipantStatus에 따라 조회한다")
     void findStudyParticipantIds() {
         studyParticipantJpaRepository.save(StudyParticipant.applyInStudy(study.getId(), applier.getId()));
 
-        final List<Long> studyParticipantIds1 = studyParticipantJpaRepository.findStudyParticipantIds(study.getId());
+        final List<Long> applyParticipantIds1 = studyParticipantJpaRepository.findParticipantIdsByStatus(study.getId(), APPLY);
+        final List<Long> approveParticipantIds1 = studyParticipantJpaRepository.findParticipantIdsByStatus(study.getId(), APPROVE);
         assertAll(
-                () -> assertThat(studyParticipantIds1).hasSize(1),
-                () -> assertThat(studyParticipantIds1).containsExactlyInAnyOrder(host.getId())
+                () -> assertThat(applyParticipantIds1).hasSize(1),
+                () -> assertThat(applyParticipantIds1).containsExactlyInAnyOrder(applier.getId()),
+                () -> assertThat(approveParticipantIds1).hasSize(1),
+                () -> assertThat(approveParticipantIds1).containsExactlyInAnyOrder(host.getId())
         );
 
         /* applier participant */
         studyParticipantJpaRepository.updateParticipantStatus(study.getId(), applier.getId(), APPROVE);
 
-        final List<Long> studyParticipantIds2 = studyParticipantJpaRepository.findStudyParticipantIds(study.getId());
+        final List<Long> applyParticipantIds2 = studyParticipantJpaRepository.findParticipantIdsByStatus(study.getId(), APPLY);
+        final List<Long> approveParticipantIds2 = studyParticipantJpaRepository.findParticipantIdsByStatus(study.getId(), APPROVE);
         assertAll(
-                () -> assertThat(studyParticipantIds2).hasSize(2),
-                () -> assertThat(studyParticipantIds2).containsExactlyInAnyOrder(host.getId(), applier.getId())
+                () -> assertThat(applyParticipantIds2).isEmpty(),
+                () -> assertThat(approveParticipantIds2).hasSize(2),
+                () -> assertThat(approveParticipantIds2).containsExactlyInAnyOrder(host.getId(), applier.getId())
         );
     }
 

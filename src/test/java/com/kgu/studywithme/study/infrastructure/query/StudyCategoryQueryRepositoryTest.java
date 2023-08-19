@@ -96,7 +96,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
     private static final LocalDateTime NOW = LocalDateTime.now();
 
     private Member host;
-    private final Member[] member = new Member[9];
+    private final Member[] members = new Member[9];
     private final Study[] language = new Study[7];
     private final Study[] interview = new Study[5];
     private final Study[] programming = new Study[12];
@@ -107,15 +107,15 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
     void setUp() {
         host = memberJpaRepository.save(JIWON.toMember());
 
-        member[0] = memberJpaRepository.save(DUMMY1.toMember());
-        member[1] = memberJpaRepository.save(DUMMY2.toMember());
-        member[2] = memberJpaRepository.save(DUMMY3.toMember());
-        member[3] = memberJpaRepository.save(DUMMY4.toMember());
-        member[4] = memberJpaRepository.save(DUMMY5.toMember());
-        member[5] = memberJpaRepository.save(DUMMY6.toMember());
-        member[6] = memberJpaRepository.save(DUMMY7.toMember());
-        member[7] = memberJpaRepository.save(DUMMY8.toMember());
-        member[8] = memberJpaRepository.save(DUMMY9.toMember());
+        members[0] = memberJpaRepository.save(DUMMY1.toMember());
+        members[1] = memberJpaRepository.save(DUMMY2.toMember());
+        members[2] = memberJpaRepository.save(DUMMY3.toMember());
+        members[3] = memberJpaRepository.save(DUMMY4.toMember());
+        members[4] = memberJpaRepository.save(DUMMY5.toMember());
+        members[5] = memberJpaRepository.save(DUMMY6.toMember());
+        members[6] = memberJpaRepository.save(DUMMY7.toMember());
+        members[7] = memberJpaRepository.save(DUMMY8.toMember());
+        members[8] = memberJpaRepository.save(DUMMY9.toMember());
 
         language[0] = TOEIC.toOnlineStudy(host.getId());
         language[1] = TOEFL.toOnlineStudy(host.getId());
@@ -307,32 +307,32 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     ),
                     List.of(
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5], member[6], member[7],
-                                    member[8]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5], members[6], members[7],
+                                    members[8]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5], member[6], member[7]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5], members[6], members[7]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5], member[6]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5], members[6]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4]
                             ),
-                            List.of(member[0], member[1], member[2], member[3]),
-                            List.of(member[0], member[1], member[2], member[3])
+                            List.of(members[0], members[1], members[2], members[3]),
+                            List.of(members[0], members[1], members[2], members[3])
                     )
             );
 
@@ -342,8 +342,8 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     result2.getContent(),
                     List.of(programming[1], programming[4]),
                     List.of(
-                            List.of(member[0], member[1], member[2]),
-                            List.of(member[0])
+                            List.of(members[0], members[1], members[2]),
+                            List.of(members[0])
                     )
             );
 
@@ -362,12 +362,12 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     List.of(programming[2], programming[6]),
                     List.of(
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5], member[6], member[7]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5], members[6], members[7]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5], member[6]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5], members[6]
                             )
                     )
             );
@@ -390,37 +390,37 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     ),
                     List.of(
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5], member[6], member[7],
-                                    member[8]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5], members[6], members[7],
+                                    members[8]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5], member[6], member[7]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5], members[6], members[7]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5], member[6], member[7]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5], members[6], members[7]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5], member[6]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5], members[6]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5], member[6]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5], members[6]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4]
                             )
                     )
             );
@@ -431,10 +431,10 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     result5.getContent(),
                     List.of(programming[11], programming[10], programming[1], programming[4]),
                     List.of(
-                            List.of(member[0], member[1], member[2], member[3]),
-                            List.of(member[0], member[1], member[2], member[3]),
-                            List.of(member[0], member[1], member[2]),
-                            List.of(member[0])
+                            List.of(members[0], members[1], members[2], members[3]),
+                            List.of(members[0], members[1], members[2], members[3]),
+                            List.of(members[0], members[1], members[2]),
+                            List.of(members[0])
                     )
             );
         }
@@ -725,36 +725,36 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     ),
                     List.of(
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5], member[6], member[7], member[8]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5], members[6], members[7], members[8]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5], member[6], member[7]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5], members[6], members[7]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5], member[6]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5], members[6]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5], member[6]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5], members[6]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4]
                             )
                     )
             );
@@ -768,14 +768,14 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                             language[6], language[2], language[1], programming[4]
                     ),
                     List.of(
-                            List.of(member[0], member[1], member[2], member[3]),
-                            List.of(member[0], member[1], member[2], member[3]),
-                            List.of(member[0], member[1], member[2], member[3]),
-                            List.of(member[0], member[1], member[2]),
-                            List.of(member[0], member[1], member[2]),
-                            List.of(member[0], member[1], member[2]),
-                            List.of(member[0], member[1], member[2]),
-                            List.of(member[0])
+                            List.of(members[0], members[1], members[2], members[3]),
+                            List.of(members[0], members[1], members[2], members[3]),
+                            List.of(members[0], members[1], members[2], members[3]),
+                            List.of(members[0], members[1], members[2]),
+                            List.of(members[0], members[1], members[2]),
+                            List.of(members[0], members[1], members[2]),
+                            List.of(members[0], members[1], members[2]),
+                            List.of(members[0])
                     )
             );
 
@@ -805,21 +805,21 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     ),
                     List.of(
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5], member[6], member[7]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5], members[6], members[7]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5], member[6]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5], members[6]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5], member[6]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5], members[6]
                             ),
-                            List.of(member[0], member[1], member[2], member[3]),
-                            List.of(member[0], member[1], member[2], member[3]),
-                            List.of(member[0], member[1]),
-                            List.of(member[0])
+                            List.of(members[0], members[1], members[2], members[3]),
+                            List.of(members[0], members[1], members[2], members[3]),
+                            List.of(members[0], members[1]),
+                            List.of(members[0])
                     )
             );
 
@@ -841,36 +841,36 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     ),
                     List.of(
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5], member[6], member[7], member[8]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5], members[6], members[7], members[8]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5], member[6], member[7]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5], members[6], members[7]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5], member[6], member[7]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5], members[6], members[7]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5], member[6]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5], members[6]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5], member[6]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5], members[6]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5], member[6]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5], members[6]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5], member[6]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5], members[6]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4], member[5]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4], members[5]
                             )
                     )
             );
@@ -885,22 +885,22 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                     ),
                     List.of(
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4]
                             ),
                             List.of(
-                                    member[0], member[1], member[2], member[3],
-                                    member[4]
+                                    members[0], members[1], members[2], members[3],
+                                    members[4]
                             ),
-                            List.of(member[0], member[1], member[2], member[3]),
-                            List.of(member[0], member[1], member[2], member[3]),
-                            List.of(member[0], member[1], member[2], member[3]),
-                            List.of(member[0], member[1], member[2], member[3]),
-                            List.of(member[0], member[1], member[2], member[3])
+                            List.of(members[0], members[1], members[2], members[3]),
+                            List.of(members[0], members[1], members[2], members[3]),
+                            List.of(members[0], members[1], members[2], members[3]),
+                            List.of(members[0], members[1], members[2], members[3]),
+                            List.of(members[0], members[1], members[2], members[3])
                     )
             );
 
@@ -913,13 +913,13 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
                             interview[2], programming[4], interview[0], language[4]
                     ),
                     List.of(
-                            List.of(member[0], member[1], member[2]),
-                            List.of(member[0], member[1], member[2]),
-                            List.of(member[0], member[1], member[2]),
-                            List.of(member[0], member[1], member[2]),
-                            List.of(member[0], member[1]),
-                            List.of(member[0]),
-                            List.of(member[0]),
+                            List.of(members[0], members[1], members[2]),
+                            List.of(members[0], members[1], members[2]),
+                            List.of(members[0], members[1], members[2]),
+                            List.of(members[0], members[1], members[2]),
+                            List.of(members[0], members[1]),
+                            List.of(members[0]),
+                            List.of(members[0]),
                             List.of()
                     )
             );
@@ -1075,32 +1075,32 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
         initDataWithRegisterDate();
 
         favorites.clear();
-        likeMarking(language[0], member[0], member[1], member[2], member[3], member[4], member[5], member[6]);
-        likeMarking(language[1], member[0], member[1], member[2]);
-        likeMarking(language[2], member[0], member[1], member[2]);
-        likeMarking(language[3], member[0], member[1], member[2], member[3]);
+        likeMarking(language[0], members[0], members[1], members[2], members[3], members[4], members[5], members[6]);
+        likeMarking(language[1], members[0], members[1], members[2]);
+        likeMarking(language[2], members[0], members[1], members[2]);
+        likeMarking(language[3], members[0], members[1], members[2], members[3]);
         likeMarking(language[4]);
-        likeMarking(language[5], member[0], member[1], member[2], member[3], member[4]);
-        likeMarking(language[6], member[0], member[1], member[2]);
+        likeMarking(language[5], members[0], members[1], members[2], members[3], members[4]);
+        likeMarking(language[6], members[0], members[1], members[2]);
 
-        likeMarking(interview[0], member[0]); // Offline
-        likeMarking(interview[1], member[0], member[1], member[2], member[3]); // Offline
-        likeMarking(interview[2], member[0], member[1]); // Offline
-        likeMarking(interview[3], member[0], member[1], member[2], member[3], member[4], member[5], member[6]); // Offline
-        likeMarking(interview[4], member[0], member[1], member[2], member[3]); // Offline
+        likeMarking(interview[0], members[0]); // Offline
+        likeMarking(interview[1], members[0], members[1], members[2], members[3]); // Offline
+        likeMarking(interview[2], members[0], members[1]); // Offline
+        likeMarking(interview[3], members[0], members[1], members[2], members[3], members[4], members[5], members[6]); // Offline
+        likeMarking(interview[4], members[0], members[1], members[2], members[3]); // Offline
 
-        likeMarking(programming[0], member[0], member[1], member[2], member[3], member[4]);
-        likeMarking(programming[1], member[0], member[1], member[2]);
-        likeMarking(programming[2], member[0], member[1], member[2], member[3], member[4], member[5], member[6], member[7]); // Offline
-        likeMarking(programming[3], member[0], member[1], member[2], member[3], member[4], member[5], member[6], member[7]);
-        likeMarking(programming[4], member[0]);
-        likeMarking(programming[5], member[0], member[1], member[2], member[3], member[4], member[5], member[6]);
-        likeMarking(programming[6], member[0], member[1], member[2], member[3], member[4], member[5], member[6]); // Offline
-        likeMarking(programming[7], member[0], member[1], member[2], member[3], member[4]);
-        likeMarking(programming[8], member[0], member[1], member[2], member[3], member[4], member[5]);
-        likeMarking(programming[9], member[0], member[1], member[2], member[3], member[4], member[5], member[6], member[7], member[8]);
-        likeMarking(programming[10], member[0], member[1], member[2], member[3]);
-        likeMarking(programming[11], member[0], member[1], member[2], member[3]);
+        likeMarking(programming[0], members[0], members[1], members[2], members[3], members[4]);
+        likeMarking(programming[1], members[0], members[1], members[2]);
+        likeMarking(programming[2], members[0], members[1], members[2], members[3], members[4], members[5], members[6], members[7]); // Offline
+        likeMarking(programming[3], members[0], members[1], members[2], members[3], members[4], members[5], members[6], members[7]);
+        likeMarking(programming[4], members[0]);
+        likeMarking(programming[5], members[0], members[1], members[2], members[3], members[4], members[5], members[6]);
+        likeMarking(programming[6], members[0], members[1], members[2], members[3], members[4], members[5], members[6]); // Offline
+        likeMarking(programming[7], members[0], members[1], members[2], members[3], members[4]);
+        likeMarking(programming[8], members[0], members[1], members[2], members[3], members[4], members[5]);
+        likeMarking(programming[9], members[0], members[1], members[2], members[3], members[4], members[5], members[6], members[7], members[8]);
+        likeMarking(programming[10], members[0], members[1], members[2], members[3]);
+        likeMarking(programming[11], members[0], members[1], members[2], members[3]);
         favoriteJpaRepository.saveAll(favorites);
     }
 
@@ -1108,30 +1108,30 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
         initDataWithRegisterDate();
 
         reviews.clear();
-        writeReview(language[0], member[0], member[1], member[2], member[3], member[4], member[5], member[6]);
-        writeReview(language[1], member[0], member[1], member[2]);
-        writeReview(language[2], member[0], member[1], member[2]);
-        writeReview(language[3], member[0], member[1], member[2], member[3]);
+        writeReview(language[0], members[0], members[1], members[2], members[3], members[4], members[5], members[6]);
+        writeReview(language[1], members[0], members[1], members[2]);
+        writeReview(language[2], members[0], members[1], members[2]);
+        writeReview(language[3], members[0], members[1], members[2], members[3]);
         writeReview(language[4]);
-        writeReview(language[5], member[0], member[1], member[2], member[3], member[4]);
-        writeReview(language[6], member[0], member[1], member[2]);
-        writeReview(interview[0], member[0]); // Offline
-        writeReview(interview[1], member[0], member[1], member[2], member[3]); // Offline
-        writeReview(interview[2], member[0], member[1]); // Offline
-        writeReview(interview[3], member[0], member[1], member[2], member[3], member[4], member[5], member[6]); // Offline
-        writeReview(interview[4], member[0], member[1], member[2], member[3]); // Offline
-        writeReview(programming[0], member[0], member[1], member[2], member[3], member[4]);
-        writeReview(programming[1], member[0], member[1], member[2]);
-        writeReview(programming[2], member[0], member[1], member[2], member[3], member[4], member[5], member[6], member[7]); // Offline
-        writeReview(programming[3], member[0], member[1], member[2], member[3], member[4], member[5], member[6], member[7]);
-        writeReview(programming[4], member[0]);
-        writeReview(programming[5], member[0], member[1], member[2], member[3], member[4], member[5], member[6]);
-        writeReview(programming[6], member[0], member[1], member[2], member[3], member[4], member[5], member[6]); // Offline
-        writeReview(programming[7], member[0], member[1], member[2], member[3], member[4]);
-        writeReview(programming[8], member[0], member[1], member[2], member[3], member[4], member[5]);
-        writeReview(programming[9], member[0], member[1], member[2], member[3], member[4], member[5], member[6], member[7], member[8]);
-        writeReview(programming[10], member[0], member[1], member[2], member[3]);
-        writeReview(programming[11], member[0], member[1], member[2], member[3]);
+        writeReview(language[5], members[0], members[1], members[2], members[3], members[4]);
+        writeReview(language[6], members[0], members[1], members[2]);
+        writeReview(interview[0], members[0]); // Offline
+        writeReview(interview[1], members[0], members[1], members[2], members[3]); // Offline
+        writeReview(interview[2], members[0], members[1]); // Offline
+        writeReview(interview[3], members[0], members[1], members[2], members[3], members[4], members[5], members[6]); // Offline
+        writeReview(interview[4], members[0], members[1], members[2], members[3]); // Offline
+        writeReview(programming[0], members[0], members[1], members[2], members[3], members[4]);
+        writeReview(programming[1], members[0], members[1], members[2]);
+        writeReview(programming[2], members[0], members[1], members[2], members[3], members[4], members[5], members[6], members[7]); // Offline
+        writeReview(programming[3], members[0], members[1], members[2], members[3], members[4], members[5], members[6], members[7]);
+        writeReview(programming[4], members[0]);
+        writeReview(programming[5], members[0], members[1], members[2], members[3], members[4], members[5], members[6]);
+        writeReview(programming[6], members[0], members[1], members[2], members[3], members[4], members[5], members[6]); // Offline
+        writeReview(programming[7], members[0], members[1], members[2], members[3], members[4]);
+        writeReview(programming[8], members[0], members[1], members[2], members[3], members[4], members[5]);
+        writeReview(programming[9], members[0], members[1], members[2], members[3], members[4], members[5], members[6], members[7], members[8]);
+        writeReview(programming[10], members[0], members[1], members[2], members[3]);
+        writeReview(programming[11], members[0], members[1], members[2], members[3]);
         studyReviewJpaRepository.saveAll(reviews);
     }
 

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.NON_ATTENDANCE;
+import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPROVE;
 
 @Component
 @RequiredArgsConstructor
@@ -28,8 +29,8 @@ public class WeeklyCreatedEventListener {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void createWeeklyAndApplyAttendanceStatusToPaticipant(final WeeklyCreatedEvent event) {
         final List<StudyAttendance> participantsAttendance = new ArrayList<>();
-        final List<Long> studyParticipantIds = studyParticipantJpaRepository.findStudyParticipantIds(event.studyId());
-        studyParticipantIds.forEach(
+        final List<Long> approveParticipantsIds = studyParticipantJpaRepository.findParticipantIdsByStatus(event.studyId(), APPROVE);
+        approveParticipantsIds.forEach(
                 studyParticipantId -> participantsAttendance.add(
                         StudyAttendance.recordAttendance(
                                 event.studyId(),

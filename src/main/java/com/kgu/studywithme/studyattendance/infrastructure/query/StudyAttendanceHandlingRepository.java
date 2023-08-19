@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
 import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.NON_ATTENDANCE;
 import static com.kgu.studywithme.studyattendance.domain.QStudyAttendance.studyAttendance;
 
@@ -54,5 +55,19 @@ public class StudyAttendanceHandlingRepository implements StudyAttendanceHandlin
                 .where(studyAttendance.participantId.eq(memberId))
                 .orderBy(studyAttendance.studyId.asc(), studyAttendance.week.asc())
                 .fetch();
+    }
+
+    @Override
+    public int getAttendanceCount(final Long studyId, final Long participantId) {
+        return query
+                .select(studyAttendance.count())
+                .from(studyAttendance)
+                .where(
+                        studyAttendance.studyId.eq(studyId),
+                        studyAttendance.participantId.eq(participantId),
+                        studyAttendance.status.eq(ATTENDANCE)
+                )
+                .fetchOne()
+                .intValue();
     }
 }
