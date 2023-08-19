@@ -5,17 +5,17 @@ import com.kgu.studywithme.file.application.adapter.FileUploader;
 import com.kgu.studywithme.file.domain.RawFileData;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.studyattendance.infrastructure.persistence.StudyAttendanceJpaRepository;
-import com.kgu.studywithme.studyparticipant.infrastructure.persistence.StudyParticipantJpaRepository;
 import com.kgu.studywithme.studyweekly.application.adapter.StudyWeeklyHandlingRepositoryAdapter;
 import com.kgu.studywithme.studyweekly.application.usecase.command.CreateStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
+import com.kgu.studywithme.studyweekly.event.WeeklyCreatedEvent;
 import com.kgu.studywithme.studyweekly.infrastructure.persistence.StudyWeeklyJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -28,6 +28,7 @@ import static com.kgu.studywithme.common.fixture.StudyWeeklyAttachmentFixture.HW
 import static com.kgu.studywithme.common.fixture.StudyWeeklyAttachmentFixture.TXT_FILE;
 import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1;
 import static com.kgu.studywithme.common.utils.FileMockingUtils.createMultipleMockMultipartFile;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -49,14 +50,10 @@ class CreateStudyWeeklyServiceTest extends UseCaseTest {
     private StudyWeeklyJpaRepository studyWeeklyJpaRepository;
 
     @Mock
-    private StudyParticipantJpaRepository studyParticipantJpaRepository;
-
-    @Mock
-    private StudyAttendanceJpaRepository studyAttendanceJpaRepository;
+    private ApplicationEventPublisher eventPublisher;
 
     private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L, LocalDateTime.now());
-    private final StudyWeekly weekly = STUDY_WEEKLY_1.toWeekly(study.getId(), host.getId());
     private RawFileData fileData1;
     private RawFileData fileData2;
     private List<RawFileData> fileDatas;
@@ -78,11 +75,12 @@ class CreateStudyWeeklyServiceTest extends UseCaseTest {
         given(uploader.uploadWeeklyAttachment(fileData1)).willReturn(TXT_FILE.getLink());
         given(uploader.uploadWeeklyAttachment(fileData2)).willReturn(HWPX_FILE.getLink());
         given(studyWeeklyHandlingRepositoryAdapter.getNextWeek(any())).willReturn(1);
+
+        final StudyWeekly weekly = STUDY_WEEKLY_1.toWeekly(study.getId(), host.getId()).apply(1L, LocalDateTime.now());
         given(studyWeeklyJpaRepository.save(any())).willReturn(weekly);
-        given(studyParticipantJpaRepository.findStudyParticipantIds(any())).willReturn(List.of(1L, 2L, 3L));
 
         // when
-        createStudyWeeklyService.invoke(
+        final Long createdWeeklyId = createStudyWeeklyService.invoke(
                 new CreateStudyWeeklyUseCase.Command(
                         study.getId(),
                         host.getId(),
@@ -99,9 +97,8 @@ class CreateStudyWeeklyServiceTest extends UseCaseTest {
         assertAll(
                 () -> verify(uploader, times(fileDatas.size())).uploadWeeklyAttachment(any()),
                 () -> verify(studyWeeklyHandlingRepositoryAdapter, times(1)).getNextWeek(any()),
-                () -> verify(studyWeeklyJpaRepository, times(1)).save(any()),
-                () -> verify(studyParticipantJpaRepository, times(1)).findStudyParticipantIds(any()),
-                () -> verify(studyAttendanceJpaRepository, times(1)).saveAll(any())
+                () -> verify(eventPublisher, times(1)).publishEvent(any(WeeklyCreatedEvent.class)),
+                () -> assertThat(createdWeeklyId).isEqualTo(weekly.getId())
         );
     }
 }
