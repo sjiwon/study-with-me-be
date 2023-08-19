@@ -9,10 +9,10 @@ import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
 import com.kgu.studywithme.studyattendance.exception.StudyAttendanceErrorCode;
 import com.kgu.studywithme.studyattendance.infrastructure.persistence.StudyAttendanceJpaRepository;
+import com.kgu.studywithme.studyweekly.application.adapter.StudyWeeklyHandlingRepositoryAdapter;
 import com.kgu.studywithme.studyweekly.application.usecase.command.EditSubmittedWeeklyAssignmentUseCase;
 import com.kgu.studywithme.studyweekly.domain.Period;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
-import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
 import com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType;
 import com.kgu.studywithme.studyweekly.domain.submit.StudyWeeklySubmit;
 import com.kgu.studywithme.studyweekly.domain.submit.UploadAssignment;
@@ -30,7 +30,7 @@ import static com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class EditSubmittedWeeklyAssignmentService implements EditSubmittedWeeklyAssignmentUseCase {
-    private final StudyWeeklyRepository studyWeeklyRepository;
+    private final StudyWeeklyHandlingRepositoryAdapter studyWeeklyHandlingRepositoryAdapter;
     private final StudyAttendanceJpaRepository studyAttendanceJpaRepository;
     private final MemberReadAdapter memberReadAdapter;
     private final FileUploader uploader;
@@ -69,7 +69,7 @@ public class EditSubmittedWeeklyAssignmentService implements EditSubmittedWeekly
             final Long studyId,
             final Long weeklyId
     ) {
-        return studyWeeklyRepository.getSubmittedAssignment(memberId, studyId, weeklyId)
+        return studyWeeklyHandlingRepositoryAdapter.getSubmittedAssignment(memberId, studyId, weeklyId)
                 .orElseThrow(() -> StudyWithMeException.type(StudyWeeklyErrorCode.SUBMITTED_ASSIGNMENT_NOT_FOUND));
     }
 
@@ -92,8 +92,7 @@ public class EditSubmittedWeeklyAssignmentService implements EditSubmittedWeekly
         final Period period = weekly.getPeriod();
 
         if (weekly.isAutoAttendance() && !period.isDateWithInRange(now)) { // 수정 시간을 기준으로 제출 시간 업데이트
-            final StudyAttendance attendance
-                    = getParticipantAttendanceByWeek(studyId, member.getId(), weekly.getWeek());
+            final StudyAttendance attendance = getParticipantAttendanceByWeek(studyId, member.getId(), weekly.getWeek());
 
             if (attendance.isAttendanceStatus()) {
                 attendance.updateAttendanceStatus(LATE);

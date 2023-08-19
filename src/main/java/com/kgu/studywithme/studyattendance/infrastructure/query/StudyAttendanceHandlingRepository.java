@@ -2,10 +2,10 @@ package com.kgu.studywithme.studyattendance.infrastructure.query;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.studyattendance.application.adapter.StudyAttendanceHandlingRepositoryAdapter;
-import com.kgu.studywithme.studyattendance.domain.AttendanceStatus;
 import com.kgu.studywithme.studyattendance.infrastructure.query.dto.NonAttendanceWeekly;
 import com.kgu.studywithme.studyattendance.infrastructure.query.dto.QNonAttendanceWeekly;
-import com.querydsl.core.types.dsl.BooleanExpression;
+import com.kgu.studywithme.studyattendance.infrastructure.query.dto.QStudyAttendanceWeekly;
+import com.kgu.studywithme.studyattendance.infrastructure.query.dto.StudyAttendanceWeekly;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -32,7 +32,7 @@ public class StudyAttendanceHandlingRepository implements StudyAttendanceHandlin
                         )
                 )
                 .from(studyAttendance)
-                .where(statusEq(NON_ATTENDANCE))
+                .where(studyAttendance.status.eq(NON_ATTENDANCE))
                 .orderBy(
                         studyAttendance.studyId.asc(),
                         studyAttendance.week.asc(),
@@ -41,19 +41,18 @@ public class StudyAttendanceHandlingRepository implements StudyAttendanceHandlin
                 .fetch();
     }
 
-    private BooleanExpression studyIdEq(final Long studyId) {
-        return studyAttendance.studyId.eq(studyId);
-    }
-
-    private BooleanExpression participantIdEq(final Long participantId) {
-        return studyAttendance.participantId.eq(participantId);
-    }
-
-    private BooleanExpression weekEq(final int week) {
-        return studyAttendance.week.eq(week);
-    }
-
-    private BooleanExpression statusEq(final AttendanceStatus status) {
-        return studyAttendance.status.eq(status);
+    @Override
+    public List<StudyAttendanceWeekly> findParticipateWeeksInStudyByMemberId(final Long memberId) {
+        return query
+                .select(
+                        new QStudyAttendanceWeekly(
+                                studyAttendance.studyId,
+                                studyAttendance.week
+                        )
+                )
+                .from(studyAttendance)
+                .where(studyAttendance.participantId.eq(memberId))
+                .orderBy(studyAttendance.studyId.asc(), studyAttendance.week.asc())
+                .fetch();
     }
 }

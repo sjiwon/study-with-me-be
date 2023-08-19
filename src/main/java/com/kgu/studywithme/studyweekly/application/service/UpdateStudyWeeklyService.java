@@ -6,9 +6,9 @@ import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.studyweekly.application.usecase.command.UpdateStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
-import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
 import com.kgu.studywithme.studyweekly.domain.attachment.UploadAttachment;
 import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
+import com.kgu.studywithme.studyweekly.infrastructure.persistence.StudyWeeklyJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -19,7 +19,7 @@ import java.util.List;
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class UpdateStudyWeeklyService implements UpdateStudyWeeklyUseCase {
-    private final StudyWeeklyRepository studyWeeklyRepository;
+    private final StudyWeeklyJpaRepository studyWeeklyJpaRepository;
     private final FileUploader uploader;
 
     @Override
@@ -38,7 +38,7 @@ public class UpdateStudyWeeklyService implements UpdateStudyWeeklyUseCase {
     }
 
     private StudyWeekly getSpecificWeekly(final Long weeklyId) {
-        return studyWeeklyRepository.findById(weeklyId)
+        return studyWeeklyJpaRepository.findById(weeklyId)
                 .orElseThrow(() -> StudyWithMeException.type(StudyWeeklyErrorCode.WEEKLY_NOT_FOUND));
     }
 

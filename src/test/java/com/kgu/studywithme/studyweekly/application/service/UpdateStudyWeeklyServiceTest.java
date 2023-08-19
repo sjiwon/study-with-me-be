@@ -8,10 +8,10 @@ import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.studyweekly.application.usecase.command.UpdateStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
-import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
 import com.kgu.studywithme.studyweekly.domain.attachment.StudyWeeklyAttachment;
 import com.kgu.studywithme.studyweekly.domain.attachment.UploadAttachment;
 import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
+import com.kgu.studywithme.studyweekly.infrastructure.persistence.StudyWeeklyJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,7 +47,7 @@ class UpdateStudyWeeklyServiceTest extends UseCaseTest {
     private UpdateStudyWeeklyService updateStudyWeeklyService;
 
     @Mock
-    private StudyWeeklyRepository studyWeeklyRepository;
+    private StudyWeeklyJpaRepository studyWeeklyJpaRepository;
 
     @Mock
     private FileUploader uploader;
@@ -92,7 +92,7 @@ class UpdateStudyWeeklyServiceTest extends UseCaseTest {
     @DisplayName("해당 주차 정보를 찾지 못하면 수정할 수 없다")
     void throwExceptionByWeeklyNotFound() {
         // given
-        given(studyWeeklyRepository.findById(any())).willReturn(Optional.empty());
+        given(studyWeeklyJpaRepository.findById(any())).willReturn(Optional.empty());
 
         // when - then
         assertThatThrownBy(() -> updateStudyWeeklyService.invoke(command))
@@ -100,7 +100,7 @@ class UpdateStudyWeeklyServiceTest extends UseCaseTest {
                 .hasMessage(StudyWeeklyErrorCode.WEEKLY_NOT_FOUND.getMessage());
 
         assertAll(
-                () -> verify(studyWeeklyRepository, times(1)).findById(any()),
+                () -> verify(studyWeeklyJpaRepository, times(1)).findById(any()),
                 () -> verify(uploader, times(0)).uploadWeeklyAttachment(any())
         );
     }
@@ -109,7 +109,7 @@ class UpdateStudyWeeklyServiceTest extends UseCaseTest {
     @DisplayName("해당 주차 정보를 수정한다")
     void success() {
         // given
-        given(studyWeeklyRepository.findById(any())).willReturn(Optional.of(weekly));
+        given(studyWeeklyJpaRepository.findById(any())).willReturn(Optional.of(weekly));
         given(uploader.uploadWeeklyAttachment(fileData1)).willReturn(TXT_FILE.getLink());
         given(uploader.uploadWeeklyAttachment(fileData2)).willReturn(HWPX_FILE.getLink());
         given(uploader.uploadWeeklyAttachment(fileData3)).willReturn(PDF_FILE.getLink());
@@ -120,7 +120,7 @@ class UpdateStudyWeeklyServiceTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyWeeklyRepository, times(1)).findById(any()),
+                () -> verify(studyWeeklyJpaRepository, times(1)).findById(any()),
                 () -> verify(uploader, times(fileDatas.size())).uploadWeeklyAttachment(any()),
                 () -> assertThat(weekly.getTitle()).isEqualTo(STUDY_WEEKLY_2.getTitle()),
                 () -> assertThat(weekly.getContent()).isEqualTo(STUDY_WEEKLY_2.getContent()),

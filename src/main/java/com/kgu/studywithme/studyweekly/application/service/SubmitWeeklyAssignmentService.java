@@ -13,10 +13,10 @@ import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantReadA
 import com.kgu.studywithme.studyweekly.application.usecase.command.SubmitWeeklyAssignmentUseCase;
 import com.kgu.studywithme.studyweekly.domain.Period;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
-import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
 import com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType;
 import com.kgu.studywithme.studyweekly.domain.submit.UploadAssignment;
 import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
+import com.kgu.studywithme.studyweekly.infrastructure.persistence.StudyWeeklyJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +32,7 @@ import static com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class SubmitWeeklyAssignmentService implements SubmitWeeklyAssignmentUseCase {
-    private final StudyWeeklyRepository studyWeeklyRepository;
+    private final StudyWeeklyJpaRepository studyWeeklyJpaRepository;
     private final ParticipantReadAdapter participantReadAdapter;
     private final StudyAttendanceJpaRepository studyAttendanceJpaRepository;
     private final FileUploader uploader;
@@ -62,7 +62,7 @@ public class SubmitWeeklyAssignmentService implements SubmitWeeklyAssignmentUseC
     }
 
     private StudyWeekly getSpecificWeekly(final Long weeklyId) {
-        return studyWeeklyRepository.findById(weeklyId)
+        return studyWeeklyJpaRepository.findById(weeklyId)
                 .orElseThrow(() -> StudyWithMeException.type(StudyWeeklyErrorCode.WEEKLY_NOT_FOUND));
     }
 

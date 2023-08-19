@@ -1,12 +1,12 @@
 package com.kgu.studywithme.memberreview.application.service;
 
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.application.adapter.MemberAttendanceRepositoryAdapter;
-import com.kgu.studywithme.member.infrastructure.query.dto.StudyParticipateWeeks;
 import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.domain.MemberReview;
 import com.kgu.studywithme.memberreview.exception.MemberReviewErrorCode;
 import com.kgu.studywithme.memberreview.infrastructure.persistence.MemberReviewJpaRepository;
+import com.kgu.studywithme.studyattendance.application.adapter.StudyAttendanceHandlingRepositoryAdapter;
+import com.kgu.studywithme.studyattendance.infrastructure.query.dto.StudyAttendanceWeekly;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class WriteMemberReviewService implements WriteMemberReviewUseCase {
-    private final MemberAttendanceRepositoryAdapter memberAttendanceRepositoryAdapter;
+    private final StudyAttendanceHandlingRepositoryAdapter studyAttendanceHandlingRepositoryAdapter;
     private final MemberReviewJpaRepository memberReviewJpaRepository;
 
     @Override
@@ -41,10 +41,10 @@ public class WriteMemberReviewService implements WriteMemberReviewUseCase {
             final Long reviewerId,
             final Long revieweeId
     ) {
-        final List<StudyParticipateWeeks> reviewerMetadata
-                = memberAttendanceRepositoryAdapter.findParticipateWeeksInStudyByMemberId(reviewerId);
-        final List<StudyParticipateWeeks> revieweeMetadata
-                = memberAttendanceRepositoryAdapter.findParticipateWeeksInStudyByMemberId(revieweeId);
+        final List<StudyAttendanceWeekly> reviewerMetadata
+                = studyAttendanceHandlingRepositoryAdapter.findParticipateWeeksInStudyByMemberId(reviewerId);
+        final List<StudyAttendanceWeekly> revieweeMetadata
+                = studyAttendanceHandlingRepositoryAdapter.findParticipateWeeksInStudyByMemberId(revieweeId);
 
         final boolean hasCommonMetadata =
                 reviewerMetadata.stream()
@@ -59,8 +59,8 @@ public class WriteMemberReviewService implements WriteMemberReviewUseCase {
     }
 
     private boolean hasCommonMetadata(
-            final StudyParticipateWeeks reviewerData,
-            final StudyParticipateWeeks revieweeData
+            final StudyAttendanceWeekly reviewerData,
+            final StudyAttendanceWeekly revieweeData
     ) {
         return reviewerData.studyId().equals(revieweeData.studyId())
                 && reviewerData.week() == revieweeData.week();

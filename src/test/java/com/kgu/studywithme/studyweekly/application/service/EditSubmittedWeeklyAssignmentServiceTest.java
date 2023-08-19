@@ -9,9 +9,9 @@ import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
 import com.kgu.studywithme.studyattendance.infrastructure.persistence.StudyAttendanceJpaRepository;
+import com.kgu.studywithme.studyweekly.application.adapter.StudyWeeklyHandlingRepositoryAdapter;
 import com.kgu.studywithme.studyweekly.application.usecase.command.EditSubmittedWeeklyAssignmentUseCase;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
-import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
 import com.kgu.studywithme.studyweekly.domain.submit.StudyWeeklySubmit;
 import com.kgu.studywithme.studyweekly.domain.submit.UploadAssignment;
 import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
@@ -48,7 +48,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
     private EditSubmittedWeeklyAssignmentService editSubmittedWeeklyAssignmentService;
 
     @Mock
-    private StudyWeeklyRepository studyWeeklyRepository;
+    private StudyWeeklyHandlingRepositoryAdapter studyWeeklyHandlingRepositoryAdapter;
 
     @Mock
     private StudyAttendanceJpaRepository studyAttendanceJpaRepository;
@@ -98,7 +98,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
                 .hasMessage(StudyWeeklyErrorCode.MISSING_SUBMISSION.getMessage());
 
         assertAll(
-                () -> verify(studyWeeklyRepository, times(0)).getSubmittedAssignment(any(), any(), any()),
+                () -> verify(studyWeeklyHandlingRepositoryAdapter, times(0)).getSubmittedAssignment(any(), any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceJpaRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt())
         );
@@ -121,7 +121,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
                 .hasMessage(StudyWeeklyErrorCode.DUPLICATE_SUBMISSION.getMessage());
 
         assertAll(
-                () -> verify(studyWeeklyRepository, times(0)).getSubmittedAssignment(any(), any(), any()),
+                () -> verify(studyWeeklyHandlingRepositoryAdapter, times(0)).getSubmittedAssignment(any(), any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceJpaRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt())
         );
@@ -131,7 +131,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
     @DisplayName("제출한 과제가 없다면 수정할 수 없다")
     void throwExceptionBySubmittedAssignmentNotFound() {
         // given
-        given(studyWeeklyRepository.getSubmittedAssignment(any(), any(), any())).willReturn(Optional.empty());
+        given(studyWeeklyHandlingRepositoryAdapter.getSubmittedAssignment(any(), any(), any())).willReturn(Optional.empty());
 
         // when - then
         assertThatThrownBy(() -> editSubmittedWeeklyAssignmentService.invoke(
@@ -148,7 +148,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
                 .hasMessage(StudyWeeklyErrorCode.SUBMITTED_ASSIGNMENT_NOT_FOUND.getMessage());
 
         assertAll(
-                () -> verify(studyWeeklyRepository, times(1)).getSubmittedAssignment(any(), any(), any()),
+                () -> verify(studyWeeklyHandlingRepositoryAdapter, times(1)).getSubmittedAssignment(any(), any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceJpaRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt())
         );
@@ -163,7 +163,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
                 host.getId(),
                 UploadAssignment.withLink("https://notion.so")
         ).apply(1L, LocalDateTime.now());
-        given(studyWeeklyRepository.getSubmittedAssignment(any(), any(), any())).willReturn(Optional.of(submittedAssignment));
+        given(studyWeeklyHandlingRepositoryAdapter.getSubmittedAssignment(any(), any(), any())).willReturn(Optional.of(submittedAssignment));
         given(memberReadAdapter.getById(any())).willReturn(host);
 
         // when
@@ -180,7 +180,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyWeeklyRepository, times(1)).getSubmittedAssignment(any(), any(), any()),
+                () -> verify(studyWeeklyHandlingRepositoryAdapter, times(1)).getSubmittedAssignment(any(), any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceJpaRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
                 () -> assertThat(host.getScore().getValue()).isEqualTo(previousScore) // Score 유지
@@ -196,7 +196,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
                 host.getId(),
                 UploadAssignment.withLink("https://notion.so")
         ).apply(1L, LocalDateTime.now());
-        given(studyWeeklyRepository.getSubmittedAssignment(any(), any(), any())).willReturn(Optional.of(submittedAssignment));
+        given(studyWeeklyHandlingRepositoryAdapter.getSubmittedAssignment(any(), any(), any())).willReturn(Optional.of(submittedAssignment));
         given(memberReadAdapter.getById(any())).willReturn(host);
         given(studyAttendanceJpaRepository.getParticipantAttendanceByWeek(any(), any(), anyInt())).willReturn(Optional.of(attendance));
 
@@ -214,7 +214,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyWeeklyRepository, times(1)).getSubmittedAssignment(any(), any(), any()),
+                () -> verify(studyWeeklyHandlingRepositoryAdapter, times(1)).getSubmittedAssignment(any(), any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
                 () -> verify(studyAttendanceJpaRepository, times(1)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
                 () -> assertThat(host.getScore().getValue()).isEqualTo(previousScore - 2) // 출석 -> 지각

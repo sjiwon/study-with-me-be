@@ -4,9 +4,9 @@ import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.Study;
+import com.kgu.studywithme.studyweekly.application.adapter.StudyWeeklyHandlingRepositoryAdapter;
 import com.kgu.studywithme.studyweekly.application.usecase.command.DeleteStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
-import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
 import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ class DeleteStudyWeeklyServiceTest extends UseCaseTest {
     private DeleteStudyWeeklyService deleteStudyWeeklyService;
 
     @Mock
-    private StudyWeeklyRepository studyWeeklyRepository;
+    private StudyWeeklyHandlingRepositoryAdapter studyWeeklyHandlingRepositoryAdapter;
 
     private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L, LocalDateTime.now());
@@ -45,7 +45,7 @@ class DeleteStudyWeeklyServiceTest extends UseCaseTest {
     @DisplayName("가장 최신 주차가 아니면 해당 주차 정보를 삭제할 수 없다")
     void throwExceptionBySpecificWeekIsNotLatestWeek() {
         // given
-        given(studyWeeklyRepository.isLatestWeek(any(), any())).willReturn(false);
+        given(studyWeeklyHandlingRepositoryAdapter.isLatestWeek(any(), any())).willReturn(false);
 
         // when - then
         assertThatThrownBy(() -> deleteStudyWeeklyService.invoke(command))
@@ -53,8 +53,8 @@ class DeleteStudyWeeklyServiceTest extends UseCaseTest {
                 .hasMessage(StudyWeeklyErrorCode.ONLY_LATEST_WEEKLY_CAN_DELETE.getMessage());
 
         assertAll(
-                () -> verify(studyWeeklyRepository, times(1)).isLatestWeek(any(), any()),
-                () -> verify(studyWeeklyRepository, times(0)).deleteSpecificWeekly(any(), any())
+                () -> verify(studyWeeklyHandlingRepositoryAdapter, times(1)).isLatestWeek(any(), any()),
+                () -> verify(studyWeeklyHandlingRepositoryAdapter, times(0)).deleteSpecificWeekly(any(), any())
         );
     }
 
@@ -62,15 +62,15 @@ class DeleteStudyWeeklyServiceTest extends UseCaseTest {
     @DisplayName("해당 주차 정보를 삭제한다")
     void success() {
         // given
-        given(studyWeeklyRepository.isLatestWeek(any(), any())).willReturn(true);
+        given(studyWeeklyHandlingRepositoryAdapter.isLatestWeek(any(), any())).willReturn(true);
 
         // when
         deleteStudyWeeklyService.invoke(command);
 
         // then
         assertAll(
-                () -> verify(studyWeeklyRepository, times(1)).isLatestWeek(any(), any()),
-                () -> verify(studyWeeklyRepository, times(1)).deleteSpecificWeekly(any(), any())
+                () -> verify(studyWeeklyHandlingRepositoryAdapter, times(1)).isLatestWeek(any(), any()),
+                () -> verify(studyWeeklyHandlingRepositoryAdapter, times(1)).deleteSpecificWeekly(any(), any())
         );
     }
 }

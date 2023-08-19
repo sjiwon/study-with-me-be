@@ -4,7 +4,7 @@ import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository
 import com.kgu.studywithme.studyattendance.application.adapter.StudyAttendanceHandlingRepositoryAdapter;
 import com.kgu.studywithme.studyattendance.infrastructure.persistence.StudyAttendanceJpaRepository;
 import com.kgu.studywithme.studyattendance.infrastructure.query.dto.NonAttendanceWeekly;
-import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
+import com.kgu.studywithme.studyweekly.application.adapter.StudyWeeklyHandlingRepositoryAdapter;
 import com.kgu.studywithme.studyweekly.infrastructure.query.dto.AutoAttendanceAndFinishedWeekly;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,7 +21,7 @@ import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ABSENC
 @Component
 @RequiredArgsConstructor
 public class StudyAttendanceScheduler {
-    private final StudyWeeklyRepository studyWeeklyRepository;
+    private final StudyWeeklyHandlingRepositoryAdapter studyWeeklyHandlingRepositoryAdapter;
     private final StudyAttendanceHandlingRepositoryAdapter studyAttendanceHandlingRepositoryAdapter;
     private final StudyAttendanceJpaRepository studyAttendanceJpaRepository;
     private final MemberJpaRepository memberJpaRepository;
@@ -29,7 +29,7 @@ public class StudyAttendanceScheduler {
     @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
     public void processAbsenceCheckScheduler() {
         final Set<Long> absenceParticipantIds = new HashSet<>();
-        final List<AutoAttendanceAndFinishedWeekly> weeks = studyWeeklyRepository.findAutoAttendanceAndFinishedWeekly();
+        final List<AutoAttendanceAndFinishedWeekly> weeks = studyWeeklyHandlingRepositoryAdapter.findAutoAttendanceAndFinishedWeekly();
         final List<NonAttendanceWeekly> attendances = studyAttendanceHandlingRepositoryAdapter.findNonAttendanceInformation();
 
         weeks.forEach(week -> {

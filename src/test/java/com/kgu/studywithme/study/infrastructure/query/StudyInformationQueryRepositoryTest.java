@@ -22,9 +22,9 @@ import com.kgu.studywithme.studyparticipant.infrastructure.persistence.StudyPart
 import com.kgu.studywithme.studyreview.domain.StudyReview;
 import com.kgu.studywithme.studyreview.infrastructure.persistence.StudyReviewJpaRepository;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
-import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
 import com.kgu.studywithme.studyweekly.domain.attachment.UploadAttachment;
 import com.kgu.studywithme.studyweekly.domain.submit.UploadAssignment;
+import com.kgu.studywithme.studyweekly.infrastructure.persistence.StudyWeeklyJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -76,7 +76,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
     private StudyAttendanceJpaRepository studyAttendanceJpaRepository;
 
     @Autowired
-    private StudyWeeklyRepository studyWeeklyRepository;
+    private StudyWeeklyJpaRepository studyWeeklyJpaRepository;
 
     private Member host;
     private Member memberA;
@@ -436,20 +436,20 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
     @DisplayName("스터디 주차별 정보를 조회한다")
     void fetchWeeklyById() {
         /* WeeklyA, WeeklyB = 과제 O / WeeklyC = 과제 X */
-        final StudyWeekly weeklyA = studyWeeklyRepository.save(
+        final StudyWeekly weeklyA = studyWeeklyJpaRepository.save(
                 STUDY_WEEKLY_1.toWeeklyWithAssignment(study.getId(), host.getId())
         );
         weeklyA.submitAssignment(memberA.getId(), UploadAssignment.withLink("https://notion.so/weeklyA/memberA"));
         weeklyA.submitAssignment(memberB.getId(), UploadAssignment.withLink("https://notion.so/weeklyA/memberB"));
         weeklyA.submitAssignment(memberC.getId(), UploadAssignment.withLink("https://notion.so/weeklyA/memberC"));
 
-        final StudyWeekly weeklyB = studyWeeklyRepository.save(
+        final StudyWeekly weeklyB = studyWeeklyJpaRepository.save(
                 STUDY_WEEKLY_2.toWeeklyWithAssignment(study.getId(), host.getId())
         );
         weeklyB.submitAssignment(host.getId(), UploadAssignment.withLink("https://notion.so/weeklyB/host"));
         weeklyB.submitAssignment(memberC.getId(), UploadAssignment.withLink("https://notion.so/weeklyB/memberC"));
 
-        final StudyWeekly weeklyC = studyWeeklyRepository.save(
+        final StudyWeekly weeklyC = studyWeeklyJpaRepository.save(
                 STUDY_WEEKLY_5.toWeekly(study.getId(), host.getId())
         );
 

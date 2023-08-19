@@ -6,13 +6,14 @@ import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.study.infrastructure.persistence.StudyJpaRepository;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
-import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
 import com.kgu.studywithme.studyweekly.domain.submit.UploadAssignment;
+import com.kgu.studywithme.studyweekly.infrastructure.persistence.StudyWeeklyJpaRepository;
 import com.kgu.studywithme.studyweekly.infrastructure.query.dto.AutoAttendanceAndFinishedWeekly;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 
 import java.util.List;
 
@@ -26,10 +27,14 @@ import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+@Import(StudyWeeklyHandlingRepository.class)
 @DisplayName("StudyWeekly -> StudyWeeklyHandlingRepository 테스트")
 class StudyWeeklyHandlingRepositoryTest extends RepositoryTest {
     @Autowired
-    private StudyWeeklyRepository studyWeeklyRepository;
+    private StudyWeeklyHandlingRepository studyWeeklyHandlingRepository;
+
+    @Autowired
+    private StudyWeeklyJpaRepository studyWeeklyJpaRepository;
 
     @Autowired
     private MemberJpaRepository memberJpaRepository;
@@ -52,19 +57,19 @@ class StudyWeeklyHandlingRepositoryTest extends RepositoryTest {
     @DisplayName("스터디 다음 주차를 조회한다")
     void getNextWeek() {
         /* 0주차 -> 1 */
-        final int nextWeek1 = studyWeeklyRepository.getNextWeek(studyA.getId());
+        final int nextWeek1 = studyWeeklyHandlingRepository.getNextWeek(studyA.getId());
         assertThat(nextWeek1).isEqualTo(1);
 
         /* 1주차 -> 2 */
-        studyWeeklyRepository.save(STUDY_WEEKLY_1.toWeeklyWithAssignment(studyA.getId(), host.getId()));
+        studyWeeklyJpaRepository.save(STUDY_WEEKLY_1.toWeeklyWithAssignment(studyA.getId(), host.getId()));
 
-        final int nextWeek2 = studyWeeklyRepository.getNextWeek(studyA.getId());
+        final int nextWeek2 = studyWeeklyHandlingRepository.getNextWeek(studyA.getId());
         assertThat(nextWeek2).isEqualTo(2);
 
         /* 2주차 -> 3 */
-        studyWeeklyRepository.save(STUDY_WEEKLY_2.toWeeklyWithAssignment(studyA.getId(), host.getId()));
+        studyWeeklyJpaRepository.save(STUDY_WEEKLY_2.toWeeklyWithAssignment(studyA.getId(), host.getId()));
 
-        final int nextWeek3 = studyWeeklyRepository.getNextWeek(studyA.getId());
+        final int nextWeek3 = studyWeeklyHandlingRepository.getNextWeek(studyA.getId());
         assertThat(nextWeek3).isEqualTo(3);
     }
 
@@ -72,46 +77,46 @@ class StudyWeeklyHandlingRepositoryTest extends RepositoryTest {
     @DisplayName("해당 주차가 가장 최신 주차인지 확인한다")
     void isLatestWeek() {
         /* 1주차 */
-        final StudyWeekly weekly1 = studyWeeklyRepository.save(STUDY_WEEKLY_1.toWeeklyWithAssignment(studyA.getId(), host.getId()));
-        assertThat(studyWeeklyRepository.isLatestWeek(studyA.getId(), weekly1.getId())).isTrue();
+        final StudyWeekly weekly1 = studyWeeklyJpaRepository.save(STUDY_WEEKLY_1.toWeeklyWithAssignment(studyA.getId(), host.getId()));
+        assertThat(studyWeeklyHandlingRepository.isLatestWeek(studyA.getId(), weekly1.getId())).isTrue();
 
         /* 2주차 */
-        final StudyWeekly weekly2 = studyWeeklyRepository.save(STUDY_WEEKLY_2.toWeeklyWithAssignment(studyA.getId(), host.getId()));
+        final StudyWeekly weekly2 = studyWeeklyJpaRepository.save(STUDY_WEEKLY_2.toWeeklyWithAssignment(studyA.getId(), host.getId()));
         assertAll(
-                () -> assertThat(studyWeeklyRepository.isLatestWeek(studyA.getId(), weekly1.getId())).isFalse(),
-                () -> assertThat(studyWeeklyRepository.isLatestWeek(studyA.getId(), weekly2.getId())).isTrue()
+                () -> assertThat(studyWeeklyHandlingRepository.isLatestWeek(studyA.getId(), weekly1.getId())).isFalse(),
+                () -> assertThat(studyWeeklyHandlingRepository.isLatestWeek(studyA.getId(), weekly2.getId())).isTrue()
         );
     }
 
     @Test
     @DisplayName("특정 주차 정보를 삭제 한다 [제출 과제 삭제 -> 주차 첨부파일 삭제 -> 주차 출석정보 삭제 -> 주차 삭제]")
     void deleteSpecificWeekly() {
-        final StudyWeekly weekly1 = studyWeeklyRepository.save(STUDY_WEEKLY_1.toWeeklyWithAssignment(studyA.getId(), host.getId()));
-        final StudyWeekly weekly2 = studyWeeklyRepository.save(STUDY_WEEKLY_2.toWeeklyWithAssignment(studyA.getId(), host.getId()));
-        final StudyWeekly weekly3 = studyWeeklyRepository.save(STUDY_WEEKLY_3.toWeeklyWithAssignment(studyA.getId(), host.getId()));
+        final StudyWeekly weekly1 = studyWeeklyJpaRepository.save(STUDY_WEEKLY_1.toWeeklyWithAssignment(studyA.getId(), host.getId()));
+        final StudyWeekly weekly2 = studyWeeklyJpaRepository.save(STUDY_WEEKLY_2.toWeeklyWithAssignment(studyA.getId(), host.getId()));
+        final StudyWeekly weekly3 = studyWeeklyJpaRepository.save(STUDY_WEEKLY_3.toWeeklyWithAssignment(studyA.getId(), host.getId()));
 
         /* 3주차 삭제 */
-        studyWeeklyRepository.deleteSpecificWeekly(studyA.getId(), weekly3.getId());
+        studyWeeklyHandlingRepository.deleteSpecificWeekly(studyA.getId(), weekly3.getId());
         assertAll(
-                () -> assertThat(studyWeeklyRepository.existsById(weekly1.getId())).isTrue(),
-                () -> assertThat(studyWeeklyRepository.existsById(weekly2.getId())).isTrue(),
-                () -> assertThat(studyWeeklyRepository.existsById(weekly3.getId())).isFalse()
+                () -> assertThat(studyWeeklyJpaRepository.existsById(weekly1.getId())).isTrue(),
+                () -> assertThat(studyWeeklyJpaRepository.existsById(weekly2.getId())).isTrue(),
+                () -> assertThat(studyWeeklyJpaRepository.existsById(weekly3.getId())).isFalse()
         );
 
         /* 2주차 삭제 */
-        studyWeeklyRepository.deleteSpecificWeekly(studyA.getId(), weekly2.getId());
+        studyWeeklyHandlingRepository.deleteSpecificWeekly(studyA.getId(), weekly2.getId());
         assertAll(
-                () -> assertThat(studyWeeklyRepository.existsById(weekly1.getId())).isTrue(),
-                () -> assertThat(studyWeeklyRepository.existsById(weekly2.getId())).isFalse(),
-                () -> assertThat(studyWeeklyRepository.existsById(weekly3.getId())).isFalse()
+                () -> assertThat(studyWeeklyJpaRepository.existsById(weekly1.getId())).isTrue(),
+                () -> assertThat(studyWeeklyJpaRepository.existsById(weekly2.getId())).isFalse(),
+                () -> assertThat(studyWeeklyJpaRepository.existsById(weekly3.getId())).isFalse()
         );
 
         /* 1주차 삭제 */
-        studyWeeklyRepository.deleteSpecificWeekly(studyA.getId(), weekly1.getId());
+        studyWeeklyHandlingRepository.deleteSpecificWeekly(studyA.getId(), weekly1.getId());
         assertAll(
-                () -> assertThat(studyWeeklyRepository.existsById(weekly1.getId())).isFalse(),
-                () -> assertThat(studyWeeklyRepository.existsById(weekly2.getId())).isFalse(),
-                () -> assertThat(studyWeeklyRepository.existsById(weekly3.getId())).isFalse()
+                () -> assertThat(studyWeeklyJpaRepository.existsById(weekly1.getId())).isFalse(),
+                () -> assertThat(studyWeeklyJpaRepository.existsById(weekly2.getId())).isFalse(),
+                () -> assertThat(studyWeeklyJpaRepository.existsById(weekly3.getId())).isFalse()
         );
     }
 
@@ -119,30 +124,30 @@ class StudyWeeklyHandlingRepositoryTest extends RepositoryTest {
     @DisplayName("해당 주차에 제출한 과제를 조회한다")
     void getSubmittedAssignment() {
         /* 1주차 X */
-        final StudyWeekly weekly1 = studyWeeklyRepository.save(STUDY_WEEKLY_1.toWeeklyWithAssignment(studyA.getId(), host.getId()));
-        assertThat(studyWeeklyRepository.getSubmittedAssignment(host.getId(), studyA.getId(), weekly1.getId())).isEmpty();
+        final StudyWeekly weekly1 = studyWeeklyJpaRepository.save(STUDY_WEEKLY_1.toWeeklyWithAssignment(studyA.getId(), host.getId()));
+        assertThat(studyWeeklyHandlingRepository.getSubmittedAssignment(host.getId(), studyA.getId(), weekly1.getId())).isEmpty();
 
         /* 1주차 O */
         weekly1.submitAssignment(host.getId(), UploadAssignment.withLink("https://notion.so"));
-        assertThat(studyWeeklyRepository.getSubmittedAssignment(host.getId(), studyA.getId(), weekly1.getId())).isPresent();
+        assertThat(studyWeeklyHandlingRepository.getSubmittedAssignment(host.getId(), studyA.getId(), weekly1.getId())).isPresent();
 
         /* 2주차 X */
-        final StudyWeekly weekly2 = studyWeeklyRepository.save(STUDY_WEEKLY_2.toWeeklyWithAssignment(studyA.getId(), host.getId()));
-        assertThat(studyWeeklyRepository.getSubmittedAssignment(host.getId(), studyA.getId(), weekly2.getId())).isEmpty();
+        final StudyWeekly weekly2 = studyWeeklyJpaRepository.save(STUDY_WEEKLY_2.toWeeklyWithAssignment(studyA.getId(), host.getId()));
+        assertThat(studyWeeklyHandlingRepository.getSubmittedAssignment(host.getId(), studyA.getId(), weekly2.getId())).isEmpty();
 
         /* 2주차 O */
         weekly2.submitAssignment(host.getId(), UploadAssignment.withLink("https://notion.so"));
-        assertThat(studyWeeklyRepository.getSubmittedAssignment(host.getId(), studyA.getId(), weekly2.getId())).isPresent();
+        assertThat(studyWeeklyHandlingRepository.getSubmittedAssignment(host.getId(), studyA.getId(), weekly2.getId())).isPresent();
     }
 
     @Test
     @DisplayName("자동 출석이 적용된 주차 중 과제 제출 기간이 종료된 Weekly를 조회한다")
     void findAutoAttendanceAndFinishedWeekly() {
-        final List<AutoAttendanceAndFinishedWeekly> result1 = studyWeeklyRepository.findAutoAttendanceAndFinishedWeekly();
+        final List<AutoAttendanceAndFinishedWeekly> result1 = studyWeeklyHandlingRepository.findAutoAttendanceAndFinishedWeekly();
         assertThat(result1).isEmpty();
 
         /* studyA-Week1 */
-        studyWeeklyRepository.saveAll(
+        studyWeeklyJpaRepository.saveAll(
                 List.of(
                         StudyWeekly.createWeeklyWithAssignment(
                                 studyA.getId(),
@@ -167,7 +172,7 @@ class StudyWeeklyHandlingRepositoryTest extends RepositoryTest {
                 )
         );
 
-        final List<AutoAttendanceAndFinishedWeekly> result2 = studyWeeklyRepository.findAutoAttendanceAndFinishedWeekly();
+        final List<AutoAttendanceAndFinishedWeekly> result2 = studyWeeklyHandlingRepository.findAutoAttendanceAndFinishedWeekly();
         assertAll(
                 () -> assertThat(result2)
                         .map(AutoAttendanceAndFinishedWeekly::studyId)
@@ -178,7 +183,7 @@ class StudyWeeklyHandlingRepositoryTest extends RepositoryTest {
         );
 
         /* studyA-Week1 & studyB-Week2 */
-        studyWeeklyRepository.saveAll(
+        studyWeeklyJpaRepository.saveAll(
                 List.of(
                         StudyWeekly.createWeeklyWithAssignment(
                                 studyA.getId(),
@@ -203,7 +208,7 @@ class StudyWeeklyHandlingRepositoryTest extends RepositoryTest {
                 )
         );
 
-        final List<AutoAttendanceAndFinishedWeekly> result3 = studyWeeklyRepository.findAutoAttendanceAndFinishedWeekly();
+        final List<AutoAttendanceAndFinishedWeekly> result3 = studyWeeklyHandlingRepository.findAutoAttendanceAndFinishedWeekly();
         assertAll(
                 () -> assertThat(result3)
                         .map(AutoAttendanceAndFinishedWeekly::studyId)
