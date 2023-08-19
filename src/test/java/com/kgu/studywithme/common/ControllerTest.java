@@ -80,7 +80,7 @@ import com.kgu.studywithme.studyreview.application.usecase.command.WriteStudyRev
 import com.kgu.studywithme.studyreview.presentation.StudyReviewApiController;
 import com.kgu.studywithme.studyweekly.application.usecase.command.CreateStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.application.usecase.command.DeleteStudyWeeklyUseCase;
-import com.kgu.studywithme.studyweekly.application.usecase.command.EditSubmittedWeeklyAssignmentUseCase;
+import com.kgu.studywithme.studyweekly.application.usecase.command.EditWeeklyAssignmentUseCase;
 import com.kgu.studywithme.studyweekly.application.usecase.command.SubmitWeeklyAssignmentUseCase;
 import com.kgu.studywithme.studyweekly.application.usecase.command.UpdateStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.presentation.StudyWeeklyApiController;
@@ -351,7 +351,7 @@ public abstract class ControllerTest {
     protected SubmitWeeklyAssignmentUseCase submitWeeklyAssignmentUseCase;
 
     @MockBean
-    protected EditSubmittedWeeklyAssignmentUseCase editSubmittedWeeklyAssignmentUseCase;
+    protected EditWeeklyAssignmentUseCase editWeeklyAssignmentUseCase;
 
     // StudyReview
     @MockBean

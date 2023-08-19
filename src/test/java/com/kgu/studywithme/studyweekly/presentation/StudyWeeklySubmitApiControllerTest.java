@@ -396,7 +396,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
             // given
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyWeeklyErrorCode.MISSING_SUBMISSION))
-                    .when(editSubmittedWeeklyAssignmentUseCase)
+                    .when(editWeeklyAssignmentUseCase)
                     .invoke(any());
 
             // when
@@ -453,7 +453,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
             // given
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyWeeklyErrorCode.DUPLICATE_SUBMISSION))
-                    .when(editSubmittedWeeklyAssignmentUseCase)
+                    .when(editWeeklyAssignmentUseCase)
                     .invoke(any());
 
             // when
@@ -512,7 +512,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
             // given
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyWeeklyErrorCode.SUBMITTED_ASSIGNMENT_NOT_FOUND))
-                    .when(editSubmittedWeeklyAssignmentUseCase)
+                    .when(editWeeklyAssignmentUseCase)
                     .invoke(any());
 
             // when

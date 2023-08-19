@@ -4,22 +4,21 @@ import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.file.application.adapter.FileUploader;
 import com.kgu.studywithme.file.domain.RawFileData;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.application.adapter.MemberReadAdapter;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
-import com.kgu.studywithme.studyattendance.infrastructure.persistence.StudyAttendanceJpaRepository;
 import com.kgu.studywithme.studyweekly.application.adapter.StudyWeeklyHandlingRepositoryAdapter;
-import com.kgu.studywithme.studyweekly.application.usecase.command.EditSubmittedWeeklyAssignmentUseCase;
+import com.kgu.studywithme.studyweekly.application.usecase.command.EditWeeklyAssignmentUseCase;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
 import com.kgu.studywithme.studyweekly.domain.submit.StudyWeeklySubmit;
 import com.kgu.studywithme.studyweekly.domain.submit.UploadAssignment;
+import com.kgu.studywithme.studyweekly.event.AssignmentEditedEvent;
 import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -31,61 +30,48 @@ import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1;
 import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1_PREVIOUS;
 import static com.kgu.studywithme.common.utils.FileMockingUtils.createMultipleMockMultipartFile;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
 import static com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType.LINK;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@DisplayName("StudyWeekly -> EditSubmittedWeeklyAssignmentService 테스트")
-class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
+@DisplayName("StudyWeekly -> EditWeeklyAssignmentService 테스트")
+class EditWeeklyAssignmentServiceTest extends UseCaseTest {
     @InjectMocks
-    private EditSubmittedWeeklyAssignmentService editSubmittedWeeklyAssignmentService;
+    private EditWeeklyAssignmentService editWeeklyAssignmentService;
 
     @Mock
     private StudyWeeklyHandlingRepositoryAdapter studyWeeklyHandlingRepositoryAdapter;
 
     @Mock
-    private StudyAttendanceJpaRepository studyAttendanceJpaRepository;
-
-    @Mock
-    private MemberReadAdapter memberReadAdapter;
-
-    @Mock
     private FileUploader uploader;
+
+    @Mock
+    private ApplicationEventPublisher eventPublisher;
 
     private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L, LocalDateTime.now());
-    private final StudyWeekly previousWeekly =
-            STUDY_WEEKLY_1_PREVIOUS.toWeeklyWithAssignment(study.getId(), host.getId())
-                    .apply(1L, LocalDateTime.now());
-    private final StudyWeekly currentWeekly =
-            STUDY_WEEKLY_1.toWeeklyWithAssignment(study.getId(), host.getId())
-                    .apply(2L, LocalDateTime.now());
-    private final StudyAttendance attendance =
-            StudyAttendance.recordAttendance(host.getId(), host.getId(), 1, ATTENDANCE)
-                    .apply(1L, LocalDateTime.now());
+    private final StudyWeekly previousWeekly = STUDY_WEEKLY_1_PREVIOUS.toWeeklyWithAssignment(study.getId(), host.getId())
+            .apply(1L, LocalDateTime.now());
+    private final StudyWeekly currentWeekly = STUDY_WEEKLY_1.toWeeklyWithAssignment(study.getId(), host.getId())
+            .apply(2L, LocalDateTime.now());
 
     private RawFileData fileData;
-    private int previousScore;
 
     @BeforeEach
     void setUp() throws IOException {
         final MultipartFile file = createMultipleMockMultipartFile("hello1.txt", "text/plain");
         fileData = new RawFileData(file.getInputStream(), file.getContentType(), file.getOriginalFilename());
-        previousScore = host.getScore().getValue();
     }
 
     @Test
     @DisplayName("과제 제출물은 링크 또는 파일 중 하나를 반드시 업로드해야 하고 그러지 않으면 제출한 과제 수정에 실패한다")
     void throwExceptionByMissingSubmission() {
-        assertThatThrownBy(() -> editSubmittedWeeklyAssignmentService.invoke(
-                new EditSubmittedWeeklyAssignmentUseCase.Command(
+        assertThatThrownBy(() -> editWeeklyAssignmentService.invoke(
+                new EditWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),
                         currentWeekly.getId(),
@@ -100,15 +86,15 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
         assertAll(
                 () -> verify(studyWeeklyHandlingRepositoryAdapter, times(0)).getSubmittedAssignment(any(), any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
-                () -> verify(studyAttendanceJpaRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt())
+                () -> verify(eventPublisher, times(0)).publishEvent(any(AssignmentEditedEvent.class))
         );
     }
 
     @Test
     @DisplayName("과제 제출물은 링크 또는 파일 중 한가지만 업로드해야 하고 그러지 않으면 제출한 과제 수정에 실패한다")
     void throwExceptionByDuplicateSubmission() {
-        assertThatThrownBy(() -> editSubmittedWeeklyAssignmentService.invoke(
-                new EditSubmittedWeeklyAssignmentUseCase.Command(
+        assertThatThrownBy(() -> editWeeklyAssignmentService.invoke(
+                new EditWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),
                         currentWeekly.getId(),
@@ -123,7 +109,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
         assertAll(
                 () -> verify(studyWeeklyHandlingRepositoryAdapter, times(0)).getSubmittedAssignment(any(), any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
-                () -> verify(studyAttendanceJpaRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt())
+                () -> verify(eventPublisher, times(0)).publishEvent(any(AssignmentEditedEvent.class))
         );
     }
 
@@ -134,8 +120,8 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
         given(studyWeeklyHandlingRepositoryAdapter.getSubmittedAssignment(any(), any(), any())).willReturn(Optional.empty());
 
         // when - then
-        assertThatThrownBy(() -> editSubmittedWeeklyAssignmentService.invoke(
-                new EditSubmittedWeeklyAssignmentUseCase.Command(
+        assertThatThrownBy(() -> editWeeklyAssignmentService.invoke(
+                new EditWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),
                         currentWeekly.getId(),
@@ -150,7 +136,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
         assertAll(
                 () -> verify(studyWeeklyHandlingRepositoryAdapter, times(1)).getSubmittedAssignment(any(), any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
-                () -> verify(studyAttendanceJpaRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt())
+                () -> verify(eventPublisher, times(0)).publishEvent(any(AssignmentEditedEvent.class))
         );
     }
 
@@ -163,12 +149,12 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
                 host.getId(),
                 UploadAssignment.withLink("https://notion.so")
         ).apply(1L, LocalDateTime.now());
-        given(studyWeeklyHandlingRepositoryAdapter.getSubmittedAssignment(any(), any(), any())).willReturn(Optional.of(submittedAssignment));
-        given(memberReadAdapter.getById(any())).willReturn(host);
+        given(studyWeeklyHandlingRepositoryAdapter.getSubmittedAssignment(any(), any(), any()))
+                .willReturn(Optional.of(submittedAssignment));
 
         // when
-        editSubmittedWeeklyAssignmentService.invoke(
-                new EditSubmittedWeeklyAssignmentUseCase.Command(
+        editWeeklyAssignmentService.invoke(
+                new EditWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),
                         currentWeekly.getId(),
@@ -182,8 +168,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
         assertAll(
                 () -> verify(studyWeeklyHandlingRepositoryAdapter, times(1)).getSubmittedAssignment(any(), any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
-                () -> verify(studyAttendanceJpaRepository, times(0)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
-                () -> assertThat(host.getScore().getValue()).isEqualTo(previousScore) // Score 유지
+                () -> verify(eventPublisher, times(1)).publishEvent(any(AssignmentEditedEvent.class))
         );
     }
 
@@ -196,13 +181,12 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
                 host.getId(),
                 UploadAssignment.withLink("https://notion.so")
         ).apply(1L, LocalDateTime.now());
-        given(studyWeeklyHandlingRepositoryAdapter.getSubmittedAssignment(any(), any(), any())).willReturn(Optional.of(submittedAssignment));
-        given(memberReadAdapter.getById(any())).willReturn(host);
-        given(studyAttendanceJpaRepository.getParticipantAttendanceByWeek(any(), any(), anyInt())).willReturn(Optional.of(attendance));
+        given(studyWeeklyHandlingRepositoryAdapter.getSubmittedAssignment(any(), any(), any()))
+                .willReturn(Optional.of(submittedAssignment));
 
         // when
-        editSubmittedWeeklyAssignmentService.invoke(
-                new EditSubmittedWeeklyAssignmentUseCase.Command(
+        editWeeklyAssignmentService.invoke(
+                new EditWeeklyAssignmentUseCase.Command(
                         host.getId(),
                         study.getId(),
                         previousWeekly.getId(),
@@ -216,8 +200,7 @@ class EditSubmittedWeeklyAssignmentServiceTest extends UseCaseTest {
         assertAll(
                 () -> verify(studyWeeklyHandlingRepositoryAdapter, times(1)).getSubmittedAssignment(any(), any(), any()),
                 () -> verify(uploader, times(0)).uploadWeeklySubmit(any()),
-                () -> verify(studyAttendanceJpaRepository, times(1)).getParticipantAttendanceByWeek(any(), any(), anyInt()),
-                () -> assertThat(host.getScore().getValue()).isEqualTo(previousScore - 2) // 출석 -> 지각
+                () -> verify(eventPublisher, times(1)).publishEvent(any(AssignmentEditedEvent.class))
         );
     }
 }

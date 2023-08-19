@@ -3,7 +3,7 @@ package com.kgu.studywithme.studyweekly.application.usecase.command;
 import com.kgu.studywithme.file.domain.RawFileData;
 import com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType;
 
-public interface EditSubmittedWeeklyAssignmentUseCase {
+public interface EditWeeklyAssignmentUseCase {
     void invoke(final Command command);
 
     record Command(

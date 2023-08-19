@@ -3,7 +3,7 @@ package com.kgu.studywithme.studyweekly.presentation;
 import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.file.domain.RawFileData;
 import com.kgu.studywithme.global.aop.CheckStudyParticipant;
-import com.kgu.studywithme.studyweekly.application.usecase.command.EditSubmittedWeeklyAssignmentUseCase;
+import com.kgu.studywithme.studyweekly.application.usecase.command.EditWeeklyAssignmentUseCase;
 import com.kgu.studywithme.studyweekly.application.usecase.command.SubmitWeeklyAssignmentUseCase;
 import com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType;
 import com.kgu.studywithme.studyweekly.presentation.dto.request.EditSubmittedWeeklyAssignmentRequest;
@@ -30,7 +30,7 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 @RequestMapping("/api/studies/{studyId}/weeks/{weeklyId}/assignment")
 public class StudyWeeklySubmitApiController {
     private final SubmitWeeklyAssignmentUseCase submitWeeklyAssignmentUseCase;
-    private final EditSubmittedWeeklyAssignmentUseCase editSubmittedWeeklyAssignmentUseCase;
+    private final EditWeeklyAssignmentUseCase editWeeklyAssignmentUseCase;
 
     @Operation(summary = "스터디 주차별 과제 제출 EndPoint")
     @CheckStudyParticipant
@@ -63,8 +63,8 @@ public class StudyWeeklySubmitApiController {
             @PathVariable final Long weeklyId,
             @ModelAttribute @Valid final EditSubmittedWeeklyAssignmentRequest request
     ) {
-        editSubmittedWeeklyAssignmentUseCase.invoke(
-                new EditSubmittedWeeklyAssignmentUseCase.Command(
+        editWeeklyAssignmentUseCase.invoke(
+                new EditWeeklyAssignmentUseCase.Command(
                         memberId,
                         studyId,
                         weeklyId,
