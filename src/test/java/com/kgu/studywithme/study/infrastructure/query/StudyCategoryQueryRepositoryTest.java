@@ -11,7 +11,7 @@ import com.kgu.studywithme.study.infrastructure.query.dto.StudyPreview;
 import com.kgu.studywithme.study.utils.QueryStudyByCategoryCondition;
 import com.kgu.studywithme.study.utils.QueryStudyByRecommendCondition;
 import com.kgu.studywithme.studyreview.domain.StudyReview;
-import com.kgu.studywithme.studyreview.domain.StudyReviewRepository;
+import com.kgu.studywithme.studyreview.infrastructure.persistence.StudyReviewJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -85,7 +85,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
     private MemberJpaRepository memberJpaRepository;
 
     @Autowired
-    private StudyReviewRepository studyReviewRepository;
+    private StudyReviewJpaRepository studyReviewJpaRepository;
 
     @Autowired
     private FavoriteJpaRepository favoriteJpaRepository;
@@ -1132,7 +1132,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
         writeReview(programming[9], member[0], member[1], member[2], member[3], member[4], member[5], member[6], member[7], member[8]);
         writeReview(programming[10], member[0], member[1], member[2], member[3]);
         writeReview(programming[11], member[0], member[1], member[2], member[3]);
-        studyReviewRepository.saveAll(reviews);
+        studyReviewJpaRepository.saveAll(reviews);
     }
 
     private void likeMarking(final Study study, final Member... members) {

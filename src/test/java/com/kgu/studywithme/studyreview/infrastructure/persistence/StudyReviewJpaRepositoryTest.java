@@ -1,10 +1,11 @@
-package com.kgu.studywithme.studyreview.domain;
+package com.kgu.studywithme.studyreview.infrastructure.persistence;
 
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.study.infrastructure.persistence.StudyJpaRepository;
+import com.kgu.studywithme.studyreview.domain.StudyReview;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,9 +18,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("StudyReview -> StudyReviewRepository 테스트")
-class StudyReviewRepositoryTest extends RepositoryTest {
+class StudyReviewJpaRepositoryTest extends RepositoryTest {
     @Autowired
-    private StudyReviewRepository studyReviewRepository;
+    private StudyReviewJpaRepository studyReviewJpaRepository;
 
     @Autowired
     private MemberJpaRepository memberJpaRepository;
@@ -42,23 +43,23 @@ class StudyReviewRepositoryTest extends RepositoryTest {
     @DisplayName("사용자가 해당 스터디에 대해서 작성한 리뷰가 존재하는지 확인한다")
     void existsByStudyIdAndWriterId() {
         /* studyA 리뷰 */
-        studyReviewRepository.save(
+        studyReviewJpaRepository.save(
                 StudyReview.writeReview(studyA.getId(), member.getId(), "studyA 리뷰")
         );
 
         assertAll(
-                () -> assertThat(studyReviewRepository.existsByStudyIdAndWriterId(studyA.getId(), member.getId())).isTrue(),
-                () -> assertThat(studyReviewRepository.existsByStudyIdAndWriterId(studyB.getId(), member.getId())).isFalse()
+                () -> assertThat(studyReviewJpaRepository.existsByStudyIdAndWriterId(studyA.getId(), member.getId())).isTrue(),
+                () -> assertThat(studyReviewJpaRepository.existsByStudyIdAndWriterId(studyB.getId(), member.getId())).isFalse()
         );
 
         /* studyA + studyB 리뷰 */
-        studyReviewRepository.save(
+        studyReviewJpaRepository.save(
                 StudyReview.writeReview(studyB.getId(), member.getId(), "studyB 리뷰")
         );
 
         assertAll(
-                () -> assertThat(studyReviewRepository.existsByStudyIdAndWriterId(studyA.getId(), member.getId())).isTrue(),
-                () -> assertThat(studyReviewRepository.existsByStudyIdAndWriterId(studyB.getId(), member.getId())).isTrue()
+                () -> assertThat(studyReviewJpaRepository.existsByStudyIdAndWriterId(studyA.getId(), member.getId())).isTrue(),
+                () -> assertThat(studyReviewJpaRepository.existsByStudyIdAndWriterId(studyB.getId(), member.getId())).isTrue()
         );
     }
 }

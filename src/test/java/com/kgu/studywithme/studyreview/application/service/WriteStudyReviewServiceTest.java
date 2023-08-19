@@ -7,8 +7,8 @@ import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantVerificationRepositoryAdapter;
 import com.kgu.studywithme.studyreview.application.usecase.command.WriteStudyReviewUseCase;
 import com.kgu.studywithme.studyreview.domain.StudyReview;
-import com.kgu.studywithme.studyreview.domain.StudyReviewRepository;
 import com.kgu.studywithme.studyreview.exception.StudyReviewErrorCode;
+import com.kgu.studywithme.studyreview.infrastructure.persistence.StudyReviewJpaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -35,7 +35,7 @@ class WriteStudyReviewServiceTest extends UseCaseTest {
     private ParticipantVerificationRepositoryAdapter participantVerificationRepositoryAdapter;
 
     @Mock
-    private StudyReviewRepository studyReviewRepository;
+    private StudyReviewJpaRepository studyReviewJpaRepository;
 
     private final Member member = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Study study = SPRING.toOnlineStudy(member.getId()).apply(1L, LocalDateTime.now());
@@ -59,8 +59,8 @@ class WriteStudyReviewServiceTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(participantVerificationRepositoryAdapter, times(1)).isGraduatedParticipant(any(), any()),
-                () -> verify(studyReviewRepository, times(0)).existsByStudyIdAndWriterId(any(), any()),
-                () -> verify(studyReviewRepository, times(0)).save(any())
+                () -> verify(studyReviewJpaRepository, times(0)).existsByStudyIdAndWriterId(any(), any()),
+                () -> verify(studyReviewJpaRepository, times(0)).save(any())
         );
     }
 
@@ -69,7 +69,7 @@ class WriteStudyReviewServiceTest extends UseCaseTest {
     void throwExceptionByMemberIsAlreadyWrittenReview() {
         // given
         given(participantVerificationRepositoryAdapter.isGraduatedParticipant(any(), any())).willReturn(true);
-        given(studyReviewRepository.existsByStudyIdAndWriterId(any(), any())).willReturn(true);
+        given(studyReviewJpaRepository.existsByStudyIdAndWriterId(any(), any())).willReturn(true);
 
         // when - then
         assertThatThrownBy(() -> writeStudyReviewService.invoke(command))
@@ -78,8 +78,8 @@ class WriteStudyReviewServiceTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(participantVerificationRepositoryAdapter, times(1)).isGraduatedParticipant(any(), any()),
-                () -> verify(studyReviewRepository, times(1)).existsByStudyIdAndWriterId(any(), any()),
-                () -> verify(studyReviewRepository, times(0)).save(any())
+                () -> verify(studyReviewJpaRepository, times(1)).existsByStudyIdAndWriterId(any(), any()),
+                () -> verify(studyReviewJpaRepository, times(0)).save(any())
         );
     }
 
@@ -88,14 +88,14 @@ class WriteStudyReviewServiceTest extends UseCaseTest {
     void success() {
         // given
         given(participantVerificationRepositoryAdapter.isGraduatedParticipant(any(), any())).willReturn(true);
-        given(studyReviewRepository.existsByStudyIdAndWriterId(any(), any())).willReturn(false);
+        given(studyReviewJpaRepository.existsByStudyIdAndWriterId(any(), any())).willReturn(false);
 
         final StudyReview review = StudyReview.writeReview(
                 study.getId(),
                 member.getId(),
                 "졸업자 리뷰"
         ).apply(1L, LocalDateTime.now());
-        given(studyReviewRepository.save(any())).willReturn(review);
+        given(studyReviewJpaRepository.save(any())).willReturn(review);
 
         // when
         final Long studyReviewId = writeStudyReviewService.invoke(command);
@@ -103,8 +103,8 @@ class WriteStudyReviewServiceTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(participantVerificationRepositoryAdapter, times(1)).isGraduatedParticipant(any(), any()),
-                () -> verify(studyReviewRepository, times(1)).existsByStudyIdAndWriterId(any(), any()),
-                () -> verify(studyReviewRepository, times(1)).save(any()),
+                () -> verify(studyReviewJpaRepository, times(1)).existsByStudyIdAndWriterId(any(), any()),
+                () -> verify(studyReviewJpaRepository, times(1)).save(any()),
                 () -> assertThat(studyReviewId).isEqualTo(review.getId())
         );
     }

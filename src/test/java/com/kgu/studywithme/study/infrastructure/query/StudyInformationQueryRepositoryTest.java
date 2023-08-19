@@ -20,7 +20,7 @@ import com.kgu.studywithme.studynotice.infrastructure.persistence.StudyNoticeJpa
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipant;
 import com.kgu.studywithme.studyparticipant.infrastructure.persistence.StudyParticipantJpaRepository;
 import com.kgu.studywithme.studyreview.domain.StudyReview;
-import com.kgu.studywithme.studyreview.domain.StudyReviewRepository;
+import com.kgu.studywithme.studyreview.infrastructure.persistence.StudyReviewJpaRepository;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
 import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
 import com.kgu.studywithme.studyweekly.domain.attachment.UploadAttachment;
@@ -64,7 +64,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
     private MemberJpaRepository memberJpaRepository;
 
     @Autowired
-    private StudyReviewRepository studyReviewRepository;
+    private StudyReviewJpaRepository studyReviewJpaRepository;
 
     @Autowired
     private StudyParticipantJpaRepository studyParticipantJpaRepository;
@@ -146,7 +146,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
         );
 
         /* 리뷰 2건 */
-        studyReviewRepository.saveAll(
+        studyReviewJpaRepository.saveAll(
                 List.of(
                         StudyReview.writeReview(study.getId(), memberA.getId(), "Good Study"),
                         StudyReview.writeReview(study.getId(), memberB.getId(), "Good Study")
@@ -164,7 +164,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
         );
 
         /* 리뷰 추가 1건 */
-        studyReviewRepository.save(
+        studyReviewJpaRepository.save(
                 StudyReview.writeReview(study.getId(), memberC.getId(), "Good Study")
         );
 

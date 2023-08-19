@@ -1,21 +1,19 @@
 package com.kgu.studywithme.studyreview.application.service;
 
-import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantVerificationRepositoryAdapter;
 import com.kgu.studywithme.studyreview.application.usecase.command.WriteStudyReviewUseCase;
 import com.kgu.studywithme.studyreview.domain.StudyReview;
-import com.kgu.studywithme.studyreview.domain.StudyReviewRepository;
 import com.kgu.studywithme.studyreview.exception.StudyReviewErrorCode;
+import com.kgu.studywithme.studyreview.infrastructure.persistence.StudyReviewJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class WriteStudyReviewService implements WriteStudyReviewUseCase {
     private final ParticipantVerificationRepositoryAdapter participantVerificationRepositoryAdapter;
-    private final StudyReviewRepository studyReviewRepository;
+    private final StudyReviewJpaRepository studyReviewJpaRepository;
 
     @Override
     public Long invoke(final Command command) {
@@ -27,7 +25,7 @@ public class WriteStudyReviewService implements WriteStudyReviewUseCase {
                 command.memberId(),
                 command.content()
         );
-        return studyReviewRepository.save(review).getId();
+        return studyReviewJpaRepository.save(review).getId();
     }
 
     private void validateMemberIsGraduatedStudy(
@@ -43,7 +41,7 @@ public class WriteStudyReviewService implements WriteStudyReviewUseCase {
             final Long studyId,
             final Long memberId
     ) {
-        if (studyReviewRepository.existsByStudyIdAndWriterId(studyId, memberId)) {
+        if (studyReviewJpaRepository.existsByStudyIdAndWriterId(studyId, memberId)) {
             throw StudyWithMeException.type(StudyReviewErrorCode.ALREADY_WRITTEN);
         }
     }
