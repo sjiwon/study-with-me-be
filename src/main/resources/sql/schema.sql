@@ -18,9 +18,11 @@ CREATE TABLE IF NOT EXISTS member
 
 CREATE TABLE IF NOT EXISTS member_token
 (
-    id            BIGINT AUTO_INCREMENT PRIMARY KEY,
-    member_id     BIGINT       NOT NULL,
-    refresh_token VARCHAR(150) NOT NULL UNIQUE
+    id               BIGINT AUTO_INCREMENT PRIMARY KEY,
+    member_id        BIGINT       NOT NULL,
+    refresh_token    VARCHAR(150) NOT NULL UNIQUE,
+    created_at       DATETIME     NOT NULL,
+    last_modified_at DATETIME     NOT NULL
 ) ENGINE = INNODB
   DEFAULT CHARSET = utf8mb4;
 
