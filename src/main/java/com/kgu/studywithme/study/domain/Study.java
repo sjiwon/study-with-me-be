@@ -49,7 +49,7 @@ public class Study extends BaseEntity<Study> {
     private int participants;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "image", nullable = false)
+    @Column(name = "thumbnail", nullable = false)
     private StudyThumbnail thumbnail;
 
     @Enumerated(EnumType.STRING)
