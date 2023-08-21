@@ -1141,7 +1141,7 @@ class StudyCategoryQueryRepositoryTest extends RepositoryTest {
         }
 
         for (Member member : members) {
-            favorites.add(Favorite.favoriteMarking(study.getId(), member.getId()));
+            favorites.add(Favorite.favoriteMarking(member.getId(), study.getId()));
         }
     }
 

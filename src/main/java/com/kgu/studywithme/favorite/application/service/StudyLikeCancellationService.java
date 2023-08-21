@@ -16,10 +16,10 @@ public class StudyLikeCancellationService implements StudyLikeCancellationUseCas
 
     @Override
     public void invoke(final Command command) {
-        if (favoriteJudgeRepositoryAdapter.neverLikeMarked(command.studyId(), command.memberId())) {
+        if (favoriteJudgeRepositoryAdapter.neverLikeMarked(command.memberId(), command.studyId())) {
             throw StudyWithMeException.type(FavoriteErrorCode.NEVER_LIKE_MARKED);
         }
 
-        favoriteJpaRepository.cancelLikeMarking(command.studyId(), command.memberId());
+        favoriteJpaRepository.cancelLikeMarking(command.memberId(), command.studyId());
     }
 }

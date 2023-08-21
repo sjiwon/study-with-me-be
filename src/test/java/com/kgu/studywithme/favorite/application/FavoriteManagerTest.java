@@ -40,13 +40,14 @@ class FavoriteManagerTest extends UseCaseTest {
     @Mock
     private FavoriteJpaRepository favoriteJpaRepository;
 
-    private static final Long STUDY_ID = 1L;
+
     private static final Long MEMBER_ID = 1L;
+    private static final Long STUDY_ID = 1L;
 
     @Nested
     @DisplayName("찜 등록")
     class LikeMarking {
-        private final StudyLikeMarkingUseCase.Command command = new StudyLikeMarkingUseCase.Command(STUDY_ID, MEMBER_ID);
+        private final StudyLikeMarkingUseCase.Command command = new StudyLikeMarkingUseCase.Command(MEMBER_ID, STUDY_ID);
 
         @Test
         @DisplayName("이미 찜 등록된 스터디를 찜할 수 없다")
@@ -71,7 +72,7 @@ class FavoriteManagerTest extends UseCaseTest {
             // given
             given(favoriteJudgeRepositoryAdapter.alreadyLikeMarked(any(), any())).willReturn(false);
 
-            final Favorite favorite = Favorite.favoriteMarking(STUDY_ID, MEMBER_ID).apply(1L, LocalDateTime.now());
+            final Favorite favorite = Favorite.favoriteMarking(MEMBER_ID, STUDY_ID).apply(1L, LocalDateTime.now());
             given(favoriteJpaRepository.save(any())).willReturn(favorite);
 
             // when
@@ -89,7 +90,7 @@ class FavoriteManagerTest extends UseCaseTest {
     @Nested
     @DisplayName("찜 취소")
     class LikeCancellation {
-        private final StudyLikeCancellationUseCase.Command command = new StudyLikeCancellationUseCase.Command(STUDY_ID, MEMBER_ID);
+        private final StudyLikeCancellationUseCase.Command command = new StudyLikeCancellationUseCase.Command(MEMBER_ID, STUDY_ID);
 
         @Test
         @DisplayName("찜 등록이 되지 않은 스터디를 취소할 수 없다")
@@ -112,7 +113,7 @@ class FavoriteManagerTest extends UseCaseTest {
         @DisplayName("해당 스터디에 대해서 등록한 찜을 취소한다")
         void success() {
             // given
-            given(favoriteJudgeRepositoryAdapter.neverLikeMarked(STUDY_ID, MEMBER_ID)).willReturn(false);
+            given(favoriteJudgeRepositoryAdapter.neverLikeMarked(any(), any())).willReturn(false);
 
             // when
             studyLikeCancellationService.invoke(command);

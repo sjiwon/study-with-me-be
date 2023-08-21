@@ -49,11 +49,11 @@ public class FavoriteJudgeRepositoryTest extends RepositoryTest {
     @DisplayName("해당 스터디를 이미 찜했는지 확인한다")
     void alreadyLikeMarked() {
         // given
-        favoriteJpaRepository.save(Favorite.favoriteMarking(studyA.getId(), member.getId()));
+        favoriteJpaRepository.save(Favorite.favoriteMarking(member.getId(), studyA.getId()));
 
         // when
-        final boolean actual1 = favoriteJudgeRepository.alreadyLikeMarked(studyA.getId(), member.getId());
-        final boolean actual2 = favoriteJudgeRepository.alreadyLikeMarked(studyB.getId(), member.getId());
+        final boolean actual1 = favoriteJudgeRepository.alreadyLikeMarked(member.getId(), studyA.getId());
+        final boolean actual2 = favoriteJudgeRepository.alreadyLikeMarked(member.getId(), studyB.getId());
 
         // then
         assertAll(
@@ -66,11 +66,11 @@ public class FavoriteJudgeRepositoryTest extends RepositoryTest {
     @DisplayName("해당 스터디를 찜한 적 없는지 확인한다")
     void neverLikeMarked() {
         // given
-        favoriteJpaRepository.save(Favorite.favoriteMarking(studyA.getId(), member.getId()));
+        favoriteJpaRepository.save(Favorite.favoriteMarking(member.getId(), studyA.getId()));
 
         // when
-        final boolean actual1 = favoriteJudgeRepository.neverLikeMarked(studyA.getId(), member.getId());
-        final boolean actual2 = favoriteJudgeRepository.neverLikeMarked(studyB.getId(), member.getId());
+        final boolean actual1 = favoriteJudgeRepository.neverLikeMarked(member.getId(), studyA.getId());
+        final boolean actual2 = favoriteJudgeRepository.neverLikeMarked(member.getId(), studyB.getId());
 
         // then
         assertAll(

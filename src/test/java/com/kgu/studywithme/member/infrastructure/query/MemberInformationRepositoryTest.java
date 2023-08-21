@@ -401,9 +401,9 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             /* studyA, studyB, studyC 찜 */
             favoriteJpaRepository.saveAll(
                     List.of(
-                            Favorite.favoriteMarking(studyA.getId(), member.getId()),
-                            Favorite.favoriteMarking(studyB.getId(), member.getId()),
-                            Favorite.favoriteMarking(studyC.getId(), member.getId())
+                            Favorite.favoriteMarking(member.getId(), studyA.getId()),
+                            Favorite.favoriteMarking(member.getId(), studyB.getId()),
+                            Favorite.favoriteMarking(member.getId(), studyC.getId())
                     )
             );
 
@@ -415,8 +415,8 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             /* studyD, studyE 추가 찜 */
             favoriteJpaRepository.saveAll(
                     List.of(
-                            Favorite.favoriteMarking(studyD.getId(), member.getId()),
-                            Favorite.favoriteMarking(studyE.getId(), member.getId())
+                            Favorite.favoriteMarking(member.getId(), studyD.getId()),
+                            Favorite.favoriteMarking(member.getId(), studyE.getId())
                     )
             );
 
