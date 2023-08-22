@@ -34,7 +34,7 @@ public record DummyMember(
         } else if (i % 3 == 0) {
             postfix = "@naver.com";
         } else {
-            postfix = "@google.com";
+            postfix = "@gmail.com";
         }
 
         return "user" + i + postfix;
