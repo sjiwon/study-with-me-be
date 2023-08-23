@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -17,7 +18,12 @@ import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPR
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "study_participant")
+@Table(
+        name = "study_participant",
+        indexes = {
+                @Index(name = "idx_participant_member_id_status", columnList = "member_id, status")
+        }
+)
 public class StudyParticipant extends BaseEntity<StudyParticipant> {
     @Column(name = "study_id", nullable = false)
     private Long studyId;
