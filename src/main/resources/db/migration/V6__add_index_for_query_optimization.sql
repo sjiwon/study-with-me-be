@@ -17,3 +17,7 @@ ALTER TABLE study_review
 -- 사용자가 받은 리뷰 조회 쿼리 최적화
 ALTER TABLE member_review
     ADD INDEX idx_member_review_reviewee_id (reviewee_id);
+
+-- 사용자 출석률 조회 쿼리 최적화
+ALTER TABLE study_attendance
+    ADD INDEX idx_attendance_participant_id_status (participant_id, status);
