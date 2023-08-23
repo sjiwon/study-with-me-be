@@ -5,6 +5,7 @@ import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.memberreview.exception.MemberReviewErrorCode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -13,7 +14,12 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "member_review")
+@Table(
+        name = "member_review",
+        indexes = {
+                @Index(name = "idx_member_review_reviewee_id", columnList = "reviewee_id")
+        }
+)
 public class MemberReview extends BaseEntity<MemberReview> {
     @Column(name = "reviewer_id", nullable = false)
     private Long reviewerId;

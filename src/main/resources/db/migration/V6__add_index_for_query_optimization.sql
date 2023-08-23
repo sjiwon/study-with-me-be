@@ -13,3 +13,7 @@ ALTER TABLE study_participant
 -- 사용자가 졸업한 스터디 -> 작성한 리뷰 조회 쿼리 최적화
 ALTER TABLE study_review
     ADD INDEX idx_study_review_writer_id (writer_id);
+
+-- 사용자가 받은 리뷰 조회 쿼리 최적화
+ALTER TABLE member_review
+    ADD INDEX idx_member_review_reviewee_id (reviewee_id);
