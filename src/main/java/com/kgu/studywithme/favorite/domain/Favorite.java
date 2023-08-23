@@ -3,6 +3,7 @@ package com.kgu.studywithme.favorite.domain;
 import com.kgu.studywithme.global.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -11,7 +12,12 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "favorite")
+@Table(
+        name = "favorite",
+        indexes = {
+                @Index(name = "idx_favorite_member_id_study_id", columnList = "member_id, study_id")
+        }
+)
 public class Favorite extends BaseEntity<Favorite> {
     @Column(name = "member_id", nullable = false)
     private Long memberId;
