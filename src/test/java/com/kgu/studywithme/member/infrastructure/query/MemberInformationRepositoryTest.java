@@ -23,6 +23,8 @@ import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
 import com.kgu.studywithme.studyattendance.infrastructure.persistence.StudyAttendanceJpaRepository;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipant;
 import com.kgu.studywithme.studyparticipant.infrastructure.persistence.StudyParticipantJpaRepository;
+import com.kgu.studywithme.studyreview.domain.StudyReview;
+import com.kgu.studywithme.studyreview.infrastructure.persistence.StudyReviewJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -76,6 +78,9 @@ class MemberInformationRepositoryTest extends RepositoryTest {
 
     @Autowired
     private FavoriteJpaRepository favoriteJpaRepository;
+
+    @Autowired
+    private StudyReviewJpaRepository studyReviewJpaRepository;
 
     @Nested
     @DisplayName("Only 사용자 관련 조회")
@@ -326,9 +331,23 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             studyParticipantJpaRepository.updateParticipantStatus(studyC.getId(), member.getId(), GRADUATED);
 
             final List<GraduatedStudy> result2 = memberInformationRepository.fetchGraduatedStudyById(member.getId());
-            assertThat(result2)
-                    .map(GraduatedStudy::id)
-                    .containsExactly(studyC.getId(), studyA.getId());
+            assertAll(
+                    () -> assertThat(result2.get(0).getId()).isEqualTo(studyC.getId()),
+                    () -> assertThat(result2.get(0).getReview()).isNull(),
+                    () -> assertThat(result2.get(1).getId()).isEqualTo(studyA.getId()),
+                    () -> assertThat(result2.get(1).getReview()).isNull()
+            );
+
+            /* member -> studyA 리뷰 작성 */
+            studyReviewJpaRepository.save(StudyReview.writeReview(studyA.getId(), member.getId(), "Good!"));
+
+            final List<GraduatedStudy> result3 = memberInformationRepository.fetchGraduatedStudyById(member.getId());
+            assertAll(
+                    () -> assertThat(result3.get(0).getId()).isEqualTo(studyC.getId()),
+                    () -> assertThat(result3.get(0).getReview()).isNull(),
+                    () -> assertThat(result3.get(1).getId()).isEqualTo(studyA.getId()),
+                    () -> assertThat(result3.get(1).getReview()).isNotNull()
+            );
         }
 
         @Test

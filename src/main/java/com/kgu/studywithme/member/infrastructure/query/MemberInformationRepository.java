@@ -20,6 +20,7 @@ import com.kgu.studywithme.member.infrastructure.query.dto.QParticipateStudy;
 import com.kgu.studywithme.member.infrastructure.query.dto.QReceivedReview;
 import com.kgu.studywithme.member.infrastructure.query.dto.ReceivedReview;
 import com.kgu.studywithme.studyattendance.domain.AttendanceStatus;
+import com.kgu.studywithme.studyreview.domain.StudyReview;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -104,28 +105,47 @@ public class MemberInformationRepository implements MemberInformationRepositoryA
 
     @Override
     public List<GraduatedStudy> fetchGraduatedStudyById(final Long memberId) {
-        return query
+        final List<GraduatedStudy> result = query
                 .select(
                         new QGraduatedStudy(
                                 study.id,
                                 study.name,
                                 study.category,
-                                study.thumbnail,
-                                studyReview.id,
-                                studyReview.content,
-                                studyReview.createdAt,
-                                studyReview.lastModifiedAt
+                                study.thumbnail
                         )
                 )
                 .from(study)
                 .innerJoin(studyParticipant).on(studyParticipant.studyId.eq(study.id))
-                .leftJoin(studyReview).on(studyReview.studyId.eq(study.id))
                 .where(
                         studyParticipant.memberId.eq(memberId),
                         studyParticipant.status.eq(GRADUATED)
                 )
                 .orderBy(studyParticipant.id.desc())
                 .fetch();
+
+        if (!result.isEmpty()) {
+            final List<StudyReview> writtenReviews = query
+                    .selectFrom(studyReview)
+                    .where(studyReview.writerId.eq(memberId))
+                    .fetch();
+
+            result.forEach(
+                    graduatedStudy -> graduatedStudy.applyWrittenReview(
+                            writtenReviews.stream()
+                                    .filter(writtenReview -> writtenReview.getStudyId().equals(graduatedStudy.getId()))
+                                    .map(writtenReview -> new GraduatedStudy.WrittenReview(
+                                            writtenReview.getId(),
+                                            writtenReview.getContent(),
+                                            writtenReview.getCreatedAt(),
+                                            writtenReview.getLastModifiedAt()
+                                    ))
+                                    .findFirst()
+                                    .orElse(null)
+                    )
+            );
+        }
+
+        return result;
     }
 
     @Override
