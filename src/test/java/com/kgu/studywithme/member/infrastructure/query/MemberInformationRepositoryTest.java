@@ -403,7 +403,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             );
         }
 
-        private int findCountByAttendanceStatus(
+        private long findCountByAttendanceStatus(
                 final List<AttendanceRatio> attendanceRatios,
                 final AttendanceStatus status
         ) {
@@ -411,7 +411,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
                     .filter(ratio -> ratio.status() == status)
                     .findFirst()
                     .map(AttendanceRatio::count)
-                    .orElse(0);
+                    .orElse(0L);
         }
 
         @Test

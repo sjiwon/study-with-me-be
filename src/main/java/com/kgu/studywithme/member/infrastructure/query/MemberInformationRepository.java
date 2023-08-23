@@ -169,7 +169,7 @@ public class MemberInformationRepository implements MemberInformationRepositoryA
                 .select(
                         new QAttendanceRatio(
                                 studyAttendance.status,
-                                studyAttendance.count().intValue()
+                                studyAttendance.count()
                         )
                 )
                 .from(studyAttendance)
