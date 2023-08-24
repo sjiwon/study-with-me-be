@@ -14,7 +14,7 @@ import com.kgu.studywithme.studyweekly.event.AssignmentSubmittedEvent;
 import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
 import com.kgu.studywithme.studyweekly.infrastructure.persistence.StudyWeeklyJpaRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.event.EventListener;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +27,7 @@ import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ABSENC
 import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
 import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.LATE;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class WeeklyAssignmentAssociatedEventListener {
@@ -34,10 +35,11 @@ public class WeeklyAssignmentAssociatedEventListener {
     private final ParticipantReadAdapter participantReadAdapter;
     private final StudyAttendanceJpaRepository studyAttendanceJpaRepository;
 
-    @EventListener
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void submitAssignmentAndApplyAttendanceStatusAndMemberScore(final AssignmentSubmittedEvent event) {
+        log.info("과제 제출에 따른 출석 & 사용자 포인트 업데이트 이벤트 -> {}", event);
+        
         final StudyWeekly weekly = getSpecificWeekly(event.weeklyId());
         final Member participant = participantReadAdapter.getParticipant(event.studyId(), event.participantId());
 
@@ -67,10 +69,11 @@ public class WeeklyAssignmentAssociatedEventListener {
         }
     }
 
-    @EventListener
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void editAssignmentAndApplyAttendanceStatusAndMemberScore(final AssignmentEditedEvent event) {
+        log.info("제출한 과제 수정에 따른 출석 & 사용자 포인트 업데이트 이벤트 -> {}", event);
+        
         final StudyWeekly weekly = getSpecificWeekly(event.weeklyId());
         final Member participant = participantReadAdapter.getParticipant(event.studyId(), event.participantId());
 
