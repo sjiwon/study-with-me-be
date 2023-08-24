@@ -82,18 +82,6 @@ class ParticipantVerificationRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    @DisplayName("스터디 신청자 or 참여자인지 확인한다 (참여 상태 IN APPLY, APPROVE)")
-    void isApplierOrParticipant() {
-        assertAll(
-                () -> assertThat(participantVerificationRepository.isApplierOrParticipant(study.getId(), host.getId())).isTrue(),
-                () -> assertThat(participantVerificationRepository.isApplierOrParticipant(study.getId(), applier.getId())).isTrue(),
-                () -> assertThat(participantVerificationRepository.isApplierOrParticipant(study.getId(), participant.getId())).isTrue(),
-                () -> assertThat(participantVerificationRepository.isApplierOrParticipant(study.getId(), leaveMember.getId())).isFalse(),
-                () -> assertThat(participantVerificationRepository.isApplierOrParticipant(study.getId(), graduatedMember.getId())).isFalse()
-        );
-    }
-
-    @Test
     @DisplayName("스터디 졸업자인지 확인한다 (참여 상태 = GRADUATED)")
     void isGraduatedParticipant() {
         assertAll(
@@ -102,6 +90,18 @@ class ParticipantVerificationRepositoryTest extends RepositoryTest {
                 () -> assertThat(participantVerificationRepository.isGraduatedParticipant(study.getId(), participant.getId())).isFalse(),
                 () -> assertThat(participantVerificationRepository.isGraduatedParticipant(study.getId(), leaveMember.getId())).isFalse(),
                 () -> assertThat(participantVerificationRepository.isGraduatedParticipant(study.getId(), graduatedMember.getId())).isTrue()
+        );
+    }
+
+    @Test
+    @DisplayName("스터디 신청자 or 참여자인지 확인한다 (참여 상태 IN APPLY, APPROVE)")
+    void isApplierOrParticipant() {
+        assertAll(
+                () -> assertThat(participantVerificationRepository.isApplierOrParticipant(study.getId(), host.getId())).isTrue(),
+                () -> assertThat(participantVerificationRepository.isApplierOrParticipant(study.getId(), applier.getId())).isTrue(),
+                () -> assertThat(participantVerificationRepository.isApplierOrParticipant(study.getId(), participant.getId())).isTrue(),
+                () -> assertThat(participantVerificationRepository.isApplierOrParticipant(study.getId(), leaveMember.getId())).isFalse(),
+                () -> assertThat(participantVerificationRepository.isApplierOrParticipant(study.getId(), graduatedMember.getId())).isFalse()
         );
     }
 

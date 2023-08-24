@@ -8,8 +8,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.Set;
-
 import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPLY;
 import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPROVE;
 import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.GRADUATED;
@@ -25,53 +23,61 @@ public class ParticipantVerificationRepository implements ParticipantVerificatio
     @Override
     public boolean isParticipant(final Long studyId, final Long memberId) {
         return query
-                .select(studyParticipant.id)
+                .select(studyParticipant.status)
                 .from(studyParticipant)
                 .where(
                         studyIdEq(studyId),
-                        memberIdEq(memberId),
-                        participantStatusEq(APPROVE)
+                        memberIdEq(memberId)
                 )
-                .fetchOne() != null;
-    }
-
-    @Override
-    public boolean isApplierOrParticipant(final Long studyId, final Long memberId) {
-        return query
-                .select(studyParticipant.id)
-                .from(studyParticipant)
-                .where(
-                        studyIdEq(studyId),
-                        memberIdEq(memberId),
-                        participantStatusIn(Set.of(APPLY, APPROVE))
-                )
-                .fetchOne() != null;
+                .fetchOne() == APPROVE;
     }
 
     @Override
     public boolean isGraduatedParticipant(final Long studyId, final Long memberId) {
         return query
-                .select(studyParticipant.id)
+                .select(studyParticipant.status)
                 .from(studyParticipant)
                 .where(
                         studyIdEq(studyId),
-                        memberIdEq(memberId),
-                        participantStatusEq(GRADUATED)
+                        memberIdEq(memberId)
                 )
-                .fetchOne() != null;
+                .fetchOne() == GRADUATED;
+    }
+
+    @Override
+    public boolean isApplierOrParticipant(final Long studyId, final Long memberId) {
+        final ParticipantStatus participantStatus = query
+                .select(studyParticipant.status)
+                .from(studyParticipant)
+                .where(
+                        studyIdEq(studyId),
+                        memberIdEq(memberId)
+                )
+                .fetchOne();
+
+        return participantStatus != null && isApplyOrApproveStatus(participantStatus);
+    }
+
+    private boolean isApplyOrApproveStatus(final ParticipantStatus participantStatus) {
+        return participantStatus == APPLY || participantStatus == APPROVE;
     }
 
     @Override
     public boolean isAlreadyLeaveOrGraduatedParticipant(final Long studyId, final Long memberId) {
-        return query
-                .select(studyParticipant.id)
+        final ParticipantStatus participantStatus = query
+                .select(studyParticipant.status)
                 .from(studyParticipant)
                 .where(
                         studyIdEq(studyId),
-                        memberIdEq(memberId),
-                        participantStatusIn(Set.of(LEAVE, GRADUATED))
+                        memberIdEq(memberId)
                 )
-                .fetchOne() != null;
+                .fetchOne();
+
+        return participantStatus != null && isLeaveOrGraduatedStatus(participantStatus);
+    }
+
+    private boolean isLeaveOrGraduatedStatus(final ParticipantStatus participantStatus) {
+        return participantStatus == LEAVE || participantStatus == GRADUATED;
     }
 
     private BooleanExpression studyIdEq(final Long studyId) {
@@ -80,13 +86,5 @@ public class ParticipantVerificationRepository implements ParticipantVerificatio
 
     private BooleanExpression memberIdEq(final Long memberId) {
         return studyParticipant.memberId.eq(memberId);
-    }
-
-    private BooleanExpression participantStatusEq(final ParticipantStatus status) {
-        return studyParticipant.status.eq(status);
-    }
-
-    private BooleanExpression participantStatusIn(final Set<ParticipantStatus> status) {
-        return studyParticipant.status.in(status);
     }
 }
