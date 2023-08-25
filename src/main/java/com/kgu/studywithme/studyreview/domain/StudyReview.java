@@ -15,7 +15,8 @@ import lombok.NoArgsConstructor;
 @Table(
         name = "study_review",
         indexes = {
-                @Index(name = "idx_study_review_writer_id", columnList = "writer_id")
+                @Index(name = "idx_study_review_writer_id", columnList = "writer_id"),
+                @Index(name = "idx_study_review_study_id", columnList = "study_id")
         }
 )
 public class StudyReview extends BaseEntity<StudyReview> {
