@@ -317,14 +317,14 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
                 () -> assertThat(result.get(0).getComments())
                         .map(NoticeInformation.CommentInformation::writer)
                         .map(StudyMember::id)
-                        .containsExactly(memberC.getId(), memberA.getId()),
+                        .containsExactly(memberA.getId(), memberC.getId()),
 
                 // Weely1 Comments
                 () -> assertThat(result.get(1).getComments()).hasSize(3),
                 () -> assertThat(result.get(1).getComments())
                         .map(NoticeInformation.CommentInformation::writer)
                         .map(StudyMember::id)
-                        .containsExactly(memberC.getId(), memberB.getId(), memberA.getId())
+                        .containsExactly(memberA.getId(), memberB.getId(), memberC.getId())
         );
     }
 

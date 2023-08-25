@@ -217,33 +217,36 @@ public class StudyInformationQueryRepository implements StudyInformationQueryRep
                 .orderBy(studyNotice.id.desc())
                 .fetch();
 
-        final List<Long> noticeIds = notices.stream()
-                .map(NoticeInformation::getId)
-                .toList();
-        final List<NoticeInformation.CommentInformation> comments = query
-                .select(
-                        new QNoticeInformation_CommentInformation(
-                                studyNoticeComment.id,
-                                studyNoticeComment.notice.id,
-                                studyNoticeComment.content,
-                                studyNoticeComment.lastModifiedAt,
-                                member.id,
-                                member.nickname
-                        )
-                )
-                .from(studyNoticeComment)
-                .innerJoin(member).on(member.id.eq(studyNoticeComment.writerId))
-                .where(studyNoticeComment.notice.id.in(noticeIds))
-                .orderBy(studyNoticeComment.id.desc())
-                .fetch();
+        if (!notices.isEmpty()) {
+            final List<Long> noticeIds = notices.stream()
+                    .map(NoticeInformation::getId)
+                    .toList();
 
-        notices.forEach(
-                notice -> notice.applyComments(
-                        comments.stream()
-                                .filter(comment -> comment.noticeId().equals(notice.getId()))
-                                .toList()
-                )
-        );
+            final List<NoticeInformation.CommentInformation> comments = query
+                    .select(
+                            new QNoticeInformation_CommentInformation(
+                                    studyNoticeComment.id,
+                                    studyNoticeComment.notice.id,
+                                    studyNoticeComment.content,
+                                    studyNoticeComment.lastModifiedAt,
+                                    member.id,
+                                    member.nickname
+                            )
+                    )
+                    .from(studyNoticeComment)
+                    .innerJoin(member).on(member.id.eq(studyNoticeComment.writerId))
+                    .where(studyNoticeComment.notice.id.in(noticeIds))
+                    .fetch();
+
+            notices.forEach(
+                    notice -> notice.applyComments(
+                            comments.stream()
+                                    .filter(comment -> comment.noticeId().equals(notice.getId()))
+                                    .toList()
+                    )
+            );
+        }
+
         return notices;
     }
 
