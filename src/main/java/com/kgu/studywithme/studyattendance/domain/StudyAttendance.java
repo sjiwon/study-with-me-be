@@ -19,7 +19,8 @@ import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTEND
 @Table(
         name = "study_attendance",
         indexes = {
-                @Index(name = "idx_attendance_participant_id_status", columnList = "participant_id, status")
+                @Index(name = "idx_attendance_participant_id_status", columnList = "participant_id, status"),
+                @Index(name = "idx_attendance_study_id_participant_id_status", columnList = "study_id, participant_id, status")
         }
 )
 public class StudyAttendance extends BaseEntity<StudyAttendance> {

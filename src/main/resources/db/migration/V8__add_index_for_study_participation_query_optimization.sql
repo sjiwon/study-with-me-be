@@ -2,10 +2,6 @@
 ALTER TABLE study_participant
     ADD INDEX idx_participant_study_id_member_id_status (study_id, member_id, status);
 
--- 스터디 해시태그 조회 쿼리 최적화
-ALTER TABLE study_hashtag
-    ADD INDEX idx_hashtag_study_id_name (study_id, name);
-
--- 스터디 리뷰 조회 쿼리 최적화
-ALTER TABLE study_review
-    ADD INDEX idx_study_review_study_id (study_id);
+-- 출석 횟수 조회 쿼리 최적화
+ALTER TABLE study_attendance
+    ADD INDEX idx_attendance_study_id_participant_id_status (study_id, participant_id, status);

@@ -21,7 +21,7 @@ import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPR
 @Table(
         name = "study_participant",
         indexes = {
-                @Index(name = "idx_participant_member_id_status_study_id", columnList = "member_id, status, study_id")
+                @Index(name = "idx_participant_study_id_member_id_status", columnList = "study_id, member_id, status")
         }
 )
 public class StudyParticipant extends BaseEntity<StudyParticipant> {
