@@ -268,8 +268,12 @@ public class StudyInformationQueryRepository implements StudyInformationQueryRep
                         studyAttendance.studyId.eq(studyId),
                         studyParticipant.status.eq(APPROVE)
                 )
-                .orderBy(studyParticipant.lastModifiedAt.asc(), studyAttendance.week.asc())
+                .orderBy(studyAttendance.week.asc())
                 .fetch();
+
+        if (result.isEmpty()) {
+            return List.of();
+        }
 
         return result.stream()
                 .collect(

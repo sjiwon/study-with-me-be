@@ -29,3 +29,7 @@ ALTER TABLE study_hashtag
 -- 스터디 신청자 조회 쿼리 최적화
 ALTER TABLE study_participant
     ADD INDEX idx_study_participant_study_id_status (study_id, status);
+
+-- 스터디 출석 정보 조회 쿼리 최적화
+ALTER TABLE study_attendance
+    ADD INDEX idx_study_attendance_study_id_week (study_id, week);
