@@ -3,7 +3,6 @@ package com.kgu.studywithme.studyreview.domain;
 import com.kgu.studywithme.global.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -12,13 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(
-        name = "study_review",
-        indexes = {
-                @Index(name = "idx_study_review_writer_id", columnList = "writer_id"),
-                @Index(name = "idx_study_review_study_id", columnList = "study_id")
-        }
-)
+@Table(name = "study_review")
 public class StudyReview extends BaseEntity<StudyReview> {
     @Column(name = "study_id", nullable = false)
     private Long studyId;

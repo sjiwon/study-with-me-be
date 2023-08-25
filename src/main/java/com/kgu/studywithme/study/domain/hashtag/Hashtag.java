@@ -20,7 +20,9 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(
         name = "study_hashtag",
-        indexes = @Index(name = "idx_hashtag_study_id_name", columnList = "study_id, name")
+        indexes = {
+                @Index(name = "idx_study_hashtag_study_id_name", columnList = "study_id, name")
+        }
 )
 public class Hashtag {
     @Id
