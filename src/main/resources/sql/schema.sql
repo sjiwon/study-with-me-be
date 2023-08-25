@@ -196,130 +196,126 @@ CREATE TABLE IF NOT EXISTS favorite
   DEFAULT CHARSET = utf8mb4;
 
 ALTER TABLE member_token
-    ADD CONSTRAINT token_member_member_id_fk
+    ADD CONSTRAINT fk_member_token_member_id_from_member
         FOREIGN KEY (member_id)
             REFERENCES member (id);
 
 ALTER TABLE member_interest
-    ADD CONSTRAINT interest_member_member_id_fk
+    ADD CONSTRAINT fk_member_interest_member_id_from_member
         FOREIGN KEY (member_id)
             REFERENCES member (id);
 
 ALTER TABLE member_report
-    ADD CONSTRAINT report_member_reportee_id_fk
+    ADD CONSTRAINT fk_member_report_reportee_id_from_member
         FOREIGN KEY (reportee_id)
             REFERENCES member (id);
 
 ALTER TABLE member_report
-    ADD CONSTRAINT report_member_reporter_id_fk
+    ADD CONSTRAINT fk_member_report_reporter_id_from_member
         FOREIGN KEY (reporter_id)
             REFERENCES member (id);
 
 ALTER TABLE member_review
-    ADD CONSTRAINT review_member_reviewee_id_fk
+    ADD CONSTRAINT fk_member_review_reviewee_id_from_member
         FOREIGN KEY (reviewee_id)
             REFERENCES member (id);
 
 ALTER TABLE member_review
-    ADD CONSTRAINT review_member_reviewer_id_fk
+    ADD CONSTRAINT fk_member_review_reviewer_id_from_member
         FOREIGN KEY (reviewer_id)
             REFERENCES member (id);
 
 ALTER TABLE study
-    ADD CONSTRAINT study_member_host_id_fk
+    ADD CONSTRAINT fk_study_host_id_from_member
         FOREIGN KEY (host_id)
             REFERENCES member (id);
 
 ALTER TABLE study_hashtag
-    ADD CONSTRAINT hashtag_study_study_id_fk
+    ADD CONSTRAINT fk_study_hashtag_study_id_from_study
         FOREIGN KEY (study_id)
             REFERENCES study (id);
 
 ALTER TABLE study_weekly
-    ADD CONSTRAINT weekly_study_study_id_fk
+    ADD CONSTRAINT fk_study_weekly_study_id_from_study
         FOREIGN KEY (study_id)
             REFERENCES study (id);
 
 ALTER TABLE study_weekly
-    ADD CONSTRAINT weekly_member_creator_id_fk
+    ADD CONSTRAINT fk_study_weekly_creator_id_from_member
         FOREIGN KEY (creator_id)
             REFERENCES member (id);
 
 ALTER TABLE study_weekly_attachment
-    ADD CONSTRAINT weekly_attachment_weekly_week_id_fk
+    ADD CONSTRAINT fk_study_weekly_attachment_week_id_from_study_weekly
         FOREIGN KEY (week_id)
             REFERENCES study_weekly (id);
 
 ALTER TABLE study_weekly_submit
-    ADD CONSTRAINT weekly_submit_weekly_week_id_fk
+    ADD CONSTRAINT fk_study_weekly_submit_week_id_from_study_weekly
         FOREIGN KEY (week_id)
             REFERENCES study_weekly (id);
 
 ALTER TABLE study_weekly_submit
-    ADD CONSTRAINT weekly_submit_member_participant_id_fk
+    ADD CONSTRAINT fk_study_weekly_submit_participant_id_from_member
         FOREIGN KEY (participant_id)
             REFERENCES member (id);
 
 ALTER TABLE study_attendance
-    ADD CONSTRAINT attendance_study_study_id_fk
+    ADD CONSTRAINT fk_study_attendance_study_id_from_study
         FOREIGN KEY (study_id)
             REFERENCES study (id);
 
 ALTER TABLE study_attendance
-    ADD CONSTRAINT attendance_member_participant_id_fk
+    ADD CONSTRAINT fk_study_attendance_participant_id_from_member
         FOREIGN KEY (participant_id)
             REFERENCES member (id);
 
 ALTER TABLE study_notice
-    ADD CONSTRAINT notice_study_study_id_fk
+    ADD CONSTRAINT fk_study_notice_study_id_from_study
         FOREIGN KEY (study_id)
             REFERENCES study (id);
 
 ALTER TABLE study_notice
-    ADD CONSTRAINT notice_member_writer_id_fk
+    ADD CONSTRAINT fk_study_notice_writer_id_from_member
         FOREIGN KEY (writer_id)
             REFERENCES member (id);
 
 ALTER TABLE study_notice_comment
-    ADD CONSTRAINT notice_comment_notice_notice_id_fk
+    ADD CONSTRAINT fk_study_notice_comment_notice_id_from_study_notice
         FOREIGN KEY (notice_id)
             REFERENCES study_notice (id);
 
 ALTER TABLE study_notice_comment
-    ADD CONSTRAINT notice_comment_member_writer_id_fk
+    ADD CONSTRAINT fk_study_notice_comment_writer_id_from_member
         FOREIGN KEY (writer_id)
             REFERENCES member (id);
 
 ALTER TABLE study_participant
-    ADD CONSTRAINT participant_study_study_id_fk
+    ADD CONSTRAINT fk_study_participant_study_id_from_study
         FOREIGN KEY (study_id)
             REFERENCES study (id);
 
 ALTER TABLE study_participant
-    ADD CONSTRAINT participant_member_member_id_fk
+    ADD CONSTRAINT fk_study_participant_member_id_from_member
         FOREIGN KEY (member_id)
             REFERENCES member (id);
 
 ALTER TABLE study_review
-    ADD CONSTRAINT review_study_study_id_fk
+    ADD CONSTRAINT fk_study_review_study_id_from_study
         FOREIGN KEY (study_id)
             REFERENCES study (id);
 
 ALTER TABLE study_review
-    ADD CONSTRAINT review_member_writer_id_fk
+    ADD CONSTRAINT fk_study_review_writer_id_from_member
         FOREIGN KEY (writer_id)
             REFERENCES member (id);
 
 ALTER TABLE favorite
-    ADD CONSTRAINT favorite_member_member_id_fk
+    ADD CONSTRAINT fk_favorite_member_id_from_member
         FOREIGN KEY (member_id)
             REFERENCES member (id);
 
 ALTER TABLE favorite
-    ADD CONSTRAINT favorite_study_study_id_fk
+    ADD CONSTRAINT fk_favorite_study_id_from_study
         FOREIGN KEY (study_id)
             REFERENCES study (id);
-
-ALTER TABLE favorite
-    ADD CONSTRAINT favorite_study_id_member_id_unique
-        UNIQUE (member_id, study_id);
