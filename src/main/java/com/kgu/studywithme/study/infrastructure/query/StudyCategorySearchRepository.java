@@ -192,8 +192,8 @@ public class StudyCategorySearchRepository implements StudyCategorySearchReposit
             final Pageable pageable,
             final List<BooleanExpression> whereConditions
     ) {
-        final List<StudyPreview> result = query
-                .select(studyPreviewProjection())
+        final List<Long> studyIds = query
+                .select(study.id)
                 .from(study)
                 .leftJoin(studyReview).on(studyReview.studyId.eq(study.id))
                 .where(whereConditions.toArray(Predicate[]::new))
@@ -203,9 +203,22 @@ public class StudyCategorySearchRepository implements StudyCategorySearchReposit
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        final List<Long> studyIds = result.stream()
-                .map(StudyPreview::getId)
-                .toList();
+        if (CollectionUtils.isEmpty(studyIds)) {
+            return List.of();
+        }
+
+        final List<StudyPreview> preResult = query
+                .select(studyPreviewProjection())
+                .from(study)
+                .where(study.id.in(studyIds))
+                .fetch();
+
+        final List<StudyPreview> result = new ArrayList<>();
+        studyIds.forEach(
+                studyId -> preResult.stream()
+                        .filter(studyPreview -> studyPreview.getId().equals(studyId))
+                        .forEach(result::add)
+        );
 
         applyStudyHashtags(result, studyIds);
         applyLikeMarkingMembers(result, studyIds);
