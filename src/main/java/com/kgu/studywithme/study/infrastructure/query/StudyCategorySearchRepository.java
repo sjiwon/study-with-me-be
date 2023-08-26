@@ -3,7 +3,7 @@ package com.kgu.studywithme.study.infrastructure.query;
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.favorite.domain.Favorite;
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
-import com.kgu.studywithme.study.application.adapter.StudyCategoryQueryRepositoryAdapter;
+import com.kgu.studywithme.study.application.adapter.StudyCategorySearchRepositoryAdapter;
 import com.kgu.studywithme.study.domain.StudyType;
 import com.kgu.studywithme.study.infrastructure.query.dto.QStudyPreview;
 import com.kgu.studywithme.study.infrastructure.query.dto.QStudyPreview_HashtagSummary;
@@ -33,7 +33,7 @@ import static com.kgu.studywithme.studyreview.domain.QStudyReview.studyReview;
 @Repository
 @StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
-public class StudyCategoryQueryRepository implements StudyCategoryQueryRepositoryAdapter {
+public class StudyCategorySearchRepository implements StudyCategorySearchRepositoryAdapter {
     private final JPAQueryFactory query;
 
     @Override
