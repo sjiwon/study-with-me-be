@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS member
     is_email_opt_in  TINYINT(1)   NOT NULL,
     created_at       DATETIME     NOT NULL,
     last_modified_at DATETIME     NOT NULL
-) ENGINE = INNODB
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE IF NOT EXISTS member_token
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS member_token
     id            BIGINT AUTO_INCREMENT PRIMARY KEY,
     member_id     BIGINT       NOT NULL,
     refresh_token VARCHAR(150) NOT NULL UNIQUE
-) ENGINE = INNODB
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE IF NOT EXISTS member_interest
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS member_interest
     id        BIGINT AUTO_INCREMENT PRIMARY KEY,
     member_id BIGINT      NOT NULL,
     category  VARCHAR(20) NOT NULL
-) ENGINE = INNODB
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE IF NOT EXISTS member_report
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS member_report
     status           VARCHAR(10) NOT NULL,
     created_at       DATETIME    NOT NULL,
     last_modified_at DATETIME    NOT NULL
-) ENGINE = INNODB
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE IF NOT EXISTS member_review
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS member_review
     content          VARCHAR(255) NOT NULL,
     created_at       DATETIME     NOT NULL,
     last_modified_at DATETIME     NOT NULL
-) ENGINE = INNODB
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE IF NOT EXISTS study
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS study
     is_terminated        TINYINT(1)   NOT NULL,
     created_at           DATETIME     NOT NULL,
     last_modified_at     DATETIME     NOT NULL
-) ENGINE = INNODB
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE IF NOT EXISTS study_hashtag
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS study_hashtag
     id       BIGINT AUTO_INCREMENT PRIMARY KEY,
     study_id BIGINT       NOT NULL,
     name     VARCHAR(100) NOT NULL
-) ENGINE = INNODB
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE IF NOT EXISTS study_weekly
@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS study_weekly
     is_auto_attendance   TINYINT(1)   NOT NULL,
     created_at           DATETIME     NOT NULL,
     last_modified_at     DATETIME     NOT NULL
-) ENGINE = INNODB
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE IF NOT EXISTS study_weekly_attachment
@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS study_weekly_attachment
     upload_file_name VARCHAR(200) NOT NULL,
     created_at       DATETIME     NOT NULL,
     last_modified_at DATETIME     NOT NULL
-) ENGINE = INNODB
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE IF NOT EXISTS study_weekly_submit
@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS study_weekly_submit
     link             VARCHAR(255) NOT NULL,
     created_at       DATETIME     NOT NULL,
     last_modified_at DATETIME     NOT NULL
-) ENGINE = INNODB
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE IF NOT EXISTS study_attendance
@@ -135,7 +135,7 @@ CREATE TABLE IF NOT EXISTS study_attendance
     status           VARCHAR(15) NOT NULL,
     created_at       DATETIME    NOT NULL,
     last_modified_at DATETIME    NOT NULL
-) ENGINE = INNODB
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE IF NOT EXISTS study_notice
@@ -147,7 +147,7 @@ CREATE TABLE IF NOT EXISTS study_notice
     content          TEXT         NOT NULL,
     created_at       DATETIME     NOT NULL,
     last_modified_at DATETIME     NOT NULL
-) ENGINE = INNODB
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE IF NOT EXISTS study_notice_comment
@@ -158,7 +158,7 @@ CREATE TABLE IF NOT EXISTS study_notice_comment
     content          TEXT     NOT NULL,
     created_at       DATETIME NOT NULL,
     last_modified_at DATETIME NOT NULL
-) ENGINE = INNODB
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE IF NOT EXISTS study_participant
@@ -169,7 +169,7 @@ CREATE TABLE IF NOT EXISTS study_participant
     status           VARCHAR(10) NOT NULL,
     created_at       DATETIME    NOT NULL,
     last_modified_at DATETIME    NOT NULL
-) ENGINE = INNODB
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE IF NOT EXISTS study_review
@@ -180,7 +180,7 @@ CREATE TABLE IF NOT EXISTS study_review
     content          VARCHAR(255) NOT NULL,
     created_at       DATETIME     NOT NULL,
     last_modified_at DATETIME     NOT NULL
-) ENGINE = INNODB
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE IF NOT EXISTS favorite
@@ -190,7 +190,7 @@ CREATE TABLE IF NOT EXISTS favorite
     study_id         BIGINT   NOT NULL,
     created_at       DATETIME NOT NULL,
     last_modified_at DATETIME NOT NULL
-) ENGINE = INNODB
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
 ALTER TABLE member_token
