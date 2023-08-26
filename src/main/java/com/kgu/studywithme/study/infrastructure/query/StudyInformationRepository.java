@@ -1,7 +1,7 @@
 package com.kgu.studywithme.study.infrastructure.query;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
-import com.kgu.studywithme.study.application.adapter.StudyInformationQueryRepositoryAdapter;
+import com.kgu.studywithme.study.application.adapter.StudyInformationRepositoryAdapter;
 import com.kgu.studywithme.study.infrastructure.query.dto.AttendanceInformation;
 import com.kgu.studywithme.study.infrastructure.query.dto.NoticeInformation;
 import com.kgu.studywithme.study.infrastructure.query.dto.QAttendanceInformation_AttenadnceParticipant;
@@ -47,7 +47,7 @@ import static com.kgu.studywithme.studyweekly.domain.submit.QStudyWeeklySubmit.s
 @Repository
 @StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
-public class StudyInformationQueryRepository implements StudyInformationQueryRepositoryAdapter {
+public class StudyInformationRepository implements StudyInformationRepositoryAdapter {
     private final JPAQueryFactory query;
 
     @Override

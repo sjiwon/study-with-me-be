@@ -51,11 +51,11 @@ import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.GRAD
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@Import(StudyInformationQueryRepository.class)
-@DisplayName("Study -> StudyInformationQueryRepository 테스트")
-class StudyInformationQueryRepositoryTest extends RepositoryTest {
+@Import(StudyInformationRepository.class)
+@DisplayName("Study -> StudyInformationRepository 테스트")
+class StudyInformationRepositoryTest extends RepositoryTest {
     @Autowired
-    private StudyInformationQueryRepository studyInformationQueryRepository;
+    private StudyInformationRepository studyInformationRepository;
 
     @Autowired
     private StudyJpaRepository studyJpaRepository;
@@ -108,7 +108,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
         );
         IntStream.range(0, 2).forEach(i -> study.addParticipant());
 
-        final StudyBasicInformation result = studyInformationQueryRepository.fetchBasicInformationById(study.getId());
+        final StudyBasicInformation result = studyInformationRepository.fetchBasicInformationById(study.getId());
         assertAll(
                 () -> assertThat(result.getId()).isEqualTo(study.getId()),
                 () -> assertThat(result.getName()).isEqualTo(study.getName().getValue()),
@@ -153,7 +153,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
                 )
         );
 
-        final ReviewInformation result1 = studyInformationQueryRepository.fetchReviewById(study.getId());
+        final ReviewInformation result1 = studyInformationRepository.fetchReviewById(study.getId());
         assertAll(
                 () -> assertThat(result1.reviews()).hasSize(2),
                 () -> assertThat(result1.reviews())
@@ -168,7 +168,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
                 StudyReview.writeReview(study.getId(), memberC.getId(), "Good Study")
         );
 
-        final ReviewInformation result2 = studyInformationQueryRepository.fetchReviewById(study.getId());
+        final ReviewInformation result2 = studyInformationRepository.fetchReviewById(study.getId());
         assertAll(
                 () -> assertThat(result2.reviews()).hasSize(3),
                 () -> assertThat(result2.reviews())
@@ -192,7 +192,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
                 )
         );
 
-        final StudyParticipantInformation result1 = studyInformationQueryRepository.fetchParticipantById(study.getId());
+        final StudyParticipantInformation result1 = studyInformationRepository.fetchParticipantById(study.getId());
         assertAll(
                 () -> assertThat(result1.host().id()).isEqualTo(host.getId()),
                 () -> assertThat(result1.participants()).isEmpty()
@@ -203,7 +203,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
         studyParticipantJpaRepository.updateParticipantStatus(study.getId(), memberC.getId(), APPROVE);
         IntStream.range(0, 2).forEach(i -> study.addParticipant());
 
-        final StudyParticipantInformation result2 = studyInformationQueryRepository.fetchParticipantById(study.getId());
+        final StudyParticipantInformation result2 = studyInformationRepository.fetchParticipantById(study.getId());
         assertAll(
                 () -> assertThat(result2.host().id()).isEqualTo(host.getId()),
                 () -> assertThat(result2.participants())
@@ -215,7 +215,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
         studyParticipantJpaRepository.updateParticipantStatus(study.getId(), memberB.getId(), APPROVE);
         IntStream.range(0, 1).forEach(i -> study.addParticipant());
 
-        final StudyParticipantInformation result3 = studyInformationQueryRepository.fetchParticipantById(study.getId());
+        final StudyParticipantInformation result3 = studyInformationRepository.fetchParticipantById(study.getId());
         assertAll(
                 () -> assertThat(result3.host().id()).isEqualTo(host.getId()),
                 () -> assertThat(result3.participants())
@@ -227,7 +227,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
         studyParticipantJpaRepository.updateParticipantStatus(study.getId(), memberC.getId(), GRADUATED);
         IntStream.range(0, 1).forEach(i -> study.removeParticipant());
 
-        final StudyParticipantInformation result4 = studyInformationQueryRepository.fetchParticipantById(study.getId());
+        final StudyParticipantInformation result4 = studyInformationRepository.fetchParticipantById(study.getId());
         assertAll(
                 () -> assertThat(result4.host().id()).isEqualTo(host.getId()),
                 () -> assertThat(result4.participants())
@@ -249,7 +249,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
                 )
         );
 
-        final List<StudyApplicantInformation> result1 = studyInformationQueryRepository.fetchApplicantById(study.getId());
+        final List<StudyApplicantInformation> result1 = studyInformationRepository.fetchApplicantById(study.getId());
         assertAll(
                 () -> assertThat(result1).hasSize(3),
                 () -> assertThat(result1)
@@ -262,7 +262,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
         studyParticipantJpaRepository.updateParticipantStatus(study.getId(), memberC.getId(), APPROVE);
         IntStream.range(0, 2).forEach(i -> study.addParticipant());
 
-        final List<StudyApplicantInformation> result2 = studyInformationQueryRepository.fetchApplicantById(study.getId());
+        final List<StudyApplicantInformation> result2 = studyInformationRepository.fetchApplicantById(study.getId());
         assertAll(
                 () -> assertThat(result2).hasSize(1),
                 () -> assertThat(result2)
@@ -274,7 +274,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
         studyParticipantJpaRepository.updateParticipantStatus(study.getId(), memberB.getId(), APPROVE);
         IntStream.range(0, 1).forEach(i -> study.addParticipant());
 
-        final List<StudyApplicantInformation> result3 = studyInformationQueryRepository.fetchApplicantById(study.getId());
+        final List<StudyApplicantInformation> result3 = studyInformationRepository.fetchApplicantById(study.getId());
         assertThat(result3).isEmpty();
     }
 
@@ -301,7 +301,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
         notice2.addComment(memberA.getId(), "OK");
         notice2.addComment(memberC.getId(), "OK");
 
-        final List<NoticeInformation> result = studyInformationQueryRepository.fetchNoticeById(study.getId());
+        final List<NoticeInformation> result = studyInformationRepository.fetchNoticeById(study.getId());
         assertAll(
                 () -> assertThat(result).hasSize(2),
                 () -> assertThat(result)
@@ -364,7 +364,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
                 )
         );
 
-        final List<AttendanceInformation> result = studyInformationQueryRepository.fetchAttendanceById(study.getId());
+        final List<AttendanceInformation> result = studyInformationRepository.fetchAttendanceById(study.getId());
         assertAll(
                 () -> assertThat(result).hasSize(3),
                 () -> assertThat(result)
@@ -453,7 +453,7 @@ class StudyInformationQueryRepositoryTest extends RepositoryTest {
                 STUDY_WEEKLY_5.toWeekly(study.getId(), host.getId())
         );
 
-        final List<WeeklyInformation> result = studyInformationQueryRepository.fetchWeeklyById(study.getId());
+        final List<WeeklyInformation> result = studyInformationRepository.fetchWeeklyById(study.getId());
         assertThat(result).hasSize(3);
 
         final WeeklyInformation resultOfWeeklyC = result.get(0);

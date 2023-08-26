@@ -1,6 +1,6 @@
 package com.kgu.studywithme.study.application.service;
 
-import com.kgu.studywithme.study.application.adapter.StudyInformationQueryRepositoryAdapter;
+import com.kgu.studywithme.study.application.adapter.StudyInformationRepositoryAdapter;
 import com.kgu.studywithme.study.application.usecase.query.QueryApplicantByIdUseCase;
 import com.kgu.studywithme.study.application.usecase.query.QueryAttendanceByIdUseCase;
 import com.kgu.studywithme.study.application.usecase.query.QueryNoticeByIdUseCase;
@@ -22,25 +22,25 @@ public class StudyQueryOnlyParticipantService implements
         QueryAttendanceByIdUseCase,
         QueryWeeklyByIdUseCase {
 
-    private final StudyInformationQueryRepositoryAdapter studyInformationQueryRepositoryAdapter;
+    private final StudyInformationRepositoryAdapter studyInformationRepositoryAdapter;
 
     @Override
     public List<StudyApplicantInformation> invoke(final QueryApplicantByIdUseCase.Query query) {
-        return studyInformationQueryRepositoryAdapter.fetchApplicantById(query.studyId());
+        return studyInformationRepositoryAdapter.fetchApplicantById(query.studyId());
     }
 
     @Override
     public List<NoticeInformation> invoke(final QueryNoticeByIdUseCase.Query query) {
-        return studyInformationQueryRepositoryAdapter.fetchNoticeById(query.studyId());
+        return studyInformationRepositoryAdapter.fetchNoticeById(query.studyId());
     }
 
     @Override
     public List<AttendanceInformation> invoke(final QueryAttendanceByIdUseCase.Query query) {
-        return studyInformationQueryRepositoryAdapter.fetchAttendanceById(query.studyId());
+        return studyInformationRepositoryAdapter.fetchAttendanceById(query.studyId());
     }
 
     @Override
     public List<WeeklyInformation> invoke(final QueryWeeklyByIdUseCase.Query query) {
-        return studyInformationQueryRepositoryAdapter.fetchWeeklyById(query.studyId());
+        return studyInformationRepositoryAdapter.fetchWeeklyById(query.studyId());
     }
 }
