@@ -20,7 +20,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -154,21 +156,32 @@ public class StudyCategorySearchRepository implements StudyCategorySearchReposit
             final List<BooleanExpression> whereConditions
     ) {
         final List<Long> studyIds = query
-                .select(favorite.studyId)
-                .from(favorite)
-                .innerJoin(study).on(study.id.eq(favorite.studyId))
+                .select(study.id)
+                .from(study)
+                .leftJoin(favorite).on(favorite.studyId.eq(study.id))
                 .where(whereConditions.toArray(Predicate[]::new))
-                .groupBy(favorite.studyId)
-                .orderBy(favorite.count().desc(), favorite.studyId.asc())
+                .groupBy(study.id)
+                .orderBy(favorite.count().desc(), study.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        final List<StudyPreview> result = query
+        if (CollectionUtils.isEmpty(studyIds)) {
+            return List.of();
+        }
+
+        final List<StudyPreview> preResult = query
                 .select(studyPreviewProjection())
                 .from(study)
                 .where(study.id.in(studyIds))
                 .fetch();
+
+        final List<StudyPreview> result = new ArrayList<>();
+        studyIds.forEach(
+                studyId -> preResult.stream()
+                        .filter(studyPreview -> studyPreview.getId().equals(studyId))
+                        .forEach(result::add)
+        );
 
         applyStudyHashtags(result, studyIds);
         applyLikeMarkingMembers(result, studyIds);
