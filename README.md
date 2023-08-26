@@ -1,7 +1,16 @@
 # 여기서 구해볼래? `Backend` (Refactoring)
 
-- [Origin Project](https://github.com/kgu-capstone/study-with-me-be)
+> [Origin Project](https://github.com/kgu-capstone/study-with-me-be)
 
+## 목차
+
+1. [소개](#-소개)
+2. [서비스 화면](#-서비스-화면)
+3. [주요 챌린지](#-주요-챌린지)
+4. [기술 스택 & 프로젝트 인프라 환경](#-기술-스택--프로젝트-인프라-환경)
+5. [실행 방식](#-실행-방식)
+
+<br>
 
 ## 🌙 소개
 #### 스터디 모집에서 진행 관리까지 케어하는 웹 애플리케이션 플랫폼
@@ -35,20 +44,26 @@
 
 <br>
 
-## 🛠 Tech Stacks
+## 🔥 주요 챌린지
+
+- [잦은 API Call이 예상되는 쿼리를 위한 Index 적용 성능 개선기](https://sjiwon.notion.site/Study-With-Me-b4e2f768c067433b9f2f84553af83067?pvs=4)
+
+<br>
+
+## 🛠 기술 스택 & 프로젝트 인프라 환경
 ### Backend
 
 ![Backend](https://github.com/sjiwon/study-with-me-be/assets/51479381/e102ebe6-6790-407b-839b-7cfa0e539fab)
 
 <br>
 
-## ⚙️ Infrastructure
+### Infrastructure
 
 > TBU...
 
 <br>
 
-## 🔀 CI/CD Pipeline
+### CI/CD Pipeline
 
 > TBU...
 
@@ -115,7 +130,7 @@ java -jar \
 > Google OAuth `Authorization Code`를 파싱한 후 `/api/oauth/login/google` 요청 시 Authorization Code에 존재하는 `%2F -> /`로 수정
 > - `%2F`는 HTTP URL Encoding으로 인한 결과로써 OAuth Provider가 인코딩된 값 인식 불가능
 > - 4%2F0Adeu5BXgIJvUdjU090jAGQEwm8WPb8VidZzvmS9OjNFLrfeTIW9B-jGB292k5PRf73w4XA -> 4/0Adeu5BXgIJvUdjU090jAGQEwm8WPb8VidZzvmS9OjNFLrfeTIW9B-jGB292k5PRf73w4XA
->   - %2F -> /
+    >   - %2F -> /
 
 ### [4) REST Docs](http://localhost:8080/docs/index.html)
 
