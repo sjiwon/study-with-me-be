@@ -33,3 +33,13 @@ ALTER TABLE study_participant
 -- 스터디 출석 정보 조회 쿼리 최적화
 ALTER TABLE study_attendance
     ADD INDEX idx_study_attendance_study_id_week (study_id, week);
+
+-- 스터디 메인페이지 조회 쿼리 최적화
+ALTER TABLE study
+    ADD INDEX idx_study_category_is_terminated (category, is_terminated);
+ALTER TABLE study
+    ADD INDEX idx_study_study_type_category_is_terminated (study_type, category, is_terminated);
+ALTER TABLE study
+    ADD INDEX idx_study_province_city_category_is_terminated (province, city, category, is_terminated);
+ALTER TABLE study
+    ADD INDEX idx_study_province_city_study_type_category_is_terminated (province, city, study_type, category, is_terminated);

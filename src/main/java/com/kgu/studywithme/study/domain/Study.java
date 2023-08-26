@@ -11,6 +11,7 @@ import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -27,7 +28,15 @@ import static com.kgu.studywithme.study.domain.StudyType.ONLINE;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "study")
+@Table(
+        name = "study",
+        indexes = {
+                @Index(name = "idx_study_category_is_terminated", columnList = "category, is_terminated"),
+                @Index(name = "idx_study_study_type_category_is_terminated", columnList = "study_type, category, is_terminated"),
+                @Index(name = "idx_study_province_city_category_is_terminated", columnList = "province, city, category, is_terminated"),
+                @Index(name = "idx_study_province_city_study_type_category_is_terminated", columnList = "province, city, study_type, category, is_terminated")
+        }
+)
 public class Study extends BaseEntity<Study> {
     @Column(name = "host_id", nullable = false)
     private Long hostId;
