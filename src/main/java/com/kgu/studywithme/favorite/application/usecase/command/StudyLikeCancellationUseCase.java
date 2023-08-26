@@ -4,8 +4,8 @@ public interface StudyLikeCancellationUseCase {
     void invoke(final Command command);
 
     record Command(
-            Long studyId,
-            Long memberId
+            Long memberId,
+            Long studyId
     ) {
     }
 }

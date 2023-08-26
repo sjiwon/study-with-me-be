@@ -1,6 +1,6 @@
 package com.kgu.studywithme.study.application.service;
 
-import com.kgu.studywithme.study.application.adapter.StudyInformationQueryRepositoryAdapter;
+import com.kgu.studywithme.study.application.adapter.StudyInformationRepositoryAdapter;
 import com.kgu.studywithme.study.application.usecase.query.QueryBasicInformationByIdUseCase;
 import com.kgu.studywithme.study.application.usecase.query.QueryParticipantByIdUseCase;
 import com.kgu.studywithme.study.application.usecase.query.QueryReviewByIdUseCase;
@@ -17,20 +17,20 @@ public class StudyQueryService implements
         QueryReviewByIdUseCase,
         QueryParticipantByIdUseCase {
 
-    private final StudyInformationQueryRepositoryAdapter studyInformationQueryRepositoryAdapter;
+    private final StudyInformationRepositoryAdapter studyInformationRepositoryAdapter;
 
     @Override
     public StudyBasicInformation invoke(final QueryBasicInformationByIdUseCase.Query query) {
-        return studyInformationQueryRepositoryAdapter.fetchBasicInformationById(query.studyId());
+        return studyInformationRepositoryAdapter.fetchBasicInformationById(query.studyId());
     }
 
     @Override
     public ReviewInformation invoke(final QueryReviewByIdUseCase.Query query) {
-        return studyInformationQueryRepositoryAdapter.fetchReviewById(query.studyId());
+        return studyInformationRepositoryAdapter.fetchReviewById(query.studyId());
     }
 
     @Override
     public StudyParticipantInformation invoke(final QueryParticipantByIdUseCase.Query query) {
-        return studyInformationQueryRepositoryAdapter.fetchParticipantById(query.studyId());
+        return studyInformationRepositoryAdapter.fetchParticipantById(query.studyId());
     }
 }

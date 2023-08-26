@@ -8,6 +8,8 @@ import com.kgu.studywithme.studyparticipant.infrastructure.persistence.StudyPart
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPLY;
+
 @Service
 @RequiredArgsConstructor
 public class ApplyCancellationService implements ApplyCancellationUseCase {
@@ -20,7 +22,7 @@ public class ApplyCancellationService implements ApplyCancellationUseCase {
     }
 
     private StudyParticipant getApplier(final Long studyId, final Long applierId) {
-        return studyParticipantJpaRepository.findApplier(studyId, applierId)
+        return studyParticipantJpaRepository.findParticipantByStatus(studyId, applierId, APPLY)
                 .orElseThrow(() -> StudyWithMeException.type(StudyParticipantErrorCode.APPLIER_NOT_FOUND));
     }
 }

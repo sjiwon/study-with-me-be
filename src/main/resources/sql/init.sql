@@ -18,9 +18,11 @@ CREATE TABLE IF NOT EXISTS member
 
 CREATE TABLE IF NOT EXISTS member_token
 (
-    id            BIGINT AUTO_INCREMENT PRIMARY KEY,
-    member_id     BIGINT       NOT NULL,
-    refresh_token VARCHAR(150) NOT NULL UNIQUE
+    id               BIGINT AUTO_INCREMENT PRIMARY KEY,
+    member_id        BIGINT       NOT NULL,
+    refresh_token    VARCHAR(150) NOT NULL UNIQUE,
+    created_at       DATETIME     NOT NULL,
+    last_modified_at DATETIME     NOT NULL
 ) ENGINE = INNODB
   DEFAULT CHARSET = utf8mb4;
 
@@ -64,7 +66,7 @@ CREATE TABLE IF NOT EXISTS study
     category             VARCHAR(20)  NOT NULL,
     capacity             INT          NOT NULL,
     participants         INT          NOT NULL,
-    image                VARCHAR(100) NOT NULL,
+    thumbnail            VARCHAR(100) NOT NULL,
     study_type           VARCHAR(10)  NOT NULL,
     province             VARCHAR(100),
     city                 VARCHAR(100),
@@ -194,133 +196,129 @@ CREATE TABLE IF NOT EXISTS favorite
   DEFAULT CHARSET = utf8mb4;
 
 ALTER TABLE member_token
-    ADD CONSTRAINT token_member_member_id_fk
+    ADD CONSTRAINT fk_member_token_member_id_from_member
         FOREIGN KEY (member_id)
             REFERENCES member (id);
 
 ALTER TABLE member_interest
-    ADD CONSTRAINT interest_member_member_id_fk
+    ADD CONSTRAINT fk_member_interest_member_id_from_member
         FOREIGN KEY (member_id)
             REFERENCES member (id);
 
 ALTER TABLE member_report
-    ADD CONSTRAINT report_member_reportee_id_fk
+    ADD CONSTRAINT fk_member_report_reportee_id_from_member
         FOREIGN KEY (reportee_id)
             REFERENCES member (id);
 
 ALTER TABLE member_report
-    ADD CONSTRAINT report_member_reporter_id_fk
+    ADD CONSTRAINT fk_member_report_reporter_id_from_member
         FOREIGN KEY (reporter_id)
             REFERENCES member (id);
 
 ALTER TABLE member_review
-    ADD CONSTRAINT review_member_reviewee_id_fk
+    ADD CONSTRAINT fk_member_review_reviewee_id_from_member
         FOREIGN KEY (reviewee_id)
             REFERENCES member (id);
 
 ALTER TABLE member_review
-    ADD CONSTRAINT review_member_reviewer_id_fk
+    ADD CONSTRAINT fk_member_review_reviewer_id_from_member
         FOREIGN KEY (reviewer_id)
             REFERENCES member (id);
 
 ALTER TABLE study
-    ADD CONSTRAINT study_member_host_id_fk
+    ADD CONSTRAINT fk_study_host_id_from_member
         FOREIGN KEY (host_id)
             REFERENCES member (id);
 
 ALTER TABLE study_hashtag
-    ADD CONSTRAINT hashtag_study_study_id_fk
+    ADD CONSTRAINT fk_study_hashtag_study_id_from_study
         FOREIGN KEY (study_id)
             REFERENCES study (id);
 
 ALTER TABLE study_weekly
-    ADD CONSTRAINT weekly_study_study_id_fk
+    ADD CONSTRAINT fk_study_weekly_study_id_from_study
         FOREIGN KEY (study_id)
             REFERENCES study (id);
 
 ALTER TABLE study_weekly
-    ADD CONSTRAINT weekly_member_creator_id_fk
+    ADD CONSTRAINT fk_study_weekly_creator_id_from_member
         FOREIGN KEY (creator_id)
             REFERENCES member (id);
 
 ALTER TABLE study_weekly_attachment
-    ADD CONSTRAINT weekly_attachment_weekly_week_id_fk
+    ADD CONSTRAINT fk_study_weekly_attachment_week_id_from_study_weekly
         FOREIGN KEY (week_id)
             REFERENCES study_weekly (id);
 
 ALTER TABLE study_weekly_submit
-    ADD CONSTRAINT weekly_submit_weekly_week_id_fk
+    ADD CONSTRAINT fk_study_weekly_submit_week_id_from_study_weekly
         FOREIGN KEY (week_id)
             REFERENCES study_weekly (id);
 
 ALTER TABLE study_weekly_submit
-    ADD CONSTRAINT weekly_submit_member_participant_id_fk
+    ADD CONSTRAINT fk_study_weekly_submit_participant_id_from_member
         FOREIGN KEY (participant_id)
             REFERENCES member (id);
 
 ALTER TABLE study_attendance
-    ADD CONSTRAINT attendance_study_study_id_fk
+    ADD CONSTRAINT fk_study_attendance_study_id_from_study
         FOREIGN KEY (study_id)
             REFERENCES study (id);
 
 ALTER TABLE study_attendance
-    ADD CONSTRAINT attendance_member_participant_id_fk
+    ADD CONSTRAINT fk_study_attendance_participant_id_from_member
         FOREIGN KEY (participant_id)
             REFERENCES member (id);
 
 ALTER TABLE study_notice
-    ADD CONSTRAINT notice_study_study_id_fk
+    ADD CONSTRAINT fk_study_notice_study_id_from_study
         FOREIGN KEY (study_id)
             REFERENCES study (id);
 
 ALTER TABLE study_notice
-    ADD CONSTRAINT notice_member_writer_id_fk
+    ADD CONSTRAINT fk_study_notice_writer_id_from_member
         FOREIGN KEY (writer_id)
             REFERENCES member (id);
 
 ALTER TABLE study_notice_comment
-    ADD CONSTRAINT notice_comment_notice_notice_id_fk
+    ADD CONSTRAINT fk_study_notice_comment_notice_id_from_study_notice
         FOREIGN KEY (notice_id)
             REFERENCES study_notice (id);
 
 ALTER TABLE study_notice_comment
-    ADD CONSTRAINT notice_comment_member_writer_id_fk
+    ADD CONSTRAINT fk_study_notice_comment_writer_id_from_member
         FOREIGN KEY (writer_id)
             REFERENCES member (id);
 
 ALTER TABLE study_participant
-    ADD CONSTRAINT participant_study_study_id_fk
+    ADD CONSTRAINT fk_study_participant_study_id_from_study
         FOREIGN KEY (study_id)
             REFERENCES study (id);
 
 ALTER TABLE study_participant
-    ADD CONSTRAINT participant_member_member_id_fk
+    ADD CONSTRAINT fk_study_participant_member_id_from_member
         FOREIGN KEY (member_id)
             REFERENCES member (id);
 
 ALTER TABLE study_review
-    ADD CONSTRAINT review_study_study_id_fk
+    ADD CONSTRAINT fk_study_review_study_id_from_study
         FOREIGN KEY (study_id)
             REFERENCES study (id);
 
 ALTER TABLE study_review
-    ADD CONSTRAINT review_member_writer_id_fk
+    ADD CONSTRAINT fk_study_review_writer_id_from_member
         FOREIGN KEY (writer_id)
             REFERENCES member (id);
 
 ALTER TABLE favorite
-    ADD CONSTRAINT favorite_member_member_id_fk
+    ADD CONSTRAINT fk_favorite_member_id_from_member
         FOREIGN KEY (member_id)
             REFERENCES member (id);
 
 ALTER TABLE favorite
-    ADD CONSTRAINT favorite_study_study_id_fk
+    ADD CONSTRAINT fk_favorite_study_id_from_study
         FOREIGN KEY (study_id)
             REFERENCES study (id);
-
-ALTER TABLE favorite
-    ADD CONSTRAINT favorite_study_id_member_id_unique
-        UNIQUE (member_id, study_id);
 
 INSERT INTO member(name, nickname, email, birth, phone, gender, province, city, score, is_email_opt_in, created_at, last_modified_at)
 VALUES ('서지원', '제임스고슬링', 'sjiwon4491@gmail.com', '2000-01-18', '010-1234-5678', 'MALE', '경기도', '안양시', 93, 1, NOW(), NOW()),
@@ -821,7 +819,7 @@ VALUES (1, 48, '매 순간 집중해서 스터디했습니다.', NOW(), NOW()),
        (100, 24, '스터디에 집중해서 참여했습니다.', NOW(), NOW());
 
 
-INSERT INTO study (host_id, name, description, category, image, study_type, province, city, recruitment_status, capacity, participants, minimum_attendance, policy_update_chance, is_terminated, created_at, last_modified_at)
+INSERT INTO study (host_id, name, description, category, thumbnail, study_type, province, city, recruitment_status, capacity, participants, minimum_attendance, policy_update_chance, is_terminated, created_at, last_modified_at)
 VALUES (1, 'Spring World', '<p>스프링 스터디입니다.</p><p>열심히 참여하실분 환영해요</p>', 'PROGRAMMING', 'IMAGE_PROGRAMMING_002', 'ONLINE', null, null, 'IN_PROGRESS', 7, 5, 20, 3, 0, NOW(), NOW()),
        (1, 'Interview World', '<p>카카오 기술 면접 오프라인 스터디입니다.</p>', 'INTERVIEW', 'IMAGE_INTERVIEW_004', 'OFFLINE', '경기도', '성남시', 'IN_PROGRESS', 6, 2, 10, 3, 0, NOW(), NOW()),
        (1, '컴공 정보처리기능사 스터디', '<p>컴공졸업을 위한 정보처리기능사 스터디입니다.</p>', 'CERTIFICATION', 'IMAGE_CERTIFICATION_001', 'ONLINE', null, null, 'IN_PROGRESS', 4, 1, 2, 3, 0, NOW(), NOW()),

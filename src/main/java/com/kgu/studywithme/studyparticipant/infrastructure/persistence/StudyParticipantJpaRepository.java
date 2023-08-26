@@ -14,13 +14,20 @@ import java.util.Optional;
 public interface StudyParticipantJpaRepository extends JpaRepository<StudyParticipant, Long> {
     @Query("SELECT sp" +
             " FROM StudyParticipant sp" +
-            " WHERE sp.studyId = :studyId AND sp.memberId = :memberId AND sp.status = 'APPLY'")
-    Optional<StudyParticipant> findApplier(@Param("studyId") final Long studyId, @Param("memberId") final Long memberId);
+            " WHERE sp.studyId = :studyId AND sp.memberId = :memberId AND sp.status = :status")
+    Optional<StudyParticipant> findParticipantByStatus(
+            @Param("studyId") final Long studyId,
+            @Param("memberId") final Long memberId,
+            @Param("status") final ParticipantStatus status
+    );
 
     @Query("SELECT sp.memberId" +
             " FROM StudyParticipant sp" +
-            " WHERE sp.studyId = :studyId AND sp.status = 'APPROVE'")
-    List<Long> findStudyParticipantIds(@Param("studyId") final Long studyId);
+            " WHERE sp.studyId = :studyId AND sp.status = :status")
+    List<Long> findParticipantIdsByStatus(
+            @Param("studyId") final Long studyId,
+            @Param("status") final ParticipantStatus status
+    );
 
     @StudyWithMeWritableTransactional
     @Modifying(flushAutomatically = true, clearAutomatically = true)

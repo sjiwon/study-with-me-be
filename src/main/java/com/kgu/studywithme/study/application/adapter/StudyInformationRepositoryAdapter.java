@@ -10,7 +10,7 @@ import com.kgu.studywithme.study.infrastructure.query.dto.WeeklyInformation;
 
 import java.util.List;
 
-public interface StudyInformationQueryRepositoryAdapter {
+public interface StudyInformationRepositoryAdapter {
     StudyBasicInformation fetchBasicInformationById(final Long studyId);
 
     ReviewInformation fetchReviewById(final Long studyId);

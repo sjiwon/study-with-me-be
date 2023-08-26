@@ -32,12 +32,4 @@ public interface StudyAttendanceJpaRepository extends JpaRepository<StudyAttenda
             @Param("participantIds") Set<Long> participantIds,
             @Param("status") AttendanceStatus status
     );
-
-    @Query("SELECT COUNT(st.id)" +
-            " FROM StudyAttendance st" +
-            " WHERE st.studyId = :studyId AND st.participantId = :participantId AND st.status = 'ATTENDANCE'")
-    int getAttendanceCount(
-            @Param("studyId") final Long studyId,
-            @Param("participantId") final Long participantId
-    );
 }

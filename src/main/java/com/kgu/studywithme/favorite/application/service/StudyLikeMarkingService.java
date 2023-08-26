@@ -17,11 +17,11 @@ public class StudyLikeMarkingService implements StudyLikeMarkingUseCase {
 
     @Override
     public Long invoke(final Command command) {
-        if (favoriteJudgeRepositoryAdapter.alreadyLikeMarked(command.studyId(), command.memberId())) {
+        if (favoriteJudgeRepositoryAdapter.alreadyLikeMarked(command.memberId(), command.studyId())) {
             throw StudyWithMeException.type(FavoriteErrorCode.ALREADY_LIKE_MARKED);
         }
 
-        final Favorite favoriteStudy = Favorite.favoriteMarking(command.studyId(), command.memberId());
+        final Favorite favoriteStudy = Favorite.favoriteMarking(command.memberId(), command.studyId());
         return favoriteJpaRepository.save(favoriteStudy).getId();
     }
 }

@@ -10,9 +10,6 @@ import com.kgu.studywithme.common.config.ExternalApiConfiguration;
 import com.kgu.studywithme.common.config.MySqlTestContainersConfiguration;
 import com.kgu.studywithme.common.config.RedisTestContainersConfiguration;
 import com.kgu.studywithme.common.utils.DatabaseCleaner;
-import com.kgu.studywithme.file.infrastructure.s3.S3FileUploader;
-import com.kgu.studywithme.mail.infrastructure.DefaultEmailSender;
-import com.kgu.studywithme.mail.infrastructure.ses.AwsSESEmailSender;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,15 +52,6 @@ public abstract class AcceptanceTest {
 
     @MockBean
     private KakaoOAuthConnector kakaoOAuthConnectorMock;
-
-    @MockBean
-    private S3FileUploader s3FileUploaderMock;
-
-    @MockBean
-    private DefaultEmailSender defaultEmailSenderMock;
-
-    @MockBean
-    private AwsSESEmailSender awsSESEmailSenderMock;
 
     @BeforeEach
     void setUp() {

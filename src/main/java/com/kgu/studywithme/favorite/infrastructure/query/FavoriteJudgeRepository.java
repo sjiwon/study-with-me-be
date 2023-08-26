@@ -16,34 +16,34 @@ public class FavoriteJudgeRepository implements FavoriteJudgeRepositoryAdapter {
     private final JPAQueryFactory query;
 
     @Override
-    public boolean alreadyLikeMarked(final Long studyId, final Long memberId) {
+    public boolean alreadyLikeMarked(final Long memberId, final Long studyId) {
         return query
                 .select(favorite.count())
                 .from(favorite)
                 .where(
-                        studyIdEq(studyId),
-                        memberIdEq(memberId)
+                        memberIdEq(memberId),
+                        studyIdEq(studyId)
                 )
                 .fetchOne() > 0;
     }
 
     @Override
-    public boolean neverLikeMarked(final Long studyId, final Long memberId) {
+    public boolean neverLikeMarked(final Long memberId, final Long studyId) {
         return query
                 .select(favorite.count())
                 .from(favorite)
                 .where(
-                        studyIdEq(studyId),
-                        memberIdEq(memberId)
+                        memberIdEq(memberId),
+                        studyIdEq(studyId)
                 )
                 .fetchOne() == 0;
     }
 
-    private BooleanExpression studyIdEq(final Long studyId) {
-        return favorite.studyId.eq(studyId);
-    }
-
     private BooleanExpression memberIdEq(final Long memberId) {
         return favorite.memberId.eq(memberId);
+    }
+
+    private BooleanExpression studyIdEq(final Long studyId) {
+        return favorite.studyId.eq(studyId);
     }
 }

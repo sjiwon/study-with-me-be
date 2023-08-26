@@ -45,7 +45,7 @@ class ApplyCancellationServiceTest extends UseCaseTest {
     @DisplayName("스터디 신청자가 아니면 신청 취소를 할 수 없다")
     void throwExceptionByRequesterIsNotApplier() {
         // given
-        given(studyParticipantJpaRepository.findApplier(any(), any())).willReturn(Optional.empty());
+        given(studyParticipantJpaRepository.findParticipantByStatus(any(), any(), any())).willReturn(Optional.empty());
 
         // when - then
         assertThatThrownBy(() -> applyCancellationService.invoke(command))
@@ -53,7 +53,7 @@ class ApplyCancellationServiceTest extends UseCaseTest {
                 .hasMessage(StudyParticipantErrorCode.APPLIER_NOT_FOUND.getMessage());
 
         assertAll(
-                () -> verify(studyParticipantJpaRepository, times(1)).findApplier(any(), any()),
+                () -> verify(studyParticipantJpaRepository, times(1)).findParticipantByStatus(any(), any(), any()),
                 () -> verify(studyParticipantJpaRepository, times(0)).delete(any())
         );
     }
@@ -62,14 +62,14 @@ class ApplyCancellationServiceTest extends UseCaseTest {
     @DisplayName("스터디 참여 신청한 내역을 취소한다")
     void success() {
         // given
-        given(studyParticipantJpaRepository.findApplier(any(), any())).willReturn(Optional.of(participant));
+        given(studyParticipantJpaRepository.findParticipantByStatus(any(), any(), any())).willReturn(Optional.of(participant));
 
         // when
         applyCancellationService.invoke(command);
 
         // then
         assertAll(
-                () -> verify(studyParticipantJpaRepository, times(1)).findApplier(any(), any()),
+                () -> verify(studyParticipantJpaRepository, times(1)).findParticipantByStatus(any(), any(), any()),
                 () -> verify(studyParticipantJpaRepository, times(1)).delete(any())
         );
     }

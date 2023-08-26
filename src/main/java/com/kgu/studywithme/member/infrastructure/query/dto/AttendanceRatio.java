@@ -5,7 +5,7 @@ import com.querydsl.core.annotations.QueryProjection;
 
 public record AttendanceRatio(
         AttendanceStatus status,
-        int count
+        long count
 ) {
     @QueryProjection
     public AttendanceRatio {

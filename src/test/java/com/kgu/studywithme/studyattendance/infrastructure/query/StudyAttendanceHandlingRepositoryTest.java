@@ -210,4 +210,27 @@ class StudyAttendanceHandlingRepositoryTest extends RepositoryTest {
                 .map(StudyAttendanceWeekly::week)
                 .toList();
     }
+
+
+    @Test
+    @DisplayName("사용자의 스터디 출석 횟수를 조회한다")
+    void getAttendanceCount() {
+        /* 출석 1회 */
+        studyAttendanceJpaRepository.save(
+                StudyAttendance.recordAttendance(studies[0].getId(), members[0].getId(), 1, ATTENDANCE)
+        );
+        assertThat(studyAttendanceHandlingRepository.getAttendanceCount(studies[0].getId(), members[0].getId())).isEqualTo(1);
+
+        /* 출석 1회 + 지각 1회 */
+        studyAttendanceJpaRepository.save(
+                StudyAttendance.recordAttendance(studies[0].getId(), members[0].getId(), 2, LATE)
+        );
+        assertThat(studyAttendanceHandlingRepository.getAttendanceCount(studies[0].getId(), members[0].getId())).isEqualTo(1);
+
+        /* 출석 2회 + 지각 1회 */
+        studyAttendanceJpaRepository.save(
+                StudyAttendance.recordAttendance(studies[0].getId(), members[0].getId(), 3, ATTENDANCE)
+        );
+        assertThat(studyAttendanceHandlingRepository.getAttendanceCount(studies[0].getId(), members[0].getId())).isEqualTo(2);
+    }
 }

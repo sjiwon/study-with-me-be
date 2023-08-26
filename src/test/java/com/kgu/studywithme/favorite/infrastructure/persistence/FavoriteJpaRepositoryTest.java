@@ -39,11 +39,11 @@ class FavoriteJpaRepositoryTest extends RepositoryTest {
     @DisplayName("특정 스터디에 대한 사용자 찜 현황을 삭제한다")
     void cancelLikeMarking() {
         // given
-        final Favorite favorite = favoriteJpaRepository.save(Favorite.favoriteMarking(study.getId(), member.getId()));
+        final Favorite favorite = favoriteJpaRepository.save(Favorite.favoriteMarking(member.getId(), study.getId()));
         assertThat(favoriteJpaRepository.existsById(favorite.getId())).isTrue();
 
         // when
-        favoriteJpaRepository.cancelLikeMarking(study.getId(), member.getId());
+        favoriteJpaRepository.cancelLikeMarking(member.getId(), study.getId());
 
         // then
         assertThat(favoriteJpaRepository.existsById(favorite.getId())).isFalse();

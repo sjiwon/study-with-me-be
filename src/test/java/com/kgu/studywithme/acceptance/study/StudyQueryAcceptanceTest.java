@@ -305,7 +305,7 @@ public class StudyQueryAcceptanceTest extends AcceptanceTest {
             }
 
             @Test
-            @DisplayName("스터디 참여자가 아니면 공지사항을 조회할 수 없다")
+            @DisplayName("스터디 참여자가 아니면 출석 정보를 조회할 수 없다")
             void memberIsNotParticipant() {
                 final String anonymousAccessToken = DUMMY9.회원가입_후_Google_OAuth_로그인을_진행한다().token().accessToken();
                 스터디_출석_정보를_조회한다(anonymousAccessToken, studyId)
@@ -371,7 +371,7 @@ public class StudyQueryAcceptanceTest extends AcceptanceTest {
             private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:00");
 
             @Test
-            @DisplayName("스터디 참여자가 아니면 공지사항을 조회할 수 없다")
+            @DisplayName("스터디 참여자가 아니면 주차별 정보를 조회할 수 없다")
             void memberIsNotParticipant() {
                 final String anonymousAccessToken = DUMMY9.회원가입_후_Google_OAuth_로그인을_진행한다().token().accessToken();
                 스터디_주차별_정보를_조회한다(anonymousAccessToken, studyId)

@@ -1,5 +1,6 @@
 package com.kgu.studywithme.studyparticipant.application.service;
 
+import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.application.adapter.StudyReadAdapter;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.REJECT;
 
 @Service
+@StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class RejectParticipationService implements RejectParticipationUseCase {
     private final ParticipantReadAdapter participantReadAdapter;

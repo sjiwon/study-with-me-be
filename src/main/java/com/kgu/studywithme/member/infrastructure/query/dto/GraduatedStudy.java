@@ -4,17 +4,37 @@ import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.study.domain.StudyName;
 import com.kgu.studywithme.study.domain.StudyThumbnail;
 import com.querydsl.core.annotations.QueryProjection;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
-public record GraduatedStudy(
-        Long id,
-        String name,
-        String category,
-        String thumbnail,
-        String thumbnailBackground,
-        WrittenReview review
-) {
+@Getter
+@AllArgsConstructor
+@ToString
+public class GraduatedStudy {
+    private final Long id;
+    private final String name;
+    private final String category;
+    private final String thumbnail;
+    private final String thumbnailBackground;
+    private WrittenReview review;
+
+    @QueryProjection
+    public GraduatedStudy(
+            final Long id,
+            final StudyName name,
+            final Category category,
+            final StudyThumbnail thumbnail
+    ) {
+        this.id = id;
+        this.name = name.getValue();
+        this.category = category.getName();
+        this.thumbnail = thumbnail.getImageName();
+        this.thumbnailBackground = thumbnail.getBackground();
+    }
+
     public record WrittenReview(
             Long id,
             String content,
@@ -23,26 +43,7 @@ public record GraduatedStudy(
     ) {
     }
 
-    @QueryProjection
-    public GraduatedStudy(
-            final Long id,
-            final StudyName name,
-            final Category category,
-            final StudyThumbnail thumbnail,
-            final Long reviewId,
-            final String content,
-            final LocalDateTime writtenDate,
-            final LocalDateTime lastModifiedDate
-    ) {
-        this(
-                id,
-                name.getValue(),
-                category.getName(),
-                thumbnail.getImageName(),
-                thumbnail.getBackground(),
-                (reviewId != null)
-                        ? new WrittenReview(reviewId, content, writtenDate, lastModifiedDate)
-                        : null
-        );
+    public void applyWrittenReview(final WrittenReview review) {
+        this.review = review;
     }
 }

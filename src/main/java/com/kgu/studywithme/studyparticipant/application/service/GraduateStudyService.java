@@ -5,7 +5,7 @@ import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.application.adapter.StudyReadAdapter;
 import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.studyattendance.infrastructure.persistence.StudyAttendanceJpaRepository;
+import com.kgu.studywithme.studyattendance.application.adapter.StudyAttendanceHandlingRepositoryAdapter;
 import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantReadAdapter;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.GraduateStudyUseCase;
 import com.kgu.studywithme.studyparticipant.event.StudyGraduatedEvent;
@@ -24,7 +24,7 @@ public class GraduateStudyService implements GraduateStudyUseCase {
     private final StudyReadAdapter studyReadAdapter;
     private final ParticipantReadAdapter participantReadAdapter;
     private final StudyParticipantJpaRepository studyParticipantJpaRepository;
-    private final StudyAttendanceJpaRepository studyAttendanceJpaRepository;
+    private final StudyAttendanceHandlingRepositoryAdapter studyAttendanceHandlingRepositoryAdapter;
     private final ApplicationEventPublisher eventPublisher;
 
     @Override
@@ -56,7 +56,7 @@ public class GraduateStudyService implements GraduateStudyUseCase {
     }
 
     private void validateParticipantMeetGraduationPolicy(final Study study, final Member participant) {
-        final int attendanceCount = studyAttendanceJpaRepository.getAttendanceCount(study.getId(), participant.getId());
+        final int attendanceCount = studyAttendanceHandlingRepositoryAdapter.getAttendanceCount(study.getId(), participant.getId());
 
         if (!study.isParticipantMeetGraduationPolicy(attendanceCount)) {
             throw StudyWithMeException.type(StudyParticipantErrorCode.PARTICIPANT_NOT_MEET_GRADUATION_POLICY);

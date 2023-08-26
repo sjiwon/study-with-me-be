@@ -1,7 +1,7 @@
 package com.kgu.studywithme.study.infrastructure.query;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
-import com.kgu.studywithme.study.application.adapter.StudyInformationQueryRepositoryAdapter;
+import com.kgu.studywithme.study.application.adapter.StudyInformationRepositoryAdapter;
 import com.kgu.studywithme.study.infrastructure.query.dto.AttendanceInformation;
 import com.kgu.studywithme.study.infrastructure.query.dto.NoticeInformation;
 import com.kgu.studywithme.study.infrastructure.query.dto.QAttendanceInformation_AttenadnceParticipant;
@@ -47,7 +47,7 @@ import static com.kgu.studywithme.studyweekly.domain.submit.QStudyWeeklySubmit.s
 @Repository
 @StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
-public class StudyInformationQueryRepository implements StudyInformationQueryRepositoryAdapter {
+public class StudyInformationRepository implements StudyInformationRepositoryAdapter {
     private final JPAQueryFactory query;
 
     @Override
@@ -217,33 +217,36 @@ public class StudyInformationQueryRepository implements StudyInformationQueryRep
                 .orderBy(studyNotice.id.desc())
                 .fetch();
 
-        final List<Long> noticeIds = notices.stream()
-                .map(NoticeInformation::getId)
-                .toList();
-        final List<NoticeInformation.CommentInformation> comments = query
-                .select(
-                        new QNoticeInformation_CommentInformation(
-                                studyNoticeComment.id,
-                                studyNoticeComment.notice.id,
-                                studyNoticeComment.content,
-                                studyNoticeComment.lastModifiedAt,
-                                member.id,
-                                member.nickname
-                        )
-                )
-                .from(studyNoticeComment)
-                .innerJoin(member).on(member.id.eq(studyNoticeComment.writerId))
-                .where(studyNoticeComment.notice.id.in(noticeIds))
-                .orderBy(studyNoticeComment.id.desc())
-                .fetch();
+        if (!notices.isEmpty()) {
+            final List<Long> noticeIds = notices.stream()
+                    .map(NoticeInformation::getId)
+                    .toList();
 
-        notices.forEach(
-                notice -> notice.applyComments(
-                        comments.stream()
-                                .filter(comment -> comment.noticeId().equals(notice.getId()))
-                                .toList()
-                )
-        );
+            final List<NoticeInformation.CommentInformation> comments = query
+                    .select(
+                            new QNoticeInformation_CommentInformation(
+                                    studyNoticeComment.id,
+                                    studyNoticeComment.notice.id,
+                                    studyNoticeComment.content,
+                                    studyNoticeComment.lastModifiedAt,
+                                    member.id,
+                                    member.nickname
+                            )
+                    )
+                    .from(studyNoticeComment)
+                    .innerJoin(member).on(member.id.eq(studyNoticeComment.writerId))
+                    .where(studyNoticeComment.notice.id.in(noticeIds))
+                    .fetch();
+
+            notices.forEach(
+                    notice -> notice.applyComments(
+                            comments.stream()
+                                    .filter(comment -> comment.noticeId().equals(notice.getId()))
+                                    .toList()
+                    )
+            );
+        }
+
         return notices;
     }
 
@@ -265,8 +268,12 @@ public class StudyInformationQueryRepository implements StudyInformationQueryRep
                         studyAttendance.studyId.eq(studyId),
                         studyParticipant.status.eq(APPROVE)
                 )
-                .orderBy(studyParticipant.lastModifiedAt.asc(), studyAttendance.week.asc())
+                .orderBy(studyAttendance.week.asc())
                 .fetch();
+
+        if (result.isEmpty()) {
+            return List.of();
+        }
 
         return result.stream()
                 .collect(

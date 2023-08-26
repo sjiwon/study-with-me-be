@@ -3,7 +3,7 @@ package com.kgu.studywithme.study.infrastructure.query;
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.favorite.domain.Favorite;
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
-import com.kgu.studywithme.study.application.adapter.StudyCategoryQueryRepositoryAdapter;
+import com.kgu.studywithme.study.application.adapter.StudyCategorySearchRepositoryAdapter;
 import com.kgu.studywithme.study.domain.StudyType;
 import com.kgu.studywithme.study.infrastructure.query.dto.QStudyPreview;
 import com.kgu.studywithme.study.infrastructure.query.dto.QStudyPreview_HashtagSummary;
@@ -20,7 +20,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,7 +35,7 @@ import static com.kgu.studywithme.studyreview.domain.QStudyReview.studyReview;
 @Repository
 @StudyWithMeReadOnlyTransactional
 @RequiredArgsConstructor
-public class StudyCategoryQueryRepository implements StudyCategoryQueryRepositoryAdapter {
+public class StudyCategorySearchRepository implements StudyCategorySearchRepositoryAdapter {
     private final JPAQueryFactory query;
 
     @Override
@@ -45,10 +47,10 @@ public class StudyCategoryQueryRepository implements StudyCategoryQueryRepositor
                 condition.sort(),
                 pageable,
                 Arrays.asList(
-                        studyCategoryEq(condition.category()),
-                        studyTypeEq(condition.type()),
                         studyLocationProvinceEq(condition.province()),
                         studyLocationCityEq(condition.city()),
+                        studyTypeEq(condition.type()),
+                        studyCategoryEq(condition.category()),
                         studyIsNotTerminated()
                 )
         );
@@ -57,10 +59,10 @@ public class StudyCategoryQueryRepository implements StudyCategoryQueryRepositor
                 .select(study.id.count())
                 .from(study)
                 .where(
-                        studyCategoryEq(condition.category()),
-                        studyTypeEq(condition.type()),
                         studyLocationProvinceEq(condition.province()),
                         studyLocationCityEq(condition.city()),
+                        studyTypeEq(condition.type()),
+                        studyCategoryEq(condition.category()),
                         studyIsNotTerminated()
                 )
                 .fetchOne();
@@ -87,10 +89,10 @@ public class StudyCategoryQueryRepository implements StudyCategoryQueryRepositor
                 condition.sort(),
                 pageable,
                 Arrays.asList(
-                        studyCategoryIn(memberInterests),
-                        studyTypeEq(condition.type()),
                         studyLocationProvinceEq(condition.province()),
                         studyLocationCityEq(condition.city()),
+                        studyTypeEq(condition.type()),
+                        studyCategoryIn(memberInterests),
                         studyIsNotTerminated()
                 )
         );
@@ -99,10 +101,10 @@ public class StudyCategoryQueryRepository implements StudyCategoryQueryRepositor
                 .select(study.id.count())
                 .from(study)
                 .where(
-                        studyCategoryIn(memberInterests),
-                        studyTypeEq(condition.type()),
                         studyLocationProvinceEq(condition.province()),
                         studyLocationCityEq(condition.city()),
+                        studyTypeEq(condition.type()),
+                        studyCategoryIn(memberInterests),
                         studyIsNotTerminated()
                 )
                 .fetchOne();
@@ -153,8 +155,8 @@ public class StudyCategoryQueryRepository implements StudyCategoryQueryRepositor
             final Pageable pageable,
             final List<BooleanExpression> whereConditions
     ) {
-        final List<StudyPreview> result = query
-                .select(studyPreviewProjection())
+        final List<Long> studyIds = query
+                .select(study.id)
                 .from(study)
                 .leftJoin(favorite).on(favorite.studyId.eq(study.id))
                 .where(whereConditions.toArray(Predicate[]::new))
@@ -164,9 +166,22 @@ public class StudyCategoryQueryRepository implements StudyCategoryQueryRepositor
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        final List<Long> studyIds = result.stream()
-                .map(StudyPreview::getId)
-                .toList();
+        if (CollectionUtils.isEmpty(studyIds)) {
+            return List.of();
+        }
+
+        final List<StudyPreview> preResult = query
+                .select(studyPreviewProjection())
+                .from(study)
+                .where(study.id.in(studyIds))
+                .fetch();
+
+        final List<StudyPreview> result = new ArrayList<>();
+        studyIds.forEach(
+                studyId -> preResult.stream()
+                        .filter(studyPreview -> studyPreview.getId().equals(studyId))
+                        .forEach(result::add)
+        );
 
         applyStudyHashtags(result, studyIds);
         applyLikeMarkingMembers(result, studyIds);
@@ -177,8 +192,8 @@ public class StudyCategoryQueryRepository implements StudyCategoryQueryRepositor
             final Pageable pageable,
             final List<BooleanExpression> whereConditions
     ) {
-        final List<StudyPreview> result = query
-                .select(studyPreviewProjection())
+        final List<Long> studyIds = query
+                .select(study.id)
                 .from(study)
                 .leftJoin(studyReview).on(studyReview.studyId.eq(study.id))
                 .where(whereConditions.toArray(Predicate[]::new))
@@ -188,9 +203,22 @@ public class StudyCategoryQueryRepository implements StudyCategoryQueryRepositor
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        final List<Long> studyIds = result.stream()
-                .map(StudyPreview::getId)
-                .toList();
+        if (CollectionUtils.isEmpty(studyIds)) {
+            return List.of();
+        }
+
+        final List<StudyPreview> preResult = query
+                .select(studyPreviewProjection())
+                .from(study)
+                .where(study.id.in(studyIds))
+                .fetch();
+
+        final List<StudyPreview> result = new ArrayList<>();
+        studyIds.forEach(
+                studyId -> preResult.stream()
+                        .filter(studyPreview -> studyPreview.getId().equals(studyId))
+                        .forEach(result::add)
+        );
 
         applyStudyHashtags(result, studyIds);
         applyLikeMarkingMembers(result, studyIds);
@@ -219,13 +247,12 @@ public class StudyCategoryQueryRepository implements StudyCategoryQueryRepositor
         final List<StudyPreview.HashtagSummary> hashtags = query
                 .select(
                         new QStudyPreview_HashtagSummary(
-                                study.id,
+                                hashtag.study.id,
                                 hashtag.name
                         )
                 )
                 .from(hashtag)
-                .innerJoin(study).on(study.id.eq(hashtag.study.id))
-                .where(study.id.in(studyIds))
+                .where(hashtag.study.id.in(studyIds))
                 .fetch();
 
         result.forEach(study -> study.applyHashtags(collectHashtags(study, hashtags)));
@@ -286,6 +313,10 @@ public class StudyCategoryQueryRepository implements StudyCategoryQueryRepositor
         return study.category.in(categories);
     }
 
+    private BooleanExpression studyIsNotTerminated() {
+        return study.terminated.isFalse();
+    }
+
     private BooleanExpression studyTypeEq(final String type) {
         return (type != null) ? study.type.eq(StudyType.from(type)) : null;
     }
@@ -296,9 +327,5 @@ public class StudyCategoryQueryRepository implements StudyCategoryQueryRepositor
 
     private BooleanExpression studyLocationCityEq(final String city) {
         return (city != null) ? study.location.city.eq(city) : null;
-    }
-
-    private BooleanExpression studyIsNotTerminated() {
-        return study.terminated.isFalse();
     }
 }

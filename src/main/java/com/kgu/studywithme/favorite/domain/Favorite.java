@@ -3,6 +3,7 @@ package com.kgu.studywithme.favorite.domain;
 import com.kgu.studywithme.global.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -11,26 +12,31 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "favorite")
+@Table(
+        name = "favorite",
+        indexes = {
+                @Index(name = "idx_favorite_member_id_study_id", columnList = "member_id, study_id")
+        }
+)
 public class Favorite extends BaseEntity<Favorite> {
-    @Column(name = "study_id", nullable = false)
-    private Long studyId;
-
     @Column(name = "member_id", nullable = false)
     private Long memberId;
 
+    @Column(name = "study_id", nullable = false)
+    private Long studyId;
+
     private Favorite(
-            final Long studyId,
-            final Long memberId
+            final Long memberId,
+            final Long studyId
     ) {
-        this.studyId = studyId;
         this.memberId = memberId;
+        this.studyId = studyId;
     }
 
     public static Favorite favoriteMarking(
-            final Long studyId,
-            final Long memberId
+            final Long memberId,
+            final Long studyId
     ) {
-        return new Favorite(studyId, memberId);
+        return new Favorite(memberId, studyId);
     }
 }
