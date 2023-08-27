@@ -5,10 +5,9 @@ import com.kgu.studywithme.studyparticipant.event.StudyApprovedEvent;
 import com.kgu.studywithme.studyparticipant.event.StudyGraduatedEvent;
 import com.kgu.studywithme.studyparticipant.event.StudyRejectedEvent;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.event.TransactionPhase;
-import org.springframework.transaction.event.TransactionalEventListener;
 
 @Component
 @RequiredArgsConstructor
@@ -16,7 +15,7 @@ public class StudyAssociatedEmailSendEventListener {
     private final EmailSender emailSender;
 
     @Async("emailAsyncExecutor")
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @EventListener
     public void sendParticipationApproveMail(final StudyApprovedEvent event) throws Exception {
         emailSender.sendParticipationApproveMail(
                 event.email(),
@@ -26,7 +25,7 @@ public class StudyAssociatedEmailSendEventListener {
     }
 
     @Async("emailAsyncExecutor")
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @EventListener
     public void sendParticipationRejectMail(final StudyRejectedEvent event) throws Exception {
         emailSender.sendParticipationRejectMail(
                 event.email(),
@@ -37,7 +36,7 @@ public class StudyAssociatedEmailSendEventListener {
     }
 
     @Async("emailAsyncExecutor")
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @EventListener
     public void sendStudyCertificateMail(final StudyGraduatedEvent event) throws Exception {
         emailSender.sendStudyCertificateMail(
                 event.email(),

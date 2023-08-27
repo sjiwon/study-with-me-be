@@ -15,11 +15,10 @@ import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
 import com.kgu.studywithme.studyweekly.infrastructure.persistence.StudyWeeklyJpaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.event.TransactionPhase;
-import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.time.LocalDateTime;
 
@@ -35,11 +34,11 @@ public class WeeklyAssignmentAssociatedEventListener {
     private final ParticipantReadAdapter participantReadAdapter;
     private final StudyAttendanceJpaRepository studyAttendanceJpaRepository;
 
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @EventListener
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void submitAssignmentAndApplyAttendanceStatusAndMemberScore(final AssignmentSubmittedEvent event) {
         log.info("과제 제출에 따른 출석 & 사용자 포인트 업데이트 이벤트 -> {}", event);
-        
+
         final StudyWeekly weekly = getSpecificWeekly(event.weeklyId());
         final Member participant = participantReadAdapter.getParticipant(event.studyId(), event.participantId());
 
@@ -69,11 +68,11 @@ public class WeeklyAssignmentAssociatedEventListener {
         }
     }
 
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @EventListener
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void editAssignmentAndApplyAttendanceStatusAndMemberScore(final AssignmentEditedEvent event) {
         log.info("제출한 과제 수정에 따른 출석 & 사용자 포인트 업데이트 이벤트 -> {}", event);
-        
+
         final StudyWeekly weekly = getSpecificWeekly(event.weeklyId());
         final Member participant = participantReadAdapter.getParticipant(event.studyId(), event.participantId());
 
