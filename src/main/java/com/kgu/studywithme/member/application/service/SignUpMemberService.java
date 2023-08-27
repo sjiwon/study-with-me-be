@@ -4,6 +4,7 @@ import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.application.adapter.MemberDuplicateCheckRepositoryAdapter;
 import com.kgu.studywithme.member.application.usecase.command.SignUpMemberUseCase;
 import com.kgu.studywithme.member.domain.Email;
+import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.member.domain.Nickname;
 import com.kgu.studywithme.member.domain.Phone;
@@ -23,7 +24,8 @@ public class SignUpMemberService implements SignUpMemberUseCase {
         validateNicknameIsUnique(command.nickname());
         validatePhoneIsUnique(command.phone());
 
-        return memberRepository.save(command.toDomain()).getId();
+        final Member member = command.toDomain();
+        return memberRepository.save(member).getId();
     }
 
     private void validateEmailIsUnique(final Email email) {

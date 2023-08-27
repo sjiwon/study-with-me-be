@@ -31,8 +31,7 @@ public class RejectParticipationService implements RejectParticipationUseCase {
         final Study study = studyReader.getById(command.studyId());
         validateStudyInProgress(study);
 
-        studyParticipantRepository.updateParticipantStatus(command.studyId(), command.applierId(), REJECT);
-
+        rejectApplier(study, applier);
         if (applier.isEmailOptIn()) {
             eventPublisher.publishEvent(
                     new StudyRejectedEvent(
@@ -49,5 +48,9 @@ public class RejectParticipationService implements RejectParticipationUseCase {
         if (study.isTerminated()) {
             throw StudyWithMeException.type(StudyParticipantErrorCode.STUDY_IS_TERMINATED);
         }
+    }
+
+    private void rejectApplier(final Study study, final Member applier) {
+        studyParticipantRepository.updateParticipantStatus(study.getId(), applier.getId(), REJECT);
     }
 }

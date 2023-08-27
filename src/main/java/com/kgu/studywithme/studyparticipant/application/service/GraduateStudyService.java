@@ -35,9 +35,7 @@ public class GraduateStudyService implements GraduateStudyUseCase {
         final Member participant = participateMemberReadAdapter.getParticipant(command.studyId(), command.participantId());
         validateParticipantMeetGraduationPolicy(study, participant);
 
-        study.removeParticipant();
-        studyParticipantRepository.updateParticipantStatus(command.studyId(), command.participantId(), GRADUATED);
-
+        graduateStudy(study, participant);
         if (participant.isEmailOptIn()) {
             eventPublisher.publishEvent(
                     new StudyGraduatedEvent(
@@ -61,5 +59,10 @@ public class GraduateStudyService implements GraduateStudyUseCase {
         if (!study.isParticipantMeetGraduationPolicy(attendanceCount)) {
             throw StudyWithMeException.type(StudyParticipantErrorCode.PARTICIPANT_NOT_MEET_GRADUATION_POLICY);
         }
+    }
+
+    private void graduateStudy(final Study study, final Member participant) {
+        study.removeParticipant();
+        studyParticipantRepository.updateParticipantStatus(study.getId(), participant.getId(), GRADUATED);
     }
 }

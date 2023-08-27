@@ -31,9 +31,7 @@ public class ApproveParticipationService implements ApproveParticipationUseCase 
         final Study study = studyReader.getById(command.studyId());
         validateStudyInProgress(study);
 
-        study.addParticipant();
-        studyParticipantRepository.updateParticipantStatus(command.studyId(), command.applierId(), APPROVE);
-
+        approveApplierToParticipant(study, applier);
         if (applier.isEmailOptIn()) {
             eventPublisher.publishEvent(
                     new StudyApprovedEvent(
@@ -49,5 +47,10 @@ public class ApproveParticipationService implements ApproveParticipationUseCase 
         if (study.isTerminated()) {
             throw StudyWithMeException.type(StudyParticipantErrorCode.STUDY_IS_TERMINATED);
         }
+    }
+
+    private void approveApplierToParticipant(final Study study, final Member applier) {
+        study.addParticipant();
+        studyParticipantRepository.updateParticipantStatus(study.getId(), applier.getId(), APPROVE);
     }
 }

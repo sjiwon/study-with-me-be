@@ -30,8 +30,7 @@ public class CreateStudyService implements CreateStudyUseCase {
         validateStudyNameIsUnique(command.name());
 
         final Member host = memberReader.getById(command.hostId());
-        final Study study = studyRepository.save(buildStudy(host, command));
-        applyHostToParticipant(study, host);
+        final Study study = createStudyAndApplyHostToParticipant(host, command);
 
         return study.getId();
     }
@@ -40,6 +39,12 @@ public class CreateStudyService implements CreateStudyUseCase {
         if (studyDuplicateCheckRepositoryAdapter.isNameExists(name.getValue())) {
             throw StudyWithMeException.type(StudyErrorCode.DUPLICATE_NAME);
         }
+    }
+
+    private Study createStudyAndApplyHostToParticipant(final Member host, final Command command) {
+        final Study study = studyRepository.save(buildStudy(host, command));
+        applyHostToParticipant(study, host);
+        return study;
     }
 
     private Study buildStudy(

@@ -23,14 +23,17 @@ public class LeaveParticipationService implements LeaveParticipationUseCase {
     public void invoke(final Command command) {
         final Study study = studyReader.getById(command.studyId());
         validateMemberIsHost(study, command.participantId());
-
-        study.removeParticipant();
-        studyParticipantRepository.updateParticipantStatus(command.studyId(), command.participantId(), LEAVE);
+        leaveStudy(study, command.participantId());
     }
 
     private void validateMemberIsHost(final Study study, final Long participantId) {
         if (study.isHost(participantId)) {
             throw StudyWithMeException.type(StudyParticipantErrorCode.HOST_CANNOT_LEAVE_STUDY);
         }
+    }
+
+    private void leaveStudy(final Study study, final Long participantId) {
+        study.removeParticipant();
+        studyParticipantRepository.updateParticipantStatus(study.getId(), participantId, LEAVE);
     }
 }

@@ -385,7 +385,7 @@ public class StudyAcceptanceFixture {
                 .build(studyId, noticeId)
                 .getPath();
 
-        final UpdateStudyNoticeRequest request = new UpdateStudyNoticeRequest("hello", "content");
+        final UpdateStudyNoticeRequest request = new UpdateStudyNoticeRequest("hello-update", "content-update");
 
         return patchRequest(accessToken, request, uri);
     }
@@ -427,7 +427,7 @@ public class StudyAcceptanceFixture {
                 .build(noticeId, commentId)
                 .getPath();
 
-        final UpdateStudyNoticeCommentRequest request = new UpdateStudyNoticeCommentRequest("ok");
+        final UpdateStudyNoticeCommentRequest request = new UpdateStudyNoticeCommentRequest("ok-update");
 
         return patchRequest(accessToken, request, uri);
     }

@@ -29,9 +29,10 @@ public class ManualAttendanceService implements ManualAttendanceUseCase {
                 command.week()
         );
         final AttendanceStatus previousStatus = attendance.getStatus();
+        final AttendanceStatus currentStatus = command.attendanceStatus();
 
-        attendance.updateAttendanceStatus(command.attendanceStatus());
-        applyMemberScore(command.participantId(), previousStatus, command.attendanceStatus());
+        attendance.updateAttendanceStatus(currentStatus);
+        applyMemberScore(command.participantId(), previousStatus, currentStatus);
     }
 
     private StudyAttendance getParticipantAttendanceByWeek(
