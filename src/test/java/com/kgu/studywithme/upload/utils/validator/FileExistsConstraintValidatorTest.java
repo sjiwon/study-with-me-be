@@ -1,4 +1,4 @@
-package com.kgu.studywithme.file.utils.validator;
+package com.kgu.studywithme.upload.utils.validator;
 
 import jakarta.validation.ConstraintValidatorContext;
 import org.junit.jupiter.api.BeforeEach;
