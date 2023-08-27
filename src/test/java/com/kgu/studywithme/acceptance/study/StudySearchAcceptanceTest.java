@@ -5,11 +5,13 @@ import com.kgu.studywithme.auth.domain.AuthToken;
 import com.kgu.studywithme.common.AcceptanceTest;
 import com.kgu.studywithme.common.fixture.MemberFixture;
 import com.kgu.studywithme.common.fixture.StudyFixture;
+import com.kgu.studywithme.common.utils.DatabaseCleanerAllCallback;
 import io.restassured.response.ValidatableResponse;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.List;
 import java.util.Map;
@@ -44,14 +46,15 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.http.HttpStatus.OK;
 
+@ExtendWith(DatabaseCleanerAllCallback.class)
 @DisplayName("[Acceptance Test] 스터디 조회 관련 기능")
 public class StudySearchAcceptanceTest extends AcceptanceTest {
-    private String hostAccessToken;
-    private Map<StudyFixture, Long> studies;
-    private List<Long> members;
+    private static String hostAccessToken;
+    private static Map<StudyFixture, Long> studies;
+    private static List<Long> members;
 
-    @BeforeEach
-    void setUp() {
+    @BeforeAll
+    static void setUp() {
         hostAccessToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행한다().token().accessToken();
         studies = Stream.of(RABBITMQ, OOP, REDIS, JSP, TOEIC, LINE_INTERVIEW)
                 .collect(Collectors.toMap(

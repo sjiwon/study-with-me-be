@@ -1,11 +1,13 @@
 package com.kgu.studywithme.acceptance.study;
 
 import com.kgu.studywithme.common.AcceptanceTest;
+import com.kgu.studywithme.common.utils.DatabaseCleanerEachCallback;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디를_생성한다;
 import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디를_수정한다;
@@ -16,6 +18,7 @@ import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
+@ExtendWith(DatabaseCleanerEachCallback.class)
 @DisplayName("[Acceptance Test] 스터디 관련 기능")
 public class StudyAcceptanceTest extends AcceptanceTest {
     private String hostAccessToken;

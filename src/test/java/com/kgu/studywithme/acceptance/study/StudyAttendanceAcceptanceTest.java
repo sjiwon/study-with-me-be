@@ -1,10 +1,12 @@
 package com.kgu.studywithme.acceptance.study;
 
 import com.kgu.studywithme.common.AcceptanceTest;
+import com.kgu.studywithme.common.utils.DatabaseCleanerEachCallback;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.사용자에_대한_해당_주차_출석_정보를_수정한다;
 import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_신청자에_대한_참여를_승인한다;
@@ -17,6 +19,7 @@ import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY
 import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
+@ExtendWith(DatabaseCleanerEachCallback.class)
 @DisplayName("[Acceptance Test] 스터디 출석 관련 기능")
 public class StudyAttendanceAcceptanceTest extends AcceptanceTest {
     private String hostAccessToken;

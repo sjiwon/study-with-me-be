@@ -1,9 +1,11 @@
 package com.kgu.studywithme.acceptance.auth;
 
 import com.kgu.studywithme.common.AcceptanceTest;
+import com.kgu.studywithme.common.utils.DatabaseCleanerEachCallback;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static com.kgu.studywithme.acceptance.auth.AuthAcceptanceFixture.Google_OAuth_로그인을_진행한다;
 import static com.kgu.studywithme.acceptance.auth.AuthAcceptanceFixture.Google_OAuth_인증_URL를_생성한다;
@@ -21,6 +23,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
 
+@ExtendWith(DatabaseCleanerEachCallback.class)
 @DisplayName("[Acceptance Test] 인증 관련 기능")
 public class AuthAcceptanceTest extends AcceptanceTest {
     @Nested

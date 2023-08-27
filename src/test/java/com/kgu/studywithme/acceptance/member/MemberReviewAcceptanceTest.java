@@ -1,10 +1,12 @@
 package com.kgu.studywithme.acceptance.member;
 
 import com.kgu.studywithme.common.AcceptanceTest;
+import com.kgu.studywithme.common.utils.DatabaseCleanerEachCallback;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static com.kgu.studywithme.acceptance.member.MemberAcceptanceFixture.작성한_리뷰를_수정한다;
 import static com.kgu.studywithme.acceptance.member.MemberAcceptanceFixture.해당_사용자에게_리뷰를_작성한다;
@@ -23,6 +25,7 @@ import static org.hamcrest.Matchers.is;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
 
+@ExtendWith(DatabaseCleanerEachCallback.class)
 @DisplayName("[Acceptance Test] 사용자 리뷰 관련 기능")
 public class MemberReviewAcceptanceTest extends AcceptanceTest {
     private Long hostId;

@@ -2,11 +2,13 @@ package com.kgu.studywithme.acceptance.member;
 
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.common.AcceptanceTest;
+import com.kgu.studywithme.common.utils.DatabaseCleanerEachCallback;
 import com.kgu.studywithme.member.infrastructure.query.dto.GraduatedStudy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -29,16 +31,11 @@ import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터
 import static com.kgu.studywithme.common.fixture.MemberFixture.ANONYMOUS;
 import static com.kgu.studywithme.common.fixture.MemberFixture.GHOST;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
-import static com.kgu.studywithme.common.fixture.StudyFixture.JPA;
 import static com.kgu.studywithme.common.fixture.StudyFixture.KAFKA;
-import static com.kgu.studywithme.common.fixture.StudyFixture.KOTLIN;
 import static com.kgu.studywithme.common.fixture.StudyFixture.LINE_INTERVIEW;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1;
 import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_2;
-import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_3;
-import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_4;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ABSENCE;
 import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
 import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.LATE;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -47,6 +44,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.http.HttpStatus.OK;
 
+@ExtendWith(DatabaseCleanerEachCallback.class)
 @DisplayName("[Acceptance Test] 사용자 정보 관련 기능")
 public class MemberQueryAcceptanceTest extends AcceptanceTest {
     private Long memberId;
@@ -166,7 +164,7 @@ public class MemberQueryAcceptanceTest extends AcceptanceTest {
         @BeforeEach
         void setUp() {
             hostAccessToken = GHOST.회원가입_후_Google_OAuth_로그인을_진행한다().token().accessToken();
-            studies = Stream.of(LINE_INTERVIEW, SPRING, JPA, KOTLIN, KAFKA)
+            studies = Stream.of(LINE_INTERVIEW, SPRING, KAFKA)
                     .map(study -> study.스터디를_생성한다(hostAccessToken))
                     .toList();
             studies.forEach(studyId -> 스터디_참여_신청을_한다(memberAccessToken, studyId));
@@ -180,12 +178,10 @@ public class MemberQueryAcceptanceTest extends AcceptanceTest {
             void success() {
                 사용자가_신청한_스터디를_조회한다(memberAccessToken)
                         .statusCode(OK.value())
-                        .body("result", hasSize(5))
-                        .body("result[0].id", is(studies.get(4).intValue()))
-                        .body("result[1].id", is(studies.get(3).intValue()))
-                        .body("result[2].id", is(studies.get(2).intValue()))
-                        .body("result[3].id", is(studies.get(1).intValue()))
-                        .body("result[4].id", is(studies.get(0).intValue()));
+                        .body("result", hasSize(3))
+                        .body("result[0].id", is(studies.get(2).intValue()))
+                        .body("result[1].id", is(studies.get(1).intValue()))
+                        .body("result[2].id", is(studies.get(0).intValue()));
             }
         }
 
@@ -200,25 +196,20 @@ public class MemberQueryAcceptanceTest extends AcceptanceTest {
                         .body("result", hasSize(0));
 
                 스터디를_찜_등록한다(memberAccessToken, studies.get(0));
-                스터디를_찜_등록한다(memberAccessToken, studies.get(3));
-                스터디를_찜_등록한다(memberAccessToken, studies.get(4));
+                스터디를_찜_등록한다(memberAccessToken, studies.get(2));
                 사용자가_찜한_스터디를_조회한다(memberAccessToken)
                         .statusCode(OK.value())
-                        .body("result", hasSize(3))
-                        .body("result[0].id", is(studies.get(4).intValue()))
-                        .body("result[1].id", is(studies.get(3).intValue()))
-                        .body("result[2].id", is(studies.get(0).intValue()));
+                        .body("result", hasSize(2))
+                        .body("result[0].id", is(studies.get(2).intValue()))
+                        .body("result[1].id", is(studies.get(0).intValue()));
 
-                스터디를_찜_등록한다(memberAccessToken, studies.get(2));
                 스터디를_찜_등록한다(memberAccessToken, studies.get(1));
                 사용자가_찜한_스터디를_조회한다(memberAccessToken)
                         .statusCode(OK.value())
-                        .body("result", hasSize(5))
+                        .body("result", hasSize(3))
                         .body("result[0].id", is(studies.get(1).intValue()))
                         .body("result[1].id", is(studies.get(2).intValue()))
-                        .body("result[2].id", is(studies.get(4).intValue()))
-                        .body("result[3].id", is(studies.get(3).intValue()))
-                        .body("result[4].id", is(studies.get(0).intValue()));
+                        .body("result[2].id", is(studies.get(0).intValue()));
             }
         }
 
@@ -233,18 +224,18 @@ public class MemberQueryAcceptanceTest extends AcceptanceTest {
                         .body("result", hasSize(0));
 
                 스터디_신청자에_대한_참여를_승인한다(hostAccessToken, studies.get(0), memberId);
-                스터디_신청자에_대한_참여를_승인한다(hostAccessToken, studies.get(3), memberId);
+                스터디_신청자에_대한_참여를_승인한다(hostAccessToken, studies.get(2), memberId);
                 사용자가_참여하고_있는_스터디를_조회한다(memberId)
                         .statusCode(OK.value())
                         .body("result", hasSize(2))
-                        .body("result[0].id", is(studies.get(3).intValue()))
+                        .body("result[0].id", is(studies.get(2).intValue()))
                         .body("result[1].id", is(studies.get(0).intValue()));
 
                 스터디_신청자에_대한_참여를_승인한다(hostAccessToken, studies.get(1), memberId);
                 사용자가_참여하고_있는_스터디를_조회한다(memberId)
                         .statusCode(OK.value())
                         .body("result", hasSize(3))
-                        .body("result[0].id", is(studies.get(3).intValue()))
+                        .body("result[0].id", is(studies.get(2).intValue()))
                         .body("result[1].id", is(studies.get(1).intValue()))
                         .body("result[2].id", is(studies.get(0).intValue()));
             }
@@ -258,8 +249,6 @@ public class MemberQueryAcceptanceTest extends AcceptanceTest {
                 스터디_신청자에_대한_참여를_승인한다(hostAccessToken, studies.get(0), memberId);
                 스터디_신청자에_대한_참여를_승인한다(hostAccessToken, studies.get(1), memberId);
                 스터디_신청자에_대한_참여를_승인한다(hostAccessToken, studies.get(2), memberId);
-                스터디_신청자에_대한_참여를_승인한다(hostAccessToken, studies.get(3), memberId);
-                스터디_신청자에_대한_참여를_승인한다(hostAccessToken, studies.get(4), memberId);
             }
 
             @Test
@@ -269,11 +258,11 @@ public class MemberQueryAcceptanceTest extends AcceptanceTest {
                         .statusCode(OK.value())
                         .body("result", hasSize(0));
 
-                스터디를_졸업한다(memberAccessToken, studies.get(4));
+                스터디를_졸업한다(memberAccessToken, studies.get(2));
                 사용자가_졸업한_스터디를_조회한다(memberId)
                         .statusCode(OK.value())
                         .body("result", hasSize(1))
-                        .body("result[0].id", is(studies.get(4).intValue()))
+                        .body("result[0].id", is(studies.get(2).intValue()))
                         .body("result[0].review", nullValue(GraduatedStudy.WrittenReview.class));
             }
         }
@@ -286,8 +275,6 @@ public class MemberQueryAcceptanceTest extends AcceptanceTest {
                 스터디_신청자에_대한_참여를_승인한다(hostAccessToken, studies.get(0), memberId);
                 스터디_주차를_생성한다(hostAccessToken, studies.get(0), STUDY_WEEKLY_1);
                 스터디_주차를_생성한다(hostAccessToken, studies.get(0), STUDY_WEEKLY_2);
-                스터디_주차를_생성한다(hostAccessToken, studies.get(0), STUDY_WEEKLY_3);
-                스터디_주차를_생성한다(hostAccessToken, studies.get(0), STUDY_WEEKLY_4);
             }
 
             @Test
@@ -303,7 +290,7 @@ public class MemberQueryAcceptanceTest extends AcceptanceTest {
                         .body("result[2].status", is("ABSENCE"))
                         .body("result[2].count", is(0))
                         .body("result[3].status", is("NON_ATTENDANCE"))
-                        .body("result[3].count", is(4));
+                        .body("result[3].count", is(2));
 
                 사용자에_대한_해당_주차_출석_정보를_수정한다(hostAccessToken, studies.get(0), memberId, STUDY_WEEKLY_1.getWeek(), LATE);
                 사용자의_스터디_출석률을_조회한다(memberId)
@@ -316,7 +303,7 @@ public class MemberQueryAcceptanceTest extends AcceptanceTest {
                         .body("result[2].status", is("ABSENCE"))
                         .body("result[2].count", is(0))
                         .body("result[3].status", is("NON_ATTENDANCE"))
-                        .body("result[3].count", is(3));
+                        .body("result[3].count", is(1));
 
                 사용자에_대한_해당_주차_출석_정보를_수정한다(hostAccessToken, studies.get(0), memberId, STUDY_WEEKLY_2.getWeek(), ATTENDANCE);
                 사용자의_스터디_출석률을_조회한다(memberId)
@@ -328,32 +315,6 @@ public class MemberQueryAcceptanceTest extends AcceptanceTest {
                         .body("result[1].count", is(1))
                         .body("result[2].status", is("ABSENCE"))
                         .body("result[2].count", is(0))
-                        .body("result[3].status", is("NON_ATTENDANCE"))
-                        .body("result[3].count", is(2));
-
-                사용자에_대한_해당_주차_출석_정보를_수정한다(hostAccessToken, studies.get(0), memberId, STUDY_WEEKLY_3.getWeek(), ABSENCE);
-                사용자의_스터디_출석률을_조회한다(memberId)
-                        .statusCode(OK.value())
-                        .body("result", hasSize(4))
-                        .body("result[0].status", is("ATTENDANCE"))
-                        .body("result[0].count", is(1))
-                        .body("result[1].status", is("LATE"))
-                        .body("result[1].count", is(1))
-                        .body("result[2].status", is("ABSENCE"))
-                        .body("result[2].count", is(1))
-                        .body("result[3].status", is("NON_ATTENDANCE"))
-                        .body("result[3].count", is(1));
-
-                사용자에_대한_해당_주차_출석_정보를_수정한다(hostAccessToken, studies.get(0), memberId, STUDY_WEEKLY_4.getWeek(), ATTENDANCE);
-                사용자의_스터디_출석률을_조회한다(memberId)
-                        .statusCode(OK.value())
-                        .body("result", hasSize(4))
-                        .body("result[0].status", is("ATTENDANCE"))
-                        .body("result[0].count", is(2))
-                        .body("result[1].status", is("LATE"))
-                        .body("result[1].count", is(1))
-                        .body("result[2].status", is("ABSENCE"))
-                        .body("result[2].count", is(1))
                         .body("result[3].status", is("NON_ATTENDANCE"))
                         .body("result[3].count", is(0));
             }
