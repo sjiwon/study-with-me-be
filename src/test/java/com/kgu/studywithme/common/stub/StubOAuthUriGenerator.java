@@ -1,11 +1,11 @@
 package com.kgu.studywithme.common.stub;
 
-import com.kgu.studywithme.auth.application.adapter.OAuthUri;
+import com.kgu.studywithme.auth.application.adapter.OAuthUriGenerator;
 import com.kgu.studywithme.auth.utils.OAuthProvider;
 
 import static com.kgu.studywithme.auth.utils.OAuthProvider.GOOGLE;
 
-public class StubOAuthUri implements OAuthUri {
+public class StubOAuthUriGenerator implements OAuthUriGenerator {
     @Override
     public boolean isSupported(final OAuthProvider provider) {
         return provider == GOOGLE;

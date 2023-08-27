@@ -1,9 +1,9 @@
 package com.kgu.studywithme.auth.infrastructure.oauth.google;
 
 import com.kgu.studywithme.auth.infrastructure.oauth.kakao.KakaoOAuthProperties;
-import com.kgu.studywithme.auth.infrastructure.oauth.kakao.KakaoOAuthUri;
+import com.kgu.studywithme.auth.infrastructure.oauth.kakao.KakaoOAuthUriGenerator;
 import com.kgu.studywithme.auth.infrastructure.oauth.naver.NaverOAuthProperties;
-import com.kgu.studywithme.auth.infrastructure.oauth.naver.NaverOAuthUri;
+import com.kgu.studywithme.auth.infrastructure.oauth.naver.NaverOAuthUriGenerator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,26 +15,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @SpringBootTest(classes = {
-        GoogleOAuthUri.class, GoogleOAuthProperties.class,
-        NaverOAuthUri.class, NaverOAuthProperties.class,
-        KakaoOAuthUri.class, KakaoOAuthProperties.class
+        GoogleOAuthUriGenerator.class, GoogleOAuthProperties.class,
+        NaverOAuthUriGenerator.class, NaverOAuthProperties.class,
+        KakaoOAuthUriGenerator.class, KakaoOAuthProperties.class
 })
-@DisplayName("Auth -> OAuthUri [구글, 네이버, 카카오] 테스트")
-class OAuthUriTest {
+@DisplayName("Auth -> OAuthUriGenerator [구글, 네이버, 카카오] 테스트")
+class OAuthUriGeneratorTest {
     @Autowired
-    private GoogleOAuthUri googleOAuthUri;
+    private GoogleOAuthUriGenerator googleOAuthUri;
 
     @Autowired
     private GoogleOAuthProperties googleOAuthProperties;
 
     @Autowired
-    private NaverOAuthUri naverOAuthUri;
+    private NaverOAuthUriGenerator naverOAuthUri;
 
     @Autowired
     private NaverOAuthProperties naverOAuthProperties;
 
     @Autowired
-    private KakaoOAuthUri kakaoOAuthUri;
+    private KakaoOAuthUriGenerator kakaoOAuthUri;
 
     @Autowired
     private KakaoOAuthProperties kakaoOAuthProperties;

@@ -1,6 +1,6 @@
-package com.kgu.studywithme.auth.infrastructure.oauth.naver;
+package com.kgu.studywithme.auth.infrastructure.oauth.kakao;
 
-import com.kgu.studywithme.auth.application.adapter.OAuthUri;
+import com.kgu.studywithme.auth.application.adapter.OAuthUriGenerator;
 import com.kgu.studywithme.auth.utils.OAuthProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -8,16 +8,16 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.UUID;
 
-import static com.kgu.studywithme.auth.utils.OAuthProvider.NAVER;
+import static com.kgu.studywithme.auth.utils.OAuthProvider.KAKAO;
 
 @Component
 @RequiredArgsConstructor
-public class NaverOAuthUri implements OAuthUri {
-    private final NaverOAuthProperties properties;
+public class KakaoOAuthUriGenerator implements OAuthUriGenerator {
+    private final KakaoOAuthProperties properties;
 
     @Override
     public boolean isSupported(final OAuthProvider provider) {
-        return provider == NAVER;
+        return provider == KAKAO;
     }
 
     @Override
@@ -26,6 +26,7 @@ public class NaverOAuthUri implements OAuthUri {
                 .fromUriString(properties.getAuthUrl())
                 .queryParam("response_type", "code")
                 .queryParam("client_id", properties.getClientId())
+                .queryParam("scope", String.join(" ", properties.getScope()))
                 .queryParam("redirect_uri", redirectUri)
                 .queryParam("state", UUID.randomUUID().toString().replaceAll("-", ""))
                 .build()

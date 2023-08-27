@@ -1,9 +1,9 @@
 package com.kgu.studywithme.auth.application.service;
 
-import com.kgu.studywithme.auth.application.adapter.OAuthUri;
+import com.kgu.studywithme.auth.application.adapter.OAuthUriGenerator;
 import com.kgu.studywithme.auth.application.usecase.query.QueryOAuthLinkUseCase;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
-import com.kgu.studywithme.auth.infrastructure.oauth.google.GoogleOAuthUri;
+import com.kgu.studywithme.auth.infrastructure.oauth.google.GoogleOAuthUriGenerator;
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,14 +32,14 @@ class QueryOAuthLinkServiceTest extends UseCaseTest {
     private QueryOAuthLinkService queryOAuthLinkService;
 
     @Spy
-    private List<OAuthUri> oAuthUris = new ArrayList<>();
+    private List<OAuthUriGenerator> oAuthUrisGenerators = new ArrayList<>();
 
     @Mock
-    private GoogleOAuthUri googleOAuthUri;
+    private GoogleOAuthUriGenerator googleOAuthUri;
 
     @BeforeEach
     void setUp() {
-        oAuthUris.add(googleOAuthUri);
+        oAuthUrisGenerators.add(googleOAuthUri);
     }
 
     @Test

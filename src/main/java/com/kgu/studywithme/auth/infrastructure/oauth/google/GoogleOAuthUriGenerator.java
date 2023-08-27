@@ -1,6 +1,6 @@
 package com.kgu.studywithme.auth.infrastructure.oauth.google;
 
-import com.kgu.studywithme.auth.application.adapter.OAuthUri;
+import com.kgu.studywithme.auth.application.adapter.OAuthUriGenerator;
 import com.kgu.studywithme.auth.utils.OAuthProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,7 +12,7 @@ import static com.kgu.studywithme.auth.utils.OAuthProvider.GOOGLE;
 
 @Component
 @RequiredArgsConstructor
-public class GoogleOAuthUri implements OAuthUri {
+public class GoogleOAuthUriGenerator implements OAuthUriGenerator {
     private final GoogleOAuthProperties properties;
 
     @Override
