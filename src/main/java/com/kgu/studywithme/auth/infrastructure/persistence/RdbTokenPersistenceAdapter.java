@@ -24,6 +24,7 @@ public class RdbTokenPersistenceAdapter implements TokenPersistenceAdapter {
                 );
     }
 
+    @StudyWithMeWritableTransactional
     @Override
     public void updateMemberRefreshToken(
             final Long memberId,
@@ -32,6 +33,7 @@ public class RdbTokenPersistenceAdapter implements TokenPersistenceAdapter {
         tokenJpaRepository.updateMemberRefreshToken(memberId, refreshToken);
     }
 
+    @StudyWithMeWritableTransactional
     @Override
     public void deleteMemberRefreshToken(final Long memberId) {
         tokenJpaRepository.deleteMemberRefreshToken(memberId);
