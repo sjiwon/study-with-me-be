@@ -4,7 +4,7 @@ import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.study.application.adapter.StudyInformationRepositoryAdapter;
 import com.kgu.studywithme.study.infrastructure.query.dto.AttendanceInformation;
 import com.kgu.studywithme.study.infrastructure.query.dto.NoticeInformation;
-import com.kgu.studywithme.study.infrastructure.query.dto.QAttendanceInformation_AttenadnceParticipant;
+import com.kgu.studywithme.study.infrastructure.query.dto.QAttendanceInformation_AttendanceParticipant;
 import com.kgu.studywithme.study.infrastructure.query.dto.QNoticeInformation;
 import com.kgu.studywithme.study.infrastructure.query.dto.QNoticeInformation_CommentInformation;
 import com.kgu.studywithme.study.infrastructure.query.dto.QReviewInformation_ReviewMetadata;
@@ -252,9 +252,9 @@ public class StudyInformationRepository implements StudyInformationRepositoryAda
 
     @Override
     public List<AttendanceInformation> fetchAttendanceById(final Long studyId) {
-        final List<AttendanceInformation.AttenadnceParticipant> result = query
+        final List<AttendanceInformation.AttendanceParticipant> result = query
                 .select(
-                        new QAttendanceInformation_AttenadnceParticipant(
+                        new QAttendanceInformation_AttendanceParticipant(
                                 member.id,
                                 member.nickname,
                                 studyAttendance.week,
@@ -278,7 +278,7 @@ public class StudyInformationRepository implements StudyInformationRepositoryAda
         return result.stream()
                 .collect(
                         Collectors.groupingBy(
-                                AttendanceInformation.AttenadnceParticipant::participant,
+                                AttendanceInformation.AttendanceParticipant::participant,
                                 LinkedHashMap::new,
                                 Collectors.mapping(
                                         value -> new AttendanceInformation.AttendanceSummary(

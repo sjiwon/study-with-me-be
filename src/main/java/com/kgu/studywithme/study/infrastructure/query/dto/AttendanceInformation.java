@@ -10,13 +10,13 @@ public record AttendanceInformation(
         StudyMember member,
         List<AttendanceSummary> summaries
 ) {
-    public record AttenadnceParticipant(
+    public record AttendanceParticipant(
             StudyMember participant,
             int week,
             String attendanceStatus
     ) {
         @QueryProjection
-        public AttenadnceParticipant(
+        public AttendanceParticipant(
                 final Long id,
                 final Nickname nickname,
                 final int week,
