@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.kgu.studywithme.auth.utils.OAuthProvider.GOOGLE;
+import static com.kgu.studywithme.auth.domain.oauth.OAuthProvider.GOOGLE;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.utils.OAuthUtils.AUTHORIZATION_CODE;
 import static com.kgu.studywithme.common.utils.OAuthUtils.REDIRECT_URI;

@@ -1,4 +1,4 @@
-package com.kgu.studywithme.auth.utils;
+package com.kgu.studywithme.auth.domain.oauth;
 
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.global.exception.StudyWithMeException;

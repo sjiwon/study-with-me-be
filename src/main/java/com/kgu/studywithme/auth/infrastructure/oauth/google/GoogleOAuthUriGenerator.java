@@ -1,14 +1,14 @@
 package com.kgu.studywithme.auth.infrastructure.oauth.google;
 
 import com.kgu.studywithme.auth.application.adapter.OAuthUriGenerator;
-import com.kgu.studywithme.auth.utils.OAuthProvider;
+import com.kgu.studywithme.auth.domain.oauth.OAuthProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.UUID;
 
-import static com.kgu.studywithme.auth.utils.OAuthProvider.GOOGLE;
+import static com.kgu.studywithme.auth.domain.oauth.OAuthProvider.GOOGLE;
 
 @Component
 @RequiredArgsConstructor

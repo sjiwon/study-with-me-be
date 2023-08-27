@@ -1,8 +1,8 @@
 package com.kgu.studywithme.auth.application.adapter;
 
+import com.kgu.studywithme.auth.domain.oauth.OAuthProvider;
 import com.kgu.studywithme.auth.domain.oauth.OAuthTokenResponse;
 import com.kgu.studywithme.auth.domain.oauth.OAuthUserResponse;
-import com.kgu.studywithme.auth.utils.OAuthProvider;
 
 public interface OAuthConnector {
     boolean isSupported(final OAuthProvider provider);

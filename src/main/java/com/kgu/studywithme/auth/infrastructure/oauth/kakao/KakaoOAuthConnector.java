@@ -1,12 +1,12 @@
 package com.kgu.studywithme.auth.infrastructure.oauth.kakao;
 
 import com.kgu.studywithme.auth.application.adapter.OAuthConnector;
+import com.kgu.studywithme.auth.domain.oauth.OAuthProvider;
 import com.kgu.studywithme.auth.domain.oauth.OAuthTokenResponse;
 import com.kgu.studywithme.auth.domain.oauth.OAuthUserResponse;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.auth.infrastructure.oauth.kakao.response.KakaoTokenResponse;
 import com.kgu.studywithme.auth.infrastructure.oauth.kakao.response.KakaoUserResponse;
-import com.kgu.studywithme.auth.utils.OAuthProvider;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -18,9 +18,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import static com.kgu.studywithme.auth.domain.oauth.OAuthProvider.KAKAO;
 import static com.kgu.studywithme.auth.infrastructure.oauth.OAuthMetadata.CONTENT_TYPE_VALUE;
 import static com.kgu.studywithme.auth.infrastructure.oauth.OAuthMetadata.TOKEN_TYPE;
-import static com.kgu.studywithme.auth.utils.OAuthProvider.KAKAO;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.HttpMethod.GET;

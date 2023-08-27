@@ -16,7 +16,7 @@ import org.mockito.Spy;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.kgu.studywithme.auth.utils.OAuthProvider.GOOGLE;
+import static com.kgu.studywithme.auth.domain.oauth.OAuthProvider.GOOGLE;
 import static com.kgu.studywithme.common.utils.OAuthUtils.REDIRECT_URI;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
