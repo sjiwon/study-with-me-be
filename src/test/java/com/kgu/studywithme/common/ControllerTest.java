@@ -17,6 +17,7 @@ import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeCancell
 import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeMarkingUseCase;
 import com.kgu.studywithme.favorite.presentation.FavoriteApiController;
 import com.kgu.studywithme.file.application.adapter.FileUploader;
+import com.kgu.studywithme.file.presentation.FileUploadApiController;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.application.usecase.command.SignUpMemberUseCase;
 import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
@@ -86,7 +87,6 @@ import com.kgu.studywithme.studyweekly.application.usecase.command.SubmitWeeklyA
 import com.kgu.studywithme.studyweekly.application.usecase.command.UpdateStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.presentation.StudyWeeklyApiController;
 import com.kgu.studywithme.studyweekly.presentation.StudyWeeklySubmitApiController;
-import com.kgu.studywithme.upload.presentation.UploadApiController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -164,7 +164,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
         StudyReviewApiController.class,
 
         // Upload
-        UploadApiController.class,
+        FileUploadApiController.class,
 })
 @ExtendWith(RestDocumentationExtension.class)
 @Import(TestAopConfiguration.class)

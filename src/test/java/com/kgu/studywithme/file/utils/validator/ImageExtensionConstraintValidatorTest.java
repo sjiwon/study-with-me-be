@@ -1,4 +1,4 @@
-package com.kgu.studywithme.upload.utils.validator;
+package com.kgu.studywithme.file.utils.validator;
 
 import jakarta.validation.ConstraintValidatorContext;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +17,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-@DisplayName("Upload -> ValidImageExtensionValidator 테스트")
+@DisplayName("File -> ImageExtensionConstraintValidator 테스트")
 class ImageExtensionConstraintValidatorTest {
     private ImageExtensionConstraintValidator validator;
     private ConstraintValidatorContext context;

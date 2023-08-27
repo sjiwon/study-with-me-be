@@ -1,4 +1,4 @@
-package com.kgu.studywithme.upload.utils.validator;
+package com.kgu.studywithme.file.utils.validator;
 
 import com.kgu.studywithme.file.domain.FileExtension;
 import jakarta.validation.ConstraintValidator;

@@ -1,9 +1,9 @@
-package com.kgu.studywithme.upload.presentation;
+package com.kgu.studywithme.file.presentation;
 
 import com.kgu.studywithme.file.application.adapter.FileUploader;
+import com.kgu.studywithme.file.presentation.dto.request.ImageUploadRequest;
 import com.kgu.studywithme.global.aop.CheckAuthUser;
 import com.kgu.studywithme.global.dto.ResponseWrapper;
-import com.kgu.studywithme.upload.presentation.dto.request.ImageUploadRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -21,7 +21,7 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-public class UploadApiController {
+public class FileUploadApiController {
     private final FileUploader fileUploader;
 
     @Operation(summary = "이미지 업로드 EndPoint")

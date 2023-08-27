@@ -1,4 +1,4 @@
-package com.kgu.studywithme.acceptance.upload;
+package com.kgu.studywithme.acceptance.file;
 
 import com.kgu.studywithme.common.AcceptanceTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -6,14 +6,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static com.kgu.studywithme.acceptance.upload.UploadAcceptanceFixture.스터디_설명_내부_이미지를_업로드한다;
-import static com.kgu.studywithme.acceptance.upload.UploadAcceptanceFixture.스터디_주차_글_내부_이미지를_업로드한다;
+import static com.kgu.studywithme.acceptance.file.FileUploadAcceptanceFixture.스터디_설명_내부_이미지를_업로드한다;
+import static com.kgu.studywithme.acceptance.file.FileUploadAcceptanceFixture.스터디_주차_글_내부_이미지를_업로드한다;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.http.HttpStatus.OK;
 
 @DisplayName("[Acceptance Test] 파일 업로드 관련 기능")
-public class UploadAcceptanceTest extends AcceptanceTest {
+public class FileUploadAcceptanceTest extends AcceptanceTest {
     private String accessToken;
 
     @BeforeEach

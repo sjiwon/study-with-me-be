@@ -1,4 +1,4 @@
-package com.kgu.studywithme.upload.utils.validator;
+package com.kgu.studywithme.file.utils.validator;
 
 import jakarta.validation.ConstraintValidatorContext;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.mock;
 
-@DisplayName("Upload -> ValidImageUploadCategoryValidator 테스트")
+@DisplayName("File -> ImageUploadCategoryConstraintValidator 테스트")
 class ImageUploadCategoryConstraintValidatorTest {
     private ImageUploadCategoryConstraintValidator validator;
     private ConstraintValidatorContext context;

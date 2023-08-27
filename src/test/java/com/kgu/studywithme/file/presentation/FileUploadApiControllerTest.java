@@ -1,4 +1,4 @@
-package com.kgu.studywithme.upload.presentation;
+package com.kgu.studywithme.file.presentation;
 
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.global.exception.GlobalErrorCode;
@@ -31,8 +31,8 @@ import static org.springframework.restdocs.request.RequestDocumentation.requestP
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("Upload -> UploadApiController 테스트")
-class UploadApiControllerTest extends ControllerTest {
+@DisplayName("File -> FileUploadApiController 테스트")
+class FileUploadApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("Weekly 설명 내부 이미지 업로드 API [POST /api/image] - AccessToken 필수")
     class UploadWeeklyImage {
