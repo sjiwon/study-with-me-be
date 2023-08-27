@@ -3,7 +3,6 @@ package com.kgu.studywithme.study.application.service;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.study.application.adapter.StudyDuplicateCheckRepositoryAdapter;
-import com.kgu.studywithme.study.application.adapter.StudyReadAdapter;
 import com.kgu.studywithme.study.application.usecase.command.UpdateStudyUseCase;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
@@ -18,13 +17,13 @@ import static com.kgu.studywithme.study.domain.RecruitmentStatus.IN_PROGRESS;
 @RequiredArgsConstructor
 public class UpdateStudyService implements UpdateStudyUseCase {
     private final StudyDuplicateCheckRepositoryAdapter studyDuplicateCheckRepositoryAdapter;
-    private final StudyReadAdapter studyReadAdapter;
+    private final StudyReader studyReader;
 
     @Override
     public void invoke(final Command command) {
         validateNameIsUnique(command.studyId(), command.name());
 
-        final Study study = studyReadAdapter.getById(command.studyId());
+        final Study study = studyReader.getById(command.studyId());
         study.update(
                 command.name(),
                 command.description(),

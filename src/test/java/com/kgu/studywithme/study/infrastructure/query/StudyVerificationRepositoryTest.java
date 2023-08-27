@@ -2,9 +2,9 @@ package com.kgu.studywithme.study.infrastructure.query;
 
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
+import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.study.infrastructure.persistence.StudyJpaRepository;
+import com.kgu.studywithme.study.domain.StudyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,10 +24,10 @@ class StudyVerificationRepositoryTest extends RepositoryTest {
     private StudyVerificationRepository studyVerificationRepository;
 
     @Autowired
-    private StudyJpaRepository studyJpaRepository;
+    private StudyRepository studyRepository;
 
     @Autowired
-    private MemberJpaRepository memberJpaRepository;
+    private MemberRepository memberRepository;
 
     private Member host;
     private Member anonymous;
@@ -35,9 +35,9 @@ class StudyVerificationRepositoryTest extends RepositoryTest {
 
     @BeforeEach
     void setUp() {
-        host = memberJpaRepository.save(JIWON.toMember());
-        anonymous = memberJpaRepository.save(ANONYMOUS.toMember());
-        study = studyJpaRepository.save(SPRING.toOnlineStudy(host.getId()));
+        host = memberRepository.save(JIWON.toMember());
+        anonymous = memberRepository.save(ANONYMOUS.toMember());
+        study = studyRepository.save(SPRING.toOnlineStudy(host.getId()));
     }
 
     @Test

@@ -6,8 +6,8 @@ import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.studynotice.application.usecase.command.DeleteStudyNoticeCommentUseCase;
 import com.kgu.studywithme.studynotice.domain.StudyNotice;
 import com.kgu.studywithme.studynotice.domain.comment.StudyNoticeComment;
+import com.kgu.studywithme.studynotice.domain.comment.StudyNoticeCommentRepository;
 import com.kgu.studywithme.studynotice.exception.StudyNoticeErrorCode;
-import com.kgu.studywithme.studynotice.infrastructure.persistence.comment.StudyNoticeCommentJpaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -30,7 +30,7 @@ class DeleteStudyNoticeCommentServiceTest extends UseCaseTest {
     private DeleteStudyNoticeCommentService deleteStudyNoticeCommentService;
 
     @Mock
-    private StudyNoticeCommentJpaRepository studyNoticeCommentJpaRepository;
+    private StudyNoticeCommentRepository studyNoticeCommentRepository;
 
     private final Member writer = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Member anonymous = JIWON.toMember().apply(2L, LocalDateTime.now());
@@ -50,7 +50,7 @@ class DeleteStudyNoticeCommentServiceTest extends UseCaseTest {
     @DisplayName("댓글 작성자가 아니면 삭제할 수 없다")
     void throwExceptionByMemberIsNotWriter() {
         // given
-        given(studyNoticeCommentJpaRepository.findById(any())).willReturn(Optional.of(comment));
+        given(studyNoticeCommentRepository.findById(any())).willReturn(Optional.of(comment));
 
         // when - then
         assertThatThrownBy(() -> deleteStudyNoticeCommentService.invoke(
@@ -60,8 +60,8 @@ class DeleteStudyNoticeCommentServiceTest extends UseCaseTest {
                 .hasMessage(StudyNoticeErrorCode.ONLY_WRITER_CAN_DELETE_NOTICE_COMMENT.getMessage());
 
         assertAll(
-                () -> verify(studyNoticeCommentJpaRepository, times(1)).findById(any()),
-                () -> verify(studyNoticeCommentJpaRepository, times(0)).delete(any())
+                () -> verify(studyNoticeCommentRepository, times(1)).findById(any()),
+                () -> verify(studyNoticeCommentRepository, times(0)).delete(any())
         );
     }
 
@@ -69,15 +69,15 @@ class DeleteStudyNoticeCommentServiceTest extends UseCaseTest {
     @DisplayName("공지사항 댓글을 삭제한다")
     void success() {
         // given
-        given(studyNoticeCommentJpaRepository.findById(any())).willReturn(Optional.of(comment));
+        given(studyNoticeCommentRepository.findById(any())).willReturn(Optional.of(comment));
 
         // when
         deleteStudyNoticeCommentService.invoke(new DeleteStudyNoticeCommentUseCase.Command(comment.getId(), writer.getId()));
 
         // then
         assertAll(
-                () -> verify(studyNoticeCommentJpaRepository, times(1)).findById(any()),
-                () -> verify(studyNoticeCommentJpaRepository, times(1)).delete(any())
+                () -> verify(studyNoticeCommentRepository, times(1)).findById(any()),
+                () -> verify(studyNoticeCommentRepository, times(1)).delete(any())
         );
     }
 }

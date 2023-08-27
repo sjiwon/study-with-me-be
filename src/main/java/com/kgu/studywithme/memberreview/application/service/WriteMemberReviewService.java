@@ -3,8 +3,8 @@ package com.kgu.studywithme.memberreview.application.service;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.domain.MemberReview;
+import com.kgu.studywithme.memberreview.domain.MemberReviewRepository;
 import com.kgu.studywithme.memberreview.exception.MemberReviewErrorCode;
-import com.kgu.studywithme.memberreview.infrastructure.persistence.MemberReviewJpaRepository;
 import com.kgu.studywithme.studyattendance.application.adapter.StudyAttendanceHandlingRepositoryAdapter;
 import com.kgu.studywithme.studyattendance.infrastructure.query.dto.StudyAttendanceWeekly;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WriteMemberReviewService implements WriteMemberReviewUseCase {
     private final StudyAttendanceHandlingRepositoryAdapter studyAttendanceHandlingRepositoryAdapter;
-    private final MemberReviewJpaRepository memberReviewJpaRepository;
+    private final MemberReviewRepository memberReviewRepository;
 
     @Override
     public Long invoke(final Command command) {
@@ -25,7 +25,7 @@ public class WriteMemberReviewService implements WriteMemberReviewUseCase {
         validateAlreadyReviewed(command.reviewerId(), command.revieweeId());
 
         final MemberReview memberReview = MemberReview.doReview(command.reviewerId(), command.revieweeId(), command.content());
-        return memberReviewJpaRepository.save(memberReview).getId();
+        return memberReviewRepository.save(memberReview).getId();
     }
 
     private void validateSelfReview(
@@ -70,7 +70,7 @@ public class WriteMemberReviewService implements WriteMemberReviewUseCase {
             final Long reviewerId,
             final Long revieweeId
     ) {
-        if (memberReviewJpaRepository.existsByReviewerIdAndRevieweeId(reviewerId, revieweeId)) {
+        if (memberReviewRepository.existsByReviewerIdAndRevieweeId(reviewerId, revieweeId)) {
             throw StudyWithMeException.type(MemberReviewErrorCode.ALREADY_REVIEW);
         }
     }

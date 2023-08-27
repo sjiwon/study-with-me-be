@@ -11,7 +11,7 @@ import com.kgu.studywithme.auth.utils.JwtTokenProvider;
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.global.exception.StudyWithMeOAuthException;
-import com.kgu.studywithme.member.application.adapter.MemberReadAdapter;
+import com.kgu.studywithme.member.application.service.MemberReader;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,7 +55,7 @@ class OAuthLoginServiceTest extends UseCaseTest {
     private GoogleOAuthConnector googleOAuthConnector;
 
     @Mock
-    private MemberReadAdapter memberReadAdapter;
+    private MemberReader memberReader;
 
     @Mock
     private JwtTokenProvider jwtTokenProvider;
@@ -89,7 +89,7 @@ class OAuthLoginServiceTest extends UseCaseTest {
             given(googleOAuthConnector.fetchToken(any(), any(), any())).willReturn(googleTokenResponse);
             given(googleOAuthConnector.fetchUserInfo(any())).willReturn(googleUserResponse);
             doThrow(StudyWithMeException.type(MemberErrorCode.MEMBER_NOT_FOUND))
-                    .when(memberReadAdapter)
+                    .when(memberReader)
                     .getByEmail(any());
 
             // when - then
@@ -104,7 +104,7 @@ class OAuthLoginServiceTest extends UseCaseTest {
                             .isEqualTo(googleUserResponse),
                     () -> verify(googleOAuthConnector, times(1)).fetchToken(any(), any(), any()),
                     () -> verify(googleOAuthConnector, times(1)).fetchUserInfo(any()),
-                    () -> verify(memberReadAdapter, times(1)).getByEmail(any()),
+                    () -> verify(memberReader, times(1)).getByEmail(any()),
                     () -> verify(jwtTokenProvider, times(0)).createAccessToken(any()),
                     () -> verify(jwtTokenProvider, times(0)).createRefreshToken(any()),
                     () -> verify(tokenPersistenceAdapter, times(0)).synchronizeRefreshToken(any(), any())
@@ -118,7 +118,7 @@ class OAuthLoginServiceTest extends UseCaseTest {
             given(googleOAuthConnector.isSupported(any())).willReturn(true);
             given(googleOAuthConnector.fetchToken(any(), any(), any())).willReturn(googleTokenResponse);
             given(googleOAuthConnector.fetchUserInfo(any())).willReturn(googleUserResponse);
-            given(memberReadAdapter.getByEmail(any())).willReturn(member);
+            given(memberReader.getByEmail(any())).willReturn(member);
             given(jwtTokenProvider.createAccessToken(any())).willReturn(ACCESS_TOKEN);
             given(jwtTokenProvider.createRefreshToken(any())).willReturn(REFRESH_TOKEN);
 
@@ -129,7 +129,7 @@ class OAuthLoginServiceTest extends UseCaseTest {
             assertAll(
                     () -> verify(googleOAuthConnector, times(1)).fetchToken(any(), any(), any()),
                     () -> verify(googleOAuthConnector, times(1)).fetchUserInfo(any()),
-                    () -> verify(memberReadAdapter, times(1)).getByEmail(any()),
+                    () -> verify(memberReader, times(1)).getByEmail(any()),
                     () -> verify(jwtTokenProvider, times(1)).createAccessToken(any()),
                     () -> verify(jwtTokenProvider, times(1)).createRefreshToken(any()),
                     () -> verify(tokenPersistenceAdapter, times(1)).synchronizeRefreshToken(any(), any()),

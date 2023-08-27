@@ -6,9 +6,9 @@ import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.studyweekly.application.usecase.command.UpdateStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
+import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
 import com.kgu.studywithme.studyweekly.domain.attachment.StudyWeeklyAttachment;
 import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
-import com.kgu.studywithme.studyweekly.infrastructure.persistence.StudyWeeklyJpaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -35,7 +35,7 @@ class UpdateStudyWeeklyServiceTest extends UseCaseTest {
     private UpdateStudyWeeklyService updateStudyWeeklyService;
 
     @Mock
-    private StudyWeeklyJpaRepository studyWeeklyJpaRepository;
+    private StudyWeeklyRepository studyWeeklyRepository;
 
     private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L, LocalDateTime.now());
@@ -55,28 +55,28 @@ class UpdateStudyWeeklyServiceTest extends UseCaseTest {
     @DisplayName("해당 주차 정보를 찾지 못하면 수정할 수 없다")
     void throwExceptionByWeeklyNotFound() {
         // given
-        given(studyWeeklyJpaRepository.findById(any())).willReturn(Optional.empty());
+        given(studyWeeklyRepository.findById(any())).willReturn(Optional.empty());
 
         // when - then
         assertThatThrownBy(() -> updateStudyWeeklyService.invoke(command))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyWeeklyErrorCode.WEEKLY_NOT_FOUND.getMessage());
 
-        verify(studyWeeklyJpaRepository, times(1)).findById(any());
+        verify(studyWeeklyRepository, times(1)).findById(any());
     }
 
     @Test
     @DisplayName("해당 주차 정보를 수정한다")
     void success() {
         // given
-        given(studyWeeklyJpaRepository.findById(any())).willReturn(Optional.of(weekly));
+        given(studyWeeklyRepository.findById(any())).willReturn(Optional.of(weekly));
 
         // when
         updateStudyWeeklyService.invoke(command);
 
         // then
         assertAll(
-                () -> verify(studyWeeklyJpaRepository, times(1)).findById(any()),
+                () -> verify(studyWeeklyRepository, times(1)).findById(any()),
                 () -> assertThat(weekly.getTitle()).isEqualTo(STUDY_WEEKLY_2.getTitle()),
                 () -> assertThat(weekly.getContent()).isEqualTo(STUDY_WEEKLY_2.getContent()),
                 () -> assertThat(weekly.getPeriod().getStartDate()).isEqualTo(STUDY_WEEKLY_2.getPeriod().getStartDate()),

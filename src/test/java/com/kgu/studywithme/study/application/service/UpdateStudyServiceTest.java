@@ -4,7 +4,6 @@ import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.application.adapter.StudyDuplicateCheckRepositoryAdapter;
-import com.kgu.studywithme.study.application.adapter.StudyReadAdapter;
 import com.kgu.studywithme.study.application.usecase.command.UpdateStudyUseCase;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
@@ -37,7 +36,7 @@ class UpdateStudyServiceTest extends UseCaseTest {
     private StudyDuplicateCheckRepositoryAdapter studyDuplicateCheckRepositoryAdapter;
 
     @Mock
-    private StudyReadAdapter studyReadAdapter;
+    private StudyReader studyReader;
 
     private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
     private Study study;
@@ -75,7 +74,7 @@ class UpdateStudyServiceTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(studyDuplicateCheckRepositoryAdapter, times(1)).isNameUsedByOther(any(), any()),
-                () -> verify(studyReadAdapter, times(0)).getById(any())
+                () -> verify(studyReader, times(0)).getById(any())
         );
     }
 
@@ -84,7 +83,7 @@ class UpdateStudyServiceTest extends UseCaseTest {
     void throwExceptionByCapacityCannotCoverCurrentParticipants() {
         // given
         given(studyDuplicateCheckRepositoryAdapter.isNameUsedByOther(any(), any())).willReturn(false);
-        given(studyReadAdapter.getById(any())).willReturn(study);
+        given(studyReader.getById(any())).willReturn(study);
 
         final int capacity = study.getCapacity().getValue();
         for (int i = 0; i < capacity - 1; i++) { // make full
@@ -98,7 +97,7 @@ class UpdateStudyServiceTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(studyDuplicateCheckRepositoryAdapter, times(1)).isNameUsedByOther(any(), any()),
-                () -> verify(studyReadAdapter, times(1)).getById(any())
+                () -> verify(studyReader, times(1)).getById(any())
         );
     }
 
@@ -107,7 +106,7 @@ class UpdateStudyServiceTest extends UseCaseTest {
     void success() {
         // given
         given(studyDuplicateCheckRepositoryAdapter.isNameUsedByOther(any(), any())).willReturn(false);
-        given(studyReadAdapter.getById(any())).willReturn(study);
+        given(studyReader.getById(any())).willReturn(study);
 
         // when
         updateStudyService.invoke(command);
@@ -115,7 +114,7 @@ class UpdateStudyServiceTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyDuplicateCheckRepositoryAdapter, times(1)).isNameUsedByOther(any(), any()),
-                () -> verify(studyReadAdapter, times(1)).getById(any()),
+                () -> verify(studyReader, times(1)).getById(any()),
                 () -> assertThat(study.getName()).isEqualTo(JPA.getName()),
                 () -> assertThat(study.getDescription()).isEqualTo(JPA.getDescription()),
                 () -> assertThat(study.getCapacity().getValue()).isEqualTo(JPA.getCapacity().getValue()),

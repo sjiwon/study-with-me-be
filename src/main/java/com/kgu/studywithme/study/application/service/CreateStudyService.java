@@ -1,17 +1,17 @@
 package com.kgu.studywithme.study.application.service;
 
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.application.adapter.MemberReadAdapter;
+import com.kgu.studywithme.member.application.service.MemberReader;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.application.adapter.StudyDuplicateCheckRepositoryAdapter;
 import com.kgu.studywithme.study.application.usecase.command.CreateStudyUseCase;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.study.domain.StudyLocation;
 import com.kgu.studywithme.study.domain.StudyName;
+import com.kgu.studywithme.study.domain.StudyRepository;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
-import com.kgu.studywithme.study.infrastructure.persistence.StudyJpaRepository;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipant;
-import com.kgu.studywithme.studyparticipant.infrastructure.persistence.StudyParticipantJpaRepository;
+import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,17 +20,17 @@ import static com.kgu.studywithme.study.domain.StudyType.ONLINE;
 @Service
 @RequiredArgsConstructor
 public class CreateStudyService implements CreateStudyUseCase {
-    private final MemberReadAdapter memberReadAdapter;
+    private final MemberReader memberReader;
     private final StudyDuplicateCheckRepositoryAdapter studyDuplicateCheckRepositoryAdapter;
-    private final StudyJpaRepository studyJpaRepository;
-    private final StudyParticipantJpaRepository studyParticipantJpaRepository;
+    private final StudyRepository studyRepository;
+    private final StudyParticipantRepository studyParticipantRepository;
 
     @Override
     public Long invoke(final Command command) {
         validateStudyNameIsUnique(command.name());
 
-        final Member host = memberReadAdapter.getById(command.hostId());
-        final Study study = studyJpaRepository.save(buildStudy(host, command));
+        final Member host = memberReader.getById(command.hostId());
+        final Study study = studyRepository.save(buildStudy(host, command));
         applyHostToParticipant(study, host);
 
         return study.getId();
@@ -74,6 +74,6 @@ public class CreateStudyService implements CreateStudyUseCase {
 
     private void applyHostToParticipant(final Study study, final Member host) {
         final StudyParticipant participant = StudyParticipant.applyHost(study.getId(), host.getId());
-        studyParticipantJpaRepository.save(participant);
+        studyParticipantRepository.save(participant);
     }
 }

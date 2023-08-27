@@ -4,13 +4,13 @@ import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantReadAdapter;
+import com.kgu.studywithme.studyparticipant.application.adapter.ParticipateMemberReadAdapter;
 import com.kgu.studywithme.studyweekly.application.usecase.command.SubmitWeeklyAssignmentUseCase;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
+import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
 import com.kgu.studywithme.studyweekly.domain.submit.UploadAssignment;
 import com.kgu.studywithme.studyweekly.event.AssignmentSubmittedEvent;
 import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
-import com.kgu.studywithme.studyweekly.infrastructure.persistence.StudyWeeklyJpaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -38,10 +38,10 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
     private SubmitWeeklyAssignmentService submitWeeklyAssignmentService;
 
     @Mock
-    private StudyWeeklyJpaRepository studyWeeklyJpaRepository;
+    private StudyWeeklyRepository studyWeeklyRepository;
 
     @Mock
-    private ParticipantReadAdapter participantReadAdapter;
+    private ParticipateMemberReadAdapter participateMemberReadAdapter;
 
     @Mock
     private ApplicationEventPublisher eventPublisher;
@@ -68,8 +68,8 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                 .hasMessage(StudyWeeklyErrorCode.MISSING_SUBMISSION.getMessage());
 
         assertAll(
-                () -> verify(studyWeeklyJpaRepository, times(0)).findById(any()),
-                () -> verify(participantReadAdapter, times(0)).getParticipant(any(), any()),
+                () -> verify(studyWeeklyRepository, times(0)).findById(any()),
+                () -> verify(participateMemberReadAdapter, times(0)).getParticipant(any(), any()),
                 () -> verify(eventPublisher, times(0)).publishEvent(any(AssignmentSubmittedEvent.class))
         );
     }
@@ -91,8 +91,8 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                 .hasMessage(StudyWeeklyErrorCode.DUPLICATE_SUBMISSION.getMessage());
 
         assertAll(
-                () -> verify(studyWeeklyJpaRepository, times(0)).findById(any()),
-                () -> verify(participantReadAdapter, times(0)).getParticipant(any(), any()),
+                () -> verify(studyWeeklyRepository, times(0)).findById(any()),
+                () -> verify(participateMemberReadAdapter, times(0)).getParticipant(any(), any()),
                 () -> verify(eventPublisher, times(0)).publishEvent(any(AssignmentSubmittedEvent.class))
         );
     }
@@ -101,7 +101,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
     @DisplayName("존재하지 않는 주차에 대해서 과제 제출을 하려고 시도하면 실패한다")
     void throwExceptionByWeekNotFound() {
         // given
-        given(studyWeeklyJpaRepository.findById(any())).willReturn(Optional.empty());
+        given(studyWeeklyRepository.findById(any())).willReturn(Optional.empty());
 
         // when - then
         assertThatThrownBy(() -> submitWeeklyAssignmentService.invoke(
@@ -118,8 +118,8 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                 .hasMessage(StudyWeeklyErrorCode.WEEKLY_NOT_FOUND.getMessage());
 
         assertAll(
-                () -> verify(studyWeeklyJpaRepository, times(1)).findById(any()),
-                () -> verify(participantReadAdapter, times(0)).getParticipant(any(), any()),
+                () -> verify(studyWeeklyRepository, times(1)).findById(any()),
+                () -> verify(participateMemberReadAdapter, times(0)).getParticipant(any(), any()),
                 () -> verify(eventPublisher, times(0)).publishEvent(any(AssignmentSubmittedEvent.class))
         );
     }
@@ -128,8 +128,8 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
     @DisplayName("해당 주차 과제를 제출한다 [링크 제출]")
     void successWithLink() {
         // given
-        given(studyWeeklyJpaRepository.findById(any())).willReturn(Optional.of(weekly));
-        given(participantReadAdapter.getParticipant(any(), any())).willReturn(host);
+        given(studyWeeklyRepository.findById(any())).willReturn(Optional.of(weekly));
+        given(participateMemberReadAdapter.getParticipant(any(), any())).willReturn(host);
 
         // when
         submitWeeklyAssignmentService.invoke(
@@ -145,8 +145,8 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyWeeklyJpaRepository, times(1)).findById(any()),
-                () -> verify(participantReadAdapter, times(1)).getParticipant(any(), any()),
+                () -> verify(studyWeeklyRepository, times(1)).findById(any()),
+                () -> verify(participateMemberReadAdapter, times(1)).getParticipant(any(), any()),
                 () -> verify(eventPublisher, times(1)).publishEvent(any(AssignmentSubmittedEvent.class))
         );
     }
@@ -155,8 +155,8 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
     @DisplayName("해당 주차 과제를 제출한다 [파일 제출]")
     void successWithFile() {
         // given
-        given(studyWeeklyJpaRepository.findById(any())).willReturn(Optional.of(weekly));
-        given(participantReadAdapter.getParticipant(any(), any())).willReturn(host);
+        given(studyWeeklyRepository.findById(any())).willReturn(Optional.of(weekly));
+        given(participateMemberReadAdapter.getParticipant(any(), any())).willReturn(host);
 
         // when
         submitWeeklyAssignmentService.invoke(
@@ -172,8 +172,8 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyWeeklyJpaRepository, times(1)).findById(any()),
-                () -> verify(participantReadAdapter, times(1)).getParticipant(any(), any()),
+                () -> verify(studyWeeklyRepository, times(1)).findById(any()),
+                () -> verify(participateMemberReadAdapter, times(1)).getParticipant(any(), any()),
                 () -> verify(eventPublisher, times(1)).publishEvent(any(AssignmentSubmittedEvent.class))
         );
     }

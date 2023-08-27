@@ -2,14 +2,14 @@ package com.kgu.studywithme.study.application.service;
 
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.application.adapter.MemberReadAdapter;
+import com.kgu.studywithme.member.application.service.MemberReader;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.application.adapter.StudyDuplicateCheckRepositoryAdapter;
 import com.kgu.studywithme.study.application.usecase.command.CreateStudyUseCase;
 import com.kgu.studywithme.study.domain.Study;
+import com.kgu.studywithme.study.domain.StudyRepository;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
-import com.kgu.studywithme.study.infrastructure.persistence.StudyJpaRepository;
-import com.kgu.studywithme.studyparticipant.infrastructure.persistence.StudyParticipantJpaRepository;
+import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -33,16 +33,16 @@ class CreateStudyServiceTest extends UseCaseTest {
     private CreateStudyService createStudyService;
 
     @Mock
-    private MemberReadAdapter memberReadAdapter;
+    private MemberReader memberReader;
 
     @Mock
     private StudyDuplicateCheckRepositoryAdapter studyDuplicateCheckRepositoryAdapter;
 
     @Mock
-    private StudyJpaRepository studyJpaRepository;
+    private StudyRepository studyRepository;
 
     @Mock
-    private StudyParticipantJpaRepository studyParticipantJpaRepository;
+    private StudyParticipantRepository studyParticipantRepository;
 
     private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final CreateStudyUseCase.Command command = new CreateStudyUseCase.Command(
@@ -72,9 +72,9 @@ class CreateStudyServiceTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(studyDuplicateCheckRepositoryAdapter, times(1)).isNameExists(any()),
-                () -> verify(memberReadAdapter, times(0)).getById(any()),
-                () -> verify(studyJpaRepository, times(0)).save(any()),
-                () -> verify(studyParticipantJpaRepository, times(0)).save(any())
+                () -> verify(memberReader, times(0)).getById(any()),
+                () -> verify(studyRepository, times(0)).save(any()),
+                () -> verify(studyParticipantRepository, times(0)).save(any())
         );
     }
 
@@ -83,10 +83,10 @@ class CreateStudyServiceTest extends UseCaseTest {
     void success() {
         // given
         given(studyDuplicateCheckRepositoryAdapter.isNameExists(any())).willReturn(false);
-        given(memberReadAdapter.getById(any())).willReturn(host);
+        given(memberReader.getById(any())).willReturn(host);
 
         final Study study = OS.toOnlineStudy(host.getId()).apply(1L, LocalDateTime.now());
-        given(studyJpaRepository.save(any())).willReturn(study);
+        given(studyRepository.save(any())).willReturn(study);
 
         // when
         final Long savedStudyId = createStudyService.invoke(command);
@@ -94,9 +94,9 @@ class CreateStudyServiceTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyDuplicateCheckRepositoryAdapter, times(1)).isNameExists(any()),
-                () -> verify(memberReadAdapter, times(1)).getById(any()),
-                () -> verify(studyJpaRepository, times(1)).save(any()),
-                () -> verify(studyParticipantJpaRepository, times(1)).save(any()),
+                () -> verify(memberReader, times(1)).getById(any()),
+                () -> verify(studyRepository, times(1)).save(any()),
+                () -> verify(studyParticipantRepository, times(1)).save(any()),
                 () -> assertThat(savedStudyId).isEqualTo(study.getId())
         );
     }

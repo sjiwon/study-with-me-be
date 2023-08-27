@@ -3,13 +3,13 @@ package com.kgu.studywithme.studyparticipant.application.service;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.study.application.adapter.StudyReadAdapter;
+import com.kgu.studywithme.study.application.service.StudyReader;
 import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantReadAdapter;
+import com.kgu.studywithme.studyparticipant.application.adapter.ParticipateMemberReadAdapter;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.RejectParticipationUseCase;
+import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import com.kgu.studywithme.studyparticipant.event.StudyRejectedEvent;
 import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
-import com.kgu.studywithme.studyparticipant.infrastructure.persistence.StudyParticipantJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -20,18 +20,18 @@ import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.REJE
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class RejectParticipationService implements RejectParticipationUseCase {
-    private final ParticipantReadAdapter participantReadAdapter;
-    private final StudyReadAdapter studyReadAdapter;
-    private final StudyParticipantJpaRepository studyParticipantJpaRepository;
+    private final ParticipateMemberReadAdapter participateMemberReadAdapter;
+    private final StudyReader studyReader;
+    private final StudyParticipantRepository studyParticipantRepository;
     private final ApplicationEventPublisher eventPublisher;
 
     @Override
     public void invoke(final Command command) {
-        final Member applier = participantReadAdapter.getApplier(command.studyId(), command.applierId());
-        final Study study = studyReadAdapter.getById(command.studyId());
+        final Member applier = participateMemberReadAdapter.getApplier(command.studyId(), command.applierId());
+        final Study study = studyReader.getById(command.studyId());
         validateStudyInProgress(study);
 
-        studyParticipantJpaRepository.updateParticipantStatus(command.studyId(), command.applierId(), REJECT);
+        studyParticipantRepository.updateParticipantStatus(command.studyId(), command.applierId(), REJECT);
 
         if (applier.isEmailOptIn()) {
             eventPublisher.publishEvent(

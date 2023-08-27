@@ -1,9 +1,10 @@
 package com.kgu.studywithme.auth.infrastructure.persistence;
 
 import com.kgu.studywithme.auth.domain.Token;
+import com.kgu.studywithme.auth.domain.TokenRepository;
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
+import com.kgu.studywithme.member.domain.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -23,16 +24,16 @@ class RdbTokenPersistenceAdapterTest extends RepositoryTest {
     private RdbTokenPersistenceAdapter rdbTokenPersistenceAdapter;
 
     @Autowired
-    private TokenJpaRepository tokenJpaRepository;
+    private TokenRepository tokenRepository;
 
     @Autowired
-    private MemberJpaRepository memberJpaRepository;
+    private MemberRepository memberRepository;
 
     private Member member;
 
     @BeforeEach
     void setUp() {
-        member = memberJpaRepository.save(JIWON.toMember());
+        member = memberRepository.save(JIWON.toMember());
     }
 
     @Nested
@@ -45,7 +46,7 @@ class RdbTokenPersistenceAdapterTest extends RepositoryTest {
             rdbTokenPersistenceAdapter.synchronizeRefreshToken(member.getId(), REFRESH_TOKEN);
 
             // then
-            final Token findToken = tokenJpaRepository.findByMemberId(member.getId()).orElseThrow();
+            final Token findToken = tokenRepository.findByMemberId(member.getId()).orElseThrow();
             assertThat(findToken.getRefreshToken()).isEqualTo(REFRESH_TOKEN);
         }
 
@@ -53,14 +54,14 @@ class RdbTokenPersistenceAdapterTest extends RepositoryTest {
         @DisplayName("RefreshToken을 보유하고 있는 사용자는 새로운 RefreshToken으로 업데이트한다")
         void updateRefreshToken() {
             // given
-            tokenJpaRepository.save(Token.issueRefreshToken(member.getId(), REFRESH_TOKEN));
+            tokenRepository.save(Token.issueRefreshToken(member.getId(), REFRESH_TOKEN));
 
             // when
             final String newRefreshToken = REFRESH_TOKEN + "new";
             rdbTokenPersistenceAdapter.synchronizeRefreshToken(member.getId(), newRefreshToken);
 
             // then
-            final Token findToken = tokenJpaRepository.findByMemberId(member.getId()).orElseThrow();
+            final Token findToken = tokenRepository.findByMemberId(member.getId()).orElseThrow();
             assertThat(findToken.getRefreshToken()).isEqualTo(newRefreshToken);
         }
     }
@@ -69,14 +70,14 @@ class RdbTokenPersistenceAdapterTest extends RepositoryTest {
     @DisplayName("사용자의 RefreshToken을 재발급한다")
     void updateMemberRefreshToken() {
         // given
-        tokenJpaRepository.save(Token.issueRefreshToken(member.getId(), REFRESH_TOKEN));
+        tokenRepository.save(Token.issueRefreshToken(member.getId(), REFRESH_TOKEN));
 
         // when
         final String newRefreshToken = REFRESH_TOKEN + "new";
         rdbTokenPersistenceAdapter.updateMemberRefreshToken(member.getId(), newRefreshToken);
 
         // then
-        final Token findToken = tokenJpaRepository.findByMemberId(member.getId()).orElseThrow();
+        final Token findToken = tokenRepository.findByMemberId(member.getId()).orElseThrow();
         assertThat(findToken.getRefreshToken()).isEqualTo(newRefreshToken);
     }
 
@@ -84,20 +85,20 @@ class RdbTokenPersistenceAdapterTest extends RepositoryTest {
     @DisplayName("사용자가 보유하고 있는 RefreshToken을 삭제한다")
     void deleteMemberRefreshToken() {
         // given
-        tokenJpaRepository.save(Token.issueRefreshToken(member.getId(), REFRESH_TOKEN));
+        tokenRepository.save(Token.issueRefreshToken(member.getId(), REFRESH_TOKEN));
 
         // when
         rdbTokenPersistenceAdapter.deleteMemberRefreshToken(member.getId());
 
         // then
-        assertThat(tokenJpaRepository.findByMemberId(member.getId())).isEmpty();
+        assertThat(tokenRepository.findByMemberId(member.getId())).isEmpty();
     }
 
     @Test
     @DisplayName("사용자가 보유하고 있는 RefreshToken인지 확인한다")
     void isMemberRefreshToken() {
         // given
-        tokenJpaRepository.save(Token.issueRefreshToken(member.getId(), REFRESH_TOKEN));
+        tokenRepository.save(Token.issueRefreshToken(member.getId(), REFRESH_TOKEN));
 
         // when
         final boolean actual1 = rdbTokenPersistenceAdapter.isMemberRefreshToken(member.getId(), REFRESH_TOKEN);

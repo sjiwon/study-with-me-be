@@ -2,15 +2,15 @@ package com.kgu.studywithme.studyattendance.infrastructure.query;
 
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
+import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.study.infrastructure.persistence.StudyJpaRepository;
+import com.kgu.studywithme.study.domain.StudyRepository;
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
-import com.kgu.studywithme.studyattendance.infrastructure.persistence.StudyAttendanceJpaRepository;
+import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
 import com.kgu.studywithme.studyattendance.infrastructure.query.dto.NonAttendanceWeekly;
 import com.kgu.studywithme.studyattendance.infrastructure.query.dto.StudyAttendanceWeekly;
 import com.kgu.studywithme.studyparticipant.domain.StudyParticipant;
-import com.kgu.studywithme.studyparticipant.infrastructure.persistence.StudyParticipantJpaRepository;
+import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,41 +45,41 @@ class StudyAttendanceHandlingRepositoryTest extends RepositoryTest {
     private StudyAttendanceHandlingRepository studyAttendanceHandlingRepository;
 
     @Autowired
-    private MemberJpaRepository memberJpaRepository;
+    private MemberRepository memberRepository;
 
     @Autowired
-    private StudyJpaRepository studyJpaRepository;
+    private StudyRepository studyRepository;
 
     @Autowired
-    private StudyAttendanceJpaRepository studyAttendanceJpaRepository;
+    private StudyAttendanceRepository studyAttendanceRepository;
 
     @Autowired
-    private StudyParticipantJpaRepository studyParticipantJpaRepository;
+    private StudyParticipantRepository studyParticipantRepository;
 
     private final Member[] members = new Member[5];
     private final Study[] studies = new Study[5];
 
     @BeforeEach
     void setUp() {
-        members[0] = memberJpaRepository.save(JIWON.toMember());
-        members[1] = memberJpaRepository.save(DUMMY1.toMember());
-        members[2] = memberJpaRepository.save(DUMMY2.toMember());
-        members[3] = memberJpaRepository.save(DUMMY3.toMember());
-        members[4] = memberJpaRepository.save(DUMMY4.toMember());
+        members[0] = memberRepository.save(JIWON.toMember());
+        members[1] = memberRepository.save(DUMMY1.toMember());
+        members[2] = memberRepository.save(DUMMY2.toMember());
+        members[3] = memberRepository.save(DUMMY3.toMember());
+        members[4] = memberRepository.save(DUMMY4.toMember());
 
-        final Member host = memberJpaRepository.save(GHOST.toMember());
-        studies[0] = studyJpaRepository.save(SPRING.toOnlineStudy(host.getId()));
-        studies[1] = studyJpaRepository.save(JPA.toOnlineStudy(host.getId()));
-        studies[2] = studyJpaRepository.save(KOTLIN.toOnlineStudy(host.getId()));
-        studies[3] = studyJpaRepository.save(NETWORK.toOnlineStudy(host.getId()));
-        studies[4] = studyJpaRepository.save(EFFECTIVE_JAVA.toOnlineStudy(host.getId()));
+        final Member host = memberRepository.save(GHOST.toMember());
+        studies[0] = studyRepository.save(SPRING.toOnlineStudy(host.getId()));
+        studies[1] = studyRepository.save(JPA.toOnlineStudy(host.getId()));
+        studies[2] = studyRepository.save(KOTLIN.toOnlineStudy(host.getId()));
+        studies[3] = studyRepository.save(NETWORK.toOnlineStudy(host.getId()));
+        studies[4] = studyRepository.save(EFFECTIVE_JAVA.toOnlineStudy(host.getId()));
     }
 
     @Test
     @DisplayName("미출석 주차 정보들을 조회한다")
     void findNonAttendanceInformation() {
         /* 1주차 */
-        studyAttendanceJpaRepository.saveAll(
+        studyAttendanceRepository.saveAll(
                 List.of(
                         StudyAttendance.recordAttendance(studies[0].getId(), members[0].getId(), 1, NON_ATTENDANCE),
                         StudyAttendance.recordAttendance(studies[0].getId(), members[1].getId(), 1, NON_ATTENDANCE),
@@ -103,7 +103,7 @@ class StudyAttendanceHandlingRepositoryTest extends RepositoryTest {
         );
 
         /* 2주차 */
-        studyAttendanceJpaRepository.saveAll(
+        studyAttendanceRepository.saveAll(
                 List.of(
                         StudyAttendance.recordAttendance(studies[0].getId(), members[0].getId(), 2, ATTENDANCE),
                         StudyAttendance.recordAttendance(studies[0].getId(), members[1].getId(), 2, NON_ATTENDANCE),
@@ -140,7 +140,7 @@ class StudyAttendanceHandlingRepositoryTest extends RepositoryTest {
     @DisplayName("사용자가 출석을 진행한 모든 스터디의 주차를 조회한다")
     void findParticipateWeeksInStudyByMemberId() {
         /* 모든 스터디 참여 */
-        studyParticipantJpaRepository.saveAll(
+        studyParticipantRepository.saveAll(
                 List.of(
                         StudyParticipant.applyParticipant(studies[0].getId(), members[0].getId(), APPROVE),
                         StudyParticipant.applyParticipant(studies[1].getId(), members[0].getId(), APPROVE),
@@ -151,7 +151,7 @@ class StudyAttendanceHandlingRepositoryTest extends RepositoryTest {
         );
 
         /* Week 1 */
-        studyAttendanceJpaRepository.saveAll(
+        studyAttendanceRepository.saveAll(
                 List.of(
                         StudyAttendance.recordAttendance(studies[0].getId(), members[0].getId(), 1, ATTENDANCE),
                         StudyAttendance.recordAttendance(studies[1].getId(), members[0].getId(), 1, ATTENDANCE),
@@ -171,7 +171,7 @@ class StudyAttendanceHandlingRepositoryTest extends RepositoryTest {
         );
 
         /* Week 2 */
-        studyAttendanceJpaRepository.saveAll(
+        studyAttendanceRepository.saveAll(
                 List.of(
                         StudyAttendance.recordAttendance(studies[0].getId(), members[0].getId(), 2, ATTENDANCE),
                         StudyAttendance.recordAttendance(studies[3].getId(), members[0].getId(), 2, ATTENDANCE),
@@ -189,7 +189,7 @@ class StudyAttendanceHandlingRepositoryTest extends RepositoryTest {
         );
 
         /* Week 3 */
-        studyAttendanceJpaRepository.save(StudyAttendance.recordAttendance(studies[0].getId(), members[0].getId(), 3, ATTENDANCE));
+        studyAttendanceRepository.save(StudyAttendance.recordAttendance(studies[0].getId(), members[0].getId(), 3, ATTENDANCE));
 
         final List<StudyAttendanceWeekly> participateWeeks3 = studyAttendanceHandlingRepository.findParticipateWeeksInStudyByMemberId(members[0].getId());
         assertAll(
@@ -216,19 +216,19 @@ class StudyAttendanceHandlingRepositoryTest extends RepositoryTest {
     @DisplayName("사용자의 스터디 출석 횟수를 조회한다")
     void getAttendanceCount() {
         /* 출석 1회 */
-        studyAttendanceJpaRepository.save(
+        studyAttendanceRepository.save(
                 StudyAttendance.recordAttendance(studies[0].getId(), members[0].getId(), 1, ATTENDANCE)
         );
         assertThat(studyAttendanceHandlingRepository.getAttendanceCount(studies[0].getId(), members[0].getId())).isEqualTo(1);
 
         /* 출석 1회 + 지각 1회 */
-        studyAttendanceJpaRepository.save(
+        studyAttendanceRepository.save(
                 StudyAttendance.recordAttendance(studies[0].getId(), members[0].getId(), 2, LATE)
         );
         assertThat(studyAttendanceHandlingRepository.getAttendanceCount(studies[0].getId(), members[0].getId())).isEqualTo(1);
 
         /* 출석 2회 + 지각 1회 */
-        studyAttendanceJpaRepository.save(
+        studyAttendanceRepository.save(
                 StudyAttendance.recordAttendance(studies[0].getId(), members[0].getId(), 3, ATTENDANCE)
         );
         assertThat(studyAttendanceHandlingRepository.getAttendanceCount(studies[0].getId(), members[0].getId())).isEqualTo(2);

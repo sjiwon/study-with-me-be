@@ -1,8 +1,8 @@
 package com.kgu.studywithme.studyattendance.event;
 
 import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
-import com.kgu.studywithme.studyattendance.infrastructure.persistence.StudyAttendanceJpaRepository;
-import com.kgu.studywithme.studyparticipant.infrastructure.persistence.StudyParticipantJpaRepository;
+import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
+import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import com.kgu.studywithme.studyweekly.event.WeeklyCreatedEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +21,8 @@ import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPR
 @Component
 @RequiredArgsConstructor
 public class WeeklyCreatedEventListener {
-    private final StudyParticipantJpaRepository studyParticipantJpaRepository;
-    private final StudyAttendanceJpaRepository studyAttendanceJpaRepository;
+    private final StudyParticipantRepository studyParticipantRepository;
+    private final StudyAttendanceRepository studyAttendanceRepository;
 
     @EventListener
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -30,7 +30,7 @@ public class WeeklyCreatedEventListener {
         log.info("주차 생성에 따른 해당 주차 참여자 출석정보 추가 (NON_ATTENDANCE) -> {}", event);
 
         final List<StudyAttendance> participantsAttendance = new ArrayList<>();
-        final List<Long> approveParticipantsIds = studyParticipantJpaRepository.findParticipantIdsByStatus(event.studyId(), APPROVE);
+        final List<Long> approveParticipantsIds = studyParticipantRepository.findParticipantIdsByStatus(event.studyId(), APPROVE);
         approveParticipantsIds.forEach(
                 studyParticipantId -> participantsAttendance.add(
                         StudyAttendance.recordAttendance(
@@ -41,6 +41,6 @@ public class WeeklyCreatedEventListener {
                         )
                 )
         );
-        studyAttendanceJpaRepository.saveAll(participantsAttendance);
+        studyAttendanceRepository.saveAll(participantsAttendance);
     }
 }

@@ -2,16 +2,16 @@ package com.kgu.studywithme.study.infrastructure.query;
 
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.favorite.domain.Favorite;
-import com.kgu.studywithme.favorite.infrastructure.persistence.FavoriteJpaRepository;
+import com.kgu.studywithme.favorite.domain.FavoriteRepository;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
+import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.study.infrastructure.persistence.StudyJpaRepository;
+import com.kgu.studywithme.study.domain.StudyRepository;
 import com.kgu.studywithme.study.infrastructure.query.dto.StudyPreview;
 import com.kgu.studywithme.study.utils.QueryStudyByCategoryCondition;
 import com.kgu.studywithme.study.utils.QueryStudyByRecommendCondition;
 import com.kgu.studywithme.studyreview.domain.StudyReview;
-import com.kgu.studywithme.studyreview.infrastructure.persistence.StudyReviewJpaRepository;
+import com.kgu.studywithme.studyreview.domain.StudyReviewRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -79,16 +79,16 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
     private StudyCategorySearchRepository studyCategorySearchRepository;
 
     @Autowired
-    private StudyJpaRepository studyJpaRepository;
+    private StudyRepository studyRepository;
 
     @Autowired
-    private MemberJpaRepository memberJpaRepository;
+    private MemberRepository memberRepository;
 
     @Autowired
-    private StudyReviewJpaRepository studyReviewJpaRepository;
+    private StudyReviewRepository studyReviewRepository;
 
     @Autowired
-    private FavoriteJpaRepository favoriteJpaRepository;
+    private FavoriteRepository favoriteRepository;
 
     private static final Pageable PAGE_REQUEST_1 = getDefaultPageRequest(0);
     private static final Pageable PAGE_REQUEST_2 = getDefaultPageRequest(1);
@@ -105,17 +105,17 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
 
     @BeforeEach
     void setUp() {
-        host = memberJpaRepository.save(JIWON.toMember());
+        host = memberRepository.save(JIWON.toMember());
 
-        members[0] = memberJpaRepository.save(DUMMY1.toMember());
-        members[1] = memberJpaRepository.save(DUMMY2.toMember());
-        members[2] = memberJpaRepository.save(DUMMY3.toMember());
-        members[3] = memberJpaRepository.save(DUMMY4.toMember());
-        members[4] = memberJpaRepository.save(DUMMY5.toMember());
-        members[5] = memberJpaRepository.save(DUMMY6.toMember());
-        members[6] = memberJpaRepository.save(DUMMY7.toMember());
-        members[7] = memberJpaRepository.save(DUMMY8.toMember());
-        members[8] = memberJpaRepository.save(DUMMY9.toMember());
+        members[0] = memberRepository.save(DUMMY1.toMember());
+        members[1] = memberRepository.save(DUMMY2.toMember());
+        members[2] = memberRepository.save(DUMMY3.toMember());
+        members[3] = memberRepository.save(DUMMY4.toMember());
+        members[4] = memberRepository.save(DUMMY5.toMember());
+        members[5] = memberRepository.save(DUMMY6.toMember());
+        members[6] = memberRepository.save(DUMMY7.toMember());
+        members[7] = memberRepository.save(DUMMY8.toMember());
+        members[8] = memberRepository.save(DUMMY9.toMember());
 
         language[0] = TOEIC.toOnlineStudy(host.getId());
         language[1] = TOEFL.toOnlineStudy(host.getId());
@@ -1068,7 +1068,7 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
             buffer.add(study);
         }
 
-        studyJpaRepository.saveAll(buffer);
+        studyRepository.saveAll(buffer);
     }
 
     private void initDataWithFavorite() {
@@ -1101,7 +1101,7 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
         likeMarking(programming[9], members[0], members[1], members[2], members[3], members[4], members[5], members[6], members[7], members[8]);
         likeMarking(programming[10], members[0], members[1], members[2], members[3]);
         likeMarking(programming[11], members[0], members[1], members[2], members[3]);
-        favoriteJpaRepository.saveAll(favorites);
+        favoriteRepository.saveAll(favorites);
     }
 
     private void initDataWithReviews() {
@@ -1132,7 +1132,7 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
         writeReview(programming[9], members[0], members[1], members[2], members[3], members[4], members[5], members[6], members[7], members[8]);
         writeReview(programming[10], members[0], members[1], members[2], members[3]);
         writeReview(programming[11], members[0], members[1], members[2], members[3]);
-        studyReviewJpaRepository.saveAll(reviews);
+        studyReviewRepository.saveAll(reviews);
     }
 
     private void likeMarking(final Study study, final Member... members) {

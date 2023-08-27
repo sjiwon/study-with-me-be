@@ -12,7 +12,7 @@ import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.auth.utils.JwtTokenProvider;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.global.exception.StudyWithMeOAuthException;
-import com.kgu.studywithme.member.application.adapter.MemberReadAdapter;
+import com.kgu.studywithme.member.application.service.MemberReader;
 import com.kgu.studywithme.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OAuthLoginService implements OAuthLoginUseCase {
     private final List<OAuthConnector> oAuthConnectors;
-    private final MemberReadAdapter memberReadAdapter;
+    private final MemberReader memberReader;
     private final JwtTokenProvider jwtTokenProvider;
     private final TokenPersistenceAdapter tokenPersistenceAdapter;
 
@@ -55,7 +55,7 @@ public class OAuthLoginService implements OAuthLoginUseCase {
 
     private Member getMemberByOAuthUser(final OAuthUserResponse oAuthUser) {
         try {
-            return memberReadAdapter.getByEmail(oAuthUser.email());
+            return memberReader.getByEmail(oAuthUser.email());
         } catch (final StudyWithMeException e) {
             throw new StudyWithMeOAuthException(oAuthUser);
         }

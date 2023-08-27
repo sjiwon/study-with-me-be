@@ -3,11 +3,11 @@ package com.kgu.studywithme.studyparticipant.application.service;
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.study.application.adapter.StudyReadAdapter;
+import com.kgu.studywithme.study.application.service.StudyReader;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.LeaveParticipationUseCase;
+import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
-import com.kgu.studywithme.studyparticipant.infrastructure.persistence.StudyParticipantJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,10 +33,10 @@ class LeaveParticipationServiceTest extends UseCaseTest {
     private LeaveParticipationService leaveParticipationService;
 
     @Mock
-    private StudyReadAdapter studyReadAdapter;
+    private StudyReader studyReader;
 
     @Mock
-    private StudyParticipantJpaRepository studyParticipantJpaRepository;
+    private StudyParticipantRepository studyParticipantRepository;
 
     private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Member participant = GHOST.toMember().apply(2L, LocalDateTime.now());
@@ -53,7 +53,7 @@ class LeaveParticipationServiceTest extends UseCaseTest {
     @DisplayName("스터디 팀장은 팀장 권한을 위임하지 않으면 스터디 참여를 취소할 수 없다")
     void throwExceptionByHostCannotLeaveStudy() {
         // given
-        given(studyReadAdapter.getById(any())).willReturn(study);
+        given(studyReader.getById(any())).willReturn(study);
 
         // when - then
         assertThatThrownBy(() -> leaveParticipationService.invoke(new LeaveParticipationUseCase.Command(study.getId(), host.getId())))
@@ -61,8 +61,8 @@ class LeaveParticipationServiceTest extends UseCaseTest {
                 .hasMessage(StudyParticipantErrorCode.HOST_CANNOT_LEAVE_STUDY.getMessage());
 
         assertAll(
-                () -> verify(studyReadAdapter, times(1)).getById(any()),
-                () -> verify(studyParticipantJpaRepository, times(0)).updateParticipantStatus(any(), any(), any())
+                () -> verify(studyReader, times(1)).getById(any()),
+                () -> verify(studyParticipantRepository, times(0)).updateParticipantStatus(any(), any(), any())
         );
     }
 
@@ -70,15 +70,15 @@ class LeaveParticipationServiceTest extends UseCaseTest {
     @DisplayName("스터디 참여를 취소한다")
     void success() {
         // given
-        given(studyReadAdapter.getById(any())).willReturn(study);
+        given(studyReader.getById(any())).willReturn(study);
 
         // when
         leaveParticipationService.invoke(new LeaveParticipationUseCase.Command(study.getId(), participant.getId()));
 
         // then
         assertAll(
-                () -> verify(studyReadAdapter, times(1)).getById(any()),
-                () -> verify(studyParticipantJpaRepository, times(1)).updateParticipantStatus(any(), any(), any()),
+                () -> verify(studyReader, times(1)).getById(any()),
+                () -> verify(studyParticipantRepository, times(1)).updateParticipantStatus(any(), any(), any()),
                 () -> assertThat(study.getParticipants()).isEqualTo(previousParticipantMembers - 1)
         );
     }
