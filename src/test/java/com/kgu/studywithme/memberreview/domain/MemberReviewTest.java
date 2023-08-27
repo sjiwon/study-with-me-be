@@ -1,5 +1,6 @@
 package com.kgu.studywithme.memberreview.domain;
 
+import com.kgu.studywithme.common.ExecuteParallel;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.memberreview.exception.MemberReviewErrorCode;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+@ExecuteParallel
 @DisplayName("MemberReview -> 도메인 [MemberReview] 테스트")
 class MemberReviewTest {
     @Nested

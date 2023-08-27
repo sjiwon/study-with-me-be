@@ -1,5 +1,6 @@
 package com.kgu.studywithme.studyattendance.domain;
 
+import com.kgu.studywithme.common.ExecuteParallel;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.Study;
 import org.junit.jupiter.api.DisplayName;
@@ -14,6 +15,7 @@ import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.LATE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+@ExecuteParallel
 @DisplayName("StudyAttendance -> 도메인 [StudyAttendance] 테스트")
 class StudyAttendanceTest {
     private final Member member = JIWON.toMember().apply(1L, LocalDateTime.now());

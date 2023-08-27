@@ -1,5 +1,6 @@
 package com.kgu.studywithme.studyweekly.domain.submit;
 
+import com.kgu.studywithme.common.ExecuteParallel;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
 import org.junit.jupiter.api.DisplayName;
@@ -11,6 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+@ExecuteParallel
 @DisplayName("StudyWeekly/Submit -> 도메인 [AssignmentSubmitType VO] 테스트")
 public class AssignmentSubmitTypeTest {
     @Test

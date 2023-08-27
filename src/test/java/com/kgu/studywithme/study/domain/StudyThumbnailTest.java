@@ -1,5 +1,6 @@
 package com.kgu.studywithme.study.domain;
 
+import com.kgu.studywithme.common.ExecuteParallel;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+@ExecuteParallel
 @DisplayName("Study -> 도메인 [StudyThumbnail VO] 테스트")
 class StudyThumbnailTest {
     @Test

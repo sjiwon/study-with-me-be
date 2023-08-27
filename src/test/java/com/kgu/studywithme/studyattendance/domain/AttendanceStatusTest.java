@@ -1,5 +1,6 @@
 package com.kgu.studywithme.studyattendance.domain;
 
+import com.kgu.studywithme.common.ExecuteParallel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -10,6 +11,7 @@ import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.NON_AT
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+@ExecuteParallel
 @DisplayName("StudyAttendance -> 도메인 [AttendanceStatus VO] 테스트")
 class AttendanceStatusTest {
     @Test

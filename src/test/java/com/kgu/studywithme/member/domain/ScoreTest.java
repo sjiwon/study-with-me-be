@@ -1,5 +1,6 @@
 package com.kgu.studywithme.member.domain;
 
+import com.kgu.studywithme.common.ExecuteParallel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@ExecuteParallel
 @DisplayName("Member -> 도메인 [Score VO] 테스트")
 class ScoreTest {
     @Test

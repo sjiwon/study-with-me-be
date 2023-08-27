@@ -1,5 +1,6 @@
 package com.kgu.studywithme.studynotice.domain.comment;
 
+import com.kgu.studywithme.common.ExecuteParallel;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.studynotice.domain.StudyNotice;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +14,7 @@ import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+@ExecuteParallel
 @DisplayName("StudyNotice/Comment -> 도메인 [StudyNoticeComment] 테스트")
 class StudyNoticeCommentTest {
     private final Member writer = JIWON.toMember().apply(1L, LocalDateTime.now());

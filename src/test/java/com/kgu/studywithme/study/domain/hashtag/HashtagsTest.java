@@ -1,5 +1,6 @@
 package com.kgu.studywithme.study.domain.hashtag;
 
+import com.kgu.studywithme.common.ExecuteParallel;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.Study;
@@ -23,6 +24,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
+@ExecuteParallel
 @DisplayName("Study -> 도메인 [Hashtags VO] 테스트")
 class HashtagsTest {
     private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());

@@ -4,6 +4,7 @@ import com.kgu.studywithme.auth.infrastructure.oauth.kakao.KakaoOAuthProperties;
 import com.kgu.studywithme.auth.infrastructure.oauth.kakao.KakaoOAuthUriGenerator;
 import com.kgu.studywithme.auth.infrastructure.oauth.naver.NaverOAuthProperties;
 import com.kgu.studywithme.auth.infrastructure.oauth.naver.NaverOAuthUriGenerator;
+import com.kgu.studywithme.common.ExecuteParallel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+@ExecuteParallel
 @SpringBootTest(classes = {
         GoogleOAuthUriGenerator.class, GoogleOAuthProperties.class,
         NaverOAuthUriGenerator.class, NaverOAuthProperties.class,

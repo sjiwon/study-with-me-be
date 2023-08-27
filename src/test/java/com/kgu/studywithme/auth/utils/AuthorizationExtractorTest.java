@@ -1,5 +1,6 @@
 package com.kgu.studywithme.auth.utils;
 
+import com.kgu.studywithme.common.ExecuteParallel;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +16,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
+@ExecuteParallel
 @DisplayName("Auth -> AuthorizationExtractor 테스트")
 class AuthorizationExtractorTest {
     private HttpServletRequest request;

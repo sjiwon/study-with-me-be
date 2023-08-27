@@ -1,5 +1,6 @@
 package com.kgu.studywithme.member.domain;
 
+import com.kgu.studywithme.common.ExecuteParallel;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
 import org.junit.jupiter.api.DisplayName;
@@ -9,6 +10,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
+@ExecuteParallel
 @DisplayName("Member -> 도메인 [Phone VO] 테스트")
 public class PhoneTest {
     @ParameterizedTest
