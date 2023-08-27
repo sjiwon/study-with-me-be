@@ -1,9 +1,7 @@
-package com.kgu.studywithme.favorite.application;
+package com.kgu.studywithme.favorite.application.service;
 
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.favorite.application.adapter.FavoriteJudgeRepositoryAdapter;
-import com.kgu.studywithme.favorite.application.service.StudyLikeCancellationService;
-import com.kgu.studywithme.favorite.application.service.StudyLikeMarkingService;
 import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeCancellationUseCase;
 import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeMarkingUseCase;
 import com.kgu.studywithme.favorite.domain.Favorite;
@@ -27,7 +25,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @DisplayName("Favorite -> StudyLikeMarkingService, StudyLikeCancellationService 테스트")
-class FavoriteManagerTest extends UseCaseTest {
+class StudyLikeMarkingAndCancellationTest extends UseCaseTest {
     @InjectMocks
     private StudyLikeMarkingService studyLikeMarkingService;
 
