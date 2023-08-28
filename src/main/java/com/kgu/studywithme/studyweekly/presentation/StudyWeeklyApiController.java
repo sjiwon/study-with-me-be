@@ -1,8 +1,8 @@
 package com.kgu.studywithme.studyweekly.presentation;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
-import com.kgu.studywithme.file.application.adapter.FileUploader;
 import com.kgu.studywithme.global.aop.CheckStudyHost;
+import com.kgu.studywithme.studyweekly.application.facade.AttachmentUploader;
 import com.kgu.studywithme.studyweekly.application.usecase.command.CreateStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.application.usecase.command.DeleteStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.application.usecase.command.UpdateStudyWeeklyUseCase;
@@ -16,14 +16,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -34,10 +32,10 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 @RequiredArgsConstructor
 @RequestMapping("/api/studies/{studyId}")
 public class StudyWeeklyApiController {
+    private final AttachmentUploader attachmentUploader;
     private final CreateStudyWeeklyUseCase createStudyWeeklyUseCase;
     private final UpdateStudyWeeklyUseCase updateStudyWeeklyUseCase;
     private final DeleteStudyWeeklyUseCase deleteStudyWeeklyUseCase;
-    private final FileUploader fileUploader;
 
     @Operation(summary = "스터디 주차 생성 EndPoint")
     @CheckStudyHost
@@ -47,6 +45,7 @@ public class StudyWeeklyApiController {
             @PathVariable final Long studyId,
             @ModelAttribute @Valid final CreateStudyWeeklyRequest request
     ) {
+        final List<UploadAttachment> attachments = attachmentUploader.uploadAttachments(request.files());
         final Long weeklyId = createStudyWeeklyUseCase.invoke(
                 new CreateStudyWeeklyUseCase.Command(
                         studyId,
@@ -56,7 +55,7 @@ public class StudyWeeklyApiController {
                         new Period(request.startDate(), request.endDate()),
                         request.assignmentExists(),
                         request.autoAttendance(),
-                        uploadAttachments(request.files())
+                        attachments
                 )
         );
         return ResponseEntity.ok(new StudyWeeklyIdResponse(weeklyId));
@@ -71,6 +70,7 @@ public class StudyWeeklyApiController {
             @PathVariable final Long weeklyId,
             @ModelAttribute @Valid final UpdateStudyWeeklyRequest request
     ) {
+        final List<UploadAttachment> attachments = attachmentUploader.uploadAttachments(request.files());
         updateStudyWeeklyUseCase.invoke(
                 new UpdateStudyWeeklyUseCase.Command(
                         weeklyId,
@@ -79,7 +79,7 @@ public class StudyWeeklyApiController {
                         new Period(request.startDate(), request.endDate()),
                         request.assignmentExists(),
                         request.autoAttendance(),
-                        uploadAttachments(request.files())
+                        attachments
                 )
         );
         return ResponseEntity.noContent().build();
@@ -100,20 +100,5 @@ public class StudyWeeklyApiController {
                 )
         );
         return ResponseEntity.noContent().build();
-    }
-
-    private List<UploadAttachment> uploadAttachments(final List<MultipartFile> files) {
-        if (CollectionUtils.isEmpty(files)) {
-            return List.of();
-        }
-
-        return files.stream()
-                .map(file ->
-                        new UploadAttachment(
-                                file.getOriginalFilename(),
-                                fileUploader.uploadWeeklyAttachment(file)
-                        )
-                )
-                .toList();
     }
 }

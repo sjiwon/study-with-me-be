@@ -21,7 +21,8 @@ public enum StudyWeeklyErrorCode implements ErrorCode {
     INVALID_SUBMIT_TYPE(BAD_REQUEST, "STUDY_WEEKLY_SUBMIT_001", "과제 제출 타입은 링크(link), 파일(file) 중 하나입니다."),
     MISSING_SUBMISSION(BAD_REQUEST, "STUDY_WEEKLY_SUBMIT_002", "과제 제출물은 링크 또는 파일 중 하나를 반드시 업로드해야 합니다."),
     DUPLICATE_SUBMISSION(BAD_REQUEST, "STUDY_WEEKLY_SUBMIT_003", "과제 제출물은 링크 또는 파일 중 한가지만 업로드해야 합니다."),
-    SUBMITTED_ASSIGNMENT_NOT_FOUND(NOT_FOUND, "STUDY_WEEKLY_SUBMIT_004", "제출한 과제가 존재하지 않습니다."),
+    INVALID_BETWEEN_SUBMIT_TYPE_AND_RESULT(BAD_REQUEST, "STUDY_WEEKLY_SUBMIT_004", "과제 타입[link/file]과 제출한 파일[링크/파일]이 매치되지 않습니다"),
+    SUBMITTED_ASSIGNMENT_NOT_FOUND(NOT_FOUND, "STUDY_WEEKLY_SUBMIT_005", "제출한 과제가 존재하지 않습니다."),
     ;
 
     private final HttpStatus status;

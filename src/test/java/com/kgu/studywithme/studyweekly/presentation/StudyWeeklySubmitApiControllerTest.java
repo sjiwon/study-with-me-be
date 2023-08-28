@@ -111,13 +111,13 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("과제 제출물은 링크 또는 파일 중 하나를 반드시 업로드해야 하고 그러지 않으면 과제 제출에 실패한다")
+        @DisplayName("과제 제출물은 링크 또는 파일 중 하나를 반드시 업로드해야 하고 그러지 않으면 제출이 불가능하다")
         void throwExceptionByMissingSubmission() throws Exception {
             // given
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyWeeklyErrorCode.MISSING_SUBMISSION))
-                    .when(submitWeeklyAssignmentUseCase)
-                    .invoke(any());
+                    .when(assignmentUploader)
+                    .uploadAssignmentWithFile(any(), any(), any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -168,13 +168,13 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("과제 제출물은 링크 또는 파일 중 한가지만 업로드해야 하고 그러지 않으면 과제 제출에 실패한다")
+        @DisplayName("과제 제출물은 링크 또는 파일 중 한가지만 업로드해야 하고 그러지 않으면 제출이 불가능하다")
         void throwExceptionByDuplicateSubmission() throws Exception {
             // given
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyWeeklyErrorCode.DUPLICATE_SUBMISSION))
-                    .when(submitWeeklyAssignmentUseCase)
-                    .invoke(any());
+                    .when(assignmentUploader)
+                    .uploadAssignmentWithFile(any(), any(), any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -199,6 +199,64 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                     .andDo(
                             document(
                                     "StudyApi/Weekly/AssignmentSubmit/Failure/Case3",
+                                    getDocumentRequest(),
+                                    getDocumentResponse(),
+                                    getHeaderWithAccessToken(),
+                                    pathParameters(
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("weeklyId")
+                                                    .description("과제를 제출할 주차 ID(PK)")
+                                    ),
+                                    requestParts(
+                                            partWithName("file")
+                                                    .description("제출할 파일")
+                                                    .optional()
+                                    ),
+                                    queryParameters(
+                                            parameterWithName("type")
+                                                    .description("과제 제출 타입")
+                                                    .attributes(constraint("file=파일 / link=링크")),
+                                            parameterWithName("link")
+                                                    .description("제출할 링크")
+                                                    .optional()
+                                    ),
+                                    getExceptionResponseFields()
+                            )
+                    );
+        }
+
+        @Test
+        @DisplayName("제출한 타입[link/file]에 대해서 실제 제출한 양식[링크/파일]이 매칭이 되지 않음에 따라 제출이 불가능하다")
+        void throwExceptionByInvalidBetweenSubmitTypAndResult() throws Exception {
+            // given
+            mockingToken(true, HOST_ID);
+            doThrow(StudyWithMeException.type(StudyWeeklyErrorCode.INVALID_BETWEEN_SUBMIT_TYPE_AND_RESULT))
+                    .when(assignmentUploader)
+                    .uploadAssignmentWithFile(any(), any(), any());
+
+            // when
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+                    .multipart(BASE_URL, STUDY_ID, WEEKLY_ID)
+                    .file((MockMultipartFile) file)
+                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
+                    .queryParam("type", "link");
+
+            // then
+            final StudyWeeklyErrorCode expectedError = StudyWeeklyErrorCode.INVALID_BETWEEN_SUBMIT_TYPE_AND_RESULT;
+            mockMvc.perform(requestBuilder)
+                    .andExpectAll(
+                            status().isBadRequest(),
+                            jsonPath("$.status").exists(),
+                            jsonPath("$.status").value(expectedError.getStatus().value()),
+                            jsonPath("$.errorCode").exists(),
+                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
+                            jsonPath("$.message").exists(),
+                            jsonPath("$.message").value(expectedError.getMessage())
+                    )
+                    .andDo(
+                            document(
+                                    "StudyApi/Weekly/AssignmentSubmit/Failure/Case4",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
@@ -507,7 +565,65 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("제출한 과제가 없다면 수정할 수 없다")
+        @DisplayName("제출한 타입[link/file]에 대해서 실제 제출한 양식[링크/파일]이 매칭이 되지 않음에 따라 제출한 과제 수정에 실패한다")
+        void throwExceptionByInvalidBetweenSubmitTypAndResult() throws Exception {
+            // given
+            mockingToken(true, HOST_ID);
+            doThrow(StudyWithMeException.type(StudyWeeklyErrorCode.INVALID_BETWEEN_SUBMIT_TYPE_AND_RESULT))
+                    .when(assignmentUploader)
+                    .uploadAssignmentWithFile(any(), any(), any());
+
+            // when
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+                    .multipart(BASE_URL, STUDY_ID, WEEKLY_ID)
+                    .file((MockMultipartFile) file)
+                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
+                    .queryParam("type", "link");
+
+            // then
+            final StudyWeeklyErrorCode expectedError = StudyWeeklyErrorCode.INVALID_BETWEEN_SUBMIT_TYPE_AND_RESULT;
+            mockMvc.perform(requestBuilder)
+                    .andExpectAll(
+                            status().isBadRequest(),
+                            jsonPath("$.status").exists(),
+                            jsonPath("$.status").value(expectedError.getStatus().value()),
+                            jsonPath("$.errorCode").exists(),
+                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
+                            jsonPath("$.message").exists(),
+                            jsonPath("$.message").value(expectedError.getMessage())
+                    )
+                    .andDo(
+                            document(
+                                    "StudyApi/Weekly/AssignmentEdit/Failure/Case4",
+                                    getDocumentRequest(),
+                                    getDocumentResponse(),
+                                    getHeaderWithAccessToken(),
+                                    pathParameters(
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("weeklyId")
+                                                    .description("과제를 제출할 주차 ID(PK)")
+                                    ),
+                                    requestParts(
+                                            partWithName("file")
+                                                    .description("제출할 파일")
+                                                    .optional()
+                                    ),
+                                    queryParameters(
+                                            parameterWithName("type")
+                                                    .description("과제 제출 타입")
+                                                    .attributes(constraint("file=파일 / link=링크")),
+                                            parameterWithName("link")
+                                                    .description("제출할 링크")
+                                                    .optional()
+                                    ),
+                                    getExceptionResponseFields()
+                            )
+                    );
+        }
+
+        @Test
+        @DisplayName("이전에 제출한 과제가 없다면 수정할 수 없다")
         void throwExceptionBySubmittedAssignmentNotFound() throws Exception {
             // given
             mockingToken(true, HOST_ID);
@@ -537,7 +653,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
                     )
                     .andDo(
                             document(
-                                    "StudyApi/Weekly/AssignmentEdit/Failure/Case4",
+                                    "StudyApi/Weekly/AssignmentEdit/Failure/Case5",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),

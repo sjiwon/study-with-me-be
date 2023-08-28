@@ -1,8 +1,8 @@
 package com.kgu.studywithme.studyweekly.presentation;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
-import com.kgu.studywithme.file.application.adapter.FileUploader;
 import com.kgu.studywithme.global.aop.CheckStudyParticipant;
+import com.kgu.studywithme.studyweekly.application.facade.AssignmentUploader;
 import com.kgu.studywithme.studyweekly.application.usecase.command.EditWeeklyAssignmentUseCase;
 import com.kgu.studywithme.studyweekly.application.usecase.command.SubmitWeeklyAssignmentUseCase;
 import com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
@@ -28,9 +27,9 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 @RequiredArgsConstructor
 @RequestMapping("/api/studies/{studyId}/weeks/{weeklyId}/assignment")
 public class StudyWeeklySubmitApiController {
+    private final AssignmentUploader assignmentUploader;
     private final SubmitWeeklyAssignmentUseCase submitWeeklyAssignmentUseCase;
     private final EditWeeklyAssignmentUseCase editWeeklyAssignmentUseCase;
-    private final FileUploader fileUploader;
 
     @Operation(summary = "스터디 주차별 과제 제출 EndPoint")
     @CheckStudyParticipant
@@ -41,14 +40,17 @@ public class StudyWeeklySubmitApiController {
             @PathVariable final Long weeklyId,
             @ModelAttribute @Valid final SubmitWeeklyAssignmentRequest request
     ) {
+        final UploadAssignment assignment = assignmentUploader.uploadAssignmentWithFile(
+                AssignmentSubmitType.from(request.type()),
+                request.file(),
+                request.link()
+        );
         submitWeeklyAssignmentUseCase.invoke(
                 new SubmitWeeklyAssignmentUseCase.Command(
                         memberId,
                         studyId,
                         weeklyId,
-                        AssignmentSubmitType.from(request.type()),
-                        uploadFileAssignment(request.file()),
-                        request.link()
+                        assignment
                 )
         );
         return ResponseEntity.noContent().build();
@@ -63,23 +65,19 @@ public class StudyWeeklySubmitApiController {
             @PathVariable final Long weeklyId,
             @ModelAttribute @Valid final EditSubmittedWeeklyAssignmentRequest request
     ) {
+        final UploadAssignment assignment = assignmentUploader.uploadAssignmentWithFile(
+                AssignmentSubmitType.from(request.type()),
+                request.file(),
+                request.link()
+        );
         editWeeklyAssignmentUseCase.invoke(
                 new EditWeeklyAssignmentUseCase.Command(
                         memberId,
                         studyId,
                         weeklyId,
-                        AssignmentSubmitType.from(request.type()),
-                        uploadFileAssignment(request.file()),
-                        request.link()
+                        assignment
                 )
         );
         return ResponseEntity.noContent().build();
-    }
-
-    private UploadAssignment uploadFileAssignment(final MultipartFile file) {
-        if (file == null || file.isEmpty()) {
-            return null;
-        }
-        return UploadAssignment.withFile(file.getOriginalFilename(), fileUploader.uploadWeeklySubmit(file));
     }
 }

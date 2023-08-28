@@ -11,6 +11,7 @@ import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
 import com.kgu.studywithme.studyweekly.domain.submit.UploadAssignment;
 import com.kgu.studywithme.studyweekly.event.AssignmentSubmittedEvent;
 import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -25,6 +26,7 @@ import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1;
 import static com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType.FILE;
 import static com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType.LINK;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
@@ -48,53 +50,11 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
 
     private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L, LocalDateTime.now());
-    private final StudyWeekly weekly = STUDY_WEEKLY_1.toWeeklyWithAssignment(study.getId(), host.getId())
-            .apply(1L, LocalDateTime.now());
+    private StudyWeekly weekly;
 
-    @Test
-    @DisplayName("과제 제출물은 링크 또는 파일 중 하나를 반드시 업로드해야 하고 그러지 않으면 과제 제출에 실패한다")
-    void throwExceptionByMissingSubmission() {
-        assertThatThrownBy(() -> submitWeeklyAssignmentService.invoke(
-                new SubmitWeeklyAssignmentUseCase.Command(
-                        host.getId(),
-                        study.getId(),
-                        weekly.getId(),
-                        LINK,
-                        null,
-                        null
-                )
-        ))
-                .isInstanceOf(StudyWithMeException.class)
-                .hasMessage(StudyWeeklyErrorCode.MISSING_SUBMISSION.getMessage());
-
-        assertAll(
-                () -> verify(studyWeeklyRepository, times(0)).findById(any()),
-                () -> verify(participateMemberReadAdapter, times(0)).getParticipant(any(), any()),
-                () -> verify(eventPublisher, times(0)).publishEvent(any(AssignmentSubmittedEvent.class))
-        );
-    }
-
-    @Test
-    @DisplayName("과제 제출물은 링크 또는 파일 중 한가지만 업로드해야 하고 그러지 않으면 과제 제출에 실패한다")
-    void throwExceptionByDuplicateSubmission() {
-        assertThatThrownBy(() -> submitWeeklyAssignmentService.invoke(
-                new SubmitWeeklyAssignmentUseCase.Command(
-                        host.getId(),
-                        study.getId(),
-                        weekly.getId(),
-                        LINK,
-                        UploadAssignment.withFile("hello.png", "https://hello.png"),
-                        "https://notion.so"
-                )
-        ))
-                .isInstanceOf(StudyWithMeException.class)
-                .hasMessage(StudyWeeklyErrorCode.DUPLICATE_SUBMISSION.getMessage());
-
-        assertAll(
-                () -> verify(studyWeeklyRepository, times(0)).findById(any()),
-                () -> verify(participateMemberReadAdapter, times(0)).getParticipant(any(), any()),
-                () -> verify(eventPublisher, times(0)).publishEvent(any(AssignmentSubmittedEvent.class))
-        );
+    @BeforeEach
+    void setUp() {
+        weekly = STUDY_WEEKLY_1.toWeeklyWithAssignment(study.getId(), host.getId()).apply(1L, LocalDateTime.now());
     }
 
     @Test
@@ -109,9 +69,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                         host.getId(),
                         study.getId(),
                         weekly.getId(),
-                        LINK,
-                        null,
-                        "https://notion.so"
+                        UploadAssignment.withLink("https://notion.so")
                 )
         ))
                 .isInstanceOf(StudyWithMeException.class)
@@ -137,9 +95,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                         host.getId(),
                         study.getId(),
                         weekly.getId(),
-                        LINK,
-                        null,
-                        "https://notion.so"
+                        UploadAssignment.withLink("https://notion.so")
                 )
         );
 
@@ -147,7 +103,16 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
         assertAll(
                 () -> verify(studyWeeklyRepository, times(1)).findById(any()),
                 () -> verify(participateMemberReadAdapter, times(1)).getParticipant(any(), any()),
-                () -> verify(eventPublisher, times(1)).publishEvent(any(AssignmentSubmittedEvent.class))
+                () -> verify(eventPublisher, times(1)).publishEvent(any(AssignmentSubmittedEvent.class)),
+                () -> assertThat(weekly.getSubmits()).hasSize(1),
+                () -> {
+                    final UploadAssignment assignment = weekly.getSubmits().get(0).getUploadAssignment();
+                    assertAll(
+                            () -> assertThat(assignment.getSubmitType()).isEqualTo(LINK),
+                            () -> assertThat(assignment.getUploadFileName()).isNull(),
+                            () -> assertThat(assignment.getLink()).isEqualTo("https://notion.so")
+                    );
+                }
         );
     }
 
@@ -164,9 +129,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
                         host.getId(),
                         study.getId(),
                         weekly.getId(),
-                        FILE,
-                        UploadAssignment.withFile("hello.png", "https://hello.png"),
-                        null
+                        UploadAssignment.withFile("hello3.pdf", "https://notion.so/hello3.pdf")
                 )
         );
 
@@ -174,7 +137,16 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
         assertAll(
                 () -> verify(studyWeeklyRepository, times(1)).findById(any()),
                 () -> verify(participateMemberReadAdapter, times(1)).getParticipant(any(), any()),
-                () -> verify(eventPublisher, times(1)).publishEvent(any(AssignmentSubmittedEvent.class))
+                () -> verify(eventPublisher, times(1)).publishEvent(any(AssignmentSubmittedEvent.class)),
+                () -> assertThat(weekly.getSubmits()).hasSize(1),
+                () -> {
+                    final UploadAssignment assignment = weekly.getSubmits().get(0).getUploadAssignment();
+                    assertAll(
+                            () -> assertThat(assignment.getSubmitType()).isEqualTo(FILE),
+                            () -> assertThat(assignment.getUploadFileName()).isEqualTo("hello3.pdf"),
+                            () -> assertThat(assignment.getLink()).isEqualTo("https://notion.so/hello3.pdf")
+                    );
+                }
         );
     }
 }

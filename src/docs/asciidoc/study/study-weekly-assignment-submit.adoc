@@ -17,7 +17,7 @@ include::{snippets}/StudyApi/Weekly/AssignmentSubmit/Failure/Case1/query-paramet
 HTTP Response
 include::{snippets}/StudyApi/Weekly/AssignmentSubmit/Failure/Case1/response-body.adoc[]
 
-=== 2. 과제 제출물은 링크 또는 파일 중 하나를 반드시 업로드해야 하고 그러지 않으면 과제 제출에 실패한다
+=== 2. 과제 제출물은 링크 또는 파일 중 하나를 반드시 업로드해야 하고 그러지 않으면 제출이 불가능하다
 HTTP Request
 include::{snippets}/StudyApi/Weekly/AssignmentSubmit/Failure/Case2/http-request.adoc[]
 include::{snippets}/StudyApi/Weekly/AssignmentSubmit/Failure/Case2/request-headers.adoc[]
@@ -28,7 +28,7 @@ include::{snippets}/StudyApi/Weekly/AssignmentSubmit/Failure/Case2/query-paramet
 HTTP Response
 include::{snippets}/StudyApi/Weekly/AssignmentSubmit/Failure/Case2/response-body.adoc[]
 
-=== 3. 과제 제출물은 링크 또는 파일 중 한가지만 업로드해야 하고 그러지 않으면 과제 제출에 실패한다
+=== 3. 과제 제출물은 링크 또는 파일 중 한가지만 업로드해야 하고 그러지 않으면 제출이 불가능하다
 HTTP Request
 include::{snippets}/StudyApi/Weekly/AssignmentSubmit/Failure/Case3/http-request.adoc[]
 include::{snippets}/StudyApi/Weekly/AssignmentSubmit/Failure/Case3/request-headers.adoc[]
@@ -39,7 +39,18 @@ include::{snippets}/StudyApi/Weekly/AssignmentSubmit/Failure/Case3/query-paramet
 HTTP Response
 include::{snippets}/StudyApi/Weekly/AssignmentSubmit/Failure/Case3/response-body.adoc[]
 
-=== 4. 해당 주차 과제를 제출한다 - 파일
+=== 4. 제출한 타입[link/file]에 대해서 실제 제출한 양식[링크/파일]이 매칭이 되지 않음에 따라 제출이 불가능하다
+HTTP Request
+include::{snippets}/StudyApi/Weekly/AssignmentSubmit/Failure/Case4/http-request.adoc[]
+include::{snippets}/StudyApi/Weekly/AssignmentSubmit/Failure/Case4/request-headers.adoc[]
+include::{snippets}/StudyApi/Weekly/AssignmentSubmit/Failure/Case4/path-parameters.adoc[]
+include::{snippets}/StudyApi/Weekly/AssignmentSubmit/Failure/Case4/request-parts.adoc[]
+include::{snippets}/StudyApi/Weekly/AssignmentSubmit/Failure/Case4/query-parameters.adoc[]
+
+HTTP Response
+include::{snippets}/StudyApi/Weekly/AssignmentSubmit/Failure/Case4/response-body.adoc[]
+
+=== 5. 해당 주차 과제를 제출한다 - 파일
 HTTP Request
 include::{snippets}/StudyApi/Weekly/AssignmentSubmit/Success/Case1/http-request.adoc[]
 include::{snippets}/StudyApi/Weekly/AssignmentSubmit/Success/Case1/request-headers.adoc[]
@@ -50,7 +61,7 @@ include::{snippets}/StudyApi/Weekly/AssignmentSubmit/Success/Case1/query-paramet
 HTTP Response
 include::{snippets}/StudyApi/Weekly/AssignmentSubmit/Success/Case1/http-response.adoc[]
 
-=== 5. 해당 주차 과제를 제출한다 - 링크
+=== 6. 해당 주차 과제를 제출한다 - 링크
 HTTP Request
 include::{snippets}/StudyApi/Weekly/AssignmentSubmit/Success/Case2/http-request.adoc[]
 include::{snippets}/StudyApi/Weekly/AssignmentSubmit/Success/Case2/request-headers.adoc[]
@@ -95,7 +106,7 @@ include::{snippets}/StudyApi/Weekly/AssignmentEdit/Failure/Case3/query-parameter
 HTTP Response
 include::{snippets}/StudyApi/Weekly/AssignmentEdit/Failure/Case3/response-body.adoc[]
 
-=== 4. 제출한 과제가 없다면 수정할 수 없다
+=== 4. 제출한 타입[link/file]에 대해서 실제 제출한 양식[링크/파일]이 매칭이 되지 않음에 따라 제출한 과제 수정에 실패한다
 HTTP Request
 include::{snippets}/StudyApi/Weekly/AssignmentEdit/Failure/Case4/http-request.adoc[]
 include::{snippets}/StudyApi/Weekly/AssignmentEdit/Failure/Case4/request-headers.adoc[]
@@ -106,7 +117,18 @@ include::{snippets}/StudyApi/Weekly/AssignmentEdit/Failure/Case4/query-parameter
 HTTP Response
 include::{snippets}/StudyApi/Weekly/AssignmentEdit/Failure/Case4/response-body.adoc[]
 
-=== 5. 제출한 과제를 수정한다
+=== 5. 이전에 제출한 과제가 없다면 수정할 수 없다
+HTTP Request
+include::{snippets}/StudyApi/Weekly/AssignmentEdit/Failure/Case5/http-request.adoc[]
+include::{snippets}/StudyApi/Weekly/AssignmentEdit/Failure/Case5/request-headers.adoc[]
+include::{snippets}/StudyApi/Weekly/AssignmentEdit/Failure/Case5/path-parameters.adoc[]
+include::{snippets}/StudyApi/Weekly/AssignmentEdit/Failure/Case5/request-parts.adoc[]
+include::{snippets}/StudyApi/Weekly/AssignmentEdit/Failure/Case5/query-parameters.adoc[]
+
+HTTP Response
+include::{snippets}/StudyApi/Weekly/AssignmentEdit/Failure/Case5/response-body.adoc[]
+
+=== 6. 제출한 과제를 수정한다
 HTTP Request
 include::{snippets}/StudyApi/Weekly/AssignmentEdit/Success/http-request.adoc[]
 include::{snippets}/StudyApi/Weekly/AssignmentEdit/Success/request-headers.adoc[]

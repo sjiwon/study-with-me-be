@@ -8,13 +8,13 @@
 == Weekly 설명 내부 이미지 업로드 [AccessToken 필수]
 === 1. 허용하는 이미지 확장자[jpg, jpeg, png, gif]가 아니면 업로드가 불가능하다
 HTTP Request
-include::{snippets}/UploadApi/Image/Weekly/Failure/Case1/http-request.adoc[]
-include::{snippets}/UploadApi/Image/Weekly/Failure/Case1/request-headers.adoc[]
-include::{snippets}/UploadApi/Image/Weekly/Failure/Case1/request-parts.adoc[]
-include::{snippets}/UploadApi/Image/Weekly/Failure/Case1/query-parameters.adoc[]
+include::{snippets}/UploadApi/Image/Weekly/Failure/http-request.adoc[]
+include::{snippets}/UploadApi/Image/Weekly/Failure/request-headers.adoc[]
+include::{snippets}/UploadApi/Image/Weekly/Failure/request-parts.adoc[]
+include::{snippets}/UploadApi/Image/Weekly/Failure/query-parameters.adoc[]
 
 HTTP Response
-include::{snippets}/UploadApi/Image/Weekly/Failure/Case1/response-body.adoc[]
+include::{snippets}/UploadApi/Image/Weekly/Failure/response-body.adoc[]
 
 === 2. 스터디 Weekly 설명에 포함되는 이미지를 업로드한다
 HTTP Request
@@ -30,13 +30,13 @@ include::{snippets}/UploadApi/Image/Weekly/Success/response-fields.adoc[]
 == 스터디 설명 내부 이미지 업로드 [AccessToken 필수]
 === 1. 허용하는 이미지 확장자[jpg, jpeg, png, gif]가 아니면 업로드가 불가능하다
 HTTP Request
-include::{snippets}/UploadApi/Image/Description/Failure/Case1/http-request.adoc[]
-include::{snippets}/UploadApi/Image/Description/Failure/Case1/request-headers.adoc[]
-include::{snippets}/UploadApi/Image/Description/Failure/Case1/request-parts.adoc[]
-include::{snippets}/UploadApi/Image/Description/Failure/Case1/query-parameters.adoc[]
+include::{snippets}/UploadApi/Image/Description/Failure/http-request.adoc[]
+include::{snippets}/UploadApi/Image/Description/Failure/request-headers.adoc[]
+include::{snippets}/UploadApi/Image/Description/Failure/request-parts.adoc[]
+include::{snippets}/UploadApi/Image/Description/Failure/query-parameters.adoc[]
 
 HTTP Response
-include::{snippets}/UploadApi/Image/Description/Failure/Case1/response-body.adoc[]
+include::{snippets}/UploadApi/Image/Description/Failure/response-body.adoc[]
 
 === 2. 스터디 설명에 포함되는 이미지를 업로드한다
 HTTP Request

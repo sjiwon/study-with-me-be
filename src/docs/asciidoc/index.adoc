@@ -45,4 +45,4 @@ include::study/study-weekly-assignment-submit.adoc[leveloffset=+1]
 
 include::favorite/study-favorite.adoc[leveloffset=+1]
 
-include::upload/image-upload.adoc[leveloffset=+1]
+include::file/image-upload.adoc[leveloffset=+1]
