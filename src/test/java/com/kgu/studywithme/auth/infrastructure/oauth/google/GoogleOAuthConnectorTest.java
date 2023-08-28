@@ -3,7 +3,6 @@ package com.kgu.studywithme.auth.infrastructure.oauth.google;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleTokenResponse;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleUserResponse;
-import com.kgu.studywithme.common.ExecuteParallel;
 import com.kgu.studywithme.common.utils.TokenUtils;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import org.junit.jupiter.api.DisplayName;
@@ -34,7 +33,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 
-@ExecuteParallel
 @SpringBootTest(classes = {GoogleOAuthConnector.class, GoogleOAuthProperties.class})
 @DisplayName("Auth -> GoogleOAuthConnector 테스트")
 class GoogleOAuthConnectorTest {
