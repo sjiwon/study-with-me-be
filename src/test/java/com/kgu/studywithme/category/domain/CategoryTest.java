@@ -1,6 +1,7 @@
 package com.kgu.studywithme.category.domain;
 
 import com.kgu.studywithme.category.exception.CategoryErrorCode;
+import com.kgu.studywithme.common.ExecuteParallel;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -18,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+@ExecuteParallel
 @DisplayName("Category -> 도메인 [Category] 테스트")
 class CategoryTest {
     @Nested

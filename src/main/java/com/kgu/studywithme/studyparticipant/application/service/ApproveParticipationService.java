@@ -3,13 +3,13 @@ package com.kgu.studywithme.studyparticipant.application.service;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.study.application.adapter.StudyReadAdapter;
+import com.kgu.studywithme.study.application.service.StudyReader;
 import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantReadAdapter;
+import com.kgu.studywithme.studyparticipant.application.adapter.ParticipateMemberReadAdapter;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.ApproveParticipationUseCase;
+import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import com.kgu.studywithme.studyparticipant.event.StudyApprovedEvent;
 import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
-import com.kgu.studywithme.studyparticipant.infrastructure.persistence.StudyParticipantJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -20,20 +20,18 @@ import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPR
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class ApproveParticipationService implements ApproveParticipationUseCase {
-    private final ParticipantReadAdapter participantReadAdapter;
-    private final StudyReadAdapter studyReadAdapter;
-    private final StudyParticipantJpaRepository studyParticipantJpaRepository;
+    private final ParticipateMemberReadAdapter participateMemberReadAdapter;
+    private final StudyReader studyReader;
+    private final StudyParticipantRepository studyParticipantRepository;
     private final ApplicationEventPublisher eventPublisher;
 
     @Override
     public void invoke(final Command command) {
-        final Member applier = participantReadAdapter.getApplier(command.studyId(), command.applierId());
-        final Study study = studyReadAdapter.getById(command.studyId());
+        final Member applier = participateMemberReadAdapter.getApplier(command.studyId(), command.applierId());
+        final Study study = studyReader.getById(command.studyId());
         validateStudyInProgress(study);
 
-        study.addParticipant();
-        studyParticipantJpaRepository.updateParticipantStatus(command.studyId(), command.applierId(), APPROVE);
-
+        approveApplierToParticipant(study, applier);
         if (applier.isEmailOptIn()) {
             eventPublisher.publishEvent(
                     new StudyApprovedEvent(
@@ -49,5 +47,10 @@ public class ApproveParticipationService implements ApproveParticipationUseCase 
         if (study.isTerminated()) {
             throw StudyWithMeException.type(StudyParticipantErrorCode.STUDY_IS_TERMINATED);
         }
+    }
+
+    private void approveApplierToParticipant(final Study study, final Member applier) {
+        study.addParticipant();
+        studyParticipantRepository.updateParticipantStatus(study.getId(), applier.getId(), APPROVE);
     }
 }

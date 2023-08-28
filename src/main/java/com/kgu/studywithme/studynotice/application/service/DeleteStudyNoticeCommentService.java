@@ -3,26 +3,26 @@ package com.kgu.studywithme.studynotice.application.service;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.studynotice.application.usecase.command.DeleteStudyNoticeCommentUseCase;
 import com.kgu.studywithme.studynotice.domain.comment.StudyNoticeComment;
+import com.kgu.studywithme.studynotice.domain.comment.StudyNoticeCommentRepository;
 import com.kgu.studywithme.studynotice.exception.StudyNoticeErrorCode;
-import com.kgu.studywithme.studynotice.infrastructure.persistence.comment.StudyNoticeCommentJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class DeleteStudyNoticeCommentService implements DeleteStudyNoticeCommentUseCase {
-    private final StudyNoticeCommentJpaRepository studyNoticeCommentJpaRepository;
+    private final StudyNoticeCommentRepository studyNoticeCommentRepository;
 
     @Override
     public void invoke(final Command command) {
         final StudyNoticeComment comment = findById(command.commentId());
         validateCommentWriter(comment, command.memberId());
 
-        studyNoticeCommentJpaRepository.delete(comment);
+        studyNoticeCommentRepository.delete(comment);
     }
 
     private StudyNoticeComment findById(final Long commentId) {
-        return studyNoticeCommentJpaRepository.findById(commentId)
+        return studyNoticeCommentRepository.findById(commentId)
                 .orElseThrow(() -> StudyWithMeException.type(StudyNoticeErrorCode.NOTICE_COMMENT_NOT_FOUND));
     }
 

@@ -1,8 +1,8 @@
 package com.kgu.studywithme.studyattendance.infrastructure.scheduler;
 
-import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
+import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.studyattendance.application.adapter.StudyAttendanceHandlingRepositoryAdapter;
-import com.kgu.studywithme.studyattendance.infrastructure.persistence.StudyAttendanceJpaRepository;
+import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
 import com.kgu.studywithme.studyattendance.infrastructure.query.dto.NonAttendanceWeekly;
 import com.kgu.studywithme.studyweekly.application.adapter.StudyWeeklyHandlingRepositoryAdapter;
 import com.kgu.studywithme.studyweekly.infrastructure.query.dto.AutoAttendanceAndFinishedWeekly;
@@ -23,8 +23,8 @@ import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ABSENC
 public class StudyAttendanceScheduler {
     private final StudyWeeklyHandlingRepositoryAdapter studyWeeklyHandlingRepositoryAdapter;
     private final StudyAttendanceHandlingRepositoryAdapter studyAttendanceHandlingRepositoryAdapter;
-    private final StudyAttendanceJpaRepository studyAttendanceJpaRepository;
-    private final MemberJpaRepository memberJpaRepository;
+    private final StudyAttendanceRepository studyAttendanceRepository;
+    private final MemberRepository memberRepository;
 
     @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
     public void processAbsenceCheckScheduler() {
@@ -39,10 +39,10 @@ public class StudyAttendanceScheduler {
 
             if (hasCandidates(participantIds)) {
                 absenceParticipantIds.addAll(participantIds);
-                studyAttendanceJpaRepository.updateParticipantStatus(studyId, specificWeek, participantIds, ABSENCE);
+                studyAttendanceRepository.updateParticipantStatus(studyId, specificWeek, participantIds, ABSENCE);
             }
         });
-        memberJpaRepository.applyScoreToAbsenceParticipant(absenceParticipantIds);
+        memberRepository.applyScoreToAbsenceParticipant(absenceParticipantIds);
     }
 
     private Set<Long> extractNonAttendanceParticipantIds(

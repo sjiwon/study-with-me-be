@@ -50,7 +50,7 @@ public class StudyWeekly extends BaseEntity<StudyWeekly> {
     @Column(name = "is_auto_attendance", nullable = false)
     private boolean autoAttendance;
 
-    @OneToMany(mappedBy = "studyWeekly", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "studyWeekly", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private final List<StudyWeeklyAttachment> attachments = new ArrayList<>();
 
     @OneToMany(mappedBy = "studyWeekly", cascade = CascadeType.PERSIST)
@@ -144,12 +144,7 @@ public class StudyWeekly extends BaseEntity<StudyWeekly> {
         if (!CollectionUtils.isEmpty(attachments)) {
             this.attachments.addAll(
                     attachments.stream()
-                            .map(attachment ->
-                                    StudyWeeklyAttachment.addAttachmentFile(
-                                            this,
-                                            attachment
-                                    )
-                            )
+                            .map(attachment -> StudyWeeklyAttachment.addAttachmentFile(this, attachment))
                             .toList()
             );
         }

@@ -1,10 +1,12 @@
 package com.kgu.studywithme.acceptance.study;
 
 import com.kgu.studywithme.common.AcceptanceTest;
+import com.kgu.studywithme.common.config.DatabaseCleanerEachCallbackExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.time.format.DateTimeFormatter;
 
@@ -44,6 +46,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.http.HttpStatus.OK;
 
+@ExtendWith(DatabaseCleanerEachCallbackExtension.class)
 @DisplayName("[Acceptance Test] 스터디 정보 관련 기능")
 public class StudyQueryAcceptanceTest extends AcceptanceTest {
     private Long hostId;
@@ -267,7 +270,6 @@ public class StudyQueryAcceptanceTest extends AcceptanceTest {
                         .extract()
                         .jsonPath()
                         .getLong("noticeId");
-                System.out.println("ID = " + noticeId);
                 스터디_공지사항을_조회한다(hostAccessToken, studyId)
                         .statusCode(OK.value())
                         .body("result", hasSize(1))

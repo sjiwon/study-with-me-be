@@ -2,9 +2,9 @@ package com.kgu.studywithme.study.infrastructure.query;
 
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
+import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.study.infrastructure.persistence.StudyJpaRepository;
+import com.kgu.studywithme.study.domain.StudyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,19 +24,19 @@ class StudyDuplicateCheckRepositoryTest extends RepositoryTest {
     private StudyDuplicateCheckRepository studyDuplicateCheckRepository;
 
     @Autowired
-    private StudyJpaRepository studyJpaRepository;
+    private StudyRepository studyRepository;
 
     @Autowired
-    private MemberJpaRepository memberJpaRepository;
+    private MemberRepository memberRepository;
 
     private Study studyA;
     private Study studyB;
 
     @BeforeEach
     void setUp() {
-        final Member host = memberJpaRepository.save(JIWON.toMember());
-        studyA = studyJpaRepository.save(SPRING.toOnlineStudy(host.getId()));
-        studyB = studyJpaRepository.save(JPA.toOnlineStudy(host.getId()));
+        final Member host = memberRepository.save(JIWON.toMember());
+        studyA = studyRepository.save(SPRING.toOnlineStudy(host.getId()));
+        studyB = studyRepository.save(JPA.toOnlineStudy(host.getId()));
     }
 
     @Test

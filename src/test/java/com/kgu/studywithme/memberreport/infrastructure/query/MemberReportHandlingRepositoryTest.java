@@ -2,10 +2,10 @@ package com.kgu.studywithme.memberreport.infrastructure.query;
 
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
+import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.memberreport.application.adapter.MemberReportHandlingRepositoryAdapter;
 import com.kgu.studywithme.memberreport.domain.MemberReport;
-import com.kgu.studywithme.memberreport.infrastructure.persistence.MemberReportJpaRepository;
+import com.kgu.studywithme.memberreport.domain.MemberReportRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,25 +23,25 @@ class MemberReportHandlingRepositoryTest extends RepositoryTest {
     private MemberReportHandlingRepositoryAdapter memberReportHandlingRepositoryAdapter;
 
     @Autowired
-    private MemberJpaRepository memberJpaRepository;
+    private MemberRepository memberRepository;
 
     @Autowired
-    private MemberReportJpaRepository memberReportJpaRepository;
+    private MemberReportRepository memberReportRepository;
 
     private Member memberA;
     private Member memberB;
 
     @BeforeEach
     void setUp() {
-        memberA = memberJpaRepository.save(JIWON.toMember());
-        memberB = memberJpaRepository.save(GHOST.toMember());
+        memberA = memberRepository.save(JIWON.toMember());
+        memberB = memberRepository.save(GHOST.toMember());
     }
 
     @Test
     @DisplayName("특정 사용자에 대한 신고가 여전히 처리중인지 확인한다")
     void isReportStillPending() {
         // given
-        final MemberReport memberReport = memberReportJpaRepository.save(
+        final MemberReport memberReport = memberReportRepository.save(
                 MemberReport.createReportWithReason(
                         memberA.getId(),
                         memberB.getId(),

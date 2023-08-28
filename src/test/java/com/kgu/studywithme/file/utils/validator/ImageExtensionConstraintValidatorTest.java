@@ -1,0 +1,81 @@
+package com.kgu.studywithme.file.utils.validator;
+
+import com.kgu.studywithme.common.ExecuteParallel;
+import jakarta.validation.ConstraintValidatorContext;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+
+import static com.kgu.studywithme.common.utils.FileMockingUtils.createSingleMockMultipartFile;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
+@ExecuteParallel
+@DisplayName("File -> ImageExtensionConstraintValidator 테스트")
+class ImageExtensionConstraintValidatorTest {
+    private ImageExtensionConstraintValidator validator;
+    private ConstraintValidatorContext context;
+    private ConstraintValidatorContext.ConstraintViolationBuilder builder;
+
+    @BeforeEach
+    void setUp() {
+        validator = new ImageExtensionConstraintValidator();
+        context = mock(ConstraintValidatorContext.class);
+        builder = mock(ConstraintValidatorContext.ConstraintViolationBuilder.class);
+    }
+
+    @Test
+    @DisplayName("파일이 비어있으면 validator를 통과한다")
+    void emptyFile() {
+        // given
+        final MultipartFile file = new MockMultipartFile("file", new byte[0]);
+
+        // when
+        final boolean actual = validator.isValid(file, null);
+
+        // then
+        assertThat(actual).isTrue();
+    }
+
+    @Test
+    @DisplayName("허용하지 않는 파일 확장자면 validator를 통과하지 못한다")
+    void notAllowedExtension() throws IOException {
+        // given
+        given(context.buildConstraintViolationWithTemplate(anyString())).willReturn(builder);
+        given(builder.addConstraintViolation()).willReturn(context);
+
+        final MultipartFile file = createSingleMockMultipartFile("hello5.webp", "image/webp");
+
+        // when
+        final boolean actual = validator.isValid(file, context);
+
+        // then
+        assertAll(
+                () -> verify(context).disableDefaultConstraintViolation(),
+                () -> verify(context).buildConstraintViolationWithTemplate("이미지는 jpg, jpeg, png, gif만 허용합니다."),
+                () -> verify(builder).addConstraintViolation(),
+                () -> assertThat(actual).isFalse()
+        );
+    }
+
+    @Test
+    @DisplayName("허용하는 확장자면 validator를 통과한다")
+    void allowedExtension() throws IOException {
+        // given
+        final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");
+
+        // when
+        final boolean actual = validator.isValid(file, context);
+
+        // then
+        assertThat(actual).isTrue();
+    }
+}

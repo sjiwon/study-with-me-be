@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @Tag("UseCase")
+@ExecuteParallel
 @ExtendWith(MockitoExtension.class)
 public abstract class UseCaseTest {
 }

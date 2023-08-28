@@ -1,6 +1,5 @@
 package com.kgu.studywithme.studyweekly.application.usecase.command;
 
-import com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType;
 import com.kgu.studywithme.studyweekly.domain.submit.UploadAssignment;
 
 public interface SubmitWeeklyAssignmentUseCase {
@@ -10,9 +9,7 @@ public interface SubmitWeeklyAssignmentUseCase {
             Long memberId,
             Long studyId,
             Long weeklyId,
-            AssignmentSubmitType submitType,
-            UploadAssignment file,
-            String link
+            UploadAssignment assignment
     ) {
     }
 }

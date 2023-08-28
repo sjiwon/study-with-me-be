@@ -1,5 +1,6 @@
 package com.kgu.studywithme.studyweekly.domain.submit;
 
+import com.kgu.studywithme.common.ExecuteParallel;
 import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
@@ -16,6 +17,7 @@ import static com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+@ExecuteParallel
 @DisplayName("StudyWeekly/Submit -> 도메인 [StudyWeeklySubmit] 테스트")
 class StudyWeeklySubmitTest {
     private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());

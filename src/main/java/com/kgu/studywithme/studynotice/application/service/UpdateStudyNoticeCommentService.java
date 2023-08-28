@@ -4,8 +4,8 @@ import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.studynotice.application.usecase.command.UpdateStudyNoticeCommentUseCase;
 import com.kgu.studywithme.studynotice.domain.comment.StudyNoticeComment;
+import com.kgu.studywithme.studynotice.domain.comment.StudyNoticeCommentRepository;
 import com.kgu.studywithme.studynotice.exception.StudyNoticeErrorCode;
-import com.kgu.studywithme.studynotice.infrastructure.persistence.comment.StudyNoticeCommentJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class UpdateStudyNoticeCommentService implements UpdateStudyNoticeCommentUseCase {
-    private final StudyNoticeCommentJpaRepository studyNoticeCommentJpaRepository;
+    private final StudyNoticeCommentRepository studyNoticeCommentRepository;
 
     @Override
     public void invoke(final Command command) {
@@ -24,7 +24,7 @@ public class UpdateStudyNoticeCommentService implements UpdateStudyNoticeComment
     }
 
     private StudyNoticeComment findById(final Long commentId) {
-        return studyNoticeCommentJpaRepository.findById(commentId)
+        return studyNoticeCommentRepository.findById(commentId)
                 .orElseThrow(() -> StudyWithMeException.type(StudyNoticeErrorCode.NOTICE_COMMENT_NOT_FOUND));
     }
 

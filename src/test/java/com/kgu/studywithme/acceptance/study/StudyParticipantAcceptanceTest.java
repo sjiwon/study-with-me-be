@@ -1,10 +1,12 @@
 package com.kgu.studywithme.acceptance.study;
 
 import com.kgu.studywithme.common.AcceptanceTest;
+import com.kgu.studywithme.common.config.DatabaseCleanerEachCallbackExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_신청자에_대한_참여를_거절한다;
 import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_신청자에_대한_참여를_승인한다;
@@ -28,6 +30,7 @@ import static com.kgu.studywithme.studyparticipant.exception.StudyParticipantErr
 import static org.hamcrest.Matchers.is;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
+@ExtendWith(DatabaseCleanerEachCallbackExtension.class)
 @DisplayName("[Acceptance Test] 스터디 참여 관련 기능")
 public class StudyParticipantAcceptanceTest extends AcceptanceTest {
     private String hostAccessToken;

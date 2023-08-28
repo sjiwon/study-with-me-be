@@ -1,5 +1,6 @@
 package com.kgu.studywithme.studyattendance.utils.validator;
 
+import com.kgu.studywithme.common.ExecuteParallel;
 import jakarta.validation.ConstraintValidatorContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -12,6 +13,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+@ExecuteParallel
 @DisplayName("StudyAttendance -> AttendanceStatusUpdateConstraintValidator 테스트")
 class AttendanceStatusUpdateConstraintValidatorTest {
     private AttendanceStatusUpdateConstraintValidator validator;

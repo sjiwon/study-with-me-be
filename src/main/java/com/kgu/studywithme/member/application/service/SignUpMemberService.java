@@ -4,10 +4,11 @@ import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.application.adapter.MemberDuplicateCheckRepositoryAdapter;
 import com.kgu.studywithme.member.application.usecase.command.SignUpMemberUseCase;
 import com.kgu.studywithme.member.domain.Email;
+import com.kgu.studywithme.member.domain.Member;
+import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.member.domain.Nickname;
 import com.kgu.studywithme.member.domain.Phone;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
-import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SignUpMemberService implements SignUpMemberUseCase {
     private final MemberDuplicateCheckRepositoryAdapter memberDuplicateCheckRepositoryAdapter;
-    private final MemberJpaRepository memberJpaRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public Long invoke(final Command command) {
@@ -23,7 +24,8 @@ public class SignUpMemberService implements SignUpMemberUseCase {
         validateNicknameIsUnique(command.nickname());
         validatePhoneIsUnique(command.phone());
 
-        return memberJpaRepository.save(command.toDomain()).getId();
+        final Member member = command.toDomain();
+        return memberRepository.save(member).getId();
     }
 
     private void validateEmailIsUnique(final Email email) {

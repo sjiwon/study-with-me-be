@@ -4,8 +4,8 @@ import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.studynotice.application.usecase.command.WriteStudyNoticeCommentUseCase;
 import com.kgu.studywithme.studynotice.domain.StudyNotice;
+import com.kgu.studywithme.studynotice.domain.StudyNoticeRepository;
 import com.kgu.studywithme.studynotice.exception.StudyNoticeErrorCode;
-import com.kgu.studywithme.studynotice.infrastructure.persistence.StudyNoticeJpaRepository;
 import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantVerificationRepositoryAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class WriteStudyNoticeCommentService implements WriteStudyNoticeCommentUseCase {
-    private final StudyNoticeJpaRepository studyNoticeJpaRepository;
+    private final StudyNoticeRepository studyNoticeRepository;
     private final ParticipantVerificationRepositoryAdapter participantVerificationRepositoryAdapter;
 
     @Override
@@ -26,7 +26,7 @@ public class WriteStudyNoticeCommentService implements WriteStudyNoticeCommentUs
     }
 
     private StudyNotice findById(final Long noticeId) {
-        return studyNoticeJpaRepository.findById(noticeId)
+        return studyNoticeRepository.findById(noticeId)
                 .orElseThrow(() -> StudyWithMeException.type(StudyNoticeErrorCode.NOTICE_NOT_FOUND));
     }
 

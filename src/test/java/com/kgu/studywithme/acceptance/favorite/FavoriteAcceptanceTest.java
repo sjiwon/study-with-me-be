@@ -1,10 +1,12 @@
 package com.kgu.studywithme.acceptance.favorite;
 
 import com.kgu.studywithme.common.AcceptanceTest;
+import com.kgu.studywithme.common.config.DatabaseCleanerEachCallbackExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static com.kgu.studywithme.acceptance.favorite.FavoriteAcceptanceFixture.스터디를_찜_등록한다;
 import static com.kgu.studywithme.acceptance.favorite.FavoriteAcceptanceFixture.찜_등록한_스터디를_취소한다;
@@ -15,6 +17,7 @@ import static com.kgu.studywithme.favorite.exception.FavoriteErrorCode.NEVER_LIK
 import static org.hamcrest.Matchers.is;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
+@ExtendWith(DatabaseCleanerEachCallbackExtension.class)
 @DisplayName("[Acceptance Test] 스터디 찜 관련 기능")
 public class FavoriteAcceptanceTest extends AcceptanceTest {
     private String accessToken;

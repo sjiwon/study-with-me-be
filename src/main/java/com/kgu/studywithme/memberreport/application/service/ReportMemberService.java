@@ -4,8 +4,8 @@ import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.memberreport.application.adapter.MemberReportHandlingRepositoryAdapter;
 import com.kgu.studywithme.memberreport.application.usecase.command.ReportMemberUseCase;
 import com.kgu.studywithme.memberreport.domain.MemberReport;
+import com.kgu.studywithme.memberreport.domain.MemberReportRepository;
 import com.kgu.studywithme.memberreport.exception.MemberReportErrorCode;
-import com.kgu.studywithme.memberreport.infrastructure.persistence.MemberReportJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,14 +13,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ReportMemberService implements ReportMemberUseCase {
     private final MemberReportHandlingRepositoryAdapter memberReportHandlingRepositoryAdapter;
-    private final MemberReportJpaRepository memberReportJpaRepository;
+    private final MemberReportRepository memberReportRepository;
 
     @Override
     public Long invoke(final Command command) {
         validatePreviousReportIsStillPending(command.reporterId(), command.reporteeId());
 
         final MemberReport report = MemberReport.createReportWithReason(command.reporterId(), command.reporteeId(), command.reason());
-        return memberReportJpaRepository.save(report).getId();
+        return memberReportRepository.save(report).getId();
     }
 
     private void validatePreviousReportIsStillPending(

@@ -3,12 +3,12 @@ package com.kgu.studywithme.studyparticipant.application.service;
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.study.application.adapter.StudyReadAdapter;
+import com.kgu.studywithme.study.application.service.StudyReader;
 import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantVerificationRepositoryAdapter;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.ApplyStudyUseCase;
+import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
 import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
-import com.kgu.studywithme.studyparticipant.infrastructure.persistence.StudyParticipantJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,13 +33,13 @@ class ApplyStudyServiceTest extends UseCaseTest {
     private ApplyStudyService applyStudyService;
 
     @Mock
-    private StudyReadAdapter studyReadAdapter;
+    private StudyReader studyReader;
 
     @Mock
     private ParticipantVerificationRepositoryAdapter participantVerificationRepositoryAdapter;
 
     @Mock
-    private StudyParticipantJpaRepository studyParticipantJpaRepository;
+    private StudyParticipantRepository studyParticipantRepository;
 
     private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Member applier = GHOST.toMember().apply(2L, LocalDateTime.now());
@@ -55,7 +55,7 @@ class ApplyStudyServiceTest extends UseCaseTest {
     void throwExceptionByStudyIsNotRecruitingNow() {
         // given
         study.recruitingEnd();
-        given(studyReadAdapter.getById(any())).willReturn(study);
+        given(studyReader.getById(any())).willReturn(study);
 
         // when - then
         assertThatThrownBy(() -> applyStudyService.invoke(new ApplyStudyUseCase.Command(study.getId(), applier.getId())))
@@ -63,10 +63,10 @@ class ApplyStudyServiceTest extends UseCaseTest {
                 .hasMessage(StudyParticipantErrorCode.STUDY_IS_NOT_RECRUITING_NOW.getMessage());
 
         assertAll(
-                () -> verify(studyReadAdapter, times(1)).getById(any()),
+                () -> verify(studyReader, times(1)).getById(any()),
                 () -> verify(participantVerificationRepositoryAdapter, times(0)).isApplierOrParticipant(any(), any()),
                 () -> verify(participantVerificationRepositoryAdapter, times(0)).isAlreadyLeaveOrGraduatedParticipant(any(), any()),
-                () -> verify(studyParticipantJpaRepository, times(0)).save(any())
+                () -> verify(studyParticipantRepository, times(0)).save(any())
         );
     }
 
@@ -74,7 +74,7 @@ class ApplyStudyServiceTest extends UseCaseTest {
     @DisplayName("스터디 팀장은 본인 스터디에 참여 신청을 할 수 없다")
     void throwExceptionByStudyHostCannotApplyOwnStudy() {
         // given
-        given(studyReadAdapter.getById(any())).willReturn(study);
+        given(studyReader.getById(any())).willReturn(study);
 
         // when - then
         assertThatThrownBy(() -> applyStudyService.invoke(new ApplyStudyUseCase.Command(study.getId(), host.getId())))
@@ -82,10 +82,10 @@ class ApplyStudyServiceTest extends UseCaseTest {
                 .hasMessage(StudyParticipantErrorCode.STUDY_HOST_CANNOT_APPLY.getMessage());
 
         assertAll(
-                () -> verify(studyReadAdapter, times(1)).getById(any()),
+                () -> verify(studyReader, times(1)).getById(any()),
                 () -> verify(participantVerificationRepositoryAdapter, times(0)).isApplierOrParticipant(any(), any()),
                 () -> verify(participantVerificationRepositoryAdapter, times(0)).isAlreadyLeaveOrGraduatedParticipant(any(), any()),
-                () -> verify(studyParticipantJpaRepository, times(0)).save(any())
+                () -> verify(studyParticipantRepository, times(0)).save(any())
         );
     }
 
@@ -93,7 +93,7 @@ class ApplyStudyServiceTest extends UseCaseTest {
     @DisplayName("이미 신청했거나 참여중인 스터디에 다시 참여 신청할 수 없다")
     void throwExceptionByAlreadyApplyOrParticipate() {
         // given
-        given(studyReadAdapter.getById(any())).willReturn(study);
+        given(studyReader.getById(any())).willReturn(study);
         given(participantVerificationRepositoryAdapter.isApplierOrParticipant(any(), any())).willReturn(true);
 
         // when - then
@@ -102,10 +102,10 @@ class ApplyStudyServiceTest extends UseCaseTest {
                 .hasMessage(StudyParticipantErrorCode.ALREADY_APPLY_OR_PARTICIPATE.getMessage());
 
         assertAll(
-                () -> verify(studyReadAdapter, times(1)).getById(any()),
+                () -> verify(studyReader, times(1)).getById(any()),
                 () -> verify(participantVerificationRepositoryAdapter, times(1)).isApplierOrParticipant(any(), any()),
                 () -> verify(participantVerificationRepositoryAdapter, times(0)).isAlreadyLeaveOrGraduatedParticipant(any(), any()),
-                () -> verify(studyParticipantJpaRepository, times(0)).save(any())
+                () -> verify(studyParticipantRepository, times(0)).save(any())
         );
     }
 
@@ -113,7 +113,7 @@ class ApplyStudyServiceTest extends UseCaseTest {
     @DisplayName("스터디 참여를 취소했거나 졸업한 사람은 동일 스터디에 다시 참여 신청을 할 수 없다")
     void throwExceptionByAlreadyLeaveOrGraduated() {
         // given
-        given(studyReadAdapter.getById(any())).willReturn(study);
+        given(studyReader.getById(any())).willReturn(study);
         given(participantVerificationRepositoryAdapter.isApplierOrParticipant(any(), any())).willReturn(false);
         given(participantVerificationRepositoryAdapter.isAlreadyLeaveOrGraduatedParticipant(any(), any())).willReturn(true);
 
@@ -123,10 +123,10 @@ class ApplyStudyServiceTest extends UseCaseTest {
                 .hasMessage(StudyParticipantErrorCode.ALREADY_LEAVE_OR_GRADUATED.getMessage());
 
         assertAll(
-                () -> verify(studyReadAdapter, times(1)).getById(any()),
+                () -> verify(studyReader, times(1)).getById(any()),
                 () -> verify(participantVerificationRepositoryAdapter, times(1)).isApplierOrParticipant(any(), any()),
                 () -> verify(participantVerificationRepositoryAdapter, times(1)).isAlreadyLeaveOrGraduatedParticipant(any(), any()),
-                () -> verify(studyParticipantJpaRepository, times(0)).save(any())
+                () -> verify(studyParticipantRepository, times(0)).save(any())
         );
     }
 
@@ -134,7 +134,7 @@ class ApplyStudyServiceTest extends UseCaseTest {
     @DisplayName("스터디에 참여 신청을 한다")
     void success() {
         // given
-        given(studyReadAdapter.getById(any())).willReturn(study);
+        given(studyReader.getById(any())).willReturn(study);
         given(participantVerificationRepositoryAdapter.isApplierOrParticipant(any(), any())).willReturn(false);
         given(participantVerificationRepositoryAdapter.isAlreadyLeaveOrGraduatedParticipant(any(), any())).willReturn(false);
 
@@ -143,10 +143,10 @@ class ApplyStudyServiceTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyReadAdapter, times(1)).getById(any()),
+                () -> verify(studyReader, times(1)).getById(any()),
                 () -> verify(participantVerificationRepositoryAdapter, times(1)).isApplierOrParticipant(any(), any()),
                 () -> verify(participantVerificationRepositoryAdapter, times(1)).isAlreadyLeaveOrGraduatedParticipant(any(), any()),
-                () -> verify(studyParticipantJpaRepository, times(1)).save(any())
+                () -> verify(studyParticipantRepository, times(1)).save(any())
         );
     }
 }

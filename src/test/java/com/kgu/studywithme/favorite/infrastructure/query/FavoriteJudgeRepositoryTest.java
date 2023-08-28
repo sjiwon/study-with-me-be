@@ -2,11 +2,11 @@ package com.kgu.studywithme.favorite.infrastructure.query;
 
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.favorite.domain.Favorite;
-import com.kgu.studywithme.favorite.infrastructure.persistence.FavoriteJpaRepository;
+import com.kgu.studywithme.favorite.domain.FavoriteRepository;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
+import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.study.infrastructure.persistence.StudyJpaRepository;
+import com.kgu.studywithme.study.domain.StudyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,13 +26,13 @@ public class FavoriteJudgeRepositoryTest extends RepositoryTest {
     private FavoriteJudgeRepository favoriteJudgeRepository;
 
     @Autowired
-    private MemberJpaRepository memberJpaRepository;
+    private MemberRepository memberRepository;
 
     @Autowired
-    private StudyJpaRepository studyJpaRepository;
+    private StudyRepository studyRepository;
 
     @Autowired
-    private FavoriteJpaRepository favoriteJpaRepository;
+    private FavoriteRepository favoriteRepository;
 
     private Member member;
     private Study studyA;
@@ -40,16 +40,16 @@ public class FavoriteJudgeRepositoryTest extends RepositoryTest {
 
     @BeforeEach
     void setUp() {
-        member = memberJpaRepository.save(JIWON.toMember());
-        studyA = studyJpaRepository.save(SPRING.toOnlineStudy(member.getId()));
-        studyB = studyJpaRepository.save(JPA.toOnlineStudy(member.getId()));
+        member = memberRepository.save(JIWON.toMember());
+        studyA = studyRepository.save(SPRING.toOnlineStudy(member.getId()));
+        studyB = studyRepository.save(JPA.toOnlineStudy(member.getId()));
     }
 
     @Test
     @DisplayName("해당 스터디를 이미 찜했는지 확인한다")
     void alreadyLikeMarked() {
         // given
-        favoriteJpaRepository.save(Favorite.favoriteMarking(member.getId(), studyA.getId()));
+        favoriteRepository.save(Favorite.favoriteMarking(member.getId(), studyA.getId()));
 
         // when
         final boolean actual1 = favoriteJudgeRepository.alreadyLikeMarked(member.getId(), studyA.getId());
@@ -66,7 +66,7 @@ public class FavoriteJudgeRepositoryTest extends RepositoryTest {
     @DisplayName("해당 스터디를 찜한 적 없는지 확인한다")
     void neverLikeMarked() {
         // given
-        favoriteJpaRepository.save(Favorite.favoriteMarking(member.getId(), studyA.getId()));
+        favoriteRepository.save(Favorite.favoriteMarking(member.getId(), studyA.getId()));
 
         // when
         final boolean actual1 = favoriteJudgeRepository.neverLikeMarked(member.getId(), studyA.getId());

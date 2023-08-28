@@ -6,8 +6,8 @@ import com.kgu.studywithme.study.domain.Study;
 import com.kgu.studywithme.studyweekly.application.adapter.StudyWeeklyHandlingRepositoryAdapter;
 import com.kgu.studywithme.studyweekly.application.usecase.command.CreateStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
+import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
 import com.kgu.studywithme.studyweekly.event.WeeklyCreatedEvent;
-import com.kgu.studywithme.studyweekly.infrastructure.persistence.StudyWeeklyJpaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -35,7 +35,7 @@ class CreateStudyWeeklyServiceTest extends UseCaseTest {
     private StudyWeeklyHandlingRepositoryAdapter studyWeeklyHandlingRepositoryAdapter;
 
     @Mock
-    private StudyWeeklyJpaRepository studyWeeklyJpaRepository;
+    private StudyWeeklyRepository studyWeeklyRepository;
 
     @Mock
     private ApplicationEventPublisher eventPublisher;
@@ -50,7 +50,7 @@ class CreateStudyWeeklyServiceTest extends UseCaseTest {
         given(studyWeeklyHandlingRepositoryAdapter.getNextWeek(any())).willReturn(1);
 
         final StudyWeekly weekly = STUDY_WEEKLY_1.toWeekly(study.getId(), host.getId()).apply(1L, LocalDateTime.now());
-        given(studyWeeklyJpaRepository.save(any())).willReturn(weekly);
+        given(studyWeeklyRepository.save(any())).willReturn(weekly);
 
         // when
         final Long createdWeeklyId = createStudyWeeklyService.invoke(

@@ -6,8 +6,8 @@ import com.kgu.studywithme.member.domain.Member;
 import com.kgu.studywithme.memberreport.application.adapter.MemberReportHandlingRepositoryAdapter;
 import com.kgu.studywithme.memberreport.application.usecase.command.ReportMemberUseCase;
 import com.kgu.studywithme.memberreport.domain.MemberReport;
+import com.kgu.studywithme.memberreport.domain.MemberReportRepository;
 import com.kgu.studywithme.memberreport.exception.MemberReportErrorCode;
-import com.kgu.studywithme.memberreport.infrastructure.persistence.MemberReportJpaRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -34,7 +34,7 @@ class ReportMemberServiceTest extends UseCaseTest {
     private MemberReportHandlingRepositoryAdapter memberReportHandlingRepositoryAdapter;
 
     @Mock
-    private MemberReportJpaRepository memberReportJpaRepository;
+    private MemberReportRepository memberReportRepository;
 
     private final Member memberA = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Member memberB = GHOST.toMember().apply(2L, LocalDateTime.now());
@@ -57,7 +57,7 @@ class ReportMemberServiceTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(memberReportHandlingRepositoryAdapter, times(1)).isReportStillPending(memberA.getId(), memberB.getId()),
-                () -> verify(memberReportJpaRepository, times(0)).save(any())
+                () -> verify(memberReportRepository, times(0)).save(any())
         );
     }
 
@@ -70,7 +70,7 @@ class ReportMemberServiceTest extends UseCaseTest {
         final MemberReport memberReport =
                 MemberReport.createReportWithReason(memberA.getId(), memberB.getId(), "report...")
                         .apply(1L, LocalDateTime.now());
-        given(memberReportJpaRepository.save(any())).willReturn(memberReport);
+        given(memberReportRepository.save(any())).willReturn(memberReport);
 
         // when
         final Long reportId = reportMemberService.invoke(command);
@@ -78,7 +78,7 @@ class ReportMemberServiceTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(memberReportHandlingRepositoryAdapter, times(1)).isReportStillPending(memberA.getId(), memberB.getId()),
-                () -> verify(memberReportJpaRepository, times(1)).save(any()),
+                () -> verify(memberReportRepository, times(1)).save(any()),
                 () -> assertThat(reportId).isEqualTo(memberReport.getId())
         );
     }

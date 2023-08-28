@@ -1,7 +1,7 @@
 package com.kgu.studywithme.auth.application.usecase.command;
 
 import com.kgu.studywithme.auth.domain.AuthMember;
-import com.kgu.studywithme.auth.utils.OAuthProvider;
+import com.kgu.studywithme.auth.domain.oauth.OAuthProvider;
 
 public interface OAuthLoginUseCase {
     AuthMember invoke(final Command command);

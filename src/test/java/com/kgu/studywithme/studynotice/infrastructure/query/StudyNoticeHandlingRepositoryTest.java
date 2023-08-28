@@ -3,12 +3,12 @@ package com.kgu.studywithme.studynotice.infrastructure.query;
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.global.BaseEntity;
 import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.infrastructure.persistence.MemberJpaRepository;
+import com.kgu.studywithme.member.domain.MemberRepository;
 import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.study.infrastructure.persistence.StudyJpaRepository;
+import com.kgu.studywithme.study.domain.StudyRepository;
 import com.kgu.studywithme.studynotice.domain.StudyNotice;
-import com.kgu.studywithme.studynotice.infrastructure.persistence.StudyNoticeJpaRepository;
-import com.kgu.studywithme.studynotice.infrastructure.persistence.comment.StudyNoticeCommentJpaRepository;
+import com.kgu.studywithme.studynotice.domain.StudyNoticeRepository;
+import com.kgu.studywithme.studynotice.domain.comment.StudyNoticeCommentRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,16 +31,16 @@ class StudyNoticeHandlingRepositoryTest extends RepositoryTest {
     private StudyNoticeHandlingRepository studyNoticeHandlingRepository;
 
     @Autowired
-    private StudyNoticeJpaRepository studyNoticeJpaRepository;
+    private StudyNoticeRepository studyNoticeRepository;
 
     @Autowired
-    private StudyNoticeCommentJpaRepository studyNoticeCommentJpaRepository;
+    private StudyNoticeCommentRepository studyNoticeCommentRepository;
 
     @Autowired
-    private MemberJpaRepository memberJpaRepository;
+    private MemberRepository memberRepository;
 
     @Autowired
-    private StudyJpaRepository studyJpaRepository;
+    private StudyRepository studyRepository;
 
     @PersistenceContext
     private EntityManager em;
@@ -50,15 +50,15 @@ class StudyNoticeHandlingRepositoryTest extends RepositoryTest {
 
     @BeforeEach
     void setUp() {
-        writer = memberJpaRepository.save(JIWON.toMember());
-        study = studyJpaRepository.save(SPRING.toOnlineStudy(writer.getId()));
+        writer = memberRepository.save(JIWON.toMember());
+        study = studyRepository.save(SPRING.toOnlineStudy(writer.getId()));
     }
 
     @Test
     @DisplayName("공지사항을 수정한다 [제목, 내용]")
     void updateNotice() {
         // given
-        final StudyNotice notice = studyNoticeJpaRepository.save(
+        final StudyNotice notice = studyNoticeRepository.save(
                 StudyNotice.writeNotice(
                         study.getId(),
                         writer.getId(),
@@ -72,7 +72,7 @@ class StudyNoticeHandlingRepositoryTest extends RepositoryTest {
         syncAndClear(); // force
 
         // then
-        final StudyNotice findNotice = studyNoticeJpaRepository.findById(notice.getId()).orElseThrow();
+        final StudyNotice findNotice = studyNoticeRepository.findById(notice.getId()).orElseThrow();
         assertAll(
                 () -> assertThat(affectedRowCount).isEqualTo(1),
                 () -> assertThat(findNotice.getTitle()).isEqualTo("Title-Update"),
@@ -93,14 +93,14 @@ class StudyNoticeHandlingRepositoryTest extends RepositoryTest {
         notice.addComment(writer.getId(), "Comment 1");
         notice.addComment(writer.getId(), "Comment 2");
         notice.addComment(writer.getId(), "Comment 3");
-        studyNoticeJpaRepository.save(notice);
+        studyNoticeRepository.save(notice);
 
         final List<Long> commendIds = extractCommentIds(notice);
         assertAll(
-                () -> assertThat(studyNoticeJpaRepository.existsById(notice.getId())).isTrue(),
+                () -> assertThat(studyNoticeRepository.existsById(notice.getId())).isTrue(),
                 () -> {
                     for (final Long commendId : commendIds) {
-                        assertThat(studyNoticeCommentJpaRepository.existsById(commendId)).isTrue();
+                        assertThat(studyNoticeCommentRepository.existsById(commendId)).isTrue();
                     }
                 }
         );
@@ -110,10 +110,10 @@ class StudyNoticeHandlingRepositoryTest extends RepositoryTest {
 
         // then
         assertAll(
-                () -> assertThat(studyNoticeJpaRepository.existsById(notice.getId())).isFalse(),
+                () -> assertThat(studyNoticeRepository.existsById(notice.getId())).isFalse(),
                 () -> {
                     for (final Long commendId : commendIds) {
-                        assertThat(studyNoticeCommentJpaRepository.existsById(commendId)).isFalse();
+                        assertThat(studyNoticeCommentRepository.existsById(commendId)).isFalse();
                     }
                 }
         );
