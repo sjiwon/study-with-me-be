@@ -7,7 +7,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
 @FlywayTestExtension
-public class MySqlTestContainersConfiguration implements Extension {
+public class MySqlTestContainersExtension implements Extension {
     private static final String MYSQL_IMAGE = "mysql:8.0.33";
     private static final String DATABASE_NAME = "study_with_me";
     private static final String USERNAME = "root";

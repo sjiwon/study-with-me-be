@@ -3,9 +3,9 @@ package com.kgu.studywithme.acceptance.study;
 import com.kgu.studywithme.auth.domain.AuthMember;
 import com.kgu.studywithme.auth.domain.AuthToken;
 import com.kgu.studywithme.common.AcceptanceTest;
+import com.kgu.studywithme.common.config.DatabaseCleanerAllCallbackExtension;
 import com.kgu.studywithme.common.fixture.MemberFixture;
 import com.kgu.studywithme.common.fixture.StudyFixture;
-import com.kgu.studywithme.common.utils.DatabaseCleanerAllCallback;
 import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -46,7 +46,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.http.HttpStatus.OK;
 
-@ExtendWith(DatabaseCleanerAllCallback.class)
+@ExtendWith(DatabaseCleanerAllCallbackExtension.class)
 @DisplayName("[Acceptance Test] 스터디 조회 관련 기능")
 public class StudySearchAcceptanceTest extends AcceptanceTest {
     private static String hostAccessToken;

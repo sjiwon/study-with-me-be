@@ -1,7 +1,7 @@
 package com.kgu.studywithme.acceptance.favorite;
 
 import com.kgu.studywithme.common.AcceptanceTest;
-import com.kgu.studywithme.common.utils.DatabaseCleanerEachCallback;
+import com.kgu.studywithme.common.config.DatabaseCleanerEachCallbackExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -17,7 +17,7 @@ import static com.kgu.studywithme.favorite.exception.FavoriteErrorCode.NEVER_LIK
 import static org.hamcrest.Matchers.is;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
-@ExtendWith(DatabaseCleanerEachCallback.class)
+@ExtendWith(DatabaseCleanerEachCallbackExtension.class)
 @DisplayName("[Acceptance Test] 스터디 찜 관련 기능")
 public class FavoriteAcceptanceTest extends AcceptanceTest {
     private String accessToken;

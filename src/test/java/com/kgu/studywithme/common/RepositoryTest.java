@@ -1,6 +1,6 @@
 package com.kgu.studywithme.common;
 
-import com.kgu.studywithme.common.config.MySqlTestContainersConfiguration;
+import com.kgu.studywithme.common.config.MySqlTestContainersExtension;
 import com.kgu.studywithme.global.config.P6SpyConfiguration;
 import com.kgu.studywithme.global.config.QueryDslConfiguration;
 import org.junit.jupiter.api.Tag;
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Import;
 
 @Tag("Repository")
 @DataJpaTest(showSql = false)
-@ExtendWith(MySqlTestContainersConfiguration.class)
+@ExtendWith(MySqlTestContainersExtension.class)
 @Import({QueryDslConfiguration.class, P6SpyConfiguration.class})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public abstract class RepositoryTest {

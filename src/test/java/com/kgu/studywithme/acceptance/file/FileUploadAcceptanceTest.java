@@ -1,7 +1,7 @@
 package com.kgu.studywithme.acceptance.file;
 
 import com.kgu.studywithme.common.AcceptanceTest;
-import com.kgu.studywithme.common.utils.DatabaseCleanerEachCallback;
+import com.kgu.studywithme.common.config.DatabaseCleanerEachCallbackExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -14,7 +14,7 @@ import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.http.HttpStatus.OK;
 
-@ExtendWith(DatabaseCleanerEachCallback.class)
+@ExtendWith(DatabaseCleanerEachCallbackExtension.class)
 @DisplayName("[Acceptance Test] 파일 업로드 관련 기능")
 public class FileUploadAcceptanceTest extends AcceptanceTest {
     private String accessToken;

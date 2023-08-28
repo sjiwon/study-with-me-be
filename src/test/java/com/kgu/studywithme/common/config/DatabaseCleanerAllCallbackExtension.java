@@ -1,11 +1,12 @@
-package com.kgu.studywithme.common.utils;
+package com.kgu.studywithme.common.config;
 
+import com.kgu.studywithme.common.utils.DatabaseCleaner;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.platform.commons.support.ModifierSupport;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-public class DatabaseCleanerAllCallback implements AfterAllCallback {
+public class DatabaseCleanerAllCallbackExtension implements AfterAllCallback {
     @Override
     public void afterAll(final ExtensionContext context) {
         if (context.getTestClass().isPresent()) {

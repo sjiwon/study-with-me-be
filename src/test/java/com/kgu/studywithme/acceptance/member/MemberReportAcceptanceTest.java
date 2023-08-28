@@ -1,7 +1,7 @@
 package com.kgu.studywithme.acceptance.member;
 
 import com.kgu.studywithme.common.AcceptanceTest;
-import com.kgu.studywithme.common.utils.DatabaseCleanerEachCallback;
+import com.kgu.studywithme.common.config.DatabaseCleanerEachCallbackExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -13,7 +13,7 @@ import static com.kgu.studywithme.common.fixture.MemberFixture.GHOST;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
-@ExtendWith(DatabaseCleanerEachCallback.class)
+@ExtendWith(DatabaseCleanerEachCallbackExtension.class)
 @DisplayName("[Acceptance Test] 사용자 신고 관련 기능")
 public class MemberReportAcceptanceTest extends AcceptanceTest {
     private String reporterAccessToken;

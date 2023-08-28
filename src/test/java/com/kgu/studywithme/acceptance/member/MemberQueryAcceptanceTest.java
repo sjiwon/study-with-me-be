@@ -2,7 +2,7 @@ package com.kgu.studywithme.acceptance.member;
 
 import com.kgu.studywithme.category.domain.Category;
 import com.kgu.studywithme.common.AcceptanceTest;
-import com.kgu.studywithme.common.utils.DatabaseCleanerEachCallback;
+import com.kgu.studywithme.common.config.DatabaseCleanerEachCallbackExtension;
 import com.kgu.studywithme.member.infrastructure.query.dto.GraduatedStudy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -44,7 +44,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.http.HttpStatus.OK;
 
-@ExtendWith(DatabaseCleanerEachCallback.class)
+@ExtendWith(DatabaseCleanerEachCallbackExtension.class)
 @DisplayName("[Acceptance Test] 사용자 정보 관련 기능")
 public class MemberQueryAcceptanceTest extends AcceptanceTest {
     private Long memberId;

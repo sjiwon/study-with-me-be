@@ -1,7 +1,7 @@
 package com.kgu.studywithme.acceptance.study;
 
 import com.kgu.studywithme.common.AcceptanceTest;
-import com.kgu.studywithme.common.utils.DatabaseCleanerEachCallback;
+import com.kgu.studywithme.common.config.DatabaseCleanerEachCallbackExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -30,7 +30,7 @@ import static com.kgu.studywithme.studyparticipant.exception.StudyParticipantErr
 import static org.hamcrest.Matchers.is;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
-@ExtendWith(DatabaseCleanerEachCallback.class)
+@ExtendWith(DatabaseCleanerEachCallbackExtension.class)
 @DisplayName("[Acceptance Test] 스터디 참여 관련 기능")
 public class StudyParticipantAcceptanceTest extends AcceptanceTest {
     private String hostAccessToken;
