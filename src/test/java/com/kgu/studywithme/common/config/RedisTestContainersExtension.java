@@ -16,6 +16,6 @@ public class RedisTestContainersExtension implements Extension {
         CONTAINER.start();
 
         System.setProperty("spring.data.redis.host", CONTAINER.getHost());
-        System.setProperty("spring.data.redis.port", String.valueOf(CONTAINER.getMappedPort(6379)));
+        System.setProperty("spring.data.redis.port", String.valueOf(CONTAINER.getMappedPort(REDIS_PORT)));
     }
 }
