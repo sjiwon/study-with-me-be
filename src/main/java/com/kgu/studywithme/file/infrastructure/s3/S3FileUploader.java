@@ -92,8 +92,8 @@ public class S3FileUploader implements FileUploader {
         final String uploadFileName = UUID.randomUUID() + FileExtension.getExtensionFromFileName(fileName).getValue();
 
         return switch (uploadType) {
-            case DESCRIPTION -> String.format(BucketMetadata.STUDY_DESCRIPTIONS, uploadFileName);
-            case IMAGE -> String.format(BucketMetadata.WEEKLY_IMAGES, uploadFileName);
+            case DESCRIPTION -> String.format(BucketMetadata.STUDY_DESCRIPTION_IMAGE, uploadFileName);
+            case IMAGE -> String.format(BucketMetadata.WEEKLY_CONTENT_IMAGE, uploadFileName);
             case ATTACHMENT -> String.format(BucketMetadata.WEEKLY_ATTACHMENTS, uploadFileName);
             default -> String.format(BucketMetadata.WEEKLY_SUBMITS, uploadFileName);
         };
