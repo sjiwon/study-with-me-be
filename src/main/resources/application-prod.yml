@@ -27,6 +27,21 @@ spring:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
 
+server:
+  tomcat:
+    mbeanregistry:
+      enabled: true
+
+management:
+  server:
+    port: ${ACTUATOR_PORT}
+    base-path: ${ACTUATOR_BASE_PATH}
+  endpoints:
+    web:
+      exposure:
+        include:
+          - "prometheus"
+
 jwt:
   secret-key: ${JWT_SECRET_KEY}
   access-token-validity: 7200
