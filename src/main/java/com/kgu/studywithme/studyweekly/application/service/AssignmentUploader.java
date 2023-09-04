@@ -1,4 +1,4 @@
-package com.kgu.studywithme.studyweekly.application.facade;
+package com.kgu.studywithme.studyweekly.application.service;
 
 import com.kgu.studywithme.file.application.adapter.FileUploader;
 import com.kgu.studywithme.global.exception.StudyWithMeException;

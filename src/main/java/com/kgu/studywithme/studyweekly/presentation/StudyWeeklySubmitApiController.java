@@ -2,7 +2,7 @@ package com.kgu.studywithme.studyweekly.presentation;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.global.aop.CheckStudyParticipant;
-import com.kgu.studywithme.studyweekly.application.facade.AssignmentUploader;
+import com.kgu.studywithme.studyweekly.application.service.AssignmentUploader;
 import com.kgu.studywithme.studyweekly.application.usecase.command.EditWeeklyAssignmentUseCase;
 import com.kgu.studywithme.studyweekly.application.usecase.command.SubmitWeeklyAssignmentUseCase;
 import com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType;

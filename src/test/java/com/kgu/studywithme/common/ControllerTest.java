@@ -80,8 +80,8 @@ import com.kgu.studywithme.studyreview.application.usecase.command.DeleteStudyRe
 import com.kgu.studywithme.studyreview.application.usecase.command.UpdateStudyReviewUseCase;
 import com.kgu.studywithme.studyreview.application.usecase.command.WriteStudyReviewUseCase;
 import com.kgu.studywithme.studyreview.presentation.StudyReviewApiController;
-import com.kgu.studywithme.studyweekly.application.facade.AssignmentUploader;
-import com.kgu.studywithme.studyweekly.application.facade.AttachmentUploader;
+import com.kgu.studywithme.studyweekly.application.service.AssignmentUploader;
+import com.kgu.studywithme.studyweekly.application.service.AttachmentUploader;
 import com.kgu.studywithme.studyweekly.application.usecase.command.CreateStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.application.usecase.command.DeleteStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.application.usecase.command.EditWeeklyAssignmentUseCase;
