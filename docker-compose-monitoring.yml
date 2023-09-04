@@ -1,16 +1,5 @@
 version: "3"
 services:
-  application:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: application
-    image: sjiwon/study-with-me-be:latest
-    expose:
-      - "8080"
-    ports:
-      - "8080:8080"
-
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
@@ -18,7 +7,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - "./prometheus-prod.yml:/etc/prometheus/prometheus.yml"
+      - "./docker/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml"
 
   grafana:
     image: grafana/grafana:latest
@@ -28,7 +17,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - "./monitoring/grafana_data:/var/lib/grafana"
+      - "./docker/monitoring/grafana_data:/var/lib/grafana"
     depends_on:
       - prometheus
     privileged: true

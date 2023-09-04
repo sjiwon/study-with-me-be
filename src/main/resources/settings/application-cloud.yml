@@ -5,3 +5,5 @@ spring:
         static: ap-northeast-2
       s3:
         bucket: ${S3_BUCKET}
+      cloudfront:
+        url: ${CLOUD_FRONT_URL}

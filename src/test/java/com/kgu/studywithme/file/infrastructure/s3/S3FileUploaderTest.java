@@ -40,6 +40,7 @@ class S3FileUploaderTest extends UseCaseTest {
     private S3Resource s3Resource;
 
     private static final String BUCKET = "bucket";
+    private static final String CLOUD_FRONT_URL = "https://cloudfront-domain";
     private static final String IMAGE = "images";
     private static final String ATTACHMENT = "attachments";
     private static final String SUBMIT = "submits";
@@ -54,7 +55,7 @@ class S3FileUploaderTest extends UseCaseTest {
 
     @BeforeEach
     void setUp() {
-        uploader = new S3FileUploader(s3Template, BUCKET);
+        uploader = new S3FileUploader(s3Template, BUCKET, CLOUD_FRONT_URL);
     }
 
     @Nested
@@ -202,8 +203,8 @@ class S3FileUploaderTest extends UseCaseTest {
     }
 
     @Test
-    @DisplayName("NCP Object Storage와의 통신 간 네트워크적인 오류가 발생한다")
-    void throwExceptionByNCPCommunications() throws IOException {
+    @DisplayName("AWS S3와의 통신 간 네트워크적인 오류가 발생한다")
+    void throwExceptionByAwsS3Communications() throws IOException {
         // given
         doThrow(StudyWithMeException.type(FileErrorCode.S3_UPLOAD_FAILURE))
                 .when(s3Template)
@@ -221,7 +222,8 @@ class S3FileUploaderTest extends UseCaseTest {
 
     private String createUploadLink(final String type, final String originalFileName) {
         return String.format(
-                "https://kr.object.ncloudstorage.com/%s/%s/%s",
+                "%s/%s/%s/%s",
+                CLOUD_FRONT_URL,
                 BUCKET,
                 type,
                 UUID.randomUUID() + extractFileExtension(originalFileName)

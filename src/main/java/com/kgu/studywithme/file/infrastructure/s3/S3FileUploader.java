@@ -22,13 +22,16 @@ import java.util.UUID;
 public class S3FileUploader implements FileUploader {
     private final S3Template s3Template;
     private final String bucket;
+    private final String cloudFrontUrl;
 
     public S3FileUploader(
             final S3Template s3Template,
-            @Value("${spring.cloud.aws.s3.bucket}") final String bucket
+            @Value("${spring.cloud.aws.s3.bucket}") final String bucket,
+            @Value("${spring.cloud.aws.cloudfront.url}") final String cloudFrontUrl
     ) {
         this.s3Template = s3Template;
         this.bucket = bucket;
+        this.cloudFrontUrl = cloudFrontUrl;
     }
 
     @Override
@@ -66,19 +69,19 @@ public class S3FileUploader implements FileUploader {
             final MultipartFile file
     ) {
         try (final InputStream inputStream = file.getInputStream()) {
-            final String uploadFileName = createFileNameByType(uploadType, file.getOriginalFilename());
-
             final ObjectMetadata objectMetadata = ObjectMetadata.builder()
                     .contentType(file.getContentType())
                     .acl(ObjectCannedACL.PUBLIC_READ)
                     .build();
+            final String uploadFileName = createFileNameByType(uploadType, file.getOriginalFilename());
 
-            return s3Template.upload(
+            final String uploadUrlPath = s3Template.upload(
                     bucket,
                     uploadFileName,
                     inputStream,
                     objectMetadata
-            ).getURL().toString();
+            ).getURL().getPath();
+            return cloudFrontUrl + uploadUrlPath;
         } catch (final IOException e) {
             log.error("S3 파일 업로드에 실패했습니다. {}", e.getMessage(), e);
             throw StudyWithMeException.type(FileErrorCode.S3_UPLOAD_FAILURE);
@@ -92,8 +95,8 @@ public class S3FileUploader implements FileUploader {
         final String uploadFileName = UUID.randomUUID() + FileExtension.getExtensionFromFileName(fileName).getValue();
 
         return switch (uploadType) {
-            case DESCRIPTION -> String.format(BucketMetadata.STUDY_DESCRIPTIONS, uploadFileName);
-            case IMAGE -> String.format(BucketMetadata.WEEKLY_IMAGES, uploadFileName);
+            case DESCRIPTION -> String.format(BucketMetadata.STUDY_DESCRIPTION_IMAGE, uploadFileName);
+            case IMAGE -> String.format(BucketMetadata.WEEKLY_CONTENT_IMAGE, uploadFileName);
             case ATTACHMENT -> String.format(BucketMetadata.WEEKLY_ATTACHMENTS, uploadFileName);
             default -> String.format(BucketMetadata.WEEKLY_SUBMITS, uploadFileName);
         };

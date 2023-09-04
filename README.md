@@ -74,6 +74,8 @@
 
 - `docker-compose.yml` 실행
 
+<br>
+
 ### 2) API Server (Local Profile)
 
 ##### settings/application-mail.yml
@@ -83,6 +85,7 @@
 
 ##### settings/application-cloud.yml
 - `S3_BUCKET` = AWS S3 Bucket
+- `CLOUD_FRONT_URL` = AWS CloudFront Domain URL
 
   - > S3 Credentials 관련 `{localUser}/.aws`에 AccessKey & SecretKey 정보 필수
 
@@ -108,6 +111,7 @@ java -jar \
     -Dspring.mail.username="구글 계정 이메일" \
     -Dspring.mail.password="구글 앱 비밀번호" \
     -Dspring.cloud.aws.s3.bucket="AWS S3 Bucket" \
+    -Dspring.cloud.aws.cloudfront.url="AWS CloudFront Domain URL" \
     -Doauth2.google.client-id="Google OAuth Application Client Id" \
     -Doauth2.google.client-secret="Google OAuth Application Client Secret" \
     -Doauth2.google.redirect-uri="Google OAuth Application Redirect Uri" \
@@ -123,7 +127,15 @@ java -jar \
 
 #### (실행-2) IntelliJ 환경변수 설정 & 서버 ON
 
-### [3) Swagger](http://localhost:8080/swagger-ui.html)
+<br>
+
+### 3) Prometheus & Grafana
+
+- `docker-compose-monitoring.yml` 실행
+
+<br>
+
+### [4) Swagger](http://localhost:8080/swagger-ui.html)
 
 - API 테스트 시 필요한 `Token`은 `src/main/resources/DummyToken.txt`에서 사용
 
@@ -132,11 +144,15 @@ java -jar \
 > - 4%2F0Adeu5BXgIJvUdjU090jAGQEwm8WPb8VidZzvmS9OjNFLrfeTIW9B-jGB292k5PRf73w4XA -> 4/0Adeu5BXgIJvUdjU090jAGQEwm8WPb8VidZzvmS9OjNFLrfeTIW9B-jGB292k5PRf73w4XA
     >   - %2F -> /
 
-### [4) REST Docs](http://localhost:8080/docs/index.html)
+<br>
+
+### [5) REST Docs](http://localhost:8080/docs/index.html)
 
 - Gradle `build` Task 실행 후 접속
 
-### 5) 테스트 코드
+<br>
+
+### 6) 테스트 코드
 
 - Acceptance Test -> `@Tag("Acceptance")`
 - Controller Test -> `@Tag("Controller")`
