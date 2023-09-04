@@ -34,7 +34,6 @@ server:
 
 management:
   server:
-    port: ${ACTUATOR_PORT}
     base-path: ${ACTUATOR_BASE_PATH}
   endpoints:
     web:
