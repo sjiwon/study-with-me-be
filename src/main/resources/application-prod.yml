@@ -33,10 +33,9 @@ server:
       enabled: true
 
 management:
-  server:
-    base-path: ${ACTUATOR_BASE_PATH}
   endpoints:
     web:
+      base-path: ${ACTUATOR_BASE_PATH}
       exposure:
         include:
           - "prometheus"

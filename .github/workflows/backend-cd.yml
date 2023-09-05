@@ -39,11 +39,6 @@ jobs:
         with:
           timezone: Asia/Seoul
 
-      - name: Github Action Secrets에 등록된 Production 환경 Prometheus.yml을 가져온다
-        env:
-          PROD_PROMETHEUS_YML: ${{ secrets.PROD_PROMETHEUS_YML }}
-        run: echo $PROD_PROMETHEUS_YML | base64 --decode > ./prometheus-prod.yml
-
       - name: Gradle 명령 실행을 위한 권한을 부여한다
         run: chmod +x gradlew
 
@@ -62,13 +57,13 @@ jobs:
           docker images
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
 
-      - name: docker-compose-prod.yml, prometheus-prod.yml을 EC2에 전송한다
+      - name: docker-compose-prod.yml을 EC2에 전송한다
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
-          source: "./docker-compose-prod.yml, ./prometheus-prod.yml"
+          source: "./docker-compose-prod.yml"
           target: "/home/ec2-user/Study-With-Me-Backend"
 
       - name: EC2 WAS 서버에 접속 후 Docker Image를 Pull하고 docker-compose를 실행한다
