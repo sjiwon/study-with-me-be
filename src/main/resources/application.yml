@@ -31,8 +31,7 @@ management:
   endpoints:
     web:
       exposure:
-        include:
-          - "prometheus"
+        include: [ "health", "prometheus" ]
 
 jwt:
   secret-key: 2da7acad220ffe59e6943c826ec1fcf879a4339521ff5837fa92aab485e94bcb # 테스트용 Secret Key

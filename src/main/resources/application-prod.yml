@@ -36,9 +36,10 @@ management:
   endpoints:
     web:
       base-path: ${ACTUATOR_BASE_PATH}
+      path-mapping:
+        health: ${ACTUATOR_HEALTH_CHECK_PATH}
       exposure:
-        include:
-          - "prometheus"
+        include: [ "health", "prometheus" ]
 
 jwt:
   secret-key: ${JWT_SECRET_KEY}
