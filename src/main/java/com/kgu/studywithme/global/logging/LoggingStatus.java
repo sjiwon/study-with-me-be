@@ -1,27 +1,36 @@
 package com.kgu.studywithme.global.logging;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
 public class LoggingStatus {
-    public static final int END_DEPTH_LEVEL = 0;
-
     private final String taskId;
     private final long startTimeMillis;
 
     private int depthLevel = 0;
 
-    public void enterDepth() {
+    public LoggingStatus(final String taskId) {
+        this.taskId = taskId;
+        this.startTimeMillis = System.currentTimeMillis();
+    }
+
+    public void increaseDepth() {
         depthLevel++;
     }
 
-    public void leaveDepth() {
+    public void decreaseDepth() {
         depthLevel--;
     }
 
-    public boolean isEndDepth() {
-        return depthLevel == END_DEPTH_LEVEL;
+    public String depthPrefix(final String prefixString) {
+        if (depthLevel == 1) {
+            return "|" + prefixString;
+        }
+        final String bar = "|" + " ".repeat(prefixString.length());
+        return bar.repeat(depthLevel - 1) + "|" + prefixString;
+    }
+
+    public long totalTakenTime() {
+        return System.currentTimeMillis() - startTimeMillis;
     }
 }
