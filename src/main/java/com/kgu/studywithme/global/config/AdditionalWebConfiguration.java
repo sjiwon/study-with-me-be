@@ -20,11 +20,12 @@ import java.util.List;
 public class AdditionalWebConfiguration implements WebMvcConfigurer {
     private final JwtTokenProvider jwtTokenProvider;
     private final LoggingStatusManager loggingStatusManager;
+    private final CorsProperties corsProperties;
 
     @Override
     public void addCorsMappings(final CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns("*")
+                .allowedOrigins(corsProperties.getAllowedOriginPatterns().toArray(String[]::new))
                 .allowCredentials(true)
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
