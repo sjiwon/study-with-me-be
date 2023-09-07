@@ -79,6 +79,9 @@ oauth2:
     token-url: https://kauth.kakao.com/oauth/token
     user-info-url: https://kapi.kakao.com/v2/user/me
 
+cors:
+  allowed-origin-patterns: http://localhost:8080
+
 jwt:
   secret-key: testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
   access-token-validity: 1234

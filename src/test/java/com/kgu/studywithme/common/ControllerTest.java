@@ -13,12 +13,15 @@ import com.kgu.studywithme.auth.utils.JwtTokenProvider;
 import com.kgu.studywithme.category.application.usecase.query.QueryAllCategoriesUseCase;
 import com.kgu.studywithme.category.presentation.CategoryApiController;
 import com.kgu.studywithme.common.config.TestAopConfiguration;
+import com.kgu.studywithme.common.config.TestWebBeanConfiguration;
 import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeCancellationUseCase;
 import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeMarkingUseCase;
 import com.kgu.studywithme.favorite.presentation.FavoriteApiController;
 import com.kgu.studywithme.file.application.adapter.FileUploader;
 import com.kgu.studywithme.file.presentation.FileUploadApiController;
+import com.kgu.studywithme.global.config.CorsProperties;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
+import com.kgu.studywithme.global.logging.LoggingStatusManager;
 import com.kgu.studywithme.member.application.usecase.command.SignUpMemberUseCase;
 import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
 import com.kgu.studywithme.member.application.usecase.query.QueryAppliedStudyByIdUseCase;
@@ -169,7 +172,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
         FileUploadApiController.class,
 })
 @ExtendWith(RestDocumentationExtension.class)
-@Import(TestAopConfiguration.class)
+@Import({TestAopConfiguration.class, TestWebBeanConfiguration.class})
 @AutoConfigureRestDocs
 public abstract class ControllerTest {
     // common & external
@@ -182,6 +185,12 @@ public abstract class ControllerTest {
 
     @MockBean
     private JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    private LoggingStatusManager loggingStatusManager;
+
+    @Autowired
+    private CorsProperties corsProperties;
 
     // AOP Validation
     @MockBean

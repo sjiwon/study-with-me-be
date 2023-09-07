@@ -4,10 +4,8 @@
 
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="FILE"/>
-        <appender-ref ref="FILE_ERROR"/>
+        <appender-ref ref="INFO-LOG-FILE"/>
+        <appender-ref ref="WARN-LOG-FILE"/>
+        <appender-ref ref="ERROR-LOG-FILE"/>
     </root>
-
-    <logger name="org.hibernate" level="ERROR"/>
-    <logger name="org.springframework.web" level="INFO"/>
 </configuration>

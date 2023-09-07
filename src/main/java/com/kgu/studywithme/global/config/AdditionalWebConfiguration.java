@@ -3,7 +3,9 @@ package com.kgu.studywithme.global.config;
 import com.kgu.studywithme.auth.utils.ExtractPayloadArgumentResolver;
 import com.kgu.studywithme.auth.utils.ExtractTokenArgumentResolver;
 import com.kgu.studywithme.auth.utils.JwtTokenProvider;
+import com.kgu.studywithme.global.interceptor.RequestLogInterceptor;
 import com.kgu.studywithme.global.interceptor.TokenValidityInterceptor;
+import com.kgu.studywithme.global.logging.LoggingStatusManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -17,11 +19,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdditionalWebConfiguration implements WebMvcConfigurer {
     private final JwtTokenProvider jwtTokenProvider;
+    private final LoggingStatusManager loggingStatusManager;
+    private final CorsProperties corsProperties;
 
     @Override
     public void addCorsMappings(final CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns("*")
+                .allowedOrigins(corsProperties.getAllowedOriginPatterns().toArray(String[]::new))
                 .allowCredentials(true)
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
@@ -31,6 +35,9 @@ public class AdditionalWebConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(new TokenValidityInterceptor(jwtTokenProvider));
+        registry.addInterceptor(new RequestLogInterceptor(loggingStatusManager))
+                .addPathPatterns("/**")
+                .order(1);
     }
 
     @Override
