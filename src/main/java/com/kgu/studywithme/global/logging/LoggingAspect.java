@@ -19,27 +19,27 @@ public class LoggingAspect {
     private final LoggingTracer loggingTracer;
 
     @Pointcut("@within(org.springframework.web.bind.annotation.RestController)")
-    public void restControllerEntryPoint() {
+    private void restControllerEntryPoint() {
     }
 
     @Pointcut("@within(org.springframework.stereotype.Service)")
-    public void serviceLogicEntryPoint() {
+    private void serviceLogicEntryPoint() {
     }
 
     @Pointcut("execution(* com.kgu.studywithme..*Repository+.*(..))")
-    public void repositoryEntryPoint() {
+    private void repositoryEntryPoint() {
     }
 
     @Pointcut("execution(public * com.kgu.studywithme.global.logging..*(..))")
-    public void globalLoggingPath() {
+    private void globalLoggingPath() {
     }
 
     @Pointcut("restControllerEntryPoint() || serviceLogicEntryPoint() || repositoryEntryPoint()")
-    public void includeComponent() {
+    private void includeComponent() {
     }
 
     @Pointcut("!globalLoggingPath()")
-    public void excludeComponent() {
+    private void excludeComponent() {
     }
 
     @Around("includeComponent() && excludeComponent()")
