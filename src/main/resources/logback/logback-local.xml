@@ -4,5 +4,8 @@
 
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="INFO-LOG-FILE"/>
+        <appender-ref ref="WARN-LOG-FILE"/>
+        <appender-ref ref="ERROR-LOG-FILE"/>
     </root>
 </configuration>
