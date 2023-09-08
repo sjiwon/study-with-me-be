@@ -43,14 +43,6 @@ public class ApiGlobalExceptionHandler {
     @ExceptionHandler(StudyWithMeException.class)
     public ResponseEntity<ErrorResponse> studyWithMeException(final StudyWithMeException e) {
         final ErrorCode code = e.getCode();
-        log.info(
-                "StudyWithMeException Occurred -> {} | {} | {}",
-                code.getStatus(),
-                code.getErrorCode(),
-                code.getMessage(),
-                e
-        );
-
         return ResponseEntity
                 .status(code.getStatus())
                 .body(ErrorResponse.from(code));
