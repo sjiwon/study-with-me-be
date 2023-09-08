@@ -7,9 +7,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-
-import java.util.Objects;
 
 @Slf4j
 @Aspect
@@ -18,36 +15,24 @@ import java.util.Objects;
 public class LoggingAspect {
     private final LoggingTracer loggingTracer;
 
-    @Pointcut("@within(org.springframework.web.bind.annotation.RestController)")
-    private void restControllerEntryPoint() {
-    }
-
-    @Pointcut("@within(org.springframework.stereotype.Service)")
-    private void serviceLogicEntryPoint() {
-    }
-
-    @Pointcut("execution(* com.kgu.studywithme..*Repository+.*(..))")
-    private void repositoryEntryPoint() {
-    }
-
-    @Pointcut("execution(public * com.kgu.studywithme.global.logging..*(..))")
-    private void globalLoggingPath() {
-    }
-
-    @Pointcut("restControllerEntryPoint() || serviceLogicEntryPoint() || repositoryEntryPoint()")
+    @Pointcut("execution(public * com.kgu.studywithme..*(..))")
     private void includeComponent() {
     }
 
-    @Pointcut("!globalLoggingPath()")
+    @Pointcut("!execution(public * com.kgu.studywithme.global.logging..*(..))")
+    private void globalLoggingPath() {
+    }
+
+    @Pointcut("!execution(public * com.kgu.studywithme.global.config..*(..))")
+    private void globalConfigPath() {
+    }
+
+    @Pointcut("globalLoggingPath() && globalConfigPath()")
     private void excludeComponent() {
     }
 
     @Around("includeComponent() && excludeComponent()")
     public Object doLogging(final ProceedingJoinPoint joinPoint) throws Throwable {
-        if (isNotRequestScope()) {
-            return joinPoint.proceed();
-        }
-
         final String methodSignature = joinPoint.getSignature().toShortString();
         final Object[] args = joinPoint.getArgs();
         loggingTracer.methodCall(methodSignature, args);
@@ -59,9 +44,5 @@ public class LoggingAspect {
             loggingTracer.throwException(methodSignature, e);
             throw e;
         }
-    }
-
-    private boolean isNotRequestScope() {
-        return Objects.isNull(RequestContextHolder.getRequestAttributes());
     }
 }

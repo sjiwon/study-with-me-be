@@ -7,6 +7,7 @@ import com.kgu.studywithme.studyattendance.infrastructure.query.dto.NonAttendanc
 import com.kgu.studywithme.studyweekly.application.adapter.StudyWeeklyHandlingRepositoryAdapter;
 import com.kgu.studywithme.studyweekly.infrastructure.query.dto.AutoAttendanceAndFinishedWeekly;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ABSENCE;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class StudyAttendanceScheduler {
@@ -31,6 +33,7 @@ public class StudyAttendanceScheduler {
         final Set<Long> absenceParticipantIds = new HashSet<>();
         final List<AutoAttendanceAndFinishedWeekly> weeks = studyWeeklyHandlingRepositoryAdapter.findAutoAttendanceAndFinishedWeekly();
         final List<NonAttendanceWeekly> attendances = studyAttendanceHandlingRepositoryAdapter.findNonAttendanceInformation();
+        log.info("결석 처리 대상 Weekly = {}", attendances);
 
         weeks.forEach(week -> {
             final Long studyId = week.studyId();
@@ -42,6 +45,7 @@ public class StudyAttendanceScheduler {
                 studyAttendanceRepository.updateParticipantStatus(studyId, specificWeek, participantIds, ABSENCE);
             }
         });
+        log.info("결석 처리 대상 참여자 = {}", absenceParticipantIds);
         memberRepository.applyScoreToAbsenceParticipant(absenceParticipantIds);
     }
 

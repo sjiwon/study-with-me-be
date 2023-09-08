@@ -2,12 +2,8 @@ package com.kgu.studywithme.global.logging;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import java.util.Enumeration;
-import java.util.Spliterator;
-import java.util.Spliterators;
+import java.util.Collections;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 public class RequestMetadataExtractor {
     public static String getClientIP(final HttpServletRequest request) {
@@ -48,11 +44,9 @@ public class RequestMetadataExtractor {
     }
 
     public static String getSeveralParamsViaParsing(final HttpServletRequest request) {
-        final Enumeration<String> parameterNames = request.getParameterNames();
-        final Stream<String> parameterStream = StreamSupport.stream(
-                Spliterators.spliteratorUnknownSize(parameterNames.asIterator(), Spliterator.ORDERED), false
-        );
-        return parameterStream.map(param -> "%s = %s".formatted(param, request.getParameter(param)))
+        return Collections.list(request.getParameterNames())
+                .stream()
+                .map(param -> "%s = %s".formatted(param, request.getParameter(param)))
                 .collect(Collectors.joining(", ", "[", "]"));
     }
 }

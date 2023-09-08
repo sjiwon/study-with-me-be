@@ -11,8 +11,6 @@ import org.springframework.util.PatternMatchUtils;
 import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import java.util.UUID;
-
 import static com.kgu.studywithme.global.logging.RequestMetadataExtractor.getClientIP;
 import static com.kgu.studywithme.global.logging.RequestMetadataExtractor.getHttpMethod;
 import static com.kgu.studywithme.global.logging.RequestMetadataExtractor.getRequestUriWithQueryString;
@@ -34,10 +32,8 @@ public class RequestLogInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        final LoggingStatus loggingStatus = new LoggingStatus(generateRandomUuid());
-        loggingStatusManager.applyLoggingStatus(loggingStatus);
-
-        final RequestMetaData requestMetaData = new RequestMetaData(loggingStatus.getTaskId(), request);
+        loggingStatusManager.syncStatus();
+        final RequestMetaData requestMetaData = new RequestMetaData(loggingStatusManager.getTaskId(), request);
         log.info("[Request START] -> [{}]", requestMetaData);
         return true;
     }
@@ -67,9 +63,5 @@ public class RequestLogInterceptor implements HandlerInterceptor {
 
     private boolean isInfraUri(final HttpServletRequest request) {
         return PatternMatchUtils.simpleMatch(INFRA_URI, request.getRequestURI());
-    }
-
-    private String generateRandomUuid() {
-        return UUID.randomUUID().toString().substring(0, 8);
     }
 }
