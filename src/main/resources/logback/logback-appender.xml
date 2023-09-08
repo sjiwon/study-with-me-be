@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <included>
     <timestamp key="BY_DATE" datePattern="yyyy-MM-dd"/>
-    <property name="INFO_LOG_PATH" value="./logs/info"/>
-    <property name="WARN_LOG_PATH" value="./logs/warn"/>
-    <property name="ERROR_LOG_PATH" value="./logs/error"/>
-    <property name="ARCHIVE_FILE_PATTERN" value="%d{yyyy-MM-dd}_%i.log"/>
-    <property name="LOG_PATTERN" value="[%-5level] [%thread] [%d{yyyy-MM-dd HH:mm:ss.SSS}] [%logger{1}] %msg %n"/>
+    <property name="LOG_FILE_PATH" value="./logs"/>
+    <property name="ARCHIVE_FILE_PATH" value="./logs/archive"/>
+    <property name="LOG_PATTERN" value="[%-5level] [%thread] [%d{yyyy-MM-dd HH:mm:ss.SSS, ${logback.timezone:-Asia/Seoul}}] [%logger{1}] %msg %n"/>
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
@@ -13,62 +11,16 @@
         </layout>
     </appender>
 
-    <appender name="INFO-LOG-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${INFO_LOG_PATH}/${BY_DATE}.log</file>
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE_PATH}/${BY_DATE}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${INFO_LOG_PATH}/archive/${ARCHIVE_FILE_PATTERN}</fileNamePattern>
-            <maxHistory>7</maxHistory>
-            <maxFileSize>300MB</maxFileSize>
-            <totalSizeCap>300MB</totalSizeCap>
+            <fileNamePattern>${ARCHIVE_FILE_PATH}/%d{yyyy-MM-dd, ${logback.timezone:-Asia/Seoul}}_%i.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <maxFileSize>100MB</maxFileSize>
+            <totalSizeCap>100MB</totalSizeCap>
         </rollingPolicy>
         <encoder>
             <pattern>${LOG_PATTERN}</pattern>
         </encoder>
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>INFO</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>NEUTRAL</onMismatch>
-        </filter>
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>WARN</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
-    </appender>
-
-    <appender name="WARN-LOG-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${WARN_LOG_PATH}/${BY_DATE}.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${WARN_LOG_PATH}/archive/${ARCHIVE_FILE_PATTERN}</fileNamePattern>
-            <maxHistory>7</maxHistory>
-            <maxFileSize>300MB</maxFileSize>
-            <totalSizeCap>300MB</totalSizeCap>
-        </rollingPolicy>
-        <encoder>
-            <pattern>${LOG_PATTERN}</pattern>
-        </encoder>
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>WARN</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
-    </appender>
-
-    <appender name="ERROR-LOG-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${ERROR_LOG_PATH}/${BY_DATE}.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${ERROR_LOG_PATH}/archive/${ARCHIVE_FILE_PATTERN}</fileNamePattern>
-            <maxHistory>7</maxHistory>
-            <maxFileSize>300MB</maxFileSize>
-            <totalSizeCap>300MB</totalSizeCap>
-        </rollingPolicy>
-        <encoder>
-            <pattern>${LOG_PATTERN}</pattern>
-        </encoder>
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>ERROR</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
     </appender>
 </included>
