@@ -4,5 +4,6 @@
 
     <root level="INFO">
         <appender-ref ref="FILE"/>
+        <appender-ref ref="CLOUD_WATCH"/>
     </root>
 </configuration>
