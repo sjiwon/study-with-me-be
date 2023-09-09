@@ -21,12 +21,16 @@ public class LoggingStatusManager {
         return new LoggingStatus(traceId);
     }
 
-    public LoggingStatus get() {
-        return statusContainer.get();
+    public LoggingStatus getExistLoggingStatus() {
+        final LoggingStatus status = statusContainer.get();
+        if (status == null) {
+            throw new IllegalStateException("ThreadLocal LoggingStatus not exists...");
+        }
+        return status;
     }
 
     public String getTaskId() {
-        return statusContainer.get().getTaskId();
+        return getExistLoggingStatus().getTaskId();
     }
 
     public void increaseDepth() {
