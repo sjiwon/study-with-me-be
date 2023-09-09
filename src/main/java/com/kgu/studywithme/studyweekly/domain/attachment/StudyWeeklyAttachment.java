@@ -24,10 +24,7 @@ public class StudyWeeklyAttachment extends BaseEntity<StudyWeeklyAttachment> {
     @JoinColumn(name = "week_id", referencedColumnName = "id", nullable = false)
     private StudyWeekly studyWeekly;
 
-    private StudyWeeklyAttachment(
-            final StudyWeekly studyWeekly,
-            final UploadAttachment uploadAttachment
-    ) {
+    private StudyWeeklyAttachment(final StudyWeekly studyWeekly, final UploadAttachment uploadAttachment) {
         this.studyWeekly = studyWeekly;
         this.uploadAttachment = uploadAttachment;
     }

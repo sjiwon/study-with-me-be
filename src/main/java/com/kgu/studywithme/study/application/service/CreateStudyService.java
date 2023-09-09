@@ -47,10 +47,7 @@ public class CreateStudyService implements CreateStudyUseCase {
         return study;
     }
 
-    private Study buildStudy(
-            final Member host,
-            final Command command
-    ) {
+    private Study buildStudy(final Member host, final Command command) {
         if (command.type() == ONLINE) {
             return Study.createOnlineStudy(
                     host.getId(),

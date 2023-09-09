@@ -19,19 +19,13 @@ public class Address {
     @Column(name = "city", nullable = false)
     private String city;
 
-    public Address(
-            final String province,
-            final String city
-    ) {
+    public Address(final String province, final String city) {
         validateProvinceAndCityIsNotEmpty(province, city);
         this.province = province;
         this.city = city;
     }
 
-    private void validateProvinceAndCityIsNotEmpty(
-            final String province,
-            final String city
-    ) {
+    private void validateProvinceAndCityIsNotEmpty(final String province, final String city) {
         if (isEmptyText(province) || isEmptyText(city)) {
             throw StudyWithMeException.type(MemberErrorCode.ADDRESS_IS_BLANK);
         }

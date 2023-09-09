@@ -29,21 +29,13 @@ public class StudyNoticeComment extends BaseEntity<StudyNoticeComment> {
     @JoinColumn(name = "notice_id", referencedColumnName = "id", nullable = false)
     private StudyNotice notice;
 
-    private StudyNoticeComment(
-            final StudyNotice notice,
-            final Long writerId,
-            final String content
-    ) {
+    private StudyNoticeComment(final StudyNotice notice, final Long writerId, final String content) {
         this.notice = notice;
         this.writerId = writerId;
         this.content = content;
     }
 
-    public static StudyNoticeComment writeComment(
-            final StudyNotice notice,
-            final Long writerId,
-            final String content
-    ) {
+    public static StudyNoticeComment writeComment(final StudyNotice notice, final Long writerId, final String content) {
         return new StudyNoticeComment(notice, writerId, content);
     }
 

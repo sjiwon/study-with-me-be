@@ -37,11 +37,7 @@ public class GoogleOAuthConnector implements OAuthConnector {
     }
 
     @Override
-    public OAuthTokenResponse fetchToken(
-            final String code,
-            final String redirectUri,
-            final String state
-    ) {
+    public OAuthTokenResponse fetchToken(final String code, final String redirectUri, final String state) {
         final HttpHeaders headers = createTokenRequestHeader();
         final MultiValueMap<String, String> params = applyTokenRequestParams(code, redirectUri, state);
 
@@ -70,9 +66,7 @@ public class GoogleOAuthConnector implements OAuthConnector {
         return params;
     }
 
-    private ResponseEntity<GoogleTokenResponse> fetchGoogleToken(
-            final HttpEntity<MultiValueMap<String, String>> request
-    ) {
+    private ResponseEntity<GoogleTokenResponse> fetchGoogleToken(final HttpEntity<MultiValueMap<String, String>> request) {
         try {
             return restTemplate.postForEntity(properties.getTokenUrl(), request, GoogleTokenResponse.class);
         } catch (final RestClientException e) {

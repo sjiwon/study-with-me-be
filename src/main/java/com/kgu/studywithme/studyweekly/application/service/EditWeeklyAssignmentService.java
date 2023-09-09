@@ -20,17 +20,14 @@ public class EditWeeklyAssignmentService implements EditWeeklyAssignmentUseCase 
 
     @Override
     public void invoke(final Command command) {
-        final StudyWeeklySubmit submittedAssignment = getSubmittedAssignment(command.memberId(), command.studyId(), command.weeklyId());
+        final StudyWeeklySubmit submittedAssignment
+                = getSubmittedAssignment(command.memberId(), command.studyId(), command.weeklyId());
         submittedAssignment.editUpload(command.assignment());
 
         eventPublisher.publishEvent(new AssignmentEditedEvent(command.studyId(), command.weeklyId(), command.memberId()));
     }
 
-    private StudyWeeklySubmit getSubmittedAssignment(
-            final Long memberId,
-            final Long studyId,
-            final Long weeklyId
-    ) {
+    private StudyWeeklySubmit getSubmittedAssignment(final Long memberId, final Long studyId, final Long weeklyId) {
         return studyWeeklyHandlingRepositoryAdapter.getSubmittedAssignment(memberId, studyId, weeklyId)
                 .orElseThrow(() -> StudyWithMeException.type(StudyWeeklyErrorCode.SUBMITTED_ASSIGNMENT_NOT_FOUND));
     }

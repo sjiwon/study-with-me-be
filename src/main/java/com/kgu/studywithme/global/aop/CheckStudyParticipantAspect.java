@@ -15,10 +15,7 @@ public class CheckStudyParticipantAspect {
     private final ParticipantVerificationRepositoryAdapter participantVerificationRepositoryAdapter;
 
     @Before("@annotation(com.kgu.studywithme.global.aop.CheckStudyParticipant) && args(memberId, studyId, ..)")
-    public void checkParticipant(
-            final Long studyId,
-            final Long memberId
-    ) {
+    public void checkParticipant(final Long studyId, final Long memberId) {
         if (!participantVerificationRepositoryAdapter.isParticipant(studyId, memberId)) {
             throw StudyWithMeException.type(StudyParticipantErrorCode.MEMBER_IS_NOT_PARTICIPANT);
         }

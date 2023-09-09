@@ -37,11 +37,7 @@ public class KakaoOAuthConnector implements OAuthConnector {
     }
 
     @Override
-    public OAuthTokenResponse fetchToken(
-            final String code,
-            final String redirectUri,
-            final String state
-    ) {
+    public OAuthTokenResponse fetchToken(final String code, final String redirectUri, final String state) {
         final HttpHeaders headers = createTokenRequestHeader();
         final MultiValueMap<String, String> params = applyTokenRequestParams(code, redirectUri, state);
 
@@ -70,9 +66,7 @@ public class KakaoOAuthConnector implements OAuthConnector {
         return params;
     }
 
-    private ResponseEntity<KakaoTokenResponse> fetchKakaoToken(
-            final HttpEntity<MultiValueMap<String, String>> request
-    ) {
+    private ResponseEntity<KakaoTokenResponse> fetchKakaoToken(final HttpEntity<MultiValueMap<String, String>> request) {
         try {
             return restTemplate.postForEntity(properties.getTokenUrl(), request, KakaoTokenResponse.class);
         } catch (final RestClientException e) {

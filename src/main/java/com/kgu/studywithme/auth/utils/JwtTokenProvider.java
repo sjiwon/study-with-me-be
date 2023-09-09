@@ -43,10 +43,7 @@ public class JwtTokenProvider {
         return createToken(memberId, refreshTokenValidityInMilliseconds);
     }
 
-    private String createToken(
-            final Long memberId,
-            final long validityInMilliseconds
-    ) {
+    private String createToken(final Long memberId, final long validityInMilliseconds) {
         // Payload
         final Claims claims = Jwts.claims();
         claims.put("id", memberId);

@@ -15,10 +15,7 @@ public class CheckStudyHostAspect {
     private final StudyVerificationRepositoryAdapter studyVerificationRepositoryAdapter;
 
     @Before("@annotation(com.kgu.studywithme.global.aop.CheckStudyHost) && args(hostId, studyId, ..)")
-    public void checkParticipant(
-            final Long hostId,
-            final Long studyId
-    ) {
+    public void checkParticipant(final Long hostId, final Long studyId) {
         if (!studyVerificationRepositoryAdapter.isHost(studyId, hostId)) {
             throw StudyWithMeException.type(StudyErrorCode.MEMBER_IS_NOT_HOST);
         }

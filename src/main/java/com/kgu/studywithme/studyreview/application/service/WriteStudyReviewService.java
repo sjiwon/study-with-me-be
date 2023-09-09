@@ -28,19 +28,13 @@ public class WriteStudyReviewService implements WriteStudyReviewUseCase {
         return studyReviewRepository.save(review).getId();
     }
 
-    private void validateMemberIsGraduatedStudy(
-            final Long studyId,
-            final Long memberId
-    ) {
+    private void validateMemberIsGraduatedStudy(final Long studyId, final Long memberId) {
         if (!participantVerificationRepositoryAdapter.isGraduatedParticipant(studyId, memberId)) {
             throw StudyWithMeException.type(StudyReviewErrorCode.ONLY_GRADUATED_PARTICIPANT_CAN_WRITE_REVIEW);
         }
     }
 
-    private void validateAlreadyWritten(
-            final Long studyId,
-            final Long memberId
-    ) {
+    private void validateAlreadyWritten(final Long studyId, final Long memberId) {
         if (studyReviewRepository.existsByStudyIdAndWriterId(studyId, memberId)) {
             throw StudyWithMeException.type(StudyReviewErrorCode.ALREADY_WRITTEN);
         }

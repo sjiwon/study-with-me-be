@@ -109,10 +109,7 @@ public class Member extends BaseEntity<Member> {
         }
     }
 
-    public void applyScoreByAttendanceStatus(
-            final AttendanceStatus previous,
-            final AttendanceStatus current
-    ) {
+    public void applyScoreByAttendanceStatus(final AttendanceStatus previous, final AttendanceStatus current) {
         switch (previous) {
             case ATTENDANCE -> updateAttenceToCurrent(current);
             case LATE -> updateLateToCurrent(current);

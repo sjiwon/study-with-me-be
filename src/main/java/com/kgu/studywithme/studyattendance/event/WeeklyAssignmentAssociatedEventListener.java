@@ -43,7 +43,8 @@ public class WeeklyAssignmentAssociatedEventListener {
         final Member participant = participateMemberReadAdapter.getParticipant(event.studyId(), event.participantId());
 
         if (weekly.isAutoAttendance()) {
-            final StudyAttendance attendance = getParticipantAttendanceByWeek(event.studyId(), participant.getId(), weekly.getWeek());
+            final StudyAttendance attendance
+                    = getParticipantAttendanceByWeek(event.studyId(), participant.getId(), weekly.getWeek());
             final LocalDateTime now = LocalDateTime.now();
             final Period period = weekly.getPeriod();
 
@@ -79,7 +80,8 @@ public class WeeklyAssignmentAssociatedEventListener {
         final LocalDateTime now = LocalDateTime.now();
         final Period period = weekly.getPeriod();
         if (weekly.isAutoAttendance() && !period.isDateWithInRange(now)) { // 수정 시간을 기준으로 제출 시간 업데이트
-            final StudyAttendance attendance = getParticipantAttendanceByWeek(event.studyId(), participant.getId(), weekly.getWeek());
+            final StudyAttendance attendance
+                    = getParticipantAttendanceByWeek(event.studyId(), participant.getId(), weekly.getWeek());
 
             if (attendance.isAttendanceStatus()) {
                 attendance.updateAttendanceStatus(LATE);

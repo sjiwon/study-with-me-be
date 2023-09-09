@@ -19,19 +19,13 @@ public class StudyLocation {
     @Column(name = "city")
     private String city;
 
-    public StudyLocation(
-            final String province,
-            final String city
-    ) {
+    public StudyLocation(final String province, final String city) {
         validateProvinceAndCityIsNotEmpty(province, city);
         this.province = province;
         this.city = city;
     }
 
-    private void validateProvinceAndCityIsNotEmpty(
-            final String province,
-            final String city
-    ) {
+    private void validateProvinceAndCityIsNotEmpty(final String province, final String city) {
         if (isEmptyText(province) || isEmptyText(city)) {
             throw StudyWithMeException.type(StudyErrorCode.STUDY_LOCATION_IS_BLANK);
         }

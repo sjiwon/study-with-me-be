@@ -11,8 +11,5 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
     @StudyWithMeWritableTransactional
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("DELETE FROM Favorite f WHERE f.memberId = :memberId AND f.studyId = :studyId")
-    void cancelLikeMarking(
-            @Param("memberId") Long memberId,
-            @Param("studyId") Long studyId
-    );
+    void cancelLikeMarking(@Param("memberId") Long memberId, @Param("studyId") Long studyId);
 }

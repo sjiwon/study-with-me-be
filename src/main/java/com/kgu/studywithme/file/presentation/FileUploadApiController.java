@@ -32,10 +32,7 @@ public class FileUploadApiController {
         return ResponseEntity.ok(ResponseWrapper.from(imageUploadLink));
     }
 
-    private String uploadImageByType(
-            final String type,
-            final MultipartFile file
-    ) {
+    private String uploadImageByType(final String type, final MultipartFile file) {
         if ("weekly".equals(type)) {
             return fileUploader.uploadWeeklyImage(file);
         }

@@ -20,19 +20,13 @@ public class Period {
     @Column(name = "end_date", nullable = false)
     private LocalDateTime endDate;
 
-    public Period(
-            final LocalDateTime startDate,
-            final LocalDateTime endDate
-    ) {
+    public Period(final LocalDateTime startDate, final LocalDateTime endDate) {
         validateStartIsBeforeEnd(startDate, endDate);
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
-    private void validateStartIsBeforeEnd(
-            final LocalDateTime startDate,
-            final LocalDateTime endDate
-    ) {
+    private void validateStartIsBeforeEnd(final LocalDateTime startDate, final LocalDateTime endDate) {
         if (startDate.isAfter(endDate)) {
             throw StudyWithMeException.type(StudyWeeklyErrorCode.PERIOD_START_DATE_MUST_BE_BEFORE_END_DATE);
         }

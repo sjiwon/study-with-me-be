@@ -7,10 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class ImageExtensionConstraintValidator implements ConstraintValidator<ImageExtensionConstraint, MultipartFile> {
     @Override
-    public boolean isValid(
-            final MultipartFile file,
-            final ConstraintValidatorContext context
-    ) {
+    public boolean isValid(final MultipartFile file, final ConstraintValidatorContext context) {
         if (file == null || file.isEmpty()) {
             return true;
         }
