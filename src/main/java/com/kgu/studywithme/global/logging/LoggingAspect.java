@@ -19,6 +19,10 @@ public class LoggingAspect {
     private void includeComponent() {
     }
 
+    @Pointcut("!execution(public * com.kgu.studywithme.global.interceptor..*(..))")
+    private void globalInterceptorPath() {
+    }
+
     @Pointcut("!execution(public * com.kgu.studywithme.global.logging..*(..))")
     private void globalLoggingPath() {
     }
@@ -27,7 +31,7 @@ public class LoggingAspect {
     private void globalConfigPath() {
     }
 
-    @Pointcut("globalLoggingPath() && globalConfigPath()")
+    @Pointcut("globalInterceptorPath() && globalLoggingPath() && globalConfigPath()")
     private void excludeComponent() {
     }
 
