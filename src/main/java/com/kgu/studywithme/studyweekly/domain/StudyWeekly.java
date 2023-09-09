@@ -150,10 +150,7 @@ public class StudyWeekly extends BaseEntity<StudyWeekly> {
         }
     }
 
-    public void submitAssignment(
-            final Long participantId,
-            final UploadAssignment uploadAssignment
-    ) {
+    public void submitAssignment(final Long participantId, final UploadAssignment uploadAssignment) {
         submits.add(StudyWeeklySubmit.submitAssignment(this, participantId, uploadAssignment));
     }
 }

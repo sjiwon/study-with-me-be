@@ -27,11 +27,7 @@ public class UploadAssignment {
     @Column(name = "submit_type", nullable = false)
     private AssignmentSubmitType submitType;
 
-    private UploadAssignment(
-            final String uploadFileName,
-            final String link,
-            final AssignmentSubmitType submitType
-    ) {
+    private UploadAssignment(final String uploadFileName, final String link, final AssignmentSubmitType submitType) {
         this.uploadFileName = uploadFileName;
         this.link = link;
         this.submitType = submitType;
@@ -41,10 +37,7 @@ public class UploadAssignment {
         return new UploadAssignment(null, link, LINK);
     }
 
-    public static UploadAssignment withFile(
-            final String uploadFileName,
-            final String link
-    ) {
+    public static UploadAssignment withFile(final String uploadFileName, final String link) {
         return new UploadAssignment(uploadFileName, link, FILE);
     }
 

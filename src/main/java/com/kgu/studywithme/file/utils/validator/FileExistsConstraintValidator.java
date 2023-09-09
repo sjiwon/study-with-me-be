@@ -6,10 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class FileExistsConstraintValidator implements ConstraintValidator<FileExistsConstraint, MultipartFile> {
     @Override
-    public boolean isValid(
-            final MultipartFile file,
-            final ConstraintValidatorContext context
-    ) {
+    public boolean isValid(final MultipartFile file, final ConstraintValidatorContext context) {
         return file != null && !file.isEmpty();
     }
 }

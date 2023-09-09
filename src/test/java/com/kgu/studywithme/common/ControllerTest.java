@@ -19,9 +19,8 @@ import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeMarking
 import com.kgu.studywithme.favorite.presentation.FavoriteApiController;
 import com.kgu.studywithme.file.application.adapter.FileUploader;
 import com.kgu.studywithme.file.presentation.FileUploadApiController;
-import com.kgu.studywithme.global.config.CorsProperties;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.global.logging.LoggingStatusManager;
+import com.kgu.studywithme.global.exception.slack.SlackAlertManager;
 import com.kgu.studywithme.member.application.usecase.command.SignUpMemberUseCase;
 import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
 import com.kgu.studywithme.member.application.usecase.query.QueryAppliedStudyByIdUseCase;
@@ -186,11 +185,8 @@ public abstract class ControllerTest {
     @MockBean
     private JwtTokenProvider jwtTokenProvider;
 
-    @Autowired
-    private LoggingStatusManager loggingStatusManager;
-
-    @Autowired
-    private CorsProperties corsProperties;
+    @MockBean
+    private SlackAlertManager slackAlertManager;
 
     // AOP Validation
     @MockBean

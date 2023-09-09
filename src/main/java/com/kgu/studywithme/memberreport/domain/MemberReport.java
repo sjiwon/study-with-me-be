@@ -34,22 +34,14 @@ public class MemberReport extends BaseEntity<MemberReport> {
     @Column(name = "status", nullable = false)
     private MemberReportStatus status;
 
-    private MemberReport(
-            final Long reporterId,
-            final Long reporteeId,
-            final String reason
-    ) {
+    private MemberReport(final Long reporterId, final Long reporteeId, final String reason) {
         this.reporterId = reporterId;
         this.reporteeId = reporteeId;
         this.reason = reason;
         this.status = RECEIVE;
     }
 
-    public static MemberReport createReportWithReason(
-            final Long reporterId,
-            final Long reporteeId,
-            final String reason
-    ) {
+    public static MemberReport createReportWithReason(final Long reporterId, final Long reporteeId, final String reason) {
         return new MemberReport(reporterId, reporteeId, reason);
     }
 

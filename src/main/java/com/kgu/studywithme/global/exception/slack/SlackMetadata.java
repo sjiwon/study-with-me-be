@@ -1,4 +1,4 @@
-package com.kgu.studywithme.global.exception.utils;
+package com.kgu.studywithme.global.exception.slack;
 
 public interface SlackMetadata {
     String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS";

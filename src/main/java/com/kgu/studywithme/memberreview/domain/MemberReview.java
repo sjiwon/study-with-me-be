@@ -24,21 +24,13 @@ public class MemberReview extends BaseEntity<MemberReview> {
     @Column(name = "content", nullable = false)
     private String content;
 
-    private MemberReview(
-            final Long reviewerId,
-            final Long revieweeId,
-            final String content
-    ) {
+    private MemberReview(final Long reviewerId, final Long revieweeId, final String content) {
         this.reviewerId = reviewerId;
         this.revieweeId = revieweeId;
         this.content = content;
     }
 
-    public static MemberReview doReview(
-            final Long reviewerId,
-            final Long revieweeId,
-            final String content
-    ) {
+    public static MemberReview doReview(final Long reviewerId, final Long revieweeId, final String content) {
         return new MemberReview(reviewerId, revieweeId, content);
     }
 

@@ -58,10 +58,7 @@ public class ManualAttendanceService implements ManualAttendanceUseCase {
         }
     }
 
-    private boolean isStatusChanged(
-            final AttendanceStatus previousStatus,
-            final AttendanceStatus currentStatus
-    ) {
+    private boolean isStatusChanged(final AttendanceStatus previousStatus, final AttendanceStatus currentStatus) {
         return previousStatus != currentStatus;
     }
 }

@@ -64,10 +64,7 @@ public class S3FileUploader implements FileUploader {
         }
     }
 
-    private String uploadFile(
-            final FileUploadType uploadType,
-            final MultipartFile file
-    ) {
+    private String uploadFile(final FileUploadType uploadType, final MultipartFile file) {
         try (final InputStream inputStream = file.getInputStream()) {
             final ObjectMetadata objectMetadata = ObjectMetadata.builder()
                     .contentType(file.getContentType())
@@ -88,10 +85,7 @@ public class S3FileUploader implements FileUploader {
         }
     }
 
-    private String createFileNameByType(
-            final FileUploadType uploadType,
-            final String fileName
-    ) {
+    private String createFileNameByType(final FileUploadType uploadType, final String fileName) {
         final String uploadFileName = UUID.randomUUID() + FileExtension.getExtensionFromFileName(fileName).getValue();
 
         return switch (uploadType) {

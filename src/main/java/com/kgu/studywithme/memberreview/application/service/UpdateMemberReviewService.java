@@ -21,10 +21,7 @@ public class UpdateMemberReviewService implements UpdateMemberReviewUseCase {
         memberReview.updateReview(command.content());
     }
 
-    private MemberReview getWrittenReview(
-            final Long reviewerId,
-            final Long revieweeId
-    ) {
+    private MemberReview getWrittenReview(final Long reviewerId, final Long revieweeId) {
         return memberReviewRepository.getWrittenReviewForReviewee(reviewerId, revieweeId)
                 .orElseThrow(() -> StudyWithMeException.type(MemberReviewErrorCode.MEMBER_REVIEW_NOT_FOUND));
     }

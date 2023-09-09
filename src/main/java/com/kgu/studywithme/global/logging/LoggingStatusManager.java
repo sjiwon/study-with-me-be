@@ -1,26 +1,43 @@
 package com.kgu.studywithme.global.logging;
 
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.RequestScope;
+
+import java.util.UUID;
 
 @Component
-@RequestScope
 public class LoggingStatusManager {
-    private LoggingStatus loggingStatus;
+    private final ThreadLocal<LoggingStatus> statusContainer = new ThreadLocal<>();
 
-    public void applyLoggingStatus(final LoggingStatus loggingStatus) {
-        this.loggingStatus = loggingStatus;
+    public void syncStatus() {
+        final LoggingStatus status = statusContainer.get();
+        if (status == null) {
+            final LoggingStatus firstLoggingStatus = createLoggingStatus();
+            statusContainer.set(firstLoggingStatus);
+        }
     }
 
-    public LoggingStatus get() {
-        return loggingStatus;
+    private LoggingStatus createLoggingStatus() {
+        final String traceId = UUID.randomUUID().toString().substring(0, 8);
+        return new LoggingStatus(traceId);
+    }
+
+    public LoggingStatus getExistLoggingStatus() {
+        final LoggingStatus status = statusContainer.get();
+        if (status == null) {
+            throw new IllegalStateException("ThreadLocal LoggingStatus not exists...");
+        }
+        return status;
+    }
+
+    public String getTaskId() {
+        return getExistLoggingStatus().getTaskId();
     }
 
     public void increaseDepth() {
-        loggingStatus.increaseDepth();
+        statusContainer.get().increaseDepth();
     }
 
     public void decreaseDepth() {
-        loggingStatus.decreaseDepth();
+        statusContainer.get().decreaseDepth();
     }
 }

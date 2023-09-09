@@ -32,19 +32,13 @@ public class UpdateMemberService implements UpdateMemberUseCase {
         );
     }
 
-    public void validateNicknameIsUnique(
-            final Long memberId,
-            final String nickname
-    ) {
+    public void validateNicknameIsUnique(final Long memberId, final String nickname) {
         if (memberDuplicateCheckRepositoryAdapter.isNicknameUsedByOther(memberId, nickname)) {
             throw StudyWithMeException.type(MemberErrorCode.DUPLICATE_NICKNAME);
         }
     }
 
-    public void validatePhoneIsUnique(
-            final Long memberId,
-            final String phone
-    ) {
+    public void validatePhoneIsUnique(final Long memberId, final String phone) {
         if (memberDuplicateCheckRepositoryAdapter.isPhoneUsedByOther(memberId, phone)) {
             throw StudyWithMeException.type(MemberErrorCode.DUPLICATE_PHONE);
         }

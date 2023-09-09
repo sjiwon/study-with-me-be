@@ -18,7 +18,9 @@ public class LoggingTracer {
             final String methodSignature,
             final Object[] args
     ) {
-        final LoggingStatus loggingStatus = loggingStatusManager.get();
+        loggingStatusManager.syncStatus();
+
+        final LoggingStatus loggingStatus = loggingStatusManager.getExistLoggingStatus();
         loggingStatusManager.increaseDepth();
         if (log.isInfoEnabled()) {
             log.info(
@@ -31,7 +33,7 @@ public class LoggingTracer {
     }
 
     public void methodReturn(final String methodSignature) {
-        final LoggingStatus loggingStatus = loggingStatusManager.get();
+        final LoggingStatus loggingStatus = loggingStatusManager.getExistLoggingStatus();
         if (log.isInfoEnabled()) {
             log.info(
                     "[{}] {} time={}ms",
@@ -44,7 +46,7 @@ public class LoggingTracer {
     }
 
     public void throwException(final String methodSignature, final Throwable exception) {
-        final LoggingStatus loggingStatus = loggingStatusManager.get();
+        final LoggingStatus loggingStatus = loggingStatusManager.getExistLoggingStatus();
         if (log.isInfoEnabled()) {
             log.info(
                     "[{}] {} time={}ms ex={}",

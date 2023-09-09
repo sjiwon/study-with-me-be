@@ -20,10 +20,7 @@ public class GraduationPolicy {
     @Column(name = "policy_update_chance", nullable = false)
     private int updateChance;
 
-    private GraduationPolicy(
-            final int minimumAttendance,
-            final int updateChance
-    ) {
+    private GraduationPolicy(final int minimumAttendance, final int updateChance) {
         this.minimumAttendance = minimumAttendance;
         this.updateChance = updateChance;
     }

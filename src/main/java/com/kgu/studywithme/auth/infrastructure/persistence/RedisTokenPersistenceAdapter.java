@@ -27,10 +27,7 @@ public class RedisTokenPersistenceAdapter implements TokenPersistenceAdapter {
     }
 
     @Override
-    public void synchronizeRefreshToken(
-            final Long memberId,
-            final String refreshToken
-    ) {
+    public void synchronizeRefreshToken(final Long memberId, final String refreshToken) {
         tokenOperations.set(
                 String.format(REFRESH_TOKEN_KEY.getValue(), memberId),
                 refreshToken,
@@ -40,10 +37,7 @@ public class RedisTokenPersistenceAdapter implements TokenPersistenceAdapter {
     }
 
     @Override
-    public void updateMemberRefreshToken(
-            final Long memberId,
-            final String refreshToken
-    ) {
+    public void updateMemberRefreshToken(final Long memberId, final String refreshToken) {
         tokenOperations.set(
                 String.format(REFRESH_TOKEN_KEY.getValue(), memberId),
                 refreshToken,
@@ -58,10 +52,7 @@ public class RedisTokenPersistenceAdapter implements TokenPersistenceAdapter {
     }
 
     @Override
-    public boolean isMemberRefreshToken(
-            final Long memberId,
-            final String refreshToken
-    ) {
+    public boolean isMemberRefreshToken(final Long memberId, final String refreshToken) {
         final String validToken = tokenOperations.get(String.format(REFRESH_TOKEN_KEY.getValue(), memberId));
         return refreshToken.equals(validToken);
     }

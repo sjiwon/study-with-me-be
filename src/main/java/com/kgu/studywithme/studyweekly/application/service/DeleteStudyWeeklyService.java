@@ -18,10 +18,7 @@ public class DeleteStudyWeeklyService implements DeleteStudyWeeklyUseCase {
         studyWeeklyHandlingRepositoryAdapter.deleteSpecificWeekly(command.studyId(), command.weeklyId());
     }
 
-    private void validateSpecificWeekIsLatestWeek(
-            final Long studyId,
-            final Long weeklyId
-    ) {
+    private void validateSpecificWeekIsLatestWeek(final Long studyId, final Long weeklyId) {
         if (!studyWeeklyHandlingRepositoryAdapter.isLatestWeek(studyId, weeklyId)) {
             throw StudyWithMeException.type(StudyWeeklyErrorCode.ONLY_LATEST_WEEKLY_CAN_DELETE);
         }

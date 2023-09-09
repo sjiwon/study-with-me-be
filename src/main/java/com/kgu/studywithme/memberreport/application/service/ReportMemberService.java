@@ -23,10 +23,7 @@ public class ReportMemberService implements ReportMemberUseCase {
         return memberReportRepository.save(report).getId();
     }
 
-    private void validatePreviousReportIsStillPending(
-            final Long reporterId,
-            final Long reporteeId
-    ) {
+    private void validatePreviousReportIsStillPending(final Long reporterId, final Long reporteeId) {
         if (memberReportHandlingRepositoryAdapter.isReportStillPending(reporterId, reporteeId)) {
             throw StudyWithMeException.type(MemberReportErrorCode.PREVIOUS_REPORT_IS_STILL_PENDING);
         }

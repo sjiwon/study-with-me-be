@@ -14,10 +14,7 @@ public class RdbTokenPersistenceAdapter implements TokenPersistenceAdapter {
 
     @StudyWithMeWritableTransactional
     @Override
-    public void synchronizeRefreshToken(
-            final Long memberId,
-            final String refreshToken
-    ) {
+    public void synchronizeRefreshToken(final Long memberId, final String refreshToken) {
         tokenRepository.findByMemberId(memberId)
                 .ifPresentOrElse(
                         token -> token.updateRefreshToken(refreshToken),
@@ -27,10 +24,7 @@ public class RdbTokenPersistenceAdapter implements TokenPersistenceAdapter {
 
     @StudyWithMeWritableTransactional
     @Override
-    public void updateMemberRefreshToken(
-            final Long memberId,
-            final String refreshToken
-    ) {
+    public void updateMemberRefreshToken(final Long memberId, final String refreshToken) {
         tokenRepository.updateMemberRefreshToken(memberId, refreshToken);
     }
 
@@ -41,10 +35,7 @@ public class RdbTokenPersistenceAdapter implements TokenPersistenceAdapter {
     }
 
     @Override
-    public boolean isMemberRefreshToken(
-            final Long memberId,
-            final String refreshToken
-    ) {
+    public boolean isMemberRefreshToken(final Long memberId, final String refreshToken) {
         return tokenRepository.existsByMemberIdAndRefreshToken(memberId, refreshToken);
     }
 }

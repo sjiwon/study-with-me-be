@@ -24,18 +24,12 @@ public class Hashtags {
     @OneToMany(mappedBy = "study", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private final List<Hashtag> hashtags = new ArrayList<>();
 
-    public Hashtags(
-            final Study study,
-            final Set<String> hashtags
-    ) {
+    public Hashtags(final Study study, final Set<String> hashtags) {
         validateHashtagCount(hashtags);
         applyHashtags(study, hashtags);
     }
 
-    public void update(
-            final Study study,
-            final Set<String> hashtags
-    ) {
+    public void update(final Study study, final Set<String> hashtags) {
         validateHashtagCount(hashtags);
 
         this.hashtags.clear();
@@ -52,10 +46,7 @@ public class Hashtags {
         }
     }
 
-    private void applyHashtags(
-            final Study study,
-            final Set<String> hashtags
-    ) {
+    private void applyHashtags(final Study study, final Set<String> hashtags) {
         this.hashtags.addAll(
                 hashtags.stream()
                         .map(value -> Hashtag.applyHashtag(study, value))

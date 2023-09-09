@@ -22,21 +22,13 @@ public class StudyReview extends BaseEntity<StudyReview> {
     @Column(name = "content", nullable = false)
     private String content;
 
-    private StudyReview(
-            final Long studyId,
-            final Long writerId,
-            final String content
-    ) {
+    private StudyReview(final Long studyId, final Long writerId, final String content) {
         this.studyId = studyId;
         this.writerId = writerId;
         this.content = content;
     }
 
-    public static StudyReview writeReview(
-            final Long studyId,
-            final Long writerId,
-            final String content
-    ) {
+    public static StudyReview writeReview(final Long studyId, final Long writerId, final String content) {
         return new StudyReview(studyId, writerId, content);
     }
 

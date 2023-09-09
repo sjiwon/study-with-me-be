@@ -38,35 +38,21 @@ public class StudyParticipant extends BaseEntity<StudyParticipant> {
     private ParticipantStatus status;
 
     @Builder
-    private StudyParticipant(
-            final Long studyId,
-            final Long memberId,
-            final ParticipantStatus status
-    ) {
+    private StudyParticipant(final Long studyId, final Long memberId, final ParticipantStatus status) {
         this.studyId = studyId;
         this.memberId = memberId;
         this.status = status;
     }
 
-    public static StudyParticipant applyInStudy(
-            final Long studyId,
-            final Long memberId
-    ) {
+    public static StudyParticipant applyInStudy(final Long studyId, final Long memberId) {
         return new StudyParticipant(studyId, memberId, APPLY);
     }
 
-    public static StudyParticipant applyHost(
-            final Long studyId,
-            final Long hostId
-    ) {
+    public static StudyParticipant applyHost(final Long studyId, final Long hostId) {
         return new StudyParticipant(studyId, hostId, APPROVE);
     }
 
-    public static StudyParticipant applyParticipant(
-            final Long studyId,
-            final Long hostId,
-            final ParticipantStatus status
-    ) {
+    public static StudyParticipant applyParticipant(final Long studyId, final Long hostId, final ParticipantStatus status) {
         return new StudyParticipant(studyId, hostId, status);
     }
 }

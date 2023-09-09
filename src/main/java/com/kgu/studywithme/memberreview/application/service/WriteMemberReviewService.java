@@ -28,19 +28,13 @@ public class WriteMemberReviewService implements WriteMemberReviewUseCase {
         return memberReviewRepository.save(memberReview).getId();
     }
 
-    private void validateSelfReview(
-            final Long reviewerId,
-            final Long revieweeId
-    ) {
+    private void validateSelfReview(final Long reviewerId, final Long revieweeId) {
         if (reviewerId.equals(revieweeId)) {
             throw StudyWithMeException.type(MemberReviewErrorCode.SELF_REVIEW_NOT_ALLOWED);
         }
     }
 
-    private void validateColleague(
-            final Long reviewerId,
-            final Long revieweeId
-    ) {
+    private void validateColleague(final Long reviewerId, final Long revieweeId) {
         final List<StudyAttendanceWeekly> reviewerMetadata
                 = studyAttendanceHandlingRepositoryAdapter.findParticipateWeeksInStudyByMemberId(reviewerId);
         final List<StudyAttendanceWeekly> revieweeMetadata
@@ -58,18 +52,12 @@ public class WriteMemberReviewService implements WriteMemberReviewUseCase {
         }
     }
 
-    private boolean hasCommonMetadata(
-            final StudyAttendanceWeekly reviewerData,
-            final StudyAttendanceWeekly revieweeData
-    ) {
+    private boolean hasCommonMetadata(final StudyAttendanceWeekly reviewerData, final StudyAttendanceWeekly revieweeData) {
         return reviewerData.studyId().equals(revieweeData.studyId())
                 && reviewerData.week() == revieweeData.week();
     }
 
-    private void validateAlreadyReviewed(
-            final Long reviewerId,
-            final Long revieweeId
-    ) {
+    private void validateAlreadyReviewed(final Long reviewerId, final Long revieweeId) {
         if (memberReviewRepository.existsByReviewerIdAndRevieweeId(reviewerId, revieweeId)) {
             throw StudyWithMeException.type(MemberReviewErrorCode.ALREADY_REVIEW);
         }

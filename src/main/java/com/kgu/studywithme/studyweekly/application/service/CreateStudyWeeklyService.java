@@ -25,10 +25,7 @@ public class CreateStudyWeeklyService implements CreateStudyWeeklyUseCase {
         return weekly.getId();
     }
 
-    private StudyWeekly createWeekly(
-            final Command command,
-            final int nextWeek
-    ) {
+    private StudyWeekly createWeekly(final Command command, final int nextWeek) {
         if (command.assignmentExists()) {
             return StudyWeekly.createWeeklyWithAssignment(
                     command.studyId(),

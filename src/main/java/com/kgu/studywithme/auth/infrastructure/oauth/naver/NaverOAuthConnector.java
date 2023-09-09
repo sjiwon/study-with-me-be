@@ -37,11 +37,7 @@ public class NaverOAuthConnector implements OAuthConnector {
     }
 
     @Override
-    public OAuthTokenResponse fetchToken(
-            final String code,
-            final String redirectUri,
-            final String state
-    ) {
+    public OAuthTokenResponse fetchToken(final String code, final String redirectUri, final String state) {
         final HttpHeaders headers = createTokenRequestHeader();
         final MultiValueMap<String, String> params = applyTokenRequestParams(code, state);
 
@@ -55,10 +51,7 @@ public class NaverOAuthConnector implements OAuthConnector {
         return headers;
     }
 
-    private MultiValueMap<String, String> applyTokenRequestParams(
-            final String code,
-            final String state
-    ) {
+    private MultiValueMap<String, String> applyTokenRequestParams(final String code, final String state) {
         final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", properties.getGrantType());
         params.add("code", code);
@@ -68,9 +61,7 @@ public class NaverOAuthConnector implements OAuthConnector {
         return params;
     }
 
-    private ResponseEntity<NaverTokenResponse> fetchNaverToken(
-            final HttpEntity<MultiValueMap<String, String>> request
-    ) {
+    private ResponseEntity<NaverTokenResponse> fetchNaverToken(final HttpEntity<MultiValueMap<String, String>> request) {
         try {
             return restTemplate.postForEntity(properties.getTokenUrl(), request, NaverTokenResponse.class);
         } catch (final RestClientException e) {

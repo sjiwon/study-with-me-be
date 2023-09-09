@@ -16,10 +16,7 @@ public class UploadAttachment {
     @Column(name = "link", nullable = false)
     private String link;
 
-    public UploadAttachment(
-            final String uploadFileName,
-            final String link
-    ) {
+    public UploadAttachment(final String uploadFileName, final String link) {
         this.uploadFileName = uploadFileName;
         this.link = link;
     }

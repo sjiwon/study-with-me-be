@@ -22,18 +22,12 @@ public class Interests {
     @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private final List<Interest> interests = new ArrayList<>();
 
-    public Interests(
-            final Member member,
-            final Set<Category> interests
-    ) {
+    public Interests(final Member member, final Set<Category> interests) {
         validateInterestsIsEmpty(interests);
         applyInterests(member, interests);
     }
 
-    public void update(
-            final Member member,
-            final Set<Category> interests
-    ) {
+    public void update(final Member member, final Set<Category> interests) {
         validateInterestsIsEmpty(interests);
 
         this.interests.clear();
@@ -46,10 +40,7 @@ public class Interests {
         }
     }
 
-    private void applyInterests(
-            final Member member,
-            final Set<Category> interests
-    ) {
+    private void applyInterests(final Member member, final Set<Category> interests) {
         this.interests.addAll(
                 interests.stream()
                         .map(value -> Interest.applyInterest(member, value))

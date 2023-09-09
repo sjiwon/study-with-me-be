@@ -9,12 +9,10 @@ import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.global.exception.StudyWithMeOAuthException;
 import com.kgu.studywithme.global.exception.dto.ErrorResponse;
 import com.kgu.studywithme.global.exception.dto.OAuthExceptionResponse;
-import com.slack.api.Slack;
-import com.slack.api.model.Attachment;
-import com.slack.api.model.Field;
+import com.kgu.studywithme.global.exception.slack.SlackAlertManager;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
@@ -28,49 +26,23 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.kgu.studywithme.global.exception.utils.SlackMetadata.DATETIME_FORMAT;
-import static com.kgu.studywithme.global.exception.utils.SlackMetadata.LOG_COLOR;
-import static com.kgu.studywithme.global.exception.utils.SlackMetadata.TITLE_ERROR_MESSAGE;
-import static com.kgu.studywithme.global.exception.utils.SlackMetadata.TITLE_REQUEST_IP;
-import static com.kgu.studywithme.global.exception.utils.SlackMetadata.TITLE_REQUEST_URL;
-import static com.kgu.studywithme.global.exception.utils.SlackMetadata.XFF_HEADER;
-import static com.slack.api.webhook.WebhookPayloads.payload;
+import static com.kgu.studywithme.global.logging.RequestMetadataExtractor.getRequestUriWithQueryString;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Slf4j
 @RestControllerAdvice
+@RequiredArgsConstructor
 public class ApiGlobalExceptionHandler {
-    private static final Slack SLACK_CLIENT = Slack.getInstance();
-
     private final ObjectMapper objectMapper;
-    private final String slackWebhookUrl;
-
-    public ApiGlobalExceptionHandler(
-            final ObjectMapper objectMapper,
-            @Value("${slack.webhook.url}") final String slackWebhookUrl
-    ) {
-        this.objectMapper = objectMapper;
-        this.slackWebhookUrl = slackWebhookUrl;
-    }
+    private final SlackAlertManager slackAlertManager;
 
     @ExceptionHandler(StudyWithMeException.class)
     public ResponseEntity<ErrorResponse> studyWithMeException(final StudyWithMeException e) {
         final ErrorCode code = e.getCode();
-        log.warn(
-                "StudyWithMeException Occurred -> {} | {} | {}",
-                code.getStatus(),
-                code.getErrorCode(),
-                code.getMessage(),
-                e
-        );
-
         return ResponseEntity
                 .status(code.getStatus())
                 .body(ErrorResponse.from(code));
@@ -89,7 +61,7 @@ public class ApiGlobalExceptionHandler {
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponse> httpMessageNotReadableException(final HttpMessageNotReadableException e) {
-        log.warn("HttpMessageNotReadableException Occurred -> {}", e.getMessage(), e);
+        log.warn("HttpMessageNotReadableException Occurred", e);
 
         final ErrorCode code = GlobalErrorCode.VALIDATION_ERROR;
         return ResponseEntity
@@ -101,10 +73,8 @@ public class ApiGlobalExceptionHandler {
      * 요청 파라미터 Validation 전용 ExceptionHandler
      */
     @ExceptionHandler(UnsatisfiedServletRequestParameterException.class)
-    public ResponseEntity<ErrorResponse> unsatisfiedServletRequestParameterException(
-            final UnsatisfiedServletRequestParameterException e
-    ) {
-        log.warn("UnsatisfiedServletRequestParameterException Occurred -> {}", e.getMessage(), e);
+    public ResponseEntity<ErrorResponse> unsatisfiedServletRequestParameterException(final UnsatisfiedServletRequestParameterException e) {
+        log.warn("UnsatisfiedServletRequestParameterException Occurred", e);
 
         final ErrorCode code = GlobalErrorCode.VALIDATION_ERROR;
         return ResponseEntity
@@ -116,10 +86,8 @@ public class ApiGlobalExceptionHandler {
      * 요청 데이터 Validation 전용 ExceptionHandler (@RequestBody)
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> methodArgumentNotValidException(
-            final MethodArgumentNotValidException e
-    ) throws JsonProcessingException {
-        log.warn("MethodArgumentNotValidException Occurred -> {}", e.getMessage(), e);
+    public ResponseEntity<ErrorResponse> methodArgumentNotValidException(final MethodArgumentNotValidException e) {
+        log.warn("MethodArgumentNotValidException Occurred", e);
 
         final List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
         final ErrorCode code = GlobalErrorCode.VALIDATION_ERROR;
@@ -132,8 +100,8 @@ public class ApiGlobalExceptionHandler {
      * 요청 데이터 Validation 전용 ExceptionHandler (@ModelAttribute)
      */
     @ExceptionHandler(BindException.class)
-    public ResponseEntity<ErrorResponse> bindException(final BindException e) throws JsonProcessingException {
-        log.warn("BindException Occurred -> {}", e.getMessage(), e);
+    public ResponseEntity<ErrorResponse> bindException(final BindException e) {
+        log.warn("BindException Occurred", e);
 
         final List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
         final ErrorCode code = GlobalErrorCode.VALIDATION_ERROR;
@@ -142,7 +110,7 @@ public class ApiGlobalExceptionHandler {
                 .body(ErrorResponse.of(code, extractErrorMessage(fieldErrors)));
     }
 
-    private String extractErrorMessage(final List<FieldError> fieldErrors) throws JsonProcessingException {
+    private String extractErrorMessage(final List<FieldError> fieldErrors) {
         if (fieldErrors.size() == 1) {
             return fieldErrors.get(0).getDefaultMessage();
         }
@@ -151,7 +119,12 @@ public class ApiGlobalExceptionHandler {
         for (FieldError error : fieldErrors) {
             errors.put(error.getField(), error.getDefaultMessage());
         }
-        return objectMapper.writeValueAsString(errors);
+
+        try {
+            return objectMapper.writeValueAsString(errors);
+        } catch (final JsonProcessingException e) {
+            throw new RuntimeException("JSON Parsing Error...", e);
+        }
     }
 
     /**
@@ -159,7 +132,7 @@ public class ApiGlobalExceptionHandler {
      */
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<ErrorResponse> noHandlerFoundException(final NoHandlerFoundException e) {
-        log.warn("NoHandlerFoundException Occurred -> {}", e.getMessage(), e);
+        log.warn("NoHandlerFoundException Occurred", e);
 
         final ErrorCode code = GlobalErrorCode.NOT_SUPPORTED_URI_ERROR;
         return ResponseEntity
@@ -171,10 +144,8 @@ public class ApiGlobalExceptionHandler {
      * Method Argument Exception 전용 ExceptionHandler
      */
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<ErrorResponse> methodArgumentTypeMismatchException(
-            final MethodArgumentTypeMismatchException e
-    ) {
-        log.warn("MethodArgumentTypeMismatchException Occurred -> {}", e.getMessage(), e);
+    public ResponseEntity<ErrorResponse> methodArgumentTypeMismatchException(final MethodArgumentTypeMismatchException e) {
+        log.warn("MethodArgumentTypeMismatchException Occurred", e);
 
         final ErrorCode code = GlobalErrorCode.NOT_SUPPORTED_URI_ERROR;
         return ResponseEntity
@@ -186,10 +157,8 @@ public class ApiGlobalExceptionHandler {
      * HTTP Request Method 오류 전용 ExceptionHandler
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<ErrorResponse> httpRequestMethodNotSupportedException(
-            final HttpRequestMethodNotSupportedException e
-    ) {
-        log.warn("HttpRequestMethodNotSupportedException Occurred -> {}", e.getMessage(), e);
+    public ResponseEntity<ErrorResponse> httpRequestMethodNotSupportedException(final HttpRequestMethodNotSupportedException e) {
+        log.warn("HttpRequestMethodNotSupportedException Occurred", e);
 
         final ErrorCode code = GlobalErrorCode.NOT_SUPPORTED_METHOD_ERROR;
         return ResponseEntity
@@ -201,10 +170,8 @@ public class ApiGlobalExceptionHandler {
      * MediaType 전용 ExceptionHandler
      */
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-    public ResponseEntity<ErrorResponse> httpMediaTypeNotSupportedException(
-            final HttpMediaTypeNotSupportedException e
-    ) {
-        log.warn("HttpMediaTypeNotSupportedException Occurred -> {}", e.getMessage(), e);
+    public ResponseEntity<ErrorResponse> httpMediaTypeNotSupportedException(final HttpMediaTypeNotSupportedException e) {
+        log.warn("HttpMediaTypeNotSupportedException Occurred", e);
 
         final ErrorCode code = GlobalErrorCode.UNSUPPORTED_MEDIA_TYPE_ERROR;
         return ResponseEntity
@@ -213,21 +180,17 @@ public class ApiGlobalExceptionHandler {
     }
 
     /**
-     * 내부 서버 오류 전용 ExceptionHandler (With Slack Logging)
+     * 내부 서버 오류 전용 ExceptionHandler (With Slack Alert)
      */
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorResponse> handleAnyException(
-            final RuntimeException e,
-            final HttpServletRequest request
-    ) {
+    public ResponseEntity<ErrorResponse> handleAnyException(final HttpServletRequest request, final RuntimeException e) {
         log.error(
-                "RuntimeException Occurred -> {} {} | {}",
+                "RuntimeException Occurred -> {} {}",
                 request.getMethod(),
-                createRequestUriWithQueryString(request),
-                e.getMessage(),
+                getRequestUriWithQueryString(request),
                 e
         );
-        sendSlackAlertErrorLog(e, request);
+        slackAlertManager.sendErrorLog(request, e);
 
         final ErrorCode code = GlobalErrorCode.INTERNAL_SERVER_ERROR;
         return ResponseEntity
@@ -236,95 +199,21 @@ public class ApiGlobalExceptionHandler {
     }
 
     /**
-     * Exception (With Slack Logging)
+     * Exception (With Slack Alert)
      */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleAnonymousException(
-            final Exception e,
-            final HttpServletRequest request
-    ) {
+    public ResponseEntity<ErrorResponse> handleAnonymousException(final HttpServletRequest request, final Exception e) {
         log.error(
-                "Unknown Exception Occurred -> {} {} | {}",
+                "Unknown Exception Occurred -> {} {}",
                 request.getMethod(),
-                createRequestUriWithQueryString(request),
-                e.getMessage(),
+                getRequestUriWithQueryString(request),
                 e
         );
-        sendSlackAlertErrorLog(e, request);
+        slackAlertManager.sendErrorLog(request, e);
 
         final ErrorCode code = GlobalErrorCode.INTERNAL_SERVER_ERROR;
         return ResponseEntity
                 .status(code.getStatus())
                 .body(ErrorResponse.from(code));
-    }
-
-    private String createRequestUriWithQueryString(final HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
-
-        final String queryString = request.getQueryString();
-        if (queryString != null) {
-            requestURI += "?" + queryString;
-        }
-
-        return requestURI;
-    }
-
-    public void sendSlackAlertErrorLog(
-            final Exception e,
-            final HttpServletRequest request
-    ) {
-        try {
-            SLACK_CLIENT.send(
-                    slackWebhookUrl,
-                    payload(p -> p
-                            .text("서버 에러 발생!!")
-                            .attachments(
-                                    List.of(generateSlackErrorAttachments(e, request))
-                            )
-                    ));
-        } catch (final IOException slackApiError) {
-            log.error("Slack API 통신 간 에러 발생", slackApiError);
-        }
-    }
-
-    private Attachment generateSlackErrorAttachments(
-            final Exception e,
-            final HttpServletRequest request
-    ) {
-        final String requestTime = DateTimeFormatter.ofPattern(DATETIME_FORMAT).format(LocalDateTime.now());
-        final String xffHeader = request.getHeader(XFF_HEADER);
-        return Attachment.builder()
-                .color(LOG_COLOR)
-                .title(requestTime + " 발생 에러 로그")
-                .fields(
-                        List.of(
-                                generateSlackField(TITLE_REQUEST_IP, (xffHeader == null) ? request.getRemoteAddr() : xffHeader),
-                                generateSlackField(TITLE_REQUEST_URL, createRequestFullPath(request)),
-                                generateSlackField(TITLE_ERROR_MESSAGE, e.toString())
-                        )
-                )
-                .build();
-    }
-
-    private Field generateSlackField(
-            final String title,
-            final String value
-    ) {
-        return Field.builder()
-                .title(title)
-                .value(value)
-                .valueShortEnough(false)
-                .build();
-    }
-
-    private String createRequestFullPath(final HttpServletRequest request) {
-        String fullPath = request.getMethod() + " " + request.getRequestURL();
-
-        final String queryString = request.getQueryString();
-        if (queryString != null) {
-            fullPath += "?" + queryString;
-        }
-
-        return fullPath;
     }
 }

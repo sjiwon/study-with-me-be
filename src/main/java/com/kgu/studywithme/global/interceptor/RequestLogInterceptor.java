@@ -1,5 +1,7 @@
 package com.kgu.studywithme.global.interceptor;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kgu.studywithme.global.logging.LoggingStatus;
 import com.kgu.studywithme.global.logging.LoggingStatusManager;
 import com.kgu.studywithme.global.logging.RequestMetaData;
@@ -7,38 +9,47 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.springframework.util.PatternMatchUtils;
 import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.util.ContentCachingRequestWrapper;
+import org.springframework.web.util.ContentCachingResponseWrapper;
 
-import java.util.UUID;
+import java.io.IOException;
 
 import static com.kgu.studywithme.global.logging.RequestMetadataExtractor.getClientIP;
 import static com.kgu.studywithme.global.logging.RequestMetadataExtractor.getHttpMethod;
 import static com.kgu.studywithme.global.logging.RequestMetadataExtractor.getRequestUriWithQueryString;
 
 @Slf4j
+@Component
 @RequiredArgsConstructor
 public class RequestLogInterceptor implements HandlerInterceptor {
     private static final String[] INFRA_URI = {"/favicon.ico", "/error*", "/swagger*", "/actuator*"};
 
     private final LoggingStatusManager loggingStatusManager;
+    private final ObjectMapper objectMapper;
 
     @Override
     public boolean preHandle(
             final HttpServletRequest request,
             final HttpServletResponse response,
             final Object handler
-    ) {
+    ) throws IOException {
         if (CorsUtils.isPreFlightRequest(request) || isInfraUri(request)) {
             return true;
         }
 
-        final LoggingStatus loggingStatus = new LoggingStatus(generateRandomUuid());
-        loggingStatusManager.applyLoggingStatus(loggingStatus);
-
-        final RequestMetaData requestMetaData = new RequestMetaData(loggingStatus.getTaskId(), request);
+        loggingStatusManager.syncStatus();
+        final RequestMetaData requestMetaData = new RequestMetaData(loggingStatusManager.getTaskId(), request);
         log.info("[Request START] -> [{}]", requestMetaData);
+        log.info(
+                "[{}] Request Body = {}",
+                loggingStatusManager.getTaskId(),
+                readRequestBodyViaCachingRequestWrapper(request)
+        );
+
         return true;
     }
 
@@ -48,14 +59,20 @@ public class RequestLogInterceptor implements HandlerInterceptor {
             final HttpServletResponse response,
             final Object handler,
             final Exception ex
-    ) {
+    ) throws IOException {
         if (CorsUtils.isPreFlightRequest(request) || isInfraUri(request)) {
             return;
         }
 
-        final LoggingStatus loggingStatus = loggingStatusManager.get();
+        final LoggingStatus loggingStatus = loggingStatusManager.getExistLoggingStatus();
         final long totalTime = loggingStatus.totalTakenTime();
-        log.info("[Request END] -> [Task ID = {}, IP = {}, HTTP Method = {}, Uri = {}, HTTP Status = {}, 요청 처리 시간 = {}ms]",
+        log.info(
+                "[{}] Response Body = {}",
+                loggingStatusManager.getTaskId(),
+                readResponseBodyViaCachingRequestWrapper(response)
+        );
+        log.info(
+                "[Request END] -> [Task ID = {}, IP = {}, HTTP Method = {}, Uri = {}, HTTP Status = {}, 요청 처리 시간 = {}ms]",
                 loggingStatus.getTaskId(),
                 getClientIP(request),
                 getHttpMethod(request),
@@ -69,7 +86,19 @@ public class RequestLogInterceptor implements HandlerInterceptor {
         return PatternMatchUtils.simpleMatch(INFRA_URI, request.getRequestURI());
     }
 
-    private String generateRandomUuid() {
-        return UUID.randomUUID().toString().substring(0, 8);
+    private JsonNode readRequestBodyViaCachingRequestWrapper(final HttpServletRequest request) throws IOException {
+        if (request instanceof final ContentCachingRequestWrapper requestWrapper) {
+            final byte[] bodyContents = requestWrapper.getContentAsByteArray();
+            return objectMapper.readTree(bodyContents);
+        }
+        return null;
+    }
+
+    private JsonNode readResponseBodyViaCachingRequestWrapper(final HttpServletResponse response) throws IOException {
+        if (response instanceof final ContentCachingResponseWrapper responseWrapper) {
+            final byte[] bodyContents = responseWrapper.getContentAsByteArray();
+            return objectMapper.readTree(bodyContents);
+        }
+        return null;
     }
 }

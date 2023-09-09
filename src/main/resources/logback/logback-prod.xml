@@ -3,8 +3,7 @@
     <include resource="logback/logback-appender.xml"/>
 
     <root level="INFO">
-        <appender-ref ref="INFO-LOG-FILE"/>
-        <appender-ref ref="WARN-LOG-FILE"/>
-        <appender-ref ref="ERROR-LOG-FILE"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="CLOUD_WATCH"/>
     </root>
 </configuration>
