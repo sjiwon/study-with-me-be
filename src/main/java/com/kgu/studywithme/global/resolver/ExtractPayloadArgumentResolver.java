@@ -2,7 +2,7 @@ package com.kgu.studywithme.global.resolver;
 
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.auth.utils.AuthorizationExtractor;
-import com.kgu.studywithme.auth.utils.JwtTokenProvider;
+import com.kgu.studywithme.auth.utils.TokenProvider;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 @RequiredArgsConstructor
 public class ExtractPayloadArgumentResolver implements HandlerMethodArgumentResolver {
-    private final JwtTokenProvider jwtTokenProvider;
+    private final TokenProvider tokenProvider;
 
     @Override
     public boolean supportsParameter(final MethodParameter parameter) {
@@ -31,6 +31,6 @@ public class ExtractPayloadArgumentResolver implements HandlerMethodArgumentReso
         final HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         final String token = AuthorizationExtractor.extractToken(request)
                 .orElseThrow(() -> StudyWithMeException.type(AuthErrorCode.INVALID_PERMISSION));
-        return jwtTokenProvider.getId(token);
+        return tokenProvider.getId(token);
     }
 }

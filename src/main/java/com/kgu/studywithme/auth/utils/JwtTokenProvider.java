@@ -62,19 +62,14 @@ public class JwtTokenProvider implements TokenProvider {
                 .compact();
     }
 
+    @Override
     public Long getId(final String token) {
         return getClaims(token)
                 .getBody()
                 .get("id", Long.class);
     }
 
-    private Jws<Claims> getClaims(final String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(secretKey)
-                .build()
-                .parseClaimsJws(token);
-    }
-
+    @Override
     public boolean isTokenValid(final String token) {
         try {
             final Jws<Claims> claims = getClaims(token);
@@ -83,9 +78,15 @@ public class JwtTokenProvider implements TokenProvider {
             return expiredDate.after(now);
         } catch (final ExpiredJwtException e) {
             throw StudyWithMeException.type(AuthErrorCode.EXPIRED_TOKEN);
-        } catch (final SecurityException | MalformedJwtException | UnsupportedJwtException |
-                       IllegalArgumentException e) {
+        } catch (final SecurityException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
             throw StudyWithMeException.type(AuthErrorCode.INVALID_TOKEN);
         }
+    }
+
+    private Jws<Claims> getClaims(final String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token);
     }
 }

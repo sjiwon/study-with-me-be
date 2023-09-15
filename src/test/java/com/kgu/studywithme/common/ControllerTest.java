@@ -9,7 +9,7 @@ import com.kgu.studywithme.auth.application.usecase.ReissueTokenUseCase;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.auth.presentation.OAuthApiController;
 import com.kgu.studywithme.auth.presentation.TokenReissueApiController;
-import com.kgu.studywithme.auth.utils.JwtTokenProvider;
+import com.kgu.studywithme.auth.utils.TokenProvider;
 import com.kgu.studywithme.category.application.usecase.query.QueryAllCategoriesUseCase;
 import com.kgu.studywithme.category.presentation.CategoryApiController;
 import com.kgu.studywithme.common.config.TestAopConfiguration;
@@ -183,7 +183,7 @@ public abstract class ControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private JwtTokenProvider jwtTokenProvider;
+    private TokenProvider tokenProvider;
 
     @MockBean
     private SlackAlertManager slackAlertManager;
@@ -402,19 +402,19 @@ public abstract class ControllerTest {
             final boolean isValid,
             final Long payloadId
     ) {
-        given(jwtTokenProvider.isTokenValid(anyString())).willReturn(isValid);
-        given(jwtTokenProvider.getId(anyString())).willReturn(payloadId);
+        given(tokenProvider.isTokenValid(anyString())).willReturn(isValid);
+        given(tokenProvider.getId(anyString())).willReturn(payloadId);
     }
 
     protected void mockingTokenWithExpiredException() {
         doThrow(StudyWithMeException.type(AuthErrorCode.EXPIRED_TOKEN))
-                .when(jwtTokenProvider)
+                .when(tokenProvider)
                 .isTokenValid(any());
     }
 
     protected void mockingTokenWithInvalidException() {
         doThrow(StudyWithMeException.type(AuthErrorCode.INVALID_TOKEN))
-                .when(jwtTokenProvider)
+                .when(tokenProvider)
                 .isTokenValid(any());
     }
 

@@ -1,6 +1,6 @@
 package com.kgu.studywithme.global.config;
 
-import com.kgu.studywithme.auth.utils.JwtTokenProvider;
+import com.kgu.studywithme.auth.utils.TokenProvider;
 import com.kgu.studywithme.global.interceptor.RequestLogInterceptor;
 import com.kgu.studywithme.global.interceptor.TokenValidityInterceptor;
 import com.kgu.studywithme.global.resolver.ExtractPayloadArgumentResolver;
@@ -20,7 +20,7 @@ public class AdditionalWebConfiguration implements WebMvcConfigurer {
     private final CorsProperties corsProperties;
     private final TokenValidityInterceptor tokenValidityInterceptor;
     private final RequestLogInterceptor requestLogInterceptor;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final TokenProvider tokenProvider;
 
     @Override
     public void addCorsMappings(final CorsRegistry registry) {
@@ -43,6 +43,6 @@ public class AdditionalWebConfiguration implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(final List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new ExtractTokenArgumentResolver());
-        resolvers.add(new ExtractPayloadArgumentResolver(jwtTokenProvider));
+        resolvers.add(new ExtractPayloadArgumentResolver(tokenProvider));
     }
 }

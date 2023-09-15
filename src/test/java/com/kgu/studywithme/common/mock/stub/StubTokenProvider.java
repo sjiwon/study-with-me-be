@@ -15,4 +15,14 @@ public class StubTokenProvider implements TokenProvider {
     public String createRefreshToken(final Long memberId) {
         return REFRESH_TOKEN;
     }
+
+    @Override
+    public Long getId(final String token) {
+        return 1L;
+    }
+
+    @Override
+    public boolean isTokenValid(final String token) {
+        return true;
+    }
 }

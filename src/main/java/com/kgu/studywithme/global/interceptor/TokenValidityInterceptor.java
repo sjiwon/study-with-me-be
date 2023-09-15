@@ -1,7 +1,7 @@
 package com.kgu.studywithme.global.interceptor;
 
 import com.kgu.studywithme.auth.utils.AuthorizationExtractor;
-import com.kgu.studywithme.auth.utils.JwtTokenProvider;
+import com.kgu.studywithme.auth.utils.TokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 public class TokenValidityInterceptor implements HandlerInterceptor {
-    private final JwtTokenProvider jwtTokenProvider;
+    private final TokenProvider tokenProvider;
 
     @Override
     public boolean preHandle(
@@ -28,7 +28,7 @@ public class TokenValidityInterceptor implements HandlerInterceptor {
 
         final Optional<String> token = AuthorizationExtractor.extractToken(request);
         return token
-                .map(jwtTokenProvider::isTokenValid)
+                .map(tokenProvider::isTokenValid)
                 .orElse(true);
     }
 }
