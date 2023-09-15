@@ -1,7 +1,7 @@
-package com.kgu.studywithme.auth.application.service;
+package com.kgu.studywithme.auth.application.usecase;
 
 import com.kgu.studywithme.auth.application.adapter.OAuthUriGenerator;
-import com.kgu.studywithme.auth.application.usecase.query.QueryOAuthLinkUseCase;
+import com.kgu.studywithme.auth.application.usecase.query.OAuthLinkQuery;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import lombok.RequiredArgsConstructor;
@@ -11,11 +11,10 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class QueryOAuthLinkService implements QueryOAuthLinkUseCase {
+public class GetOAuthLinkUseCase {
     private final List<OAuthUriGenerator> oAuthUrisGenerators;
 
-    @Override
-    public String invoke(final Query query) {
+    public String invoke(final OAuthLinkQuery query) {
         final OAuthUriGenerator specificOAuthUriGenerator = oAuthUrisGenerators.stream()
                 .filter(oAuthUri -> oAuthUri.isSupported(query.provider()))
                 .findFirst()

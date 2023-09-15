@@ -1,19 +1,18 @@
-package com.kgu.studywithme.auth.application.service;
+package com.kgu.studywithme.auth.application.usecase;
 
 import com.kgu.studywithme.auth.application.adapter.OAuthConnector;
-import com.kgu.studywithme.auth.application.adapter.TokenPersistenceAdapter;
-import com.kgu.studywithme.auth.application.usecase.command.OAuthLoginUseCase;
+import com.kgu.studywithme.auth.application.usecase.command.OAuthLoginCommand;
 import com.kgu.studywithme.auth.domain.model.AuthMember;
 import com.kgu.studywithme.auth.domain.model.AuthToken;
 import com.kgu.studywithme.auth.domain.model.oauth.OAuthProvider;
 import com.kgu.studywithme.auth.domain.model.oauth.OAuthTokenResponse;
 import com.kgu.studywithme.auth.domain.model.oauth.OAuthUserResponse;
+import com.kgu.studywithme.auth.domain.service.TokenManager;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
-import com.kgu.studywithme.auth.utils.JwtTokenProvider;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.global.exception.StudyWithMeOAuthException;
-import com.kgu.studywithme.member.application.service.MemberReader;
 import com.kgu.studywithme.member.domain.model.Member;
+import com.kgu.studywithme.member.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,17 +20,15 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class OAuthLoginService implements OAuthLoginUseCase {
+public class OAuthLoginUseCase {
     private final List<OAuthConnector> oAuthConnectors;
-    private final MemberReader memberReader;
-    private final JwtTokenProvider jwtTokenProvider;
-    private final TokenPersistenceAdapter tokenPersistenceAdapter;
+    private final MemberRepository memberRepository;
+    private final TokenManager tokenManager;
 
-    @Override
-    public AuthMember invoke(final Command command) {
+    public AuthMember invoke(final OAuthLoginCommand command) {
         final OAuthUserResponse oAuthUser = getOAuthUser(command);
-        final Member member = getMemberByOAuthUser(oAuthUser);
-        final AuthToken authToken = createAuthTokenAndPersist(member.getId());
+        final Member member = findMemberByOAuthEmail(oAuthUser);
+        final AuthToken authToken = tokenManager.provideAuthorityToken(member.getId());
 
         return new AuthMember(
                 new AuthMember.MemberInfo(member),
@@ -39,7 +36,7 @@ public class OAuthLoginService implements OAuthLoginUseCase {
         );
     }
 
-    private OAuthUserResponse getOAuthUser(final Command command) {
+    private OAuthUserResponse getOAuthUser(final OAuthLoginCommand command) {
         final OAuthConnector oAuthConnector = getOAuthConnectorByProvider(command.provider());
         final OAuthTokenResponse oAuthToken = oAuthConnector.fetchToken(command.code(), command.redirectUrl(), command.state());
 
@@ -53,19 +50,8 @@ public class OAuthLoginService implements OAuthLoginUseCase {
                 .orElseThrow(() -> StudyWithMeException.type(AuthErrorCode.INVALID_OAUTH_PROVIDER));
     }
 
-    private Member getMemberByOAuthUser(final OAuthUserResponse oAuthUser) {
-        try {
-            return memberReader.getByEmail(oAuthUser.email());
-        } catch (final StudyWithMeException e) {
-            throw new StudyWithMeOAuthException(oAuthUser);
-        }
-    }
-
-    private AuthToken createAuthTokenAndPersist(final Long memberId) {
-        final String accessToken = jwtTokenProvider.createAccessToken(memberId);
-        final String refreshToken = jwtTokenProvider.createRefreshToken(memberId);
-        tokenPersistenceAdapter.synchronizeRefreshToken(memberId, refreshToken);
-
-        return new AuthToken(accessToken, refreshToken);
+    private Member findMemberByOAuthEmail(final OAuthUserResponse oAuthUser) {
+        return memberRepository.findByEmail(oAuthUser.email())
+                .orElseThrow(() -> new StudyWithMeOAuthException(oAuthUser));
     }
 }

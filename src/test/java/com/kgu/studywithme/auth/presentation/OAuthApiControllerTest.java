@@ -53,7 +53,7 @@ class OAuthApiControllerTest extends ControllerTest {
         void throwExceptionByInvalidOAuthProvider() throws Exception {
             // given
             doThrow(StudyWithMeException.type(AuthErrorCode.INVALID_OAUTH_PROVIDER))
-                    .when(queryOAuthLinkUseCase)
+                    .when(getOAuthLinkUseCase)
                     .invoke(any());
 
             // when
@@ -96,7 +96,7 @@ class OAuthApiControllerTest extends ControllerTest {
         @DisplayName("Google OAuth Authorization Code 요청을 위한 URI를 생성한다")
         void successGoogle() throws Exception {
             // given
-            given(queryOAuthLinkUseCase.invoke(any())).willReturn("https://url-for-authorization-code");
+            given(getOAuthLinkUseCase.invoke(any())).willReturn("https://url-for-authorization-code");
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders

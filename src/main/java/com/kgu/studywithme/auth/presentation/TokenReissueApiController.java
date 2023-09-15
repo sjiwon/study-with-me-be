@@ -1,6 +1,7 @@
 package com.kgu.studywithme.auth.presentation;
 
-import com.kgu.studywithme.auth.application.usecase.command.ReissueTokenUseCase;
+import com.kgu.studywithme.auth.application.usecase.ReissueTokenUseCase;
+import com.kgu.studywithme.auth.application.usecase.command.ReissueTokenCommand;
 import com.kgu.studywithme.auth.domain.model.AuthToken;
 import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.auth.utils.ExtractToken;
@@ -24,6 +25,6 @@ public class TokenReissueApiController {
             @ExtractPayload final Long memberId,
             @ExtractToken final String refreshToken
     ) {
-        return reissueTokenUseCase.invoke(new ReissueTokenUseCase.Command(memberId, refreshToken));
+        return reissueTokenUseCase.invoke(new ReissueTokenCommand(memberId, refreshToken));
     }
 }
