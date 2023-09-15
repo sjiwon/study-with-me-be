@@ -1,6 +1,6 @@
 package com.kgu.studywithme.file.utils.validator;
 
-import com.kgu.studywithme.common.ExecuteParallel;
+import com.kgu.studywithme.common.ParallelTest;
 import jakarta.validation.ConstraintValidatorContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,9 +18,8 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-@ExecuteParallel
 @DisplayName("File -> ImageExtensionConstraintValidator 테스트")
-class ImageExtensionConstraintValidatorTest {
+class ImageExtensionConstraintValidatorTest extends ParallelTest {
     private ImageExtensionConstraintValidator validator;
     private ConstraintValidatorContext context;
     private ConstraintValidatorContext.ConstraintViolationBuilder builder;

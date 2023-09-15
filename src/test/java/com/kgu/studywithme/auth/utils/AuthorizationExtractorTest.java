@@ -1,6 +1,6 @@
 package com.kgu.studywithme.auth.utils;
 
-import com.kgu.studywithme.common.ExecuteParallel;
+import com.kgu.studywithme.common.ParallelTest;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,9 +15,8 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
-@ExecuteParallel
 @DisplayName("Auth -> AuthorizationExtractor 테스트")
-class AuthorizationExtractorTest {
+class AuthorizationExtractorTest extends ParallelTest {
     private final HttpServletRequest request = mock(HttpServletRequest.class);
 
     @Test

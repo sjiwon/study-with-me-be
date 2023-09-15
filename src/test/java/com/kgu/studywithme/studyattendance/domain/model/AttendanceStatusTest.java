@@ -1,6 +1,6 @@
 package com.kgu.studywithme.studyattendance.domain.model;
 
-import com.kgu.studywithme.common.ExecuteParallel;
+import com.kgu.studywithme.common.ParallelTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -11,9 +11,8 @@ import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@ExecuteParallel
 @DisplayName("StudyAttendance -> 도메인 [AttendanceStatus VO] 테스트")
-class AttendanceStatusTest {
+class AttendanceStatusTest extends ParallelTest {
     @Test
     @DisplayName("Description으로 AttendanceStatus를 조회한다")
     void fromDescription() {

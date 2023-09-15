@@ -1,6 +1,6 @@
 package com.kgu.studywithme.study.domain.model;
 
-import com.kgu.studywithme.common.ExecuteParallel;
+import com.kgu.studywithme.common.ParallelTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
 import org.junit.jupiter.api.DisplayName;
@@ -12,9 +12,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@ExecuteParallel
 @DisplayName("Study -> 도메인 [StudyType VO] 테스트")
-class StudyTypeTest {
+class StudyTypeTest extends ParallelTest {
     @Test
     @DisplayName("스터디 유형을 조회한다")
     void findSpecificStudyType() {

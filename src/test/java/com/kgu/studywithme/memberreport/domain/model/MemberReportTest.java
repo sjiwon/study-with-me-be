@@ -1,6 +1,6 @@
 package com.kgu.studywithme.memberreport.domain.model;
 
-import com.kgu.studywithme.common.ExecuteParallel;
+import com.kgu.studywithme.common.ParallelTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -10,9 +10,8 @@ import static com.kgu.studywithme.memberreport.domain.model.MemberReportStatus.R
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@ExecuteParallel
 @DisplayName("MemberReport -> 도메인 [MemberReport] 테스트")
-class MemberReportTest {
+class MemberReportTest extends ParallelTest {
     private static final String REASON = "무단 결석을 10회나 했어요. 계정 정지시켜주세요.";
 
     @Test

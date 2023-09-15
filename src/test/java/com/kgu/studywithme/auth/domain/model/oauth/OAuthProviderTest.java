@@ -1,7 +1,7 @@
 package com.kgu.studywithme.auth.domain.model.oauth;
 
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
-import com.kgu.studywithme.common.ExecuteParallel;
+import com.kgu.studywithme.common.ParallelTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,9 +13,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@ExecuteParallel
 @DisplayName("Auth -> OAuthProvider 테스트")
-class OAuthProviderTest {
+class OAuthProviderTest extends ParallelTest {
     @Test
     @DisplayName("제공하지 않는 Provider에 대해서 OAuthProvider를 가져오려고 하면 예외가 발생한다")
     void throwExceptionByInvalidOAuthProvider() {

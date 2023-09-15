@@ -3,6 +3,7 @@ package com.kgu.studywithme.auth.domain.service;
 import com.kgu.studywithme.auth.application.adapter.TokenStoreAdapter;
 import com.kgu.studywithme.auth.domain.model.AuthToken;
 import com.kgu.studywithme.auth.utils.TokenProvider;
+import com.kgu.studywithme.common.ParallelTest;
 import com.kgu.studywithme.common.mock.fake.FakeTokenStore;
 import com.kgu.studywithme.common.mock.stub.StubTokenProvider;
 import com.kgu.studywithme.member.domain.model.Member;
@@ -16,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("Auth -> TokenManager 테스트")
-public class TokenManagerTest {
+public class TokenManagerTest extends ParallelTest {
     private final TokenProvider tokenProvider = new StubTokenProvider();
     private final TokenStoreAdapter tokenStoreAdapter = new FakeTokenStore();
     private final TokenManager sut = new TokenManager(tokenProvider, tokenStoreAdapter);

@@ -1,6 +1,6 @@
 package com.kgu.studywithme.file.domain.model;
 
-import com.kgu.studywithme.common.ExecuteParallel;
+import com.kgu.studywithme.common.ParallelTest;
 import com.kgu.studywithme.file.exception.FileErrorCode;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import org.junit.jupiter.api.DisplayName;
@@ -27,9 +27,8 @@ import static com.kgu.studywithme.file.domain.model.FileExtension.TXT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@ExecuteParallel
 @DisplayName("File -> 도메인 [FileExtension] 테스트")
-public class FileExtensionTest {
+public class FileExtensionTest extends ParallelTest {
     @Nested
     @DisplayName("파일 확장자 추출")
     class GetExtensionFromFileName {

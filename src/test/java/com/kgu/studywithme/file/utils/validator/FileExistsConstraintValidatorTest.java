@@ -1,6 +1,6 @@
 package com.kgu.studywithme.file.utils.validator;
 
-import com.kgu.studywithme.common.ExecuteParallel;
+import com.kgu.studywithme.common.ParallelTest;
 import jakarta.validation.ConstraintValidatorContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,9 +15,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.mock;
 
-@ExecuteParallel
 @DisplayName("File -> FileExistsConstraintValidator 테스트")
-public class FileExistsConstraintValidatorTest {
+public class FileExistsConstraintValidatorTest extends ParallelTest {
     private FileExistsConstraintValidator validator;
     private ConstraintValidatorContext context;
     private ConstraintValidatorContext.ConstraintViolationBuilder builder;

@@ -1,6 +1,6 @@
 package com.kgu.studywithme.study.domain.model;
 
-import com.kgu.studywithme.common.ExecuteParallel;
+import com.kgu.studywithme.common.ParallelTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
@@ -23,9 +23,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-@ExecuteParallel
 @DisplayName("Study -> 도메인 [Hashtags VO] 테스트")
-class HashtagsTest {
+class HashtagsTest extends ParallelTest {
     private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L, LocalDateTime.now());
 

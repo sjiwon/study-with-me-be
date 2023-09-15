@@ -1,6 +1,6 @@
 package com.kgu.studywithme.study.domain.model;
 
-import com.kgu.studywithme.common.ExecuteParallel;
+import com.kgu.studywithme.common.ParallelTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
 import org.junit.jupiter.api.DisplayName;
@@ -13,9 +13,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-@ExecuteParallel
 @DisplayName("Study -> 도메인 [Capacity VO] 테스트")
-class CapacityTest {
+class CapacityTest extends ParallelTest {
     @ParameterizedTest
     @ValueSource(ints = {-1, 0, 1, 11})
     @DisplayName("범위를 넘어가는 값에 의해서 Capacity 생성에 실패한다")

@@ -1,6 +1,6 @@
 package com.kgu.studywithme.member.domain.model;
 
-import com.kgu.studywithme.common.ExecuteParallel;
+import com.kgu.studywithme.common.ParallelTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
 import org.junit.jupiter.api.DisplayName;
@@ -12,9 +12,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@ExecuteParallel
 @DisplayName("Member -> 도메인 [Gender VO] 테스트")
-class GenderTest {
+class GenderTest extends ParallelTest {
     @Test
     @DisplayName("유효하지 않은 성별(M or F 이외)을 조회하면 예외가 발생한다")
     void throwExceptionByInvalidGender() {

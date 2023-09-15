@@ -1,7 +1,7 @@
 package com.kgu.studywithme.member.domain.model;
 
 import com.kgu.studywithme.category.domain.model.Category;
-import com.kgu.studywithme.common.ExecuteParallel;
+import com.kgu.studywithme.common.ParallelTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,9 +26,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-@ExecuteParallel
 @DisplayName("Member -> 도메인 [Interests VO] 테스트")
-class InterestsTest {
+class InterestsTest extends ParallelTest {
     private final Member member = JIWON.toMember().apply(1L, LocalDateTime.now());
 
     @Nested

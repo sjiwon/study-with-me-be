@@ -1,6 +1,6 @@
 package com.kgu.studywithme.member.domain.model;
 
-import com.kgu.studywithme.common.ExecuteParallel;
+import com.kgu.studywithme.common.ParallelTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
 import org.junit.jupiter.api.DisplayName;
@@ -13,9 +13,8 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-@ExecuteParallel
 @DisplayName("Member -> 도메인 [Address VO] 테스트")
-class AddressTest {
+class AddressTest extends ParallelTest {
     @ParameterizedTest
     @MethodSource("invalidAddress")
     @DisplayName("province나 city가 비어있음에 따라 Address 생성에 실패한다")

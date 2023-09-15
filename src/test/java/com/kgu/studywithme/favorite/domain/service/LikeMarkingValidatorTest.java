@@ -1,6 +1,6 @@
 package com.kgu.studywithme.favorite.domain.service;
 
-import com.kgu.studywithme.common.ExecuteParallel;
+import com.kgu.studywithme.common.ParallelTest;
 import com.kgu.studywithme.favorite.domain.repository.FavoriteRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,9 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-@ExecuteParallel
 @DisplayName("Favorite -> LikeMarkingValidator 테스트")
-public class LikeMarkingValidatorTest {
+public class LikeMarkingValidatorTest extends ParallelTest {
     private final FavoriteRepository favoriteRepository = mock(FavoriteRepository.class);
     private final LikeMarkingValidator sut = new LikeMarkingValidator(favoriteRepository);
 

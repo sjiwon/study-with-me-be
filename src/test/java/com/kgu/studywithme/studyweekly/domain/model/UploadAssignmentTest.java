@@ -1,6 +1,6 @@
 package com.kgu.studywithme.studyweekly.domain.model;
 
-import com.kgu.studywithme.common.ExecuteParallel;
+import com.kgu.studywithme.common.ParallelTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -9,9 +9,8 @@ import static com.kgu.studywithme.studyweekly.domain.model.AssignmentSubmitType.
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@ExecuteParallel
 @DisplayName("StudyWeekly/Submit -> 도메인 [UploadAssignment VO] 테스트")
-class UploadAssignmentTest {
+class UploadAssignmentTest extends ParallelTest {
     @Test
     @DisplayName("Notion, Blog 등 링크를 통해서 과제를 제출한다")
     void constructWithLink() {

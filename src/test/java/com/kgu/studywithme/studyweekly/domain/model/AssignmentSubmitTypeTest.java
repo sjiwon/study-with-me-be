@@ -1,6 +1,6 @@
 package com.kgu.studywithme.studyweekly.domain.model;
 
-import com.kgu.studywithme.common.ExecuteParallel;
+import com.kgu.studywithme.common.ParallelTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
 import org.junit.jupiter.api.DisplayName;
@@ -12,9 +12,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@ExecuteParallel
 @DisplayName("StudyWeekly/Submit -> 도메인 [AssignmentSubmitType VO] 테스트")
-public class AssignmentSubmitTypeTest {
+public class AssignmentSubmitTypeTest extends ParallelTest {
     @Test
     @DisplayName("link/file 이외의 제출 타입은 제공하지 않는다")
     void throwExceptionByInvalidSubmitType() {

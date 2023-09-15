@@ -1,6 +1,6 @@
 package com.kgu.studywithme.studyweekly.domain.model;
 
-import com.kgu.studywithme.common.ExecuteParallel;
+import com.kgu.studywithme.common.ParallelTest;
 import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.study.domain.model.Study;
 import org.junit.jupiter.api.DisplayName;
@@ -21,9 +21,8 @@ import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@ExecuteParallel
 @DisplayName("StudyWeekly -> 도메인 [StudyWeekly] 테스트")
-class StudyWeeklyTest {
+class StudyWeeklyTest extends ParallelTest {
     private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Member participant = JIWON.toMember().apply(2L, LocalDateTime.now());
     private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L, LocalDateTime.now());

@@ -1,6 +1,6 @@
 package com.kgu.studywithme.studyweekly.domain.model;
 
-import com.kgu.studywithme.common.ExecuteParallel;
+import com.kgu.studywithme.common.ParallelTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
 import org.junit.jupiter.api.DisplayName;
@@ -13,9 +13,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-@ExecuteParallel
 @DisplayName("StudyWeekly -> 도메인 [Period VO] 테스트")
-class PeriodTest {
+class PeriodTest extends ParallelTest {
     @Test
     @DisplayName("시작일이 종료일보다 늦는다면 Period 생성에 실패한다")
     void throwExceptionByPeriodStartDateMustBeBeforeEndDate() {

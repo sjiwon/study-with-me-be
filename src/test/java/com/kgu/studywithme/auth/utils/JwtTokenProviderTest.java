@@ -1,7 +1,7 @@
 package com.kgu.studywithme.auth.utils;
 
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
-import com.kgu.studywithme.common.ExecuteParallel;
+import com.kgu.studywithme.common.ParallelTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,9 +11,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-@ExecuteParallel
 @DisplayName("Auth -> JwtTokenProvider 테스트")
-class JwtTokenProviderTest {
+class JwtTokenProviderTest extends ParallelTest {
     private static final String SECRET_KEY = "asldfjsadlfjalksjf01jf02j9012f0120f12jf1j29v0saduf012ue101212c01";
 
     private final JwtTokenProvider invalidProvider = new JwtTokenProvider(SECRET_KEY, 0L, 0L);

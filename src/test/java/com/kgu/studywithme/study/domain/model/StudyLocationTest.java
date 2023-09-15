@@ -1,6 +1,6 @@
 package com.kgu.studywithme.study.domain.model;
 
-import com.kgu.studywithme.common.ExecuteParallel;
+import com.kgu.studywithme.common.ParallelTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
 import org.junit.jupiter.api.DisplayName;
@@ -13,9 +13,8 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-@ExecuteParallel
 @DisplayName("Study -> 도메인 [StudyLocation VO] 테스트")
-class StudyLocationTest {
+class StudyLocationTest extends ParallelTest {
     @ParameterizedTest
     @MethodSource("invalidLocation")
     @DisplayName("province나 city가 비어있음에 따라 StudyLocation 생성에 실패한다")

@@ -1,6 +1,6 @@
 package com.kgu.studywithme.file.utils.validator;
 
-import com.kgu.studywithme.common.ExecuteParallel;
+import com.kgu.studywithme.common.ParallelTest;
 import jakarta.validation.ConstraintValidatorContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -10,9 +10,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.mock;
 
-@ExecuteParallel
 @DisplayName("File -> ImageUploadCategoryConstraintValidator 테스트")
-class ImageUploadCategoryConstraintValidatorTest {
+class ImageUploadCategoryConstraintValidatorTest extends ParallelTest {
     private ImageUploadCategoryConstraintValidator validator;
     private ConstraintValidatorContext context;
 
