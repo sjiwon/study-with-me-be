@@ -2,7 +2,6 @@ package com.kgu.studywithme.auth.utils;
 
 import com.kgu.studywithme.common.ExecuteParallel;
 import jakarta.servlet.http.HttpServletRequest;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -19,12 +18,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @ExecuteParallel
 @DisplayName("Auth -> AuthorizationExtractor 테스트")
 class AuthorizationExtractorTest {
-    private HttpServletRequest request;
-
-    @BeforeEach
-    void setUp() {
-        request = mock(HttpServletRequest.class);
-    }
+    private final HttpServletRequest request = mock(HttpServletRequest.class);
 
     @Test
     @DisplayName("HTTP Request Message의 Authorization Header에 토큰이 없다면 Optional 빈 값을 응답한다")

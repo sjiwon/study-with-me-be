@@ -21,13 +21,13 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @DisplayName("Auth -> RdbTokenStore 테스트")
 class RdbTokenStoreTest extends RepositoryTest {
     @Autowired
-    private RdbTokenStore rdbTokenPersistenceAdapter;
-
-    @Autowired
     private TokenRepository tokenRepository;
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private RdbTokenStore sut;
 
     private Member member;
 
@@ -43,7 +43,7 @@ class RdbTokenStoreTest extends RepositoryTest {
         @DisplayName("RefreshToken을 보유하고 있지 않은 사용자는 새로운 RefreshToken을 발급한다")
         void reissueRefreshToken() {
             // when
-            rdbTokenPersistenceAdapter.synchronizeRefreshToken(member.getId(), REFRESH_TOKEN);
+            sut.synchronizeRefreshToken(member.getId(), REFRESH_TOKEN);
 
             // then
             final Token findToken = tokenRepository.findByMemberId(member.getId()).orElseThrow();
@@ -58,7 +58,7 @@ class RdbTokenStoreTest extends RepositoryTest {
 
             // when
             final String newRefreshToken = REFRESH_TOKEN + "new";
-            rdbTokenPersistenceAdapter.synchronizeRefreshToken(member.getId(), newRefreshToken);
+            sut.synchronizeRefreshToken(member.getId(), newRefreshToken);
 
             // then
             final Token findToken = tokenRepository.findByMemberId(member.getId()).orElseThrow();
@@ -74,7 +74,7 @@ class RdbTokenStoreTest extends RepositoryTest {
 
         // when
         final String newRefreshToken = REFRESH_TOKEN + "new";
-        rdbTokenPersistenceAdapter.updateRefreshToken(member.getId(), newRefreshToken);
+        sut.updateRefreshToken(member.getId(), newRefreshToken);
 
         // then
         final Token findToken = tokenRepository.findByMemberId(member.getId()).orElseThrow();
@@ -88,7 +88,7 @@ class RdbTokenStoreTest extends RepositoryTest {
         tokenRepository.save(Token.issueRefreshToken(member.getId(), REFRESH_TOKEN));
 
         // when
-        rdbTokenPersistenceAdapter.deleteRefreshToken(member.getId());
+        sut.deleteRefreshToken(member.getId());
 
         // then
         assertThat(tokenRepository.findByMemberId(member.getId())).isEmpty();
@@ -101,8 +101,8 @@ class RdbTokenStoreTest extends RepositoryTest {
         tokenRepository.save(Token.issueRefreshToken(member.getId(), REFRESH_TOKEN));
 
         // when
-        final boolean actual1 = rdbTokenPersistenceAdapter.isMemberRefreshToken(member.getId(), REFRESH_TOKEN);
-        final boolean actual2 = rdbTokenPersistenceAdapter.isMemberRefreshToken(member.getId(), REFRESH_TOKEN + "fake");
+        final boolean actual1 = sut.isMemberRefreshToken(member.getId(), REFRESH_TOKEN);
+        final boolean actual2 = sut.isMemberRefreshToken(member.getId(), REFRESH_TOKEN + "fake");
 
         // then
         assertAll(

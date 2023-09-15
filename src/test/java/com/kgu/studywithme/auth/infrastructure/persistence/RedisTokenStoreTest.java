@@ -19,12 +19,12 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @DisplayName("Auth -> RedisTokenStore 테스트")
 public class RedisTokenStoreTest extends RedisTest {
     @Autowired
-    private RedisTokenStore redisTokenPersistenceAdapter;
-
-    @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
     private ValueOperations<String, String> operations;
+
+    @Autowired
+    private RedisTokenStore sut;
 
     private static final Long MEMBER_ID = 1L;
 
@@ -40,7 +40,7 @@ public class RedisTokenStoreTest extends RedisTest {
         @DisplayName("RefreshToken을 보유하고 있지 않은 사용자는 새로운 RefreshToken을 발급한다")
         void reissueRefreshToken() {
             // when
-            redisTokenPersistenceAdapter.synchronizeRefreshToken(MEMBER_ID, REFRESH_TOKEN);
+            sut.synchronizeRefreshToken(MEMBER_ID, REFRESH_TOKEN);
 
             // then
             final String token = operations.get(String.format(REFRESH_TOKEN_KEY.getValue(), MEMBER_ID));
@@ -58,10 +58,10 @@ public class RedisTokenStoreTest extends RedisTest {
 
             // when
             final String newRefreshToken = REFRESH_TOKEN + "new";
-            redisTokenPersistenceAdapter.synchronizeRefreshToken(MEMBER_ID, newRefreshToken);
+            sut.synchronizeRefreshToken(MEMBER_ID, newRefreshToken);
 
             // then
-            final String token = redisTemplate.opsForValue().get(String.format(REFRESH_TOKEN_KEY.getValue(), MEMBER_ID));
+            final String token = operations.get(String.format(REFRESH_TOKEN_KEY.getValue(), MEMBER_ID));
             assertAll(
                     () -> assertThat(token).isNotNull(),
                     () -> assertThat(token).isEqualTo(newRefreshToken)
@@ -77,10 +77,10 @@ public class RedisTokenStoreTest extends RedisTest {
 
         // when
         final String newRefreshToken = REFRESH_TOKEN + "new";
-        redisTokenPersistenceAdapter.updateRefreshToken(MEMBER_ID, newRefreshToken);
+        sut.updateRefreshToken(MEMBER_ID, newRefreshToken);
 
         // then
-        final String token = redisTemplate.opsForValue().get(String.format(REFRESH_TOKEN_KEY.getValue(), MEMBER_ID));
+        final String token = operations.get(String.format(REFRESH_TOKEN_KEY.getValue(), MEMBER_ID));
         assertAll(
                 () -> assertThat(token).isNotNull(),
                 () -> assertThat(token).isEqualTo(newRefreshToken)
@@ -94,10 +94,10 @@ public class RedisTokenStoreTest extends RedisTest {
         operations.set(String.format(REFRESH_TOKEN_KEY.getValue(), MEMBER_ID), REFRESH_TOKEN);
 
         // when
-        redisTokenPersistenceAdapter.deleteRefreshToken(MEMBER_ID);
+        sut.deleteRefreshToken(MEMBER_ID);
 
         // then
-        final String token = redisTemplate.opsForValue().get(String.format(REFRESH_TOKEN_KEY.getValue(), MEMBER_ID));
+        final String token = operations.get(String.format(REFRESH_TOKEN_KEY.getValue(), MEMBER_ID));
         assertThat(token).isNull();
     }
 
@@ -108,8 +108,8 @@ public class RedisTokenStoreTest extends RedisTest {
         operations.set(String.format(REFRESH_TOKEN_KEY.getValue(), MEMBER_ID), REFRESH_TOKEN);
 
         // when
-        final boolean actual1 = redisTokenPersistenceAdapter.isMemberRefreshToken(MEMBER_ID, REFRESH_TOKEN);
-        final boolean actual2 = redisTokenPersistenceAdapter.isMemberRefreshToken(MEMBER_ID, REFRESH_TOKEN + "fake");
+        final boolean actual1 = sut.isMemberRefreshToken(MEMBER_ID, REFRESH_TOKEN);
+        final boolean actual2 = sut.isMemberRefreshToken(MEMBER_ID, REFRESH_TOKEN + "fake");
 
         // then
         assertAll(
