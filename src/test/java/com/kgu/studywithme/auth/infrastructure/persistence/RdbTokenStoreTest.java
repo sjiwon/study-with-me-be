@@ -17,11 +17,11 @@ import static com.kgu.studywithme.common.utils.TokenUtils.REFRESH_TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@Import(RdbTokenPersistenceAdapter.class)
-@DisplayName("Auth -> RdbTokenPersistenceAdapter 테스트")
-class RdbTokenPersistenceAdapterTest extends RepositoryTest {
+@Import(RdbTokenStore.class)
+@DisplayName("Auth -> RdbTokenStore 테스트")
+class RdbTokenStoreTest extends RepositoryTest {
     @Autowired
-    private RdbTokenPersistenceAdapter rdbTokenPersistenceAdapter;
+    private RdbTokenStore rdbTokenPersistenceAdapter;
 
     @Autowired
     private TokenRepository tokenRepository;
@@ -68,13 +68,13 @@ class RdbTokenPersistenceAdapterTest extends RepositoryTest {
 
     @Test
     @DisplayName("사용자의 RefreshToken을 재발급한다")
-    void updateMemberRefreshToken() {
+    void updateRefreshToken() {
         // given
         tokenRepository.save(Token.issueRefreshToken(member.getId(), REFRESH_TOKEN));
 
         // when
         final String newRefreshToken = REFRESH_TOKEN + "new";
-        rdbTokenPersistenceAdapter.updateMemberRefreshToken(member.getId(), newRefreshToken);
+        rdbTokenPersistenceAdapter.updateRefreshToken(member.getId(), newRefreshToken);
 
         // then
         final Token findToken = tokenRepository.findByMemberId(member.getId()).orElseThrow();
@@ -83,12 +83,12 @@ class RdbTokenPersistenceAdapterTest extends RepositoryTest {
 
     @Test
     @DisplayName("사용자가 보유하고 있는 RefreshToken을 삭제한다")
-    void deleteMemberRefreshToken() {
+    void deleteRefreshToken() {
         // given
         tokenRepository.save(Token.issueRefreshToken(member.getId(), REFRESH_TOKEN));
 
         // when
-        rdbTokenPersistenceAdapter.deleteMemberRefreshToken(member.getId());
+        rdbTokenPersistenceAdapter.deleteRefreshToken(member.getId());
 
         // then
         assertThat(tokenRepository.findByMemberId(member.getId())).isEmpty();

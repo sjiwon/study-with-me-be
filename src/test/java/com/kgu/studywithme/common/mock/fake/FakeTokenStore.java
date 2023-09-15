@@ -1,11 +1,11 @@
 package com.kgu.studywithme.common.mock.fake;
 
-import com.kgu.studywithme.auth.application.adapter.TokenPersistenceAdapter;
+import com.kgu.studywithme.auth.application.adapter.TokenStoreAdapter;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class FakeTokenPersistenceAdapter implements TokenPersistenceAdapter {
+public class FakeTokenStore implements TokenStoreAdapter {
     private final Map<Long, String> tokenStore = new HashMap<>();
 
     @Override
@@ -14,12 +14,12 @@ public class FakeTokenPersistenceAdapter implements TokenPersistenceAdapter {
     }
 
     @Override
-    public void updateMemberRefreshToken(final Long memberId, final String refreshToken) {
+    public void updateRefreshToken(final Long memberId, final String refreshToken) {
         tokenStore.put(memberId, refreshToken);
     }
 
     @Override
-    public void deleteMemberRefreshToken(final Long memberId) {
+    public void deleteRefreshToken(final Long memberId) {
         tokenStore.remove(memberId);
     }
 

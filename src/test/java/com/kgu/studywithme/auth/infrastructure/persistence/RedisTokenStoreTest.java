@@ -15,11 +15,11 @@ import static com.kgu.studywithme.common.utils.TokenUtils.REFRESH_TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@Import(RedisTokenPersistenceAdapter.class)
-@DisplayName("Auth -> RedisTokenPersistenceAdapter 테스트")
-public class RedisTokenPersistenceAdapterTest extends RedisTest {
+@Import(RedisTokenStore.class)
+@DisplayName("Auth -> RedisTokenStore 테스트")
+public class RedisTokenStoreTest extends RedisTest {
     @Autowired
-    private RedisTokenPersistenceAdapter redisTokenPersistenceAdapter;
+    private RedisTokenStore redisTokenPersistenceAdapter;
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
@@ -71,13 +71,13 @@ public class RedisTokenPersistenceAdapterTest extends RedisTest {
 
     @Test
     @DisplayName("사용자의 RefreshToken을 재발급한다")
-    void updateMemberRefreshToken() {
+    void updateRefreshToken() {
         // given
         operations.set(String.format(REFRESH_TOKEN_KEY.getValue(), MEMBER_ID), REFRESH_TOKEN);
 
         // when
         final String newRefreshToken = REFRESH_TOKEN + "new";
-        redisTokenPersistenceAdapter.updateMemberRefreshToken(MEMBER_ID, newRefreshToken);
+        redisTokenPersistenceAdapter.updateRefreshToken(MEMBER_ID, newRefreshToken);
 
         // then
         final String token = redisTemplate.opsForValue().get(String.format(REFRESH_TOKEN_KEY.getValue(), MEMBER_ID));
@@ -89,12 +89,12 @@ public class RedisTokenPersistenceAdapterTest extends RedisTest {
 
     @Test
     @DisplayName("사용자가 보유하고 있는 RefreshToken을 삭제한다")
-    void deleteMemberRefreshToken() {
+    void deleteRefreshToken() {
         // given
         operations.set(String.format(REFRESH_TOKEN_KEY.getValue(), MEMBER_ID), REFRESH_TOKEN);
 
         // when
-        redisTokenPersistenceAdapter.deleteMemberRefreshToken(MEMBER_ID);
+        redisTokenPersistenceAdapter.deleteRefreshToken(MEMBER_ID);
 
         // then
         final String token = redisTemplate.opsForValue().get(String.format(REFRESH_TOKEN_KEY.getValue(), MEMBER_ID));

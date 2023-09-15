@@ -1,9 +1,9 @@
 package com.kgu.studywithme.auth.domain.service;
 
-import com.kgu.studywithme.auth.application.adapter.TokenPersistenceAdapter;
+import com.kgu.studywithme.auth.application.adapter.TokenStoreAdapter;
 import com.kgu.studywithme.auth.domain.model.AuthToken;
 import com.kgu.studywithme.auth.utils.TokenProvider;
-import com.kgu.studywithme.common.mock.fake.FakeTokenPersistenceAdapter;
+import com.kgu.studywithme.common.mock.fake.FakeTokenStore;
 import com.kgu.studywithme.common.mock.stub.StubTokenProvider;
 import com.kgu.studywithme.member.domain.model.Member;
 import org.junit.jupiter.api.DisplayName;
@@ -18,8 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @DisplayName("Auth -> TokenManager 테스트")
 public class TokenManagerTest {
     private final TokenProvider tokenProvider = new StubTokenProvider();
-    private final TokenPersistenceAdapter tokenPersistenceAdapter = new FakeTokenPersistenceAdapter();
-    private final TokenManager sut = new TokenManager(tokenProvider, tokenPersistenceAdapter);
+    private final TokenStoreAdapter tokenStoreAdapter = new FakeTokenStore();
+    private final TokenManager sut = new TokenManager(tokenProvider, tokenStoreAdapter);
     private final Member member = JIWON.toMember().apply(1L);
 
     @Test
@@ -32,7 +32,7 @@ public class TokenManagerTest {
         assertAll(
                 () -> assertThat(authToken.accessToken()).isEqualTo(ACCESS_TOKEN),
                 () -> assertThat(authToken.refreshToken()).isEqualTo(REFRESH_TOKEN),
-                () -> assertThat(tokenPersistenceAdapter.isMemberRefreshToken(member.getId(), REFRESH_TOKEN)).isTrue()
+                () -> assertThat(tokenStoreAdapter.isMemberRefreshToken(member.getId(), REFRESH_TOKEN)).isTrue()
         );
     }
 
@@ -40,7 +40,7 @@ public class TokenManagerTest {
     @DisplayName("Token[Access + Refresh]를 재발급한다")
     void reissueAuthorityToken() {
         // given
-        tokenPersistenceAdapter.synchronizeRefreshToken(member.getId(), REFRESH_TOKEN);
+        tokenStoreAdapter.synchronizeRefreshToken(member.getId(), REFRESH_TOKEN);
 
         // when
         final AuthToken authToken = sut.reissueAuthorityToken(member.getId());
@@ -49,7 +49,7 @@ public class TokenManagerTest {
         assertAll(
                 () -> assertThat(authToken.accessToken()).isEqualTo(ACCESS_TOKEN),
                 () -> assertThat(authToken.refreshToken()).isEqualTo(REFRESH_TOKEN),
-                () -> assertThat(tokenPersistenceAdapter.isMemberRefreshToken(member.getId(), REFRESH_TOKEN)).isTrue()
+                () -> assertThat(tokenStoreAdapter.isMemberRefreshToken(member.getId(), REFRESH_TOKEN)).isTrue()
         );
     }
 
@@ -57,7 +57,7 @@ public class TokenManagerTest {
     @DisplayName("사용자의 RefreshToken인지 확인한다")
     void isMemberRefreshToken() {
         // given
-        tokenPersistenceAdapter.synchronizeRefreshToken(member.getId(), REFRESH_TOKEN);
+        tokenStoreAdapter.synchronizeRefreshToken(member.getId(), REFRESH_TOKEN);
 
         // when
         final boolean actual1 = sut.isMemberRefreshToken(member.getId(), REFRESH_TOKEN);
@@ -72,14 +72,14 @@ public class TokenManagerTest {
 
     @Test
     @DisplayName("사용자의 RefreshToken을 제거한다")
-    void deleteMemberRefreshToken() {
+    void deleteRefreshToken() {
         // given
-        tokenPersistenceAdapter.synchronizeRefreshToken(member.getId(), REFRESH_TOKEN);
+        tokenStoreAdapter.synchronizeRefreshToken(member.getId(), REFRESH_TOKEN);
 
         // when
-        sut.deleteMemberRefreshToken(member.getId());
+        sut.deleteRefreshToken(member.getId());
 
         // then
-        assertThat(tokenPersistenceAdapter.isMemberRefreshToken(member.getId(), REFRESH_TOKEN)).isFalse();
+        assertThat(tokenStoreAdapter.isMemberRefreshToken(member.getId(), REFRESH_TOKEN)).isFalse();
     }
 }

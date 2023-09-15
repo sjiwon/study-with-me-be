@@ -16,12 +16,12 @@ public interface TokenRepository extends JpaRepository<Token, Long> {
     @Query("UPDATE Token t" +
             " SET t.refreshToken = :refreshToken" +
             " WHERE t.memberId = :memberId")
-    void updateMemberRefreshToken(@Param("memberId") Long memberId, @Param("refreshToken") String newRefreshToken);
+    void updateRefreshToken(@Param("memberId") Long memberId, @Param("refreshToken") String refreshToken);
 
     @StudyWithMeWritableTransactional
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("DELETE FROM Token t WHERE t.memberId = :memberId")
-    void deleteMemberRefreshToken(@Param("memberId") Long memberId);
+    void deleteRefreshToken(@Param("memberId") Long memberId);
 
     // Query Method
     Optional<Token> findByMemberId(Long memberId);

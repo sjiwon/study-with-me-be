@@ -11,6 +11,6 @@ public class LogoutUseCase {
     private final TokenManager tokenManager;
 
     public void invoke(final LogoutCommand command) {
-        tokenManager.deleteMemberRefreshToken(command.memberId());
+        tokenManager.deleteRefreshToken(command.memberId());
     }
 }

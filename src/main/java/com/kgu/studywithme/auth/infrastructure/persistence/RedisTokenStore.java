@@ -1,6 +1,6 @@
 package com.kgu.studywithme.auth.infrastructure.persistence;
 
-import com.kgu.studywithme.auth.application.adapter.TokenPersistenceAdapter;
+import com.kgu.studywithme.auth.application.adapter.TokenStoreAdapter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -12,12 +12,12 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 @Primary
 @Repository
-public class RedisTokenPersistenceAdapter implements TokenPersistenceAdapter {
+public class RedisTokenStore implements TokenStoreAdapter {
     private final long tokenValidityInMilliseconds;
     private final StringRedisTemplate tokenStorage;
     private final ValueOperations<String, String> tokenOperations;
 
-    public RedisTokenPersistenceAdapter(
+    public RedisTokenStore(
             @Value("${jwt.refresh-token-validity}") final long tokenValidityInMilliseconds,
             final StringRedisTemplate tokenStorage
     ) {
@@ -37,7 +37,7 @@ public class RedisTokenPersistenceAdapter implements TokenPersistenceAdapter {
     }
 
     @Override
-    public void updateMemberRefreshToken(final Long memberId, final String refreshToken) {
+    public void updateRefreshToken(final Long memberId, final String refreshToken) {
         tokenOperations.set(
                 String.format(REFRESH_TOKEN_KEY.getValue(), memberId),
                 refreshToken,
@@ -47,7 +47,7 @@ public class RedisTokenPersistenceAdapter implements TokenPersistenceAdapter {
     }
 
     @Override
-    public void deleteMemberRefreshToken(final Long memberId) {
+    public void deleteRefreshToken(final Long memberId) {
         tokenStorage.delete(String.format(REFRESH_TOKEN_KEY.getValue(), memberId));
     }
 

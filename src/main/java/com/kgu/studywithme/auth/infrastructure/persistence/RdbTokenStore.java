@@ -1,6 +1,6 @@
 package com.kgu.studywithme.auth.infrastructure.persistence;
 
-import com.kgu.studywithme.auth.application.adapter.TokenPersistenceAdapter;
+import com.kgu.studywithme.auth.application.adapter.TokenStoreAdapter;
 import com.kgu.studywithme.auth.domain.model.Token;
 import com.kgu.studywithme.auth.domain.repository.TokenRepository;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class RdbTokenPersistenceAdapter implements TokenPersistenceAdapter {
+public class RdbTokenStore implements TokenStoreAdapter {
     private final TokenRepository tokenRepository;
 
     @StudyWithMeWritableTransactional
@@ -24,14 +24,14 @@ public class RdbTokenPersistenceAdapter implements TokenPersistenceAdapter {
 
     @StudyWithMeWritableTransactional
     @Override
-    public void updateMemberRefreshToken(final Long memberId, final String refreshToken) {
-        tokenRepository.updateMemberRefreshToken(memberId, refreshToken);
+    public void updateRefreshToken(final Long memberId, final String refreshToken) {
+        tokenRepository.updateRefreshToken(memberId, refreshToken);
     }
 
     @StudyWithMeWritableTransactional
     @Override
-    public void deleteMemberRefreshToken(final Long memberId) {
-        tokenRepository.deleteMemberRefreshToken(memberId);
+    public void deleteRefreshToken(final Long memberId) {
+        tokenRepository.deleteRefreshToken(memberId);
     }
 
     @Override
