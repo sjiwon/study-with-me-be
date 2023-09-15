@@ -3,8 +3,8 @@ package com.kgu.studywithme.studyparticipant.application.service;
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.model.Member;
-import com.kgu.studywithme.study.application.service.StudyReader;
 import com.kgu.studywithme.study.domain.model.Study;
+import com.kgu.studywithme.study.domain.repository.StudyRepository;
 import com.kgu.studywithme.studyattendance.application.adapter.StudyAttendanceHandlingRepositoryAdapter;
 import com.kgu.studywithme.studyparticipant.application.adapter.ParticipateMemberReadAdapter;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.GraduateStudyUseCase;
@@ -39,7 +39,7 @@ class GraduateStudyServiceTest extends UseCaseTest {
     private GraduateStudyService graduateStudyService;
 
     @Mock
-    private StudyReader studyReader;
+    private StudyRepository studyRepository;
 
     @Mock
     private ParticipateMemberReadAdapter participateMemberReadAdapter;
@@ -69,7 +69,7 @@ class GraduateStudyServiceTest extends UseCaseTest {
     @DisplayName("스터디 팀장은 팀장 권한을 위임하지 않으면 스터디를 졸업할 수 없다")
     void throwExceptionByHostCannotGraduateStudy() {
         // given
-        given(studyReader.getById(any())).willReturn(study);
+        given(studyRepository.getById(any())).willReturn(study);
 
         // when - then
         assertThatThrownBy(() -> graduateStudyService.invoke(new GraduateStudyUseCase.Command(study.getId(), host.getId())))
@@ -77,7 +77,7 @@ class GraduateStudyServiceTest extends UseCaseTest {
                 .hasMessage(StudyParticipantErrorCode.HOST_CANNOT_GRADUATE_STUDY.getMessage());
 
         assertAll(
-                () -> verify(studyReader, times(1)).getById(any()),
+                () -> verify(studyRepository, times(1)).getById(any()),
                 () -> verify(participateMemberReadAdapter, times(0)).getParticipant(any(), any()),
                 () -> verify(studyAttendanceHandlingRepositoryAdapter, times(0)).getAttendanceCount(any(), any()),
                 () -> verify(studyParticipantRepository, times(0)).updateParticipantStatus(any(), any(), any()),
@@ -89,7 +89,7 @@ class GraduateStudyServiceTest extends UseCaseTest {
     @DisplayName("참여자가 아닌 사람은 해당 스터디를 졸업할 수 없다")
     void throwExceptionByParticipantNotFound() {
         // given
-        given(studyReader.getById(any())).willReturn(study);
+        given(studyRepository.getById(any())).willReturn(study);
         doThrow(StudyWithMeException.type(StudyParticipantErrorCode.PARTICIPANT_NOT_FOUND))
                 .when(participateMemberReadAdapter)
                 .getParticipant(any(), any());
@@ -100,7 +100,7 @@ class GraduateStudyServiceTest extends UseCaseTest {
                 .hasMessage(StudyParticipantErrorCode.PARTICIPANT_NOT_FOUND.getMessage());
 
         assertAll(
-                () -> verify(studyReader, times(1)).getById(any()),
+                () -> verify(studyRepository, times(1)).getById(any()),
                 () -> verify(participateMemberReadAdapter, times(1)).getParticipant(any(), any()),
                 () -> verify(studyAttendanceHandlingRepositoryAdapter, times(0)).getAttendanceCount(any(), any()),
                 () -> verify(studyParticipantRepository, times(0)).updateParticipantStatus(any(), any(), any()),
@@ -112,7 +112,7 @@ class GraduateStudyServiceTest extends UseCaseTest {
     @DisplayName("졸업 요건을 만족하지 못한 참여자는 스터디를 졸업할 수 없다")
     void throwExceptionByParticipantNotMeetGraduationPolicy() {
         // given
-        given(studyReader.getById(any())).willReturn(study);
+        given(studyRepository.getById(any())).willReturn(study);
         given(participateMemberReadAdapter.getParticipant(any(), any())).willReturn(applierWithAllowEmail);
         given(studyAttendanceHandlingRepositoryAdapter.getAttendanceCount(any(), any()))
                 .willReturn(study.getGraduationPolicy().getMinimumAttendance() - 1);
@@ -123,7 +123,7 @@ class GraduateStudyServiceTest extends UseCaseTest {
                 .hasMessage(StudyParticipantErrorCode.PARTICIPANT_NOT_MEET_GRADUATION_POLICY.getMessage());
 
         assertAll(
-                () -> verify(studyReader, times(1)).getById(any()),
+                () -> verify(studyRepository, times(1)).getById(any()),
                 () -> verify(participateMemberReadAdapter, times(1)).getParticipant(any(), any()),
                 () -> verify(studyAttendanceHandlingRepositoryAdapter, times(1)).getAttendanceCount(any(), any()),
                 () -> verify(studyParticipantRepository, times(0)).updateParticipantStatus(any(), any(), any()),
@@ -135,7 +135,7 @@ class GraduateStudyServiceTest extends UseCaseTest {
     @DisplayName("스터디를 졸업한다 [이메일 수신 동의에 의한 이메일 발송 이벤트 O]")
     void successA() {
         // given
-        given(studyReader.getById(any())).willReturn(study);
+        given(studyRepository.getById(any())).willReturn(study);
         given(participateMemberReadAdapter.getParticipant(any(), any())).willReturn(applierWithAllowEmail);
         given(studyAttendanceHandlingRepositoryAdapter.getAttendanceCount(any(), any()))
                 .willReturn(study.getGraduationPolicy().getMinimumAttendance());
@@ -145,7 +145,7 @@ class GraduateStudyServiceTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyReader, times(1)).getById(any()),
+                () -> verify(studyRepository, times(1)).getById(any()),
                 () -> verify(participateMemberReadAdapter, times(1)).getParticipant(any(), any()),
                 () -> verify(studyAttendanceHandlingRepositoryAdapter, times(1)).getAttendanceCount(any(), any()),
                 () -> verify(studyParticipantRepository, times(1)).updateParticipantStatus(any(), any(), any()),
@@ -158,7 +158,7 @@ class GraduateStudyServiceTest extends UseCaseTest {
     @DisplayName("스터디를 졸업한다 [이메일 수신 비동의에 의한 이메일 발송 이벤트 X]")
     void successB() {
         // given
-        given(studyReader.getById(any())).willReturn(study);
+        given(studyRepository.getById(any())).willReturn(study);
         given(participateMemberReadAdapter.getParticipant(any(), any())).willReturn(applierWithNotAllowEmail);
         given(studyAttendanceHandlingRepositoryAdapter.getAttendanceCount(any(), any()))
                 .willReturn(study.getGraduationPolicy().getMinimumAttendance());
@@ -168,7 +168,7 @@ class GraduateStudyServiceTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyReader, times(1)).getById(any()),
+                () -> verify(studyRepository, times(1)).getById(any()),
                 () -> verify(participateMemberReadAdapter, times(1)).getParticipant(any(), any()),
                 () -> verify(studyAttendanceHandlingRepositoryAdapter, times(1)).getAttendanceCount(any(), any()),
                 () -> verify(studyParticipantRepository, times(1)).updateParticipantStatus(any(), any(), any()),

@@ -4,6 +4,7 @@ import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.study.application.usecase.command.TerminateStudyUseCase;
 import com.kgu.studywithme.study.domain.model.Study;
+import com.kgu.studywithme.study.domain.repository.StudyRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -26,7 +27,7 @@ class TerminateStudyServiceTest extends UseCaseTest {
     private TerminateStudyService terminateStudyService;
 
     @Mock
-    private StudyReader studyReader;
+    private StudyRepository studyRepository;
 
     private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
     private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L, LocalDateTime.now());
@@ -36,14 +37,14 @@ class TerminateStudyServiceTest extends UseCaseTest {
     @DisplayName("스터디를 종료시킨다")
     void success() {
         // given
-        given(studyReader.getById(any())).willReturn(study);
+        given(studyRepository.getById(any())).willReturn(study);
 
         // when
         terminateStudyService.invoke(command);
 
         // then
         assertAll(
-                () -> verify(studyReader, times(1)).getById(any()),
+                () -> verify(studyRepository, times(1)).getById(any()),
                 () -> assertThat(study.isTerminated()).isTrue()
         );
     }

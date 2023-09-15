@@ -3,8 +3,8 @@ package com.kgu.studywithme.studyparticipant.application.service;
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.model.Member;
-import com.kgu.studywithme.study.application.service.StudyReader;
 import com.kgu.studywithme.study.domain.model.Study;
+import com.kgu.studywithme.study.domain.repository.StudyRepository;
 import com.kgu.studywithme.studyparticipant.application.adapter.ParticipateMemberReadAdapter;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.ApproveParticipationUseCase;
 import com.kgu.studywithme.studyparticipant.domain.repository.StudyParticipantRepository;
@@ -41,7 +41,7 @@ class ApproveParticipationServiceTest extends UseCaseTest {
     private ParticipateMemberReadAdapter participateMemberReadAdapter;
 
     @Mock
-    private StudyReader studyReader;
+    private StudyRepository studyRepository;
 
     @Mock
     private StudyParticipantRepository studyParticipantRepository;
@@ -81,7 +81,7 @@ class ApproveParticipationServiceTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(participateMemberReadAdapter, times(1)).getApplier(any(), any()),
-                () -> verify(studyReader, times(0)).getById(any()),
+                () -> verify(studyRepository, times(0)).getById(any()),
                 () -> verify(studyParticipantRepository, times(0)).updateParticipantStatus(any(), any(), any()),
                 () -> verify(eventPublisher, times(0)).publishEvent(any(StudyApprovedEvent.class))
         );
@@ -93,7 +93,7 @@ class ApproveParticipationServiceTest extends UseCaseTest {
         // given
         study.terminate();
         given(participateMemberReadAdapter.getApplier(any(), any())).willReturn(applierWithAllowEmail);
-        given(studyReader.getById(any())).willReturn(study);
+        given(studyRepository.getById(any())).willReturn(study);
 
         // when - then
         assertThatThrownBy(() -> approveParticipationService.invoke(
@@ -107,7 +107,7 @@ class ApproveParticipationServiceTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(participateMemberReadAdapter, times(1)).getApplier(any(), any()),
-                () -> verify(studyReader, times(1)).getById(any()),
+                () -> verify(studyRepository, times(1)).getById(any()),
                 () -> verify(studyParticipantRepository, times(0)).updateParticipantStatus(any(), any(), any()),
                 () -> verify(eventPublisher, times(0)).publishEvent(any(StudyApprovedEvent.class))
         );
@@ -118,7 +118,7 @@ class ApproveParticipationServiceTest extends UseCaseTest {
     void throwExceptionByStudyCapacityIsFull() {
         // given
         given(participateMemberReadAdapter.getApplier(any(), any())).willReturn(applierWithAllowEmail);
-        given(studyReader.getById(any())).willReturn(study);
+        given(studyRepository.getById(any())).willReturn(study);
 
         final int capacity = study.getCapacity().getValue();
         for (int i = 0; i < capacity - 1; i++) {
@@ -137,7 +137,7 @@ class ApproveParticipationServiceTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(participateMemberReadAdapter, times(1)).getApplier(any(), any()),
-                () -> verify(studyReader, times(1)).getById(any()),
+                () -> verify(studyRepository, times(1)).getById(any()),
                 () -> verify(studyParticipantRepository, times(0)).updateParticipantStatus(any(), any(), any()),
                 () -> verify(eventPublisher, times(0)).publishEvent(any(StudyApprovedEvent.class))
         );
@@ -148,7 +148,7 @@ class ApproveParticipationServiceTest extends UseCaseTest {
     void successA() {
         // given
         given(participateMemberReadAdapter.getApplier(any(), any())).willReturn(applierWithAllowEmail);
-        given(studyReader.getById(any())).willReturn(study);
+        given(studyRepository.getById(any())).willReturn(study);
 
         // when
         approveParticipationService.invoke(
@@ -161,7 +161,7 @@ class ApproveParticipationServiceTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(participateMemberReadAdapter, times(1)).getApplier(any(), any()),
-                () -> verify(studyReader, times(1)).getById(any()),
+                () -> verify(studyRepository, times(1)).getById(any()),
                 () -> verify(studyParticipantRepository, times(1)).updateParticipantStatus(any(), any(), any()),
                 () -> verify(eventPublisher, times(1)).publishEvent(any(StudyApprovedEvent.class)),
                 () -> assertThat(study.getParticipants()).isEqualTo(previousParticipantMembers + 1)
@@ -173,7 +173,7 @@ class ApproveParticipationServiceTest extends UseCaseTest {
     void successB() {
         // given
         given(participateMemberReadAdapter.getApplier(any(), any())).willReturn(applierWithNotAllowEmail);
-        given(studyReader.getById(any())).willReturn(study);
+        given(studyRepository.getById(any())).willReturn(study);
 
         // when
         approveParticipationService.invoke(
@@ -186,7 +186,7 @@ class ApproveParticipationServiceTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(participateMemberReadAdapter, times(1)).getApplier(any(), any()),
-                () -> verify(studyReader, times(1)).getById(any()),
+                () -> verify(studyRepository, times(1)).getById(any()),
                 () -> verify(studyParticipantRepository, times(1)).updateParticipantStatus(any(), any(), any()),
                 () -> verify(eventPublisher, times(0)).publishEvent(any(StudyApprovedEvent.class)),
                 () -> assertThat(study.getParticipants()).isEqualTo(previousParticipantMembers + 1)
