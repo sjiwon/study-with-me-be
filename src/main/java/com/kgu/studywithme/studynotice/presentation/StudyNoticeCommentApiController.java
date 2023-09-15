@@ -1,6 +1,6 @@
 package com.kgu.studywithme.studynotice.presentation;
 
-import com.kgu.studywithme.auth.utils.ExtractPayload;
+import com.kgu.studywithme.global.resolver.ExtractPayload;
 import com.kgu.studywithme.studynotice.application.usecase.command.DeleteStudyNoticeCommentUseCase;
 import com.kgu.studywithme.studynotice.application.usecase.command.UpdateStudyNoticeCommentUseCase;
 import com.kgu.studywithme.studynotice.application.usecase.command.WriteStudyNoticeCommentUseCase;

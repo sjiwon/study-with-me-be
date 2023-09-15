@@ -1,7 +1,7 @@
 package com.kgu.studywithme.studyweekly.presentation;
 
-import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.global.aop.CheckStudyHost;
+import com.kgu.studywithme.global.resolver.ExtractPayload;
 import com.kgu.studywithme.studyweekly.application.service.AttachmentUploader;
 import com.kgu.studywithme.studyweekly.application.usecase.command.CreateStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.application.usecase.command.DeleteStudyWeeklyUseCase;

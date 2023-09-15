@@ -1,7 +1,7 @@
 package com.kgu.studywithme.memberreview.presentation;
 
-import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.global.aop.CheckAuthUser;
+import com.kgu.studywithme.global.resolver.ExtractPayload;
 import com.kgu.studywithme.memberreview.application.usecase.command.UpdateMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.presentation.dto.request.UpdateMemberReviewRequest;

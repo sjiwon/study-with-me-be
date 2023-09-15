@@ -1,6 +1,6 @@
 package com.kgu.studywithme.studyreview.presentation;
 
-import com.kgu.studywithme.auth.utils.ExtractPayload;
+import com.kgu.studywithme.global.resolver.ExtractPayload;
 import com.kgu.studywithme.studyreview.application.usecase.command.DeleteStudyReviewUseCase;
 import com.kgu.studywithme.studyreview.application.usecase.command.UpdateStudyReviewUseCase;
 import com.kgu.studywithme.studyreview.application.usecase.command.WriteStudyReviewUseCase;

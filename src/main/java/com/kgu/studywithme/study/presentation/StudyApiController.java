@@ -1,9 +1,9 @@
 package com.kgu.studywithme.study.presentation;
 
-import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.category.domain.model.Category;
 import com.kgu.studywithme.global.aop.CheckAuthUser;
 import com.kgu.studywithme.global.aop.CheckStudyHost;
+import com.kgu.studywithme.global.resolver.ExtractPayload;
 import com.kgu.studywithme.study.application.usecase.command.CreateStudyUseCase;
 import com.kgu.studywithme.study.application.usecase.command.TerminateStudyUseCase;
 import com.kgu.studywithme.study.application.usecase.command.UpdateStudyUseCase;

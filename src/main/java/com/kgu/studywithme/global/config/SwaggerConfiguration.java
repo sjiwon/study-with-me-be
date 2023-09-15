@@ -1,7 +1,7 @@
 package com.kgu.studywithme.global.config;
 
-import com.kgu.studywithme.auth.utils.ExtractPayload;
-import com.kgu.studywithme.auth.utils.ExtractToken;
+import com.kgu.studywithme.global.resolver.ExtractPayload;
+import com.kgu.studywithme.global.resolver.ExtractToken;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;

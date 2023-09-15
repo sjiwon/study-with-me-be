@@ -1,7 +1,7 @@
 package com.kgu.studywithme.studyparticipant.presentation;
 
-import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.global.aop.CheckStudyParticipant;
+import com.kgu.studywithme.global.resolver.ExtractPayload;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.GraduateStudyUseCase;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.LeaveParticipationUseCase;
 import io.swagger.v3.oas.annotations.Operation;

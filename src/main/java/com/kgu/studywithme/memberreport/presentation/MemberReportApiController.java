@@ -1,6 +1,6 @@
 package com.kgu.studywithme.memberreport.presentation;
 
-import com.kgu.studywithme.auth.utils.ExtractPayload;
+import com.kgu.studywithme.global.resolver.ExtractPayload;
 import com.kgu.studywithme.memberreport.application.usecase.command.ReportMemberUseCase;
 import com.kgu.studywithme.memberreport.presentation.dto.request.ReportMemberRequest;
 import io.swagger.v3.oas.annotations.Operation;

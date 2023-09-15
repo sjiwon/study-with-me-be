@@ -1,6 +1,7 @@
-package com.kgu.studywithme.auth.utils;
+package com.kgu.studywithme.global.resolver;
 
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
+import com.kgu.studywithme.auth.utils.AuthorizationExtractor;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;

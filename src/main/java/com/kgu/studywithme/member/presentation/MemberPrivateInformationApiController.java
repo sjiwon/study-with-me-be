@@ -1,7 +1,7 @@
 package com.kgu.studywithme.member.presentation;
 
-import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.global.dto.ResponseWrapper;
+import com.kgu.studywithme.global.resolver.ExtractPayload;
 import com.kgu.studywithme.member.application.usecase.query.QueryAppliedStudyByIdUseCase;
 import com.kgu.studywithme.member.application.usecase.query.QueryLikeMarkedStudyByIdUseCase;
 import com.kgu.studywithme.member.application.usecase.query.QueryPrivateInformationByIdUseCase;

@@ -1,9 +1,9 @@
 package com.kgu.studywithme.study.presentation;
 
-import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.global.aop.CheckStudyHost;
 import com.kgu.studywithme.global.aop.CheckStudyParticipant;
 import com.kgu.studywithme.global.dto.ResponseWrapper;
+import com.kgu.studywithme.global.resolver.ExtractPayload;
 import com.kgu.studywithme.study.application.usecase.query.QueryApplicantByIdUseCase;
 import com.kgu.studywithme.study.application.usecase.query.QueryAttendanceByIdUseCase;
 import com.kgu.studywithme.study.application.usecase.query.QueryNoticeByIdUseCase;

@@ -1,9 +1,9 @@
 package com.kgu.studywithme.favorite.presentation;
 
-import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeCancellationUseCase;
 import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeMarkingUseCase;
 import com.kgu.studywithme.global.aop.CheckAuthUser;
+import com.kgu.studywithme.global.resolver.ExtractPayload;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
