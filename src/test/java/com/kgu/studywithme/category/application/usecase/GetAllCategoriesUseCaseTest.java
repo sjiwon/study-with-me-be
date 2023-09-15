@@ -18,13 +18,13 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("Category -> GetAllCategoriesUseCase 테스트")
 class GetAllCategoriesUseCaseTest extends UseCaseTest {
-    private final GetAllCategoriesUseCase getAllCategoriesUseCase = new GetAllCategoriesUseCase();
+    private final GetAllCategoriesUseCase sut = new GetAllCategoriesUseCase();
 
     @Test
     @DisplayName("전체 스터디 카테고리를 조회한다")
     void findAllCategories() {
         // when
-        final List<CategoryResponse> categoryResponse = getAllCategoriesUseCase.invoke();
+        final List<CategoryResponse> categoryResponse = sut.invoke();
 
         // then
         assertAll(

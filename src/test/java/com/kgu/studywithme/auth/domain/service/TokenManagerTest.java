@@ -20,6 +20,7 @@ public class TokenManagerTest {
     private final TokenProvider tokenProvider = new StubTokenProvider();
     private final TokenStoreAdapter tokenStoreAdapter = new FakeTokenStore();
     private final TokenManager sut = new TokenManager(tokenProvider, tokenStoreAdapter);
+
     private final Member member = JIWON.toMember().apply(1L);
 
     @Test
