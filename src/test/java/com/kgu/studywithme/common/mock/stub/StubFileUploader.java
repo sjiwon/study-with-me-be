@@ -1,4 +1,4 @@
-package com.kgu.studywithme.common.stub;
+package com.kgu.studywithme.common.mock.stub;
 
 import com.kgu.studywithme.file.application.adapter.FileUploader;
 import org.springframework.web.multipart.MultipartFile;

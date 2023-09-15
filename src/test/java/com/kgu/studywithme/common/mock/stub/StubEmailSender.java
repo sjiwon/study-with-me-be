@@ -1,4 +1,4 @@
-package com.kgu.studywithme.common.stub;
+package com.kgu.studywithme.common.mock.stub;
 
 import com.kgu.studywithme.mail.application.adapter.EmailSender;
 import lombok.extern.slf4j.Slf4j;

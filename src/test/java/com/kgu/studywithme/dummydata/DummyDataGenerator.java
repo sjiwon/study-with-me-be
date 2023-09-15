@@ -1,8 +1,8 @@
 package com.kgu.studywithme.dummydata;
 
 import com.kgu.studywithme.category.domain.model.Category;
-import com.kgu.studywithme.common.stub.StubEmailSender;
-import com.kgu.studywithme.common.stub.StubFileUploader;
+import com.kgu.studywithme.common.mock.stub.StubEmailSender;
+import com.kgu.studywithme.common.mock.stub.StubFileUploader;
 import com.kgu.studywithme.file.application.adapter.FileUploader;
 import com.kgu.studywithme.mail.application.adapter.EmailSender;
 import lombok.extern.slf4j.Slf4j;
