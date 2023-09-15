@@ -14,8 +14,8 @@ import com.kgu.studywithme.category.application.usecase.GetAllCategoriesUseCase;
 import com.kgu.studywithme.category.presentation.CategoryApiController;
 import com.kgu.studywithme.common.config.TestAopConfiguration;
 import com.kgu.studywithme.common.config.TestWebBeanConfiguration;
-import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeCancellationUseCase;
-import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeMarkingUseCase;
+import com.kgu.studywithme.favorite.application.usecase.CancelStudyLikeUseCase;
+import com.kgu.studywithme.favorite.application.usecase.MarkStudyLikeUseCase;
 import com.kgu.studywithme.favorite.presentation.FavoriteApiController;
 import com.kgu.studywithme.file.application.adapter.FileUploader;
 import com.kgu.studywithme.file.presentation.FileUploadApiController;
@@ -213,10 +213,10 @@ public abstract class ControllerTest {
     protected GetAllCategoriesUseCase getAllCategoriesUseCase;
 
     @MockBean
-    protected StudyLikeMarkingUseCase studyLikeMarkingUseCase;
+    protected MarkStudyLikeUseCase markStudyLikeUseCase;
 
     @MockBean
-    protected StudyLikeCancellationUseCase studyLikeCancellationUseCase;
+    protected CancelStudyLikeUseCase cancelStudyLikeUseCase;
 
     // Member [Command]
     @MockBean

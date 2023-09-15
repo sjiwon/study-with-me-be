@@ -1,7 +1,9 @@
 package com.kgu.studywithme.favorite.presentation;
 
-import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeCancellationUseCase;
-import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeMarkingUseCase;
+import com.kgu.studywithme.favorite.application.usecase.CancelStudyLikeUseCase;
+import com.kgu.studywithme.favorite.application.usecase.MarkStudyLikeUseCase;
+import com.kgu.studywithme.favorite.application.usecase.command.CancelStudyLikeCommand;
+import com.kgu.studywithme.favorite.application.usecase.command.MarkStudyLikeCommand;
 import com.kgu.studywithme.global.aop.CheckAuthUser;
 import com.kgu.studywithme.global.resolver.ExtractPayload;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/studies/{studyId}/like")
 public class FavoriteApiController {
-    private final StudyLikeMarkingUseCase studyLikeMarkingUseCase;
-    private final StudyLikeCancellationUseCase studyLikeCancellationUseCase;
+    private final MarkStudyLikeUseCase markStudyLikeUseCase;
+    private final CancelStudyLikeUseCase cancelStudyLikeUseCase;
 
     @Operation(summary = "스터디 찜 등록 EndPoint")
     @CheckAuthUser
@@ -29,7 +31,7 @@ public class FavoriteApiController {
             @ExtractPayload final Long memberId,
             @PathVariable final Long studyId
     ) {
-        studyLikeMarkingUseCase.invoke(new StudyLikeMarkingUseCase.Command(memberId, studyId));
+        markStudyLikeUseCase.invoke(new MarkStudyLikeCommand(memberId, studyId));
         return ResponseEntity.noContent().build();
     }
 
@@ -40,7 +42,7 @@ public class FavoriteApiController {
             @ExtractPayload final Long memberId,
             @PathVariable final Long studyId
     ) {
-        studyLikeCancellationUseCase.invoke(new StudyLikeCancellationUseCase.Command(memberId, studyId));
+        cancelStudyLikeUseCase.invoke(new CancelStudyLikeCommand(memberId, studyId));
         return ResponseEntity.noContent().build();
     }
 }
