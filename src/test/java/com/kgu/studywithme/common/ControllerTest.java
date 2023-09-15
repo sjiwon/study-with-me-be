@@ -10,7 +10,7 @@ import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.auth.presentation.OAuthApiController;
 import com.kgu.studywithme.auth.presentation.TokenReissueApiController;
 import com.kgu.studywithme.auth.utils.TokenProvider;
-import com.kgu.studywithme.category.application.usecase.query.QueryAllCategoriesUseCase;
+import com.kgu.studywithme.category.application.usecase.GetAllCategoriesUseCase;
 import com.kgu.studywithme.category.presentation.CategoryApiController;
 import com.kgu.studywithme.common.config.TestAopConfiguration;
 import com.kgu.studywithme.common.config.TestWebBeanConfiguration;
@@ -210,7 +210,7 @@ public abstract class ControllerTest {
 
     // Category & Favorite
     @MockBean
-    protected QueryAllCategoriesUseCase queryAllCategoriesUseCase;
+    protected GetAllCategoriesUseCase getAllCategoriesUseCase;
 
     @MockBean
     protected StudyLikeMarkingUseCase studyLikeMarkingUseCase;

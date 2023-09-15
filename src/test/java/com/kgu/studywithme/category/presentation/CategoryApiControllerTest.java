@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CategoryApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("스터디 카테고리 조회 API [GET /api/categories]")
-    class FindAllCategories {
+    class GetAllCategories {
         private static final String BASE_URL = "/api/categories";
 
         @Test
@@ -44,7 +44,7 @@ class CategoryApiControllerTest extends ControllerTest {
                     new CategoryResponse(CERTIFICATION),
                     new CategoryResponse(ETC)
             );
-            given(queryAllCategoriesUseCase.invoke()).willReturn(categories);
+            given(getAllCategoriesUseCase.invoke()).willReturn(categories);
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders

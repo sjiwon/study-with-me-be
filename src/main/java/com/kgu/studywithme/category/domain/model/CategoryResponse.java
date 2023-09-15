@@ -5,9 +5,6 @@ public record CategoryResponse(
         String name
 ) {
     public CategoryResponse(final Category category) {
-        this(
-                category.getId(),
-                category.getName()
-        );
+        this(category.getId(), category.getName());
     }
 }

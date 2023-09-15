@@ -1,4 +1,4 @@
-package com.kgu.studywithme.category.application.service;
+package com.kgu.studywithme.category.application.usecase;
 
 import com.kgu.studywithme.category.domain.model.CategoryResponse;
 import com.kgu.studywithme.common.UseCaseTest;
@@ -16,15 +16,15 @@ import static com.kgu.studywithme.category.domain.model.Category.PROGRAMMING;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@DisplayName("Category -> QueryAllCategoriesService 테스트")
-class QueryAllCategoriesServiceTest extends UseCaseTest {
-    private final QueryAllCategoriesService queryAllCategoriesService = new QueryAllCategoriesService();
+@DisplayName("Category -> GetAllCategoriesUseCase 테스트")
+class GetAllCategoriesUseCaseTest extends UseCaseTest {
+    private final GetAllCategoriesUseCase getAllCategoriesUseCase = new GetAllCategoriesUseCase();
 
     @Test
     @DisplayName("전체 스터디 카테고리를 조회한다")
     void findAllCategories() {
         // when
-        final List<CategoryResponse> categoryResponse = queryAllCategoriesService.invoke();
+        final List<CategoryResponse> categoryResponse = getAllCategoriesUseCase.invoke();
 
         // then
         assertAll(
