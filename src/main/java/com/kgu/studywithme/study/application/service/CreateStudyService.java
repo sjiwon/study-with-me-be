@@ -1,8 +1,8 @@
 package com.kgu.studywithme.study.application.service;
 
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.application.service.MemberReader;
 import com.kgu.studywithme.member.domain.model.Member;
+import com.kgu.studywithme.member.domain.repository.MemberRepository;
 import com.kgu.studywithme.study.application.adapter.StudyDuplicateCheckRepositoryAdapter;
 import com.kgu.studywithme.study.application.usecase.command.CreateStudyUseCase;
 import com.kgu.studywithme.study.domain.model.Study;
@@ -20,7 +20,7 @@ import static com.kgu.studywithme.study.domain.model.StudyType.ONLINE;
 @Service
 @RequiredArgsConstructor
 public class CreateStudyService implements CreateStudyUseCase {
-    private final MemberReader memberReader;
+    private final MemberRepository memberRepository;
     private final StudyDuplicateCheckRepositoryAdapter studyDuplicateCheckRepositoryAdapter;
     private final StudyRepository studyRepository;
     private final StudyParticipantRepository studyParticipantRepository;
@@ -29,7 +29,7 @@ public class CreateStudyService implements CreateStudyUseCase {
     public Long invoke(final Command command) {
         validateStudyNameIsUnique(command.name());
 
-        final Member host = memberReader.getById(command.hostId());
+        final Member host = memberRepository.getById(command.hostId());
         final Study study = createStudyAndApplyHostToParticipant(host, command);
 
         return study.getId();

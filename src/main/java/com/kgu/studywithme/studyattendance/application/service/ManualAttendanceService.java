@@ -2,8 +2,8 @@ package com.kgu.studywithme.studyattendance.application.service;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.application.service.MemberReader;
 import com.kgu.studywithme.member.domain.model.Member;
+import com.kgu.studywithme.member.domain.repository.MemberRepository;
 import com.kgu.studywithme.studyattendance.application.usecase.command.ManualAttendanceUseCase;
 import com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus;
 import com.kgu.studywithme.studyattendance.domain.model.StudyAttendance;
@@ -19,7 +19,7 @@ import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.
 @RequiredArgsConstructor
 public class ManualAttendanceService implements ManualAttendanceUseCase {
     private final StudyAttendanceRepository studyAttendanceRepository;
-    private final MemberReader memberReader;
+    private final MemberRepository memberRepository;
 
     @Override
     public void invoke(final Command command) {
@@ -49,7 +49,7 @@ public class ManualAttendanceService implements ManualAttendanceUseCase {
             final AttendanceStatus previousStatus,
             final AttendanceStatus currentStatus
     ) {
-        final Member participant = memberReader.getById(participantId);
+        final Member participant = memberRepository.getById(participantId);
 
         if (previousStatus == NON_ATTENDANCE) {
             participant.applyScoreByAttendanceStatus(currentStatus);

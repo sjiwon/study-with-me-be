@@ -5,6 +5,7 @@ import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.application.adapter.MemberDuplicateCheckRepositoryAdapter;
 import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
 import com.kgu.studywithme.member.domain.model.Member;
+import com.kgu.studywithme.member.domain.repository.MemberRepository;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,12 +14,12 @@ import org.springframework.stereotype.Service;
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class UpdateMemberService implements UpdateMemberUseCase {
-    private final MemberReader memberReader;
+    private final MemberRepository memberRepository;
     private final MemberDuplicateCheckRepositoryAdapter memberDuplicateCheckRepositoryAdapter;
 
     @Override
     public void invoke(final Command command) {
-        final Member member = memberReader.getById(command.memberId());
+        final Member member = memberRepository.getById(command.memberId());
         validateNicknameIsUnique(command.memberId(), command.nickname());
         validatePhoneIsUnique(command.memberId(), command.phone());
 
