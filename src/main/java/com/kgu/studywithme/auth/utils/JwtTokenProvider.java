@@ -20,7 +20,7 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Component
-public class JwtTokenProvider {
+public class JwtTokenProvider implements TokenProvider {
     private final SecretKey secretKey;
     private final long accessTokenValidityInMilliseconds;
     private final long refreshTokenValidityInMilliseconds;
@@ -35,10 +35,12 @@ public class JwtTokenProvider {
         this.refreshTokenValidityInMilliseconds = refreshTokenValidityInMilliseconds;
     }
 
+    @Override
     public String createAccessToken(final Long memberId) {
         return createToken(memberId, accessTokenValidityInMilliseconds);
     }
 
+    @Override
     public String createRefreshToken(final Long memberId) {
         return createToken(memberId, refreshTokenValidityInMilliseconds);
     }
@@ -81,7 +83,8 @@ public class JwtTokenProvider {
             return expiredDate.after(now);
         } catch (final ExpiredJwtException e) {
             throw StudyWithMeException.type(AuthErrorCode.EXPIRED_TOKEN);
-        } catch (final SecurityException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
+        } catch (final SecurityException | MalformedJwtException | UnsupportedJwtException |
+                       IllegalArgumentException e) {
             throw StudyWithMeException.type(AuthErrorCode.INVALID_TOKEN);
         }
     }
