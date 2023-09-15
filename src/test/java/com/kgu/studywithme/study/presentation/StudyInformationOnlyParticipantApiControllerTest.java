@@ -8,7 +8,7 @@ import com.kgu.studywithme.study.infrastructure.query.dto.StudyApplicantInformat
 import com.kgu.studywithme.study.infrastructure.query.dto.StudyMember;
 import com.kgu.studywithme.study.infrastructure.query.dto.WeeklyInformation;
 import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
-import com.kgu.studywithme.studyweekly.domain.submit.UploadAssignment;
+import com.kgu.studywithme.studyweekly.domain.model.UploadAssignment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -31,10 +31,10 @@ import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getExc
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ABSENCE;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.LATE;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.NON_ATTENDANCE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.ABSENCE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.ATTENDANCE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.LATE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.NON_ATTENDANCE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;

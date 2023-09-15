@@ -1,11 +1,11 @@
 package com.kgu.studywithme.memberreport.infrastructure.query;
 
 import com.kgu.studywithme.common.RepositoryTest;
-import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.domain.MemberRepository;
+import com.kgu.studywithme.member.domain.model.Member;
+import com.kgu.studywithme.member.domain.repository.MemberRepository;
 import com.kgu.studywithme.memberreport.application.adapter.MemberReportHandlingRepositoryAdapter;
-import com.kgu.studywithme.memberreport.domain.MemberReport;
-import com.kgu.studywithme.memberreport.domain.MemberReportRepository;
+import com.kgu.studywithme.memberreport.domain.model.MemberReport;
+import com.kgu.studywithme.memberreport.domain.repository.MemberReportRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

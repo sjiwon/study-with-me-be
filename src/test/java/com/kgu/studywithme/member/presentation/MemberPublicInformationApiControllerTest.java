@@ -1,8 +1,8 @@
 package com.kgu.studywithme.member.presentation;
 
-import com.kgu.studywithme.category.domain.Category;
+import com.kgu.studywithme.category.domain.model.Category;
 import com.kgu.studywithme.common.ControllerTest;
-import com.kgu.studywithme.member.domain.Member;
+import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.member.infrastructure.query.dto.AttendanceRatio;
 import com.kgu.studywithme.member.infrastructure.query.dto.GraduatedStudy;
 import com.kgu.studywithme.member.infrastructure.query.dto.MemberPublicInformation;
@@ -22,10 +22,10 @@ import static com.kgu.studywithme.common.fixture.StudyFixture.JPA;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentRequest;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ABSENCE;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.LATE;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.NON_ATTENDANCE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.ABSENCE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.ATTENDANCE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.LATE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.NON_ATTENDANCE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;

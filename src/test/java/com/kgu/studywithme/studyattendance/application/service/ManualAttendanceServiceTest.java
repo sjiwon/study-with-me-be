@@ -2,11 +2,11 @@ package com.kgu.studywithme.studyattendance.application.service;
 
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.member.application.service.MemberReader;
-import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.study.domain.Study;
+import com.kgu.studywithme.member.domain.model.Member;
+import com.kgu.studywithme.study.domain.model.Study;
 import com.kgu.studywithme.studyattendance.application.usecase.command.ManualAttendanceUseCase;
-import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
-import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
+import com.kgu.studywithme.studyattendance.domain.model.StudyAttendance;
+import com.kgu.studywithme.studyattendance.domain.repository.StudyAttendanceRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,9 +18,9 @@ import java.util.Optional;
 
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ABSENCE;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.LATE;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.NON_ATTENDANCE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.ABSENCE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.LATE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.NON_ATTENDANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;

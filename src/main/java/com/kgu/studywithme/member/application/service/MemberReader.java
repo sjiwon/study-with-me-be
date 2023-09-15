@@ -1,8 +1,8 @@
 package com.kgu.studywithme.member.application.service;
 
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.domain.MemberRepository;
+import com.kgu.studywithme.member.domain.model.Member;
+import com.kgu.studywithme.member.domain.repository.MemberRepository;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

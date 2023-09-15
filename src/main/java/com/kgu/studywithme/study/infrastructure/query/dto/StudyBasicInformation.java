@@ -1,16 +1,16 @@
 package com.kgu.studywithme.study.infrastructure.query.dto;
 
-import com.kgu.studywithme.category.domain.Category;
-import com.kgu.studywithme.member.domain.Gender;
-import com.kgu.studywithme.member.domain.Nickname;
-import com.kgu.studywithme.member.domain.Score;
-import com.kgu.studywithme.study.domain.Capacity;
-import com.kgu.studywithme.study.domain.Description;
-import com.kgu.studywithme.study.domain.RecruitmentStatus;
-import com.kgu.studywithme.study.domain.StudyLocation;
-import com.kgu.studywithme.study.domain.StudyName;
-import com.kgu.studywithme.study.domain.StudyThumbnail;
-import com.kgu.studywithme.study.domain.StudyType;
+import com.kgu.studywithme.category.domain.model.Category;
+import com.kgu.studywithme.member.domain.model.Gender;
+import com.kgu.studywithme.member.domain.model.Nickname;
+import com.kgu.studywithme.member.domain.model.Score;
+import com.kgu.studywithme.study.domain.model.Capacity;
+import com.kgu.studywithme.study.domain.model.Description;
+import com.kgu.studywithme.study.domain.model.RecruitmentStatus;
+import com.kgu.studywithme.study.domain.model.StudyLocation;
+import com.kgu.studywithme.study.domain.model.StudyName;
+import com.kgu.studywithme.study.domain.model.StudyThumbnail;
+import com.kgu.studywithme.study.domain.model.StudyType;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,6 +1,6 @@
 package com.kgu.studywithme.study.presentation;
 
-import com.kgu.studywithme.category.domain.Category;
+import com.kgu.studywithme.category.domain.model.Category;
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.study.application.service.dto.StudyPagingResponse;
 import com.kgu.studywithme.study.infrastructure.query.dto.StudyPreview;
@@ -14,15 +14,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.kgu.studywithme.category.domain.Category.PROGRAMMING;
+import static com.kgu.studywithme.category.domain.model.Category.PROGRAMMING;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.constraint;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentRequest;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
-import static com.kgu.studywithme.study.domain.RecruitmentStatus.IN_PROGRESS;
-import static com.kgu.studywithme.study.domain.StudyType.ONLINE;
+import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.IN_PROGRESS;
+import static com.kgu.studywithme.study.domain.model.StudyType.ONLINE;
 import static com.kgu.studywithme.study.utils.PagingConstants.SLICE_PER_PAGE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;

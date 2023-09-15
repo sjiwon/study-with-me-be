@@ -1,8 +1,8 @@
 package com.kgu.studywithme.studyattendance.infrastructure.scheduler;
 
-import com.kgu.studywithme.member.domain.MemberRepository;
+import com.kgu.studywithme.member.domain.repository.MemberRepository;
 import com.kgu.studywithme.studyattendance.application.adapter.StudyAttendanceHandlingRepositoryAdapter;
-import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
+import com.kgu.studywithme.studyattendance.domain.repository.StudyAttendanceRepository;
 import com.kgu.studywithme.studyattendance.infrastructure.query.dto.NonAttendanceWeekly;
 import com.kgu.studywithme.studyweekly.application.adapter.StudyWeeklyHandlingRepositoryAdapter;
 import com.kgu.studywithme.studyweekly.infrastructure.query.dto.AutoAttendanceAndFinishedWeekly;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ABSENCE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.ABSENCE;
 
 @Slf4j
 @Component

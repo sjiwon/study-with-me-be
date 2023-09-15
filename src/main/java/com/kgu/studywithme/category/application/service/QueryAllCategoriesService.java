@@ -1,8 +1,8 @@
 package com.kgu.studywithme.category.application.service;
 
 import com.kgu.studywithme.category.application.usecase.query.QueryAllCategoriesUseCase;
-import com.kgu.studywithme.category.domain.Category;
-import com.kgu.studywithme.category.domain.CategoryResponse;
+import com.kgu.studywithme.category.domain.model.Category;
+import com.kgu.studywithme.category.domain.model.CategoryResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;

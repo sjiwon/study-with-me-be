@@ -2,7 +2,7 @@ package com.kgu.studywithme.auth.application.service;
 
 import com.kgu.studywithme.auth.application.adapter.TokenPersistenceAdapter;
 import com.kgu.studywithme.auth.application.usecase.command.ReissueTokenUseCase;
-import com.kgu.studywithme.auth.domain.AuthToken;
+import com.kgu.studywithme.auth.domain.model.AuthToken;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.auth.utils.JwtTokenProvider;
 import com.kgu.studywithme.common.UseCaseTest;

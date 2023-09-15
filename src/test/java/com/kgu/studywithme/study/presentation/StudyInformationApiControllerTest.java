@@ -27,7 +27,7 @@ import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDoc
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
-import static com.kgu.studywithme.study.domain.RecruitmentStatus.IN_PROGRESS;
+import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.IN_PROGRESS;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;

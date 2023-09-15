@@ -1,12 +1,12 @@
 package com.kgu.studywithme.favorite.infrastructure.query;
 
 import com.kgu.studywithme.common.RepositoryTest;
-import com.kgu.studywithme.favorite.domain.Favorite;
-import com.kgu.studywithme.favorite.domain.FavoriteRepository;
-import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.domain.MemberRepository;
-import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.study.domain.StudyRepository;
+import com.kgu.studywithme.favorite.domain.model.Favorite;
+import com.kgu.studywithme.favorite.domain.repository.FavoriteRepository;
+import com.kgu.studywithme.member.domain.model.Member;
+import com.kgu.studywithme.member.domain.repository.MemberRepository;
+import com.kgu.studywithme.study.domain.model.Study;
+import com.kgu.studywithme.study.domain.repository.StudyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

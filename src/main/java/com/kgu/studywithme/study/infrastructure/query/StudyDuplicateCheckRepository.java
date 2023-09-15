@@ -7,7 +7,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import static com.kgu.studywithme.study.domain.QStudy.study;
+import static com.kgu.studywithme.study.domain.model.QStudy.study;
 
 @Repository
 @StudyWithMeReadOnlyTransactional

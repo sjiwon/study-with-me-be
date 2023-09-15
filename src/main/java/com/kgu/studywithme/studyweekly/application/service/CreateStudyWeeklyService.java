@@ -2,8 +2,8 @@ package com.kgu.studywithme.studyweekly.application.service;
 
 import com.kgu.studywithme.studyweekly.application.adapter.StudyWeeklyHandlingRepositoryAdapter;
 import com.kgu.studywithme.studyweekly.application.usecase.command.CreateStudyWeeklyUseCase;
-import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
-import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
+import com.kgu.studywithme.studyweekly.domain.model.StudyWeekly;
+import com.kgu.studywithme.studyweekly.domain.repository.StudyWeeklyRepository;
 import com.kgu.studywithme.studyweekly.event.WeeklyCreatedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;

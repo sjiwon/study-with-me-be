@@ -2,11 +2,11 @@ package com.kgu.studywithme.studyweekly.application.service;
 
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.study.domain.Study;
+import com.kgu.studywithme.member.domain.model.Member;
+import com.kgu.studywithme.study.domain.model.Study;
 import com.kgu.studywithme.studyweekly.application.adapter.StudyWeeklyHandlingRepositoryAdapter;
 import com.kgu.studywithme.studyweekly.application.usecase.command.DeleteStudyWeeklyUseCase;
-import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
+import com.kgu.studywithme.studyweekly.domain.model.StudyWeekly;
 import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

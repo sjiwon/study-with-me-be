@@ -2,8 +2,8 @@ package com.kgu.studywithme.favorite.application.service;
 
 import com.kgu.studywithme.favorite.application.adapter.FavoriteJudgeRepositoryAdapter;
 import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeMarkingUseCase;
-import com.kgu.studywithme.favorite.domain.Favorite;
-import com.kgu.studywithme.favorite.domain.FavoriteRepository;
+import com.kgu.studywithme.favorite.domain.model.Favorite;
+import com.kgu.studywithme.favorite.domain.repository.FavoriteRepository;
 import com.kgu.studywithme.favorite.exception.FavoriteErrorCode;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import lombok.RequiredArgsConstructor;

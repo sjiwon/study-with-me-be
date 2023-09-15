@@ -4,7 +4,7 @@ import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.application.adapter.MemberDuplicateCheckRepositoryAdapter;
 import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
-import com.kgu.studywithme.member.domain.Member;
+import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

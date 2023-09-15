@@ -1,7 +1,7 @@
 package com.kgu.studywithme.acceptance.study;
 
-import com.kgu.studywithme.auth.domain.AuthMember;
-import com.kgu.studywithme.auth.domain.AuthToken;
+import com.kgu.studywithme.auth.domain.model.AuthMember;
+import com.kgu.studywithme.auth.domain.model.AuthToken;
 import com.kgu.studywithme.common.AcceptanceTest;
 import com.kgu.studywithme.common.config.DatabaseCleanerAllCallbackExtension;
 import com.kgu.studywithme.common.fixture.MemberFixture;
@@ -25,7 +25,7 @@ import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터
 import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_참여_신청을_한다;
 import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디를_졸업한다;
 import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.카테고리로_스터디를_조회한다;
-import static com.kgu.studywithme.category.domain.Category.PROGRAMMING;
+import static com.kgu.studywithme.category.domain.model.Category.PROGRAMMING;
 import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY1;
 import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY2;
 import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY3;

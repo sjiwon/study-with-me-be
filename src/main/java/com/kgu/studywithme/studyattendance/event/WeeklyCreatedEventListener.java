@@ -1,8 +1,8 @@
 package com.kgu.studywithme.studyattendance.event;
 
-import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
-import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
+import com.kgu.studywithme.studyattendance.domain.model.StudyAttendance;
+import com.kgu.studywithme.studyattendance.domain.repository.StudyAttendanceRepository;
+import com.kgu.studywithme.studyparticipant.domain.repository.StudyParticipantRepository;
 import com.kgu.studywithme.studyweekly.event.WeeklyCreatedEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.NON_ATTENDANCE;
-import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPROVE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.NON_ATTENDANCE;
+import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.APPROVE;
 
 @Slf4j
 @Component

@@ -2,15 +2,15 @@ package com.kgu.studywithme.studyweekly.application.service;
 
 import com.kgu.studywithme.file.application.adapter.FileUploader;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType;
-import com.kgu.studywithme.studyweekly.domain.submit.UploadAssignment;
+import com.kgu.studywithme.studyweekly.domain.model.AssignmentSubmitType;
+import com.kgu.studywithme.studyweekly.domain.model.UploadAssignment;
 import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import static com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType.FILE;
-import static com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType.LINK;
+import static com.kgu.studywithme.studyweekly.domain.model.AssignmentSubmitType.FILE;
+import static com.kgu.studywithme.studyweekly.domain.model.AssignmentSubmitType.LINK;
 
 @Component
 @RequiredArgsConstructor

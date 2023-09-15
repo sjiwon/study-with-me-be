@@ -2,13 +2,13 @@ package com.kgu.studywithme.studyparticipant.application.service;
 
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.ApplyCancellationUseCase;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipant;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
+import com.kgu.studywithme.studyparticipant.domain.model.StudyParticipant;
+import com.kgu.studywithme.studyparticipant.domain.repository.StudyParticipantRepository;
 import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPLY;
+import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.APPLY;
 
 @Service
 @RequiredArgsConstructor

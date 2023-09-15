@@ -1,8 +1,8 @@
 package com.kgu.studywithme.member.infrastructure.query;
 
 import com.kgu.studywithme.common.RepositoryTest;
-import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.domain.MemberRepository;
+import com.kgu.studywithme.member.domain.model.Member;
+import com.kgu.studywithme.member.domain.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

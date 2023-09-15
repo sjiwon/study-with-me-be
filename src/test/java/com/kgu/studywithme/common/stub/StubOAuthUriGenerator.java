@@ -1,9 +1,9 @@
 package com.kgu.studywithme.common.stub;
 
 import com.kgu.studywithme.auth.application.adapter.OAuthUriGenerator;
-import com.kgu.studywithme.auth.domain.oauth.OAuthProvider;
+import com.kgu.studywithme.auth.domain.model.oauth.OAuthProvider;
 
-import static com.kgu.studywithme.auth.domain.oauth.OAuthProvider.GOOGLE;
+import static com.kgu.studywithme.auth.domain.model.oauth.OAuthProvider.GOOGLE;
 
 public class StubOAuthUriGenerator implements OAuthUriGenerator {
     @Override

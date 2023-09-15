@@ -12,9 +12,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.NON_ATTENDANCE;
-import static com.kgu.studywithme.studyattendance.domain.QStudyAttendance.studyAttendance;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.ATTENDANCE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.NON_ATTENDANCE;
+import static com.kgu.studywithme.studyattendance.domain.model.QStudyAttendance.studyAttendance;
 
 @Repository
 @StudyWithMeReadOnlyTransactional

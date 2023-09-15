@@ -1,6 +1,6 @@
 package com.kgu.studywithme.file.utils.validator;
 
-import com.kgu.studywithme.file.domain.FileExtension;
+import com.kgu.studywithme.file.domain.model.FileExtension;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.web.multipart.MultipartFile;

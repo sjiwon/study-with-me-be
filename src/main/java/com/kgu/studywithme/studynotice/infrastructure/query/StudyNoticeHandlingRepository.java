@@ -8,8 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
-import static com.kgu.studywithme.studynotice.domain.QStudyNotice.studyNotice;
-import static com.kgu.studywithme.studynotice.domain.comment.QStudyNoticeComment.studyNoticeComment;
+import static com.kgu.studywithme.studynotice.domain.model.QStudyNotice.studyNotice;
+import static com.kgu.studywithme.studynotice.domain.model.QStudyNoticeComment.studyNoticeComment;
 
 @Repository
 @StudyWithMeReadOnlyTransactional

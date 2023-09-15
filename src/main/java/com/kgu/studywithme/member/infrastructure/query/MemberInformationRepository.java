@@ -1,6 +1,6 @@
 package com.kgu.studywithme.member.infrastructure.query;
 
-import com.kgu.studywithme.category.domain.Category;
+import com.kgu.studywithme.category.domain.model.Category;
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.member.application.adapter.MemberInformationRepositoryAdapter;
 import com.kgu.studywithme.member.infrastructure.query.dto.AppliedStudy;
@@ -19,25 +19,25 @@ import com.kgu.studywithme.member.infrastructure.query.dto.QMemberPublicInformat
 import com.kgu.studywithme.member.infrastructure.query.dto.QParticipateStudy;
 import com.kgu.studywithme.member.infrastructure.query.dto.QReceivedReview;
 import com.kgu.studywithme.member.infrastructure.query.dto.ReceivedReview;
-import com.kgu.studywithme.studyattendance.domain.AttendanceStatus;
-import com.kgu.studywithme.studyreview.domain.StudyReview;
+import com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus;
+import com.kgu.studywithme.studyreview.domain.model.StudyReview;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.kgu.studywithme.favorite.domain.QFavorite.favorite;
-import static com.kgu.studywithme.member.domain.QMember.member;
-import static com.kgu.studywithme.member.domain.interest.QInterest.interest;
-import static com.kgu.studywithme.memberreview.domain.QMemberReview.memberReview;
-import static com.kgu.studywithme.study.domain.QStudy.study;
-import static com.kgu.studywithme.studyattendance.domain.QStudyAttendance.studyAttendance;
-import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPLY;
-import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPROVE;
-import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.GRADUATED;
-import static com.kgu.studywithme.studyparticipant.domain.QStudyParticipant.studyParticipant;
-import static com.kgu.studywithme.studyreview.domain.QStudyReview.studyReview;
+import static com.kgu.studywithme.favorite.domain.model.QFavorite.favorite;
+import static com.kgu.studywithme.member.domain.model.QInterest.interest;
+import static com.kgu.studywithme.member.domain.model.QMember.member;
+import static com.kgu.studywithme.memberreview.domain.model.QMemberReview.memberReview;
+import static com.kgu.studywithme.study.domain.model.QStudy.study;
+import static com.kgu.studywithme.studyattendance.domain.model.QStudyAttendance.studyAttendance;
+import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.APPLY;
+import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.APPROVE;
+import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.GRADUATED;
+import static com.kgu.studywithme.studyparticipant.domain.model.QStudyParticipant.studyParticipant;
+import static com.kgu.studywithme.studyreview.domain.model.QStudyReview.studyReview;
 
 @Repository
 @StudyWithMeReadOnlyTransactional

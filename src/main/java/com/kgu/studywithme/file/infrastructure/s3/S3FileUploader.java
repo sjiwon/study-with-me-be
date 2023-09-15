@@ -1,8 +1,8 @@
 package com.kgu.studywithme.file.infrastructure.s3;
 
 import com.kgu.studywithme.file.application.adapter.FileUploader;
-import com.kgu.studywithme.file.domain.FileExtension;
-import com.kgu.studywithme.file.domain.FileUploadType;
+import com.kgu.studywithme.file.domain.model.FileExtension;
+import com.kgu.studywithme.file.domain.model.FileUploadType;
 import com.kgu.studywithme.file.exception.FileErrorCode;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import io.awspring.cloud.s3.ObjectMetadata;

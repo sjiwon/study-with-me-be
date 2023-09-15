@@ -1,8 +1,8 @@
 package com.kgu.studywithme.member.presentation;
 
-import com.kgu.studywithme.category.domain.Category;
+import com.kgu.studywithme.category.domain.model.Category;
 import com.kgu.studywithme.common.ControllerTest;
-import com.kgu.studywithme.member.domain.Member;
+import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.member.infrastructure.query.dto.AppliedStudy;
 import com.kgu.studywithme.member.infrastructure.query.dto.LikeMarkedStudy;
 import com.kgu.studywithme.member.infrastructure.query.dto.MemberPrivateInformation;

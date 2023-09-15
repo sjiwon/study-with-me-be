@@ -1,6 +1,6 @@
 package com.kgu.studywithme.study.utils;
 
-import com.kgu.studywithme.category.domain.Category;
+import com.kgu.studywithme.category.domain.model.Category;
 import com.kgu.studywithme.study.utils.PagingConstants.SortType;
 
 public record QueryStudyByCategoryCondition(

@@ -2,17 +2,17 @@ package com.kgu.studywithme.studyparticipant.infrastructure.query;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantVerificationRepositoryAdapter;
-import com.kgu.studywithme.studyparticipant.domain.ParticipantStatus;
+import com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPLY;
-import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPROVE;
-import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.GRADUATED;
-import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.LEAVE;
-import static com.kgu.studywithme.studyparticipant.domain.QStudyParticipant.studyParticipant;
+import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.APPLY;
+import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.APPROVE;
+import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.GRADUATED;
+import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.LEAVE;
+import static com.kgu.studywithme.studyparticipant.domain.model.QStudyParticipant.studyParticipant;
 
 @Repository
 @StudyWithMeReadOnlyTransactional

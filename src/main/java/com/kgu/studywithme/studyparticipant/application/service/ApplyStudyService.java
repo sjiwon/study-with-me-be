@@ -2,11 +2,11 @@ package com.kgu.studywithme.studyparticipant.application.service;
 
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.study.application.service.StudyReader;
-import com.kgu.studywithme.study.domain.Study;
+import com.kgu.studywithme.study.domain.model.Study;
 import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantVerificationRepositoryAdapter;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.ApplyStudyUseCase;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipant;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
+import com.kgu.studywithme.studyparticipant.domain.model.StudyParticipant;
+import com.kgu.studywithme.studyparticipant.domain.repository.StudyParticipantRepository;
 import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

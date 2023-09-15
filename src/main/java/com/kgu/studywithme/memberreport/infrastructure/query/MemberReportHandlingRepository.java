@@ -6,8 +6,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import static com.kgu.studywithme.memberreport.domain.MemberReportStatus.RECEIVE;
-import static com.kgu.studywithme.memberreport.domain.QMemberReport.memberReport;
+import static com.kgu.studywithme.memberreport.domain.model.MemberReportStatus.RECEIVE;
+import static com.kgu.studywithme.memberreport.domain.model.QMemberReport.memberReport;
 
 @Repository
 @StudyWithMeReadOnlyTransactional

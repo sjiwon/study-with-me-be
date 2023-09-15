@@ -1,10 +1,10 @@
 package com.kgu.studywithme.member.infrastructure.query.dto;
 
-import com.kgu.studywithme.member.domain.Address;
-import com.kgu.studywithme.member.domain.Email;
-import com.kgu.studywithme.member.domain.Gender;
-import com.kgu.studywithme.member.domain.Nickname;
-import com.kgu.studywithme.member.domain.Score;
+import com.kgu.studywithme.member.domain.model.Address;
+import com.kgu.studywithme.member.domain.model.Email;
+import com.kgu.studywithme.member.domain.model.Gender;
+import com.kgu.studywithme.member.domain.model.Nickname;
+import com.kgu.studywithme.member.domain.model.Score;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,6 +1,6 @@
 package com.kgu.studywithme.dummydata;
 
-import com.kgu.studywithme.study.domain.RecruitmentStatus;
+import com.kgu.studywithme.study.domain.model.RecruitmentStatus;
 
 public record DummyStudy(
         long hostId, String name, String description, String category,

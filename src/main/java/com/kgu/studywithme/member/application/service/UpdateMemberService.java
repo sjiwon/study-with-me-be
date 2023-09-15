@@ -4,7 +4,7 @@ import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.application.adapter.MemberDuplicateCheckRepositoryAdapter;
 import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
-import com.kgu.studywithme.member.domain.Member;
+import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

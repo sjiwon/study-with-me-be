@@ -2,11 +2,11 @@ package com.kgu.studywithme.studyreview.application.service;
 
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.study.domain.Study;
+import com.kgu.studywithme.member.domain.model.Member;
+import com.kgu.studywithme.study.domain.model.Study;
 import com.kgu.studywithme.studyreview.application.usecase.command.UpdateStudyReviewUseCase;
-import com.kgu.studywithme.studyreview.domain.StudyReview;
-import com.kgu.studywithme.studyreview.domain.StudyReviewRepository;
+import com.kgu.studywithme.studyreview.domain.model.StudyReview;
+import com.kgu.studywithme.studyreview.domain.repository.StudyReviewRepository;
 import com.kgu.studywithme.studyreview.exception.StudyReviewErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,8 +1,8 @@
 package com.kgu.studywithme.study.application.usecase.command;
 
-import com.kgu.studywithme.category.domain.Category;
-import com.kgu.studywithme.study.domain.StudyThumbnail;
-import com.kgu.studywithme.study.domain.StudyType;
+import com.kgu.studywithme.category.domain.model.Category;
+import com.kgu.studywithme.study.domain.model.StudyThumbnail;
+import com.kgu.studywithme.study.domain.model.StudyType;
 
 import java.util.Set;
 

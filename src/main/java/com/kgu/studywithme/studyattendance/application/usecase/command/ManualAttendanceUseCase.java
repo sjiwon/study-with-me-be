@@ -1,6 +1,6 @@
 package com.kgu.studywithme.studyattendance.application.usecase.command;
 
-import com.kgu.studywithme.studyattendance.domain.AttendanceStatus;
+import com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus;
 
 public interface ManualAttendanceUseCase {
     void invoke(final Command command);

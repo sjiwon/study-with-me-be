@@ -1,18 +1,18 @@
 package com.kgu.studywithme.category.application.service;
 
-import com.kgu.studywithme.category.domain.CategoryResponse;
+import com.kgu.studywithme.category.domain.model.CategoryResponse;
 import com.kgu.studywithme.common.UseCaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.kgu.studywithme.category.domain.Category.APTITUDE_NCS;
-import static com.kgu.studywithme.category.domain.Category.CERTIFICATION;
-import static com.kgu.studywithme.category.domain.Category.ETC;
-import static com.kgu.studywithme.category.domain.Category.INTERVIEW;
-import static com.kgu.studywithme.category.domain.Category.LANGUAGE;
-import static com.kgu.studywithme.category.domain.Category.PROGRAMMING;
+import static com.kgu.studywithme.category.domain.model.Category.APTITUDE_NCS;
+import static com.kgu.studywithme.category.domain.model.Category.CERTIFICATION;
+import static com.kgu.studywithme.category.domain.model.Category.ETC;
+import static com.kgu.studywithme.category.domain.model.Category.INTERVIEW;
+import static com.kgu.studywithme.category.domain.model.Category.LANGUAGE;
+import static com.kgu.studywithme.category.domain.model.Category.PROGRAMMING;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 

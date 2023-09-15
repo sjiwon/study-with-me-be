@@ -2,11 +2,11 @@ package com.kgu.studywithme.memberreport.application.service;
 
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.domain.Member;
+import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.memberreport.application.adapter.MemberReportHandlingRepositoryAdapter;
 import com.kgu.studywithme.memberreport.application.usecase.command.ReportMemberUseCase;
-import com.kgu.studywithme.memberreport.domain.MemberReport;
-import com.kgu.studywithme.memberreport.domain.MemberReportRepository;
+import com.kgu.studywithme.memberreport.domain.model.MemberReport;
+import com.kgu.studywithme.memberreport.domain.repository.MemberReportRepository;
 import com.kgu.studywithme.memberreport.exception.MemberReportErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,7 +1,7 @@
 package com.kgu.studywithme.studyweekly.application.usecase.command;
 
-import com.kgu.studywithme.studyweekly.domain.Period;
-import com.kgu.studywithme.studyweekly.domain.attachment.UploadAttachment;
+import com.kgu.studywithme.studyweekly.domain.model.Period;
+import com.kgu.studywithme.studyweekly.domain.model.UploadAttachment;
 
 import java.util.List;
 

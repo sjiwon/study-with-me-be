@@ -1,6 +1,6 @@
 package com.kgu.studywithme.acceptance.member;
 
-import com.kgu.studywithme.category.domain.Category;
+import com.kgu.studywithme.category.domain.model.Category;
 import com.kgu.studywithme.common.fixture.MemberFixture;
 import com.kgu.studywithme.member.presentation.dto.request.SignUpMemberRequest;
 import com.kgu.studywithme.member.presentation.dto.request.UpdateMemberRequest;

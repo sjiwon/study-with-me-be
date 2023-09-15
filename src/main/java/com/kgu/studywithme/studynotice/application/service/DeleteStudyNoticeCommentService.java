@@ -2,8 +2,8 @@ package com.kgu.studywithme.studynotice.application.service;
 
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.studynotice.application.usecase.command.DeleteStudyNoticeCommentUseCase;
-import com.kgu.studywithme.studynotice.domain.comment.StudyNoticeComment;
-import com.kgu.studywithme.studynotice.domain.comment.StudyNoticeCommentRepository;
+import com.kgu.studywithme.studynotice.domain.model.StudyNoticeComment;
+import com.kgu.studywithme.studynotice.domain.repository.StudyNoticeCommentRepository;
 import com.kgu.studywithme.studynotice.exception.StudyNoticeErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

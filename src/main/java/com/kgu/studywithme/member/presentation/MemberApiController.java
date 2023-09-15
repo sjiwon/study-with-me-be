@@ -1,15 +1,15 @@
 package com.kgu.studywithme.member.presentation;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
-import com.kgu.studywithme.category.domain.Category;
+import com.kgu.studywithme.category.domain.model.Category;
 import com.kgu.studywithme.global.aop.CheckAuthUser;
 import com.kgu.studywithme.member.application.usecase.command.SignUpMemberUseCase;
 import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
-import com.kgu.studywithme.member.domain.Address;
-import com.kgu.studywithme.member.domain.Email;
-import com.kgu.studywithme.member.domain.Gender;
-import com.kgu.studywithme.member.domain.Nickname;
-import com.kgu.studywithme.member.domain.Phone;
+import com.kgu.studywithme.member.domain.model.Address;
+import com.kgu.studywithme.member.domain.model.Email;
+import com.kgu.studywithme.member.domain.model.Gender;
+import com.kgu.studywithme.member.domain.model.Nickname;
+import com.kgu.studywithme.member.domain.model.Phone;
 import com.kgu.studywithme.member.presentation.dto.request.SignUpMemberRequest;
 import com.kgu.studywithme.member.presentation.dto.request.UpdateMemberRequest;
 import com.kgu.studywithme.member.presentation.dto.response.MemberIdResponse;

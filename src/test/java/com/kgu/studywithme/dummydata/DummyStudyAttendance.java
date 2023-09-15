@@ -1,7 +1,7 @@
 package com.kgu.studywithme.dummydata;
 
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.LATE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.ATTENDANCE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.LATE;
 
 public record DummyStudyAttendance(
         long studyId, int week,

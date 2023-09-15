@@ -4,7 +4,7 @@ import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.studyweekly.application.adapter.StudyWeeklyHandlingRepositoryAdapter;
 import com.kgu.studywithme.studyweekly.application.usecase.command.EditWeeklyAssignmentUseCase;
-import com.kgu.studywithme.studyweekly.domain.submit.StudyWeeklySubmit;
+import com.kgu.studywithme.studyweekly.domain.model.StudyWeeklySubmit;
 import com.kgu.studywithme.studyweekly.event.AssignmentEditedEvent;
 import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
 import lombok.RequiredArgsConstructor;

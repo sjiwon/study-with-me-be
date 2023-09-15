@@ -1,6 +1,6 @@
 package com.kgu.studywithme.common.fixture;
 
-import com.kgu.studywithme.studyweekly.domain.Period;
+import com.kgu.studywithme.studyweekly.domain.model.Period;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

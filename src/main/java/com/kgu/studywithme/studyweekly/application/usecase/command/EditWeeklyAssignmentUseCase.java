@@ -1,6 +1,6 @@
 package com.kgu.studywithme.studyweekly.application.usecase.command;
 
-import com.kgu.studywithme.studyweekly.domain.submit.UploadAssignment;
+import com.kgu.studywithme.studyweekly.domain.model.UploadAssignment;
 
 public interface EditWeeklyAssignmentUseCase {
     void invoke(final Command command);

@@ -1,6 +1,6 @@
 package com.kgu.studywithme.auth.presentation;
 
-import com.kgu.studywithme.auth.domain.AuthMember;
+import com.kgu.studywithme.auth.domain.model.AuthMember;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleUserResponse;
 import com.kgu.studywithme.auth.presentation.dto.request.OAuthLoginRequest;

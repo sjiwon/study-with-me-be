@@ -2,20 +2,20 @@ package com.kgu.studywithme.study.application.service;
 
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.application.service.MemberReader;
-import com.kgu.studywithme.member.domain.Member;
+import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.study.application.adapter.StudyDuplicateCheckRepositoryAdapter;
 import com.kgu.studywithme.study.application.usecase.command.CreateStudyUseCase;
-import com.kgu.studywithme.study.domain.Study;
-import com.kgu.studywithme.study.domain.StudyLocation;
-import com.kgu.studywithme.study.domain.StudyName;
-import com.kgu.studywithme.study.domain.StudyRepository;
+import com.kgu.studywithme.study.domain.model.Study;
+import com.kgu.studywithme.study.domain.model.StudyLocation;
+import com.kgu.studywithme.study.domain.model.StudyName;
+import com.kgu.studywithme.study.domain.repository.StudyRepository;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipant;
-import com.kgu.studywithme.studyparticipant.domain.StudyParticipantRepository;
+import com.kgu.studywithme.studyparticipant.domain.model.StudyParticipant;
+import com.kgu.studywithme.studyparticipant.domain.repository.StudyParticipantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import static com.kgu.studywithme.study.domain.StudyType.ONLINE;
+import static com.kgu.studywithme.study.domain.model.StudyType.ONLINE;
 
 @Service
 @RequiredArgsConstructor

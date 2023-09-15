@@ -1,7 +1,7 @@
 package com.kgu.studywithme.studyweekly.application.service;
 
 import com.kgu.studywithme.file.application.adapter.FileUploader;
-import com.kgu.studywithme.studyweekly.domain.attachment.UploadAttachment;
+import com.kgu.studywithme.studyweekly.domain.model.UploadAttachment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;

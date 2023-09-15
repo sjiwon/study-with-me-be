@@ -1,14 +1,14 @@
 package com.kgu.studywithme.auth.infrastructure.oauth.naver;
 
 import com.kgu.studywithme.auth.application.adapter.OAuthUriGenerator;
-import com.kgu.studywithme.auth.domain.oauth.OAuthProvider;
+import com.kgu.studywithme.auth.domain.model.oauth.OAuthProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.UUID;
 
-import static com.kgu.studywithme.auth.domain.oauth.OAuthProvider.NAVER;
+import static com.kgu.studywithme.auth.domain.model.oauth.OAuthProvider.NAVER;
 
 @Component
 @RequiredArgsConstructor

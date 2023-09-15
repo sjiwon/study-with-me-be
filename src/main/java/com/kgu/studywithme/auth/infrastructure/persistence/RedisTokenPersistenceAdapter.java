@@ -7,7 +7,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
 
-import static com.kgu.studywithme.auth.domain.RedisTokenKey.REFRESH_TOKEN_KEY;
+import static com.kgu.studywithme.auth.domain.model.RedisTokenKey.REFRESH_TOKEN_KEY;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 @Primary

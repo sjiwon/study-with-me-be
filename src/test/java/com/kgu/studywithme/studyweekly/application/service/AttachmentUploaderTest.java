@@ -2,7 +2,7 @@ package com.kgu.studywithme.studyweekly.application.service;
 
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.file.application.adapter.FileUploader;
-import com.kgu.studywithme.studyweekly.domain.attachment.UploadAttachment;
+import com.kgu.studywithme.studyweekly.domain.model.UploadAttachment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

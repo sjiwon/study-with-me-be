@@ -3,7 +3,7 @@ package com.kgu.studywithme.studyweekly.infrastructure.query;
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.studyweekly.application.adapter.StudyWeeklyHandlingRepositoryAdapter;
-import com.kgu.studywithme.studyweekly.domain.submit.StudyWeeklySubmit;
+import com.kgu.studywithme.studyweekly.domain.model.StudyWeeklySubmit;
 import com.kgu.studywithme.studyweekly.infrastructure.query.dto.AutoAttendanceAndFinishedWeekly;
 import com.kgu.studywithme.studyweekly.infrastructure.query.dto.QAutoAttendanceAndFinishedWeekly;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -16,10 +16,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static com.kgu.studywithme.studyattendance.domain.QStudyAttendance.studyAttendance;
-import static com.kgu.studywithme.studyweekly.domain.QStudyWeekly.studyWeekly;
-import static com.kgu.studywithme.studyweekly.domain.attachment.QStudyWeeklyAttachment.studyWeeklyAttachment;
-import static com.kgu.studywithme.studyweekly.domain.submit.QStudyWeeklySubmit.studyWeeklySubmit;
+import static com.kgu.studywithme.studyattendance.domain.model.QStudyAttendance.studyAttendance;
+import static com.kgu.studywithme.studyweekly.domain.model.QStudyWeekly.studyWeekly;
+import static com.kgu.studywithme.studyweekly.domain.model.QStudyWeeklyAttachment.studyWeeklyAttachment;
+import static com.kgu.studywithme.studyweekly.domain.model.QStudyWeeklySubmit.studyWeeklySubmit;
 
 @Repository
 @StudyWithMeReadOnlyTransactional

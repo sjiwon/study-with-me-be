@@ -2,10 +2,10 @@ package com.kgu.studywithme.memberreview.application.service;
 
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.domain.Member;
+import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberReviewUseCase;
-import com.kgu.studywithme.memberreview.domain.MemberReview;
-import com.kgu.studywithme.memberreview.domain.MemberReviewRepository;
+import com.kgu.studywithme.memberreview.domain.model.MemberReview;
+import com.kgu.studywithme.memberreview.domain.repository.MemberReviewRepository;
 import com.kgu.studywithme.memberreview.exception.MemberReviewErrorCode;
 import com.kgu.studywithme.studyattendance.application.adapter.StudyAttendanceHandlingRepositoryAdapter;
 import com.kgu.studywithme.studyattendance.infrastructure.query.dto.StudyAttendanceWeekly;

@@ -1,10 +1,10 @@
 package com.kgu.studywithme.study.infrastructure.query;
 
-import com.kgu.studywithme.category.domain.Category;
-import com.kgu.studywithme.favorite.domain.Favorite;
+import com.kgu.studywithme.category.domain.model.Category;
+import com.kgu.studywithme.favorite.domain.model.Favorite;
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.study.application.adapter.StudyCategorySearchRepositoryAdapter;
-import com.kgu.studywithme.study.domain.StudyType;
+import com.kgu.studywithme.study.domain.model.StudyType;
 import com.kgu.studywithme.study.infrastructure.query.dto.QStudyPreview;
 import com.kgu.studywithme.study.infrastructure.query.dto.QStudyPreview_HashtagSummary;
 import com.kgu.studywithme.study.infrastructure.query.dto.StudyPreview;
@@ -26,11 +26,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.kgu.studywithme.favorite.domain.QFavorite.favorite;
-import static com.kgu.studywithme.member.domain.interest.QInterest.interest;
-import static com.kgu.studywithme.study.domain.QStudy.study;
-import static com.kgu.studywithme.study.domain.hashtag.QHashtag.hashtag;
-import static com.kgu.studywithme.studyreview.domain.QStudyReview.studyReview;
+import static com.kgu.studywithme.favorite.domain.model.QFavorite.favorite;
+import static com.kgu.studywithme.member.domain.model.QInterest.interest;
+import static com.kgu.studywithme.study.domain.model.QHashtag.hashtag;
+import static com.kgu.studywithme.study.domain.model.QStudy.study;
+import static com.kgu.studywithme.studyreview.domain.model.QStudyReview.studyReview;
 
 @Repository
 @StudyWithMeReadOnlyTransactional

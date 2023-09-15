@@ -1,17 +1,17 @@
 package com.kgu.studywithme.study.presentation;
 
 import com.kgu.studywithme.auth.utils.ExtractPayload;
-import com.kgu.studywithme.category.domain.Category;
+import com.kgu.studywithme.category.domain.model.Category;
 import com.kgu.studywithme.global.aop.CheckAuthUser;
 import com.kgu.studywithme.global.aop.CheckStudyHost;
 import com.kgu.studywithme.study.application.usecase.command.CreateStudyUseCase;
 import com.kgu.studywithme.study.application.usecase.command.TerminateStudyUseCase;
 import com.kgu.studywithme.study.application.usecase.command.UpdateStudyUseCase;
-import com.kgu.studywithme.study.domain.Capacity;
-import com.kgu.studywithme.study.domain.Description;
-import com.kgu.studywithme.study.domain.StudyName;
-import com.kgu.studywithme.study.domain.StudyThumbnail;
-import com.kgu.studywithme.study.domain.StudyType;
+import com.kgu.studywithme.study.domain.model.Capacity;
+import com.kgu.studywithme.study.domain.model.Description;
+import com.kgu.studywithme.study.domain.model.StudyName;
+import com.kgu.studywithme.study.domain.model.StudyThumbnail;
+import com.kgu.studywithme.study.domain.model.StudyType;
 import com.kgu.studywithme.study.presentation.dto.request.CreateStudyRequest;
 import com.kgu.studywithme.study.presentation.dto.request.UpdateStudyRequest;
 import com.kgu.studywithme.study.presentation.dto.response.StudyIdResponse;

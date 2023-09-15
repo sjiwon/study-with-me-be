@@ -1,9 +1,9 @@
 package com.kgu.studywithme.study.application.service;
 
 import com.kgu.studywithme.common.UseCaseTest;
-import com.kgu.studywithme.member.domain.Member;
+import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.study.application.usecase.command.TerminateStudyUseCase;
-import com.kgu.studywithme.study.domain.Study;
+import com.kgu.studywithme.study.domain.model.Study;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

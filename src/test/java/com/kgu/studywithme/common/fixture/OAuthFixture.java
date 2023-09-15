@@ -1,7 +1,7 @@
 package com.kgu.studywithme.common.fixture;
 
-import com.kgu.studywithme.auth.domain.oauth.OAuthTokenResponse;
-import com.kgu.studywithme.auth.domain.oauth.OAuthUserResponse;
+import com.kgu.studywithme.auth.domain.model.oauth.OAuthTokenResponse;
+import com.kgu.studywithme.auth.domain.model.oauth.OAuthUserResponse;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleTokenResponse;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

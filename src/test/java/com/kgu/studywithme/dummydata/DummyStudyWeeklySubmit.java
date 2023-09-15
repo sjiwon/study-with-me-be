@@ -1,6 +1,6 @@
 package com.kgu.studywithme.dummydata;
 
-import static com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType.FILE;
+import static com.kgu.studywithme.studyweekly.domain.model.AssignmentSubmitType.FILE;
 
 public record DummyStudyWeeklySubmit(
         long weekId, long participantId,

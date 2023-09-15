@@ -16,7 +16,7 @@ import static com.kgu.studywithme.common.fixture.MemberFixture.GHOST;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.ATTENDANCE;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @ExtendWith(DatabaseCleanerEachCallbackExtension.class)

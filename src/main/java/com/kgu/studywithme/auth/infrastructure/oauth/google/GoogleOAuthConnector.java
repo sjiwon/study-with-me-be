@@ -1,9 +1,9 @@
 package com.kgu.studywithme.auth.infrastructure.oauth.google;
 
 import com.kgu.studywithme.auth.application.adapter.OAuthConnector;
-import com.kgu.studywithme.auth.domain.oauth.OAuthProvider;
-import com.kgu.studywithme.auth.domain.oauth.OAuthTokenResponse;
-import com.kgu.studywithme.auth.domain.oauth.OAuthUserResponse;
+import com.kgu.studywithme.auth.domain.model.oauth.OAuthProvider;
+import com.kgu.studywithme.auth.domain.model.oauth.OAuthTokenResponse;
+import com.kgu.studywithme.auth.domain.model.oauth.OAuthUserResponse;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleTokenResponse;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleUserResponse;
@@ -18,7 +18,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import static com.kgu.studywithme.auth.domain.oauth.OAuthProvider.GOOGLE;
+import static com.kgu.studywithme.auth.domain.model.oauth.OAuthProvider.GOOGLE;
 import static com.kgu.studywithme.auth.infrastructure.oauth.OAuthMetadata.CONTENT_TYPE_VALUE;
 import static com.kgu.studywithme.auth.infrastructure.oauth.OAuthMetadata.TOKEN_TYPE;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;

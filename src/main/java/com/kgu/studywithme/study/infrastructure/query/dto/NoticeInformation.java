@@ -1,6 +1,6 @@
 package com.kgu.studywithme.study.infrastructure.query.dto;
 
-import com.kgu.studywithme.member.domain.Nickname;
+import com.kgu.studywithme.member.domain.model.Nickname;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

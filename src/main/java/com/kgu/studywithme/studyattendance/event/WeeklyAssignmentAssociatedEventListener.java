@@ -1,15 +1,15 @@
 package com.kgu.studywithme.studyattendance.event;
 
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.studyattendance.domain.AttendanceStatus;
-import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
-import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
+import com.kgu.studywithme.member.domain.model.Member;
+import com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus;
+import com.kgu.studywithme.studyattendance.domain.model.StudyAttendance;
+import com.kgu.studywithme.studyattendance.domain.repository.StudyAttendanceRepository;
 import com.kgu.studywithme.studyattendance.exception.StudyAttendanceErrorCode;
 import com.kgu.studywithme.studyparticipant.application.adapter.ParticipateMemberReadAdapter;
-import com.kgu.studywithme.studyweekly.domain.Period;
-import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
-import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
+import com.kgu.studywithme.studyweekly.domain.model.Period;
+import com.kgu.studywithme.studyweekly.domain.model.StudyWeekly;
+import com.kgu.studywithme.studyweekly.domain.repository.StudyWeeklyRepository;
 import com.kgu.studywithme.studyweekly.event.AssignmentEditedEvent;
 import com.kgu.studywithme.studyweekly.event.AssignmentSubmittedEvent;
 import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
@@ -22,9 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ABSENCE;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.LATE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.ABSENCE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.ATTENDANCE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.LATE;
 
 @Slf4j
 @Component

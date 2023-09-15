@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
-import static com.kgu.studywithme.auth.domain.RedisTokenKey.REFRESH_TOKEN_KEY;
+import static com.kgu.studywithme.auth.domain.model.RedisTokenKey.REFRESH_TOKEN_KEY;
 import static com.kgu.studywithme.common.utils.TokenUtils.REFRESH_TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;

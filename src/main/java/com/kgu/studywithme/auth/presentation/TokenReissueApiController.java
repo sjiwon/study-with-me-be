@@ -1,7 +1,7 @@
 package com.kgu.studywithme.auth.presentation;
 
 import com.kgu.studywithme.auth.application.usecase.command.ReissueTokenUseCase;
-import com.kgu.studywithme.auth.domain.AuthToken;
+import com.kgu.studywithme.auth.domain.model.AuthToken;
 import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.auth.utils.ExtractToken;
 import io.swagger.v3.oas.annotations.Operation;

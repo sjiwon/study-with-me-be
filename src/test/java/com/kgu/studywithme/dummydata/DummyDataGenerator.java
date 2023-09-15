@@ -1,6 +1,6 @@
 package com.kgu.studywithme.dummydata;
 
-import com.kgu.studywithme.category.domain.Category;
+import com.kgu.studywithme.category.domain.model.Category;
 import com.kgu.studywithme.common.stub.StubEmailSender;
 import com.kgu.studywithme.common.stub.StubFileUploader;
 import com.kgu.studywithme.file.application.adapter.FileUploader;
@@ -23,13 +23,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.kgu.studywithme.study.domain.StudyThumbnail.IMAGE_PROGRAMMING_001;
-import static com.kgu.studywithme.study.domain.StudyType.OFFLINE;
-import static com.kgu.studywithme.study.domain.StudyType.ONLINE;
-import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPLY;
-import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPROVE;
-import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.GRADUATED;
-import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.LEAVE;
+import static com.kgu.studywithme.study.domain.model.StudyThumbnail.IMAGE_PROGRAMMING_001;
+import static com.kgu.studywithme.study.domain.model.StudyType.OFFLINE;
+import static com.kgu.studywithme.study.domain.model.StudyType.ONLINE;
+import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.APPLY;
+import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.APPROVE;
+import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.GRADUATED;
+import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.LEAVE;
 
 @Slf4j
 @ActiveProfiles("dummy")

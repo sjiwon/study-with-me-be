@@ -1,10 +1,10 @@
 package com.kgu.studywithme.auth.infrastructure.persistence;
 
-import com.kgu.studywithme.auth.domain.Token;
-import com.kgu.studywithme.auth.domain.TokenRepository;
+import com.kgu.studywithme.auth.domain.model.Token;
+import com.kgu.studywithme.auth.domain.repository.TokenRepository;
 import com.kgu.studywithme.common.RepositoryTest;
-import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.domain.MemberRepository;
+import com.kgu.studywithme.member.domain.model.Member;
+import com.kgu.studywithme.member.domain.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

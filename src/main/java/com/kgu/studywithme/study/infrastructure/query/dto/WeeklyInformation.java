@@ -1,9 +1,9 @@
 package com.kgu.studywithme.study.infrastructure.query.dto;
 
-import com.kgu.studywithme.member.domain.Nickname;
-import com.kgu.studywithme.studyweekly.domain.Period;
-import com.kgu.studywithme.studyweekly.domain.submit.AssignmentSubmitType;
-import com.kgu.studywithme.studyweekly.domain.submit.UploadAssignment;
+import com.kgu.studywithme.member.domain.model.Nickname;
+import com.kgu.studywithme.studyweekly.domain.model.AssignmentSubmitType;
+import com.kgu.studywithme.studyweekly.domain.model.Period;
+import com.kgu.studywithme.studyweekly.domain.model.UploadAssignment;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

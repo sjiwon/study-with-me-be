@@ -1,6 +1,6 @@
 package com.kgu.studywithme.common.utils;
 
-import com.kgu.studywithme.auth.domain.AuthToken;
+import com.kgu.studywithme.auth.domain.model.AuthToken;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleTokenResponse;
 
 import java.util.Set;

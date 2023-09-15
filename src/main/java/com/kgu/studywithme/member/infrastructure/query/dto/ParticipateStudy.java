@@ -1,8 +1,8 @@
 package com.kgu.studywithme.member.infrastructure.query.dto;
 
-import com.kgu.studywithme.category.domain.Category;
-import com.kgu.studywithme.study.domain.StudyName;
-import com.kgu.studywithme.study.domain.StudyThumbnail;
+import com.kgu.studywithme.category.domain.model.Category;
+import com.kgu.studywithme.study.domain.model.StudyName;
+import com.kgu.studywithme.study.domain.model.StudyThumbnail;
 import com.querydsl.core.annotations.QueryProjection;
 
 public record ParticipateStudy(

@@ -29,20 +29,20 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.kgu.studywithme.member.domain.QMember.member;
-import static com.kgu.studywithme.study.domain.QStudy.study;
-import static com.kgu.studywithme.study.domain.hashtag.QHashtag.hashtag;
-import static com.kgu.studywithme.studyattendance.domain.QStudyAttendance.studyAttendance;
-import static com.kgu.studywithme.studynotice.domain.QStudyNotice.studyNotice;
-import static com.kgu.studywithme.studynotice.domain.comment.QStudyNoticeComment.studyNoticeComment;
-import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPLY;
-import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.APPROVE;
-import static com.kgu.studywithme.studyparticipant.domain.ParticipantStatus.GRADUATED;
-import static com.kgu.studywithme.studyparticipant.domain.QStudyParticipant.studyParticipant;
-import static com.kgu.studywithme.studyreview.domain.QStudyReview.studyReview;
-import static com.kgu.studywithme.studyweekly.domain.QStudyWeekly.studyWeekly;
-import static com.kgu.studywithme.studyweekly.domain.attachment.QStudyWeeklyAttachment.studyWeeklyAttachment;
-import static com.kgu.studywithme.studyweekly.domain.submit.QStudyWeeklySubmit.studyWeeklySubmit;
+import static com.kgu.studywithme.member.domain.model.QMember.member;
+import static com.kgu.studywithme.study.domain.model.QHashtag.hashtag;
+import static com.kgu.studywithme.study.domain.model.QStudy.study;
+import static com.kgu.studywithme.studyattendance.domain.model.QStudyAttendance.studyAttendance;
+import static com.kgu.studywithme.studynotice.domain.model.QStudyNotice.studyNotice;
+import static com.kgu.studywithme.studynotice.domain.model.QStudyNoticeComment.studyNoticeComment;
+import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.APPLY;
+import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.APPROVE;
+import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.GRADUATED;
+import static com.kgu.studywithme.studyparticipant.domain.model.QStudyParticipant.studyParticipant;
+import static com.kgu.studywithme.studyreview.domain.model.QStudyReview.studyReview;
+import static com.kgu.studywithme.studyweekly.domain.model.QStudyWeekly.studyWeekly;
+import static com.kgu.studywithme.studyweekly.domain.model.QStudyWeeklyAttachment.studyWeeklyAttachment;
+import static com.kgu.studywithme.studyweekly.domain.model.QStudyWeeklySubmit.studyWeeklySubmit;
 
 @Repository
 @StudyWithMeReadOnlyTransactional

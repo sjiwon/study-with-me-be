@@ -2,11 +2,11 @@ package com.kgu.studywithme.studyweekly.application.service;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.member.domain.Member;
+import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.studyparticipant.application.adapter.ParticipateMemberReadAdapter;
 import com.kgu.studywithme.studyweekly.application.usecase.command.SubmitWeeklyAssignmentUseCase;
-import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
-import com.kgu.studywithme.studyweekly.domain.StudyWeeklyRepository;
+import com.kgu.studywithme.studyweekly.domain.model.StudyWeekly;
+import com.kgu.studywithme.studyweekly.domain.repository.StudyWeeklyRepository;
 import com.kgu.studywithme.studyweekly.event.AssignmentSubmittedEvent;
 import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
 import lombok.RequiredArgsConstructor;

@@ -3,16 +3,16 @@ package com.kgu.studywithme.studyattendance.application.service;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.application.service.MemberReader;
-import com.kgu.studywithme.member.domain.Member;
+import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.studyattendance.application.usecase.command.ManualAttendanceUseCase;
-import com.kgu.studywithme.studyattendance.domain.AttendanceStatus;
-import com.kgu.studywithme.studyattendance.domain.StudyAttendance;
-import com.kgu.studywithme.studyattendance.domain.StudyAttendanceRepository;
+import com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus;
+import com.kgu.studywithme.studyattendance.domain.model.StudyAttendance;
+import com.kgu.studywithme.studyattendance.domain.repository.StudyAttendanceRepository;
 import com.kgu.studywithme.studyattendance.exception.StudyAttendanceErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.NON_ATTENDANCE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.NON_ATTENDANCE;
 
 @Service
 @StudyWithMeWritableTransactional

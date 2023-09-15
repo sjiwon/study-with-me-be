@@ -1,8 +1,8 @@
 package com.kgu.studywithme.studynotice.application.service;
 
 import com.kgu.studywithme.studynotice.application.usecase.command.WriteStudyNoticeUseCase;
-import com.kgu.studywithme.studynotice.domain.StudyNotice;
-import com.kgu.studywithme.studynotice.domain.StudyNoticeRepository;
+import com.kgu.studywithme.studynotice.domain.model.StudyNotice;
+import com.kgu.studywithme.studynotice.domain.repository.StudyNoticeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -7,7 +7,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import static com.kgu.studywithme.favorite.domain.QFavorite.favorite;
+import static com.kgu.studywithme.favorite.domain.model.QFavorite.favorite;
 
 @Repository
 @StudyWithMeReadOnlyTransactional

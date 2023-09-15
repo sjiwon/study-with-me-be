@@ -1,6 +1,6 @@
 package com.kgu.studywithme.member.application.usecase.command;
 
-import com.kgu.studywithme.category.domain.Category;
+import com.kgu.studywithme.category.domain.model.Category;
 
 import java.util.Set;
 

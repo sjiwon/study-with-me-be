@@ -1,6 +1,6 @@
 package com.kgu.studywithme.studyweekly.application.adapter;
 
-import com.kgu.studywithme.studyweekly.domain.submit.StudyWeeklySubmit;
+import com.kgu.studywithme.studyweekly.domain.model.StudyWeeklySubmit;
 import com.kgu.studywithme.studyweekly.infrastructure.query.dto.AutoAttendanceAndFinishedWeekly;
 
 import java.util.List;

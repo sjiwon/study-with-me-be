@@ -1,6 +1,6 @@
 package com.kgu.studywithme.studyparticipant.application.adapter;
 
-import com.kgu.studywithme.member.domain.Member;
+import com.kgu.studywithme.member.domain.model.Member;
 
 public interface ParticipateMemberReadAdapter {
     Member getApplier(final Long studyId, final Long memberId);
