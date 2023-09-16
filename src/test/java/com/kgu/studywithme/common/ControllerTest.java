@@ -22,16 +22,10 @@ import com.kgu.studywithme.file.presentation.FileUploadApiController;
 import com.kgu.studywithme.global.exception.ErrorCode;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.global.exception.slack.SlackAlertManager;
+import com.kgu.studywithme.member.application.usecase.MemberPrivateQueryUseCase;
+import com.kgu.studywithme.member.application.usecase.MemberPublicQueryUseCase;
 import com.kgu.studywithme.member.application.usecase.SignUpMemberUseCase;
 import com.kgu.studywithme.member.application.usecase.UpdateMemberUseCase;
-import com.kgu.studywithme.member.application.usecase.query.QueryAppliedStudyByIdUseCase;
-import com.kgu.studywithme.member.application.usecase.query.QueryAttendanceRatioByIdUseCase;
-import com.kgu.studywithme.member.application.usecase.query.QueryGraduatedStudyByIdUseCase;
-import com.kgu.studywithme.member.application.usecase.query.QueryLikeMarkedStudyByIdUseCase;
-import com.kgu.studywithme.member.application.usecase.query.QueryParticipateStudyByIdUseCase;
-import com.kgu.studywithme.member.application.usecase.query.QueryPrivateInformationByIdUseCase;
-import com.kgu.studywithme.member.application.usecase.query.QueryPublicInformationByIdUseCase;
-import com.kgu.studywithme.member.application.usecase.query.QueryReceivedReviewByIdUseCase;
 import com.kgu.studywithme.member.presentation.MemberApiController;
 import com.kgu.studywithme.member.presentation.MemberPrivateInformationApiController;
 import com.kgu.studywithme.member.presentation.MemberPublicInformationApiController;
@@ -230,29 +224,10 @@ public abstract class ControllerTest {
 
     // Member [Query]
     @MockBean
-    protected QueryPublicInformationByIdUseCase queryPublicInformationByIdUseCase;
+    protected MemberPublicQueryUseCase memberPublicQueryUseCase;
 
     @MockBean
-    protected QueryParticipateStudyByIdUseCase queryParticipateStudyByIdUseCase;
-
-    @MockBean
-    protected QueryGraduatedStudyByIdUseCase queryGraduatedStudyByIdUseCase;
-
-    @MockBean
-    protected QueryReceivedReviewByIdUseCase queryReceivedReviewByIdUseCase;
-
-    @MockBean
-    protected QueryAttendanceRatioByIdUseCase queryAttendanceRatioByIdUseCase;
-
-    @MockBean
-    protected QueryPrivateInformationByIdUseCase queryPrivateInformationByIdUseCase;
-
-    @MockBean
-    protected QueryAppliedStudyByIdUseCase queryAppliedStudyByIdUseCase;
-
-    @MockBean
-    protected QueryLikeMarkedStudyByIdUseCase queryLikeMarkedStudyByIdUseCase;
-
+    protected MemberPrivateQueryUseCase memberPrivateQueryUseCase;
 
     // MemberReview
     @MockBean

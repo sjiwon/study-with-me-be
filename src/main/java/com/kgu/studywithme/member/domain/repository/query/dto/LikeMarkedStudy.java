@@ -1,4 +1,4 @@
-package com.kgu.studywithme.member.infrastructure.query.dto;
+package com.kgu.studywithme.member.domain.repository.query.dto;
 
 import com.kgu.studywithme.category.domain.model.Category;
 import com.kgu.studywithme.study.domain.model.StudyName;

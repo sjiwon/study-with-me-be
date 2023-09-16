@@ -3,11 +3,11 @@ package com.kgu.studywithme.member.presentation;
 import com.kgu.studywithme.category.domain.model.Category;
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.member.domain.model.Member;
-import com.kgu.studywithme.member.infrastructure.query.dto.AttendanceRatio;
-import com.kgu.studywithme.member.infrastructure.query.dto.GraduatedStudy;
-import com.kgu.studywithme.member.infrastructure.query.dto.MemberPublicInformation;
-import com.kgu.studywithme.member.infrastructure.query.dto.ParticipateStudy;
-import com.kgu.studywithme.member.infrastructure.query.dto.ReceivedReview;
+import com.kgu.studywithme.member.domain.repository.query.dto.AttendanceRatio;
+import com.kgu.studywithme.member.domain.repository.query.dto.GraduatedStudy;
+import com.kgu.studywithme.member.domain.repository.query.dto.MemberPublicInformation;
+import com.kgu.studywithme.member.domain.repository.query.dto.ParticipateStudy;
+import com.kgu.studywithme.member.domain.repository.query.dto.ReceivedReview;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -62,7 +62,7 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
                             .map(Category::getName)
                             .toList()
             );
-            given(queryPublicInformationByIdUseCase.invoke(any())).willReturn(response);
+            given(memberPublicQueryUseCase.getPublicInformationById(any())).willReturn(response);
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -117,23 +117,21 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
         @DisplayName("사용자가 참여중인 스터디 리스트를 조회한다")
         void success() throws Exception {
             // given
-            given(queryParticipateStudyByIdUseCase.invoke(any()))
-                    .willReturn(
-                            List.of(
-                                    new ParticipateStudy(
-                                            1L,
-                                            SPRING.getName(),
-                                            SPRING.getCategory(),
-                                            SPRING.getThumbnail()
-                                    ),
-                                    new ParticipateStudy(
-                                            2L,
-                                            JPA.getName(),
-                                            JPA.getCategory(),
-                                            JPA.getThumbnail()
-                                    )
+            given(memberPublicQueryUseCase.getParticipateStudyById(any()))
+                    .willReturn(List.of(
+                            new ParticipateStudy(
+                                    1L,
+                                    SPRING.getName(),
+                                    SPRING.getCategory(),
+                                    SPRING.getThumbnail()
+                            ),
+                            new ParticipateStudy(
+                                    2L,
+                                    JPA.getName(),
+                                    JPA.getCategory(),
+                                    JPA.getThumbnail()
                             )
-                    );
+                    ));
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -178,37 +176,25 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
         @DisplayName("사용자가 졸업한 스터디 리스트를 조회한다")
         void success() throws Exception {
             // given
-            given(queryGraduatedStudyByIdUseCase.invoke(any()))
-                    .willReturn(
-                            List.of(
-                                    new GraduatedStudy(
-                                            1L,
-                                            SPRING.getName().getValue(),
-                                            SPRING.getCategory().getName(),
-                                            SPRING.getThumbnail().getImageName(),
-                                            SPRING.getThumbnail().getBackground(),
-                                            new GraduatedStudy.WrittenReview(
-                                                    1L,
-                                                    "Good Study",
-                                                    LocalDateTime.now(),
-                                                    LocalDateTime.now()
-                                            )
-                                    ),
-                                    new GraduatedStudy(
-                                            2L,
-                                            JPA.getName().getValue(),
-                                            JPA.getCategory().getName(),
-                                            JPA.getThumbnail().getImageName(),
-                                            JPA.getThumbnail().getBackground(),
-                                            new GraduatedStudy.WrittenReview(
-                                                    1L,
-                                                    "Good Study",
-                                                    LocalDateTime.now(),
-                                                    LocalDateTime.now()
-                                            )
-                                    )
+            given(memberPublicQueryUseCase.getGraduatedStudyById(any()))
+                    .willReturn(List.of(
+                            new GraduatedStudy(
+                                    1L,
+                                    SPRING.getName().getValue(),
+                                    SPRING.getCategory().getName(),
+                                    SPRING.getThumbnail().getImageName(),
+                                    SPRING.getThumbnail().getBackground(),
+                                    new GraduatedStudy.WrittenReview(1L, "Good Study", LocalDateTime.now(), LocalDateTime.now())
+                            ),
+                            new GraduatedStudy(
+                                    2L,
+                                    JPA.getName().getValue(),
+                                    JPA.getCategory().getName(),
+                                    JPA.getThumbnail().getImageName(),
+                                    JPA.getThumbnail().getBackground(),
+                                    new GraduatedStudy.WrittenReview(1L, "Good Study", LocalDateTime.now(), LocalDateTime.now())
                             )
-                    );
+                    ));
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -268,14 +254,12 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
         @DisplayName("사용자가 받은 리뷰를 조회한다")
         void success() throws Exception {
             // given
-            given(queryReceivedReviewByIdUseCase.invoke(any()))
-                    .willReturn(
-                            List.of(
-                                    new ReceivedReview("Good Participant", LocalDateTime.now()),
-                                    new ReceivedReview("Good Participant", LocalDateTime.now()),
-                                    new ReceivedReview("Good Participant", LocalDateTime.now())
-                            )
-                    );
+            given(memberPublicQueryUseCase.getReceivedReviewById(any()))
+                    .willReturn(List.of(
+                            new ReceivedReview("Good Participant", LocalDateTime.now()),
+                            new ReceivedReview("Good Participant", LocalDateTime.now()),
+                            new ReceivedReview("Good Participant", LocalDateTime.now())
+                    ));
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -314,15 +298,13 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
         @DisplayName("사용자의 출석률을 조회한다")
         void success() throws Exception {
             // given
-            given(queryAttendanceRatioByIdUseCase.invoke(any()))
-                    .willReturn(
-                            List.of(
-                                    new AttendanceRatio(ATTENDANCE, 13),
-                                    new AttendanceRatio(LATE, 2),
-                                    new AttendanceRatio(ABSENCE, 1),
-                                    new AttendanceRatio(NON_ATTENDANCE, 5)
-                            )
-                    );
+            given(memberPublicQueryUseCase.getAttendanceRatioById(any()))
+                    .willReturn(List.of(
+                            new AttendanceRatio(ATTENDANCE, 13),
+                            new AttendanceRatio(LATE, 2),
+                            new AttendanceRatio(ABSENCE, 1),
+                            new AttendanceRatio(NON_ATTENDANCE, 5)
+                    ));
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders

@@ -5,7 +5,7 @@ import com.kgu.studywithme.auth.application.usecase.LogoutUseCase;
 import com.kgu.studywithme.auth.application.usecase.OAuthLoginUseCase;
 import com.kgu.studywithme.auth.application.usecase.command.LogoutCommand;
 import com.kgu.studywithme.auth.application.usecase.command.OAuthLoginCommand;
-import com.kgu.studywithme.auth.application.usecase.query.OAuthLinkQuery;
+import com.kgu.studywithme.auth.application.usecase.query.GetOAuthLink;
 import com.kgu.studywithme.auth.domain.model.AuthMember;
 import com.kgu.studywithme.auth.domain.model.oauth.OAuthProvider;
 import com.kgu.studywithme.auth.presentation.dto.request.OAuthLoginRequest;
@@ -40,7 +40,7 @@ public class OAuthApiController {
             @PathVariable final String provider,
             @RequestParam final String redirectUri
     ) {
-        final String oAuthLink = getOAuthLinkUseCase.invoke(new OAuthLinkQuery(
+        final String oAuthLink = getOAuthLinkUseCase.invoke(new GetOAuthLink(
                 OAuthProvider.from(provider),
                 redirectUri
         ));

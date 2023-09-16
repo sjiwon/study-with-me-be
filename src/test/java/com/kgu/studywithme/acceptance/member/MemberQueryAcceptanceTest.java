@@ -3,7 +3,7 @@ package com.kgu.studywithme.acceptance.member;
 import com.kgu.studywithme.category.domain.model.Category;
 import com.kgu.studywithme.common.AcceptanceTest;
 import com.kgu.studywithme.common.config.DatabaseCleanerEachCallbackExtension;
-import com.kgu.studywithme.member.infrastructure.query.dto.GraduatedStudy;
+import com.kgu.studywithme.member.domain.repository.query.dto.GraduatedStudy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

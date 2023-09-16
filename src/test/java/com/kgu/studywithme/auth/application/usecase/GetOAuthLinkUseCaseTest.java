@@ -1,7 +1,7 @@
 package com.kgu.studywithme.auth.application.usecase;
 
 import com.kgu.studywithme.auth.application.adapter.OAuthUriGenerator;
-import com.kgu.studywithme.auth.application.usecase.query.OAuthLinkQuery;
+import com.kgu.studywithme.auth.application.usecase.query.GetOAuthLink;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.GoogleOAuthUriGenerator;
 import com.kgu.studywithme.common.UseCaseTest;
@@ -34,7 +34,7 @@ class GetOAuthLinkUseCaseTest extends UseCaseTest {
         given(googleOAuthUriGenerator.isSupported(null)).willReturn(false);
 
         // when - then
-        assertThatThrownBy(() -> sut.invoke(new OAuthLinkQuery(null, REDIRECT_URI)))
+        assertThatThrownBy(() -> sut.invoke(new GetOAuthLink(null, REDIRECT_URI)))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(AuthErrorCode.INVALID_OAUTH_PROVIDER.getMessage());
 
@@ -51,7 +51,7 @@ class GetOAuthLinkUseCaseTest extends UseCaseTest {
         given(googleOAuthUriGenerator.generate(REDIRECT_URI)).willReturn(googleOAuthUri);
 
         // when
-        final String uri = sut.invoke(new OAuthLinkQuery(GOOGLE, REDIRECT_URI));
+        final String uri = sut.invoke(new GetOAuthLink(GOOGLE, REDIRECT_URI));
 
         // then
         assertAll(

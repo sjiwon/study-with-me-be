@@ -1,11 +1,11 @@
-package com.kgu.studywithme.member.infrastructure.query.dto;
+package com.kgu.studywithme.member.domain.repository.query.dto;
 
 import com.kgu.studywithme.category.domain.model.Category;
 import com.kgu.studywithme.study.domain.model.StudyName;
 import com.kgu.studywithme.study.domain.model.StudyThumbnail;
 import com.querydsl.core.annotations.QueryProjection;
 
-public record AppliedStudy(
+public record ParticipateStudy(
         Long id,
         String name,
         String category,
@@ -13,7 +13,7 @@ public record AppliedStudy(
         String thumbnailBackground
 ) {
     @QueryProjection
-    public AppliedStudy(
+    public ParticipateStudy(
             final Long id,
             final StudyName name,
             final Category category,

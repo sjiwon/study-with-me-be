@@ -1,4 +1,4 @@
-package com.kgu.studywithme.member.infrastructure.query.dto;
+package com.kgu.studywithme.member.domain.repository.query.dto;
 
 import com.kgu.studywithme.member.domain.model.Address;
 import com.kgu.studywithme.member.domain.model.Email;

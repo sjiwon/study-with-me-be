@@ -3,9 +3,9 @@ package com.kgu.studywithme.member.presentation;
 import com.kgu.studywithme.category.domain.model.Category;
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.member.domain.model.Member;
-import com.kgu.studywithme.member.infrastructure.query.dto.AppliedStudy;
-import com.kgu.studywithme.member.infrastructure.query.dto.LikeMarkedStudy;
-import com.kgu.studywithme.member.infrastructure.query.dto.MemberPrivateInformation;
+import com.kgu.studywithme.member.domain.repository.query.dto.AppliedStudy;
+import com.kgu.studywithme.member.domain.repository.query.dto.LikeMarkedStudy;
+import com.kgu.studywithme.member.domain.repository.query.dto.MemberPrivateInformation;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -61,7 +61,7 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
                             .map(Category::getName)
                             .toList()
             );
-            given(queryPrivateInformationByIdUseCase.invoke(any())).willReturn(response);
+            given(memberPrivateQueryUseCase.getPrivateInformationById(any())).willReturn(response);
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -119,23 +119,21 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
-            given(queryAppliedStudyByIdUseCase.invoke(any()))
-                    .willReturn(
-                            List.of(
-                                    new AppliedStudy(
-                                            1L,
-                                            SPRING.getName(),
-                                            SPRING.getCategory(),
-                                            SPRING.getThumbnail()
-                                    ),
-                                    new AppliedStudy(
-                                            2L,
-                                            JPA.getName(),
-                                            JPA.getCategory(),
-                                            JPA.getThumbnail()
-                                    )
+            given(memberPrivateQueryUseCase.getAppliedStudyById(any()))
+                    .willReturn(List.of(
+                            new AppliedStudy(
+                                    1L,
+                                    SPRING.getName(),
+                                    SPRING.getCategory(),
+                                    SPRING.getThumbnail()
+                            ),
+                            new AppliedStudy(
+                                    2L,
+                                    JPA.getName(),
+                                    JPA.getCategory(),
+                                    JPA.getThumbnail()
                             )
-                    );
+                    ));
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -179,23 +177,21 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
-            given(queryLikeMarkedStudyByIdUseCase.invoke(any()))
-                    .willReturn(
-                            List.of(
-                                    new LikeMarkedStudy(
-                                            1L,
-                                            SPRING.getName(),
-                                            SPRING.getCategory(),
-                                            SPRING.getThumbnail()
-                                    ),
-                                    new LikeMarkedStudy(
-                                            2L,
-                                            JPA.getName(),
-                                            JPA.getCategory(),
-                                            JPA.getThumbnail()
-                                    )
+            given(memberPrivateQueryUseCase.getLikeMarkedStudyById(any()))
+                    .willReturn(List.of(
+                            new LikeMarkedStudy(
+                                    1L,
+                                    SPRING.getName(),
+                                    SPRING.getCategory(),
+                                    SPRING.getThumbnail()
+                            ),
+                            new LikeMarkedStudy(
+                                    2L,
+                                    JPA.getName(),
+                                    JPA.getCategory(),
+                                    JPA.getThumbnail()
                             )
-                    );
+                    ));
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
