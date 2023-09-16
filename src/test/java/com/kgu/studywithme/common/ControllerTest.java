@@ -17,7 +17,7 @@ import com.kgu.studywithme.common.config.TestWebBeanConfiguration;
 import com.kgu.studywithme.favorite.application.usecase.CancelStudyLikeUseCase;
 import com.kgu.studywithme.favorite.application.usecase.MarkStudyLikeUseCase;
 import com.kgu.studywithme.favorite.presentation.FavoriteApiController;
-import com.kgu.studywithme.file.application.adapter.FileUploader;
+import com.kgu.studywithme.file.application.usecase.UploadImageUseCase;
 import com.kgu.studywithme.file.presentation.FileUploadApiController;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.global.exception.slack.SlackAlertManager;
@@ -379,7 +379,7 @@ public abstract class ControllerTest {
 
     // File
     @MockBean
-    protected FileUploader fileUploader;
+    protected UploadImageUseCase uploadImageUseCase;
 
     @BeforeEach
     void setUp(

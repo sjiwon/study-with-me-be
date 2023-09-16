@@ -5,8 +5,6 @@ import com.kgu.studywithme.global.resolver.ExtractPayload;
 import com.kgu.studywithme.studyweekly.application.service.AssignmentUploader;
 import com.kgu.studywithme.studyweekly.application.usecase.command.EditWeeklyAssignmentUseCase;
 import com.kgu.studywithme.studyweekly.application.usecase.command.SubmitWeeklyAssignmentUseCase;
-import com.kgu.studywithme.studyweekly.domain.model.AssignmentSubmitType;
-import com.kgu.studywithme.studyweekly.domain.model.UploadAssignment;
 import com.kgu.studywithme.studyweekly.presentation.dto.request.EditSubmittedWeeklyAssignmentRequest;
 import com.kgu.studywithme.studyweekly.presentation.dto.request.SubmitWeeklyAssignmentRequest;
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,17 +38,13 @@ public class StudyWeeklySubmitApiController {
             @PathVariable final Long weeklyId,
             @ModelAttribute @Valid final SubmitWeeklyAssignmentRequest request
     ) {
-        final UploadAssignment assignment = assignmentUploader.uploadAssignmentWithFile(
-                AssignmentSubmitType.from(request.type()),
-                request.file(),
-                request.link()
-        );
+        // FIXME
         submitWeeklyAssignmentUseCase.invoke(
                 new SubmitWeeklyAssignmentUseCase.Command(
                         memberId,
                         studyId,
                         weeklyId,
-                        assignment
+                        null
                 )
         );
         return ResponseEntity.noContent().build();
@@ -65,17 +59,13 @@ public class StudyWeeklySubmitApiController {
             @PathVariable final Long weeklyId,
             @ModelAttribute @Valid final EditSubmittedWeeklyAssignmentRequest request
     ) {
-        final UploadAssignment assignment = assignmentUploader.uploadAssignmentWithFile(
-                AssignmentSubmitType.from(request.type()),
-                request.file(),
-                request.link()
-        );
+        // FIXME
         editWeeklyAssignmentUseCase.invoke(
                 new EditWeeklyAssignmentUseCase.Command(
                         memberId,
                         studyId,
                         weeklyId,
-                        assignment
+                        null
                 )
         );
         return ResponseEntity.noContent().build();

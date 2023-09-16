@@ -7,7 +7,6 @@ import com.kgu.studywithme.studyweekly.application.usecase.command.CreateStudyWe
 import com.kgu.studywithme.studyweekly.application.usecase.command.DeleteStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.application.usecase.command.UpdateStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.domain.model.Period;
-import com.kgu.studywithme.studyweekly.domain.model.UploadAttachment;
 import com.kgu.studywithme.studyweekly.presentation.dto.request.CreateStudyWeeklyRequest;
 import com.kgu.studywithme.studyweekly.presentation.dto.request.UpdateStudyWeeklyRequest;
 import com.kgu.studywithme.studyweekly.presentation.dto.response.StudyWeeklyIdResponse;
@@ -22,8 +21,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
@@ -45,7 +42,7 @@ public class StudyWeeklyApiController {
             @PathVariable final Long studyId,
             @ModelAttribute @Valid final CreateStudyWeeklyRequest request
     ) {
-        final List<UploadAttachment> attachments = attachmentUploader.uploadAttachments(request.files());
+        // FIXME
         final Long weeklyId = createStudyWeeklyUseCase.invoke(
                 new CreateStudyWeeklyUseCase.Command(
                         studyId,
@@ -55,7 +52,7 @@ public class StudyWeeklyApiController {
                         new Period(request.startDate(), request.endDate()),
                         request.assignmentExists(),
                         request.autoAttendance(),
-                        attachments
+                        null
                 )
         );
         return ResponseEntity.ok(new StudyWeeklyIdResponse(weeklyId));
@@ -70,7 +67,7 @@ public class StudyWeeklyApiController {
             @PathVariable final Long weeklyId,
             @ModelAttribute @Valid final UpdateStudyWeeklyRequest request
     ) {
-        final List<UploadAttachment> attachments = attachmentUploader.uploadAttachments(request.files());
+        // FIXME
         updateStudyWeeklyUseCase.invoke(
                 new UpdateStudyWeeklyUseCase.Command(
                         weeklyId,
@@ -79,7 +76,7 @@ public class StudyWeeklyApiController {
                         new Period(request.startDate(), request.endDate()),
                         request.assignmentExists(),
                         request.autoAttendance(),
-                        attachments
+                        null
                 )
         );
         return ResponseEntity.noContent().build();

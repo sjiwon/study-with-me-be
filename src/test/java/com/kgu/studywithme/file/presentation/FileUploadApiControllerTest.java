@@ -51,7 +51,7 @@ class FileUploadApiControllerTest extends ControllerTest {
                     .multipart(BASE_URL)
                     .file((MockMultipartFile) file)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .queryParam("type", "weekly");
+                    .queryParam("type", "studyWeeklyContentImage");
 
             // then
             final GlobalErrorCode expectedError = GlobalErrorCode.VALIDATION_ERROR;
@@ -79,7 +79,7 @@ class FileUploadApiControllerTest extends ControllerTest {
                                     queryParameters(
                                             parameterWithName("type")
                                                     .description("이미지 업로드 타입")
-                                                    .attributes(constraint("주차별 이미지 = weekly / 스터디 설명 이미지 = description"))
+                                                    .attributes(constraint("스터디 설명 이미지 = studyDescriptionImage / Weekly 설명 이미지 = studyWeeklyContentImage"))
                                     ),
                                     getExceptionResponseFields()
                             )
@@ -93,7 +93,7 @@ class FileUploadApiControllerTest extends ControllerTest {
             mockingToken(true, MEMBER_ID);
 
             final String uploadLink = "https://image-upload-link";
-            given(fileUploader.uploadWeeklyImage(any())).willReturn(uploadLink);
+            given(uploadImageUseCase.invoke(any())).willReturn(uploadLink);
 
             // when
             final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");
@@ -101,7 +101,7 @@ class FileUploadApiControllerTest extends ControllerTest {
                     .multipart(BASE_URL)
                     .file((MockMultipartFile) file)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .queryParam("type", "weekly");
+                    .queryParam("type", "studyWeeklyContentImage");
 
             // then
             mockMvc.perform(requestBuilder)
@@ -123,7 +123,7 @@ class FileUploadApiControllerTest extends ControllerTest {
                                     queryParameters(
                                             parameterWithName("type")
                                                     .description("이미지 업로드 타입")
-                                                    .attributes(constraint("주차별 이미지 = weekly / 스터디 설명 이미지 = description"))
+                                                    .attributes(constraint("스터디 설명 이미지 = studyDescriptionImage / Weekly 설명 이미지 = studyWeeklyContentImage"))
                                     ),
                                     responseFields(
                                             fieldWithPath("result")
@@ -152,7 +152,7 @@ class FileUploadApiControllerTest extends ControllerTest {
                     .multipart(BASE_URL)
                     .file((MockMultipartFile) file)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .queryParam("type", "description");
+                    .queryParam("type", "studyDescriptionImage");
 
             // then
             final GlobalErrorCode expectedError = GlobalErrorCode.VALIDATION_ERROR;
@@ -180,7 +180,7 @@ class FileUploadApiControllerTest extends ControllerTest {
                                     queryParameters(
                                             parameterWithName("type")
                                                     .description("이미지 업로드 타입")
-                                                    .attributes(constraint("주차별 이미지 = weekly / 스터디 설명 이미지 = description"))
+                                                    .attributes(constraint("스터디 설명 이미지 = studyDescriptionImage / Weekly 설명 이미지 = studyWeeklyContentImage"))
                                     ),
                                     getExceptionResponseFields()
                             )
@@ -194,7 +194,7 @@ class FileUploadApiControllerTest extends ControllerTest {
             mockingToken(true, MEMBER_ID);
 
             final String uploadLink = "https://image-upload-link";
-            given(fileUploader.uploadStudyDescriptionImage(any())).willReturn(uploadLink);
+            given(uploadImageUseCase.invoke(any())).willReturn(uploadLink);
 
             // when
             final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");
@@ -202,7 +202,7 @@ class FileUploadApiControllerTest extends ControllerTest {
                     .multipart(BASE_URL)
                     .file((MockMultipartFile) file)
                     .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .queryParam("type", "description");
+                    .queryParam("type", "studyDescriptionImage");
 
             // then
             mockMvc.perform(requestBuilder)
@@ -224,7 +224,7 @@ class FileUploadApiControllerTest extends ControllerTest {
                                     queryParameters(
                                             parameterWithName("type")
                                                     .description("이미지 업로드 타입")
-                                                    .attributes(constraint("주차별 이미지 = weekly / 스터디 설명 이미지 = description"))
+                                                    .attributes(constraint("스터디 설명 이미지 = studyDescriptionImage / Weekly 설명 이미지 = studyWeeklyContentImage"))
                                     ),
                                     responseFields(
                                             fieldWithPath("result")
