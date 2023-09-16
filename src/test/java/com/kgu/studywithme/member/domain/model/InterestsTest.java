@@ -12,7 +12,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -28,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @DisplayName("Member -> 도메인 [Interests VO] 테스트")
 class InterestsTest extends ParallelTest {
-    private final Member member = JIWON.toMember().apply(1L, LocalDateTime.now());
+    private final Member member = JIWON.toMember().apply(1L);
 
     @Nested
     @DisplayName("Interests 생성")

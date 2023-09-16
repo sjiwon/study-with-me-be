@@ -30,7 +30,6 @@ public class Nickname {
     }
 
     public Nickname update(final String value) {
-        validateNicknamePattern(value);
         validateNicknameIsSameAsBefore(value);
         return new Nickname(value);
     }
@@ -41,8 +40,8 @@ public class Nickname {
         }
     }
 
-    private boolean isInvalidPattern(final String nickname) {
-        return !NICKNAME_PATTERN.matcher(nickname).matches();
+    private boolean isInvalidPattern(final String value) {
+        return !NICKNAME_PATTERN.matcher(value).matches();
     }
 
     private void validateNicknameIsSameAsBefore(final String value) {

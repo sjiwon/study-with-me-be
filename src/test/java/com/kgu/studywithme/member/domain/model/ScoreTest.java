@@ -42,10 +42,12 @@ class ScoreTest extends ParallelTest {
     @DisplayName("단순 출석에 대한 Score 업데이트")
     class ApplySimpleAttendance {
         private Score score;
+        private int initScore;
 
         @BeforeEach
         void setUp() {
             score = Score.initScore(); // 80
+            initScore = score.getValue();
         }
 
         @Test
@@ -55,7 +57,7 @@ class ScoreTest extends ParallelTest {
             final Score updateScore = score.applyAttendance(); // 80 + 1
 
             // then
-            assertThat(updateScore.getValue()).isEqualTo(81);
+            assertThat(updateScore.getValue()).isEqualTo(initScore + 1);
         }
 
         @Test
@@ -65,7 +67,7 @@ class ScoreTest extends ParallelTest {
             final Score updateScore = score.applyLate(); // 80 - 1
 
             // then
-            assertThat(updateScore.getValue()).isEqualTo(79);
+            assertThat(updateScore.getValue()).isEqualTo(initScore - 1);
         }
 
         @Test
@@ -75,7 +77,7 @@ class ScoreTest extends ParallelTest {
             final Score updateScore = score.applyAbsence(); // 80 - 5
 
             // then
-            assertThat(updateScore.getValue()).isEqualTo(75);
+            assertThat(updateScore.getValue()).isEqualTo(initScore - 5);
         }
     }
 
@@ -83,10 +85,12 @@ class ScoreTest extends ParallelTest {
     @DisplayName("이전 출석 정보 수정에 따른 Score 업데이트")
     class ApplyComplexAttendance {
         private Score score;
+        private int initScore;
 
         @BeforeEach
         void setUp() {
             score = Score.initScore(); // 80
+            initScore = score.getValue();
         }
 
         @Test
@@ -96,7 +100,7 @@ class ScoreTest extends ParallelTest {
             final Score updateScore = score.updateAttendanceToLate(); // 80 - 1 - 1
 
             // then
-            assertThat(updateScore.getValue()).isEqualTo(78);
+            assertThat(updateScore.getValue()).isEqualTo(initScore - 1 - 1);
         }
 
         @Test
@@ -106,7 +110,7 @@ class ScoreTest extends ParallelTest {
             final Score updateScore = score.updateAttendanceToAbsence(); // 80 - 1 - 5
 
             // then
-            assertThat(updateScore.getValue()).isEqualTo(74);
+            assertThat(updateScore.getValue()).isEqualTo(initScore - 1 - 5);
         }
 
         @Test
@@ -116,7 +120,7 @@ class ScoreTest extends ParallelTest {
             final Score updateScore = score.updateLateToAttendance(); // 80 + 1 + 1
 
             // then
-            assertThat(updateScore.getValue()).isEqualTo(82);
+            assertThat(updateScore.getValue()).isEqualTo(initScore + 1 + 1);
         }
 
         @Test
@@ -126,7 +130,7 @@ class ScoreTest extends ParallelTest {
             final Score updateScore = score.updateLateToAbsence(); // 80 + 1 - 5
 
             // then
-            assertThat(updateScore.getValue()).isEqualTo(76);
+            assertThat(updateScore.getValue()).isEqualTo(initScore + 1 - 5);
         }
 
         @Test
@@ -136,7 +140,7 @@ class ScoreTest extends ParallelTest {
             final Score updateScore = score.updateAbsenceToAttendance(); // 80 + 5 + 1
 
             // then
-            assertThat(updateScore.getValue()).isEqualTo(86);
+            assertThat(updateScore.getValue()).isEqualTo(initScore + 5 + 1);
         }
 
         @Test
@@ -146,7 +150,7 @@ class ScoreTest extends ParallelTest {
             final Score updateScore = score.updateAbsenceToLate(); // 80 + 5 - 1
 
             // then
-            assertThat(updateScore.getValue()).isEqualTo(84);
+            assertThat(updateScore.getValue()).isEqualTo(initScore + 5 - 1);
         }
     }
 }

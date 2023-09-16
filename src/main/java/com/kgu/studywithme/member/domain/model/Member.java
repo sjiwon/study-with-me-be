@@ -85,16 +85,15 @@ public class Member extends BaseEntity<Member> {
     }
 
     public void update(
-            final String nickname,
-            final String phone,
-            final String province,
-            final String city,
+            final Nickname nickname,
+            final Phone phone,
+            final Address address,
             final boolean emailOptIn,
             final Set<Category> interests
     ) {
-        this.nickname = this.nickname.update(nickname);
-        this.phone = new Phone(phone);
-        this.address = new Address(province, city);
+        this.nickname = this.nickname.update(nickname.getValue());
+        this.phone = phone;
+        this.address = address;
         this.email = this.email.updateEmailOptIn(emailOptIn);
         this.interests.update(this, interests);
     }

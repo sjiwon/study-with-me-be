@@ -6,8 +6,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
-
 import static com.kgu.studywithme.common.fixture.MemberFixture.ANONYMOUS;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.ABSENCE;
@@ -41,14 +39,13 @@ class MemberTest extends ParallelTest {
     @DisplayName("사용자 정보를 수정한다")
     void update() {
         // given
-        final Member member = JIWON.toMember().apply(1L, LocalDateTime.now());
+        final Member member = JIWON.toMember().apply(1L);
 
         // when
         member.update(
-                ANONYMOUS.getNickname().getValue(),
-                ANONYMOUS.getPhone().getValue(),
-                ANONYMOUS.getAddress().getProvince(),
-                ANONYMOUS.getAddress().getCity(),
+                ANONYMOUS.getNickname(),
+                ANONYMOUS.getPhone(),
+                ANONYMOUS.getAddress(),
                 ANONYMOUS.getEmail().isEmailOptIn(),
                 ANONYMOUS.getInterests()
         );

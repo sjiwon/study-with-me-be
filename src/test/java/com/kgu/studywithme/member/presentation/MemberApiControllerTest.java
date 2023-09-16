@@ -38,9 +38,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("Member -> MemberApiController 테스트")
 class MemberApiControllerTest extends ControllerTest {
     @Nested
-    @DisplayName("회원가입 API [POST /api/member]")
+    @DisplayName("회원가입 API [POST /api/members]")
     class SignUp {
-        private static final String BASE_URL = "/api/member";
+        private static final String BASE_URL = "/api/members";
         private static final SignUpMemberRequest REQUEST = new SignUpMemberRequest(
                 JIWON.getName(),
                 JIWON.getNickname().getValue(),

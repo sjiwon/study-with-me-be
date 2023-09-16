@@ -1,4 +1,4 @@
-package com.kgu.studywithme.member.application.service;
+package com.kgu.studywithme.member.application.usecase;
 
 import com.kgu.studywithme.member.application.adapter.MemberInformationRepositoryAdapter;
 import com.kgu.studywithme.member.application.usecase.query.QueryAppliedStudyByIdUseCase;
