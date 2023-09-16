@@ -24,8 +24,7 @@ import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDoc
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getExceptionResponseFields;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
-import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
-import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
+import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessTokenToAuthorizationHeader;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
@@ -64,15 +63,8 @@ class OAuthApiControllerTest extends ControllerTest {
             // then
             final AuthErrorCode expectedError = AuthErrorCode.INVALID_OAUTH_PROVIDER;
             mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isBadRequest(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
-                    )
+                    .andExpect(status().isBadRequest())
+                    .andExpectAll(getResultMatchersViaErrorCode(expectedError))
                     .andDo(
                             document(
                                     "OAuthApi/Access/Failure",
@@ -263,7 +255,7 @@ class OAuthApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
 
             // then
             mockMvc.perform(requestBuilder)

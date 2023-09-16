@@ -14,8 +14,7 @@ import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDoc
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getExceptionResponseFields;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
-import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
-import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
+import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessTokenToAuthorizationHeader;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
@@ -23,7 +22,6 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("StudyParticipant -> StudyFinalizeApiController 테스트")
@@ -53,20 +51,13 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
 
             // then
             final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.MEMBER_IS_NOT_PARTICIPANT;
             mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isForbidden(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
-                    )
+                    .andExpect(status().isForbidden())
+                    .andExpectAll(getResultMatchersViaErrorCode(expectedError))
                     .andDo(
                             document(
                                     "StudyApi/Participation/Leave/Failure/Case1",
@@ -94,20 +85,13 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
 
             // then
             final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.HOST_CANNOT_LEAVE_STUDY;
             mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isConflict(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
-                    )
+                    .andExpect(status().isConflict())
+                    .andExpectAll(getResultMatchersViaErrorCode(expectedError))
                     .andDo(
                             document(
                                     "StudyApi/Participation/Leave/Failure/Case2",
@@ -135,7 +119,7 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
 
             // then
             mockMvc.perform(requestBuilder)
@@ -180,20 +164,13 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
 
             // then
             final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.MEMBER_IS_NOT_PARTICIPANT;
             mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isForbidden(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
-                    )
+                    .andExpect(status().isForbidden())
+                    .andExpectAll(getResultMatchersViaErrorCode(expectedError))
                     .andDo(
                             document(
                                     "StudyApi/Participation/Graduate/Failure/Case1",
@@ -221,20 +198,13 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
 
             // then
             final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.HOST_CANNOT_GRADUATE_STUDY;
             mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isConflict(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
-                    )
+                    .andExpect(status().isConflict())
+                    .andExpectAll(getResultMatchersViaErrorCode(expectedError))
                     .andDo(
                             document(
                                     "StudyApi/Participation/Graduate/Failure/Case2",
@@ -262,20 +232,13 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
 
             // then
             final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.PARTICIPANT_NOT_MEET_GRADUATION_POLICY;
             mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isConflict(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
-                    )
+                    .andExpect(status().isConflict())
+                    .andExpectAll(getResultMatchersViaErrorCode(expectedError))
                     .andDo(
                             document(
                                     "StudyApi/Participation/Graduate/Failure/Case3",
@@ -303,7 +266,7 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
 
             // then
             mockMvc.perform(requestBuilder)

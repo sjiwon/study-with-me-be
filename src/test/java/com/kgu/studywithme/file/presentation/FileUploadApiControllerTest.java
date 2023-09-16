@@ -16,8 +16,7 @@ import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDoc
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getExceptionResponseFields;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
-import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
-import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
+import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessTokenToAuthorizationHeader;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -50,22 +49,15 @@ class FileUploadApiControllerTest extends ControllerTest {
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL)
                     .file((MockMultipartFile) file)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
                     .queryParam("type", "studyWeeklyContentImage");
 
             // then
             final GlobalErrorCode expectedError = GlobalErrorCode.VALIDATION_ERROR;
             final String message = "이미지는 jpg, jpeg, png, gif만 허용합니다.";
             mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isBadRequest(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(message)
-                    )
+                    .andExpect(status().isBadRequest())
+                    .andExpectAll(getResultMatchersViaErrorCode(expectedError, message))
                     .andDo(
                             document(
                                     "UploadApi/Image/Weekly/Failure",
@@ -100,7 +92,7 @@ class FileUploadApiControllerTest extends ControllerTest {
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL)
                     .file((MockMultipartFile) file)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
                     .queryParam("type", "studyWeeklyContentImage");
 
             // then
@@ -151,22 +143,15 @@ class FileUploadApiControllerTest extends ControllerTest {
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL)
                     .file((MockMultipartFile) file)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
                     .queryParam("type", "studyDescriptionImage");
 
             // then
             final GlobalErrorCode expectedError = GlobalErrorCode.VALIDATION_ERROR;
             final String message = "이미지는 jpg, jpeg, png, gif만 허용합니다.";
             mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isBadRequest(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(message)
-                    )
+                    .andExpect(status().isBadRequest())
+                    .andExpectAll(getResultMatchersViaErrorCode(expectedError, message))
                     .andDo(
                             document(
                                     "UploadApi/Image/Description/Failure",
@@ -201,7 +186,7 @@ class FileUploadApiControllerTest extends ControllerTest {
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL)
                     .file((MockMultipartFile) file)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
                     .queryParam("type", "studyDescriptionImage");
 
             // then

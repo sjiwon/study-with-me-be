@@ -15,8 +15,7 @@ import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDoc
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getExceptionResponseFields;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
-import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
-import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
+import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessTokenToAuthorizationHeader;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
@@ -54,22 +53,15 @@ class MemberReviewApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, REVIEWEE_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(REQUEST));
 
             // then
             final MemberReviewErrorCode expectedError = MemberReviewErrorCode.SELF_REVIEW_NOT_ALLOWED;
             mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isConflict(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
-                    )
+                    .andExpect(status().isConflict())
+                    .andExpectAll(getResultMatchersViaErrorCode(expectedError))
                     .andDo(
                             document(
                                     "MemberApi/Review/Write/Failure/Case1",
@@ -101,22 +93,15 @@ class MemberReviewApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, REVIEWEE_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(REQUEST));
 
             // then
             final MemberReviewErrorCode expectedError = MemberReviewErrorCode.COMMON_STUDY_RECORD_NOT_FOUND;
             mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isConflict(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
-                    )
+                    .andExpect(status().isConflict())
+                    .andExpectAll(getResultMatchersViaErrorCode(expectedError))
                     .andDo(
                             document(
                                     "MemberApi/Review/Write/Failure/Case2",
@@ -148,22 +133,15 @@ class MemberReviewApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, REVIEWEE_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(REQUEST));
 
             // then
             final MemberReviewErrorCode expectedError = MemberReviewErrorCode.ALREADY_REVIEW;
             mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isConflict(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
-                    )
+                    .andExpect(status().isConflict())
+                    .andExpectAll(getResultMatchersViaErrorCode(expectedError))
                     .andDo(
                             document(
                                     "MemberApi/Review/Write/Failure/Case3",
@@ -193,7 +171,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, REVIEWEE_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(REQUEST));
 
@@ -246,22 +224,15 @@ class MemberReviewApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, REVIEWEE_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(REQUEST));
 
             // then
             final MemberReviewErrorCode expectedError = MemberReviewErrorCode.MEMBER_REVIEW_NOT_FOUND;
             mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isNotFound(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
-                    )
+                    .andExpect(status().isNotFound())
+                    .andExpectAll(getResultMatchersViaErrorCode(expectedError))
                     .andDo(
                             document(
                                     "MemberApi/Review/Update/Failure/Case1",
@@ -293,22 +264,15 @@ class MemberReviewApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, REVIEWEE_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(REQUEST));
 
             // then
             final MemberReviewErrorCode expectedError = MemberReviewErrorCode.REVIEW_SAME_AS_BEFORE;
             mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isConflict(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
-                    )
+                    .andExpect(status().isConflict())
+                    .andExpectAll(getResultMatchersViaErrorCode(expectedError))
                     .andDo(
                             document(
                                     "MemberApi/Review/Update/Failure/Case2",
@@ -340,7 +304,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, REVIEWEE_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(REQUEST));
 

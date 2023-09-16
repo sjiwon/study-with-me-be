@@ -20,8 +20,7 @@ import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDoc
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getExceptionResponseFields;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
-import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
-import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
+import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessTokenToAuthorizationHeader;
 import static com.kgu.studywithme.member.domain.model.Gender.MALE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -75,15 +74,8 @@ class MemberApiControllerTest extends ControllerTest {
             // then
             final MemberErrorCode expectedError = MemberErrorCode.DUPLICATE_NICKNAME;
             mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isConflict(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
-                    )
+                    .andExpect(status().isConflict())
+                    .andExpectAll(getResultMatchersViaErrorCode(expectedError))
                     .andDo(
                             document(
                                     "MemberApi/SignUp/Failure",
@@ -207,7 +199,7 @@ class MemberApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .patch(BASE_URL)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(REQUEST));
 

@@ -19,6 +19,7 @@ import com.kgu.studywithme.favorite.application.usecase.MarkStudyLikeUseCase;
 import com.kgu.studywithme.favorite.presentation.FavoriteApiController;
 import com.kgu.studywithme.file.application.usecase.UploadImageUseCase;
 import com.kgu.studywithme.file.presentation.FileUploadApiController;
+import com.kgu.studywithme.global.exception.ErrorCode;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.global.exception.slack.SlackAlertManager;
 import com.kgu.studywithme.member.application.usecase.command.SignUpMemberUseCase;
@@ -103,6 +104,7 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -113,6 +115,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @Tag("Controller")
 @WebMvcTest({
@@ -382,16 +385,35 @@ public abstract class ControllerTest {
     protected UploadImageUseCase uploadImageUseCase;
 
     @BeforeEach
-    void setUp(
-            final WebApplicationContext context,
-            final RestDocumentationContextProvider provider
-    ) {
+    void setUp(final WebApplicationContext context, final RestDocumentationContextProvider provider) {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(MockMvcRestDocumentation.documentationConfiguration(provider))
                 .alwaysDo(print())
                 .alwaysDo(log())
                 .addFilter(new CharacterEncodingFilter("UTF-8", true))
                 .build();
+    }
+
+    protected ResultMatcher[] getResultMatchersViaErrorCode(final ErrorCode eror) {
+        return new ResultMatcher[]{
+                jsonPath("$.status").exists(),
+                jsonPath("$.status").value(eror.getStatus().value()),
+                jsonPath("$.errorCode").exists(),
+                jsonPath("$.errorCode").value(eror.getErrorCode()),
+                jsonPath("$.message").exists(),
+                jsonPath("$.message").value(eror.getMessage())
+        };
+    }
+
+    protected ResultMatcher[] getResultMatchersViaErrorCode(final ErrorCode eror, final String message) {
+        return new ResultMatcher[]{
+                jsonPath("$.status").exists(),
+                jsonPath("$.status").value(eror.getStatus().value()),
+                jsonPath("$.errorCode").exists(),
+                jsonPath("$.errorCode").value(eror.getErrorCode()),
+                jsonPath("$.message").exists(),
+                jsonPath("$.message").value(message)
+        };
     }
 
     protected String convertObjectToJson(final Object data) throws JsonProcessingException {
@@ -418,19 +440,11 @@ public abstract class ControllerTest {
                 .isTokenValid(any());
     }
 
-    protected void mockingForStudyHost(
-            final Long studyId,
-            final Long memberId,
-            final boolean isValid
-    ) {
+    protected void mockingForStudyHost(final Long studyId, final Long memberId, final boolean isValid) {
         given(studyVerificationRepositoryAdapter.isHost(studyId, memberId)).willReturn(isValid);
     }
 
-    protected void mockingForStudyParticipant(
-            final Long studyId,
-            final Long memberId,
-            final boolean isValid
-    ) {
+    protected void mockingForStudyParticipant(final Long studyId, final Long memberId, final boolean isValid) {
         given(participantVerificationRepositoryAdapter.isParticipant(studyId, memberId)).willReturn(isValid);
     }
 }
