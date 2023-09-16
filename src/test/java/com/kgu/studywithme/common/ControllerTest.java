@@ -31,8 +31,8 @@ import com.kgu.studywithme.member.presentation.MemberPrivateInformationApiContro
 import com.kgu.studywithme.member.presentation.MemberPublicInformationApiController;
 import com.kgu.studywithme.memberreport.application.usecase.ReportMemberUseCase;
 import com.kgu.studywithme.memberreport.presentation.MemberReportApiController;
-import com.kgu.studywithme.memberreview.application.usecase.command.UpdateMemberReviewUseCase;
-import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberReviewUseCase;
+import com.kgu.studywithme.memberreview.application.usecase.UpdateMemberReviewUseCase;
+import com.kgu.studywithme.memberreview.application.usecase.WriteMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.presentation.MemberReviewApiController;
 import com.kgu.studywithme.study.application.adapter.StudyVerificationRepositoryAdapter;
 import com.kgu.studywithme.study.application.usecase.command.CreateStudyUseCase;

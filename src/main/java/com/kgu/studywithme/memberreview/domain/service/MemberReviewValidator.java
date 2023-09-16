@@ -1,31 +1,25 @@
-package com.kgu.studywithme.memberreview.application.service;
+package com.kgu.studywithme.memberreview.domain.service;
 
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberReviewUseCase;
-import com.kgu.studywithme.memberreview.domain.model.MemberReview;
 import com.kgu.studywithme.memberreview.domain.repository.MemberReviewRepository;
 import com.kgu.studywithme.memberreview.exception.MemberReviewErrorCode;
 import com.kgu.studywithme.studyattendance.application.adapter.StudyAttendanceHandlingRepositoryAdapter;
 import com.kgu.studywithme.studyattendance.infrastructure.query.dto.StudyAttendanceWeekly;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Service
+@Component
 @RequiredArgsConstructor
-public class WriteMemberReviewService implements WriteMemberReviewUseCase {
+public class MemberReviewValidator {
     private final StudyAttendanceHandlingRepositoryAdapter studyAttendanceHandlingRepositoryAdapter;
     private final MemberReviewRepository memberReviewRepository;
 
-    @Override
-    public Long invoke(final Command command) {
-        validateSelfReview(command.reviewerId(), command.revieweeId());
-        validateColleague(command.reviewerId(), command.revieweeId());
-        validateAlreadyReviewed(command.reviewerId(), command.revieweeId());
-
-        final MemberReview memberReview = MemberReview.doReview(command.reviewerId(), command.revieweeId(), command.content());
-        return memberReviewRepository.save(memberReview).getId();
+    public void validateReviewEligibility(final Long reviewerId, final Long revieweeId) {
+        validateSelfReview(reviewerId, revieweeId);
+        validateColleague(reviewerId, revieweeId);
+        validateAlreadyReviewed(reviewerId, revieweeId);
     }
 
     private void validateSelfReview(final Long reviewerId, final Long revieweeId) {
@@ -35,17 +29,16 @@ public class WriteMemberReviewService implements WriteMemberReviewUseCase {
     }
 
     private void validateColleague(final Long reviewerId, final Long revieweeId) {
-        final List<StudyAttendanceWeekly> reviewerMetadata
+        final List<StudyAttendanceWeekly> reviewerParticipateData
                 = studyAttendanceHandlingRepositoryAdapter.findParticipateWeeksInStudyByMemberId(reviewerId);
-        final List<StudyAttendanceWeekly> revieweeMetadata
+        final List<StudyAttendanceWeekly> revieweeParticipateData
                 = studyAttendanceHandlingRepositoryAdapter.findParticipateWeeksInStudyByMemberId(revieweeId);
 
-        final boolean hasCommonMetadata =
-                reviewerMetadata.stream()
-                        .anyMatch(revieweeData ->
-                                revieweeMetadata.stream()
-                                        .anyMatch(reviewerData -> hasCommonMetadata(reviewerData, revieweeData))
-                        );
+        final boolean hasCommonMetadata = reviewerParticipateData.stream()
+                .anyMatch(reviewerData ->
+                        revieweeParticipateData.stream()
+                                .anyMatch(revieweeData -> hasCommonMetadata(reviewerData, revieweeData))
+                );
 
         if (!hasCommonMetadata) {
             throw StudyWithMeException.type(MemberReviewErrorCode.COMMON_STUDY_RECORD_NOT_FOUND);

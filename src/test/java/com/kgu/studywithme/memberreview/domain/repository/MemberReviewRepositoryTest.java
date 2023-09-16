@@ -39,14 +39,12 @@ public class MemberReviewRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    @DisplayName("리뷰 대상자 ID와 리뷰 작성자 ID로 리뷰를 조회한다")
+    @DisplayName("리뷰 대상자 ID와 리뷰 작성자 ID로 작성된 리뷰를 조회한다")
     void findByReviewerIdAndRevieweeId() {
         doReview(reviewers[0], reviewers[1], reviewers[2]);
 
         for (Member reviewer : reviewers) {
-            final MemberReview review =
-                    memberReviewRepository.getWrittenReviewForReviewee(reviewer.getId(), reviewee.getId())
-                            .orElseThrow();
+            final MemberReview review = memberReviewRepository.findByReviewerIdAndRevieweeId(reviewer.getId(), reviewee.getId()).orElseThrow();
 
             assertAll(
                     () -> assertThat(review.getReviewerId()).isEqualTo(reviewer.getId()),
@@ -78,13 +76,7 @@ public class MemberReviewRepositoryTest extends RepositoryTest {
     private void doReview(final Member... reviewers) {
         final List<MemberReview> memberReviews = new ArrayList<>();
         for (Member reviewer : reviewers) {
-            memberReviews.add(
-                    MemberReview.doReview(
-                            reviewer.getId(),
-                            reviewee.getId(),
-                            "BEST! - " + reviewer.getId()
-                    )
-            );
+            memberReviews.add(MemberReview.doReview(reviewer.getId(), reviewee.getId(), "BEST! - " + reviewer.getId()));
         }
         memberReviewRepository.saveAll(memberReviews);
     }
