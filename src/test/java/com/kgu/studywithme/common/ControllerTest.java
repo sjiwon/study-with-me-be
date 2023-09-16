@@ -29,7 +29,7 @@ import com.kgu.studywithme.member.application.usecase.UpdateMemberUseCase;
 import com.kgu.studywithme.member.presentation.MemberApiController;
 import com.kgu.studywithme.member.presentation.MemberPrivateInformationApiController;
 import com.kgu.studywithme.member.presentation.MemberPublicInformationApiController;
-import com.kgu.studywithme.memberreport.application.usecase.command.ReportMemberUseCase;
+import com.kgu.studywithme.memberreport.application.usecase.ReportMemberUseCase;
 import com.kgu.studywithme.memberreport.presentation.MemberReportApiController;
 import com.kgu.studywithme.memberreview.application.usecase.command.UpdateMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberReviewUseCase;

@@ -4,4 +4,5 @@ import com.kgu.studywithme.memberreport.domain.model.MemberReport;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberReportRepository extends JpaRepository<MemberReport, Long> {
+    boolean existsByReporterIdAndReporteeId(final Long reporterId, final Long reporteeId);
 }
