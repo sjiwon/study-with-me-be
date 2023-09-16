@@ -1,5 +1,6 @@
 package com.kgu.studywithme.member.domain.service;
 
+import com.kgu.studywithme.common.ParallelTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.member.domain.repository.MemberRepository;
@@ -20,7 +21,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @DisplayName("Member -> MemberResourceValidator 테스트")
-public class MemberResourceValidatorTest {
+public class MemberResourceValidatorTest extends ParallelTest {
     private final MemberRepository memberRepository = mock(MemberRepository.class);
     private final MemberResourceValidator sut = new MemberResourceValidator(memberRepository);
 
