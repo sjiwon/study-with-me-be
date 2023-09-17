@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface StudyAttendanceRepository extends JpaRepository<StudyAttendance, Long> {
+    // @Query
     @Query("SELECT sa" +
             " FROM StudyAttendance sa" +
             " WHERE sa.studyId = :studyId AND sa.participantId = :participantId AND sa.week = :week")
@@ -32,4 +33,7 @@ public interface StudyAttendanceRepository extends JpaRepository<StudyAttendance
             @Param("participantIds") Set<Long> participantIds,
             @Param("status") AttendanceStatus status
     );
+
+    // Method Query
+    int countByStudyIdAndParticipantIdAndStatus(final Long studyId, final Long participantId, final AttendanceStatus status);
 }

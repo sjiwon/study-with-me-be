@@ -30,8 +30,7 @@ public class WeeklyCreatedEventListener {
         log.info("주차 생성에 따른 해당 주차 참여자 출석정보 추가 (NON_ATTENDANCE) -> {}", event);
 
         final List<StudyAttendance> participantsAttendance = new ArrayList<>();
-        final List<Long> approveParticipantsIds
-                = studyParticipantRepository.findParticipantIdsByStatus(event.studyId(), APPROVE);
+        final List<Long> approveParticipantsIds = studyParticipantRepository.findParticipantIdsByStatus(event.studyId(), APPROVE);
         approveParticipantsIds.forEach(
                 studyParticipantId -> participantsAttendance.add(
                         StudyAttendance.recordAttendance(

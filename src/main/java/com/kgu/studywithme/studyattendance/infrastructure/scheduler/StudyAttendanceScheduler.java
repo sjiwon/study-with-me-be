@@ -1,9 +1,9 @@
 package com.kgu.studywithme.studyattendance.infrastructure.scheduler;
 
 import com.kgu.studywithme.member.domain.repository.MemberRepository;
-import com.kgu.studywithme.studyattendance.application.adapter.StudyAttendanceHandlingRepositoryAdapter;
 import com.kgu.studywithme.studyattendance.domain.repository.StudyAttendanceRepository;
-import com.kgu.studywithme.studyattendance.infrastructure.query.dto.NonAttendanceWeekly;
+import com.kgu.studywithme.studyattendance.domain.repository.query.StudyAttendanceMetadataRepository;
+import com.kgu.studywithme.studyattendance.domain.repository.query.dto.NonAttendanceWeekly;
 import com.kgu.studywithme.studyweekly.application.adapter.StudyWeeklyHandlingRepositoryAdapter;
 import com.kgu.studywithme.studyweekly.infrastructure.query.dto.AutoAttendanceAndFinishedWeekly;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.
 @RequiredArgsConstructor
 public class StudyAttendanceScheduler {
     private final StudyWeeklyHandlingRepositoryAdapter studyWeeklyHandlingRepositoryAdapter;
-    private final StudyAttendanceHandlingRepositoryAdapter studyAttendanceHandlingRepositoryAdapter;
+    private final StudyAttendanceMetadataRepository studyAttendanceMetadataRepository;
     private final StudyAttendanceRepository studyAttendanceRepository;
     private final MemberRepository memberRepository;
 
@@ -32,7 +32,7 @@ public class StudyAttendanceScheduler {
     public void processAbsenceCheckScheduler() {
         final Set<Long> absenceParticipantIds = new HashSet<>();
         final List<AutoAttendanceAndFinishedWeekly> weeks = studyWeeklyHandlingRepositoryAdapter.findAutoAttendanceAndFinishedWeekly();
-        final List<NonAttendanceWeekly> attendances = studyAttendanceHandlingRepositoryAdapter.findNonAttendanceInformation();
+        final List<NonAttendanceWeekly> attendances = studyAttendanceMetadataRepository.findParticipantNonAttendanceWeekly();
         log.info("결석 처리 대상 Weekly = {}", attendances);
 
         weeks.forEach(week -> {

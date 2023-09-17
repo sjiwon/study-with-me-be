@@ -2,7 +2,8 @@ package com.kgu.studywithme.studyattendance.presentation;
 
 import com.kgu.studywithme.global.aop.CheckStudyHost;
 import com.kgu.studywithme.global.resolver.ExtractPayload;
-import com.kgu.studywithme.studyattendance.application.usecase.command.ManualAttendanceUseCase;
+import com.kgu.studywithme.studyattendance.application.usecase.ManualAttendanceUseCase;
+import com.kgu.studywithme.studyattendance.application.usecase.command.ManualAttendanceCommand;
 import com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus;
 import com.kgu.studywithme.studyattendance.presentation.dto.request.ManualAttendanceRequest;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,14 +33,12 @@ public class StudyAttendanceApiController {
             @PathVariable final Long memberId,
             @RequestBody @Valid final ManualAttendanceRequest request
     ) {
-        manualCheckAttendance.invoke(
-                new ManualAttendanceUseCase.Command(
-                        studyId,
-                        memberId,
-                        request.week(),
-                        AttendanceStatus.fromDescription(request.status())
-                )
-        );
+        manualCheckAttendance.invoke(new ManualAttendanceCommand(
+                studyId,
+                memberId,
+                request.week(),
+                AttendanceStatus.fromDescription(request.status())
+        ));
         return ResponseEntity.noContent().build();
     }
 }

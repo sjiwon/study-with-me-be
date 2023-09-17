@@ -3,8 +3,8 @@ package com.kgu.studywithme.memberreview.domain.service;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.memberreview.domain.repository.MemberReviewRepository;
 import com.kgu.studywithme.memberreview.exception.MemberReviewErrorCode;
-import com.kgu.studywithme.studyattendance.application.adapter.StudyAttendanceHandlingRepositoryAdapter;
-import com.kgu.studywithme.studyattendance.infrastructure.query.dto.StudyAttendanceWeekly;
+import com.kgu.studywithme.studyattendance.domain.repository.query.StudyAttendanceMetadataRepository;
+import com.kgu.studywithme.studyattendance.domain.repository.query.dto.StudyAttendanceWeekly;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class MemberReviewValidator {
-    private final StudyAttendanceHandlingRepositoryAdapter studyAttendanceHandlingRepositoryAdapter;
+    private final StudyAttendanceMetadataRepository studyAttendanceMetadataRepository;
     private final MemberReviewRepository memberReviewRepository;
 
     public void validateReviewEligibility(final Long reviewerId, final Long revieweeId) {
@@ -30,9 +30,9 @@ public class MemberReviewValidator {
 
     private void validateColleague(final Long reviewerId, final Long revieweeId) {
         final List<StudyAttendanceWeekly> reviewerParticipateData
-                = studyAttendanceHandlingRepositoryAdapter.findParticipateWeeksInStudyByMemberId(reviewerId);
+                = studyAttendanceMetadataRepository.findMemberParticipateWeekly(reviewerId);
         final List<StudyAttendanceWeekly> revieweeParticipateData
-                = studyAttendanceHandlingRepositoryAdapter.findParticipateWeeksInStudyByMemberId(revieweeId);
+                = studyAttendanceMetadataRepository.findMemberParticipateWeekly(revieweeId);
 
         final boolean hasCommonMetadata = reviewerParticipateData.stream()
                 .anyMatch(reviewerData ->

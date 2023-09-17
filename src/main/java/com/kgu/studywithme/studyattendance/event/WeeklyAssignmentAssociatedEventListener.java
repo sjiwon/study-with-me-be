@@ -43,8 +43,7 @@ public class WeeklyAssignmentAssociatedEventListener {
         final Member participant = participateMemberReadAdapter.getParticipant(event.studyId(), event.participantId());
 
         if (weekly.isAutoAttendance()) {
-            final StudyAttendance attendance
-                    = getParticipantAttendanceByWeek(event.studyId(), participant.getId(), weekly.getWeek());
+            final StudyAttendance attendance = getParticipantAttendanceByWeek(event.studyId(), participant.getId(), weekly.getWeek());
             final LocalDateTime now = LocalDateTime.now();
             final Period period = weekly.getPeriod();
 
@@ -58,10 +57,7 @@ public class WeeklyAssignmentAssociatedEventListener {
         }
     }
 
-    private void applyLateScore(
-            final Member participant,
-            final AttendanceStatus status
-    ) {
+    private void applyLateScore(final Member participant, final AttendanceStatus status) {
         if (status == ABSENCE) { // Scheduler에 의한 자동 결석 처리
             participant.applyScoreByAttendanceStatus(ABSENCE, LATE);
         } else { // 미출결 (NON_ATTENDANCE)
@@ -80,8 +76,7 @@ public class WeeklyAssignmentAssociatedEventListener {
         final LocalDateTime now = LocalDateTime.now();
         final Period period = weekly.getPeriod();
         if (weekly.isAutoAttendance() && !period.isDateWithInRange(now)) { // 수정 시간을 기준으로 제출 시간 업데이트
-            final StudyAttendance attendance
-                    = getParticipantAttendanceByWeek(event.studyId(), participant.getId(), weekly.getWeek());
+            final StudyAttendance attendance = getParticipantAttendanceByWeek(event.studyId(), participant.getId(), weekly.getWeek());
 
             if (attendance.isAttendanceStatus()) {
                 attendance.updateAttendanceStatus(LATE);
@@ -95,11 +90,7 @@ public class WeeklyAssignmentAssociatedEventListener {
                 .orElseThrow(() -> StudyWithMeException.type(StudyWeeklyErrorCode.WEEKLY_NOT_FOUND));
     }
 
-    private StudyAttendance getParticipantAttendanceByWeek(
-            final Long studyId,
-            final Long participantId,
-            final int week
-    ) {
+    private StudyAttendance getParticipantAttendanceByWeek(final Long studyId, final Long participantId, final int week) {
         return studyAttendanceRepository.getParticipantAttendanceByWeek(studyId, participantId, week)
                 .orElseThrow(() -> StudyWithMeException.type(StudyAttendanceErrorCode.ATTENDANCE_NOT_FOUND));
     }

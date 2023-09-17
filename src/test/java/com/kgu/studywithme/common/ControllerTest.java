@@ -45,7 +45,7 @@ import com.kgu.studywithme.study.presentation.StudyApiController;
 import com.kgu.studywithme.study.presentation.StudyInformationApiController;
 import com.kgu.studywithme.study.presentation.StudyInformationOnlyParticipantApiController;
 import com.kgu.studywithme.study.presentation.StudySearchApiController;
-import com.kgu.studywithme.studyattendance.application.usecase.command.ManualAttendanceUseCase;
+import com.kgu.studywithme.studyattendance.application.usecase.ManualAttendanceUseCase;
 import com.kgu.studywithme.studyattendance.presentation.StudyAttendanceApiController;
 import com.kgu.studywithme.studynotice.application.usecase.command.DeleteStudyNoticeCommentUseCase;
 import com.kgu.studywithme.studynotice.application.usecase.command.DeleteStudyNoticeUseCase;
