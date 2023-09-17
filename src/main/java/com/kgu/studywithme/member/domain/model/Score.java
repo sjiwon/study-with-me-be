@@ -10,14 +10,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
 public class Score {
-    private static final int DEFAULT_INIT_VALUE = 80;
-    private static final int MINIMUM = 0;
-    private static final int MAXIMUM = 100;
+    public static final int INIT_SCORE = 80;
+    public static final int MINIMUM = 0;
+    public static final int MAXIMUM = 100;
 
     // 출석 관련 점수
-    private static final int ATTENDANCE = 1;
-    private static final int LATE = 1;
-    private static final int ABSENCE = 5;
+    public static final int ATTENDANCE = 1;
+    public static final int LATE = -1;
+    public static final int ABSENCE = -5;
 
     @Column(name = "score", nullable = false)
     private int value;
@@ -27,7 +27,7 @@ public class Score {
     }
 
     public static Score initScore() {
-        return new Score(DEFAULT_INIT_VALUE);
+        return new Score(INIT_SCORE);
     }
 
     public Score applyAttendance() {
@@ -35,35 +35,35 @@ public class Score {
     }
 
     public Score applyLate() {
-        return new Score(value - LATE);
+        return new Score(value + LATE);
     }
 
     public Score applyAbsence() {
-        return new Score(value - ABSENCE);
+        return new Score(value + ABSENCE);
     }
 
     public Score updateAttendanceToLate() {
-        return new Score(value - ATTENDANCE - LATE);
+        return new Score(value - ATTENDANCE + LATE);
     }
 
     public Score updateAttendanceToAbsence() {
-        return new Score(value - ATTENDANCE - ABSENCE);
+        return new Score(value - ATTENDANCE + ABSENCE);
     }
 
     public Score updateLateToAttendance() {
-        return new Score(value + LATE + ATTENDANCE);
+        return new Score(value - LATE + ATTENDANCE);
     }
 
     public Score updateLateToAbsence() {
-        return new Score(value + LATE - ABSENCE);
+        return new Score(value - LATE + ABSENCE);
     }
 
     public Score updateAbsenceToAttendance() {
-        return new Score(value + ABSENCE + ATTENDANCE);
+        return new Score(value - ABSENCE + ATTENDANCE);
     }
 
     public Score updateAbsenceToLate() {
-        return new Score(value + ABSENCE - LATE);
+        return new Score(value - ABSENCE + LATE);
     }
 
     @Override

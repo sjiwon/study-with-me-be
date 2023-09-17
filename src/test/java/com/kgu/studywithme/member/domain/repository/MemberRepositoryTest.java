@@ -45,8 +45,8 @@ class MemberRepositoryTest extends RepositoryTest {
                 .map(Score::getValue)
                 .containsExactly(
                         scoreOfMemberA,
-                        scoreOfMemberB - 5,
-                        scoreOfMemberC - 5
+                        scoreOfMemberB + Score.ABSENCE,
+                        scoreOfMemberC + Score.ABSENCE
                 );
     }
 

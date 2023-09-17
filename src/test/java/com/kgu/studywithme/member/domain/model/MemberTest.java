@@ -69,10 +69,12 @@ class MemberTest extends ParallelTest {
     @DisplayName("사용자 점수 업데이트")
     class UpdateScore {
         private Member member;
+        private int previousScore;
 
         @BeforeEach
         void setUp() {
             member = JIWON.toMember();
+            previousScore = member.getScore().getValue();
         }
 
         @Nested
@@ -81,34 +83,31 @@ class MemberTest extends ParallelTest {
             @Test
             @DisplayName("출석에 대한 점수를 적용한다")
             void applyAttendance() {
-                // given
-                member.applyScoreByAttendanceStatus(ABSENCE); // 80 - 5 = 75
-
                 // when
-                member.applyScoreByAttendanceStatus(ATTENDANCE); // 75 + 1
+                member.applyScoreByAttendanceStatus(ATTENDANCE);
 
                 // then
-                assertThat(member.getScore().getValue()).isEqualTo(76);
+                assertThat(member.getScore().getValue()).isEqualTo(previousScore + Score.ATTENDANCE);
             }
 
             @Test
             @DisplayName("지각에 대한 점수를 적용한다")
             void applyLate() {
                 // when
-                member.applyScoreByAttendanceStatus(LATE); // 80 - 1
+                member.applyScoreByAttendanceStatus(LATE);
 
                 // then
-                assertThat(member.getScore().getValue()).isEqualTo(79);
+                assertThat(member.getScore().getValue()).isEqualTo(previousScore + Score.LATE);
             }
 
             @Test
             @DisplayName("결석에 대한 점수를 적용한다")
             void applyAbsence() {
                 // when
-                member.applyScoreByAttendanceStatus(ABSENCE); // 80 - 5
+                member.applyScoreByAttendanceStatus(ABSENCE);
 
                 // then
-                assertThat(member.getScore().getValue()).isEqualTo(75);
+                assertThat(member.getScore().getValue()).isEqualTo(previousScore + Score.ABSENCE);
             }
         }
 
@@ -119,60 +118,60 @@ class MemberTest extends ParallelTest {
             @DisplayName("출석 -> 지각으로 수정함에 따라 점수를 업데이트한다")
             void updateAttendanceToLate() {
                 // when
-                member.applyScoreByAttendanceStatus(ATTENDANCE, LATE); // 80 - 1 - 1
+                member.applyScoreByAttendanceStatus(ATTENDANCE, LATE);
 
                 // then
-                assertThat(member.getScore().getValue()).isEqualTo(78);
+                assertThat(member.getScore().getValue()).isEqualTo(previousScore - Score.ATTENDANCE + Score.LATE);
             }
 
             @Test
             @DisplayName("출석 -> 결석으로 수정함에 따라 점수를 업데이트한다")
             void updateAttendanceToAbsence() {
                 // when
-                member.applyScoreByAttendanceStatus(ATTENDANCE, ABSENCE); // 80 - 1 - 5
+                member.applyScoreByAttendanceStatus(ATTENDANCE, ABSENCE);
 
                 // then
-                assertThat(member.getScore().getValue()).isEqualTo(74);
+                assertThat(member.getScore().getValue()).isEqualTo(previousScore - Score.ATTENDANCE + Score.ABSENCE);
             }
 
             @Test
             @DisplayName("지각 -> 출석으로 수정함에 따라 점수를 업데이트한다")
             void updateLateToAttendance() {
                 // when
-                member.applyScoreByAttendanceStatus(LATE, ATTENDANCE); // 80 + 1 + 1
+                member.applyScoreByAttendanceStatus(LATE, ATTENDANCE);
 
                 // then
-                assertThat(member.getScore().getValue()).isEqualTo(82);
+                assertThat(member.getScore().getValue()).isEqualTo(previousScore - Score.LATE + Score.ATTENDANCE);
             }
 
             @Test
             @DisplayName("지각 -> 결석으로 수정함에 따라 점수를 업데이트한다")
             void updateLateToAbsence() {
                 // when
-                member.applyScoreByAttendanceStatus(LATE, ABSENCE); // 80 + 1 - 5
+                member.applyScoreByAttendanceStatus(LATE, ABSENCE);
 
                 // then
-                assertThat(member.getScore().getValue()).isEqualTo(76);
+                assertThat(member.getScore().getValue()).isEqualTo(previousScore - Score.LATE + Score.ABSENCE);
             }
 
             @Test
             @DisplayName("결석 -> 출석으로 수정함에 따라 점수를 업데이트한다")
             void updateAbsenceToAttendance() {
                 // when
-                member.applyScoreByAttendanceStatus(ABSENCE, ATTENDANCE); // 80 + 5 + 1
+                member.applyScoreByAttendanceStatus(ABSENCE, ATTENDANCE);
 
                 // then
-                assertThat(member.getScore().getValue()).isEqualTo(86);
+                assertThat(member.getScore().getValue()).isEqualTo(previousScore - Score.ABSENCE + Score.ATTENDANCE);
             }
 
             @Test
             @DisplayName("결석 -> 지각으로 수정함에 따라 점수를 업데이트한다")
             void updateAbsenceToLate() {
                 // when
-                member.applyScoreByAttendanceStatus(ABSENCE, LATE); // 80 + 5 - 1
+                member.applyScoreByAttendanceStatus(ABSENCE, LATE);
 
                 // then
-                assertThat(member.getScore().getValue()).isEqualTo(84);
+                assertThat(member.getScore().getValue()).isEqualTo(previousScore - Score.ABSENCE + Score.LATE);
             }
         }
     }
