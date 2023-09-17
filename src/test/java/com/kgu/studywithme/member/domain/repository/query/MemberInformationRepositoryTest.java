@@ -59,7 +59,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @DisplayName("Member -> MemberInformationRepository 테스트")
 class MemberInformationRepositoryTest extends RepositoryTest {
     @Autowired
-    private MemberInformationRepositoryImpl memberInformationRepositoryImpl;
+    private MemberInformationRepositoryImpl sut;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -96,7 +96,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
         @DisplayName("사용자 기본 Public 정보를 조회한다")
         void fetchPublicInformationById() {
             // when
-            final MemberPublicInformation result = memberInformationRepositoryImpl.fetchPublicInformationById(member.getId());
+            final MemberPublicInformation result = sut.fetchPublicInformationById(member.getId());
 
             // then
             assertAll(
@@ -122,7 +122,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
         @DisplayName("사용자 기본 Private 정보를 조회한다")
         void fetchPrivateInformationById() {
             // when
-            final MemberPrivateInformation result = memberInformationRepositoryImpl.fetchPrivateInformationById(member.getId());
+            final MemberPrivateInformation result = sut.fetchPrivateInformationById(member.getId());
 
             // then
             assertAll(
@@ -171,7 +171,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
                     )
             ));
 
-            final List<ReceivedReview> result1 = memberInformationRepositoryImpl.fetchReceivedReviewById(member.getId());
+            final List<ReceivedReview> result1 = sut.fetchReceivedReviewById(member.getId());
             assertAll(
                     () -> assertThat(result1).hasSize(3),
                     () -> assertThat(result1)
@@ -199,7 +199,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
                     )
             ));
 
-            final List<ReceivedReview> result2 = memberInformationRepositoryImpl.fetchReceivedReviewById(member.getId());
+            final List<ReceivedReview> result2 = sut.fetchReceivedReviewById(member.getId());
             assertAll(
                     () -> assertThat(result2).hasSize(5),
                     () -> assertThat(result2)
@@ -247,7 +247,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
                     StudyParticipant.applyInStudy(studyC.getId(), member.getId())
             ));
 
-            final List<AppliedStudy> result1 = memberInformationRepositoryImpl.fetchAppliedStudyById(member.getId());
+            final List<AppliedStudy> result1 = sut.fetchAppliedStudyById(member.getId());
             assertThat(result1)
                     .map(AppliedStudy::id)
                     .containsExactly(studyC.getId(), studyB.getId(), studyA.getId());
@@ -259,7 +259,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             ));
             studyParticipantRepository.updateParticipantStatus(studyB.getId(), member.getId(), APPROVE);
 
-            final List<AppliedStudy> result2 = memberInformationRepositoryImpl.fetchAppliedStudyById(member.getId());
+            final List<AppliedStudy> result2 = sut.fetchAppliedStudyById(member.getId());
             assertThat(result2)
                     .map(AppliedStudy::id)
                     .containsExactly(studyE.getId(), studyD.getId(), studyC.getId(), studyA.getId());
@@ -275,7 +275,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
                     StudyParticipant.applyParticipant(studyC.getId(), member.getId(), APPROVE)
             ));
 
-            final List<ParticipateStudy> result1 = memberInformationRepositoryImpl.fetchParticipateStudyById(member.getId());
+            final List<ParticipateStudy> result1 = sut.fetchParticipateStudyById(member.getId());
             assertThat(result1)
                     .map(ParticipateStudy::id)
                     .containsExactly(studyC.getId(), studyB.getId(), studyA.getId());
@@ -287,7 +287,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             ));
             studyParticipantRepository.updateParticipantStatus(studyC.getId(), member.getId(), GRADUATED);
 
-            final List<ParticipateStudy> result2 = memberInformationRepositoryImpl.fetchParticipateStudyById(member.getId());
+            final List<ParticipateStudy> result2 = sut.fetchParticipateStudyById(member.getId());
             assertThat(result2)
                     .map(ParticipateStudy::id)
                     .containsExactly(studyE.getId(), studyD.getId(), studyB.getId(), studyA.getId());
@@ -303,7 +303,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
                     StudyParticipant.applyParticipant(studyC.getId(), member.getId(), APPROVE)
             ));
 
-            final List<GraduatedStudy> result1 = memberInformationRepositoryImpl.fetchGraduatedStudyById(member.getId());
+            final List<GraduatedStudy> result1 = sut.fetchGraduatedStudyById(member.getId());
             assertThat(result1).isEmpty();
 
             /* studyD, studyE 추가 참여 -> studyA, studyC 졸업 */
@@ -314,7 +314,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             studyParticipantRepository.updateParticipantStatus(studyA.getId(), member.getId(), GRADUATED);
             studyParticipantRepository.updateParticipantStatus(studyC.getId(), member.getId(), GRADUATED);
 
-            final List<GraduatedStudy> result2 = memberInformationRepositoryImpl.fetchGraduatedStudyById(member.getId());
+            final List<GraduatedStudy> result2 = sut.fetchGraduatedStudyById(member.getId());
             assertAll(
                     () -> assertThat(result2.get(0).getId()).isEqualTo(studyC.getId()),
                     () -> assertThat(result2.get(0).getReview()).isNull(),
@@ -325,7 +325,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             /* member -> studyA 리뷰 작성 */
             studyReviewRepository.save(StudyReview.writeReview(studyA.getId(), member.getId(), "Good!"));
 
-            final List<GraduatedStudy> result3 = memberInformationRepositoryImpl.fetchGraduatedStudyById(member.getId());
+            final List<GraduatedStudy> result3 = sut.fetchGraduatedStudyById(member.getId());
             assertAll(
                     () -> assertThat(result3.get(0).getId()).isEqualTo(studyC.getId()),
                     () -> assertThat(result3.get(0).getReview()).isNull(),
@@ -355,7 +355,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
                     StudyAttendance.recordAttendance(studyE.getId(), member.getId(), 1, ABSENCE)
             ));
 
-            final List<AttendanceRatio> result1 = memberInformationRepositoryImpl.fetchAttendanceRatioById(member.getId());
+            final List<AttendanceRatio> result1 = sut.fetchAttendanceRatioById(member.getId());
             assertAll(
                     () -> assertThat(findCountByAttendanceStatus(result1, ATTENDANCE)).isEqualTo(3),
                     () -> assertThat(findCountByAttendanceStatus(result1, LATE)).isEqualTo(1),
@@ -372,7 +372,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
                     StudyAttendance.recordAttendance(studyE.getId(), member.getId(), 2, NON_ATTENDANCE)
             ));
 
-            final List<AttendanceRatio> result2 = memberInformationRepositoryImpl.fetchAttendanceRatioById(member.getId());
+            final List<AttendanceRatio> result2 = sut.fetchAttendanceRatioById(member.getId());
             assertAll(
                     () -> assertThat(findCountByAttendanceStatus(result2, ATTENDANCE)).isEqualTo(5),
                     () -> assertThat(findCountByAttendanceStatus(result2, LATE)).isEqualTo(1),
@@ -402,7 +402,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
                     Favorite.favoriteMarking(member.getId(), studyC.getId())
             ));
 
-            final List<LikeMarkedStudy> result1 = memberInformationRepositoryImpl.fetchLikeMarkedStudyById(member.getId());
+            final List<LikeMarkedStudy> result1 = sut.fetchLikeMarkedStudyById(member.getId());
             assertThat(result1)
                     .map(LikeMarkedStudy::id)
                     .containsExactly(studyC.getId(), studyB.getId(), studyA.getId());
@@ -413,7 +413,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
                     Favorite.favoriteMarking(member.getId(), studyE.getId())
             ));
 
-            final List<LikeMarkedStudy> result2 = memberInformationRepositoryImpl.fetchLikeMarkedStudyById(member.getId());
+            final List<LikeMarkedStudy> result2 = sut.fetchLikeMarkedStudyById(member.getId());
             assertThat(result2)
                     .map(LikeMarkedStudy::id)
                     .containsExactly(studyE.getId(), studyD.getId(), studyC.getId(), studyB.getId(), studyA.getId());
