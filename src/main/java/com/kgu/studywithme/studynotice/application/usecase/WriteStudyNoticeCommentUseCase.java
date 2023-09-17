@@ -1,8 +1,8 @@
-package com.kgu.studywithme.studynotice.application.service;
+package com.kgu.studywithme.studynotice.application.usecase;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.studynotice.application.usecase.command.WriteStudyNoticeCommentUseCase;
+import com.kgu.studywithme.studynotice.application.usecase.command.WriteStudyNoticeCommentCommand;
 import com.kgu.studywithme.studynotice.domain.model.StudyNotice;
 import com.kgu.studywithme.studynotice.domain.repository.StudyNoticeRepository;
 import com.kgu.studywithme.studynotice.exception.StudyNoticeErrorCode;
@@ -13,21 +13,15 @@ import org.springframework.stereotype.Service;
 @Service
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
-public class WriteStudyNoticeCommentService implements WriteStudyNoticeCommentUseCase {
+public class WriteStudyNoticeCommentUseCase {
     private final StudyNoticeRepository studyNoticeRepository;
     private final ParticipantVerificationRepositoryAdapter participantVerificationRepositoryAdapter;
 
-    @Override
-    public void invoke(final Command command) {
-        final StudyNotice notice = findById(command.noticeId());
+    public void invoke(final WriteStudyNoticeCommentCommand command) {
+        final StudyNotice notice = studyNoticeRepository.getById(command.noticeId());
         validateWriterIsStudyParticipant(notice.getStudyId(), command.writerId());
 
         notice.addComment(command.writerId(), command.content());
-    }
-
-    private StudyNotice findById(final Long noticeId) {
-        return studyNoticeRepository.findById(noticeId)
-                .orElseThrow(() -> StudyWithMeException.type(StudyNoticeErrorCode.NOTICE_NOT_FOUND));
     }
 
     private void validateWriterIsStudyParticipant(final Long studyId, final Long writerId) {

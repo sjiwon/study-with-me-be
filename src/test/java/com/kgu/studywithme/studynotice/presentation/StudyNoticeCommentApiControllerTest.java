@@ -31,9 +31,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("StudyNotice/Comment -> StudyNoticeCommentApiController 테스트")
 class StudyNoticeCommentApiControllerTest extends ControllerTest {
     @Nested
-    @DisplayName("공지사항 댓글 작성 API [POST /api/notices/{noticeId}/comment] - AccessToken 필수")
+    @DisplayName("공지사항 댓글 작성 API [POST /api/notices/{noticeId}/comments] - AccessToken 필수")
     class Write {
-        private static final String BASE_URL = "/api/notices/{noticeId}/comment";
+        private static final String BASE_URL = "/api/notices/{noticeId}/comments";
         private static final Long NOTICE_ID = 1L;
         private static final Long PARTICIPANT_ID = 1L;
         private static final Long ANONYMOUS_ID = 2L;

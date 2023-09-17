@@ -33,16 +33,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("StudyNotice -> StudyNoticeApiController 테스트")
 class StudyNoticeApiControllerTest extends ControllerTest {
     @Nested
-    @DisplayName("공지사항 작성 API [POST /api/studies/{studyId}/notice] - AccessToken 필수")
+    @DisplayName("공지사항 작성 API [POST /api/studies/{studyId}/notices] - AccessToken 필수")
     class Write {
-        private static final String BASE_URL = "/api/studies/{studyId}/notice";
+        private static final String BASE_URL = "/api/studies/{studyId}/notices";
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;
         private static final Long ANONYMOUS_ID = 2L;
-        private static final WriteStudyNoticeRequest REQUEST = new WriteStudyNoticeRequest(
-                "공지사항 제목",
-                "공지사항 내용~~"
-        );
+        private static final WriteStudyNoticeRequest REQUEST = new WriteStudyNoticeRequest("공지사항 제목", "공지사항 내용~~");
 
         @BeforeEach
         void setUp() {
@@ -141,10 +138,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
         private static final Long NOTICE_ID = 1L;
         private static final Long HOST_ID = 1L;
         private static final Long ANONYMOUS_ID = 2L;
-        private static final UpdateStudyNoticeRequest REQUEST = new UpdateStudyNoticeRequest(
-                "공지사항 제목",
-                "공지사항 내용~~"
-        );
+        private static final UpdateStudyNoticeRequest REQUEST = new UpdateStudyNoticeRequest("공지사항 제목", "공지사항 내용~~");
 
         @BeforeEach
         void setUp() {
