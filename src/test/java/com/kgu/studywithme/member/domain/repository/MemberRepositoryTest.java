@@ -69,44 +69,42 @@ class MemberRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    @DisplayName("해당 닉네임을 사용하고 있는 Member Ids를 조회한다")
+    @DisplayName("해당 닉네임을 사용하고 있는 MemberId를 조회한다")
     void findIdByNicknameUsed() {
         // given
         final Member memberA = sut.save(JIWON.toMember());
         final Member memberB = sut.save(GHOST.toMember());
-        final Member memberC = sut.save(ANONYMOUS.toMember());
 
         // when
-        final List<Long> ids1 = sut.findIdByNicknameUsed(memberA.getNickname().getValue());
-        final List<Long> ids2 = sut.findIdByNicknameUsed(memberB.getNickname().getValue());
-        final List<Long> ids3 = sut.findIdByNicknameUsed(memberC.getNickname().getValue());
+        final Long ids1 = sut.findIdByNicknameUsed(memberA.getNickname().getValue());
+        final Long ids2 = sut.findIdByNicknameUsed(memberB.getNickname().getValue());
+        final Long ids3 = sut.findIdByNicknameUsed(memberB.getNickname().getValue() + "diff");
 
         // then
         assertAll(
-                () -> assertThat(ids1).containsExactlyInAnyOrder(memberA.getId()),
-                () -> assertThat(ids2).containsExactlyInAnyOrder(memberB.getId()),
-                () -> assertThat(ids3).containsExactlyInAnyOrder(memberC.getId())
+                () -> assertThat(ids1).isEqualTo(memberA.getId()),
+                () -> assertThat(ids2).isEqualTo(memberB.getId()),
+                () -> assertThat(ids3).isNull()
         );
     }
 
     @Test
-    @DisplayName("해당 전화번호를 사용하고 있는 Member Ids를 조회한다")
+    @DisplayName("해당 전화번호를 사용하고 있는 MemberId를 조회한다")
     void findIdByPhoneUsed() {
         // given
         final Member memberA = sut.save(JIWON.toMember());
         final Member memberB = sut.save(GHOST.toMember());
-        final Member memberC = sut.save(ANONYMOUS.toMember());
 
         // when
-        final List<Long> ids1 = sut.findIdByPhoneUsed(memberA.getPhone().getValue());
-        final List<Long> ids2 = sut.findIdByPhoneUsed(memberB.getPhone().getValue());
-        final List<Long> ids3 = sut.findIdByPhoneUsed(memberC.getPhone().getValue());
+        final Long ids1 = sut.findIdByPhoneUsed(memberA.getPhone().getValue());
+        final Long ids2 = sut.findIdByPhoneUsed(memberB.getPhone().getValue());
+        final Long ids3 = sut.findIdByPhoneUsed(memberB.getPhone().getValue().replaceAll("0", "9"));
 
         // then
         assertAll(
-                () -> assertThat(ids1).containsExactlyInAnyOrder(memberA.getId()),
-                () -> assertThat(ids2).containsExactlyInAnyOrder(memberB.getId()),
-                () -> assertThat(ids3).containsExactlyInAnyOrder(memberC.getId())
+                () -> assertThat(ids1).isEqualTo(memberA.getId()),
+                () -> assertThat(ids2).isEqualTo(memberB.getId()),
+                () -> assertThat(ids3).isNull()
         );
     }
 
@@ -155,7 +153,7 @@ class MemberRepositoryTest extends RepositoryTest {
 
         // when
         final boolean actual1 = sut.existsByPhoneValue(phone);
-        final boolean actual2 = sut.existsByPhoneValue("diff" + phone);
+        final boolean actual2 = sut.existsByPhoneValue(phone.replaceAll("0", "9"));
 
         // then
         assertAll(

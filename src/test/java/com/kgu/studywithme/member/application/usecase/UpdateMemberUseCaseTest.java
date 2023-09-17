@@ -10,8 +10,6 @@ import com.kgu.studywithme.member.exception.MemberErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
-
 import static com.kgu.studywithme.common.fixture.MemberFixture.GHOST;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,11 +24,11 @@ import static org.mockito.Mockito.verify;
 
 @DisplayName("Member -> UpdateMemberUseCase 테스트")
 class UpdateMemberUseCaseTest extends UseCaseTest {
-    private final MemberRepository memberRepository = mock(MemberRepository.class);
     private final MemberResourceValidator memberResourceValidator = mock(MemberResourceValidator.class);
-    private final UpdateMemberUseCase sut = new UpdateMemberUseCase(memberRepository, memberResourceValidator);
+    private final MemberRepository memberRepository = mock(MemberRepository.class);
+    private final UpdateMemberUseCase sut = new UpdateMemberUseCase(memberResourceValidator, memberRepository);
 
-    private final Member member = JIWON.toMember().apply(1L, LocalDateTime.now());
+    private final Member member = JIWON.toMember().apply(1L);
     private final UpdateMemberCommand command = new UpdateMemberCommand(
             member.getId(),
             GHOST.getNickname(),
@@ -44,10 +42,9 @@ class UpdateMemberUseCaseTest extends UseCaseTest {
     @DisplayName("다른 사람이 사용하고 있는 닉네임으로 수정할 수 없다")
     void throwExceptionByDuplicateNickname() {
         // given
-        given(memberRepository.getById(command.memberId())).willReturn(member);
         doThrow(StudyWithMeException.type(MemberErrorCode.DUPLICATE_NICKNAME))
                 .when(memberResourceValidator)
-                .validateInUpdate(member);
+                .validateInUpdate(member.getId(), command.nickname(), command.phone());
 
         // when - then
         assertThatThrownBy(() -> sut.invoke(command))
@@ -55,8 +52,8 @@ class UpdateMemberUseCaseTest extends UseCaseTest {
                 .hasMessage(MemberErrorCode.DUPLICATE_NICKNAME.getMessage());
 
         assertAll(
-                () -> verify(memberRepository, times(1)).getById(command.memberId()),
-                () -> verify(memberResourceValidator, times(1)).validateInUpdate(member)
+                () -> verify(memberResourceValidator, times(1)).validateInUpdate(member.getId(), command.nickname(), command.phone()),
+                () -> verify(memberRepository, times(0)).getById(command.memberId())
         );
     }
 
@@ -64,10 +61,9 @@ class UpdateMemberUseCaseTest extends UseCaseTest {
     @DisplayName("다른 사람이 사용하고 있는 전화번호로 수정할 수 없다")
     void throwExceptionByDuplicatePhone() {
         // given
-        given(memberRepository.getById(command.memberId())).willReturn(member);
         doThrow(StudyWithMeException.type(MemberErrorCode.DUPLICATE_PHONE))
                 .when(memberResourceValidator)
-                .validateInUpdate(member);
+                .validateInUpdate(member.getId(), command.nickname(), command.phone());
 
         // when - then
         assertThatThrownBy(() -> sut.invoke(command))
@@ -75,8 +71,8 @@ class UpdateMemberUseCaseTest extends UseCaseTest {
                 .hasMessage(MemberErrorCode.DUPLICATE_PHONE.getMessage());
 
         assertAll(
-                () -> verify(memberRepository, times(1)).getById(command.memberId()),
-                () -> verify(memberResourceValidator, times(1)).validateInUpdate(member)
+                () -> verify(memberResourceValidator, times(1)).validateInUpdate(member.getId(), command.nickname(), command.phone()),
+                () -> verify(memberRepository, times(0)).getById(command.memberId())
         );
     }
 
@@ -87,15 +83,15 @@ class UpdateMemberUseCaseTest extends UseCaseTest {
         given(memberRepository.getById(command.memberId())).willReturn(member);
         doNothing()
                 .when(memberResourceValidator)
-                .validateInUpdate(member);
+                .validateInUpdate(member.getId(), command.nickname(), command.phone());
 
         // when
         sut.invoke(command);
 
         // then
         assertAll(
+                () -> verify(memberResourceValidator, times(1)).validateInUpdate(member.getId(), command.nickname(), command.phone()),
                 () -> verify(memberRepository, times(1)).getById(command.memberId()),
-                () -> verify(memberResourceValidator, times(1)).validateInUpdate(member),
                 () -> assertThat(member.getNickname().getValue()).isEqualTo(command.nickname().getValue()),
                 () -> assertThat(member.getPhone().getValue()).isEqualTo(command.phone().getValue()),
                 () -> assertThat(member.getAddress().getProvince()).isEqualTo(command.address().getProvince()),

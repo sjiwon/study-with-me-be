@@ -2,15 +2,12 @@ package com.kgu.studywithme.member.domain.service;
 
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.model.Email;
-import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.member.domain.model.Nickname;
 import com.kgu.studywithme.member.domain.model.Phone;
 import com.kgu.studywithme.member.domain.repository.MemberRepository;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -23,9 +20,9 @@ public class MemberResourceValidator {
         validatePhoneIsUnique(phone);
     }
 
-    public void validateInUpdate(final Member member) {
-        validateNicknameIsInUseByOther(member.getId(), member.getNickname());
-        validatePhoneIsInUseByOther(member.getId(), member.getPhone());
+    public void validateInUpdate(final Long memberId, final Nickname nickname, final Phone phone) {
+        validateNicknameIsInUseByOther(memberId, nickname);
+        validatePhoneIsInUseByOther(memberId, phone);
     }
 
     private void validateEmailIsUnique(final Email email) {
@@ -47,26 +44,22 @@ public class MemberResourceValidator {
     }
 
     private void validateNicknameIsInUseByOther(final Long memberId, final Nickname nickname) {
-        final List<Long> ids = memberRepository.findIdByNicknameUsed(nickname.getValue());
+        final Long nicknameUsedId = memberRepository.findIdByNicknameUsed(nickname.getValue());
 
-        if (usedByOther(ids, memberId)) {
+        if (usedByOther(nicknameUsedId, memberId)) {
             throw StudyWithMeException.type(MemberErrorCode.DUPLICATE_NICKNAME);
         }
     }
 
     private void validatePhoneIsInUseByOther(final Long memberId, final Phone phone) {
-        final List<Long> ids = memberRepository.findIdByPhoneUsed(phone.getValue());
+        final Long phoneUsedId = memberRepository.findIdByPhoneUsed(phone.getValue());
 
-        if (usedByOther(ids, memberId)) {
+        if (usedByOther(phoneUsedId, memberId)) {
             throw StudyWithMeException.type(MemberErrorCode.DUPLICATE_PHONE);
         }
     }
 
-    private boolean usedByOther(final List<Long> resourceUsedIds, final Long memberId) {
-        if (resourceUsedIds.isEmpty()) {
-            return false;
-        }
-
-        return resourceUsedIds.size() != 1 || !resourceUsedIds.contains(memberId);
+    private boolean usedByOther(final Long resourceUsedId, final Long memberId) {
+        return resourceUsedId != null && !resourceUsedId.equals(memberId);
     }
 }

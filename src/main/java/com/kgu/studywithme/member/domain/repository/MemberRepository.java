@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -35,12 +34,12 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("SELECT m.id" +
             " FROM Member m" +
             " WHERE m.nickname.value = :nickname")
-    List<Long> findIdByNicknameUsed(@Param("nickname") final String nickname);
+    Long findIdByNicknameUsed(@Param("nickname") final String nickname);
 
     @Query("SELECT m.id" +
             " FROM Member m" +
             " WHERE m.phone.value = :phone")
-    List<Long> findIdByPhoneUsed(@Param("phone") final String phone);
+    Long findIdByPhoneUsed(@Param("phone") final String phone);
 
     // Method Query
     boolean existsByEmailValue(final String email);

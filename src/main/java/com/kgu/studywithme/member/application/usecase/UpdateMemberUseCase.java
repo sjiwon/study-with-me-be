@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class UpdateMemberUseCase {
-    private final MemberRepository memberRepository;
     private final MemberResourceValidator memberResourceValidator;
+    private final MemberRepository memberRepository;
 
     public void invoke(final UpdateMemberCommand command) {
-        final Member member = memberRepository.getById(command.memberId());
-        memberResourceValidator.validateInUpdate(member);
+        memberResourceValidator.validateInUpdate(command.memberId(), command.nickname(), command.phone());
 
+        final Member member = memberRepository.getById(command.memberId());
         member.update(
                 command.nickname(),
                 command.phone(),
