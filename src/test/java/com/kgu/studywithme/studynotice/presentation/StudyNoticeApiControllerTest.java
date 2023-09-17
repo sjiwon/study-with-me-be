@@ -46,8 +46,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
 
         @BeforeEach
         void setUp() {
-            mockingForStudyHost(STUDY_ID, HOST_ID, true);
-            mockingForStudyHost(STUDY_ID, ANONYMOUS_ID, false);
+            mockingForStudyHost(STUDY_ID, HOST_ID);
         }
 
         @Test
@@ -149,8 +148,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
 
         @BeforeEach
         void setUp() {
-            mockingForStudyHost(STUDY_ID, HOST_ID, true);
-            mockingForStudyHost(STUDY_ID, ANONYMOUS_ID, false);
+            mockingForStudyHost(STUDY_ID, HOST_ID);
         }
 
         @Test
@@ -247,8 +245,7 @@ class StudyNoticeApiControllerTest extends ControllerTest {
 
         @BeforeEach
         void setUp() {
-            mockingForStudyHost(STUDY_ID, HOST_ID, true);
-            mockingForStudyHost(STUDY_ID, ANONYMOUS_ID, false);
+            mockingForStudyHost(STUDY_ID, HOST_ID);
         }
 
         @Test

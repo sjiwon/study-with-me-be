@@ -156,8 +156,8 @@ public class Study extends BaseEntity<Study> {
     }
 
     public void update(
-            final String name,
-            final String description,
+            final StudyName name,
+            final Description description,
             final int capacity,
             final Category category,
             final StudyThumbnail thumbnail,
@@ -168,8 +168,8 @@ public class Study extends BaseEntity<Study> {
             final int minimumAttendanceForGraduation,
             final Set<String> hashtags
     ) {
-        this.name = new StudyName(name);
-        this.description = new Description(description);
+        this.name = name;
+        this.description = description;
         this.capacity = this.capacity.update(capacity, participants);
         this.category = category;
         this.thumbnail = thumbnail;

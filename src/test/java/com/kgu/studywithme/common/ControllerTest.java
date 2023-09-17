@@ -34,19 +34,13 @@ import com.kgu.studywithme.memberreport.presentation.MemberReportApiController;
 import com.kgu.studywithme.memberreview.application.usecase.UpdateMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.application.usecase.WriteMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.presentation.MemberReviewApiController;
-import com.kgu.studywithme.study.application.adapter.StudyVerificationRepositoryAdapter;
-import com.kgu.studywithme.study.application.usecase.command.CreateStudyUseCase;
-import com.kgu.studywithme.study.application.usecase.command.TerminateStudyUseCase;
-import com.kgu.studywithme.study.application.usecase.command.UpdateStudyUseCase;
-import com.kgu.studywithme.study.application.usecase.query.QueryApplicantByIdUseCase;
-import com.kgu.studywithme.study.application.usecase.query.QueryAttendanceByIdUseCase;
-import com.kgu.studywithme.study.application.usecase.query.QueryBasicInformationByIdUseCase;
-import com.kgu.studywithme.study.application.usecase.query.QueryNoticeByIdUseCase;
-import com.kgu.studywithme.study.application.usecase.query.QueryParticipantByIdUseCase;
-import com.kgu.studywithme.study.application.usecase.query.QueryReviewByIdUseCase;
-import com.kgu.studywithme.study.application.usecase.query.QueryStudyByCategoryUseCase;
-import com.kgu.studywithme.study.application.usecase.query.QueryStudyByRecommendUseCase;
-import com.kgu.studywithme.study.application.usecase.query.QueryWeeklyByIdUseCase;
+import com.kgu.studywithme.study.application.usecase.CreateStudyUseCase;
+import com.kgu.studywithme.study.application.usecase.StudyQueryOnlyParticipantUseCase;
+import com.kgu.studywithme.study.application.usecase.StudyQueryUseCase;
+import com.kgu.studywithme.study.application.usecase.StudySearchUseCase;
+import com.kgu.studywithme.study.application.usecase.TerminateStudyUseCase;
+import com.kgu.studywithme.study.application.usecase.UpdateStudyUseCase;
+import com.kgu.studywithme.study.domain.repository.StudyRepository;
 import com.kgu.studywithme.study.presentation.StudyApiController;
 import com.kgu.studywithme.study.presentation.StudyInformationApiController;
 import com.kgu.studywithme.study.presentation.StudyInformationOnlyParticipantApiController;
@@ -187,7 +181,7 @@ public abstract class ControllerTest {
 
     // AOP Validation
     @MockBean
-    private StudyVerificationRepositoryAdapter studyVerificationRepositoryAdapter;
+    private StudyRepository studyRepository;
 
     @MockBean
     private ParticipantVerificationRepositoryAdapter participantVerificationRepositoryAdapter;
@@ -252,31 +246,13 @@ public abstract class ControllerTest {
 
     // Study [Query]
     @MockBean
-    protected QueryBasicInformationByIdUseCase queryBasicInformationByIdUseCase;
+    protected StudyQueryUseCase studyQueryUseCase;
 
     @MockBean
-    protected QueryReviewByIdUseCase queryReviewByIdUseCase;
+    protected StudyQueryOnlyParticipantUseCase studyQueryOnlyParticipantUseCase;
 
     @MockBean
-    protected QueryParticipantByIdUseCase queryParticipantByIdUseCase;
-
-    @MockBean
-    protected QueryApplicantByIdUseCase queryApplicantByIdUseCase;
-
-    @MockBean
-    protected QueryNoticeByIdUseCase queryNoticeByIdUseCase;
-
-    @MockBean
-    protected QueryAttendanceByIdUseCase queryAttendanceByIdUseCase;
-
-    @MockBean
-    protected QueryWeeklyByIdUseCase queryWeeklyByIdUseCase;
-
-    @MockBean
-    protected QueryStudyByCategoryUseCase queryStudyByCategoryUseCase;
-
-    @MockBean
-    protected QueryStudyByRecommendUseCase queryStudyByRecommendUseCase;
+    protected StudySearchUseCase studySearchUseCase;
 
     // StudyParticipant
     @MockBean
@@ -415,8 +391,8 @@ public abstract class ControllerTest {
                 .isTokenValid(any());
     }
 
-    protected void mockingForStudyHost(final Long studyId, final Long memberId, final boolean isValid) {
-        given(studyVerificationRepositoryAdapter.isHost(studyId, memberId)).willReturn(isValid);
+    protected void mockingForStudyHost(final Long studyId, final Long hostId) {
+        given(studyRepository.getHostId(studyId)).willReturn(hostId);
     }
 
     protected void mockingForStudyParticipant(final Long studyId, final Long memberId, final boolean isValid) {

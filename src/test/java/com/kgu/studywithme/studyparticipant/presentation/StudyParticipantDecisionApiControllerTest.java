@@ -42,8 +42,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
 
         @BeforeEach
         void setUp() {
-            mockingForStudyHost(STUDY_ID, HOST_ID, true);
-            mockingForStudyHost(STUDY_ID, APPLIER_ID, false);
+            mockingForStudyHost(STUDY_ID, HOST_ID);
         }
 
         @Test
@@ -232,8 +231,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
 
         @BeforeEach
         void setUp() {
-            mockingForStudyHost(STUDY_ID, HOST_ID, true);
-            mockingForStudyHost(STUDY_ID, APPLIER_ID, false);
+            mockingForStudyHost(STUDY_ID, HOST_ID);
         }
 
         @Test

@@ -12,7 +12,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -25,8 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @DisplayName("Study -> 도메인 [Hashtags VO] 테스트")
 class HashtagsTest extends ParallelTest {
-    private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
-    private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L, LocalDateTime.now());
+    private final Member host = JIWON.toMember().apply(1L);
+    private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L);
 
     @Nested
     class Construct {

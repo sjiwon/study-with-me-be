@@ -39,9 +39,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("Study -> StudyApiController 테스트")
 class StudyApiControllerTest extends ControllerTest {
     @Nested
-    @DisplayName("스터디 생성 API [POST /api/study] - AccessToken 필수")
+    @DisplayName("스터디 생성 API [POST /api/studies] - AccessToken 필수")
     class Create {
-        private static final String BASE_URL = "/api/study";
+        private static final String BASE_URL = "/api/studies";
         private static final Long HOST_ID = 1L;
         private static final CreateStudyRequest ONLINE_STUDY_REQUEST = new CreateStudyRequest(
                 SPRING.getName().getValue(),
@@ -289,8 +289,7 @@ class StudyApiControllerTest extends ControllerTest {
 
         @BeforeEach
         void setUp() {
-            mockingForStudyHost(STUDY_ID, HOST_ID, true);
-            mockingForStudyHost(STUDY_ID, ANONYMOUS_ID, false);
+            mockingForStudyHost(STUDY_ID, HOST_ID);
         }
 
         @Test
@@ -710,8 +709,7 @@ class StudyApiControllerTest extends ControllerTest {
 
         @BeforeEach
         void setUp() {
-            mockingForStudyHost(STUDY_ID, HOST_ID, true);
-            mockingForStudyHost(STUDY_ID, ANONYMOUS_ID, false);
+            mockingForStudyHost(STUDY_ID, HOST_ID);
         }
 
         @Test

@@ -4,14 +4,15 @@ import com.kgu.studywithme.global.aop.CheckStudyHost;
 import com.kgu.studywithme.global.aop.CheckStudyParticipant;
 import com.kgu.studywithme.global.dto.ResponseWrapper;
 import com.kgu.studywithme.global.resolver.ExtractPayload;
-import com.kgu.studywithme.study.application.usecase.query.QueryApplicantByIdUseCase;
-import com.kgu.studywithme.study.application.usecase.query.QueryAttendanceByIdUseCase;
-import com.kgu.studywithme.study.application.usecase.query.QueryNoticeByIdUseCase;
-import com.kgu.studywithme.study.application.usecase.query.QueryWeeklyByIdUseCase;
-import com.kgu.studywithme.study.infrastructure.query.dto.AttendanceInformation;
-import com.kgu.studywithme.study.infrastructure.query.dto.NoticeInformation;
-import com.kgu.studywithme.study.infrastructure.query.dto.StudyApplicantInformation;
-import com.kgu.studywithme.study.infrastructure.query.dto.WeeklyInformation;
+import com.kgu.studywithme.study.application.usecase.StudyQueryOnlyParticipantUseCase;
+import com.kgu.studywithme.study.application.usecase.query.GetApplicantById;
+import com.kgu.studywithme.study.application.usecase.query.GetAttendanceById;
+import com.kgu.studywithme.study.application.usecase.query.GetNoticeById;
+import com.kgu.studywithme.study.application.usecase.query.GetWeeklyById;
+import com.kgu.studywithme.study.domain.repository.query.dto.AttendanceInformation;
+import com.kgu.studywithme.study.domain.repository.query.dto.NoticeInformation;
+import com.kgu.studywithme.study.domain.repository.query.dto.StudyApplicantInformation;
+import com.kgu.studywithme.study.domain.repository.query.dto.WeeklyInformation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -28,10 +29,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/studies/{studyId}")
 public class StudyInformationOnlyParticipantApiController {
-    private final QueryApplicantByIdUseCase queryApplicantByIdUseCase;
-    private final QueryNoticeByIdUseCase queryNoticeByIdUseCase;
-    private final QueryAttendanceByIdUseCase queryAttendanceByIdUseCase;
-    private final QueryWeeklyByIdUseCase queryWeeklyByIdUseCase;
+    private final StudyQueryOnlyParticipantUseCase studyQueryOnlyParticipantUseCase;
 
     @Operation(summary = "스터디 신청자 조회 EndPoint")
     @CheckStudyHost
@@ -40,9 +38,7 @@ public class StudyInformationOnlyParticipantApiController {
             @ExtractPayload final Long hostId,
             @PathVariable final Long studyId
     ) {
-        final List<StudyApplicantInformation> response = queryApplicantByIdUseCase.invoke(
-                new QueryApplicantByIdUseCase.Query(studyId)
-        );
+        final List<StudyApplicantInformation> response = studyQueryOnlyParticipantUseCase.getApplicantById(new GetApplicantById(studyId));
         return ResponseEntity.ok(ResponseWrapper.from(response));
     }
 
@@ -53,9 +49,7 @@ public class StudyInformationOnlyParticipantApiController {
             @ExtractPayload final Long memberId,
             @PathVariable final Long studyId
     ) {
-        final List<NoticeInformation> response = queryNoticeByIdUseCase.invoke(
-                new QueryNoticeByIdUseCase.Query(studyId)
-        );
+        final List<NoticeInformation> response = studyQueryOnlyParticipantUseCase.getNoticeById(new GetNoticeById(studyId));
         return ResponseEntity.ok(ResponseWrapper.from(response));
     }
 
@@ -66,9 +60,7 @@ public class StudyInformationOnlyParticipantApiController {
             @ExtractPayload final Long memberId,
             @PathVariable final Long studyId
     ) {
-        final List<AttendanceInformation> response = queryAttendanceByIdUseCase.invoke(
-                new QueryAttendanceByIdUseCase.Query(studyId)
-        );
+        final List<AttendanceInformation> response = studyQueryOnlyParticipantUseCase.getAttendanceById(new GetAttendanceById(studyId));
         return ResponseEntity.ok(ResponseWrapper.from(response));
     }
 
@@ -79,9 +71,7 @@ public class StudyInformationOnlyParticipantApiController {
             @ExtractPayload final Long memberId,
             @PathVariable final Long studyId
     ) {
-        final List<WeeklyInformation> response = queryWeeklyByIdUseCase.invoke(
-                new QueryWeeklyByIdUseCase.Query(studyId)
-        );
+        final List<WeeklyInformation> response = studyQueryOnlyParticipantUseCase.getWeeklyById(new GetWeeklyById(studyId));
         return ResponseEntity.ok(ResponseWrapper.from(response));
     }
 }

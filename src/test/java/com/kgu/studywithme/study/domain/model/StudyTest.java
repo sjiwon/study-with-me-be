@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.time.LocalDateTime;
-
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.CHINESE;
 import static com.kgu.studywithme.common.fixture.StudyFixture.JAPANESE;
@@ -25,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("Study -> 도메인 [Study] 테스트")
 class StudyTest extends ParallelTest {
-    private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
+    private final Member host = JIWON.toMember().apply(1L);
 
     @Test
     @DisplayName("Study를 생성한다")
@@ -73,8 +71,8 @@ class StudyTest extends ParallelTest {
 
         // when
         onlineStudy.update(
-                CHINESE.getName().getValue(),
-                CHINESE.getDescription().getValue(),
+                CHINESE.getName(),
+                CHINESE.getDescription(),
                 CHINESE.getCapacity().getValue(),
                 CHINESE.getCategory(),
                 CHINESE.getThumbnail(),
@@ -86,8 +84,8 @@ class StudyTest extends ParallelTest {
         );
 
         offlineStudy.update(
-                KAKAO_INTERVIEW.getName().getValue(),
-                KAKAO_INTERVIEW.getDescription().getValue(),
+                KAKAO_INTERVIEW.getName(),
+                KAKAO_INTERVIEW.getDescription(),
                 KAKAO_INTERVIEW.getCapacity().getValue(),
                 KAKAO_INTERVIEW.getCategory(),
                 KAKAO_INTERVIEW.getThumbnail(),

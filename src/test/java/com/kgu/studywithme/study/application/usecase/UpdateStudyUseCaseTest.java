@@ -1,0 +1,130 @@
+package com.kgu.studywithme.study.application.usecase;
+
+import com.kgu.studywithme.common.UseCaseTest;
+import com.kgu.studywithme.global.exception.StudyWithMeException;
+import com.kgu.studywithme.member.domain.model.Member;
+import com.kgu.studywithme.study.application.usecase.command.UpdateStudyCommand;
+import com.kgu.studywithme.study.domain.model.Study;
+import com.kgu.studywithme.study.domain.repository.StudyRepository;
+import com.kgu.studywithme.study.domain.service.StudyResourceValidator;
+import com.kgu.studywithme.study.exception.StudyErrorCode;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
+import static com.kgu.studywithme.common.fixture.StudyFixture.JPA;
+import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
+import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.IN_PROGRESS;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
+@DisplayName("Study -> UpdateStudyUseCase 테스트")
+class UpdateStudyUseCaseTest extends UseCaseTest {
+    private final StudyResourceValidator studyResourceValidator = mock(StudyResourceValidator.class);
+    private final StudyRepository studyRepository = mock(StudyRepository.class);
+    private final UpdateStudyUseCase sut = new UpdateStudyUseCase(studyResourceValidator, studyRepository);
+
+    private final Member host = JIWON.toMember().apply(1L);
+
+    private Study study;
+    private UpdateStudyCommand command;
+
+    @BeforeEach
+    void setUp() {
+        study = SPRING.toOnlineStudy(host.getId()).apply(1L);
+        command = new UpdateStudyCommand(
+                study.getId(),
+                JPA.getName(),
+                JPA.getDescription(),
+                JPA.getCategory(),
+                JPA.getCapacity().getValue(),
+                JPA.getThumbnail(),
+                JPA.getType(),
+                null,
+                null,
+                true,
+                JPA.getMinimumAttendanceForGraduation(),
+                JPA.getHashtags()
+        );
+    }
+
+    @Test
+    @DisplayName("다른 스터디가 사용하고 있는 이름으로 수정할 수 없다")
+    void throwExceptionByDuplicateName() {
+        // given
+        doThrow(StudyWithMeException.type(StudyErrorCode.DUPLICATE_NAME))
+                .when(studyResourceValidator)
+                .validateInUpdate(command.studyId(), command.name());
+
+        // when - then
+        assertThatThrownBy(() -> sut.invoke(command))
+                .isInstanceOf(StudyWithMeException.class)
+                .hasMessage(StudyErrorCode.DUPLICATE_NAME.getMessage());
+
+        assertAll(
+                () -> verify(studyResourceValidator, times(1)).validateInUpdate(command.studyId(), command.name()),
+                () -> verify(studyRepository, times(0)).getById(command.studyId())
+        );
+    }
+
+    @Test
+    @DisplayName("현재 참여자 수보다 낮게 스터디 정원을 수정할 수 없다")
+    void throwExceptionByCapacityCannotCoverCurrentParticipants() {
+        // given
+        doNothing()
+                .when(studyResourceValidator)
+                .validateInUpdate(command.studyId(), command.name());
+        given(studyRepository.getById(command.studyId())).willReturn(study);
+        ReflectionTestUtils.setField(study, "participants", command.capacity() + 1);
+
+        // when - then
+        assertThatThrownBy(() -> sut.invoke(command))
+                .isInstanceOf(StudyWithMeException.class)
+                .hasMessage(StudyErrorCode.CAPACITY_CANNOT_COVER_CURRENT_PARTICIPANTS.getMessage());
+
+        assertAll(
+                () -> verify(studyResourceValidator, times(1)).validateInUpdate(command.studyId(), command.name()),
+                () -> verify(studyRepository, times(1)).getById(command.studyId())
+        );
+    }
+
+    @Test
+    @DisplayName("스터디를 수정한다")
+    void success() {
+        // given
+        doNothing()
+                .when(studyResourceValidator)
+                .validateInUpdate(command.studyId(), command.name());
+        given(studyRepository.getById(command.studyId())).willReturn(study);
+
+        // when
+        sut.invoke(command);
+
+        // then
+        assertAll(
+                () -> verify(studyResourceValidator, times(1)).validateInUpdate(command.studyId(), command.name()),
+                () -> verify(studyRepository, times(1)).getById(command.studyId()),
+                () -> assertThat(study.getName().getValue()).isEqualTo(JPA.getName().getValue()),
+                () -> assertThat(study.getDescription().getValue()).isEqualTo(JPA.getDescription().getValue()),
+                () -> assertThat(study.getCapacity().getValue()).isEqualTo(JPA.getCapacity().getValue()),
+                () -> assertThat(study.getParticipants()).isEqualTo(1), // host
+                () -> assertThat(study.getCategory()).isEqualTo(JPA.getCategory()),
+                () -> assertThat(study.getThumbnail().getImageName()).isEqualTo(JPA.getThumbnail().getImageName()),
+                () -> assertThat(study.getThumbnail().getBackground()).isEqualTo(JPA.getThumbnail().getBackground()),
+                () -> assertThat(study.getType()).isEqualTo(JPA.getType()),
+                () -> assertThat(study.getLocation()).isNull(),
+                () -> assertThat(study.getRecruitmentStatus()).isEqualTo(IN_PROGRESS),
+                () -> assertThat(study.getGraduationPolicy().getMinimumAttendance()).isEqualTo(JPA.getMinimumAttendanceForGraduation()),
+                () -> assertThat(study.getHashtags()).containsExactlyInAnyOrderElementsOf(JPA.getHashtags())
+        );
+    }
+}

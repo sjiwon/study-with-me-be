@@ -46,8 +46,7 @@ class StudyAttendanceApiControllerTest extends ControllerTest {
 
         @BeforeEach
         void setUp() {
-            mockingForStudyHost(STUDY_ID, HOST_ID, true);
-            mockingForStudyHost(STUDY_ID, PARTICIPANT_ID, false);
+            mockingForStudyHost(STUDY_ID, HOST_ID);
         }
 
         @Test

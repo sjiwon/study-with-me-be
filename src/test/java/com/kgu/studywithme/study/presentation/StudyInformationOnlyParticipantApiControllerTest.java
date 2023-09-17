@@ -1,12 +1,12 @@
 package com.kgu.studywithme.study.presentation;
 
 import com.kgu.studywithme.common.ControllerTest;
+import com.kgu.studywithme.study.domain.repository.query.dto.AttendanceInformation;
+import com.kgu.studywithme.study.domain.repository.query.dto.NoticeInformation;
+import com.kgu.studywithme.study.domain.repository.query.dto.StudyApplicantInformation;
+import com.kgu.studywithme.study.domain.repository.query.dto.StudyMember;
+import com.kgu.studywithme.study.domain.repository.query.dto.WeeklyInformation;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
-import com.kgu.studywithme.study.infrastructure.query.dto.AttendanceInformation;
-import com.kgu.studywithme.study.infrastructure.query.dto.NoticeInformation;
-import com.kgu.studywithme.study.infrastructure.query.dto.StudyApplicantInformation;
-import com.kgu.studywithme.study.infrastructure.query.dto.StudyMember;
-import com.kgu.studywithme.study.infrastructure.query.dto.WeeklyInformation;
 import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
 import com.kgu.studywithme.studyweekly.domain.model.UploadAssignment;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +22,7 @@ import java.util.List;
 import static com.kgu.studywithme.common.fixture.MemberFixture.ANONYMOUS;
 import static com.kgu.studywithme.common.fixture.MemberFixture.GHOST;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
+import static com.kgu.studywithme.common.fixture.StudyWeeklyAttachmentFixture.IMG_FILE;
 import static com.kgu.studywithme.common.fixture.StudyWeeklyAttachmentFixture.PDF_FILE;
 import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.constraint;
@@ -56,8 +57,7 @@ class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
 
         @BeforeEach
         void setUp() {
-            mockingForStudyHost(STUDY_ID, HOST_ID, true);
-            mockingForStudyHost(STUDY_ID, PARTICIPANT_ID, false);
+            mockingForStudyHost(STUDY_ID, HOST_ID);
         }
 
         @Test
@@ -96,23 +96,11 @@ class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            given(queryApplicantByIdUseCase.invoke(any()))
-                    .willReturn(
-                            List.of(
-                                    new StudyApplicantInformation(
-                                            1L,
-                                            JIWON.getNickname().getValue(),
-                                            85,
-                                            LocalDateTime.now().minusDays(1)
-                                    ),
-                                    new StudyApplicantInformation(
-                                            2L,
-                                            GHOST.getNickname().getValue(),
-                                            72,
-                                            LocalDateTime.now().minusDays(3)
-                                    )
-                            )
-                    );
+            given(studyQueryOnlyParticipantUseCase.getApplicantById(any()))
+                    .willReturn(List.of(
+                            new StudyApplicantInformation(1L, JIWON.getNickname().getValue(), 85, LocalDateTime.now().minusDays(1)),
+                            new StudyApplicantInformation(2L, GHOST.getNickname().getValue(), 72, LocalDateTime.now().minusDays(3))
+                    ));
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -197,35 +185,57 @@ class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            given(queryNoticeByIdUseCase.invoke(any()))
-                    .willReturn(
-                            List.of(
-                                    new NoticeInformation(
-                                            2L,
-                                            "스터디 공지사항 [중요]",
-                                            "Hello World",
-                                            LocalDateTime.now().minusDays(1),
-                                            LocalDateTime.now().minusDays(1),
-                                            new StudyMember(1L, JIWON.getNickname()),
-                                            List.of(
-                                                    new NoticeInformation.CommentInformation(
-                                                            2L,
-                                                            2L,
-                                                            "OK~",
-                                                            LocalDateTime.now().minusHours(3),
-                                                            new StudyMember(1L, JIWON.getNickname())
-                                                    ),
-                                                    new NoticeInformation.CommentInformation(
-                                                            1L,
-                                                            2L,
-                                                            "OK~",
-                                                            LocalDateTime.now().minusHours(9),
-                                                            new StudyMember(2L, GHOST.getNickname())
-                                                    )
+            given(studyQueryOnlyParticipantUseCase.getNoticeById(any()))
+                    .willReturn(List.of(
+                            new NoticeInformation(
+                                    2L,
+                                    "스터디 진행 방향",
+                                    "Hello World",
+                                    LocalDateTime.now().minusDays(1),
+                                    LocalDateTime.now().minusDays(1),
+                                    new StudyMember(1L, JIWON.getNickname()),
+                                    List.of(
+                                            new NoticeInformation.CommentInformation(
+                                                    2L,
+                                                    2L,
+                                                    "OK~",
+                                                    LocalDateTime.now().minusHours(3),
+                                                    new StudyMember(1L, JIWON.getNickname())
+                                            ),
+                                            new NoticeInformation.CommentInformation(
+                                                    1L,
+                                                    2L,
+                                                    "OK~",
+                                                    LocalDateTime.now().minusHours(9),
+                                                    new StudyMember(2L, GHOST.getNickname())
+                                            )
+                                    )
+                            ),
+                            new NoticeInformation(
+                                    1L,
+                                    "스터디 출석 관련 공지사항",
+                                    "Hello World",
+                                    LocalDateTime.now().minusDays(3),
+                                    LocalDateTime.now().minusDays(3),
+                                    new StudyMember(1L, JIWON.getNickname()),
+                                    List.of(
+                                            new NoticeInformation.CommentInformation(
+                                                    2L,
+                                                    1L,
+                                                    "OK~",
+                                                    LocalDateTime.now().minusDays(1),
+                                                    new StudyMember(1L, JIWON.getNickname())
+                                            ),
+                                            new NoticeInformation.CommentInformation(
+                                                    1L,
+                                                    1L,
+                                                    "OK~",
+                                                    LocalDateTime.now().minusDays(2),
+                                                    new StudyMember(2L, GHOST.getNickname())
                                             )
                                     )
                             )
-                    );
+                    ));
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -328,34 +338,32 @@ class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            given(queryAttendanceByIdUseCase.invoke(any()))
-                    .willReturn(
-                            List.of(
-                                    new AttendanceInformation(
-                                            new StudyMember(1L, JIWON.getNickname()),
-                                            List.of(
-                                                    new AttendanceInformation.AttendanceSummary(1, ATTENDANCE.getValue()),
-                                                    new AttendanceInformation.AttendanceSummary(2, ATTENDANCE.getValue()),
-                                                    new AttendanceInformation.AttendanceSummary(3, NON_ATTENDANCE.getValue())
-                                            )
-                                    ),
-                                    new AttendanceInformation(
-                                            new StudyMember(2L, GHOST.getNickname()),
-                                            List.of(
-                                                    new AttendanceInformation.AttendanceSummary(1, ATTENDANCE.getValue()),
-                                                    new AttendanceInformation.AttendanceSummary(2, LATE.getValue()),
-                                                    new AttendanceInformation.AttendanceSummary(3, NON_ATTENDANCE.getValue())
-                                            )
-                                    ),
-                                    new AttendanceInformation(
-                                            new StudyMember(3L, ANONYMOUS.getNickname()),
-                                            List.of(
-                                                    new AttendanceInformation.AttendanceSummary(1, LATE.getValue()),
-                                                    new AttendanceInformation.AttendanceSummary(2, ABSENCE.getValue())
-                                            )
+            given(studyQueryOnlyParticipantUseCase.getAttendanceById(any()))
+                    .willReturn(List.of(
+                            new AttendanceInformation(
+                                    new StudyMember(1L, JIWON.getNickname()),
+                                    List.of(
+                                            new AttendanceInformation.AttendanceSummary(1, ATTENDANCE.getValue()),
+                                            new AttendanceInformation.AttendanceSummary(2, ATTENDANCE.getValue()),
+                                            new AttendanceInformation.AttendanceSummary(3, NON_ATTENDANCE.getValue())
+                                    )
+                            ),
+                            new AttendanceInformation(
+                                    new StudyMember(2L, GHOST.getNickname()),
+                                    List.of(
+                                            new AttendanceInformation.AttendanceSummary(1, ATTENDANCE.getValue()),
+                                            new AttendanceInformation.AttendanceSummary(2, LATE.getValue()),
+                                            new AttendanceInformation.AttendanceSummary(3, NON_ATTENDANCE.getValue())
+                                    )
+                            ),
+                            new AttendanceInformation(
+                                    new StudyMember(3L, ANONYMOUS.getNickname()),
+                                    List.of(
+                                            new AttendanceInformation.AttendanceSummary(1, LATE.getValue()),
+                                            new AttendanceInformation.AttendanceSummary(2, ABSENCE.getValue())
                                     )
                             )
-                    );
+                    ));
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -440,42 +448,27 @@ class StudyInformationOnlyParticipantApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            given(queryWeeklyByIdUseCase.invoke(any()))
-                    .willReturn(
-                            List.of(
-                                    new WeeklyInformation(
-                                            1L,
-                                            STUDY_WEEKLY_1.getTitle(),
-                                            STUDY_WEEKLY_1.getContent(),
-                                            1,
-                                            STUDY_WEEKLY_1.getPeriod().toPeriod(),
-                                            STUDY_WEEKLY_1.isAssignmentExists(),
-                                            STUDY_WEEKLY_1.isAutoAttendance(),
-                                            new StudyMember(1L, JIWON.getNickname()),
-                                            List.of(
-                                                    new WeeklyInformation.WeeklyAttachment(
-                                                            1L,
-                                                            PDF_FILE.getUploadFileName(),
-                                                            PDF_FILE.getLink()
-                                                    )
-                                            ),
-                                            List.of(
-                                                    new WeeklyInformation.WeeklySubmit(
-                                                            1L,
-                                                            JIWON.getNickname(),
-                                                            1L,
-                                                            UploadAssignment.withLink("https://notion.so/jiwon")
-                                                    ),
-                                                    new WeeklyInformation.WeeklySubmit(
-                                                            2L,
-                                                            GHOST.getNickname(),
-                                                            1L,
-                                                            UploadAssignment.withLink("https://notion.so/ghost")
-                                                    )
-                                            )
+            given(studyQueryOnlyParticipantUseCase.getWeeklyById(any()))
+                    .willReturn(List.of(
+                            new WeeklyInformation(
+                                    1L,
+                                    STUDY_WEEKLY_1.getTitle(),
+                                    STUDY_WEEKLY_1.getContent(),
+                                    1,
+                                    STUDY_WEEKLY_1.getPeriod().toPeriod(),
+                                    STUDY_WEEKLY_1.isAssignmentExists(),
+                                    STUDY_WEEKLY_1.isAutoAttendance(),
+                                    new StudyMember(1L, JIWON.getNickname()),
+                                    List.of(
+                                            new WeeklyInformation.WeeklyAttachment(1L, PDF_FILE.getUploadFileName(), PDF_FILE.getLink()),
+                                            new WeeklyInformation.WeeklyAttachment(1L, IMG_FILE.getUploadFileName(), IMG_FILE.getLink())
+                                    ),
+                                    List.of(
+                                            new WeeklyInformation.WeeklySubmit(1L, JIWON.getNickname(), 1L, UploadAssignment.withLink("https://notion.so/jiwon")),
+                                            new WeeklyInformation.WeeklySubmit(2L, GHOST.getNickname(), 1L, UploadAssignment.withLink("https://notion.so/ghost"))
                                     )
                             )
-                    );
+                    ));
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
