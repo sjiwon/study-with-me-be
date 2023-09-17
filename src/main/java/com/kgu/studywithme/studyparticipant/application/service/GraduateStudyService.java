@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.ATTENDANCE;
 import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.GRADUATED;
 
 @Service
@@ -55,15 +54,11 @@ public class GraduateStudyService implements GraduateStudyUseCase {
     }
 
     private void validateParticipantMeetGraduationPolicy(final Study study, final Member participant) {
-        final int attendanceCount = getAttendanceCount(study.getId(), participant.getId());
+        final int attendanceStatusCount = studyAttendanceRepository.getAttendanceStatusCount(study.getId(), participant.getId());
 
-        if (!study.isParticipantMeetGraduationPolicy(attendanceCount)) {
+        if (!study.isParticipantMeetGraduationPolicy(attendanceStatusCount)) {
             throw StudyWithMeException.type(StudyParticipantErrorCode.PARTICIPANT_NOT_MEET_GRADUATION_POLICY);
         }
-    }
-
-    private int getAttendanceCount(final Long studyId, final Long participantId) {
-        return studyAttendanceRepository.countByStudyIdAndParticipantIdAndStatus(studyId, participantId, ATTENDANCE);
     }
 
     private void graduateStudy(final Study study, final Member participant) {

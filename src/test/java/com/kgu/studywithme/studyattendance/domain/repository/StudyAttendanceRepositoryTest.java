@@ -21,7 +21,6 @@ import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY3;
 import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY4;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
-import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.ABSENCE;
 import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.ATTENDANCE;
 import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.LATE;
 import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.NON_ATTENDANCE;
@@ -83,12 +82,7 @@ public class StudyAttendanceRepositoryTest extends RepositoryTest {
 
         // when
         final Set<Long> participantIds = Set.of(members[1].getId(), members[3].getId());
-        sut.updateParticipantStatus(
-                study.getId(),
-                1,
-                participantIds,
-                ATTENDANCE
-        );
+        sut.updateParticipantStatus(study.getId(), 1, participantIds, ATTENDANCE);
 
         // then
         final List<StudyAttendance> attendances = sut.findAll();
@@ -121,37 +115,37 @@ public class StudyAttendanceRepositoryTest extends RepositoryTest {
         /* 출석 1회 */
         sut.save(StudyAttendance.recordAttendance(study.getId(), members[0].getId(), 1, ATTENDANCE));
         assertAll(
-                () -> assertThat(sut.countByStudyIdAndParticipantIdAndStatus(study.getId(), members[0].getId(), ATTENDANCE)).isEqualTo(1),
-                () -> assertThat(sut.countByStudyIdAndParticipantIdAndStatus(study.getId(), members[0].getId(), LATE)).isEqualTo(0),
-                () -> assertThat(sut.countByStudyIdAndParticipantIdAndStatus(study.getId(), members[0].getId(), ABSENCE)).isEqualTo(0),
-                () -> assertThat(sut.countByStudyIdAndParticipantIdAndStatus(study.getId(), members[0].getId(), NON_ATTENDANCE)).isEqualTo(0)
+                () -> assertThat(sut.getAttendanceStatusCount(study.getId(), members[0].getId())).isEqualTo(1),
+                () -> assertThat(sut.getLateStatusCount(study.getId(), members[0].getId())).isEqualTo(0),
+                () -> assertThat(sut.getAbsenceStatusCount(study.getId(), members[0].getId())).isEqualTo(0),
+                () -> assertThat(sut.getNonAttendanceStatusCount(study.getId(), members[0].getId())).isEqualTo(0)
         );
 
         /* 출석 1회 + 지각 1회 */
         sut.save(StudyAttendance.recordAttendance(study.getId(), members[0].getId(), 2, LATE));
         assertAll(
-                () -> assertThat(sut.countByStudyIdAndParticipantIdAndStatus(study.getId(), members[0].getId(), ATTENDANCE)).isEqualTo(1),
-                () -> assertThat(sut.countByStudyIdAndParticipantIdAndStatus(study.getId(), members[0].getId(), LATE)).isEqualTo(1),
-                () -> assertThat(sut.countByStudyIdAndParticipantIdAndStatus(study.getId(), members[0].getId(), ABSENCE)).isEqualTo(0),
-                () -> assertThat(sut.countByStudyIdAndParticipantIdAndStatus(study.getId(), members[0].getId(), NON_ATTENDANCE)).isEqualTo(0)
+                () -> assertThat(sut.getAttendanceStatusCount(study.getId(), members[0].getId())).isEqualTo(1),
+                () -> assertThat(sut.getLateStatusCount(study.getId(), members[0].getId())).isEqualTo(1),
+                () -> assertThat(sut.getAbsenceStatusCount(study.getId(), members[0].getId())).isEqualTo(0),
+                () -> assertThat(sut.getNonAttendanceStatusCount(study.getId(), members[0].getId())).isEqualTo(0)
         );
 
         /* 출석 2회 + 지각 1회 */
         sut.save(StudyAttendance.recordAttendance(study.getId(), members[0].getId(), 3, ATTENDANCE));
         assertAll(
-                () -> assertThat(sut.countByStudyIdAndParticipantIdAndStatus(study.getId(), members[0].getId(), ATTENDANCE)).isEqualTo(2),
-                () -> assertThat(sut.countByStudyIdAndParticipantIdAndStatus(study.getId(), members[0].getId(), LATE)).isEqualTo(1),
-                () -> assertThat(sut.countByStudyIdAndParticipantIdAndStatus(study.getId(), members[0].getId(), ABSENCE)).isEqualTo(0),
-                () -> assertThat(sut.countByStudyIdAndParticipantIdAndStatus(study.getId(), members[0].getId(), NON_ATTENDANCE)).isEqualTo(0)
+                () -> assertThat(sut.getAttendanceStatusCount(study.getId(), members[0].getId())).isEqualTo(2),
+                () -> assertThat(sut.getLateStatusCount(study.getId(), members[0].getId())).isEqualTo(1),
+                () -> assertThat(sut.getAbsenceStatusCount(study.getId(), members[0].getId())).isEqualTo(0),
+                () -> assertThat(sut.getNonAttendanceStatusCount(study.getId(), members[0].getId())).isEqualTo(0)
         );
 
         /* 출석 2회 + 지각 1회 + 미출석 1회 */
         sut.save(StudyAttendance.recordAttendance(study.getId(), members[0].getId(), 4, NON_ATTENDANCE));
         assertAll(
-                () -> assertThat(sut.countByStudyIdAndParticipantIdAndStatus(study.getId(), members[0].getId(), ATTENDANCE)).isEqualTo(2),
-                () -> assertThat(sut.countByStudyIdAndParticipantIdAndStatus(study.getId(), members[0].getId(), LATE)).isEqualTo(1),
-                () -> assertThat(sut.countByStudyIdAndParticipantIdAndStatus(study.getId(), members[0].getId(), ABSENCE)).isEqualTo(0),
-                () -> assertThat(sut.countByStudyIdAndParticipantIdAndStatus(study.getId(), members[0].getId(), NON_ATTENDANCE)).isEqualTo(1)
+                () -> assertThat(sut.getAttendanceStatusCount(study.getId(), members[0].getId())).isEqualTo(2),
+                () -> assertThat(sut.getLateStatusCount(study.getId(), members[0].getId())).isEqualTo(1),
+                () -> assertThat(sut.getAbsenceStatusCount(study.getId(), members[0].getId())).isEqualTo(0),
+                () -> assertThat(sut.getNonAttendanceStatusCount(study.getId(), members[0].getId())).isEqualTo(1)
         );
     }
 }

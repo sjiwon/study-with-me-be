@@ -11,6 +11,11 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 import java.util.Set;
 
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.ABSENCE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.ATTENDANCE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.LATE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.NON_ATTENDANCE;
+
 public interface StudyAttendanceRepository extends JpaRepository<StudyAttendance, Long> {
     // @Query
     @Query("SELECT sa" +
@@ -36,4 +41,20 @@ public interface StudyAttendanceRepository extends JpaRepository<StudyAttendance
 
     // Method Query
     int countByStudyIdAndParticipantIdAndStatus(final Long studyId, final Long participantId, final AttendanceStatus status);
+
+    default int getAttendanceStatusCount(final Long studyId, final Long participantId) {
+        return countByStudyIdAndParticipantIdAndStatus(studyId, participantId, ATTENDANCE);
+    }
+
+    default int getLateStatusCount(final Long studyId, final Long participantId) {
+        return countByStudyIdAndParticipantIdAndStatus(studyId, participantId, LATE);
+    }
+
+    default int getAbsenceStatusCount(final Long studyId, final Long participantId) {
+        return countByStudyIdAndParticipantIdAndStatus(studyId, participantId, ABSENCE);
+    }
+
+    default int getNonAttendanceStatusCount(final Long studyId, final Long participantId) {
+        return countByStudyIdAndParticipantIdAndStatus(studyId, participantId, NON_ATTENDANCE);
+    }
 }
