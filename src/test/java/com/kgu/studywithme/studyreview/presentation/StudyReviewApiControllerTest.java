@@ -34,9 +34,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("StudyReview -> StudyReviewApiController 테스트")
 class StudyReviewApiControllerTest extends ControllerTest {
     @Nested
-    @DisplayName("스터디 리뷰 작성 API [POST /api/studies/{studyId}/review] - AccessToken 필수")
+    @DisplayName("스터디 리뷰 작성 API [POST /api/studies/{studyId}/reviews] - AccessToken 필수")
     class Write {
-        private static final String BASE_URL = "/api/studies/{studyId}/review";
+        private static final String BASE_URL = "/api/studies/{studyId}/reviews";
         private static final Long STUDY_ID = 1L;
         private static final Long MEMBER_ID = 1L;
         private static final Long ANONYMOUS_ID = 2L;

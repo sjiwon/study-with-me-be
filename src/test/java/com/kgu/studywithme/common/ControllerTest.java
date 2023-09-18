@@ -67,9 +67,9 @@ import com.kgu.studywithme.studyparticipant.presentation.DelegateHostAuthorityAp
 import com.kgu.studywithme.studyparticipant.presentation.StudyApplyApiController;
 import com.kgu.studywithme.studyparticipant.presentation.StudyFinalizeApiController;
 import com.kgu.studywithme.studyparticipant.presentation.StudyParticipantDecisionApiController;
-import com.kgu.studywithme.studyreview.application.usecase.command.DeleteStudyReviewUseCase;
-import com.kgu.studywithme.studyreview.application.usecase.command.UpdateStudyReviewUseCase;
-import com.kgu.studywithme.studyreview.application.usecase.command.WriteStudyReviewUseCase;
+import com.kgu.studywithme.studyreview.application.usecase.DeleteStudyReviewUseCase;
+import com.kgu.studywithme.studyreview.application.usecase.UpdateStudyReviewUseCase;
+import com.kgu.studywithme.studyreview.application.usecase.WriteStudyReviewUseCase;
 import com.kgu.studywithme.studyreview.presentation.StudyReviewApiController;
 import com.kgu.studywithme.studyweekly.application.service.AssignmentUploader;
 import com.kgu.studywithme.studyweekly.application.service.AttachmentUploader;

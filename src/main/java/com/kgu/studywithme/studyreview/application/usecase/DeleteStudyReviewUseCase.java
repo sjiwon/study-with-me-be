@@ -1,7 +1,7 @@
-package com.kgu.studywithme.studyreview.application.service;
+package com.kgu.studywithme.studyreview.application.usecase;
 
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.studyreview.application.usecase.command.DeleteStudyReviewUseCase;
+import com.kgu.studywithme.studyreview.application.usecase.command.DeleteStudyReviewCommand;
 import com.kgu.studywithme.studyreview.domain.model.StudyReview;
 import com.kgu.studywithme.studyreview.domain.repository.StudyReviewRepository;
 import com.kgu.studywithme.studyreview.exception.StudyReviewErrorCode;
@@ -10,20 +10,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class DeleteStudyReviewService implements DeleteStudyReviewUseCase {
+public class DeleteStudyReviewUseCase {
     private final StudyReviewRepository studyReviewRepository;
 
-    @Override
-    public void invoke(final Command command) {
-        final StudyReview review = findById(command.reviewId());
+    public void invoke(final DeleteStudyReviewCommand command) {
+        final StudyReview review = studyReviewRepository.getById(command.reviewId());
         validateMemberIsReviewWriter(review, command.memberId());
 
         studyReviewRepository.delete(review);
-    }
-
-    private StudyReview findById(final Long reviewId) {
-        return studyReviewRepository.findById(reviewId)
-                .orElseThrow(() -> StudyWithMeException.type(StudyReviewErrorCode.STUDY_REVIEW_NOT_FOUND));
     }
 
     private void validateMemberIsReviewWriter(final StudyReview review, final Long memberId) {

@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @DisplayName("StudyReview -> StudyReviewRepository 테스트")
 class StudyReviewRepositoryTest extends RepositoryTest {
     @Autowired
-    private StudyReviewRepository studyReviewRepository;
+    private StudyReviewRepository sut;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -43,23 +43,19 @@ class StudyReviewRepositoryTest extends RepositoryTest {
     @DisplayName("사용자가 해당 스터디에 대해서 작성한 리뷰가 존재하는지 확인한다")
     void existsByStudyIdAndWriterId() {
         /* studyA 리뷰 */
-        studyReviewRepository.save(
-                StudyReview.writeReview(studyA.getId(), member.getId(), "studyA 리뷰")
-        );
+        sut.save(StudyReview.writeReview(studyA.getId(), member.getId(), "studyA 리뷰"));
 
         assertAll(
-                () -> assertThat(studyReviewRepository.existsByStudyIdAndWriterId(studyA.getId(), member.getId())).isTrue(),
-                () -> assertThat(studyReviewRepository.existsByStudyIdAndWriterId(studyB.getId(), member.getId())).isFalse()
+                () -> assertThat(sut.existsByStudyIdAndWriterId(studyA.getId(), member.getId())).isTrue(),
+                () -> assertThat(sut.existsByStudyIdAndWriterId(studyB.getId(), member.getId())).isFalse()
         );
 
         /* studyA + studyB 리뷰 */
-        studyReviewRepository.save(
-                StudyReview.writeReview(studyB.getId(), member.getId(), "studyB 리뷰")
-        );
+        sut.save(StudyReview.writeReview(studyB.getId(), member.getId(), "studyB 리뷰"));
 
         assertAll(
-                () -> assertThat(studyReviewRepository.existsByStudyIdAndWriterId(studyA.getId(), member.getId())).isTrue(),
-                () -> assertThat(studyReviewRepository.existsByStudyIdAndWriterId(studyB.getId(), member.getId())).isTrue()
+                () -> assertThat(sut.existsByStudyIdAndWriterId(studyA.getId(), member.getId())).isTrue(),
+                () -> assertThat(sut.existsByStudyIdAndWriterId(studyB.getId(), member.getId())).isTrue()
         );
     }
 }

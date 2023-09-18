@@ -1,8 +1,8 @@
-package com.kgu.studywithme.studyreview.application.service;
+package com.kgu.studywithme.studyreview.application.usecase;
 
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.studyparticipant.domain.repository.StudyParticipantRepository;
-import com.kgu.studywithme.studyreview.application.usecase.command.WriteStudyReviewUseCase;
+import com.kgu.studywithme.studyreview.application.usecase.command.WriteStudyReviewCommand;
 import com.kgu.studywithme.studyreview.domain.repository.StudyReviewRepository;
 import com.kgu.studywithme.studyreview.exception.StudyReviewErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -10,12 +10,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class WriteStudyReviewService implements WriteStudyReviewUseCase {
+public class WriteStudyReviewUseCase {
     private final StudyParticipantRepository studyParticipantRepository;
     private final StudyReviewRepository studyReviewRepository;
 
-    @Override
-    public Long invoke(final Command command) {
+    public Long invoke(final WriteStudyReviewCommand command) {
         validateMemberIsGraduatedStudy(command.studyId(), command.memberId());
         validateAlreadyWritten(command.studyId(), command.memberId());
 

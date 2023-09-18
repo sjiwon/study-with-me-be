@@ -1,8 +1,8 @@
-package com.kgu.studywithme.studyreview.application.service;
+package com.kgu.studywithme.studyreview.application.usecase;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.studyreview.application.usecase.command.UpdateStudyReviewUseCase;
+import com.kgu.studywithme.studyreview.application.usecase.command.UpdateStudyReviewCommand;
 import com.kgu.studywithme.studyreview.domain.model.StudyReview;
 import com.kgu.studywithme.studyreview.domain.repository.StudyReviewRepository;
 import com.kgu.studywithme.studyreview.exception.StudyReviewErrorCode;
@@ -12,20 +12,14 @@ import org.springframework.stereotype.Service;
 @Service
 @StudyWithMeWritableTransactional
 @RequiredArgsConstructor
-public class UpdateStudyReviewService implements UpdateStudyReviewUseCase {
+public class UpdateStudyReviewUseCase {
     private final StudyReviewRepository studyReviewRepository;
 
-    @Override
-    public void invoke(final Command command) {
-        final StudyReview review = findById(command.reviewId());
+    public void invoke(final UpdateStudyReviewCommand command) {
+        final StudyReview review = studyReviewRepository.getById(command.reviewId());
         validateMemberIsReviewWriter(review, command.memberId());
 
         review.updateReview(command.content());
-    }
-
-    private StudyReview findById(final Long reviewId) {
-        return studyReviewRepository.findById(reviewId)
-                .orElseThrow(() -> StudyWithMeException.type(StudyReviewErrorCode.STUDY_REVIEW_NOT_FOUND));
     }
 
     private void validateMemberIsReviewWriter(final StudyReview review, final Long memberId) {
