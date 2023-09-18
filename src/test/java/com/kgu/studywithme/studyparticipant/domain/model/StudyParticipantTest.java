@@ -6,8 +6,6 @@ import com.kgu.studywithme.study.domain.model.Study;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
-
 import static com.kgu.studywithme.common.fixture.MemberFixture.GHOST;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
@@ -17,9 +15,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("StudyParticipant -> 도메인 [StudyParticipant] 테스트")
 class StudyParticipantTest extends ParallelTest {
-    private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
-    private final Member member = GHOST.toMember().apply(2L, LocalDateTime.now());
-    private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L, LocalDateTime.now());
+    private final Member host = JIWON.toMember().apply(1L);
+    private final Member member = GHOST.toMember().apply(2L);
+    private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L);
 
     @Test
     @DisplayName("사용자가 스터디에 참여 신청을 한다")

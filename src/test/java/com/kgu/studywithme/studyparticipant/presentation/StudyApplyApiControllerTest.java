@@ -2,6 +2,7 @@ package com.kgu.studywithme.studyparticipant.presentation;
 
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
+import com.kgu.studywithme.study.exception.StudyErrorCode;
 import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -15,6 +16,7 @@ import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getExc
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
 import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessTokenToAuthorizationHeader;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -39,7 +41,7 @@ class StudyApplyApiControllerTest extends ControllerTest {
         void throwExceptionByStudyIsNotRecruitingNow() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
-            doThrow(StudyWithMeException.type(StudyParticipantErrorCode.STUDY_IS_NOT_RECRUITING_NOW))
+            doThrow(StudyWithMeException.type(StudyErrorCode.STUDY_IS_NOT_RECRUITING_NOW))
                     .when(applyStudyUseCase)
                     .invoke(any());
 
@@ -49,7 +51,7 @@ class StudyApplyApiControllerTest extends ControllerTest {
                     .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
 
             // then
-            final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.STUDY_IS_NOT_RECRUITING_NOW;
+            final StudyErrorCode expectedError = StudyErrorCode.STUDY_IS_NOT_RECRUITING_NOW;
             mockMvc.perform(requestBuilder)
                     .andExpect(status().isConflict())
                     .andExpectAll(getResultMatchersViaErrorCode(expectedError))
@@ -175,9 +177,7 @@ class StudyApplyApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
-            doNothing()
-                    .when(applyStudyUseCase)
-                    .invoke(any());
+            given(applyStudyUseCase.invoke(any())).willReturn(1L);
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -216,7 +216,7 @@ class StudyApplyApiControllerTest extends ControllerTest {
             // given
             mockingToken(true, ANONYMOUS_ID);
             doThrow(StudyWithMeException.type(StudyParticipantErrorCode.APPLIER_NOT_FOUND))
-                    .when(applyCancellationUseCase)
+                    .when(applyCancelUseCase)
                     .invoke(any());
 
             // when
@@ -250,7 +250,7 @@ class StudyApplyApiControllerTest extends ControllerTest {
             // given
             mockingToken(true, APPLIER_ID);
             doNothing()
-                    .when(applyCancellationUseCase)
+                    .when(applyCancelUseCase)
                     .invoke(any());
 
             // when

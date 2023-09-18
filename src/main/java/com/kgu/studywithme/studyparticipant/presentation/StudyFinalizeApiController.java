@@ -2,8 +2,10 @@ package com.kgu.studywithme.studyparticipant.presentation;
 
 import com.kgu.studywithme.global.aop.CheckStudyParticipant;
 import com.kgu.studywithme.global.resolver.ExtractPayload;
-import com.kgu.studywithme.studyparticipant.application.usecase.command.GraduateStudyUseCase;
-import com.kgu.studywithme.studyparticipant.application.usecase.command.LeaveParticipationUseCase;
+import com.kgu.studywithme.studyparticipant.application.usecase.GraduateStudyUseCase;
+import com.kgu.studywithme.studyparticipant.application.usecase.LeaveStudyUseCase;
+import com.kgu.studywithme.studyparticipant.application.usecase.command.GraduateStudyCommand;
+import com.kgu.studywithme.studyparticipant.application.usecase.command.LeaveStudyCommand;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -18,22 +20,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/studies/{studyId}")
 public class StudyFinalizeApiController {
-    private final LeaveParticipationUseCase leaveParticipationUseCase;
+    private final LeaveStudyUseCase leaveStudyUseCase;
     private final GraduateStudyUseCase graduateStudyUseCase;
 
-    @Operation(summary = "스터디 참여 취소 EndPoint")
+    @Operation(summary = "스터디 떠나기 EndPoint")
     @CheckStudyParticipant
     @PatchMapping("/participants/leave")
     public ResponseEntity<Void> leave(
             @ExtractPayload final Long memberId,
             @PathVariable final Long studyId
     ) {
-        leaveParticipationUseCase.invoke(
-                new LeaveParticipationUseCase.Command(
-                        studyId,
-                        memberId
-                )
-        );
+        leaveStudyUseCase.invoke(new LeaveStudyCommand(studyId, memberId));
         return ResponseEntity.noContent().build();
     }
 
@@ -44,12 +41,7 @@ public class StudyFinalizeApiController {
             @ExtractPayload final Long memberId,
             @PathVariable final Long studyId
     ) {
-        graduateStudyUseCase.invoke(
-                new GraduateStudyUseCase.Command(
-                        studyId,
-                        memberId
-                )
-        );
+        graduateStudyUseCase.invoke(new GraduateStudyCommand(studyId, memberId));
         return ResponseEntity.noContent().build();
     }
 }

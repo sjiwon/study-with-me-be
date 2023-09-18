@@ -16,7 +16,7 @@ import static com.kgu.studywithme.common.fixture.StudyFixture.JAPANESE;
 import static com.kgu.studywithme.common.fixture.StudyFixture.KAKAO_INTERVIEW;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static com.kgu.studywithme.common.fixture.StudyFixture.TOSS_INTERVIEW;
-import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.IN_PROGRESS;
+import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.ON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -40,9 +40,9 @@ class StudyTest extends ParallelTest {
                 () -> assertThat(onlineStudy.getThumbnail()).isEqualTo(SPRING.getThumbnail()),
                 () -> assertThat(onlineStudy.getType()).isEqualTo(SPRING.getType()),
                 () -> assertThat(onlineStudy.getLocation()).isNull(),
-                () -> assertThat(onlineStudy.getRecruitmentStatus()).isEqualTo(IN_PROGRESS),
+                () -> assertThat(onlineStudy.getRecruitmentStatus()).isEqualTo(ON),
                 () -> assertThat(onlineStudy.getGraduationPolicy().getMinimumAttendance()).isEqualTo(SPRING.getMinimumAttendanceForGraduation()),
-                () -> assertThat(onlineStudy.getGraduationPolicy().getUpdateChance()).isEqualTo(3),
+                () -> assertThat(onlineStudy.getGraduationPolicy().getUpdateChance()).isEqualTo(GraduationPolicy.DEFAULT_UPDATE_CHANCE),
                 () -> assertThat(onlineStudy.isTerminated()).isFalse(),
                 () -> assertThat(onlineStudy.getHashtags()).containsExactlyInAnyOrderElementsOf(SPRING.getHashtags()),
 
@@ -54,9 +54,9 @@ class StudyTest extends ParallelTest {
                 () -> assertThat(offlineStudy.getThumbnail()).isEqualTo(TOSS_INTERVIEW.getThumbnail()),
                 () -> assertThat(offlineStudy.getType()).isEqualTo(TOSS_INTERVIEW.getType()),
                 () -> assertThat(offlineStudy.getLocation()).isEqualTo(TOSS_INTERVIEW.getLocation()),
-                () -> assertThat(offlineStudy.getRecruitmentStatus()).isEqualTo(IN_PROGRESS),
+                () -> assertThat(offlineStudy.getRecruitmentStatus()).isEqualTo(ON),
                 () -> assertThat(offlineStudy.getGraduationPolicy().getMinimumAttendance()).isEqualTo(TOSS_INTERVIEW.getMinimumAttendanceForGraduation()),
-                () -> assertThat(offlineStudy.getGraduationPolicy().getUpdateChance()).isEqualTo(3),
+                () -> assertThat(offlineStudy.getGraduationPolicy().getUpdateChance()).isEqualTo(GraduationPolicy.DEFAULT_UPDATE_CHANCE),
                 () -> assertThat(offlineStudy.isTerminated()).isFalse(),
                 () -> assertThat(offlineStudy.getHashtags()).containsExactlyInAnyOrderElementsOf(TOSS_INTERVIEW.getHashtags())
         );
@@ -78,7 +78,7 @@ class StudyTest extends ParallelTest {
                 CHINESE.getThumbnail(),
                 CHINESE.getType(),
                 null, null,
-                IN_PROGRESS,
+                ON,
                 CHINESE.getMinimumAttendanceForGraduation(),
                 CHINESE.getHashtags()
         );
@@ -92,7 +92,7 @@ class StudyTest extends ParallelTest {
                 KAKAO_INTERVIEW.getType(),
                 KAKAO_INTERVIEW.getLocation().getProvince(),
                 KAKAO_INTERVIEW.getLocation().getCity(),
-                IN_PROGRESS,
+                ON,
                 KAKAO_INTERVIEW.getMinimumAttendanceForGraduation(),
                 KAKAO_INTERVIEW.getHashtags()
         );
@@ -107,9 +107,9 @@ class StudyTest extends ParallelTest {
                 () -> assertThat(onlineStudy.getThumbnail()).isEqualTo(CHINESE.getThumbnail()),
                 () -> assertThat(onlineStudy.getType()).isEqualTo(CHINESE.getType()),
                 () -> assertThat(onlineStudy.getLocation()).isNull(),
-                () -> assertThat(onlineStudy.getRecruitmentStatus()).isEqualTo(IN_PROGRESS),
+                () -> assertThat(onlineStudy.getRecruitmentStatus()).isEqualTo(ON),
                 () -> assertThat(onlineStudy.getGraduationPolicy().getMinimumAttendance()).isEqualTo(CHINESE.getMinimumAttendanceForGraduation()),
-                () -> assertThat(onlineStudy.getGraduationPolicy().getUpdateChance()).isEqualTo(2),
+                () -> assertThat(onlineStudy.getGraduationPolicy().getUpdateChance()).isEqualTo(GraduationPolicy.DEFAULT_UPDATE_CHANCE - 1),
                 () -> assertThat(onlineStudy.getHashtags()).containsExactlyInAnyOrderElementsOf(CHINESE.getHashtags()),
 
                 () -> assertThat(offlineStudy.getName()).isEqualTo(KAKAO_INTERVIEW.getName()),
@@ -120,9 +120,9 @@ class StudyTest extends ParallelTest {
                 () -> assertThat(offlineStudy.getThumbnail()).isEqualTo(KAKAO_INTERVIEW.getThumbnail()),
                 () -> assertThat(offlineStudy.getType()).isEqualTo(KAKAO_INTERVIEW.getType()),
                 () -> assertThat(offlineStudy.getLocation()).isEqualTo(KAKAO_INTERVIEW.getLocation()),
-                () -> assertThat(offlineStudy.getRecruitmentStatus()).isEqualTo(IN_PROGRESS),
+                () -> assertThat(offlineStudy.getRecruitmentStatus()).isEqualTo(ON),
                 () -> assertThat(offlineStudy.getGraduationPolicy().getMinimumAttendance()).isEqualTo(KAKAO_INTERVIEW.getMinimumAttendanceForGraduation()),
-                () -> assertThat(offlineStudy.getGraduationPolicy().getUpdateChance()).isEqualTo(2),
+                () -> assertThat(offlineStudy.getGraduationPolicy().getUpdateChance()).isEqualTo(GraduationPolicy.DEFAULT_UPDATE_CHANCE - 1),
                 () -> assertThat(offlineStudy.getHashtags()).containsExactlyInAnyOrderElementsOf(KAKAO_INTERVIEW.getHashtags())
         );
     }
@@ -159,27 +159,13 @@ class StudyTest extends ParallelTest {
         // then
         assertAll(
                 () -> assertThat(study.getHostId()).isEqualTo(12345L),
-                () -> assertThat(study.getGraduationPolicy().getUpdateChance()).isEqualTo(3)
+                () -> assertThat(study.getGraduationPolicy().getUpdateChance()).isEqualTo(GraduationPolicy.DEFAULT_UPDATE_CHANCE)
         );
     }
 
     @Test
-    @DisplayName("스터디 모집이 마감되었는지 확인한다")
-    void isRecruitmentComplete_recruitingEnd() {
-        // given
-        final Study study = SPRING.toOnlineStudy(host.getId());
-
-        /* 모집 중 */
-        assertThat(study.isRecruitmentComplete()).isFalse();
-
-        /* 모집 완료 */
-        study.recruitingEnd();
-        assertThat(study.isRecruitmentComplete()).isTrue();
-    }
-
-    @Test
     @DisplayName("스터디를 종료한다")
-    void terminateStudy() {
+    void terminate() {
         // given
         final Study study = SPRING.toOnlineStudy(host.getId());
         assertThat(study.isTerminated()).isFalse();

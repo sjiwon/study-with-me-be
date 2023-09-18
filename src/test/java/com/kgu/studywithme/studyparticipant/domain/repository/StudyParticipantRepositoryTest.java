@@ -13,19 +13,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static com.kgu.studywithme.common.fixture.MemberFixture.GHOST;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY1;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY2;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY3;
+import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY4;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.APPLY;
 import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.APPROVE;
 import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.GRADUATED;
+import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.LEAVE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("StudyParticipant -> StudyParticipantRepository 테스트")
 public class StudyParticipantRepositoryTest extends RepositoryTest {
     @Autowired
-    private StudyParticipantRepository studyParticipantRepository;
+    private StudyParticipantRepository sut;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -35,65 +39,86 @@ public class StudyParticipantRepositoryTest extends RepositoryTest {
 
     private Member host;
     private Member applier;
+    private Member participant;
+    private Member leaveMember;
+    private Member graduatedMember;
     private Study study;
 
     @BeforeEach
     void setUp() {
         host = memberRepository.save(JIWON.toMember());
-        applier = memberRepository.save(GHOST.toMember());
-        study = studyRepository.save(SPRING.toOnlineStudy(host.getId()));
+        applier = memberRepository.save(DUMMY1.toMember());
+        participant = memberRepository.save(DUMMY2.toMember());
+        leaveMember = memberRepository.save(DUMMY3.toMember());
+        graduatedMember = memberRepository.save(DUMMY4.toMember());
 
-        studyParticipantRepository.save(StudyParticipant.applyHost(study.getId(), host.getId()));
+        study = studyRepository.save(SPRING.toOnlineStudy(host.getId()));
+        sut.saveAll(List.of(
+                StudyParticipant.applyHost(study.getId(), host.getId()),
+                StudyParticipant.applyInStudy(study.getId(), applier.getId()),
+                StudyParticipant.applyParticipant(study.getId(), participant.getId(), APPROVE),
+                StudyParticipant.applyParticipant(study.getId(), leaveMember.getId(), LEAVE),
+                StudyParticipant.applyParticipant(study.getId(), graduatedMember.getId(), GRADUATED)
+        ));
     }
 
     @Test
     @DisplayName("스터디 참여자를 ParticipantStatus에 따라 조회한다")
-    void findApplier() {
-        studyParticipantRepository.save(StudyParticipant.applyInStudy(study.getId(), applier.getId()));
+    void findParticipantByStatus() {
         assertAll(
-                () -> assertThat(studyParticipantRepository.findParticipantByStatus(study.getId(), applier.getId(), APPLY)).isPresent(),
-                () -> assertThat(studyParticipantRepository.findParticipantByStatus(study.getId(), applier.getId(), APPROVE)).isEmpty(),
-                () -> assertThat(studyParticipantRepository.findParticipantByStatus(study.getId(), applier.getId(), GRADUATED)).isEmpty()
+                () -> assertThat(sut.findParticipantByStatus(study.getId(), applier.getId(), APPLY)).isPresent(),
+                () -> assertThat(sut.findParticipantByStatus(study.getId(), applier.getId(), APPROVE)).isEmpty(),
+                () -> assertThat(sut.findParticipantByStatus(study.getId(), applier.getId(), GRADUATED)).isEmpty()
         );
 
-        studyParticipantRepository.updateParticipantStatus(study.getId(), applier.getId(), APPROVE);
+        sut.updateParticipantStatus(study.getId(), applier.getId(), APPROVE);
         assertAll(
-                () -> assertThat(studyParticipantRepository.findParticipantByStatus(study.getId(), applier.getId(), APPLY)).isEmpty(),
-                () -> assertThat(studyParticipantRepository.findParticipantByStatus(study.getId(), applier.getId(), APPROVE)).isPresent(),
-                () -> assertThat(studyParticipantRepository.findParticipantByStatus(study.getId(), applier.getId(), GRADUATED)).isEmpty()
+                () -> assertThat(sut.findParticipantByStatus(study.getId(), applier.getId(), APPLY)).isEmpty(),
+                () -> assertThat(sut.findParticipantByStatus(study.getId(), applier.getId(), APPROVE)).isPresent(),
+                () -> assertThat(sut.findParticipantByStatus(study.getId(), applier.getId(), GRADUATED)).isEmpty()
         );
 
-        studyParticipantRepository.updateParticipantStatus(study.getId(), applier.getId(), GRADUATED);
+        sut.updateParticipantStatus(study.getId(), applier.getId(), GRADUATED);
         assertAll(
-                () -> assertThat(studyParticipantRepository.findParticipantByStatus(study.getId(), applier.getId(), APPLY)).isEmpty(),
-                () -> assertThat(studyParticipantRepository.findParticipantByStatus(study.getId(), applier.getId(), APPROVE)).isEmpty(),
-                () -> assertThat(studyParticipantRepository.findParticipantByStatus(study.getId(), applier.getId(), GRADUATED)).isPresent()
+                () -> assertThat(sut.findParticipantByStatus(study.getId(), applier.getId(), APPLY)).isEmpty(),
+                () -> assertThat(sut.findParticipantByStatus(study.getId(), applier.getId(), APPROVE)).isEmpty(),
+                () -> assertThat(sut.findParticipantByStatus(study.getId(), applier.getId(), GRADUATED)).isPresent()
         );
     }
 
     @Test
     @DisplayName("스터디 참여자들의 ID(PK)를 ParticipantStatus에 따라 조회한다")
-    void findStudyParticipantIds() {
-        studyParticipantRepository.save(StudyParticipant.applyInStudy(study.getId(), applier.getId()));
-
-        final List<Long> applyParticipantIds1 = studyParticipantRepository.findParticipantIdsByStatus(study.getId(), APPLY);
-        final List<Long> approveParticipantIds1 = studyParticipantRepository.findParticipantIdsByStatus(study.getId(), APPROVE);
+    void findParticipantIdsByStatus() {
+        final List<Long> applyParticipantIds1 = sut.findParticipantIdsByStatus(study.getId(), APPLY);
+        final List<Long> approveParticipantIds1 = sut.findParticipantIdsByStatus(study.getId(), APPROVE);
+        final List<Long> leaveParticipantIds1 = sut.findParticipantIdsByStatus(study.getId(), LEAVE);
+        final List<Long> graduateParticipantIds1 = sut.findParticipantIdsByStatus(study.getId(), GRADUATED);
         assertAll(
                 () -> assertThat(applyParticipantIds1).hasSize(1),
                 () -> assertThat(applyParticipantIds1).containsExactlyInAnyOrder(applier.getId()),
-                () -> assertThat(approveParticipantIds1).hasSize(1),
-                () -> assertThat(approveParticipantIds1).containsExactlyInAnyOrder(host.getId())
+                () -> assertThat(approveParticipantIds1).hasSize(2),
+                () -> assertThat(approveParticipantIds1).containsExactlyInAnyOrder(host.getId(), participant.getId()),
+                () -> assertThat(leaveParticipantIds1).hasSize(1),
+                () -> assertThat(leaveParticipantIds1).containsExactlyInAnyOrder(leaveMember.getId()),
+                () -> assertThat(graduateParticipantIds1).hasSize(1),
+                () -> assertThat(graduateParticipantIds1).containsExactlyInAnyOrder(graduatedMember.getId())
         );
 
-        /* applier participant */
-        studyParticipantRepository.updateParticipantStatus(study.getId(), applier.getId(), APPROVE);
+        /* applier -> participant */
+        sut.updateParticipantStatus(study.getId(), applier.getId(), APPROVE);
 
-        final List<Long> applyParticipantIds2 = studyParticipantRepository.findParticipantIdsByStatus(study.getId(), APPLY);
-        final List<Long> approveParticipantIds2 = studyParticipantRepository.findParticipantIdsByStatus(study.getId(), APPROVE);
+        final List<Long> applyParticipantIds2 = sut.findParticipantIdsByStatus(study.getId(), APPLY);
+        final List<Long> approveParticipantIds2 = sut.findParticipantIdsByStatus(study.getId(), APPROVE);
+        final List<Long> leaveParticipantIds2 = sut.findParticipantIdsByStatus(study.getId(), LEAVE);
+        final List<Long> graduateParticipantIds2 = sut.findParticipantIdsByStatus(study.getId(), GRADUATED);
         assertAll(
                 () -> assertThat(applyParticipantIds2).isEmpty(),
-                () -> assertThat(approveParticipantIds2).hasSize(2),
-                () -> assertThat(approveParticipantIds2).containsExactlyInAnyOrder(host.getId(), applier.getId())
+                () -> assertThat(approveParticipantIds2).hasSize(3),
+                () -> assertThat(approveParticipantIds2).containsExactlyInAnyOrder(host.getId(), participant.getId(), applier.getId()),
+                () -> assertThat(leaveParticipantIds2).hasSize(1),
+                () -> assertThat(leaveParticipantIds2).containsExactlyInAnyOrder(leaveMember.getId()),
+                () -> assertThat(graduateParticipantIds2).hasSize(1),
+                () -> assertThat(graduateParticipantIds2).containsExactlyInAnyOrder(graduatedMember.getId())
         );
     }
 
@@ -101,21 +126,67 @@ public class StudyParticipantRepositoryTest extends RepositoryTest {
     @DisplayName("스터디 참여자 상태를 업데이트한다")
     void updateParticipantStatus() {
         // given
-        final StudyParticipant participant = studyParticipantRepository.save(StudyParticipant.applyInStudy(study.getId(), applier.getId()));
-
-        final StudyParticipant findParticipant1 = studyParticipantRepository.findById(participant.getId()).orElseThrow();
+        final StudyParticipant findParticipant1 = sut.findById(applier.getId()).orElseThrow();
         assertThat(findParticipant1.getStatus()).isEqualTo(APPLY);
 
         /* applier -> APPROVE */
-        studyParticipantRepository.updateParticipantStatus(study.getId(), applier.getId(), APPROVE);
+        sut.updateParticipantStatus(study.getId(), applier.getId(), APPROVE);
 
-        final StudyParticipant findParticipant2 = studyParticipantRepository.findById(participant.getId()).orElseThrow();
+        final StudyParticipant findParticipant2 = sut.findById(applier.getId()).orElseThrow();
         assertThat(findParticipant2.getStatus()).isEqualTo(APPROVE);
 
         /* applier -> GRADUATED */
-        studyParticipantRepository.updateParticipantStatus(study.getId(), applier.getId(), GRADUATED);
+        sut.updateParticipantStatus(study.getId(), applier.getId(), GRADUATED);
 
-        final StudyParticipant findParticipant3 = studyParticipantRepository.findById(participant.getId()).orElseThrow();
+        final StudyParticipant findParticipant3 = sut.findById(applier.getId()).orElseThrow();
         assertThat(findParticipant3.getStatus()).isEqualTo(GRADUATED);
+    }
+
+    @Test
+    @DisplayName("스터디 참여자인지 확인한다 (참여 상태 = APPROVE)")
+    void isParticipant() {
+        assertAll(
+                () -> assertThat(sut.isParticipant(study.getId(), host.getId())).isTrue(),
+                () -> assertThat(sut.isParticipant(study.getId(), applier.getId())).isFalse(),
+                () -> assertThat(sut.isParticipant(study.getId(), participant.getId())).isTrue(),
+                () -> assertThat(sut.isParticipant(study.getId(), leaveMember.getId())).isFalse(),
+                () -> assertThat(sut.isParticipant(study.getId(), graduatedMember.getId())).isFalse()
+        );
+    }
+
+    @Test
+    @DisplayName("스터디 졸업자인지 확인한다 (참여 상태 = GRADUATED)")
+    void isGraduatedParticipant() {
+        assertAll(
+                () -> assertThat(sut.isGraduatedParticipant(study.getId(), host.getId())).isFalse(),
+                () -> assertThat(sut.isGraduatedParticipant(study.getId(), applier.getId())).isFalse(),
+                () -> assertThat(sut.isGraduatedParticipant(study.getId(), participant.getId())).isFalse(),
+                () -> assertThat(sut.isGraduatedParticipant(study.getId(), leaveMember.getId())).isFalse(),
+                () -> assertThat(sut.isGraduatedParticipant(study.getId(), graduatedMember.getId())).isTrue()
+        );
+    }
+
+    @Test
+    @DisplayName("스터디 신청자 or 참여자인지 확인한다 (참여 상태 IN APPLY, APPROVE)")
+    void isApplierOrParticipant() {
+        assertAll(
+                () -> assertThat(sut.isApplierOrParticipant(study.getId(), host.getId())).isTrue(),
+                () -> assertThat(sut.isApplierOrParticipant(study.getId(), applier.getId())).isTrue(),
+                () -> assertThat(sut.isApplierOrParticipant(study.getId(), participant.getId())).isTrue(),
+                () -> assertThat(sut.isApplierOrParticipant(study.getId(), leaveMember.getId())).isFalse(),
+                () -> assertThat(sut.isApplierOrParticipant(study.getId(), graduatedMember.getId())).isFalse()
+        );
+    }
+
+    @Test
+    @DisplayName("스터디 참여 취소자 or 졸업자인지 확인한다 (참여 상태 IN LEAVE, GRADUATED)")
+    void isAlreadyLeaveOrGraduatedParticipant() {
+        assertAll(
+                () -> assertThat(sut.isAlreadyLeaveOrGraduatedParticipant(study.getId(), host.getId())).isFalse(),
+                () -> assertThat(sut.isAlreadyLeaveOrGraduatedParticipant(study.getId(), applier.getId())).isFalse(),
+                () -> assertThat(sut.isAlreadyLeaveOrGraduatedParticipant(study.getId(), participant.getId())).isFalse(),
+                () -> assertThat(sut.isAlreadyLeaveOrGraduatedParticipant(study.getId(), leaveMember.getId())).isTrue(),
+                () -> assertThat(sut.isAlreadyLeaveOrGraduatedParticipant(study.getId(), graduatedMember.getId())).isTrue()
+        );
     }
 }

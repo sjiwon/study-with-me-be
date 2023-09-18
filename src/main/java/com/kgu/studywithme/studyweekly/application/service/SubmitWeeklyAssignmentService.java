@@ -3,7 +3,7 @@ package com.kgu.studywithme.studyweekly.application.service;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.model.Member;
-import com.kgu.studywithme.studyparticipant.application.adapter.ParticipateMemberReadAdapter;
+import com.kgu.studywithme.studyparticipant.domain.repository.query.ParticipateMemberReader;
 import com.kgu.studywithme.studyweekly.application.usecase.command.SubmitWeeklyAssignmentUseCase;
 import com.kgu.studywithme.studyweekly.domain.model.StudyWeekly;
 import com.kgu.studywithme.studyweekly.domain.repository.StudyWeeklyRepository;
@@ -18,13 +18,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SubmitWeeklyAssignmentService implements SubmitWeeklyAssignmentUseCase {
     private final StudyWeeklyRepository studyWeeklyRepository;
-    private final ParticipateMemberReadAdapter participateMemberReadAdapter;
+    private final ParticipateMemberReader participateMemberReader;
     private final ApplicationEventPublisher eventPublisher;
 
     @Override
     public void invoke(final Command command) {
         final StudyWeekly weekly = getSpecificWeekly(command.weeklyId());
-        final Member member = participateMemberReadAdapter.getParticipant(command.studyId(), command.memberId());
+        final Member member = participateMemberReader.getParticipant(command.studyId(), command.memberId());
         weekly.submitAssignment(member.getId(), command.assignment());
 
         eventPublisher.publishEvent(new AssignmentSubmittedEvent(command.studyId(), weekly.getId(), member.getId()));

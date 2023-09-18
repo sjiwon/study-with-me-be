@@ -55,14 +55,14 @@ import com.kgu.studywithme.studynotice.application.usecase.WriteStudyNoticeComme
 import com.kgu.studywithme.studynotice.application.usecase.WriteStudyNoticeUseCase;
 import com.kgu.studywithme.studynotice.presentation.StudyNoticeApiController;
 import com.kgu.studywithme.studynotice.presentation.StudyNoticeCommentApiController;
-import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantVerificationRepositoryAdapter;
-import com.kgu.studywithme.studyparticipant.application.usecase.command.ApplyCancellationUseCase;
-import com.kgu.studywithme.studyparticipant.application.usecase.command.ApplyStudyUseCase;
-import com.kgu.studywithme.studyparticipant.application.usecase.command.ApproveParticipationUseCase;
-import com.kgu.studywithme.studyparticipant.application.usecase.command.DelegateHostAuthorityUseCase;
-import com.kgu.studywithme.studyparticipant.application.usecase.command.GraduateStudyUseCase;
-import com.kgu.studywithme.studyparticipant.application.usecase.command.LeaveParticipationUseCase;
-import com.kgu.studywithme.studyparticipant.application.usecase.command.RejectParticipationUseCase;
+import com.kgu.studywithme.studyparticipant.application.usecase.ApplyCancelUseCase;
+import com.kgu.studywithme.studyparticipant.application.usecase.ApplyStudyUseCase;
+import com.kgu.studywithme.studyparticipant.application.usecase.ApproveParticipationUseCase;
+import com.kgu.studywithme.studyparticipant.application.usecase.DelegateHostAuthorityUseCase;
+import com.kgu.studywithme.studyparticipant.application.usecase.GraduateStudyUseCase;
+import com.kgu.studywithme.studyparticipant.application.usecase.LeaveStudyUseCase;
+import com.kgu.studywithme.studyparticipant.application.usecase.RejectParticipationUseCase;
+import com.kgu.studywithme.studyparticipant.domain.repository.StudyParticipantRepository;
 import com.kgu.studywithme.studyparticipant.presentation.DelegateHostAuthorityApiController;
 import com.kgu.studywithme.studyparticipant.presentation.StudyApplyApiController;
 import com.kgu.studywithme.studyparticipant.presentation.StudyFinalizeApiController;
@@ -184,7 +184,7 @@ public abstract class ControllerTest {
     private StudyRepository studyRepository;
 
     @MockBean
-    private ParticipantVerificationRepositoryAdapter participantVerificationRepositoryAdapter;
+    private StudyParticipantRepository studyParticipantRepository;
 
     // Auth
     @MockBean
@@ -259,7 +259,7 @@ public abstract class ControllerTest {
     protected ApplyStudyUseCase applyStudyUseCase;
 
     @MockBean
-    protected ApplyCancellationUseCase applyCancellationUseCase;
+    protected ApplyCancelUseCase applyCancelUseCase;
 
     @MockBean
     protected ApproveParticipationUseCase approveParticipationUseCase;
@@ -271,7 +271,7 @@ public abstract class ControllerTest {
     protected DelegateHostAuthorityUseCase delegateHostAuthorityUseCase;
 
     @MockBean
-    protected LeaveParticipationUseCase leaveParticipationUseCase;
+    protected LeaveStudyUseCase leaveStudyUseCase;
 
     @MockBean
     protected GraduateStudyUseCase graduateStudyUseCase;
@@ -391,11 +391,11 @@ public abstract class ControllerTest {
                 .isTokenValid(any());
     }
 
-    protected void mockingForStudyHost(final Long studyId, final Long hostId) {
-        given(studyRepository.getHostId(studyId)).willReturn(hostId);
+    protected void mockingForStudyHost(final Long studyId, final Long memberId, final boolean isValue) {
+        given(studyRepository.isHost(studyId, memberId)).willReturn(isValue);
     }
 
     protected void mockingForStudyParticipant(final Long studyId, final Long memberId, final boolean isValid) {
-        given(participantVerificationRepositoryAdapter.isParticipant(studyId, memberId)).willReturn(isValid);
+        given(studyParticipantRepository.isParticipant(studyId, memberId)).willReturn(isValid);
     }
 }

@@ -80,7 +80,7 @@ include::{snippets}/StudyApi/Participation/Approve/Failure/Case1/path-parameters
 HTTP Response
 include::{snippets}/StudyApi/Participation/Approve/Failure/Case1/response-body.adoc[]
 
-=== 2. 스터디 신청자가 아닌 사용자에 대해서 참여 승인을 할 수 없다
+=== 2. 스터디가 종료됨에 따라 참여 승인을 할 수 없다
 HTTP Request
 include::{snippets}/StudyApi/Participation/Approve/Failure/Case2/http-request.adoc[]
 include::{snippets}/StudyApi/Participation/Approve/Failure/Case2/request-headers.adoc[]
@@ -89,7 +89,7 @@ include::{snippets}/StudyApi/Participation/Approve/Failure/Case2/path-parameters
 HTTP Response
 include::{snippets}/StudyApi/Participation/Approve/Failure/Case2/response-body.adoc[]
 
-=== 3. 스터디가 종료됨에 따라 참여 승인을 할 수 없다
+=== 3. 스터디 신청자가 아닌 사용자에 대해서 참여 승인을 할 수 없다
 HTTP Request
 include::{snippets}/StudyApi/Participation/Approve/Failure/Case3/http-request.adoc[]
 include::{snippets}/StudyApi/Participation/Approve/Failure/Case3/request-headers.adoc[]
@@ -137,7 +137,7 @@ include::{snippets}/StudyApi/Participation/Reject/Failure/Case2/request-fields.a
 HTTP Response
 include::{snippets}/StudyApi/Participation/Reject/Failure/Case2/response-body.adoc[]
 
-=== 3. 스터디 신청자가 아닌 사용자에 대해서 참여 거절을 할 수 없다
+=== 3. 스터디가 종료됨에 따라 참여 거절을 할 수 없다
 HTTP Request
 include::{snippets}/StudyApi/Participation/Reject/Failure/Case3/http-request.adoc[]
 include::{snippets}/StudyApi/Participation/Reject/Failure/Case3/request-headers.adoc[]
@@ -147,7 +147,7 @@ include::{snippets}/StudyApi/Participation/Reject/Failure/Case3/request-fields.a
 HTTP Response
 include::{snippets}/StudyApi/Participation/Reject/Failure/Case3/response-body.adoc[]
 
-=== 4. 스터디가 종료됨에 따라 참여 거절을 할 수 없다
+=== 4. 스터디 신청자가 아닌 사용자에 대해서 참여 거절을 할 수 없다
 HTTP Request
 include::{snippets}/StudyApi/Participation/Reject/Failure/Case4/http-request.adoc[]
 include::{snippets}/StudyApi/Participation/Reject/Failure/Case4/request-headers.adoc[]
@@ -186,7 +186,7 @@ include::{snippets}/StudyApi/Participation/DelegateHostAuthority/Failure/Case2/p
 HTTP Response
 include::{snippets}/StudyApi/Participation/DelegateHostAuthority/Failure/Case2/response-body.adoc[]
 
-=== 3. 팀장 권한을 기존 팀장(Self Invoke)에게 위임할 수 없다
+=== 3. 스터디 참여자가 아니면 팀장 권한을 위임할 수 없다
 HTTP Request
 include::{snippets}/StudyApi/Participation/DelegateHostAuthority/Failure/Case3/http-request.adoc[]
 include::{snippets}/StudyApi/Participation/DelegateHostAuthority/Failure/Case3/request-headers.adoc[]
@@ -195,7 +195,7 @@ include::{snippets}/StudyApi/Participation/DelegateHostAuthority/Failure/Case3/p
 HTTP Response
 include::{snippets}/StudyApi/Participation/DelegateHostAuthority/Failure/Case3/response-body.adoc[]
 
-=== 4. 스터디 참여자가 아니면 팀장 권한을 위임할 수 없다
+=== 4. 팀장 권한을 기존 팀장(Self Invoke)에게 위임할 수 없다
 HTTP Request
 include::{snippets}/StudyApi/Participation/DelegateHostAuthority/Failure/Case4/http-request.adoc[]
 include::{snippets}/StudyApi/Participation/DelegateHostAuthority/Failure/Case4/request-headers.adoc[]
@@ -213,8 +213,8 @@ include::{snippets}/StudyApi/Participation/DelegateHostAuthority/Success/path-pa
 HTTP Response
 include::{snippets}/StudyApi/Participation/DelegateHostAuthority/Success/http-response.adoc[]
 
-== 스터디 참여 취소 [AccessToken 필수]
-=== 1. 참여자가 아니면 참여 취소를 할 수 없다
+== 스터디 떠나기 [AccessToken 필수]
+=== 1. 스터디 참여자가 아니면 스터디를 떠날 수 없다
 HTTP Request
 include::{snippets}/StudyApi/Participation/Leave/Failure/Case1/http-request.adoc[]
 include::{snippets}/StudyApi/Participation/Leave/Failure/Case1/request-headers.adoc[]
@@ -223,7 +223,7 @@ include::{snippets}/StudyApi/Participation/Leave/Failure/Case1/path-parameters.a
 HTTP Response
 include::{snippets}/StudyApi/Participation/Leave/Failure/Case1/response-body.adoc[]
 
-=== 2. 스터디 팀장은 팀장 권한을 위임하지 않으면 스터디 참여를 취소할 수 없다
+=== 2. 스터디 팀장은 팀장 권한을 위임하지 않으면 스터디를 떠날 수 없다
 HTTP Request
 include::{snippets}/StudyApi/Participation/Leave/Failure/Case2/http-request.adoc[]
 include::{snippets}/StudyApi/Participation/Leave/Failure/Case2/request-headers.adoc[]
@@ -232,7 +232,7 @@ include::{snippets}/StudyApi/Participation/Leave/Failure/Case2/path-parameters.a
 HTTP Response
 include::{snippets}/StudyApi/Participation/Leave/Failure/Case2/response-body.adoc[]
 
-=== 3. 스터디 참여를 취소한다
+=== 3. 스터디를 떠난다
 HTTP Request
 include::{snippets}/StudyApi/Participation/Leave/Success/http-request.adoc[]
 include::{snippets}/StudyApi/Participation/Leave/Success/request-headers.adoc[]
@@ -242,7 +242,7 @@ HTTP Response
 include::{snippets}/StudyApi/Participation/Leave/Success/http-response.adoc[]
 
 == 스터디 졸업 [AccessToken 필수]
-=== 1. 참여자가 아니면 졸업을 할 수 없다
+=== 1. 스터디 참여자가 아니면 스터디를 졸업할 수 없다
 HTTP Request
 include::{snippets}/StudyApi/Participation/Graduate/Failure/Case1/http-request.adoc[]
 include::{snippets}/StudyApi/Participation/Graduate/Failure/Case1/request-headers.adoc[]

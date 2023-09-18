@@ -2,7 +2,8 @@ package com.kgu.studywithme.studyparticipant.presentation;
 
 import com.kgu.studywithme.global.aop.CheckStudyHost;
 import com.kgu.studywithme.global.resolver.ExtractPayload;
-import com.kgu.studywithme.studyparticipant.application.usecase.command.DelegateHostAuthorityUseCase;
+import com.kgu.studywithme.studyparticipant.application.usecase.DelegateHostAuthorityUseCase;
+import com.kgu.studywithme.studyparticipant.application.usecase.command.DelegateHostAuthorityCommand;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -27,12 +28,7 @@ public class DelegateHostAuthorityApiController {
             @PathVariable final Long studyId,
             @PathVariable final Long participantId
     ) {
-        delegateHostAuthorityUseCase.invoke(
-                new DelegateHostAuthorityUseCase.Command(
-                        studyId,
-                        participantId
-                )
-        );
+        delegateHostAuthorityUseCase.invoke(new DelegateHostAuthorityCommand(studyId, participantId));
         return ResponseEntity.noContent().build();
     }
 }

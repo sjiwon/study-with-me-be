@@ -4,7 +4,7 @@ import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.study.domain.model.Study;
-import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantVerificationRepositoryAdapter;
+import com.kgu.studywithme.studyparticipant.domain.repository.StudyParticipantRepository;
 import com.kgu.studywithme.studyreview.application.usecase.command.WriteStudyReviewUseCase;
 import com.kgu.studywithme.studyreview.domain.model.StudyReview;
 import com.kgu.studywithme.studyreview.domain.repository.StudyReviewRepository;
@@ -32,7 +32,7 @@ class WriteStudyReviewServiceTest extends UseCaseTest {
     private WriteStudyReviewService writeStudyReviewService;
 
     @Mock
-    private ParticipantVerificationRepositoryAdapter participantVerificationRepositoryAdapter;
+    private StudyParticipantRepository studyParticipantRepository;
 
     @Mock
     private StudyReviewRepository studyReviewRepository;
@@ -50,7 +50,7 @@ class WriteStudyReviewServiceTest extends UseCaseTest {
     @DisplayName("스터디 졸업자가 아니면 리뷰를 작성할 수 없다")
     void throwExceptionByMemberIsNotGraduated() {
         // given
-        given(participantVerificationRepositoryAdapter.isGraduatedParticipant(any(), any())).willReturn(false);
+        given(studyParticipantRepository.isGraduatedParticipant(any(), any())).willReturn(false);
 
         // when - then
         assertThatThrownBy(() -> writeStudyReviewService.invoke(command))
@@ -58,7 +58,7 @@ class WriteStudyReviewServiceTest extends UseCaseTest {
                 .hasMessage(StudyReviewErrorCode.ONLY_GRADUATED_PARTICIPANT_CAN_WRITE_REVIEW.getMessage());
 
         assertAll(
-                () -> verify(participantVerificationRepositoryAdapter, times(1)).isGraduatedParticipant(any(), any()),
+                () -> verify(studyParticipantRepository, times(1)).isGraduatedParticipant(any(), any()),
                 () -> verify(studyReviewRepository, times(0)).existsByStudyIdAndWriterId(any(), any()),
                 () -> verify(studyReviewRepository, times(0)).save(any())
         );
@@ -68,7 +68,7 @@ class WriteStudyReviewServiceTest extends UseCaseTest {
     @DisplayName("이미 리뷰를 작성했다면 추가 작성할 수 없다")
     void throwExceptionByMemberIsAlreadyWrittenReview() {
         // given
-        given(participantVerificationRepositoryAdapter.isGraduatedParticipant(any(), any())).willReturn(true);
+        given(studyParticipantRepository.isGraduatedParticipant(any(), any())).willReturn(true);
         given(studyReviewRepository.existsByStudyIdAndWriterId(any(), any())).willReturn(true);
 
         // when - then
@@ -77,7 +77,7 @@ class WriteStudyReviewServiceTest extends UseCaseTest {
                 .hasMessage(StudyReviewErrorCode.ALREADY_WRITTEN.getMessage());
 
         assertAll(
-                () -> verify(participantVerificationRepositoryAdapter, times(1)).isGraduatedParticipant(any(), any()),
+                () -> verify(studyParticipantRepository, times(1)).isGraduatedParticipant(any(), any()),
                 () -> verify(studyReviewRepository, times(1)).existsByStudyIdAndWriterId(any(), any()),
                 () -> verify(studyReviewRepository, times(0)).save(any())
         );
@@ -87,7 +87,7 @@ class WriteStudyReviewServiceTest extends UseCaseTest {
     @DisplayName("스터디 리뷰를 작성한다")
     void success() {
         // given
-        given(participantVerificationRepositoryAdapter.isGraduatedParticipant(any(), any())).willReturn(true);
+        given(studyParticipantRepository.isGraduatedParticipant(any(), any())).willReturn(true);
         given(studyReviewRepository.existsByStudyIdAndWriterId(any(), any())).willReturn(false);
 
         final StudyReview review = StudyReview.writeReview(
@@ -102,7 +102,7 @@ class WriteStudyReviewServiceTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(participantVerificationRepositoryAdapter, times(1)).isGraduatedParticipant(any(), any()),
+                () -> verify(studyParticipantRepository, times(1)).isGraduatedParticipant(any(), any()),
                 () -> verify(studyReviewRepository, times(1)).existsByStudyIdAndWriterId(any(), any()),
                 () -> verify(studyReviewRepository, times(1)).save(any()),
                 () -> assertThat(studyReviewId).isEqualTo(review.getId())

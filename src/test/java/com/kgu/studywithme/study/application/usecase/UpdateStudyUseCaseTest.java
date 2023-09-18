@@ -16,7 +16,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.JPA;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
-import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.IN_PROGRESS;
+import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.ON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -122,7 +122,7 @@ class UpdateStudyUseCaseTest extends UseCaseTest {
                 () -> assertThat(study.getThumbnail().getBackground()).isEqualTo(JPA.getThumbnail().getBackground()),
                 () -> assertThat(study.getType()).isEqualTo(JPA.getType()),
                 () -> assertThat(study.getLocation()).isNull(),
-                () -> assertThat(study.getRecruitmentStatus()).isEqualTo(IN_PROGRESS),
+                () -> assertThat(study.getRecruitmentStatus()).isEqualTo(ON),
                 () -> assertThat(study.getGraduationPolicy().getMinimumAttendance()).isEqualTo(JPA.getMinimumAttendanceForGraduation()),
                 () -> assertThat(study.getHashtags()).containsExactlyInAnyOrderElementsOf(JPA.getHashtags())
         );

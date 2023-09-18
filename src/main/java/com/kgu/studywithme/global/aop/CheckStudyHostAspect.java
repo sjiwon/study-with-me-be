@@ -16,9 +16,7 @@ public class CheckStudyHostAspect {
 
     @Before("@annotation(com.kgu.studywithme.global.aop.CheckStudyHost) && args(hostId, studyId, ..)")
     public void checkStudyHost(final Long hostId, final Long studyId) {
-        final Long realHostId = studyRepository.getHostId(studyId);
-
-        if (!realHostId.equals(hostId)) {
+        if (!studyRepository.isHost(studyId, hostId)) {
             throw StudyWithMeException.type(StudyErrorCode.MEMBER_IS_NOT_HOST);
         }
     }

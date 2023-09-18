@@ -33,7 +33,7 @@ import static com.kgu.studywithme.common.fixture.StudyFixture.KAFKA;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1;
 import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_2;
-import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.IN_PROGRESS;
+import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.ON;
 import static com.kgu.studywithme.study.exception.StudyErrorCode.MEMBER_IS_NOT_HOST;
 import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.ABSENCE;
 import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.ATTENDANCE;
@@ -84,7 +84,7 @@ public class StudyQueryAcceptanceTest extends AcceptanceTest {
                         .body("thumbnail.background", is(KAFKA.getThumbnail().getBackground()))
                         .body("type", is(KAFKA.getType().toString()))
                         .body("location", nullValue())
-                        .body("recruitmentStatus", is(IN_PROGRESS.toString()))
+                        .body("recruitmentStatus", is(ON.toString()))
                         .body("maxMember", is(KAFKA.getCapacity().getValue()))
                         .body("participantMembers", is(1))
                         .body("minimumAttendanceForGraduation", is(KAFKA.getMinimumAttendanceForGraduation()))

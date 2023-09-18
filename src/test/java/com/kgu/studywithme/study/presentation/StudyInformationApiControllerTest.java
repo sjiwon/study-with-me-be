@@ -26,7 +26,7 @@ import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDoc
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
 import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessTokenToAuthorizationHeader;
-import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.IN_PROGRESS;
+import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.ON;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -255,7 +255,7 @@ class StudyInformationApiControllerTest extends ControllerTest {
                 ),
                 LINE_INTERVIEW.getType(),
                 LINE_INTERVIEW.getLocation(),
-                IN_PROGRESS,
+                ON,
                 LINE_INTERVIEW.getCapacity().getValue(),
                 LINE_INTERVIEW.getCapacity().getValue() - 2,
                 LINE_INTERVIEW.getMinimumAttendanceForGraduation(),

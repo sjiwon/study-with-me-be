@@ -42,7 +42,8 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
 
         @BeforeEach
         void setUp() {
-            mockingForStudyHost(STUDY_ID, HOST_ID);
+            mockingForStudyHost(STUDY_ID, HOST_ID, true);
+            mockingForStudyHost(STUDY_ID, APPLIER_ID, false);
         }
 
         @Test
@@ -79,6 +80,42 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
         }
 
         @Test
+        @DisplayName("스터디가 종료됨에 따라 참여 승인을 할 수 없다")
+        void throwExceptionByStudyIsTerminated() throws Exception {
+            // given
+            mockingToken(true, HOST_ID);
+            doThrow(StudyWithMeException.type(StudyErrorCode.STUDY_IS_TERMINATED))
+                    .when(approveParticipationUseCase)
+                    .invoke(any());
+
+            // when
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+                    .patch(BASE_URL, STUDY_ID, APPLIER_ID)
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
+
+            // then
+            final StudyErrorCode expectedError = StudyErrorCode.STUDY_IS_TERMINATED;
+            mockMvc.perform(requestBuilder)
+                    .andExpect(status().isConflict())
+                    .andExpectAll(getResultMatchersViaErrorCode(expectedError))
+                    .andDo(
+                            document(
+                                    "StudyApi/Participation/Approve/Failure/Case3",
+                                    getDocumentRequest(),
+                                    getDocumentResponse(),
+                                    getHeaderWithAccessToken(),
+                                    pathParameters(
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("applierId")
+                                                    .description("참여 승인할 사용자 ID(PK)")
+                                    ),
+                                    getExceptionResponseFields()
+                            )
+                    );
+        }
+
+        @Test
         @DisplayName("스터디 신청자가 아닌 사용자에 대해서 참여 승인을 할 수 없다")
         void throwExceptionByApplierNotFound() throws Exception {
             // given
@@ -96,42 +133,6 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
             final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.APPLIER_NOT_FOUND;
             mockMvc.perform(requestBuilder)
                     .andExpect(status().isNotFound())
-                    .andExpectAll(getResultMatchersViaErrorCode(expectedError))
-                    .andDo(
-                            document(
-                                    "StudyApi/Participation/Approve/Failure/Case2",
-                                    getDocumentRequest(),
-                                    getDocumentResponse(),
-                                    getHeaderWithAccessToken(),
-                                    pathParameters(
-                                            parameterWithName("studyId")
-                                                    .description("스터디 ID(PK)"),
-                                            parameterWithName("applierId")
-                                                    .description("참여 승인할 사용자 ID(PK)")
-                                    ),
-                                    getExceptionResponseFields()
-                            )
-                    );
-        }
-
-        @Test
-        @DisplayName("스터디가 종료됨에 따라 참여 승인을 할 수 없다")
-        void throwExceptionByStudyIsTerminated() throws Exception {
-            // given
-            mockingToken(true, HOST_ID);
-            doThrow(StudyWithMeException.type(StudyParticipantErrorCode.STUDY_IS_TERMINATED))
-                    .when(approveParticipationUseCase)
-                    .invoke(any());
-
-            // when
-            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .patch(BASE_URL, STUDY_ID, APPLIER_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
-
-            // then
-            final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.STUDY_IS_TERMINATED;
-            mockMvc.perform(requestBuilder)
-                    .andExpect(status().isConflict())
                     .andExpectAll(getResultMatchersViaErrorCode(expectedError))
                     .andDo(
                             document(
@@ -231,7 +232,8 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
 
         @BeforeEach
         void setUp() {
-            mockingForStudyHost(STUDY_ID, HOST_ID);
+            mockingForStudyHost(STUDY_ID, HOST_ID, true);
+            mockingForStudyHost(STUDY_ID, APPLIER_ID, false);
         }
 
         @Test
@@ -314,11 +316,11 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("스터디 신청자가 아닌 사용자에 대해서 참여 거절을 할 수 없다")
-        void throwExceptionByApplierNotFound() throws Exception {
+        @DisplayName("스터디가 종료됨에 따라 참여 거절을 할 수 없다")
+        void throwExceptionByStudyIsTerminated() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            doThrow(StudyWithMeException.type(StudyParticipantErrorCode.APPLIER_NOT_FOUND))
+            doThrow(StudyWithMeException.type(StudyErrorCode.STUDY_IS_TERMINATED))
                     .when(rejectParticipationUseCase)
                     .invoke(any());
 
@@ -330,9 +332,9 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
                     .content(convertObjectToJson(REQUEST));
 
             // then
-            final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.APPLIER_NOT_FOUND;
+            final StudyErrorCode expectedError = StudyErrorCode.STUDY_IS_TERMINATED;
             mockMvc.perform(requestBuilder)
-                    .andExpect(status().isNotFound())
+                    .andExpect(status().isConflict())
                     .andExpectAll(getResultMatchersViaErrorCode(expectedError))
                     .andDo(
                             document(
@@ -356,11 +358,11 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("스터디가 종료됨에 따라 참여 거절을 할 수 없다")
-        void throwExceptionByStudyIsTerminated() throws Exception {
+        @DisplayName("스터디 신청자가 아닌 사용자에 대해서 참여 거절을 할 수 없다")
+        void throwExceptionByApplierNotFound() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            doThrow(StudyWithMeException.type(StudyParticipantErrorCode.STUDY_IS_TERMINATED))
+            doThrow(StudyWithMeException.type(StudyParticipantErrorCode.APPLIER_NOT_FOUND))
                     .when(rejectParticipationUseCase)
                     .invoke(any());
 
@@ -372,9 +374,9 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
                     .content(convertObjectToJson(REQUEST));
 
             // then
-            final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.STUDY_IS_TERMINATED;
+            final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.APPLIER_NOT_FOUND;
             mockMvc.perform(requestBuilder)
-                    .andExpect(status().isConflict())
+                    .andExpect(status().isNotFound())
                     .andExpectAll(getResultMatchersViaErrorCode(expectedError))
                     .andDo(
                             document(

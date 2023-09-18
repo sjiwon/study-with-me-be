@@ -38,7 +38,9 @@ class DelegateHostAuthorityApiControllerTest extends ControllerTest {
 
         @BeforeEach
         void setUp() {
-            mockingForStudyHost(STUDY_ID, HOST_ID);
+            mockingForStudyHost(STUDY_ID, HOST_ID, true);
+            mockingForStudyHost(STUDY_ID, PARTICIPANT_ID, false);
+            mockingForStudyHost(STUDY_ID, ANONYMOUS_ID, false);
         }
 
         @Test
@@ -79,7 +81,7 @@ class DelegateHostAuthorityApiControllerTest extends ControllerTest {
         void throwExceptionByStudyIsTerminated() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            doThrow(StudyWithMeException.type(StudyParticipantErrorCode.STUDY_IS_TERMINATED))
+            doThrow(StudyWithMeException.type(StudyErrorCode.STUDY_IS_TERMINATED))
                     .when(delegateHostAuthorityUseCase)
                     .invoke(any());
 
@@ -89,49 +91,13 @@ class DelegateHostAuthorityApiControllerTest extends ControllerTest {
                     .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
 
             // then
-            final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.STUDY_IS_TERMINATED;
+            final StudyErrorCode expectedError = StudyErrorCode.STUDY_IS_TERMINATED;
             mockMvc.perform(requestBuilder)
                     .andExpect(status().isConflict())
                     .andExpectAll(getResultMatchersViaErrorCode(expectedError))
                     .andDo(
                             document(
                                     "StudyApi/Participation/DelegateHostAuthority/Failure/Case2",
-                                    getDocumentRequest(),
-                                    getDocumentResponse(),
-                                    getHeaderWithAccessToken(),
-                                    pathParameters(
-                                            parameterWithName("studyId")
-                                                    .description("스터디 ID(PK)"),
-                                            parameterWithName("participantId")
-                                                    .description("권한을 위임할 사용자 ID(PK)")
-                                    ),
-                                    getExceptionResponseFields()
-                            )
-                    );
-        }
-
-        @Test
-        @DisplayName("팀장 권한을 기존 팀장(Self Invoke)에게 위임할 수 없다")
-        void throwExceptionByNewHostIsCurrentHost() throws Exception {
-            // given
-            mockingToken(true, HOST_ID);
-            doThrow(StudyWithMeException.type(StudyParticipantErrorCode.SELF_DELEGATING_NOT_ALLOWED))
-                    .when(delegateHostAuthorityUseCase)
-                    .invoke(any());
-
-            // when
-            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .patch(BASE_URL, STUDY_ID, ANONYMOUS_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
-
-            // then
-            final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.SELF_DELEGATING_NOT_ALLOWED;
-            mockMvc.perform(requestBuilder)
-                    .andExpect(status().isConflict())
-                    .andExpectAll(getResultMatchersViaErrorCode(expectedError))
-                    .andDo(
-                            document(
-                                    "StudyApi/Participation/DelegateHostAuthority/Failure/Case3",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
@@ -162,6 +128,42 @@ class DelegateHostAuthorityApiControllerTest extends ControllerTest {
 
             // then
             final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.NON_PARTICIPANT_CANNOT_BE_HOST;
+            mockMvc.perform(requestBuilder)
+                    .andExpect(status().isConflict())
+                    .andExpectAll(getResultMatchersViaErrorCode(expectedError))
+                    .andDo(
+                            document(
+                                    "StudyApi/Participation/DelegateHostAuthority/Failure/Case3",
+                                    getDocumentRequest(),
+                                    getDocumentResponse(),
+                                    getHeaderWithAccessToken(),
+                                    pathParameters(
+                                            parameterWithName("studyId")
+                                                    .description("스터디 ID(PK)"),
+                                            parameterWithName("participantId")
+                                                    .description("권한을 위임할 사용자 ID(PK)")
+                                    ),
+                                    getExceptionResponseFields()
+                            )
+                    );
+        }
+
+        @Test
+        @DisplayName("팀장 권한을 기존 팀장(Self Invoke)에게 위임할 수 없다")
+        void throwExceptionByNewHostIsCurrentHost() throws Exception {
+            // given
+            mockingToken(true, HOST_ID);
+            doThrow(StudyWithMeException.type(StudyParticipantErrorCode.SELF_DELEGATING_NOT_ALLOWED))
+                    .when(delegateHostAuthorityUseCase)
+                    .invoke(any());
+
+            // when
+            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
+                    .patch(BASE_URL, STUDY_ID, ANONYMOUS_ID)
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
+
+            // then
+            final StudyParticipantErrorCode expectedError = StudyParticipantErrorCode.SELF_DELEGATING_NOT_ALLOWED;
             mockMvc.perform(requestBuilder)
                     .andExpect(status().isConflict())
                     .andExpectAll(getResultMatchersViaErrorCode(expectedError))

@@ -18,8 +18,8 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 import java.util.Set;
 
-import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.COMPLETE;
-import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.IN_PROGRESS;
+import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.OFF;
+import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.ON;
 import static com.kgu.studywithme.study.domain.model.StudyType.OFFLINE;
 import static com.kgu.studywithme.study.domain.model.StudyType.ONLINE;
 
@@ -100,7 +100,7 @@ public class Study extends BaseEntity<Study> {
         this.thumbnail = thumbnail;
         this.type = type;
         this.location = location;
-        this.recruitmentStatus = IN_PROGRESS;
+        this.recruitmentStatus = ON;
         this.graduationPolicy = GraduationPolicy.initPolicy(minimumAttendanceForGraduation);
         this.terminated = false;
         this.hashtags = new Hashtags(this, hashtags);
@@ -189,12 +189,8 @@ public class Study extends BaseEntity<Study> {
         graduationPolicy = graduationPolicy.resetUpdateChanceByDelegatingHostAuthority();
     }
 
-    public boolean isRecruitmentComplete() {
-        return recruitmentStatus == COMPLETE;
-    }
-
-    public void recruitingEnd() {
-        recruitmentStatus = COMPLETE;
+    public void recruitmentOff() {
+        recruitmentStatus = OFF;
     }
 
     public void terminate() {

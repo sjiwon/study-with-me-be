@@ -59,7 +59,8 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
 
         @BeforeEach
         void setUp() throws IOException {
-            mockingForStudyHost(STUDY_ID, HOST_ID);
+            mockingForStudyHost(STUDY_ID, HOST_ID, true);
+            mockingForStudyHost(STUDY_ID, ANONYMOUS_ID, false);
 
             files1 = createMultipleMockMultipartFile("hello1.txt", "text/plain");
             files2 = createMultipleMockMultipartFile("hello2.hwpx", "application/x-hwpml");
@@ -210,7 +211,8 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
 
         @BeforeEach
         void setUp() throws IOException {
-            mockingForStudyHost(STUDY_ID, HOST_ID);
+            mockingForStudyHost(STUDY_ID, HOST_ID, true);
+            mockingForStudyHost(STUDY_ID, ANONYMOUS_ID, false);
 
             files1 = createMultipleMockMultipartFile("hello1.txt", "text/plain");
             files2 = createMultipleMockMultipartFile("hello2.hwpx", "application/x-hwpml");
@@ -422,7 +424,8 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
 
         @BeforeEach
         void setUp() {
-            mockingForStudyHost(STUDY_ID, HOST_ID);
+            mockingForStudyHost(STUDY_ID, HOST_ID, true);
+            mockingForStudyHost(STUDY_ID, ANONYMOUS_ID, false);
         }
 
         @Test

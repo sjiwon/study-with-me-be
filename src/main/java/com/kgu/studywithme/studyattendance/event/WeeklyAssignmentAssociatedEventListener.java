@@ -6,7 +6,7 @@ import com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus;
 import com.kgu.studywithme.studyattendance.domain.model.StudyAttendance;
 import com.kgu.studywithme.studyattendance.domain.repository.StudyAttendanceRepository;
 import com.kgu.studywithme.studyattendance.exception.StudyAttendanceErrorCode;
-import com.kgu.studywithme.studyparticipant.application.adapter.ParticipateMemberReadAdapter;
+import com.kgu.studywithme.studyparticipant.domain.repository.query.ParticipateMemberReader;
 import com.kgu.studywithme.studyweekly.domain.model.Period;
 import com.kgu.studywithme.studyweekly.domain.model.StudyWeekly;
 import com.kgu.studywithme.studyweekly.domain.repository.StudyWeeklyRepository;
@@ -31,7 +31,7 @@ import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.
 @RequiredArgsConstructor
 public class WeeklyAssignmentAssociatedEventListener {
     private final StudyWeeklyRepository studyWeeklyRepository;
-    private final ParticipateMemberReadAdapter participateMemberReadAdapter;
+    private final ParticipateMemberReader participateMemberReader;
     private final StudyAttendanceRepository studyAttendanceRepository;
 
     @EventListener
@@ -40,7 +40,7 @@ public class WeeklyAssignmentAssociatedEventListener {
         log.info("과제 제출에 따른 출석 & 사용자 포인트 업데이트 이벤트 -> {}", event);
 
         final StudyWeekly weekly = getSpecificWeekly(event.weeklyId());
-        final Member participant = participateMemberReadAdapter.getParticipant(event.studyId(), event.participantId());
+        final Member participant = participateMemberReader.getParticipant(event.studyId(), event.participantId());
 
         if (weekly.isAutoAttendance()) {
             final StudyAttendance attendance = getParticipantAttendanceByWeek(event.studyId(), participant.getId(), weekly.getWeek());
@@ -71,7 +71,7 @@ public class WeeklyAssignmentAssociatedEventListener {
         log.info("제출한 과제 수정에 따른 출석 & 사용자 포인트 업데이트 이벤트 -> {}", event);
 
         final StudyWeekly weekly = getSpecificWeekly(event.weeklyId());
-        final Member participant = participateMemberReadAdapter.getParticipant(event.studyId(), event.participantId());
+        final Member participant = participateMemberReader.getParticipant(event.studyId(), event.participantId());
 
         final LocalDateTime now = LocalDateTime.now();
         final Period period = weekly.getPeriod();

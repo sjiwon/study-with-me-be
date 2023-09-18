@@ -1,9 +1,8 @@
 package com.kgu.studywithme.studyreview.application.service;
 
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantVerificationRepositoryAdapter;
+import com.kgu.studywithme.studyparticipant.domain.repository.StudyParticipantRepository;
 import com.kgu.studywithme.studyreview.application.usecase.command.WriteStudyReviewUseCase;
-import com.kgu.studywithme.studyreview.domain.model.StudyReview;
 import com.kgu.studywithme.studyreview.domain.repository.StudyReviewRepository;
 import com.kgu.studywithme.studyreview.exception.StudyReviewErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class WriteStudyReviewService implements WriteStudyReviewUseCase {
-    private final ParticipantVerificationRepositoryAdapter participantVerificationRepositoryAdapter;
+    private final StudyParticipantRepository studyParticipantRepository;
     private final StudyReviewRepository studyReviewRepository;
 
     @Override
@@ -20,16 +19,11 @@ public class WriteStudyReviewService implements WriteStudyReviewUseCase {
         validateMemberIsGraduatedStudy(command.studyId(), command.memberId());
         validateAlreadyWritten(command.studyId(), command.memberId());
 
-        final StudyReview review = StudyReview.writeReview(
-                command.studyId(),
-                command.memberId(),
-                command.content()
-        );
-        return studyReviewRepository.save(review).getId();
+        return studyReviewRepository.save(command.toDomain()).getId();
     }
 
     private void validateMemberIsGraduatedStudy(final Long studyId, final Long memberId) {
-        if (!participantVerificationRepositoryAdapter.isGraduatedParticipant(studyId, memberId)) {
+        if (!studyParticipantRepository.isGraduatedParticipant(studyId, memberId)) {
             throw StudyWithMeException.type(StudyReviewErrorCode.ONLY_GRADUATED_PARTICIPANT_CAN_WRITE_REVIEW);
         }
     }

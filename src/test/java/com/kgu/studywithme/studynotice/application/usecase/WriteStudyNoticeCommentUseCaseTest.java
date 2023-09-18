@@ -9,7 +9,7 @@ import com.kgu.studywithme.studynotice.domain.model.StudyNotice;
 import com.kgu.studywithme.studynotice.domain.model.StudyNoticeComment;
 import com.kgu.studywithme.studynotice.domain.repository.StudyNoticeRepository;
 import com.kgu.studywithme.studynotice.exception.StudyNoticeErrorCode;
-import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantVerificationRepositoryAdapter;
+import com.kgu.studywithme.studyparticipant.domain.repository.StudyParticipantRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -26,8 +26,8 @@ import static org.mockito.Mockito.verify;
 @DisplayName("StudyNotice/Comment -> WriteStudyNoticeCommentUseCase 테스트")
 class WriteStudyNoticeCommentUseCaseTest extends UseCaseTest {
     private final StudyNoticeRepository studyNoticeRepository = mock(StudyNoticeRepository.class);
-    private final ParticipantVerificationRepositoryAdapter participantVerificationRepositoryAdapter = mock(ParticipantVerificationRepositoryAdapter.class);
-    private final WriteStudyNoticeCommentUseCase sut = new WriteStudyNoticeCommentUseCase(studyNoticeRepository, participantVerificationRepositoryAdapter);
+    private final StudyParticipantRepository studyParticipantRepository = mock(StudyParticipantRepository.class);
+    private final WriteStudyNoticeCommentUseCase sut = new WriteStudyNoticeCommentUseCase(studyNoticeRepository, studyParticipantRepository);
 
     private final Member host = JIWON.toMember().apply(1L);
     private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L);
@@ -39,7 +39,7 @@ class WriteStudyNoticeCommentUseCaseTest extends UseCaseTest {
     void throwExceptionByWriterIsNotStudyParticipant() {
         // given
         given(studyNoticeRepository.getById(command.noticeId())).willReturn(notice);
-        given(participantVerificationRepositoryAdapter.isParticipant(notice.getStudyId(), command.writerId())).willReturn(false);
+        given(studyParticipantRepository.isParticipant(notice.getStudyId(), command.writerId())).willReturn(false);
 
         // when - then
         assertThatThrownBy(() -> sut.invoke(command))
@@ -48,7 +48,7 @@ class WriteStudyNoticeCommentUseCaseTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(studyNoticeRepository, times(1)).getById(command.noticeId()),
-                () -> verify(participantVerificationRepositoryAdapter, times(1)).isParticipant(notice.getStudyId(), command.writerId())
+                () -> verify(studyParticipantRepository, times(1)).isParticipant(notice.getStudyId(), command.writerId())
         );
     }
 
@@ -57,7 +57,7 @@ class WriteStudyNoticeCommentUseCaseTest extends UseCaseTest {
     void success() {
         // given
         given(studyNoticeRepository.getById(command.noticeId())).willReturn(notice);
-        given(participantVerificationRepositoryAdapter.isParticipant(notice.getStudyId(), command.writerId())).willReturn(true);
+        given(studyParticipantRepository.isParticipant(notice.getStudyId(), command.writerId())).willReturn(true);
 
         // when
         sut.invoke(command);
@@ -65,7 +65,7 @@ class WriteStudyNoticeCommentUseCaseTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyNoticeRepository, times(1)).getById(command.noticeId()),
-                () -> verify(participantVerificationRepositoryAdapter, times(1)).isParticipant(notice.getStudyId(), command.writerId()),
+                () -> verify(studyParticipantRepository, times(1)).isParticipant(notice.getStudyId(), command.writerId()),
                 () -> assertThat(notice.getComments()).hasSize(1),
                 () -> assertThat(notice.getComments())
                         .map(StudyNoticeComment::getWriterId)

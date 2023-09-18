@@ -1,8 +1,10 @@
 package com.kgu.studywithme.studyparticipant.presentation;
 
 import com.kgu.studywithme.global.resolver.ExtractPayload;
-import com.kgu.studywithme.studyparticipant.application.usecase.command.ApplyCancellationUseCase;
-import com.kgu.studywithme.studyparticipant.application.usecase.command.ApplyStudyUseCase;
+import com.kgu.studywithme.studyparticipant.application.usecase.ApplyCancelUseCase;
+import com.kgu.studywithme.studyparticipant.application.usecase.ApplyStudyUseCase;
+import com.kgu.studywithme.studyparticipant.application.usecase.command.ApplyCancelCommand;
+import com.kgu.studywithme.studyparticipant.application.usecase.command.ApplyStudyCommand;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/studies/{studyId}/applicants")
 public class StudyApplyApiController {
     private final ApplyStudyUseCase applyStudyUseCase;
-    private final ApplyCancellationUseCase applyCancellationUseCase;
+    private final ApplyCancelUseCase applyCancelUseCase;
 
     @Operation(summary = "스터디 참여 신청 EndPoint")
     @PostMapping
@@ -27,12 +29,7 @@ public class StudyApplyApiController {
             @ExtractPayload final Long memberId,
             @PathVariable final Long studyId
     ) {
-        applyStudyUseCase.invoke(
-                new ApplyStudyUseCase.Command(
-                        studyId,
-                        memberId
-                )
-        );
+        applyStudyUseCase.invoke(new ApplyStudyCommand(studyId, memberId));
         return ResponseEntity.noContent().build();
     }
 
@@ -42,12 +39,7 @@ public class StudyApplyApiController {
             @ExtractPayload final Long applierId,
             @PathVariable final Long studyId
     ) {
-        applyCancellationUseCase.invoke(
-                new ApplyCancellationUseCase.Command(
-                        studyId,
-                        applierId
-                )
-        );
+        applyCancelUseCase.invoke(new ApplyCancelCommand(studyId, applierId));
         return ResponseEntity.noContent().build();
     }
 }

@@ -27,7 +27,7 @@ public record DummyStudy(
                 studyType,
                 (studyType.equals("ONLINE")) ? null : "경기도",
                 (studyType.equals("ONLINE")) ? null : "안양시",
-                RecruitmentStatus.IN_PROGRESS.name(),
+                RecruitmentStatus.ON.name(),
                 0,
                 3,
                 0

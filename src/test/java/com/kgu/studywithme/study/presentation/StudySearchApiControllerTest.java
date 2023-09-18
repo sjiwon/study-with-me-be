@@ -20,7 +20,7 @@ import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDoc
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
 import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessTokenToAuthorizationHeader;
-import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.IN_PROGRESS;
+import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.ON;
 import static com.kgu.studywithme.study.domain.model.StudyType.ONLINE;
 import static com.kgu.studywithme.study.domain.model.paging.PagingConstants.SLICE_PER_PAGE;
 import static org.mockito.ArgumentMatchers.any;
@@ -219,7 +219,7 @@ class StudySearchApiControllerTest extends ControllerTest {
                     Category.from((long) (Math.random() * 6 + 1)).getName(),
                     new StudyPreview.Thumbnail("스터디 썸네일.png", "스터디 썸네일 백그라운드 RGB"),
                     ONLINE,
-                    IN_PROGRESS,
+                    ON,
                     10,
                     8,
                     now.minusDays(index),

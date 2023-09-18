@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class StudyFinalizeApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("스터디 참여 취소 API [PATCH /api/studies/{studyId}/participants/leave] - AccessToken 필수")
-    class leave {
+    class Leave {
         private static final String BASE_URL = "/api/studies/{studyId}/participants/leave";
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;
@@ -43,7 +43,7 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("참여자가 아니면 참여 취소를 할 수 없다")
+        @DisplayName("스터디 참여자가 아니면 스터디를 떠날 수 없다")
         void throwExceptionByMemberIsNotParticipant() throws Exception {
             // given
             mockingToken(true, ANONYMOUS_ID);
@@ -74,12 +74,12 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("스터디 팀장은 팀장 권한을 위임하지 않으면 스터디 참여를 취소할 수 없다")
+        @DisplayName("스터디 팀장은 팀장 권한을 위임하지 않으면 스터디를 떠날 수 없다")
         void throwExceptionByHostCannotLeaveStudy() throws Exception {
             // given
             mockingToken(true, PARTICIPANT_ID);
             doThrow(StudyWithMeException.type(StudyParticipantErrorCode.HOST_CANNOT_LEAVE_STUDY))
-                    .when(leaveParticipationUseCase)
+                    .when(leaveStudyUseCase)
                     .invoke(any());
 
             // when
@@ -108,12 +108,12 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("스터디 참여를 취소한다")
+        @DisplayName("스터디를 떠난다")
         void success() throws Exception {
             // given
             mockingToken(true, PARTICIPANT_ID);
             doNothing()
-                    .when(leaveParticipationUseCase)
+                    .when(leaveStudyUseCase)
                     .invoke(any());
 
             // when
@@ -141,7 +141,7 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
 
     @Nested
     @DisplayName("스터디 졸업 API [PATCH /api/studies/{studyId}/graduate] - AccessToken 필수")
-    class graduate {
+    class Graduate {
         private static final String BASE_URL = "/api/studies/{studyId}/graduate";
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;
@@ -156,7 +156,7 @@ class StudyFinalizeApiControllerTest extends ControllerTest {
         }
 
         @Test
-        @DisplayName("참여자가 아니면 졸업을 할 수 없다")
+        @DisplayName("스터디 참여자가 아니면 스터디를 졸업할 수 없다")
         void throwExceptionByMemberIsNotParticipant() throws Exception {
             // given
             mockingToken(true, ANONYMOUS_ID);

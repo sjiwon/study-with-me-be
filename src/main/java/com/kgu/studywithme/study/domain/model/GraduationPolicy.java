@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
 public class GraduationPolicy {
-    private static final int DEFAULT_UPDATE_CHANCE = 3;
+    public static final int DEFAULT_UPDATE_CHANCE = 3;
 
     @Column(name = "minimum_attendance", nullable = false)
     private int minimumAttendance;

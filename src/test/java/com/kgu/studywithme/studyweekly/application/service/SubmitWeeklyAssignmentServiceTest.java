@@ -4,7 +4,7 @@ import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.study.domain.model.Study;
-import com.kgu.studywithme.studyparticipant.application.adapter.ParticipateMemberReadAdapter;
+import com.kgu.studywithme.studyparticipant.domain.repository.query.ParticipateMemberReader;
 import com.kgu.studywithme.studyweekly.application.usecase.command.SubmitWeeklyAssignmentUseCase;
 import com.kgu.studywithme.studyweekly.domain.model.StudyWeekly;
 import com.kgu.studywithme.studyweekly.domain.model.UploadAssignment;
@@ -43,7 +43,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
     private StudyWeeklyRepository studyWeeklyRepository;
 
     @Mock
-    private ParticipateMemberReadAdapter participateMemberReadAdapter;
+    private ParticipateMemberReader participateMemberReader;
 
     @Mock
     private ApplicationEventPublisher eventPublisher;
@@ -77,7 +77,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(studyWeeklyRepository, times(1)).findById(any()),
-                () -> verify(participateMemberReadAdapter, times(0)).getParticipant(any(), any()),
+                () -> verify(participateMemberReader, times(0)).getParticipant(any(), any()),
                 () -> verify(eventPublisher, times(0)).publishEvent(any(AssignmentSubmittedEvent.class))
         );
     }
@@ -87,7 +87,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
     void successWithLink() {
         // given
         given(studyWeeklyRepository.findById(any())).willReturn(Optional.of(weekly));
-        given(participateMemberReadAdapter.getParticipant(any(), any())).willReturn(host);
+        given(participateMemberReader.getParticipant(any(), any())).willReturn(host);
 
         // when
         submitWeeklyAssignmentService.invoke(
@@ -102,7 +102,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyWeeklyRepository, times(1)).findById(any()),
-                () -> verify(participateMemberReadAdapter, times(1)).getParticipant(any(), any()),
+                () -> verify(participateMemberReader, times(1)).getParticipant(any(), any()),
                 () -> verify(eventPublisher, times(1)).publishEvent(any(AssignmentSubmittedEvent.class)),
                 () -> assertThat(weekly.getSubmits()).hasSize(1),
                 () -> {
@@ -121,7 +121,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
     void successWithFile() {
         // given
         given(studyWeeklyRepository.findById(any())).willReturn(Optional.of(weekly));
-        given(participateMemberReadAdapter.getParticipant(any(), any())).willReturn(host);
+        given(participateMemberReader.getParticipant(any(), any())).willReturn(host);
 
         // when
         submitWeeklyAssignmentService.invoke(
@@ -136,7 +136,7 @@ class SubmitWeeklyAssignmentServiceTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyWeeklyRepository, times(1)).findById(any()),
-                () -> verify(participateMemberReadAdapter, times(1)).getParticipant(any(), any()),
+                () -> verify(participateMemberReader, times(1)).getParticipant(any(), any()),
                 () -> verify(eventPublisher, times(1)).publishEvent(any(AssignmentSubmittedEvent.class)),
                 () -> assertThat(weekly.getSubmits()).hasSize(1),
                 () -> {

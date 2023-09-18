@@ -8,8 +8,8 @@ import com.kgu.studywithme.study.domain.service.StudyResourceValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.COMPLETE;
-import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.IN_PROGRESS;
+import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.OFF;
+import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.ON;
 
 @Service
 @StudyWithMeWritableTransactional
@@ -31,7 +31,7 @@ public class UpdateStudyUseCase {
                 command.type(),
                 command.province(),
                 command.city(),
-                command.recruitmentStatus() ? IN_PROGRESS : COMPLETE,
+                command.recruitmentStatus() ? ON : OFF,
                 command.minimumAttendanceForGraduation(),
                 command.hashtags()
         );
