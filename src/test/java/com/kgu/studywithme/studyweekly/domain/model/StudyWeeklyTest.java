@@ -1,12 +1,12 @@
 package com.kgu.studywithme.studyweekly.domain.model;
 
 import com.kgu.studywithme.common.ParallelTest;
+import com.kgu.studywithme.common.fixture.PeriodFixture;
 import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.study.domain.model.Study;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
@@ -23,9 +23,9 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("StudyWeekly -> 도메인 [StudyWeekly] 테스트")
 class StudyWeeklyTest extends ParallelTest {
-    private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
-    private final Member participant = JIWON.toMember().apply(2L, LocalDateTime.now());
-    private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L, LocalDateTime.now());
+    private final Member host = JIWON.toMember().apply(1L);
+    private final Member participant = JIWON.toMember().apply(2L);
+    private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L);
 
     @Test
     @DisplayName("StudyWeekly를 생성한다")
@@ -120,6 +120,40 @@ class StudyWeeklyTest extends ParallelTest {
                 () -> assertThat(weekly.getSubmits())
                         .map(StudyWeeklySubmit::getUploadAssignment)
                         .containsExactlyInAnyOrder(hostUploadAssignment, participantUploadAssignment)
+        );
+    }
+
+    @Test
+    @DisplayName("과제 제출 날짜가 Weekly Period StartDate ~ EndDate 사이에 포함되는지 확인한다")
+    void isSubmissionPeriodInRange() {
+        // given
+        final StudyWeekly weekly = STUDY_WEEKLY_1.toWeeklyWithAssignment(study.getId(), host.getId()); // WEEK1
+
+        // when
+        final boolean actual1 = weekly.isSubmissionPeriodInRange(PeriodFixture.WEEK_1.getEndDate().minusDays(1));
+        final boolean actual2 = weekly.isSubmissionPeriodInRange(PeriodFixture.WEEK_1.getEndDate().plusDays(1));
+
+        // then
+        assertAll(
+                () -> assertThat(actual1).isTrue(),
+                () -> assertThat(actual2).isFalse()
+        );
+    }
+
+    @Test
+    @DisplayName("과제 제출 날짜가 Weekly Period을 지났는지 확인한다")
+    void isSubmissionPeriodPassed() {
+        // given
+        final StudyWeekly weekly = STUDY_WEEKLY_1.toWeeklyWithAssignment(study.getId(), host.getId()); // WEEK1
+
+        // when
+        final boolean actual1 = weekly.isSubmissionPeriodPassed(PeriodFixture.WEEK_1.getEndDate().minusDays(1));
+        final boolean actual2 = weekly.isSubmissionPeriodPassed(PeriodFixture.WEEK_1.getEndDate().plusDays(1));
+
+        // then
+        assertAll(
+                () -> assertThat(actual1).isFalse(),
+                () -> assertThat(actual2).isTrue()
         );
     }
 }

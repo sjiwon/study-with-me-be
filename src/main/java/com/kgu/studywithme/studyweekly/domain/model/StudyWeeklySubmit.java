@@ -25,24 +25,24 @@ public class StudyWeeklySubmit extends BaseEntity<StudyWeeklySubmit> {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "week_id", referencedColumnName = "id", nullable = false)
-    private StudyWeekly studyWeekly;
+    private StudyWeekly weekly;
 
     private StudyWeeklySubmit(
-            final StudyWeekly studyWeekly,
+            final StudyWeekly weekly,
             final Long participantId,
             final UploadAssignment uploadAssignment
     ) {
-        this.studyWeekly = studyWeekly;
+        this.weekly = weekly;
         this.participantId = participantId;
         this.uploadAssignment = uploadAssignment;
     }
 
     public static StudyWeeklySubmit submitAssignment(
-            final StudyWeekly studyWeekly,
+            final StudyWeekly weekly,
             final Long participantId,
             final UploadAssignment uploadAssignment
     ) {
-        return new StudyWeeklySubmit(studyWeekly, participantId, uploadAssignment);
+        return new StudyWeeklySubmit(weekly, participantId, uploadAssignment);
     }
 
     public void editUpload(final UploadAssignment uploadAssignment) {

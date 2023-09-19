@@ -23,7 +23,7 @@ import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode.APPLIER_NOT_FOUND;
 import static com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode.HOST_CANNOT_GRADUATE_STUDY;
 import static com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode.HOST_CANNOT_LEAVE_STUDY;
-import static com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode.NON_PARTICIPANT_CANNOT_BE_HOST;
+import static com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode.PARTICIPANT_NOT_FOUND;
 import static com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode.PARTICIPANT_NOT_MEET_GRADUATION_POLICY;
 import static com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode.STUDY_CAPACITY_ALREADY_FULL;
 import static com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode.STUDY_HOST_CANNOT_APPLY;
@@ -157,9 +157,9 @@ public class StudyParticipantAcceptanceTest extends AcceptanceTest {
         @DisplayName("스터디 참여자가 아니면 팀장 권한을 위임할 수 없다")
         void nonParticipantCannotBeHost() {
             스터디_팀장_권한을_위임한다(hostAccessToken, studyId, idOfMemberA)
-                    .statusCode(NON_PARTICIPANT_CANNOT_BE_HOST.getStatus().value())
-                    .body("errorCode", is(NON_PARTICIPANT_CANNOT_BE_HOST.getErrorCode()))
-                    .body("message", is(NON_PARTICIPANT_CANNOT_BE_HOST.getMessage()));
+                    .statusCode(PARTICIPANT_NOT_FOUND.getStatus().value())
+                    .body("errorCode", is(PARTICIPANT_NOT_FOUND.getErrorCode()))
+                    .body("message", is(PARTICIPANT_NOT_FOUND.getMessage()));
         }
 
         @Test

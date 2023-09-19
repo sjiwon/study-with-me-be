@@ -107,8 +107,8 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
             // given
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyWeeklyErrorCode.MISSING_SUBMISSION))
-                    .when(assignmentUploader)
-                    .uploadAssignmentWithFile(any(), any(), any());
+                    .when(submitWeeklyAssignmentUseCase)
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -157,8 +157,8 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
             // given
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyWeeklyErrorCode.DUPLICATE_SUBMISSION))
-                    .when(assignmentUploader)
-                    .uploadAssignmentWithFile(any(), any(), any());
+                    .when(submitWeeklyAssignmentUseCase)
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -209,8 +209,8 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
             // given
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyWeeklyErrorCode.INVALID_BETWEEN_SUBMIT_TYPE_AND_RESULT))
-                    .when(assignmentUploader)
-                    .uploadAssignmentWithFile(any(), any(), any());
+                    .when(submitWeeklyAssignmentUseCase)
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -417,8 +417,8 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
             // given
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyWeeklyErrorCode.MISSING_SUBMISSION))
-                    .when(assignmentUploader)
-                    .uploadAssignmentWithFile(any(), any(), any());
+                    .when(editWeeklySubmittedAssignmentUseCase)
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -467,8 +467,8 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
             // given
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyWeeklyErrorCode.DUPLICATE_SUBMISSION))
-                    .when(assignmentUploader)
-                    .uploadAssignmentWithFile(any(), any(), any());
+                    .when(editWeeklySubmittedAssignmentUseCase)
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -519,8 +519,8 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
             // given
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyWeeklyErrorCode.INVALID_BETWEEN_SUBMIT_TYPE_AND_RESULT))
-                    .when(assignmentUploader)
-                    .uploadAssignmentWithFile(any(), any(), any());
+                    .when(editWeeklySubmittedAssignmentUseCase)
+                    .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -570,7 +570,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
             // given
             mockingToken(true, HOST_ID);
             doThrow(StudyWithMeException.type(StudyWeeklyErrorCode.SUBMITTED_ASSIGNMENT_NOT_FOUND))
-                    .when(editWeeklyAssignmentUseCase)
+                    .when(editWeeklySubmittedAssignmentUseCase)
                     .invoke(any());
 
             // when

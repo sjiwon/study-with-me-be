@@ -32,7 +32,7 @@ public class ManualAttendanceUseCase {
             final Long participantId,
             final Integer week
     ) {
-        return studyAttendanceRepository.getParticipantAttendanceByWeek(studyId, participantId, week)
+        return studyAttendanceRepository.findParticipantAttendanceByWeek(studyId, participantId, week)
                 .orElseThrow(() -> StudyWithMeException.type(StudyAttendanceErrorCode.ATTENDANCE_NOT_FOUND));
     }
 }

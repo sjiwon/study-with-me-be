@@ -79,7 +79,7 @@ class CreateStudyUseCaseTest extends UseCaseTest {
                 .validateInCreate(command.name());
         given(memberRepository.getById(command.hostId())).willReturn(host);
 
-        final Study study = OS.toOnlineStudy(host.getId()).apply(1L);
+        final Study study = command.toDomain().apply(1L);
         given(studyRepository.save(any())).willReturn(study);
 
         // when

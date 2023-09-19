@@ -300,12 +300,12 @@ public class StudyInformationRepositoryImpl implements StudyInformationRepositor
 
             final List<WeeklyInformation.WeeklyAttachment> attachments = query
                     .select(new QWeeklyInformation_WeeklyAttachment(
-                            studyWeeklyAttachment.studyWeekly.id,
+                            studyWeeklyAttachment.weekly.id,
                             studyWeeklyAttachment.uploadAttachment.uploadFileName,
                             studyWeeklyAttachment.uploadAttachment.link
                     ))
                     .from(studyWeeklyAttachment)
-                    .where(studyWeeklyAttachment.studyWeekly.id.in(weeklyIds))
+                    .where(studyWeeklyAttachment.weekly.id.in(weeklyIds))
                     .fetch();
             weeklyInformations.forEach(weekly -> weekly.applyAttachments(
                     attachments.stream()
@@ -317,12 +317,12 @@ public class StudyInformationRepositoryImpl implements StudyInformationRepositor
                     .select(new QWeeklyInformation_WeeklySubmit(
                             member.id,
                             member.nickname,
-                            studyWeeklySubmit.studyWeekly.id,
+                            studyWeeklySubmit.weekly.id,
                             studyWeeklySubmit.uploadAssignment
                     ))
                     .from(studyWeeklySubmit)
                     .innerJoin(member).on(member.id.eq(studyWeeklySubmit.participantId))
-                    .where(studyWeeklySubmit.studyWeekly.id.in(weeklyIds))
+                    .where(studyWeeklySubmit.weekly.id.in(weeklyIds))
                     .fetch();
             weeklyInformations.forEach(weekly -> weekly.applySubmits(
                     submits.stream()

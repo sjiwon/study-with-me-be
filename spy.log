@@ -1,0 +1,5 @@
+1695119686270|68|statement|connection 36|url jdbc:mysql://localhost:63941/study_with_me|TRUNCATE TABLE member|TRUNCATE TABLE member
+1695119686330|59|statement|connection 36|url jdbc:mysql://localhost:63941/study_with_me|TRUNCATE TABLE study_participant|TRUNCATE TABLE study_participant
+1695119686373|41|statement|connection 36|url jdbc:mysql://localhost:63941/study_with_me|TRUNCATE TABLE study_weekly_attachment|TRUNCATE TABLE study_weekly_attachment
+1695119686427|53|statement|connection 36|url jdbc:mysql://localhost:63941/study_with_me|TRUNCATE TABLE member_token|TRUNCATE TABLE member_token
+1695119686433|0|rollback|connection 36|url jdbc:mysql://localhost:63941/study_with_me||

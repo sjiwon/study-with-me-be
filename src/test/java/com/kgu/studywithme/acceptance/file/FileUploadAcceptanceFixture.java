@@ -17,7 +17,7 @@ public class FileUploadAcceptanceFixture {
                 .getPath();
 
         final Map<String, String> params = new HashMap<>();
-        params.put("type", "weekly");
+        params.put("type", "studyWeeklyContentImage");
 
         return multipartRequest("hello4.png", params, accessToken, uri);
     }
@@ -30,7 +30,7 @@ public class FileUploadAcceptanceFixture {
                 .getPath();
 
         final Map<String, String> params = new HashMap<>();
-        params.put("type", "description");
+        params.put("type", "studyDescriptionImage");
 
         return multipartRequest("hello4.png", params, accessToken, uri);
     }

@@ -32,8 +32,12 @@ public class Period {
         }
     }
 
-    public boolean isDateWithInRange(final LocalDateTime time) {
+    public boolean isInRange(final LocalDateTime time) {
         return startDate.isBefore(time) && endDate.isAfter(time);
+    }
+
+    public boolean isPassed(final LocalDateTime time) {
+        return endDate.isBefore(time);
     }
 
     @Override

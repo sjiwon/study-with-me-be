@@ -21,17 +21,17 @@ public class StudyWeeklyAttachment extends BaseEntity<StudyWeeklyAttachment> {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "week_id", referencedColumnName = "id", nullable = false)
-    private StudyWeekly studyWeekly;
+    private StudyWeekly weekly;
 
-    private StudyWeeklyAttachment(final StudyWeekly studyWeekly, final UploadAttachment uploadAttachment) {
-        this.studyWeekly = studyWeekly;
+    private StudyWeeklyAttachment(final StudyWeekly weekly, final UploadAttachment uploadAttachment) {
+        this.weekly = weekly;
         this.uploadAttachment = uploadAttachment;
     }
 
     public static StudyWeeklyAttachment addAttachmentFile(
-            final StudyWeekly studyWeekly,
+            final StudyWeekly weekly,
             final UploadAttachment uploadAttachment
     ) {
-        return new StudyWeeklyAttachment(studyWeekly, uploadAttachment);
+        return new StudyWeeklyAttachment(weekly, uploadAttachment);
     }
 }

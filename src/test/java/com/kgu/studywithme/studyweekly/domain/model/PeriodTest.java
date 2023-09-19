@@ -39,13 +39,30 @@ class PeriodTest extends ParallelTest {
         final Period period = new Period(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(7));
 
         // when
-        final boolean actual1 = period.isDateWithInRange(LocalDateTime.now().plusDays(4));
-        final boolean actual2 = period.isDateWithInRange(LocalDateTime.now().plusDays(8));
+        final boolean actual1 = period.isInRange(LocalDateTime.now().plusDays(4));
+        final boolean actual2 = period.isInRange(LocalDateTime.now().plusDays(8));
 
         // then
         assertAll(
                 () -> assertThat(actual1).isTrue(),
                 () -> assertThat(actual2).isFalse()
+        );
+    }
+    
+    @Test
+    @DisplayName("주어진 날짜가 Period을 지났는지 확인한다")
+    void isPassed() {
+        // given
+        final Period period = new Period(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(7));
+
+        // when
+        final boolean actual1 = period.isPassed(LocalDateTime.now().plusDays(4));
+        final boolean actual2 = period.isPassed(LocalDateTime.now().plusDays(8));
+
+        // then
+        assertAll(
+                () -> assertThat(actual1).isFalse(),
+                () -> assertThat(actual2).isTrue()
         );
     }
 }

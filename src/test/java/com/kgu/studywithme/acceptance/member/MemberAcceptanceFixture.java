@@ -19,7 +19,7 @@ import static com.kgu.studywithme.acceptance.CommonRequestFixture.postRequest;
 public class MemberAcceptanceFixture {
     public static ValidatableResponse 회원가입을_진행한다(final MemberFixture fixture) {
         final String uri = UriComponentsBuilder
-                .fromPath("/api/member")
+                .fromPath("/api/members")
                 .build()
                 .toUri()
                 .getPath();

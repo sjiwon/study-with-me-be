@@ -1,10 +1,13 @@
 package com.kgu.studywithme.studyweekly.presentation;
 
+import com.kgu.studywithme.file.utils.converter.FileConverter;
 import com.kgu.studywithme.global.aop.CheckStudyParticipant;
 import com.kgu.studywithme.global.resolver.ExtractPayload;
-import com.kgu.studywithme.studyweekly.application.service.AssignmentUploader;
-import com.kgu.studywithme.studyweekly.application.usecase.command.EditWeeklyAssignmentUseCase;
-import com.kgu.studywithme.studyweekly.application.usecase.command.SubmitWeeklyAssignmentUseCase;
+import com.kgu.studywithme.studyweekly.application.usecase.EditWeeklySubmittedAssignmentUseCase;
+import com.kgu.studywithme.studyweekly.application.usecase.SubmitWeeklyAssignmentUseCase;
+import com.kgu.studywithme.studyweekly.application.usecase.command.EditWeeklySubmittedAssignmentCommand;
+import com.kgu.studywithme.studyweekly.application.usecase.command.SubmitWeeklyAssignmentCommand;
+import com.kgu.studywithme.studyweekly.domain.model.AssignmentSubmitType;
 import com.kgu.studywithme.studyweekly.presentation.dto.request.EditSubmittedWeeklyAssignmentRequest;
 import com.kgu.studywithme.studyweekly.presentation.dto.request.SubmitWeeklyAssignmentRequest;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,9 +28,8 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 @RequiredArgsConstructor
 @RequestMapping("/api/studies/{studyId}/weeks/{weeklyId}/assignment")
 public class StudyWeeklySubmitApiController {
-    private final AssignmentUploader assignmentUploader;
     private final SubmitWeeklyAssignmentUseCase submitWeeklyAssignmentUseCase;
-    private final EditWeeklyAssignmentUseCase editWeeklyAssignmentUseCase;
+    private final EditWeeklySubmittedAssignmentUseCase editWeeklySubmittedAssignmentUseCase;
 
     @Operation(summary = "스터디 주차별 과제 제출 EndPoint")
     @CheckStudyParticipant
@@ -38,15 +40,14 @@ public class StudyWeeklySubmitApiController {
             @PathVariable final Long weeklyId,
             @ModelAttribute @Valid final SubmitWeeklyAssignmentRequest request
     ) {
-        // FIXME
-        submitWeeklyAssignmentUseCase.invoke(
-                new SubmitWeeklyAssignmentUseCase.Command(
-                        memberId,
-                        studyId,
-                        weeklyId,
-                        null
-                )
-        );
+        submitWeeklyAssignmentUseCase.invoke(new SubmitWeeklyAssignmentCommand(
+                memberId,
+                studyId,
+                weeklyId,
+                AssignmentSubmitType.from(request.type()),
+                FileConverter.convertAssignmentFile(request.file()),
+                request.link()
+        ));
         return ResponseEntity.noContent().build();
     }
 
@@ -59,15 +60,14 @@ public class StudyWeeklySubmitApiController {
             @PathVariable final Long weeklyId,
             @ModelAttribute @Valid final EditSubmittedWeeklyAssignmentRequest request
     ) {
-        // FIXME
-        editWeeklyAssignmentUseCase.invoke(
-                new EditWeeklyAssignmentUseCase.Command(
-                        memberId,
-                        studyId,
-                        weeklyId,
-                        null
-                )
-        );
+        editWeeklySubmittedAssignmentUseCase.invoke(new EditWeeklySubmittedAssignmentCommand(
+                memberId,
+                studyId,
+                weeklyId,
+                AssignmentSubmitType.from(request.type()),
+                FileConverter.convertAssignmentFile(request.file()),
+                request.link()
+        ));
         return ResponseEntity.noContent().build();
     }
 }

@@ -71,13 +71,11 @@ import com.kgu.studywithme.studyreview.application.usecase.DeleteStudyReviewUseC
 import com.kgu.studywithme.studyreview.application.usecase.UpdateStudyReviewUseCase;
 import com.kgu.studywithme.studyreview.application.usecase.WriteStudyReviewUseCase;
 import com.kgu.studywithme.studyreview.presentation.StudyReviewApiController;
-import com.kgu.studywithme.studyweekly.application.service.AssignmentUploader;
-import com.kgu.studywithme.studyweekly.application.service.AttachmentUploader;
-import com.kgu.studywithme.studyweekly.application.usecase.command.CreateStudyWeeklyUseCase;
-import com.kgu.studywithme.studyweekly.application.usecase.command.DeleteStudyWeeklyUseCase;
-import com.kgu.studywithme.studyweekly.application.usecase.command.EditWeeklyAssignmentUseCase;
-import com.kgu.studywithme.studyweekly.application.usecase.command.SubmitWeeklyAssignmentUseCase;
-import com.kgu.studywithme.studyweekly.application.usecase.command.UpdateStudyWeeklyUseCase;
+import com.kgu.studywithme.studyweekly.application.usecase.CreateStudyWeeklyUseCase;
+import com.kgu.studywithme.studyweekly.application.usecase.DeleteStudyWeeklyUseCase;
+import com.kgu.studywithme.studyweekly.application.usecase.EditWeeklySubmittedAssignmentUseCase;
+import com.kgu.studywithme.studyweekly.application.usecase.SubmitWeeklyAssignmentUseCase;
+import com.kgu.studywithme.studyweekly.application.usecase.UpdateStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.presentation.StudyWeeklyApiController;
 import com.kgu.studywithme.studyweekly.presentation.StudyWeeklySubmitApiController;
 import org.junit.jupiter.api.BeforeEach;
@@ -301,9 +299,6 @@ public abstract class ControllerTest {
 
     // StudyWeekly
     @MockBean
-    protected AttachmentUploader attachmentUploader;
-
-    @MockBean
     protected CreateStudyWeeklyUseCase createStudyWeeklyUseCase;
 
     @MockBean
@@ -313,13 +308,10 @@ public abstract class ControllerTest {
     protected DeleteStudyWeeklyUseCase deleteStudyWeeklyUseCase;
 
     @MockBean
-    protected AssignmentUploader assignmentUploader;
-
-    @MockBean
     protected SubmitWeeklyAssignmentUseCase submitWeeklyAssignmentUseCase;
 
     @MockBean
-    protected EditWeeklyAssignmentUseCase editWeeklyAssignmentUseCase;
+    protected EditWeeklySubmittedAssignmentUseCase editWeeklySubmittedAssignmentUseCase;
 
     // StudyReview
     @MockBean

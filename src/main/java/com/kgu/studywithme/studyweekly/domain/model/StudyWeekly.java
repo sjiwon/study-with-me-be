@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.CollectionUtils;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,10 +47,10 @@ public class StudyWeekly extends BaseEntity<StudyWeekly> {
     @Column(name = "is_auto_attendance", nullable = false)
     private boolean autoAttendance;
 
-    @OneToMany(mappedBy = "studyWeekly", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "weekly", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private final List<StudyWeeklyAttachment> attachments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "studyWeekly", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "weekly", cascade = CascadeType.PERSIST)
     private final List<StudyWeeklySubmit> submits = new ArrayList<>();
 
     private StudyWeekly(
@@ -148,5 +149,13 @@ public class StudyWeekly extends BaseEntity<StudyWeekly> {
 
     public void submitAssignment(final Long participantId, final UploadAssignment uploadAssignment) {
         submits.add(StudyWeeklySubmit.submitAssignment(this, participantId, uploadAssignment));
+    }
+
+    public boolean isSubmissionPeriodInRange(final LocalDateTime time) {
+        return period.isInRange(time);
+    }
+
+    public boolean isSubmissionPeriodPassed(final LocalDateTime time) {
+        return period.isPassed(time);
     }
 }

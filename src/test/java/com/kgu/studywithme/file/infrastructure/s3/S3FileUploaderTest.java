@@ -3,6 +3,7 @@ package com.kgu.studywithme.file.infrastructure.s3;
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.file.domain.model.RawFileData;
 import com.kgu.studywithme.file.exception.FileErrorCode;
+import com.kgu.studywithme.file.utils.converter.FileConverter;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import io.awspring.cloud.s3.S3Resource;
 import io.awspring.cloud.s3.S3Template;
@@ -15,7 +16,6 @@ import java.io.IOException;
 import java.net.URL;
 
 import static com.kgu.studywithme.common.utils.FileMockingUtils.createSingleMockMultipartFile;
-import static com.kgu.studywithme.file.domain.model.FileExtension.PNG;
 import static com.kgu.studywithme.file.domain.model.FileUploadType.STUDY_DESCRIPTION_IMAGE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -41,13 +41,7 @@ class S3FileUploaderTest extends UseCaseTest {
     @BeforeEach
     void setUp() throws IOException {
         final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");
-        rawFileData = new RawFileData(
-                file.getOriginalFilename(),
-                file.getContentType(),
-                PNG,
-                STUDY_DESCRIPTION_IMAGE,
-                file.getInputStream()
-        );
+        rawFileData = FileConverter.convertImageFile(file, STUDY_DESCRIPTION_IMAGE);
         imageUploadLinkPath = "/" + rawFileData.fileName();
     }
 

@@ -32,7 +32,7 @@ public class FileUploadAcceptanceTest extends AcceptanceTest {
         void uploadStudyWeeklyImageApi() {
             스터디_주차_글_내부_이미지를_업로드한다(accessToken)
                     .statusCode(OK.value())
-                    .body("result", is("https://weekly-image"));
+                    .body("result", is("S3/hello4.png"));
         }
 
         @Test
@@ -40,7 +40,7 @@ public class FileUploadAcceptanceTest extends AcceptanceTest {
         void uploadStudyDescriptionImageApi() {
             스터디_설명_내부_이미지를_업로드한다(accessToken)
                     .statusCode(OK.value())
-                    .body("result", is("https://study-description-image"));
+                    .body("result", is("S3/hello4.png"));
         }
     }
 }

@@ -45,9 +45,9 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 
     @Nested
-    @DisplayName("스터디 주차 생성 API [POST /api/studies/{studyId}/week] - AccessToken 필수")
+    @DisplayName("스터디 주차 생성 API [POST /api/studies/{studyId}/weeks] - AccessToken 필수")
     class CreateWeekly {
-        private static final String BASE_URL = "/api/studies/{studyId}/week";
+        private static final String BASE_URL = "/api/studies/{studyId}/weeks";
         private static final Long STUDY_ID = 1L;
         private static final Long HOST_ID = 1L;
         private static final Long ANONYMOUS_ID = 2L;

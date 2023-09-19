@@ -1,13 +1,16 @@
 package com.kgu.studywithme.studyattendance.domain.repository;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
+import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus;
 import com.kgu.studywithme.studyattendance.domain.model.StudyAttendance;
+import com.kgu.studywithme.studyattendance.exception.StudyAttendanceErrorCode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -21,11 +24,16 @@ public interface StudyAttendanceRepository extends JpaRepository<StudyAttendance
     @Query("SELECT sa" +
             " FROM StudyAttendance sa" +
             " WHERE sa.studyId = :studyId AND sa.participantId = :participantId AND sa.week = :week")
-    Optional<StudyAttendance> getParticipantAttendanceByWeek(
+    Optional<StudyAttendance> findParticipantAttendanceByWeek(
             @Param("studyId") final Long studyId,
             @Param("participantId") final Long participantId,
             @Param("week") final Integer week
     );
+
+    default StudyAttendance getParticipantAttendanceByWeek(final Long studyId, final Long participantId, final int week) {
+        return findParticipantAttendanceByWeek(studyId, participantId, week)
+                .orElseThrow(() -> StudyWithMeException.type(StudyAttendanceErrorCode.ATTENDANCE_NOT_FOUND));
+    }
 
     @StudyWithMeWritableTransactional
     @Modifying(flushAutomatically = true, clearAutomatically = true)
@@ -33,11 +41,22 @@ public interface StudyAttendanceRepository extends JpaRepository<StudyAttendance
             " SET st.status = :status" +
             " WHERE st.studyId = :studyId AND st.week = :week AND st.participantId IN :participantIds")
     void updateParticipantStatus(
-            @Param("studyId") Long studyId,
-            @Param("week") int week,
-            @Param("participantIds") Set<Long> participantIds,
-            @Param("status") AttendanceStatus status
+            @Param("studyId") final Long studyId,
+            @Param("week") final int week,
+            @Param("participantIds") final Set<Long> participantIds,
+            @Param("status") final AttendanceStatus status
     );
+
+    List<StudyAttendance> findByStatusOrderByStudyIdAscWeekAscParticipantIdAsc(final AttendanceStatus status);
+
+    default List<StudyAttendance> findNonAttendanceInformation() {
+        return findByStatusOrderByStudyIdAscWeekAscParticipantIdAsc(NON_ATTENDANCE);
+    }
+
+    @StudyWithMeWritableTransactional
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query("DELETE FROM StudyAttendance sa WHERE sa.studyId = :studyId AND sa.week = :week")
+    int deleteFromSpecificWeekly(@Param("studyId") final Long studyId, @Param("week") final int week);
 
     // Method Query
     int countByStudyIdAndParticipantIdAndStatus(final Long studyId, final Long participantId, final AttendanceStatus status);
@@ -57,4 +76,8 @@ public interface StudyAttendanceRepository extends JpaRepository<StudyAttendance
     default int getNonAttendanceStatusCount(final Long studyId, final Long participantId) {
         return countByStudyIdAndParticipantIdAndStatus(studyId, participantId, NON_ATTENDANCE);
     }
+
+    boolean existsByStudyIdAndWeek(final Long studyId, final int week);
+
+    int countByStudyIdAndWeek(final Long studyId, final int week);
 }

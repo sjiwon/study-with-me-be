@@ -6,8 +6,6 @@ import com.kgu.studywithme.study.domain.model.Study;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
-
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1;
@@ -18,11 +16,11 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("StudyWeekly/Submit -> 도메인 [StudyWeeklySubmit] 테스트")
 class StudyWeeklySubmitTest extends ParallelTest {
-    private final Member host = JIWON.toMember().apply(1L, LocalDateTime.now());
-    private final Member participant = JIWON.toMember().apply(2L, LocalDateTime.now());
-    private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L, LocalDateTime.now());
+    private final Member host = JIWON.toMember().apply(1L);
+    private final Member participant = JIWON.toMember().apply(2L);
+    private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L);
     private final StudyWeekly weekly = STUDY_WEEKLY_1.toWeeklyWithAssignment(study.getId(), host.getId())
-            .apply(1L, LocalDateTime.now());
+            .apply(1L);
 
     @Test
     @DisplayName("StudyWeeklySubmit[With Link]을 생성한다")
@@ -31,7 +29,7 @@ class StudyWeeklySubmitTest extends ParallelTest {
         final StudyWeeklySubmit submit = StudyWeeklySubmit.submitAssignment(weekly, participant.getId(), uploadAssignment);
 
         assertAll(
-                () -> assertThat(submit.getStudyWeekly()).isEqualTo(weekly),
+                () -> assertThat(submit.getWeekly()).isEqualTo(weekly),
                 () -> assertThat(submit.getUploadAssignment().getUploadFileName()).isNull(),
                 () -> assertThat(submit.getUploadAssignment().getLink()).isEqualTo("https://notion.com"),
                 () -> assertThat(submit.getUploadAssignment().getSubmitType()).isEqualTo(LINK)
@@ -45,7 +43,7 @@ class StudyWeeklySubmitTest extends ParallelTest {
         final StudyWeeklySubmit submit = StudyWeeklySubmit.submitAssignment(weekly, participant.getId(), uploadAssignment);
 
         assertAll(
-                () -> assertThat(submit.getStudyWeekly()).isEqualTo(weekly),
+                () -> assertThat(submit.getWeekly()).isEqualTo(weekly),
                 () -> assertThat(submit.getUploadAssignment().getUploadFileName()).isEqualTo("hello.pdf"),
                 () -> assertThat(submit.getUploadAssignment().getLink()).isEqualTo("uuid.pdf"),
                 () -> assertThat(submit.getUploadAssignment().getSubmitType()).isEqualTo(FILE)
@@ -65,7 +63,7 @@ class StudyWeeklySubmitTest extends ParallelTest {
 
         // then
         assertAll(
-                () -> assertThat(submit.getStudyWeekly()).isEqualTo(weekly),
+                () -> assertThat(submit.getWeekly()).isEqualTo(weekly),
                 () -> assertThat(submit.getUploadAssignment().getUploadFileName()).isNull(),
                 () -> assertThat(submit.getUploadAssignment().getLink()).isEqualTo(newUploadAssignment.getLink()),
                 () -> assertThat(submit.getUploadAssignment().getSubmitType()).isEqualTo(newUploadAssignment.getSubmitType())

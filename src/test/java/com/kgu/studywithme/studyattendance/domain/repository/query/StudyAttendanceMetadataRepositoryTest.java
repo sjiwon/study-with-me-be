@@ -7,7 +7,6 @@ import com.kgu.studywithme.study.domain.model.Study;
 import com.kgu.studywithme.study.domain.repository.StudyRepository;
 import com.kgu.studywithme.studyattendance.domain.model.StudyAttendance;
 import com.kgu.studywithme.studyattendance.domain.repository.StudyAttendanceRepository;
-import com.kgu.studywithme.studyattendance.domain.repository.query.dto.NonAttendanceWeekly;
 import com.kgu.studywithme.studyattendance.domain.repository.query.dto.StudyAttendanceWeekly;
 import com.kgu.studywithme.studyparticipant.domain.model.StudyParticipant;
 import com.kgu.studywithme.studyparticipant.domain.repository.StudyParticipantRepository;
@@ -33,7 +32,6 @@ import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.ABSENCE;
 import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.ATTENDANCE;
 import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.LATE;
-import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.NON_ATTENDANCE;
 import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.APPROVE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -73,63 +71,6 @@ class StudyAttendanceMetadataRepositoryTest extends RepositoryTest {
         studies[2] = studyRepository.save(KOTLIN.toOnlineStudy(host.getId()));
         studies[3] = studyRepository.save(NETWORK.toOnlineStudy(host.getId()));
         studies[4] = studyRepository.save(EFFECTIVE_JAVA.toOnlineStudy(host.getId()));
-    }
-
-    @Test
-    @DisplayName("미출석 주차 정보들을 조회한다")
-    void findNonAttendanceInformation() {
-        /* 1주차 */
-        studyAttendanceRepository.saveAll(List.of(
-                StudyAttendance.recordAttendance(studies[0].getId(), members[0].getId(), 1, NON_ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[0].getId(), members[1].getId(), 1, NON_ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[0].getId(), members[2].getId(), 1, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[0].getId(), members[3].getId(), 1, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[0].getId(), members[4].getId(), 1, NON_ATTENDANCE)
-        ));
-
-        final List<NonAttendanceWeekly> result1 = sut.findParticipantNonAttendanceWeekly();
-        assertAll(
-                () -> assertThat(result1)
-                        .map(NonAttendanceWeekly::studyId)
-                        .containsExactly(studies[0].getId(), studies[0].getId(), studies[0].getId()),
-                () -> assertThat(result1)
-                        .map(NonAttendanceWeekly::week)
-                        .containsExactly(1, 1, 1),
-                () -> assertThat(result1)
-                        .map(NonAttendanceWeekly::participantId)
-                        .containsExactly(members[0].getId(), members[1].getId(), members[4].getId())
-        );
-
-        /* 2주차 */
-        studyAttendanceRepository.saveAll(List.of(
-                StudyAttendance.recordAttendance(studies[0].getId(), members[0].getId(), 2, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[0].getId(), members[1].getId(), 2, NON_ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[0].getId(), members[2].getId(), 2, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[0].getId(), members[3].getId(), 2, NON_ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[0].getId(), members[4].getId(), 2, ATTENDANCE)
-        ));
-
-        final List<NonAttendanceWeekly> result2 = sut.findParticipantNonAttendanceWeekly();
-        assertAll(
-                () -> assertThat(result2)
-                        .map(NonAttendanceWeekly::studyId)
-                        .containsExactly(
-                                studies[0].getId(), studies[0].getId(), studies[0].getId(),
-                                studies[0].getId(), studies[0].getId()
-                        ),
-                () -> assertThat(result2)
-                        .map(NonAttendanceWeekly::week)
-                        .containsExactly(
-                                1, 1, 1,
-                                2, 2
-                        ),
-                () -> assertThat(result2)
-                        .map(NonAttendanceWeekly::participantId)
-                        .containsExactly(
-                                members[0].getId(), members[1].getId(), members[4].getId(),
-                                members[1].getId(), members[3].getId()
-                        )
-        );
     }
 
     @Test

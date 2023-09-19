@@ -54,7 +54,7 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
         // given
         final StudyAttendance attendance = StudyAttendance.recordAttendance(study.getId(), member.getId(), 1, NON_ATTENDANCE);
         final ManualAttendanceCommand command = new ManualAttendanceCommand(study.getId(), member.getId(), 1, ATTENDANCE);
-        given(studyAttendanceRepository.getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()))
+        given(studyAttendanceRepository.findParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()))
                 .willReturn(Optional.of(attendance));
 
         // when
@@ -63,7 +63,7 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyAttendanceRepository, times(1))
-                        .getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()),
+                        .findParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()),
                 () -> verify(memberRepository, times(1)).getById(command.participantId()),
                 () -> assertThat(attendance.getStatus()).isEqualTo(ATTENDANCE),
                 () -> assertThat(member.getScore().getValue()).isEqualTo(previousScore + Score.ATTENDANCE)
@@ -76,7 +76,7 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
         // given
         final StudyAttendance attendance = StudyAttendance.recordAttendance(study.getId(), member.getId(), 1, NON_ATTENDANCE);
         final ManualAttendanceCommand command = new ManualAttendanceCommand(study.getId(), member.getId(), 1, LATE);
-        given(studyAttendanceRepository.getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()))
+        given(studyAttendanceRepository.findParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()))
                 .willReturn(Optional.of(attendance));
 
         // when
@@ -85,7 +85,7 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyAttendanceRepository, times(1))
-                        .getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()),
+                        .findParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()),
                 () -> verify(memberRepository, times(1)).getById(command.participantId()),
                 () -> assertThat(attendance.getStatus()).isEqualTo(LATE),
                 () -> assertThat(member.getScore().getValue()).isEqualTo(previousScore + Score.LATE)
@@ -98,7 +98,7 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
         // given
         final StudyAttendance attendance = StudyAttendance.recordAttendance(study.getId(), member.getId(), 1, NON_ATTENDANCE);
         final ManualAttendanceCommand command = new ManualAttendanceCommand(study.getId(), member.getId(), 1, ABSENCE);
-        given(studyAttendanceRepository.getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()))
+        given(studyAttendanceRepository.findParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()))
                 .willReturn(Optional.of(attendance));
 
         // when
@@ -107,7 +107,7 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyAttendanceRepository, times(1))
-                        .getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()),
+                        .findParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()),
                 () -> verify(memberRepository, times(1)).getById(command.participantId()),
                 () -> assertThat(attendance.getStatus()).isEqualTo(ABSENCE),
                 () -> assertThat(member.getScore().getValue()).isEqualTo(previousScore + Score.ABSENCE)
@@ -120,7 +120,7 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
         // given
         final StudyAttendance attendance = StudyAttendance.recordAttendance(study.getId(), member.getId(), 1, ATTENDANCE);
         final ManualAttendanceCommand command = new ManualAttendanceCommand(study.getId(), member.getId(), 1, LATE);
-        given(studyAttendanceRepository.getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()))
+        given(studyAttendanceRepository.findParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()))
                 .willReturn(Optional.of(attendance));
 
         // when
@@ -129,7 +129,7 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyAttendanceRepository, times(1))
-                        .getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()),
+                        .findParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()),
                 () -> verify(memberRepository, times(1)).getById(command.participantId()),
                 () -> assertThat(attendance.getStatus()).isEqualTo(LATE),
                 () -> assertThat(member.getScore().getValue()).isEqualTo(previousScore - Score.ATTENDANCE + Score.LATE)
@@ -142,7 +142,7 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
         // given
         final StudyAttendance attendance = StudyAttendance.recordAttendance(study.getId(), member.getId(), 1, ATTENDANCE);
         final ManualAttendanceCommand command = new ManualAttendanceCommand(study.getId(), member.getId(), 1, ABSENCE);
-        given(studyAttendanceRepository.getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()))
+        given(studyAttendanceRepository.findParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()))
                 .willReturn(Optional.of(attendance));
 
         // when
@@ -151,7 +151,7 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyAttendanceRepository, times(1))
-                        .getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()),
+                        .findParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()),
                 () -> verify(memberRepository, times(1)).getById(command.participantId()),
                 () -> assertThat(attendance.getStatus()).isEqualTo(ABSENCE),
                 () -> assertThat(member.getScore().getValue()).isEqualTo(previousScore - Score.ATTENDANCE + Score.ABSENCE)
@@ -164,7 +164,7 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
         // given
         final StudyAttendance attendance = StudyAttendance.recordAttendance(study.getId(), member.getId(), 1, LATE);
         final ManualAttendanceCommand command = new ManualAttendanceCommand(study.getId(), member.getId(), 1, ATTENDANCE);
-        given(studyAttendanceRepository.getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()))
+        given(studyAttendanceRepository.findParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()))
                 .willReturn(Optional.of(attendance));
 
         // when
@@ -173,7 +173,7 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyAttendanceRepository, times(1))
-                        .getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()),
+                        .findParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()),
                 () -> verify(memberRepository, times(1)).getById(command.participantId()),
                 () -> assertThat(attendance.getStatus()).isEqualTo(ATTENDANCE),
                 () -> assertThat(member.getScore().getValue()).isEqualTo(previousScore - Score.LATE + Score.ATTENDANCE)
@@ -186,7 +186,7 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
         // given
         final StudyAttendance attendance = StudyAttendance.recordAttendance(study.getId(), member.getId(), 1, LATE);
         final ManualAttendanceCommand command = new ManualAttendanceCommand(study.getId(), member.getId(), 1, ABSENCE);
-        given(studyAttendanceRepository.getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()))
+        given(studyAttendanceRepository.findParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()))
                 .willReturn(Optional.of(attendance));
 
         // when
@@ -195,7 +195,7 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyAttendanceRepository, times(1))
-                        .getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()),
+                        .findParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()),
                 () -> verify(memberRepository, times(1)).getById(command.participantId()),
                 () -> assertThat(attendance.getStatus()).isEqualTo(ABSENCE),
                 () -> assertThat(member.getScore().getValue()).isEqualTo(previousScore - Score.LATE + Score.ABSENCE)
@@ -208,7 +208,7 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
         // given
         final StudyAttendance attendance = StudyAttendance.recordAttendance(study.getId(), member.getId(), 1, ABSENCE);
         final ManualAttendanceCommand command = new ManualAttendanceCommand(study.getId(), member.getId(), 1, ATTENDANCE);
-        given(studyAttendanceRepository.getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()))
+        given(studyAttendanceRepository.findParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()))
                 .willReturn(Optional.of(attendance));
 
         // when
@@ -217,7 +217,7 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyAttendanceRepository, times(1))
-                        .getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()),
+                        .findParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()),
                 () -> verify(memberRepository, times(1)).getById(command.participantId()),
                 () -> assertThat(attendance.getStatus()).isEqualTo(ATTENDANCE),
                 () -> assertThat(member.getScore().getValue()).isEqualTo(previousScore - Score.ABSENCE + Score.ATTENDANCE)
@@ -230,7 +230,7 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
         // given
         final StudyAttendance attendance = StudyAttendance.recordAttendance(study.getId(), member.getId(), 1, ABSENCE);
         final ManualAttendanceCommand command = new ManualAttendanceCommand(study.getId(), member.getId(), 1, LATE);
-        given(studyAttendanceRepository.getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()))
+        given(studyAttendanceRepository.findParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()))
                 .willReturn(Optional.of(attendance));
 
         // when
@@ -239,7 +239,7 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyAttendanceRepository, times(1))
-                        .getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()),
+                        .findParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week()),
                 () -> verify(memberRepository, times(1)).getById(command.participantId()),
                 () -> assertThat(attendance.getStatus()).isEqualTo(LATE),
                 () -> assertThat(member.getScore().getValue()).isEqualTo(previousScore - Score.ABSENCE + Score.LATE)
