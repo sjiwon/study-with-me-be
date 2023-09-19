@@ -41,7 +41,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             " WHERE m.phone.value = :phone")
     Long findIdByPhoneUsed(@Param("phone") final String phone);
 
-    // Method Query
+    // Query Method
     boolean existsByEmailValue(final String email);
 
     boolean existsByNicknameValue(final String nickname);

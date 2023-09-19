@@ -33,7 +33,7 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
         return getHostId(studyId).equals(memberId);
     }
 
-    // Method Query
+    // Query Method
     boolean existsByNameValue(final String name);
 
     Optional<Study> findByIdAndRecruitmentStatusIs(final Long id, final RecruitmentStatus status);

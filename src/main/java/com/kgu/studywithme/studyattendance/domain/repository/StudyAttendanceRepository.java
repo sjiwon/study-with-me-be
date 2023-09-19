@@ -58,7 +58,7 @@ public interface StudyAttendanceRepository extends JpaRepository<StudyAttendance
     @Query("DELETE FROM StudyAttendance sa WHERE sa.studyId = :studyId AND sa.week = :week")
     int deleteFromSpecificWeekly(@Param("studyId") final Long studyId, @Param("week") final int week);
 
-    // Method Query
+    // Query Method
     int countByStudyIdAndParticipantIdAndStatus(final Long studyId, final Long participantId, final AttendanceStatus status);
 
     default int getAttendanceStatusCount(final Long studyId, final Long participantId) {

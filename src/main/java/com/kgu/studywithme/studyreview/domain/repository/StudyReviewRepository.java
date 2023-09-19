@@ -11,6 +11,6 @@ public interface StudyReviewRepository extends JpaRepository<StudyReview, Long> 
                 .orElseThrow(() -> StudyWithMeException.type(StudyReviewErrorCode.STUDY_REVIEW_NOT_FOUND));
     }
 
-    // Method Query
+    // Query Method
     boolean existsByStudyIdAndWriterId(final Long studyId, final Long memberId);
 }

@@ -32,7 +32,7 @@ public interface StudyWeeklySubmitRepository extends JpaRepository<StudyWeeklySu
     @Query("DELETE FROM StudyWeeklySubmit sws WHERE sws.weekly.id = :weeklyId")
     int deleteFromSpecificWeekly(@Param("weeklyId") final Long weeklyId);
 
-    // Method Query
+    // Query Method
     boolean existsByWeeklyId(final Long weeklyId);
 
     int countByWeeklyId(final Long weeklyId);
