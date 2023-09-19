@@ -1,5 +1,6 @@
 package com.kgu.studywithme.file.utils.converter;
 
+import com.kgu.studywithme.common.ParallelTest;
 import com.kgu.studywithme.file.domain.model.RawFileData;
 import com.kgu.studywithme.file.exception.FileErrorCode;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
@@ -26,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("FIle -> FileConverter 테스트")
-public class FileConverterTest {
+public class FileConverterTest extends ParallelTest {
     @Nested
     @DisplayName("이미지 파일 Convert")
     class ConvertImageFile {

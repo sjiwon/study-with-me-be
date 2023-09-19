@@ -1,18 +1,19 @@
 package com.kgu.studywithme.file.infrastructure.s3;
 
-import com.kgu.studywithme.common.UseCaseTest;
+import com.kgu.studywithme.common.ParallelTest;
 import com.kgu.studywithme.file.domain.model.RawFileData;
 import com.kgu.studywithme.file.exception.FileErrorCode;
 import com.kgu.studywithme.file.utils.converter.FileConverter;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
+import io.awspring.cloud.s3.ObjectMetadata;
 import io.awspring.cloud.s3.S3Resource;
 import io.awspring.cloud.s3.S3Template;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 
 import static com.kgu.studywithme.common.utils.FileMockingUtils.createSingleMockMultipartFile;
@@ -27,7 +28,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @DisplayName("File -> S3FileUploader 테스트")
-class S3FileUploaderTest extends UseCaseTest {
+class S3FileUploaderTest extends ParallelTest {
     private static final String BUCKET = "bucket";
     private static final String CLOUD_FRONT_URL = "https://cloudfront-domain";
 
@@ -40,13 +41,15 @@ class S3FileUploaderTest extends UseCaseTest {
 
     @BeforeEach
     void setUp() throws IOException {
-        final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");
-        rawFileData = FileConverter.convertImageFile(file, STUDY_DESCRIPTION_IMAGE);
+        rawFileData = FileConverter.convertImageFile(
+                createSingleMockMultipartFile("hello4.png", "image/png"),
+                STUDY_DESCRIPTION_IMAGE
+        );
         imageUploadLinkPath = "/" + rawFileData.fileName();
     }
 
     @Test
-    @DisplayName("파일을 업로드하지 않으면 예외가 발생한다")
+    @DisplayName("Client가 파일을 전송하지 않았으면 예외가 발생한다")
     void throwExceptionByFileIsNotUpload() {
         assertThatThrownBy(() -> sut.uploadFile(null))
                 .isInstanceOf(StudyWithMeException.class)
@@ -60,7 +63,12 @@ class S3FileUploaderTest extends UseCaseTest {
     void success() throws IOException {
         // given
         final URL mockUrl = new URL("https://s3" + imageUploadLinkPath);
-        given(s3Template.upload(any(), any(), any(), any())).willReturn(s3Resource);
+        given(s3Template.upload(
+                any(String.class),
+                any(String.class),
+                any(InputStream.class),
+                any(ObjectMetadata.class)
+        )).willReturn(s3Resource);
         given(s3Resource.getURL()).willReturn(mockUrl);
 
         // when
