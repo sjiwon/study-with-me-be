@@ -34,7 +34,7 @@ class FavoriteApiControllerTest extends ControllerTest {
         private static final Long MEMBER_ID = 1L;
 
         @Test
-        @DisplayName("이미 찜 등록된 스터디를 찜할 수 없다")
+        @DisplayName("이미 찜 등록된 스터디를 중복으로 찜할 수 없다")
         void throwExceptionByAlreadyLikeMarked() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
@@ -105,40 +105,6 @@ class FavoriteApiControllerTest extends ControllerTest {
         private static final Long MEMBER_ID = 1L;
 
         @Test
-        @DisplayName("찜 등록이 되지 않은 스터디를 취소할 수 없다")
-        void throwExceptionByNeverLikeMarked() throws Exception {
-            // given
-            mockingToken(true, MEMBER_ID);
-            doThrow(StudyWithMeException.type(FavoriteErrorCode.NEVER_LIKE_MARKED))
-                    .when(cancelStudyLikeUseCase)
-                    .invoke(any());
-
-            // when
-            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .delete(BASE_URL, STUDY_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
-
-            // then
-            final FavoriteErrorCode expectedError = FavoriteErrorCode.NEVER_LIKE_MARKED;
-            mockMvc.perform(requestBuilder)
-                    .andExpect(status().isConflict())
-                    .andExpectAll(getResultMatchersViaErrorCode(expectedError))
-                    .andDo(
-                            document(
-                                    "StudyApi/Favorite/LikeCancellation/Failure",
-                                    getDocumentRequest(),
-                                    getDocumentResponse(),
-                                    getHeaderWithAccessToken(),
-                                    pathParameters(
-                                            parameterWithName("studyId")
-                                                    .description("찜 취소 할 스터디 ID(PK)")
-                                    ),
-                                    getExceptionResponseFields()
-                            )
-                    );
-        }
-
-        @Test
         @DisplayName("해당 스터디에 대해서 등록한 찜을 취소한다")
         void success() throws Exception {
             // given
@@ -157,7 +123,7 @@ class FavoriteApiControllerTest extends ControllerTest {
                     .andExpect(status().isNoContent())
                     .andDo(
                             document(
-                                    "StudyApi/Favorite/LikeCancellation/Success",
+                                    "StudyApi/Favorite/LikeCancellation",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
