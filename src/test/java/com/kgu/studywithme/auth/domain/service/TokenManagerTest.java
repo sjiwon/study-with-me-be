@@ -25,7 +25,7 @@ public class TokenManagerTest extends ParallelTest {
     private final Member member = JIWON.toMember().apply(1L);
 
     @Test
-    @DisplayName("Token[Access + Refresh]를 제공한다")
+    @DisplayName("AuthToken[Access + Refresh]을 제공한다")
     void provideAuthorityToken() {
         // when
         final AuthToken authToken = sut.provideAuthorityToken(member.getId());
@@ -39,7 +39,7 @@ public class TokenManagerTest extends ParallelTest {
     }
 
     @Test
-    @DisplayName("Token[Access + Refresh]를 재발급한다")
+    @DisplayName("AuthToken[Access + Refresh]을 재발급한다")
     void reissueAuthorityToken() {
         // given
         tokenStoreAdapter.synchronizeRefreshToken(member.getId(), REFRESH_TOKEN);

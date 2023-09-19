@@ -18,12 +18,11 @@ class JwtTokenProviderTest extends ParallelTest {
     private final JwtTokenProvider invalidProvider = new JwtTokenProvider(SECRET_KEY, 0L, 0L);
     private final JwtTokenProvider validProvider = new JwtTokenProvider(SECRET_KEY, 7200L, 7200L);
 
+    private final Long memberId = 1L;
+
     @Test
     @DisplayName("AccessToken과 RefreshToken을 발급한다")
     void issueAccessTokenAndRefreshToken() {
-        // given
-        final Long memberId = 1L;
-
         // when
         final String accessToken = validProvider.createAccessToken(memberId);
         final String refreshToken = validProvider.createRefreshToken(memberId);
@@ -38,9 +37,6 @@ class JwtTokenProviderTest extends ParallelTest {
     @Test
     @DisplayName("Token의 Payload를 추출한다")
     void extractTokenPayload() {
-        // given
-        final Long memberId = 1L;
-
         // when
         final String accessToken = validProvider.createAccessToken(memberId);
 
@@ -51,9 +47,6 @@ class JwtTokenProviderTest extends ParallelTest {
     @Test
     @DisplayName("Token 만료에 대한 유효성을 검증한다")
     void validateTokenExpire() {
-        // given
-        final Long memberId = 1L;
-
         // when
         final String validToken = validProvider.createAccessToken(memberId);
         final String invalidToken = invalidProvider.createAccessToken(memberId);
@@ -70,9 +63,6 @@ class JwtTokenProviderTest extends ParallelTest {
     @Test
     @DisplayName("Token 조작에 대한 유효성을 검증한다")
     void validateTokenManipulation() {
-        // given
-        final Long memberId = 1L;
-
         // when
         final String forgedToken = validProvider.createAccessToken(memberId) + "hacked";
 

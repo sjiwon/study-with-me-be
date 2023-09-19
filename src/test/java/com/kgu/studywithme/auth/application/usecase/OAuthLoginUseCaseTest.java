@@ -3,12 +3,13 @@ package com.kgu.studywithme.auth.application.usecase;
 import com.kgu.studywithme.auth.application.adapter.OAuthConnector;
 import com.kgu.studywithme.auth.application.usecase.command.OAuthLoginCommand;
 import com.kgu.studywithme.auth.domain.model.AuthMember;
-import com.kgu.studywithme.auth.domain.model.AuthToken;
 import com.kgu.studywithme.auth.domain.service.TokenManager;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.GoogleOAuthConnector;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleTokenResponse;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleUserResponse;
 import com.kgu.studywithme.common.UseCaseTest;
+import com.kgu.studywithme.common.mock.fake.FakeTokenStore;
+import com.kgu.studywithme.common.mock.stub.StubTokenProvider;
 import com.kgu.studywithme.global.exception.StudyWithMeOAuthException;
 import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.member.domain.repository.MemberRepository;
@@ -40,7 +41,10 @@ class OAuthLoginUseCaseTest extends UseCaseTest {
     private final GoogleOAuthConnector googleOAuthConnector = mock(GoogleOAuthConnector.class);
     private final List<OAuthConnector> oAuthConnectors = List.of(googleOAuthConnector);
     private final MemberRepository memberRepository = mock(MemberRepository.class);
-    private final TokenManager tokenManager = mock(TokenManager.class);
+    private final TokenManager tokenManager = new TokenManager(
+            new StubTokenProvider(),
+            new FakeTokenStore()
+    );
     private final OAuthLoginUseCase sut = new OAuthLoginUseCase(oAuthConnectors, memberRepository, tokenManager);
 
     @Nested
@@ -77,8 +81,7 @@ class OAuthLoginUseCaseTest extends UseCaseTest {
                             .isEqualTo(googleUserResponse),
                     () -> verify(googleOAuthConnector, times(1)).fetchToken(AUTHORIZATION_CODE, REDIRECT_URI, STATE),
                     () -> verify(googleOAuthConnector, times(1)).fetchUserInfo(googleTokenResponse.accessToken()),
-                    () -> verify(memberRepository, times(1)).findByEmail(googleUserResponse.email()),
-                    () -> verify(tokenManager, times(0)).provideAuthorityToken(member.getId())
+                    () -> verify(memberRepository, times(1)).findByEmail(googleUserResponse.email())
             );
         }
 
@@ -90,7 +93,6 @@ class OAuthLoginUseCaseTest extends UseCaseTest {
             given(googleOAuthConnector.fetchToken(AUTHORIZATION_CODE, REDIRECT_URI, STATE)).willReturn(googleTokenResponse);
             given(googleOAuthConnector.fetchUserInfo(googleTokenResponse.accessToken())).willReturn(googleUserResponse);
             given(memberRepository.findByEmail(googleUserResponse.email())).willReturn(Optional.of(member));
-            given(tokenManager.provideAuthorityToken(member.getId())).willReturn(new AuthToken(ACCESS_TOKEN, REFRESH_TOKEN));
 
             // when
             final AuthMember response = sut.invoke(command);
@@ -100,12 +102,12 @@ class OAuthLoginUseCaseTest extends UseCaseTest {
                     () -> verify(googleOAuthConnector, times(1)).fetchToken(AUTHORIZATION_CODE, REDIRECT_URI, STATE),
                     () -> verify(googleOAuthConnector, times(1)).fetchUserInfo(googleTokenResponse.accessToken()),
                     () -> verify(memberRepository, times(1)).findByEmail(googleUserResponse.email()),
-                    () -> verify(tokenManager, times(1)).provideAuthorityToken(member.getId()),
                     () -> assertThat(response.member().id()).isEqualTo(member.getId()),
                     () -> assertThat(response.member().nickname()).isEqualTo(member.getNickname().getValue()),
                     () -> assertThat(response.member().email()).isEqualTo(member.getEmail().getValue()),
                     () -> assertThat(response.token().accessToken()).isEqualTo(ACCESS_TOKEN),
-                    () -> assertThat(response.token().refreshToken()).isEqualTo(REFRESH_TOKEN)
+                    () -> assertThat(response.token().refreshToken()).isEqualTo(REFRESH_TOKEN),
+                    () -> assertThat(tokenManager.isMemberRefreshToken(response.member().id(), REFRESH_TOKEN)).isTrue()
             );
         }
     }

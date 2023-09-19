@@ -12,11 +12,7 @@ public record AuthMember(
             String email
     ) {
         public MemberInfo(final Member member) {
-            this(
-                    member.getId(),
-                    member.getNickname().getValue(),
-                    member.getEmail().getValue()
-            );
+            this(member.getId(), member.getNickname().getValue(), member.getEmail().getValue());
         }
     }
 }

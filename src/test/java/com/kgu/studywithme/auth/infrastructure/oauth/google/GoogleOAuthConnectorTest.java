@@ -53,7 +53,9 @@ class GoogleOAuthConnectorTest {
         void failure() {
             // given
             given(restTemplate.postForEntity(
-                    eq(properties.getTokenUrl()), any(HttpEntity.class), eq(GoogleTokenResponse.class)
+                    eq(properties.getTokenUrl()),
+                    any(HttpEntity.class),
+                    eq(GoogleTokenResponse.class)
             )).willThrow(RestClientException.class);
 
             // when - then
@@ -69,7 +71,9 @@ class GoogleOAuthConnectorTest {
             final GoogleTokenResponse response = TokenUtils.createGoogleTokenResponse();
             final ResponseEntity<GoogleTokenResponse> responseEntity = ResponseEntity.ok(response);
             given(restTemplate.postForEntity(
-                    eq(properties.getTokenUrl()), any(HttpEntity.class), eq(GoogleTokenResponse.class)
+                    eq(properties.getTokenUrl()),
+                    any(HttpEntity.class),
+                    eq(GoogleTokenResponse.class)
             )).willReturn(responseEntity);
 
             // when
@@ -94,7 +98,10 @@ class GoogleOAuthConnectorTest {
         void failure() {
             // given
             given(restTemplate.exchange(
-                    eq(properties.getUserInfoUrl()), eq(HttpMethod.GET), any(HttpEntity.class), eq(GoogleUserResponse.class)
+                    eq(properties.getUserInfoUrl()),
+                    eq(HttpMethod.GET),
+                    any(HttpEntity.class),
+                    eq(GoogleUserResponse.class)
             )).willThrow(RestClientException.class);
 
             // when - then
@@ -110,7 +117,10 @@ class GoogleOAuthConnectorTest {
             final GoogleUserResponse response = JIWON.toGoogleUserResponse();
             final ResponseEntity<GoogleUserResponse> responseEntity = ResponseEntity.ok(response);
             given(restTemplate.exchange(
-                    eq(properties.getUserInfoUrl()), eq(HttpMethod.GET), any(HttpEntity.class), eq(GoogleUserResponse.class)
+                    eq(properties.getUserInfoUrl()),
+                    eq(HttpMethod.GET),
+                    any(HttpEntity.class),
+                    eq(GoogleUserResponse.class)
             )).willReturn(responseEntity);
 
             // when
