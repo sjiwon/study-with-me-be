@@ -2,7 +2,6 @@ package com.kgu.studywithme.studyattendance.utils.validator;
 
 import com.kgu.studywithme.common.ParallelTest;
 import jakarta.validation.ConstraintValidatorContext;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,16 +14,9 @@ import static org.mockito.Mockito.verify;
 
 @DisplayName("StudyAttendance -> AttendanceStatusUpdateConstraintValidator 테스트")
 class AttendanceStatusUpdateConstraintValidatorTest extends ParallelTest {
-    private AttendanceStatusUpdateConstraintValidator validator;
-    private ConstraintValidatorContext context;
-    private ConstraintValidatorContext.ConstraintViolationBuilder builder;
-
-    @BeforeEach
-    void setUp() {
-        validator = new AttendanceStatusUpdateConstraintValidator();
-        context = mock(ConstraintValidatorContext.class);
-        builder = mock(ConstraintValidatorContext.ConstraintViolationBuilder.class);
-    }
+    private final ConstraintValidatorContext context = mock(ConstraintValidatorContext.class);
+    private final ConstraintValidatorContext.ConstraintViolationBuilder builder = mock(ConstraintValidatorContext.ConstraintViolationBuilder.class);
+    private final AttendanceStatusUpdateConstraintValidator sut = new AttendanceStatusUpdateConstraintValidator();
 
     @Test
     @DisplayName("status가 미출결이면 validator를 통과하지 못한다")
@@ -34,7 +26,7 @@ class AttendanceStatusUpdateConstraintValidatorTest extends ParallelTest {
         given(builder.addConstraintViolation()).willReturn(context);
 
         // when
-        final boolean actual = validator.isValid("미출결", context);
+        final boolean actual = sut.isValid("미출결", context);
 
         // then
         assertAll(
@@ -53,7 +45,7 @@ class AttendanceStatusUpdateConstraintValidatorTest extends ParallelTest {
         given(builder.addConstraintViolation()).willReturn(context);
 
         // when
-        final boolean actual = validator.isValid("??", context);
+        final boolean actual = sut.isValid("??", context);
 
         // then
         assertThat(actual).isFalse();
@@ -63,9 +55,9 @@ class AttendanceStatusUpdateConstraintValidatorTest extends ParallelTest {
     @DisplayName("status가 출석/지각/결석 중 하나면 validator를 통과한다")
     void success() {
         // when
-        final boolean actual1 = validator.isValid("출석", context);
-        final boolean actual2 = validator.isValid("지각", context);
-        final boolean actual3 = validator.isValid("결석", context);
+        final boolean actual1 = sut.isValid("출석", context);
+        final boolean actual2 = sut.isValid("지각", context);
+        final boolean actual3 = sut.isValid("결석", context);
 
         // then
         assertAll(

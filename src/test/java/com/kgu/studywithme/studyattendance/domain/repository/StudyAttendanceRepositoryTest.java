@@ -63,18 +63,16 @@ public class StudyAttendanceRepositoryTest extends RepositoryTest {
     @DisplayName("특정 스터디에서 사용자의 특정 주차 출석 정보를 조회한다")
     void getParticipantAttendanceByWeek() {
         // given
-        final StudyAttendance attendance
-                = sut.save(StudyAttendance.recordAttendance(study.getId(), members[0].getId(), 1, ATTENDANCE));
+        final StudyAttendance attendance = sut.save(StudyAttendance.recordAttendance(study.getId(), members[0].getId(), 1, ATTENDANCE));
 
         // when
-        final Optional<StudyAttendance> findStudyAttendance
-                = sut.findParticipantAttendanceByWeek(study.getId(), members[0].getId(), attendance.getWeek());
-        final Optional<StudyAttendance> emptyStudyAttendance
-                = sut.findParticipantAttendanceByWeek(study.getId(), members[0].getId(), attendance.getWeek() + 1);
+        final Optional<StudyAttendance> findStudyAttendance = sut.findParticipantAttendanceByWeek(study.getId(), members[0].getId(), attendance.getWeek());
+        final Optional<StudyAttendance> emptyStudyAttendance = sut.findParticipantAttendanceByWeek(study.getId(), members[0].getId(), attendance.getWeek() + 1);
 
         // then
         assertAll(
                 () -> assertThat(findStudyAttendance).isPresent(),
+                () -> assertThat(findStudyAttendance.get()).isEqualTo(attendance),
                 () -> assertThat(emptyStudyAttendance).isEmpty()
         );
     }

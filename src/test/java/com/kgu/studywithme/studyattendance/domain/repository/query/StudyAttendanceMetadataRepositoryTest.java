@@ -18,10 +18,6 @@ import org.springframework.context.annotation.Import;
 
 import java.util.List;
 
-import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY1;
-import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY2;
-import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY3;
-import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY4;
 import static com.kgu.studywithme.common.fixture.MemberFixture.GHOST;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.EFFECTIVE_JAVA;
@@ -54,16 +50,12 @@ class StudyAttendanceMetadataRepositoryTest extends RepositoryTest {
     @Autowired
     private StudyParticipantRepository studyParticipantRepository;
 
-    private final Member[] members = new Member[5];
+    private Member participant;
     private final Study[] studies = new Study[5];
 
     @BeforeEach
     void setUp() {
-        members[0] = memberRepository.save(JIWON.toMember());
-        members[1] = memberRepository.save(DUMMY1.toMember());
-        members[2] = memberRepository.save(DUMMY2.toMember());
-        members[3] = memberRepository.save(DUMMY3.toMember());
-        members[4] = memberRepository.save(DUMMY4.toMember());
+        participant = memberRepository.save(JIWON.toMember());
 
         final Member host = memberRepository.save(GHOST.toMember());
         studies[0] = studyRepository.save(SPRING.toOnlineStudy(host.getId()));
@@ -78,23 +70,23 @@ class StudyAttendanceMetadataRepositoryTest extends RepositoryTest {
     void findParticipateWeeksInStudyByMemberId() {
         /* 모든 스터디 참여 */
         studyParticipantRepository.saveAll(List.of(
-                StudyParticipant.applyParticipant(studies[0].getId(), members[0].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[1].getId(), members[0].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[2].getId(), members[0].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[3].getId(), members[0].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[4].getId(), members[0].getId(), APPROVE)
+                StudyParticipant.applyParticipant(studies[0].getId(), participant.getId(), APPROVE),
+                StudyParticipant.applyParticipant(studies[1].getId(), participant.getId(), APPROVE),
+                StudyParticipant.applyParticipant(studies[2].getId(), participant.getId(), APPROVE),
+                StudyParticipant.applyParticipant(studies[3].getId(), participant.getId(), APPROVE),
+                StudyParticipant.applyParticipant(studies[4].getId(), participant.getId(), APPROVE)
         ));
 
         /* Week 1 */
         studyAttendanceRepository.saveAll(List.of(
-                StudyAttendance.recordAttendance(studies[0].getId(), members[0].getId(), 1, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[1].getId(), members[0].getId(), 1, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[2].getId(), members[0].getId(), 1, LATE),
-                StudyAttendance.recordAttendance(studies[3].getId(), members[0].getId(), 1, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[4].getId(), members[0].getId(), 1, ABSENCE)
+                StudyAttendance.recordAttendance(studies[0].getId(), participant.getId(), 1, ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[1].getId(), participant.getId(), 1, ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[2].getId(), participant.getId(), 1, LATE),
+                StudyAttendance.recordAttendance(studies[3].getId(), participant.getId(), 1, ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[4].getId(), participant.getId(), 1, ABSENCE)
         ));
 
-        final List<StudyAttendanceWeekly> participateWeeks1 = sut.findMemberParticipateWeekly(members[0].getId());
+        final List<StudyAttendanceWeekly> participateWeeks1 = sut.findMemberParticipateWeekly(participant.getId());
         assertAll(
                 () -> assertThat(groupingWeeksByStudyId(participateWeeks1, studies[0].getId())).containsExactlyInAnyOrder(1),
                 () -> assertThat(groupingWeeksByStudyId(participateWeeks1, studies[1].getId())).containsExactlyInAnyOrder(1),
@@ -105,12 +97,12 @@ class StudyAttendanceMetadataRepositoryTest extends RepositoryTest {
 
         /* Week 2 */
         studyAttendanceRepository.saveAll(List.of(
-                StudyAttendance.recordAttendance(studies[0].getId(), members[0].getId(), 2, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[3].getId(), members[0].getId(), 2, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[4].getId(), members[0].getId(), 2, ABSENCE)
+                StudyAttendance.recordAttendance(studies[0].getId(), participant.getId(), 2, ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[3].getId(), participant.getId(), 2, ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[4].getId(), participant.getId(), 2, ABSENCE)
         ));
 
-        final List<StudyAttendanceWeekly> participateWeeks2 = sut.findMemberParticipateWeekly(members[0].getId());
+        final List<StudyAttendanceWeekly> participateWeeks2 = sut.findMemberParticipateWeekly(participant.getId());
         assertAll(
                 () -> assertThat(groupingWeeksByStudyId(participateWeeks2, studies[0].getId())).containsExactlyInAnyOrder(1, 2),
                 () -> assertThat(groupingWeeksByStudyId(participateWeeks2, studies[1].getId())).containsExactlyInAnyOrder(1),
@@ -120,9 +112,9 @@ class StudyAttendanceMetadataRepositoryTest extends RepositoryTest {
         );
 
         /* Week 3 */
-        studyAttendanceRepository.save(StudyAttendance.recordAttendance(studies[0].getId(), members[0].getId(), 3, ATTENDANCE));
+        studyAttendanceRepository.save(StudyAttendance.recordAttendance(studies[0].getId(), participant.getId(), 3, ATTENDANCE));
 
-        final List<StudyAttendanceWeekly> participateWeeks3 = sut.findMemberParticipateWeekly(members[0].getId());
+        final List<StudyAttendanceWeekly> participateWeeks3 = sut.findMemberParticipateWeekly(participant.getId());
         assertAll(
                 () -> assertThat(groupingWeeksByStudyId(participateWeeks3, studies[0].getId())).containsExactlyInAnyOrder(1, 2, 3),
                 () -> assertThat(groupingWeeksByStudyId(participateWeeks3, studies[1].getId())).containsExactlyInAnyOrder(1),
