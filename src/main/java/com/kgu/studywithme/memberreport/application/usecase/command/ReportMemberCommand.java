@@ -8,6 +8,6 @@ public record ReportMemberCommand(
         String reason
 ) {
     public MemberReport toDomain() {
-        return MemberReport.createReportWithReason(reporterId, reporteeId, reason);
+        return MemberReport.createReport(reporterId, reporteeId, reason);
     }
 }

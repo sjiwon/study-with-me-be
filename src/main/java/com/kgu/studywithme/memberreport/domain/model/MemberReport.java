@@ -41,7 +41,7 @@ public class MemberReport extends BaseEntity<MemberReport> {
         this.status = RECEIVE;
     }
 
-    public static MemberReport createReportWithReason(final Long reporterId, final Long reporteeId, final String reason) {
+    public static MemberReport createReport(final Long reporterId, final Long reporteeId, final String reason) {
         return new MemberReport(reporterId, reporteeId, reason);
     }
 

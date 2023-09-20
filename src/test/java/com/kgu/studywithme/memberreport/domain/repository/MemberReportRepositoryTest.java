@@ -11,15 +11,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static com.kgu.studywithme.common.fixture.MemberFixture.GHOST;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
+import static com.kgu.studywithme.memberreport.domain.model.MemberReportStatus.APPROVE;
+import static com.kgu.studywithme.memberreport.domain.model.MemberReportStatus.RECEIVE;
+import static com.kgu.studywithme.memberreport.domain.model.MemberReportStatus.REJECT;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("MemberReport -> MemberReportRepository 테스트")
 public class MemberReportRepositoryTest extends RepositoryTest {
     @Autowired
-    private MemberReportRepository memberReportRepository;
+    private MemberRepository memberRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberReportRepository sut;
 
     private Member memberA;
     private Member memberB;
@@ -31,13 +35,37 @@ public class MemberReportRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    @DisplayName("특정 사용자에 대한 신고 내역이 존재하는지 확인한다")
+    @DisplayName("특정 사용자에 대한 신고 내역을 처리 상태에 따라 존재하는지 확인한다")
     void existsByReporterIdAndReporteeId() {
         /* 신고 X */
-        assertThat(memberReportRepository.existsByReporterIdAndReporteeId(memberA.getId(), memberB.getId())).isFalse();
+        assertAll(
+                () -> assertThat(sut.existsByReporterIdAndReporteeIdAndStatus(memberA.getId(), memberB.getId(), RECEIVE)).isFalse(),
+                () -> assertThat(sut.existsByReporterIdAndReporteeIdAndStatus(memberA.getId(), memberB.getId(), APPROVE)).isFalse(),
+                () -> assertThat(sut.existsByReporterIdAndReporteeIdAndStatus(memberA.getId(), memberB.getId(), REJECT)).isFalse()
+        );
 
         /* 신고 O */
-        memberReportRepository.save(MemberReport.createReportWithReason(memberA.getId(), memberB.getId(), "스터디를 대충합니다."));
-        assertThat(memberReportRepository.existsByReporterIdAndReporteeId(memberA.getId(), memberB.getId())).isTrue();
+        final MemberReport report = sut.save(MemberReport.createReport(memberA.getId(), memberB.getId(), "스터디를 대충합니다."));
+        assertAll(
+                () -> assertThat(sut.existsByReporterIdAndReporteeIdAndStatus(memberA.getId(), memberB.getId(), RECEIVE)).isTrue(),
+                () -> assertThat(sut.existsByReporterIdAndReporteeIdAndStatus(memberA.getId(), memberB.getId(), APPROVE)).isFalse(),
+                () -> assertThat(sut.existsByReporterIdAndReporteeIdAndStatus(memberA.getId(), memberB.getId(), REJECT)).isFalse()
+        );
+
+        /* to 승인 */
+        report.approveReport();
+        assertAll(
+                () -> assertThat(sut.existsByReporterIdAndReporteeIdAndStatus(memberA.getId(), memberB.getId(), RECEIVE)).isFalse(),
+                () -> assertThat(sut.existsByReporterIdAndReporteeIdAndStatus(memberA.getId(), memberB.getId(), APPROVE)).isTrue(),
+                () -> assertThat(sut.existsByReporterIdAndReporteeIdAndStatus(memberA.getId(), memberB.getId(), REJECT)).isFalse()
+        );
+
+        /* to 거부 */
+        report.rejectReport();
+        assertAll(
+                () -> assertThat(sut.existsByReporterIdAndReporteeIdAndStatus(memberA.getId(), memberB.getId(), RECEIVE)).isFalse(),
+                () -> assertThat(sut.existsByReporterIdAndReporteeIdAndStatus(memberA.getId(), memberB.getId(), APPROVE)).isFalse(),
+                () -> assertThat(sut.existsByReporterIdAndReporteeIdAndStatus(memberA.getId(), memberB.getId(), REJECT)).isTrue()
+        );
     }
 }
