@@ -79,7 +79,7 @@ class WriteStudyReviewUseCaseTest extends UseCaseTest {
         given(studyParticipantRepository.isGraduatedParticipant(command.studyId(), command.memberId())).willReturn(true);
         given(studyReviewRepository.existsByStudyIdAndWriterId(command.studyId(), command.memberId())).willReturn(false);
 
-        final StudyReview review = command.toDomain();
+        final StudyReview review = command.toDomain().apply(1L);
         given(studyReviewRepository.save(any())).willReturn(review);
 
         // when
