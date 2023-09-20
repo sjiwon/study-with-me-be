@@ -127,7 +127,7 @@ class StudyWeeklyTest extends ParallelTest {
     @DisplayName("과제 제출 날짜가 Weekly Period StartDate ~ EndDate 사이에 포함되는지 확인한다")
     void isSubmissionPeriodInRange() {
         // given
-        final StudyWeekly weekly = STUDY_WEEKLY_1.toWeeklyWithAssignment(study.getId(), host.getId()); // WEEK1
+        final StudyWeekly weekly = STUDY_WEEKLY_1.toWeeklyWithAssignment(study.getId(), host.getId());
 
         // when
         final boolean actual1 = weekly.isSubmissionPeriodInRange(PeriodFixture.WEEK_1.getEndDate().minusDays(1));
@@ -144,7 +144,7 @@ class StudyWeeklyTest extends ParallelTest {
     @DisplayName("과제 제출 날짜가 Weekly Period을 지났는지 확인한다")
     void isSubmissionPeriodPassed() {
         // given
-        final StudyWeekly weekly = STUDY_WEEKLY_1.toWeeklyWithAssignment(study.getId(), host.getId()); // WEEK1
+        final StudyWeekly weekly = STUDY_WEEKLY_1.toWeeklyWithAssignment(study.getId(), host.getId());
 
         // when
         final boolean actual1 = weekly.isSubmissionPeriodPassed(PeriodFixture.WEEK_1.getEndDate().minusDays(1));

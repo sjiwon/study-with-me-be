@@ -44,10 +44,13 @@ class SubmitWeeklyAssignmentUseCaseTest extends UseCaseTest {
     private final ParticipateMemberReader participateMemberReader = fakeParticipateMemberReader();
     private final StudyWeeklySubmitRepository studyWeeklySubmitRepository = mock(StudyWeeklySubmitRepository.class);
     private final StudyAttendanceRepository studyAttendanceRepository = mock(StudyAttendanceRepository.class);
-    private final WeeklySubmitManager weeklySubmitManager
-            = new WeeklySubmitManager(studyWeeklyRepository, participateMemberReader, studyWeeklySubmitRepository, studyAttendanceRepository);
-    private final SubmitWeeklyAssignmentUseCase sut
-            = new SubmitWeeklyAssignmentUseCase(assignmentUploader, weeklySubmitManager);
+    private final WeeklySubmitManager weeklySubmitManager = new WeeklySubmitManager(
+            studyWeeklyRepository,
+            participateMemberReader,
+            studyWeeklySubmitRepository,
+            studyAttendanceRepository
+    );
+    private final SubmitWeeklyAssignmentUseCase sut = new SubmitWeeklyAssignmentUseCase(assignmentUploader, weeklySubmitManager);
 
     private final Member host = JIWON.toMember().apply(1L);
     private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L);
@@ -66,9 +69,7 @@ class SubmitWeeklyAssignmentUseCaseTest extends UseCaseTest {
                 false,
                 STUDY_WEEKLY_1.getAttachments()
         ).apply(1L);
-        file = FileConverter.convertAssignmentFile(
-                createMultipleMockMultipartFile("hello3.pdf", "application/pdf")
-        );
+        file = FileConverter.convertAssignmentFile(createMultipleMockMultipartFile("hello3.pdf", "application/pdf"));
     }
 
     @Test

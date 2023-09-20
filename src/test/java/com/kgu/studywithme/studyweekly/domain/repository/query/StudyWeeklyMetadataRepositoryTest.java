@@ -1,4 +1,4 @@
-package com.kgu.studywithme.studyweekly.infrastructure.query;
+package com.kgu.studywithme.studyweekly.domain.repository.query;
 
 import com.kgu.studywithme.common.RepositoryTest;
 import com.kgu.studywithme.member.domain.model.Member;
@@ -7,7 +7,6 @@ import com.kgu.studywithme.study.domain.model.Study;
 import com.kgu.studywithme.study.domain.repository.StudyRepository;
 import com.kgu.studywithme.studyweekly.domain.model.StudyWeekly;
 import com.kgu.studywithme.studyweekly.domain.repository.StudyWeeklyRepository;
-import com.kgu.studywithme.studyweekly.domain.repository.query.StudyWeeklyMetadataRepositoryImpl;
 import com.kgu.studywithme.studyweekly.domain.repository.query.dto.AutoAttendanceAndFinishedWeekly;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -14,9 +14,7 @@ public class SubmitWeeklyAssignmentUseCase {
     private final WeeklySubmitManager weeklySubmitManager;
 
     public void invoke(final SubmitWeeklyAssignmentCommand command) {
-        final UploadAssignment assignment
-                = assignmentUploader.uploadAssignment(command.submitType(), command.assignment(), command.linkSubmit());
-
+        final UploadAssignment assignment = assignmentUploader.uploadAssignment(command.submitType(), command.assignment(), command.linkSubmit());
         weeklySubmitManager.submitAssignment(command.memberId(), command.studyId(), command.weeklyId(), assignment);
     }
 }

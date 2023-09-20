@@ -37,8 +37,13 @@ public class WeeklyManagerTest extends ParallelTest {
     private final StudyWeeklySubmitRepository studyWeeklySubmitRepository = mock(StudyWeeklySubmitRepository.class);
     private final StudyParticipantRepository studyParticipantRepository = mock(StudyParticipantRepository.class);
     private final StudyAttendanceRepository studyAttendanceRepository = mock(StudyAttendanceRepository.class);
-    private final WeeklyManager sut
-            = new WeeklyManager(studyWeeklyRepository, studyParticipantRepository, studyAttendanceRepository, studyWeeklyAttachmentRepository, studyWeeklySubmitRepository);
+    private final WeeklyManager sut = new WeeklyManager(
+            studyWeeklyRepository,
+            studyParticipantRepository,
+            studyAttendanceRepository,
+            studyWeeklyAttachmentRepository,
+            studyWeeklySubmitRepository
+    );
 
     private final Member host = JIWON.toMember().apply(1L);
     private final Member participantA = GHOST.toMember().apply(2L);

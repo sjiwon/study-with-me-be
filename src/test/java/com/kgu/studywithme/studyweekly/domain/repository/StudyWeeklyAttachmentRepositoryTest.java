@@ -45,37 +45,37 @@ public class StudyWeeklyAttachmentRepositoryTest extends RepositoryTest {
     @Test
     @DisplayName("특정 Weekly의 Attachment를 삭제한다")
     void deleteFromSpecificWeekly() {
-        /* 3 Weekly & Attachment Information */
-        final StudyWeekly weekly1 = studyWeeklyRepository.save(STUDY_WEEKLY_1.toWeekly(study.getId(), host.getId())); // 2
-        final StudyWeekly weekly2 = studyWeeklyRepository.save(STUDY_WEEKLY_2.toWeekly(study.getId(), host.getId())); // 2
-        final StudyWeekly weekly3 = studyWeeklyRepository.save(STUDY_WEEKLY_3.toWeekly(study.getId(), host.getId())); // 1
+        /* 3 Weekly */
+        final StudyWeekly weekly1 = studyWeeklyRepository.save(STUDY_WEEKLY_1.toWeekly(study.getId(), host.getId()));
+        final StudyWeekly weekly2 = studyWeeklyRepository.save(STUDY_WEEKLY_2.toWeekly(study.getId(), host.getId()));
+        final StudyWeekly weekly3 = studyWeeklyRepository.save(STUDY_WEEKLY_3.toWeekly(study.getId(), host.getId()));
 
         assertAll(
                 () -> assertThat(sut.existsByWeeklyId(weekly1.getId())).isTrue(),
-                () -> assertThat(sut.countByWeeklyId(weekly1.getId())).isEqualTo(2),
+                () -> assertThat(sut.countByWeeklyId(weekly1.getId())).isEqualTo(STUDY_WEEKLY_1.getAttachments().size()),
                 () -> assertThat(sut.existsByWeeklyId(weekly2.getId())).isTrue(),
-                () -> assertThat(sut.countByWeeklyId(weekly2.getId())).isEqualTo(2),
+                () -> assertThat(sut.countByWeeklyId(weekly2.getId())).isEqualTo(STUDY_WEEKLY_2.getAttachments().size()),
                 () -> assertThat(sut.existsByWeeklyId(weekly3.getId())).isTrue(),
-                () -> assertThat(sut.countByWeeklyId(weekly3.getId())).isEqualTo(1)
+                () -> assertThat(sut.countByWeeklyId(weekly3.getId())).isEqualTo(STUDY_WEEKLY_3.getAttachments().size())
         );
 
         /* 3주차 첨부파일 삭제 */
         final int deleteWeekly3 = sut.deleteFromSpecificWeekly(weekly3.getId());
         assertAll(
-                () -> assertThat(deleteWeekly3).isEqualTo(1),
+                () -> assertThat(deleteWeekly3).isEqualTo(STUDY_WEEKLY_3.getAttachments().size()),
                 () -> assertThat(sut.existsByWeeklyId(weekly1.getId())).isTrue(),
-                () -> assertThat(sut.countByWeeklyId(weekly1.getId())).isEqualTo(2),
+                () -> assertThat(sut.countByWeeklyId(weekly1.getId())).isEqualTo(STUDY_WEEKLY_1.getAttachments().size()),
                 () -> assertThat(sut.existsByWeeklyId(weekly2.getId())).isTrue(),
-                () -> assertThat(sut.countByWeeklyId(weekly2.getId())).isEqualTo(2),
+                () -> assertThat(sut.countByWeeklyId(weekly2.getId())).isEqualTo(STUDY_WEEKLY_2.getAttachments().size()),
                 () -> assertThat(sut.existsByWeeklyId(weekly3.getId())).isFalse()
         );
 
         /* 2주차 첨부파일 삭제 */
         final int deleteWeekly2 = sut.deleteFromSpecificWeekly(weekly2.getId());
         assertAll(
-                () -> assertThat(deleteWeekly2).isEqualTo(2),
+                () -> assertThat(deleteWeekly2).isEqualTo(STUDY_WEEKLY_2.getAttachments().size()),
                 () -> assertThat(sut.existsByWeeklyId(weekly1.getId())).isTrue(),
-                () -> assertThat(sut.countByWeeklyId(weekly1.getId())).isEqualTo(2),
+                () -> assertThat(sut.countByWeeklyId(weekly1.getId())).isEqualTo(STUDY_WEEKLY_1.getAttachments().size()),
                 () -> assertThat(sut.existsByWeeklyId(weekly2.getId())).isFalse(),
                 () -> assertThat(sut.existsByWeeklyId(weekly3.getId())).isFalse()
         );
@@ -83,7 +83,7 @@ public class StudyWeeklyAttachmentRepositoryTest extends RepositoryTest {
         /* 1주차 첨부파일 삭제 */
         final int deleteWeekly1 = sut.deleteFromSpecificWeekly(weekly1.getId());
         assertAll(
-                () -> assertThat(deleteWeekly1).isEqualTo(2),
+                () -> assertThat(deleteWeekly1).isEqualTo(STUDY_WEEKLY_1.getAttachments().size()),
                 () -> assertThat(sut.existsByWeeklyId(weekly1.getId())).isFalse(),
                 () -> assertThat(sut.existsByWeeklyId(weekly2.getId())).isFalse(),
                 () -> assertThat(sut.existsByWeeklyId(weekly3.getId())).isFalse()

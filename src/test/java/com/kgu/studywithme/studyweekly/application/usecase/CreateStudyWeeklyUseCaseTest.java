@@ -45,10 +45,14 @@ class CreateStudyWeeklyUseCaseTest extends UseCaseTest {
     private final StudyWeeklySubmitRepository studyWeeklySubmitRepository = mock(StudyWeeklySubmitRepository.class);
     private final StudyParticipantRepository studyParticipantRepository = mock(StudyParticipantRepository.class);
     private final StudyAttendanceRepository studyAttendanceRepository = mock(StudyAttendanceRepository.class);
-    private final WeeklyManager weeklyManager
-            = new WeeklyManager(studyWeeklyRepository, studyParticipantRepository, studyAttendanceRepository, studyWeeklyAttachmentRepository, studyWeeklySubmitRepository);
-    private final CreateStudyWeeklyUseCase sut
-            = new CreateStudyWeeklyUseCase(attachmentUploader, studyWeeklyRepository, weeklyManager);
+    private final WeeklyManager weeklyManager = new WeeklyManager(
+            studyWeeklyRepository,
+            studyParticipantRepository,
+            studyAttendanceRepository,
+            studyWeeklyAttachmentRepository,
+            studyWeeklySubmitRepository
+    );
+    private final CreateStudyWeeklyUseCase sut = new CreateStudyWeeklyUseCase(attachmentUploader, studyWeeklyRepository, weeklyManager);
 
     private final Member host = JIWON.toMember().apply(1L);
     private final Member participantA = GHOST.toMember().apply(2L);

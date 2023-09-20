@@ -42,8 +42,12 @@ public class WeeklySubmitManagerTest extends ParallelTest {
     private final ParticipateMemberReader participateMemberReader = fakeParticipateMemberReader();
     private final StudyWeeklySubmitRepository studyWeeklySubmitRepository = mock(StudyWeeklySubmitRepository.class);
     private final StudyAttendanceRepository studyAttendanceRepository = mock(StudyAttendanceRepository.class);
-    private final WeeklySubmitManager sut
-            = new WeeklySubmitManager(studyWeeklyRepository, participateMemberReader, studyWeeklySubmitRepository, studyAttendanceRepository);
+    private final WeeklySubmitManager sut = new WeeklySubmitManager(
+            studyWeeklyRepository,
+            participateMemberReader,
+            studyWeeklySubmitRepository,
+            studyAttendanceRepository
+    );
 
     private Member host;
     private int previousScore;
@@ -128,10 +132,17 @@ public class WeeklySubmitManagerTest extends ParallelTest {
             // given
             given(studyWeeklyRepository.getById(autoAttendanceAndCurrentWeekly.getId())).willReturn(autoAttendanceAndCurrentWeekly);
 
-            final StudyAttendance attendance
-                    = StudyAttendance.recordAttendance(study.getId(), host.getId(), autoAttendanceAndCurrentWeekly.getWeek(), NON_ATTENDANCE).apply(1L);
-            given(studyAttendanceRepository.getParticipantAttendanceByWeek(autoAttendanceAndCurrentWeekly.getStudyId(), host.getId(), autoAttendanceAndCurrentWeekly.getWeek()))
-                    .willReturn(attendance);
+            final StudyAttendance attendance = StudyAttendance.recordAttendance(
+                    study.getId(),
+                    host.getId(),
+                    autoAttendanceAndCurrentWeekly.getWeek(),
+                    NON_ATTENDANCE
+            ).apply(1L);
+            given(studyAttendanceRepository.getParticipantAttendanceByWeek(
+                    autoAttendanceAndCurrentWeekly.getStudyId(),
+                    host.getId(),
+                    autoAttendanceAndCurrentWeekly.getWeek()
+            )).willReturn(attendance);
 
             // when
             sut.submitAssignment(host.getId(), study.getId(), autoAttendanceAndCurrentWeekly.getId(), assignment);
@@ -161,10 +172,17 @@ public class WeeklySubmitManagerTest extends ParallelTest {
             // given
             given(studyWeeklyRepository.getById(autoAttendanceAndPreviousWeekly.getId())).willReturn(autoAttendanceAndPreviousWeekly);
 
-            final StudyAttendance attendance
-                    = StudyAttendance.recordAttendance(study.getId(), host.getId(), autoAttendanceAndPreviousWeekly.getWeek(), ABSENCE).apply(1L).apply(1L);
-            given(studyAttendanceRepository.getParticipantAttendanceByWeek(autoAttendanceAndPreviousWeekly.getStudyId(), host.getId(), autoAttendanceAndPreviousWeekly.getWeek()))
-                    .willReturn(attendance);
+            final StudyAttendance attendance = StudyAttendance.recordAttendance(
+                    study.getId(),
+                    host.getId(),
+                    autoAttendanceAndPreviousWeekly.getWeek(),
+                    ABSENCE
+            ).apply(1L);
+            given(studyAttendanceRepository.getParticipantAttendanceByWeek(
+                    autoAttendanceAndPreviousWeekly.getStudyId(),
+                    host.getId(),
+                    autoAttendanceAndPreviousWeekly.getWeek()
+            )).willReturn(attendance);
 
             // when
             sut.submitAssignment(host.getId(), study.getId(), autoAttendanceAndPreviousWeekly.getId(), assignment);
@@ -194,10 +212,17 @@ public class WeeklySubmitManagerTest extends ParallelTest {
             // given
             given(studyWeeklyRepository.getById(autoAttendanceAndPreviousWeekly.getId())).willReturn(autoAttendanceAndPreviousWeekly);
 
-            final StudyAttendance attendance
-                    = StudyAttendance.recordAttendance(study.getId(), host.getId(), autoAttendanceAndPreviousWeekly.getWeek(), NON_ATTENDANCE).apply(1L);
-            given(studyAttendanceRepository.getParticipantAttendanceByWeek(autoAttendanceAndPreviousWeekly.getStudyId(), host.getId(), autoAttendanceAndPreviousWeekly.getWeek()))
-                    .willReturn(attendance);
+            final StudyAttendance attendance = StudyAttendance.recordAttendance(
+                    study.getId(),
+                    host.getId(),
+                    autoAttendanceAndPreviousWeekly.getWeek(),
+                    NON_ATTENDANCE
+            ).apply(1L);
+            given(studyAttendanceRepository.getParticipantAttendanceByWeek(
+                    autoAttendanceAndPreviousWeekly.getStudyId(),
+                    host.getId(),
+                    autoAttendanceAndPreviousWeekly.getWeek()
+            )).willReturn(attendance);
 
             // when
             sut.submitAssignment(host.getId(), study.getId(), autoAttendanceAndPreviousWeekly.getId(), assignment);
@@ -232,8 +257,7 @@ public class WeeklySubmitManagerTest extends ParallelTest {
         @DisplayName("해당 Weekly -> 수동 출석")
         void manualAttendance() {
             // given
-            final StudyWeeklySubmit submitted
-                    = StudyWeeklySubmit.submitAssignment(manualAttendanceWeekly, host.getId(), defaultAssignment).apply(1L);
+            final StudyWeeklySubmit submitted = StudyWeeklySubmit.submitAssignment(manualAttendanceWeekly, host.getId(), defaultAssignment).apply(1L);
             given(studyWeeklySubmitRepository.getSubmittedAssignment(manualAttendanceWeekly.getId(), host.getId())).willReturn(submitted);
 
             // when
@@ -254,8 +278,7 @@ public class WeeklySubmitManagerTest extends ParallelTest {
         @DisplayName("해당 Weekly -> 자동 출석 + 제출 기간 안에 수정 O")
         void autoAttendanceCase1() {
             // given
-            final StudyWeeklySubmit submitted
-                    = StudyWeeklySubmit.submitAssignment(autoAttendanceAndCurrentWeekly, host.getId(), defaultAssignment).apply(1L);
+            final StudyWeeklySubmit submitted = StudyWeeklySubmit.submitAssignment(autoAttendanceAndCurrentWeekly, host.getId(), defaultAssignment).apply(1L);
             given(studyWeeklySubmitRepository.getSubmittedAssignment(autoAttendanceAndCurrentWeekly.getId(), host.getId())).willReturn(submitted);
 
             // when
@@ -276,14 +299,20 @@ public class WeeklySubmitManagerTest extends ParallelTest {
         @DisplayName("해당 Weekly -> 자동 출석 + 제출 기간 안에 수정 X + 이전 Status == ATTENDANCE")
         void autoAttendanceCase2() {
             // given
-            final StudyWeeklySubmit submitted
-                    = StudyWeeklySubmit.submitAssignment(autoAttendanceAndPreviousWeekly, host.getId(), defaultAssignment).apply(1L);
+            final StudyWeeklySubmit submitted = StudyWeeklySubmit.submitAssignment(autoAttendanceAndPreviousWeekly, host.getId(), defaultAssignment).apply(1L);
             given(studyWeeklySubmitRepository.getSubmittedAssignment(autoAttendanceAndPreviousWeekly.getId(), host.getId())).willReturn(submitted);
 
-            final StudyAttendance attendance
-                    = StudyAttendance.recordAttendance(study.getId(), host.getId(), autoAttendanceAndPreviousWeekly.getWeek(), ATTENDANCE).apply(1L);
-            given(studyAttendanceRepository.getParticipantAttendanceByWeek(autoAttendanceAndPreviousWeekly.getId(), host.getId(), autoAttendanceAndPreviousWeekly.getWeek()))
-                    .willReturn(attendance);
+            final StudyAttendance attendance = StudyAttendance.recordAttendance(
+                    study.getId(),
+                    host.getId(),
+                    autoAttendanceAndPreviousWeekly.getWeek(),
+                    ATTENDANCE
+            ).apply(1L);
+            given(studyAttendanceRepository.getParticipantAttendanceByWeek(
+                    autoAttendanceAndPreviousWeekly.getId(),
+                    host.getId(),
+                    autoAttendanceAndPreviousWeekly.getWeek()
+            )).willReturn(attendance);
 
             // when
             sut.editSubmittedAssignment(host.getId(), study.getId(), autoAttendanceAndPreviousWeekly.getId(), updateAssignment);
@@ -304,14 +333,20 @@ public class WeeklySubmitManagerTest extends ParallelTest {
         @DisplayName("해당 Weekly -> 자동 출석 + 제출 기간 안에 수정 X + 이전 Status == LATE")
         void autoAttendanceCase3() {
             // given
-            final StudyWeeklySubmit submitted
-                    = StudyWeeklySubmit.submitAssignment(autoAttendanceAndPreviousWeekly, host.getId(), defaultAssignment).apply(1L);
+            final StudyWeeklySubmit submitted = StudyWeeklySubmit.submitAssignment(autoAttendanceAndPreviousWeekly, host.getId(), defaultAssignment).apply(1L);
             given(studyWeeklySubmitRepository.getSubmittedAssignment(autoAttendanceAndPreviousWeekly.getId(), host.getId())).willReturn(submitted);
 
-            final StudyAttendance attendance
-                    = StudyAttendance.recordAttendance(study.getId(), host.getId(), autoAttendanceAndPreviousWeekly.getWeek(), LATE).apply(1L);
-            given(studyAttendanceRepository.getParticipantAttendanceByWeek(autoAttendanceAndPreviousWeekly.getId(), host.getId(), autoAttendanceAndPreviousWeekly.getWeek()))
-                    .willReturn(attendance);
+            final StudyAttendance attendance = StudyAttendance.recordAttendance(
+                    study.getId(),
+                    host.getId(),
+                    autoAttendanceAndPreviousWeekly.getWeek(),
+                    LATE
+            ).apply(1L);
+            given(studyAttendanceRepository.getParticipantAttendanceByWeek(
+                    autoAttendanceAndPreviousWeekly.getId(),
+                    host.getId(),
+                    autoAttendanceAndPreviousWeekly.getWeek()
+            )).willReturn(attendance);
 
             // when
             sut.editSubmittedAssignment(host.getId(), study.getId(), autoAttendanceAndPreviousWeekly.getId(), updateAssignment);

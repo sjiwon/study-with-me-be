@@ -33,8 +33,13 @@ class DeleteStudyWeeklyUseCaseTest extends UseCaseTest {
     private final StudyWeeklySubmitRepository studyWeeklySubmitRepository = mock(StudyWeeklySubmitRepository.class);
     private final StudyParticipantRepository studyParticipantRepository = mock(StudyParticipantRepository.class);
     private final StudyAttendanceRepository studyAttendanceRepository = mock(StudyAttendanceRepository.class);
-    private final WeeklyManager weeklyManager
-            = new WeeklyManager(studyWeeklyRepository, studyParticipantRepository, studyAttendanceRepository, studyWeeklyAttachmentRepository, studyWeeklySubmitRepository);
+    private final WeeklyManager weeklyManager = new WeeklyManager(
+            studyWeeklyRepository,
+            studyParticipantRepository,
+            studyAttendanceRepository,
+            studyWeeklyAttachmentRepository,
+            studyWeeklySubmitRepository
+    );
     private final DeleteStudyWeeklyUseCase sut = new DeleteStudyWeeklyUseCase(studyWeeklyRepository, weeklyManager);
 
     private final Member host = JIWON.toMember().apply(1L);

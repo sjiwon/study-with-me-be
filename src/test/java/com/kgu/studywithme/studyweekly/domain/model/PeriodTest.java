@@ -34,7 +34,7 @@ class PeriodTest extends ParallelTest {
 
     @Test
     @DisplayName("주어진 날짜가 Period의 StartDate ~ EndDate 사이에 포함되는지 확인한다")
-    void isDateWithInRange() {
+    void isInRange() {
         // given
         final Period period = new Period(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(7));
 
@@ -48,7 +48,7 @@ class PeriodTest extends ParallelTest {
                 () -> assertThat(actual2).isFalse()
         );
     }
-    
+
     @Test
     @DisplayName("주어진 날짜가 Period을 지났는지 확인한다")
     void isPassed() {
@@ -56,13 +56,15 @@ class PeriodTest extends ParallelTest {
         final Period period = new Period(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(7));
 
         // when
-        final boolean actual1 = period.isPassed(LocalDateTime.now().plusDays(4));
-        final boolean actual2 = period.isPassed(LocalDateTime.now().plusDays(8));
+        final boolean actual1 = period.isPassed(LocalDateTime.now());
+        final boolean actual2 = period.isPassed(LocalDateTime.now().plusDays(4));
+        final boolean actual3 = period.isPassed(LocalDateTime.now().plusDays(8));
 
         // then
         assertAll(
                 () -> assertThat(actual1).isFalse(),
-                () -> assertThat(actual2).isTrue()
+                () -> assertThat(actual2).isFalse(),
+                () -> assertThat(actual3).isTrue()
         );
     }
 }
