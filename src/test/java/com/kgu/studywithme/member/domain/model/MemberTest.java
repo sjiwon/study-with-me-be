@@ -30,7 +30,7 @@ class MemberTest extends ParallelTest {
                 () -> assertThat(member.getPhone()).isEqualTo(JIWON.getPhone()),
                 () -> assertThat(member.getGender()).isEqualTo(JIWON.getGender()),
                 () -> assertThat(member.getAddress()).isEqualTo(JIWON.getAddress()),
-                () -> assertThat(member.getScore().getValue()).isEqualTo(80),
+                () -> assertThat(member.getScore().getValue()).isEqualTo(Score.INIT_SCORE),
                 () -> assertThat(member.getInterests()).containsExactlyInAnyOrderElementsOf(JIWON.getInterests())
         );
     }
@@ -60,7 +60,7 @@ class MemberTest extends ParallelTest {
                 () -> assertThat(member.getPhone()).isEqualTo(ANONYMOUS.getPhone()),
                 () -> assertThat(member.getGender()).isEqualTo(JIWON.getGender()),
                 () -> assertThat(member.getAddress()).isEqualTo(ANONYMOUS.getAddress()),
-                () -> assertThat(member.getScore().getValue()).isEqualTo(80),
+                () -> assertThat(member.getScore().getValue()).isEqualTo(Score.INIT_SCORE),
                 () -> assertThat(member.getInterests()).containsExactlyInAnyOrderElementsOf(ANONYMOUS.getInterests())
         );
     }

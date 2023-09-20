@@ -67,7 +67,7 @@ public class Member extends BaseEntity<Member> {
         this.phone = phone;
         this.gender = gender;
         this.address = address;
-        this.score = Score.initScore();
+        this.score = Score.init();
         this.interests = new Interests(this, interests);
     }
 

@@ -31,8 +31,8 @@ public class Address {
         }
     }
 
-    private boolean isEmptyText(final String str) {
-        return !StringUtils.hasText(str);
+    private boolean isEmptyText(final String value) {
+        return !StringUtils.hasText(value);
     }
 
     @Override

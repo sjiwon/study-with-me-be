@@ -26,7 +26,7 @@ public class Score {
         this.value = value < MINIMUM ? MINIMUM : Math.min(value, MAXIMUM);
     }
 
-    public static Score initScore() {
+    public static Score init() {
         return new Score(INIT_SCORE);
     }
 

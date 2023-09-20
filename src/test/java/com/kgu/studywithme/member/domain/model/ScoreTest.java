@@ -13,7 +13,7 @@ class ScoreTest extends ParallelTest {
     @Test
     @DisplayName("Score를 생성한다")
     void construct() {
-        final Score score = Score.initScore();
+        final Score score = Score.init();
 
         assertThat(score.getValue()).isEqualTo(Score.INIT_SCORE);
     }
@@ -46,7 +46,7 @@ class ScoreTest extends ParallelTest {
 
         @BeforeEach
         void setUp() {
-            score = Score.initScore();
+            score = Score.init();
             previousScore = score.getValue();
         }
 
@@ -89,7 +89,7 @@ class ScoreTest extends ParallelTest {
 
         @BeforeEach
         void setUp() {
-            score = Score.initScore();
+            score = Score.init();
             previousScore = score.getValue();
         }
 

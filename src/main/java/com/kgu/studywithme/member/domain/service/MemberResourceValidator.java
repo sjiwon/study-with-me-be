@@ -44,22 +44,14 @@ public class MemberResourceValidator {
     }
 
     private void validateNicknameIsInUseByOther(final Long memberId, final Nickname nickname) {
-        final Long nicknameUsedId = memberRepository.findIdByNicknameUsed(nickname.getValue());
-
-        if (usedByOther(nicknameUsedId, memberId)) {
-            throw StudyWithMeException.type(MemberErrorCode.DUPLICATE_NICKNAME);
-        }
-    }
-
-    private void validatePhoneIsInUseByOther(final Long memberId, final Phone phone) {
-        final Long phoneUsedId = memberRepository.findIdByPhoneUsed(phone.getValue());
-
-        if (usedByOther(phoneUsedId, memberId)) {
+        if (memberRepository.isNicknameUsedByOther(memberId, nickname.getValue())) {
             throw StudyWithMeException.type(MemberErrorCode.DUPLICATE_PHONE);
         }
     }
 
-    private boolean usedByOther(final Long resourceUsedId, final Long memberId) {
-        return resourceUsedId != null && !resourceUsedId.equals(memberId);
+    private void validatePhoneIsInUseByOther(final Long memberId, final Phone phone) {
+        if (memberRepository.isPhoneUsedByOther(memberId, phone.getValue())) {
+            throw StudyWithMeException.type(MemberErrorCode.DUPLICATE_PHONE);
+        }
     }
 }

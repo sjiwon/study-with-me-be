@@ -36,10 +36,20 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             " WHERE m.nickname.value = :nickname")
     Long findIdByNicknameUsed(@Param("nickname") final String nickname);
 
+    default boolean isNicknameUsedByOther(final Long memberId, final String nickname) {
+        final Long nicknameUsedId = findIdByNicknameUsed(nickname);
+        return nicknameUsedId != null && !nicknameUsedId.equals(memberId);
+    }
+
     @Query("SELECT m.id" +
             " FROM Member m" +
             " WHERE m.phone.value = :phone")
     Long findIdByPhoneUsed(@Param("phone") final String phone);
+
+    default boolean isPhoneUsedByOther(final Long memberId, final String phone) {
+        final Long phoneUsedId = findIdByPhoneUsed(phone);
+        return phoneUsedId != null && !phoneUsedId.equals(memberId);
+    }
 
     // Query Method
     boolean existsByEmailValue(final String email);

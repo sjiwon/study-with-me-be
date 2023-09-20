@@ -69,42 +69,46 @@ class MemberRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    @DisplayName("해당 닉네임을 사용하고 있는 MemberId를 조회한다")
-    void findIdByNicknameUsed() {
+    @DisplayName("해당 닉네임을 본인이 아닌 타인이 사용하고 있는지 확인한다")
+    void isNicknameUsedByOther() {
         // given
         final Member memberA = sut.save(JIWON.toMember());
         final Member memberB = sut.save(GHOST.toMember());
 
         // when
-        final Long ids1 = sut.findIdByNicknameUsed(memberA.getNickname().getValue());
-        final Long ids2 = sut.findIdByNicknameUsed(memberB.getNickname().getValue());
-        final Long ids3 = sut.findIdByNicknameUsed(memberB.getNickname().getValue() + "diff");
+        final boolean actual1 = sut.isNicknameUsedByOther(memberA.getId(), memberA.getNickname().getValue());
+        final boolean actual2 = sut.isNicknameUsedByOther(memberA.getId(), memberB.getNickname().getValue());
+        final boolean actual3 = sut.isNicknameUsedByOther(memberB.getId(), memberB.getNickname().getValue());
+        final boolean actual4 = sut.isNicknameUsedByOther(memberB.getId(), memberA.getNickname().getValue());
 
         // then
         assertAll(
-                () -> assertThat(ids1).isEqualTo(memberA.getId()),
-                () -> assertThat(ids2).isEqualTo(memberB.getId()),
-                () -> assertThat(ids3).isNull()
+                () -> assertThat(actual1).isFalse(),
+                () -> assertThat(actual2).isTrue(),
+                () -> assertThat(actual3).isFalse(),
+                () -> assertThat(actual4).isTrue()
         );
     }
 
     @Test
-    @DisplayName("해당 전화번호를 사용하고 있는 MemberId를 조회한다")
-    void findIdByPhoneUsed() {
+    @DisplayName("해당 전화번호를 본인이 아닌 타인이 사용하고 있는지 확인한다")
+    void isPhoneUsedByOther() {
         // given
         final Member memberA = sut.save(JIWON.toMember());
         final Member memberB = sut.save(GHOST.toMember());
 
         // when
-        final Long ids1 = sut.findIdByPhoneUsed(memberA.getPhone().getValue());
-        final Long ids2 = sut.findIdByPhoneUsed(memberB.getPhone().getValue());
-        final Long ids3 = sut.findIdByPhoneUsed(memberB.getPhone().getValue().replaceAll("0", "9"));
+        final boolean actual1 = sut.isPhoneUsedByOther(memberA.getId(), memberA.getPhone().getValue());
+        final boolean actual2 = sut.isPhoneUsedByOther(memberA.getId(), memberB.getPhone().getValue());
+        final boolean actual3 = sut.isPhoneUsedByOther(memberB.getId(), memberB.getPhone().getValue());
+        final boolean actual4 = sut.isPhoneUsedByOther(memberB.getId(), memberA.getPhone().getValue());
 
         // then
         assertAll(
-                () -> assertThat(ids1).isEqualTo(memberA.getId()),
-                () -> assertThat(ids2).isEqualTo(memberB.getId()),
-                () -> assertThat(ids3).isNull()
+                () -> assertThat(actual1).isFalse(),
+                () -> assertThat(actual2).isTrue(),
+                () -> assertThat(actual3).isFalse(),
+                () -> assertThat(actual4).isTrue()
         );
     }
 

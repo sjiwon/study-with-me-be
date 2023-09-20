@@ -11,7 +11,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static com.kgu.studywithme.common.fixture.MemberFixture.GHOST;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -111,7 +110,6 @@ public class MemberResourceValidatorTest extends ParallelTest {
     @DisplayName("수정 시 리소스 검증 (이메일, 닉네임, 전화번호)")
     class ValidateInUpdate {
         private final Member member = JIWON.toMember().apply(1L);
-        private final Member other = GHOST.toMember().apply(2L);
         private final Nickname newNickname = new Nickname(member.getNickname().getValue() + "diff");
         private final Phone newPhone = new Phone(member.getPhone().getValue().replaceAll("0", "9"));
 
@@ -119,7 +117,7 @@ public class MemberResourceValidatorTest extends ParallelTest {
         @DisplayName("타인이 닉네임을 사용하고 있으면 예외가 발생한다")
         void throwExceptionByDuplicateNickname() {
             // given
-            given(memberRepository.findIdByNicknameUsed(newNickname.getValue())).willReturn(other.getId());
+            given(memberRepository.isNicknameUsedByOther(member.getId(), newNickname.getValue())).willReturn(true);
 
             // when - then
             assertThatThrownBy(() -> sut.validateInUpdate(member.getId(), newNickname, newPhone))
@@ -127,8 +125,8 @@ public class MemberResourceValidatorTest extends ParallelTest {
                     .hasMessage(MemberErrorCode.DUPLICATE_NICKNAME.getMessage());
 
             assertAll(
-                    () -> verify(memberRepository, times(1)).findIdByNicknameUsed(newNickname.getValue()),
-                    () -> verify(memberRepository, times(0)).findIdByPhoneUsed(newPhone.getValue())
+                    () -> verify(memberRepository, times(1)).isNicknameUsedByOther(member.getId(), newNickname.getValue()),
+                    () -> verify(memberRepository, times(0)).isPhoneUsedByOther(member.getId(), newPhone.getValue())
             );
         }
 
@@ -136,8 +134,8 @@ public class MemberResourceValidatorTest extends ParallelTest {
         @DisplayName("타인이 전화번호를 사용하고 있으면 예외가 발생한다")
         void throwExceptionByDuplicatePhone() {
             // given
-            given(memberRepository.findIdByNicknameUsed(newNickname.getValue())).willReturn(null);
-            given(memberRepository.findIdByPhoneUsed(newPhone.getValue())).willReturn(other.getId());
+            given(memberRepository.isNicknameUsedByOther(member.getId(), newNickname.getValue())).willReturn(false);
+            given(memberRepository.isPhoneUsedByOther(member.getId(), newPhone.getValue())).willReturn(true);
 
             // when - then
             assertThatThrownBy(() -> sut.validateInUpdate(member.getId(), newNickname, newPhone))
@@ -145,40 +143,24 @@ public class MemberResourceValidatorTest extends ParallelTest {
                     .hasMessage(MemberErrorCode.DUPLICATE_PHONE.getMessage());
 
             assertAll(
-                    () -> verify(memberRepository, times(1)).findIdByNicknameUsed(newNickname.getValue()),
-                    () -> verify(memberRepository, times(1)).findIdByPhoneUsed(newPhone.getValue())
+                    () -> verify(memberRepository, times(1)).isNicknameUsedByOther(member.getId(), newNickname.getValue()),
+                    () -> verify(memberRepository, times(1)).isPhoneUsedByOther(member.getId(), newPhone.getValue())
             );
         }
 
         @Test
-        @DisplayName("검증에 성공한다 - 아무도 사용 X")
-        void success1() {
+        @DisplayName("검증에 성공한다")
+        void success() {
             // given
-            given(memberRepository.findIdByNicknameUsed(newNickname.getValue())).willReturn(null);
-            given(memberRepository.findIdByPhoneUsed(newPhone.getValue())).willReturn(null);
+            given(memberRepository.isNicknameUsedByOther(member.getId(), newNickname.getValue())).willReturn(false);
+            given(memberRepository.isPhoneUsedByOther(member.getId(), newPhone.getValue())).willReturn(false);
 
             // when - then
             assertDoesNotThrow(() -> sut.validateInUpdate(member.getId(), newNickname, newPhone));
 
             assertAll(
-                    () -> verify(memberRepository, times(1)).findIdByNicknameUsed(newNickname.getValue()),
-                    () -> verify(memberRepository, times(1)).findIdByPhoneUsed(newPhone.getValue())
-            );
-        }
-
-        @Test
-        @DisplayName("검증에 성공한다 - 본인 리소스는 제외 (닉네임, 전화번호)")
-        void success2() {
-            // given
-            given(memberRepository.findIdByNicknameUsed(newNickname.getValue())).willReturn(member.getId());
-            given(memberRepository.findIdByPhoneUsed(newPhone.getValue())).willReturn(member.getId());
-
-            // when - then
-            assertDoesNotThrow(() -> sut.validateInUpdate(member.getId(), newNickname, newPhone));
-
-            assertAll(
-                    () -> verify(memberRepository, times(1)).findIdByNicknameUsed(newNickname.getValue()),
-                    () -> verify(memberRepository, times(1)).findIdByPhoneUsed(newPhone.getValue())
+                    () -> verify(memberRepository, times(1)).isNicknameUsedByOther(member.getId(), newNickname.getValue()),
+                    () -> verify(memberRepository, times(1)).isPhoneUsedByOther(member.getId(), newPhone.getValue())
             );
         }
     }

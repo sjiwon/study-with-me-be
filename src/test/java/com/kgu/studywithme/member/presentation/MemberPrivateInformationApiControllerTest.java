@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
@@ -44,7 +43,7 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
             // given
             mockingToken(true, MEMBER_ID);
 
-            final Member member = JIWON.toMember().apply(1L, LocalDateTime.now());
+            final Member member = JIWON.toMember().apply(1L);
             final MemberPrivateInformation response = new MemberPrivateInformation(
                     member.getId(),
                     member.getName(),

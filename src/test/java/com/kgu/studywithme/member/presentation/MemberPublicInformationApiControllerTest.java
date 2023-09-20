@@ -47,7 +47,7 @@ class MemberPublicInformationApiControllerTest extends ControllerTest {
         @DisplayName("사용자 기본 Public 정보를 조회한다")
         void success() throws Exception {
             // given
-            final Member member = JIWON.toMember().apply(1L, LocalDateTime.now());
+            final Member member = JIWON.toMember().apply(1L);
             final MemberPublicInformation response = new MemberPublicInformation(
                     member.getId(),
                     member.getName(),

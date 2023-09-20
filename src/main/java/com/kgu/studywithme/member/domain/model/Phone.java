@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 @Embeddable
 public class Phone {
     /**
-     * xxx-xxxx-xxxx 형태
+     * xxx-xxx-xxxx or xxx-xxxx-xxxx
      */
     private static final Pattern PHONE_PATTERN = Pattern.compile("^\\d{3}-\\d{3,4}-\\d{4}$");
 
