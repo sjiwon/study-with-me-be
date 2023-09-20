@@ -38,11 +38,7 @@ public class StudyNoticeCommentApiController {
             @PathVariable final Long noticeId,
             @RequestBody @Valid final WriteStudyNoticeCommentRequest request
     ) {
-        writeStudyNoticeCommentUseCase.invoke(new WriteStudyNoticeCommentCommand(
-                noticeId,
-                writerId,
-                request.content()
-        ));
+        writeStudyNoticeCommentUseCase.invoke(new WriteStudyNoticeCommentCommand(noticeId, writerId, request.content()));
         return ResponseEntity.noContent().build();
     }
 
@@ -54,11 +50,7 @@ public class StudyNoticeCommentApiController {
             @PathVariable final Long commentId,
             @RequestBody @Valid final UpdateStudyNoticeCommentRequest request
     ) {
-        updateStudyNoticeCommentUseCase.invoke(new UpdateStudyNoticeCommentCommand(
-                commentId,
-                memberId,
-                request.content()
-        ));
+        updateStudyNoticeCommentUseCase.invoke(new UpdateStudyNoticeCommentCommand(commentId, memberId, request.content()));
         return ResponseEntity.noContent().build();
     }
 

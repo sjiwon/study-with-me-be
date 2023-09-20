@@ -26,7 +26,7 @@ class WriteStudyNoticeUseCaseTest extends UseCaseTest {
     @DisplayName("스터디 공지사항을 작성한다")
     void success() {
         // given
-        final StudyNotice notice = StudyNotice.writeNotice(command.studyId(), command.hostId(), command.title(), command.content()).apply(1L);
+        final StudyNotice notice = command.toDomain().apply(1L);
         given(studyNoticeRepository.save(any())).willReturn(notice);
 
         // when

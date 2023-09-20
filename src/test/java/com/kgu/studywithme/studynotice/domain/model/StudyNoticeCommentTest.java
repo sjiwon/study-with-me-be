@@ -2,11 +2,13 @@ package com.kgu.studywithme.studynotice.domain.model;
 
 import com.kgu.studywithme.common.ParallelTest;
 import com.kgu.studywithme.member.domain.model.Member;
+import com.kgu.studywithme.study.domain.model.Study;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.kgu.studywithme.common.fixture.MemberFixture.GHOST;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
+import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -14,7 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class StudyNoticeCommentTest extends ParallelTest {
     private final Member host = JIWON.toMember().apply(1L);
     private final Member anonymous = GHOST.toMember().apply(2L);
-    private final StudyNotice notice = StudyNotice.writeNotice(1L, host.getId(), "Hello", "Hello World").apply(1L);
+    private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L);
+    private final StudyNotice notice = StudyNotice.writeNotice(study.getId(), host.getId(), "Hello", "Hello World").apply(1L);
 
     @Test
     @DisplayName("스터디 공지사항에 작성한 댓글을 수정한다")

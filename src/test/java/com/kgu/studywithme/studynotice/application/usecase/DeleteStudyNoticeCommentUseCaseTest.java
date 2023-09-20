@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -43,8 +42,8 @@ class DeleteStudyNoticeCommentUseCaseTest extends UseCaseTest {
                 .hasMessage(StudyNoticeErrorCode.ONLY_WRITER_CAN_DELETE_NOTICE_COMMENT.getMessage());
 
         assertAll(
-                () -> verify(studyNoticeCommentRepository, times(1)).getById(any()),
-                () -> verify(studyNoticeCommentRepository, times(0)).delete(any())
+                () -> verify(studyNoticeCommentRepository, times(1)).getById(command.commentId()),
+                () -> verify(studyNoticeCommentRepository, times(0)).delete(comment)
         );
     }
 
@@ -60,8 +59,8 @@ class DeleteStudyNoticeCommentUseCaseTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyNoticeCommentRepository, times(1)).getById(any()),
-                () -> verify(studyNoticeCommentRepository, times(1)).delete(any())
+                () -> verify(studyNoticeCommentRepository, times(1)).getById(command.commentId()),
+                () -> verify(studyNoticeCommentRepository, times(1)).delete(comment)
         );
     }
 }
