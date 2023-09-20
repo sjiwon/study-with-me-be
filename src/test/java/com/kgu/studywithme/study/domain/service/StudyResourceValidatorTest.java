@@ -83,7 +83,7 @@ public class StudyResourceValidatorTest extends ParallelTest {
         @DisplayName("검증에 성공한다")
         void success1() {
             // given
-            given(studyRepository.isNameUsedByOther(study.getId(), newName.getValue())).willReturn(true);
+            given(studyRepository.isNameUsedByOther(study.getId(), newName.getValue())).willReturn(false);
 
             // when - then
             assertDoesNotThrow(() -> sut.validateInUpdate(study.getId(), newName));

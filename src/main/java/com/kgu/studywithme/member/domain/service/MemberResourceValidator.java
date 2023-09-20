@@ -45,7 +45,7 @@ public class MemberResourceValidator {
 
     private void validateNicknameIsInUseByOther(final Long memberId, final Nickname nickname) {
         if (memberRepository.isNicknameUsedByOther(memberId, nickname.getValue())) {
-            throw StudyWithMeException.type(MemberErrorCode.DUPLICATE_PHONE);
+            throw StudyWithMeException.type(MemberErrorCode.DUPLICATE_NICKNAME);
         }
     }
 

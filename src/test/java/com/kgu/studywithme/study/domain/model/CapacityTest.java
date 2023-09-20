@@ -77,8 +77,8 @@ class CapacityTest extends ParallelTest {
 
         // then
         assertAll(
-                () -> assertThat(actual1).isTrue(),
-                () -> assertThat(actual2).isFalse()
+                () -> assertThat(actual1).isFalse(),
+                () -> assertThat(actual2).isTrue()
         );
     }
 }

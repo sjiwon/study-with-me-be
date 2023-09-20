@@ -52,7 +52,7 @@ public class StudyParticipant extends BaseEntity<StudyParticipant> {
         return new StudyParticipant(studyId, hostId, APPROVE);
     }
 
-    public static StudyParticipant applyParticipant(final Long studyId, final Long hostId, final ParticipantStatus status) {
-        return new StudyParticipant(studyId, hostId, status);
+    public static StudyParticipant applyParticipant(final Long studyId, final Long memberId, final ParticipantStatus status) {
+        return new StudyParticipant(studyId, memberId, status);
     }
 }
