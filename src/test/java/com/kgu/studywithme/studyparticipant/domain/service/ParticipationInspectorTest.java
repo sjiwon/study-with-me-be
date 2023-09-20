@@ -52,7 +52,7 @@ public class ParticipationInspectorTest extends ParallelTest {
     }
 
     @Test
-    @DisplayName("신청자가 이미 스터디와 관련있는 사람인지 확인한다 (참여중, 떠남, 졸업)")
+    @DisplayName("신청자가 이미 스터디와 관련있는 사람인지 확인한다 [이미 신청 | 참여중 | 떠남 | 졸업]")
     void checkApplierIsAlreadyRelatedToStudy() {
         given(studyParticipantRepository.isApplierOrParticipant(study.getId(), host.getId())).willReturn(true);
         given(studyParticipantRepository.isAlreadyLeaveOrGraduatedParticipant(study.getId(), host.getId())).willReturn(false);

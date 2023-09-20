@@ -37,10 +37,8 @@ class DelegateHostAuthorityUseCaseTest extends UseCaseTest {
     private final ParticipateMemberReader participateMemberReader = fakeParticipateMemberReader();
     private final StudyParticipantRepository studyParticipantRepository = mock(StudyParticipantRepository.class);
     private final StudyAttendanceRepository studyAttendanceRepository = mock(StudyAttendanceRepository.class);
-    private final ParticipationInspector participationInspector
-            = new ParticipationInspector(studyParticipantRepository, studyAttendanceRepository);
-    private final DelegateHostAuthorityUseCase sut
-            = new DelegateHostAuthorityUseCase(studyRepository, participateMemberReader, participationInspector);
+    private final ParticipationInspector participationInspector = new ParticipationInspector(studyParticipantRepository, studyAttendanceRepository);
+    private final DelegateHostAuthorityUseCase sut = new DelegateHostAuthorityUseCase(studyRepository, participateMemberReader, participationInspector);
 
     private final Member host = JIWON.toMember().apply(1L);
     private final Member newHost = GHOST.toMember().apply(2L);

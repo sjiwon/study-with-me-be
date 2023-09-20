@@ -39,13 +39,10 @@ class GraduateStudyUseCaseTest extends UseCaseTest {
     private final ParticipateMemberReader participateMemberReader = fakeParticipateMemberReader();
     private final StudyParticipantRepository studyParticipantRepository = mock(StudyParticipantRepository.class);
     private final StudyAttendanceRepository studyAttendanceRepository = mock(StudyAttendanceRepository.class);
-    private final ParticipationInspector participationInspector
-            = new ParticipationInspector(studyParticipantRepository, studyAttendanceRepository);
+    private final ParticipationInspector participationInspector = new ParticipationInspector(studyParticipantRepository, studyAttendanceRepository);
     private final ApplicationEventPublisher eventPublisher = mock(ApplicationEventPublisher.class);
-    private final ParticipationProcessor participationProcessor
-            = new ParticipationProcessor(studyParticipantRepository, eventPublisher);
-    private final GraduateStudyUseCase sut
-            = new GraduateStudyUseCase(studyRepository, participateMemberReader, participationInspector, participationProcessor);
+    private final ParticipationProcessor participationProcessor = new ParticipationProcessor(studyParticipantRepository, eventPublisher);
+    private final GraduateStudyUseCase sut = new GraduateStudyUseCase(studyRepository, participateMemberReader, participationInspector, participationProcessor);
 
     private final Member host = JIWON.toMember().apply(1L);
     private final Member participantWithAllowEmail = GHOST.toMember().apply(2L);

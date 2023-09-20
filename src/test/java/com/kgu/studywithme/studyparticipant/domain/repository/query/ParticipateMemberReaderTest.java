@@ -74,6 +74,7 @@ public class ParticipateMemberReaderTest extends RepositoryTest {
     @DisplayName("특정 스터디 신청자를 조회한다 [With studyId + memberId]")
     void getApplier() {
         assertAll(
+                () -> assertThat(sut.getApplier(study.getId(), applier.getId())).isEqualTo(applier),
                 () -> assertThatThrownBy(() -> sut.getApplier(study.getId(), host.getId()))
                         .isInstanceOf(StudyWithMeException.class)
                         .hasMessage(StudyParticipantErrorCode.APPLIER_NOT_FOUND.getMessage()),
@@ -85,8 +86,7 @@ public class ParticipateMemberReaderTest extends RepositoryTest {
                         .hasMessage(StudyParticipantErrorCode.APPLIER_NOT_FOUND.getMessage()),
                 () -> assertThatThrownBy(() -> sut.getApplier(study.getId(), graduatedMember.getId()))
                         .isInstanceOf(StudyWithMeException.class)
-                        .hasMessage(StudyParticipantErrorCode.APPLIER_NOT_FOUND.getMessage()),
-                () -> assertThat(sut.getApplier(study.getId(), applier.getId())).isEqualTo(applier)
+                        .hasMessage(StudyParticipantErrorCode.APPLIER_NOT_FOUND.getMessage())
         );
     }
 
@@ -94,6 +94,8 @@ public class ParticipateMemberReaderTest extends RepositoryTest {
     @DisplayName("특정 스터디 참여자를 조회한다 [With studyId + memberId]")
     void getParticipant() {
         assertAll(
+                () -> assertThat(sut.getParticipant(study.getId(), host.getId())).isEqualTo(host),
+                () -> assertThat(sut.getParticipant(study.getId(), participant.getId())).isEqualTo(participant),
                 () -> assertThatThrownBy(() -> sut.getParticipant(study.getId(), applier.getId()))
                         .isInstanceOf(StudyWithMeException.class)
                         .hasMessage(StudyParticipantErrorCode.PARTICIPANT_NOT_FOUND.getMessage()),
@@ -102,9 +104,7 @@ public class ParticipateMemberReaderTest extends RepositoryTest {
                         .hasMessage(StudyParticipantErrorCode.PARTICIPANT_NOT_FOUND.getMessage()),
                 () -> assertThatThrownBy(() -> sut.getParticipant(study.getId(), graduatedMember.getId()))
                         .isInstanceOf(StudyWithMeException.class)
-                        .hasMessage(StudyParticipantErrorCode.PARTICIPANT_NOT_FOUND.getMessage()),
-                () -> assertThat(sut.getParticipant(study.getId(), host.getId())).isEqualTo(host),
-                () -> assertThat(sut.getParticipant(study.getId(), participant.getId())).isEqualTo(participant)
+                        .hasMessage(StudyParticipantErrorCode.PARTICIPANT_NOT_FOUND.getMessage())
         );
     }
 }
