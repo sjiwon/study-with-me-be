@@ -21,16 +21,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @DisplayName("Study -> UpdateStudyUseCase 테스트")
 class UpdateStudyUseCaseTest extends UseCaseTest {
-    private final StudyResourceValidator studyResourceValidator = mock(StudyResourceValidator.class);
     private final StudyRepository studyRepository = mock(StudyRepository.class);
+    private final StudyResourceValidator studyResourceValidator = new StudyResourceValidator(studyRepository);
     private final UpdateStudyUseCase sut = new UpdateStudyUseCase(studyResourceValidator, studyRepository);
 
     private final Member host = JIWON.toMember().apply(1L);
@@ -61,9 +59,7 @@ class UpdateStudyUseCaseTest extends UseCaseTest {
     @DisplayName("다른 스터디가 사용하고 있는 이름으로 수정할 수 없다")
     void throwExceptionByDuplicateName() {
         // given
-        doThrow(StudyWithMeException.type(StudyErrorCode.DUPLICATE_NAME))
-                .when(studyResourceValidator)
-                .validateInUpdate(command.studyId(), command.name());
+        given(studyRepository.isNameUsedByOther(command.studyId(), command.name().getValue())).willReturn(true);
 
         // when - then
         assertThatThrownBy(() -> sut.invoke(command))
@@ -71,7 +67,7 @@ class UpdateStudyUseCaseTest extends UseCaseTest {
                 .hasMessage(StudyErrorCode.DUPLICATE_NAME.getMessage());
 
         assertAll(
-                () -> verify(studyResourceValidator, times(1)).validateInUpdate(command.studyId(), command.name()),
+                () -> verify(studyRepository, times(1)).isNameUsedByOther(command.studyId(), command.name().getValue()),
                 () -> verify(studyRepository, times(0)).getById(command.studyId())
         );
     }
@@ -80,9 +76,7 @@ class UpdateStudyUseCaseTest extends UseCaseTest {
     @DisplayName("현재 참여자 수보다 낮게 스터디 정원을 수정할 수 없다")
     void throwExceptionByCapacityCannotCoverCurrentParticipants() {
         // given
-        doNothing()
-                .when(studyResourceValidator)
-                .validateInUpdate(command.studyId(), command.name());
+        given(studyRepository.isNameUsedByOther(command.studyId(), command.name().getValue())).willReturn(false);
         given(studyRepository.getById(command.studyId())).willReturn(study);
         ReflectionTestUtils.setField(study, "participants", command.capacity() + 1);
 
@@ -92,7 +86,7 @@ class UpdateStudyUseCaseTest extends UseCaseTest {
                 .hasMessage(StudyErrorCode.CAPACITY_CANNOT_COVER_CURRENT_PARTICIPANTS.getMessage());
 
         assertAll(
-                () -> verify(studyResourceValidator, times(1)).validateInUpdate(command.studyId(), command.name()),
+                () -> verify(studyRepository, times(1)).isNameUsedByOther(command.studyId(), command.name().getValue()),
                 () -> verify(studyRepository, times(1)).getById(command.studyId())
         );
     }
@@ -101,9 +95,7 @@ class UpdateStudyUseCaseTest extends UseCaseTest {
     @DisplayName("스터디를 수정한다")
     void success() {
         // given
-        doNothing()
-                .when(studyResourceValidator)
-                .validateInUpdate(command.studyId(), command.name());
+        given(studyRepository.isNameUsedByOther(command.studyId(), command.name().getValue())).willReturn(false);
         given(studyRepository.getById(command.studyId())).willReturn(study);
 
         // when
@@ -111,20 +103,20 @@ class UpdateStudyUseCaseTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyResourceValidator, times(1)).validateInUpdate(command.studyId(), command.name()),
+                () -> verify(studyRepository, times(1)).isNameUsedByOther(command.studyId(), command.name().getValue()),
                 () -> verify(studyRepository, times(1)).getById(command.studyId()),
-                () -> assertThat(study.getName().getValue()).isEqualTo(JPA.getName().getValue()),
-                () -> assertThat(study.getDescription().getValue()).isEqualTo(JPA.getDescription().getValue()),
-                () -> assertThat(study.getCapacity().getValue()).isEqualTo(JPA.getCapacity().getValue()),
+                () -> assertThat(study.getName().getValue()).isEqualTo(command.name().getValue()),
+                () -> assertThat(study.getDescription().getValue()).isEqualTo(command.description().getValue()),
+                () -> assertThat(study.getCapacity().getValue()).isEqualTo(command.capacity()),
                 () -> assertThat(study.getParticipants()).isEqualTo(1), // host
-                () -> assertThat(study.getCategory()).isEqualTo(JPA.getCategory()),
-                () -> assertThat(study.getThumbnail().getImageName()).isEqualTo(JPA.getThumbnail().getImageName()),
-                () -> assertThat(study.getThumbnail().getBackground()).isEqualTo(JPA.getThumbnail().getBackground()),
-                () -> assertThat(study.getType()).isEqualTo(JPA.getType()),
+                () -> assertThat(study.getCategory()).isEqualTo(command.category()),
+                () -> assertThat(study.getThumbnail().getImageName()).isEqualTo(command.thumbnail().getImageName()),
+                () -> assertThat(study.getThumbnail().getBackground()).isEqualTo(command.thumbnail().getBackground()),
+                () -> assertThat(study.getType()).isEqualTo(command.type()),
                 () -> assertThat(study.getLocation()).isNull(),
                 () -> assertThat(study.getRecruitmentStatus()).isEqualTo(ON),
-                () -> assertThat(study.getGraduationPolicy().getMinimumAttendance()).isEqualTo(JPA.getMinimumAttendanceForGraduation()),
-                () -> assertThat(study.getHashtags()).containsExactlyInAnyOrderElementsOf(JPA.getHashtags())
+                () -> assertThat(study.getGraduationPolicy().getMinimumAttendance()).isEqualTo(command.minimumAttendanceForGraduation()),
+                () -> assertThat(study.getHashtags()).containsExactlyInAnyOrderElementsOf(command.hashtags())
         );
     }
 }

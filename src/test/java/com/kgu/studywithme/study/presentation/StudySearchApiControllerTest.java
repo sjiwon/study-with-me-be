@@ -22,7 +22,7 @@ import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHea
 import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessTokenToAuthorizationHeader;
 import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.ON;
 import static com.kgu.studywithme.study.domain.model.StudyType.ONLINE;
-import static com.kgu.studywithme.study.domain.model.paging.PagingConstants.SLICE_PER_PAGE;
+import static com.kgu.studywithme.study.utils.search.PagingConstants.SLICE_PER_PAGE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;

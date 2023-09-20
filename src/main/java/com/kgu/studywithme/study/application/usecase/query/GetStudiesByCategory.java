@@ -1,6 +1,6 @@
 package com.kgu.studywithme.study.application.usecase.query;
 
-import com.kgu.studywithme.study.domain.model.paging.SearchByCategoryCondition;
+import com.kgu.studywithme.study.utils.search.SearchByCategoryCondition;
 import org.springframework.data.domain.Pageable;
 
 public record GetStudiesByCategory(

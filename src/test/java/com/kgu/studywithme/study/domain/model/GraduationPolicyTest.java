@@ -22,7 +22,7 @@ class GraduationPolicyTest extends ParallelTest {
 
         assertAll(
                 () -> assertThat(policy.getMinimumAttendance()).isEqualTo(10),
-                () -> assertThat(policy.getUpdateChance()).isEqualTo(3)
+                () -> assertThat(policy.getUpdateChance()).isEqualTo(GraduationPolicy.DEFAULT_UPDATE_CHANCE)
         );
     }
 
@@ -30,10 +30,14 @@ class GraduationPolicyTest extends ParallelTest {
     @DisplayName("GraduationPoicy 수정")
     class Update {
         private GraduationPolicy policy;
+        private int previousMinimumAttendance;
+        private int previousUpdateChance;
 
         @BeforeEach
         void setUp() {
             policy = GraduationPolicy.initPolicy(10);
+            previousMinimumAttendance = policy.getMinimumAttendance();
+            previousUpdateChance = policy.getUpdateChance();
         }
 
         @Test
@@ -43,41 +47,41 @@ class GraduationPolicyTest extends ParallelTest {
             ReflectionTestUtils.setField(policy, "updateChance", 0);
 
             // when - then
-            assertThatThrownBy(() -> policy.update(20))
+            assertThatThrownBy(() -> policy.update(previousMinimumAttendance + 10))
                     .isInstanceOf(StudyWithMeException.class)
                     .hasMessage(StudyErrorCode.NO_CHANCE_TO_UPDATE_GRADUATION_POLICY.getMessage());
         }
 
         @Test
-        @DisplayName("GraduationPolicy 수정에 성공한다 [변화 X]")
+        @DisplayName("GraduationPolicy의 MinimumAttendance를 수정한다 [변화 X]")
         void success1() {
             // when
-            final GraduationPolicy update = policy.update(10);
+            final GraduationPolicy update = policy.update(previousMinimumAttendance);
 
             // then
             assertAll(
-                    () -> assertThat(update.getMinimumAttendance()).isEqualTo(10),
-                    () -> assertThat(update.getUpdateChance()).isEqualTo(3)
+                    () -> assertThat(update.getMinimumAttendance()).isEqualTo(previousMinimumAttendance),
+                    () -> assertThat(update.getUpdateChance()).isEqualTo(previousUpdateChance)
             );
         }
 
         @Test
-        @DisplayName("GraduationPolicy 수정에 성공한다 [변화 O]")
+        @DisplayName("GraduationPolicy의 MinimumAttendance를 수정한다 [변화 O]")
         void success2() {
             // when
-            final GraduationPolicy update = policy.update(20);
+            final GraduationPolicy update = policy.update(previousMinimumAttendance + 10);
 
             // then
             assertAll(
-                    () -> assertThat(update.getMinimumAttendance()).isEqualTo(20),
-                    () -> assertThat(update.getUpdateChance()).isEqualTo(2)
+                    () -> assertThat(update.getMinimumAttendance()).isEqualTo(previousMinimumAttendance + 10),
+                    () -> assertThat(update.getUpdateChance()).isEqualTo(previousUpdateChance - 1)
             );
         }
     }
 
     @Test
-    @DisplayName("스터디 팀장 위임 후 GraduationPolicy 수정 기회를 초기화한다")
-    void resetUpdateChanceByDelegatingHostAuthority() {
+    @DisplayName("GraduationPolicy의 UpdateChance를 초기화한다")
+    void resetUpdateChance() {
         // given
         final GraduationPolicy policy = GraduationPolicy
                 .initPolicy(10) // remain = 3
@@ -85,12 +89,12 @@ class GraduationPolicyTest extends ParallelTest {
                 .update(13); // remain = 1
 
         // when
-        final GraduationPolicy resetUpdateChange = policy.resetUpdateChanceByDelegatingHostAuthority();
+        final GraduationPolicy resetUpdateChange = policy.resetUpdateChance();
 
         // then
         assertAll(
                 () -> assertThat(resetUpdateChange.getMinimumAttendance()).isEqualTo(13),
-                () -> assertThat(resetUpdateChange.getUpdateChance()).isEqualTo(3)
+                () -> assertThat(resetUpdateChange.getUpdateChance()).isEqualTo(GraduationPolicy.DEFAULT_UPDATE_CHANCE)
         );
     }
 
@@ -102,12 +106,14 @@ class GraduationPolicyTest extends ParallelTest {
 
         // when
         final boolean actual1 = policy.isGraduationRequirementsFulfilled(9);
-        final boolean actual2 = policy.isGraduationRequirementsFulfilled(11);
+        final boolean actual2 = policy.isGraduationRequirementsFulfilled(10);
+        final boolean actual3 = policy.isGraduationRequirementsFulfilled(11);
 
         // then
         assertAll(
                 () -> assertThat(actual1).isFalse(),
-                () -> assertThat(actual2).isTrue()
+                () -> assertThat(actual2).isTrue(),
+                () -> assertThat(actual3).isTrue()
         );
     }
 }

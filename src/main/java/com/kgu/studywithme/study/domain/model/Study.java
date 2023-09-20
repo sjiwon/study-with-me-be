@@ -186,7 +186,7 @@ public class Study extends BaseEntity<Study> {
 
     public void delegateHostAuthority(final Long newHostId) {
         hostId = newHostId;
-        graduationPolicy = graduationPolicy.resetUpdateChanceByDelegatingHostAuthority();
+        graduationPolicy = graduationPolicy.resetUpdateChance();
     }
 
     public void recruitmentOff() {

@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
-import static com.kgu.studywithme.common.fixture.StudyFixture.JPA;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -64,45 +63,32 @@ public class StudyResourceValidatorTest extends ParallelTest {
     @DisplayName("수정 시 리소스 검증 (이름)")
     class ValidateInUpdate {
         private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L);
-        private final Study other = JPA.toOnlineStudy(host.getId()).apply(2L);
         private final StudyName newName = new StudyName(study.getName().getValue() + "diff");
 
         @Test
         @DisplayName("다른 스터디가 해당 이름을 사용하고 있으면 예외가 발생한다")
         void throwExceptionByDuplicateName() {
             // given
-            given(studyRepository.findIdByNameUsed(other.getName().getValue())).willReturn(other.getId());
+            given(studyRepository.isNameUsedByOther(study.getId(), newName.getValue())).willReturn(true);
 
             // when - then
-            assertThatThrownBy(() -> sut.validateInUpdate(study.getId(), other.getName()))
+            assertThatThrownBy(() -> sut.validateInUpdate(study.getId(), newName))
                     .isInstanceOf(StudyWithMeException.class)
                     .hasMessage(StudyErrorCode.DUPLICATE_NAME.getMessage());
 
-            verify(studyRepository, times(1)).findIdByNameUsed(other.getName().getValue());
+            verify(studyRepository, times(1)).isNameUsedByOther(study.getId(), newName.getValue());
         }
 
         @Test
-        @DisplayName("검증에 성공한다 - 아무도 사용 X")
+        @DisplayName("검증에 성공한다")
         void success1() {
             // given
-            given(studyRepository.findIdByNameUsed(newName.getValue())).willReturn(null);
+            given(studyRepository.isNameUsedByOther(study.getId(), newName.getValue())).willReturn(true);
 
             // when - then
             assertDoesNotThrow(() -> sut.validateInUpdate(study.getId(), newName));
 
-            verify(studyRepository, times(1)).findIdByNameUsed(newName.getValue());
-        }
-
-        @Test
-        @DisplayName("검증에 성공한다 - 본인 리소스는 제외 (이름)")
-        void success2() {
-            // given
-            given(studyRepository.findIdByNameUsed(study.getName().getValue())).willReturn(study.getId());
-
-            // when - then
-            assertDoesNotThrow(() -> sut.validateInUpdate(study.getId(), study.getName()));
-
-            verify(studyRepository, times(1)).findIdByNameUsed(study.getName().getValue());
+            verify(studyRepository, times(1)).isNameUsedByOther(study.getId(), newName.getValue());
         }
     }
 }

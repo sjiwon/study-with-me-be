@@ -5,10 +5,10 @@ import com.kgu.studywithme.study.application.usecase.StudySearchUseCase;
 import com.kgu.studywithme.study.application.usecase.dto.StudyPagingResponse;
 import com.kgu.studywithme.study.application.usecase.query.GetStudiesByCategory;
 import com.kgu.studywithme.study.application.usecase.query.GetStudiesByRecommend;
-import com.kgu.studywithme.study.domain.model.paging.SearchByCategoryCondition;
-import com.kgu.studywithme.study.domain.model.paging.SearchByRecommendCondition;
 import com.kgu.studywithme.study.presentation.dto.request.GetStudiesByCategoryRequest;
 import com.kgu.studywithme.study.presentation.dto.request.GetStudiesByRecommendRequest;
+import com.kgu.studywithme.study.utils.search.SearchByCategoryCondition;
+import com.kgu.studywithme.study.utils.search.SearchByRecommendCondition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.kgu.studywithme.study.domain.model.paging.PagingConstants.getDefaultPageRequest;
+import static com.kgu.studywithme.study.utils.search.PagingConstants.getDefaultPageRequest;
 
 @Tag(name = "4-2. 메인페이지 스터디 조회 API")
 @RestController

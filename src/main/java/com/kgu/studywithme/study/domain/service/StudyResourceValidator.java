@@ -19,9 +19,7 @@ public class StudyResourceValidator {
     }
 
     public void validateInUpdate(final Long studyId, final StudyName name) {
-        final Long nameUsedId = studyRepository.findIdByNameUsed(name.getValue());
-
-        if (nameUsedId != null && !nameUsedId.equals(studyId)) {
+        if (studyRepository.isNameUsedByOther(studyId, name.getValue())) {
             throw StudyWithMeException.type(StudyErrorCode.DUPLICATE_NAME);
         }
     }

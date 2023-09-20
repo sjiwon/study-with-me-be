@@ -1,4 +1,4 @@
-package com.kgu.studywithme.study.domain.model.paging;
+package com.kgu.studywithme.study.utils.search;
 
 public record SearchByRecommendCondition(
         Long memberId,

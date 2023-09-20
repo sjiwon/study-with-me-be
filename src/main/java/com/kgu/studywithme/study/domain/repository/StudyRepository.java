@@ -24,6 +24,11 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
             " WHERE s.name.value = :name")
     Long findIdByNameUsed(@Param("name") final String name);
 
+    default boolean isNameUsedByOther(final Long studyId, final String name) {
+        final Long nameUsedId = findIdByNameUsed(name);
+        return nameUsedId != null && !nameUsedId.equals(studyId);
+    }
+
     @Query("SELECT s.hostId" +
             " FROM Study s" +
             " WHERE s.id = :studyId")

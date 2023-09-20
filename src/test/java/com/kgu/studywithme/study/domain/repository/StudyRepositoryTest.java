@@ -21,10 +21,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @DisplayName("Study -> StudyRepository 테스트")
 public class StudyRepositoryTest extends RepositoryTest {
     @Autowired
-    private StudyRepository sut;
+    private MemberRepository memberRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private StudyRepository sut;
 
     private Member host;
 
@@ -34,22 +34,24 @@ public class StudyRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    @DisplayName("해당 이름을 사용하고 있는 StudyId를 조회한다")
-    void findIdByNameUsed() {
+    @DisplayName("해당 이름을 다른 스터디가 사용하고 있는지 확인한다")
+    void isNameUsedByOther() {
         // given
         final Study studyA = sut.save(SPRING.toOnlineStudy(host.getId()));
         final Study studyB = sut.save(JPA.toOnlineStudy(host.getId()));
 
         // when
-        final Long ids1 = sut.findIdByNameUsed(studyA.getName().getValue());
-        final Long ids2 = sut.findIdByNameUsed(studyB.getName().getValue());
-        final Long ids3 = sut.findIdByNameUsed(studyB.getName().getValue() + "diff");
+        final boolean actual1 = sut.isNameUsedByOther(studyA.getId(), studyA.getName().getValue());
+        final boolean actual2 = sut.isNameUsedByOther(studyA.getId(), studyB.getName().getValue());
+        final boolean actual3 = sut.isNameUsedByOther(studyB.getId(), studyB.getName().getValue());
+        final boolean actual4 = sut.isNameUsedByOther(studyB.getId(), studyA.getName().getValue());
 
         // then
         assertAll(
-                () -> assertThat(ids1).isEqualTo(studyA.getId()),
-                () -> assertThat(ids2).isEqualTo(studyB.getId()),
-                () -> assertThat(ids3).isNull()
+                () -> assertThat(actual1).isFalse(),
+                () -> assertThat(actual2).isTrue(),
+                () -> assertThat(actual3).isFalse(),
+                () -> assertThat(actual4).isTrue()
         );
     }
 

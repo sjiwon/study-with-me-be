@@ -44,7 +44,7 @@ public class GraduationPolicy {
         }
     }
 
-    public GraduationPolicy resetUpdateChanceByDelegatingHostAuthority() {
+    public GraduationPolicy resetUpdateChance() {
         return new GraduationPolicy(minimumAttendance, DEFAULT_UPDATE_CHANCE);
     }
 

@@ -11,13 +11,14 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @DisplayName("Study -> 도메인 [Capacity VO] 테스트")
 class CapacityTest extends ParallelTest {
     @ParameterizedTest
     @ValueSource(ints = {-1, 0, 1, 11})
-    @DisplayName("범위를 넘어가는 값에 의해서 Capacity 생성에 실패한다")
+    @DisplayName("Capacity가 2..10 범위가 아니라면 생성할 수 없다")
     void throwExceptionByCapacityOutOfRange(final int value) {
         assertThatThrownBy(() -> new Capacity(value))
                 .isInstanceOf(StudyWithMeException.class)
@@ -26,7 +27,7 @@ class CapacityTest extends ParallelTest {
 
     @ParameterizedTest
     @ValueSource(ints = {2, 5, 10})
-    @DisplayName("수용할 수 있는 값으로 Capacity를 생성한다")
+    @DisplayName("Capacity를 생성한다")
     void construct(final int value) {
         assertDoesNotThrow(() -> new Capacity(value));
     }
@@ -62,5 +63,22 @@ class CapacityTest extends ParallelTest {
             // then
             assertThat(updateCapacity.getValue()).isEqualTo(3);
         }
+    }
+
+    @Test
+    @DisplayName("currentParticipant에 대해서 Capacity가 꽉 찼는지 확인한다")
+    void isFull() {
+        // given
+        final Capacity capacity = new Capacity(5);
+
+        // when
+        final boolean actual1 = capacity.isFull(4);
+        final boolean actual2 = capacity.isFull(5);
+
+        // then
+        assertAll(
+                () -> assertThat(actual1).isTrue(),
+                () -> assertThat(actual2).isFalse()
+        );
     }
 }

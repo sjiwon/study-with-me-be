@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @DisplayName("Study -> 도메인 [StudyType VO] 테스트")
 class StudyTypeTest extends ParallelTest {
     @Test
-    @DisplayName("스터디 유형을 조회한다")
+    @DisplayName("StudyType을 조회한다")
     void findSpecificStudyType() {
         assertAll(
                 () -> assertThat(StudyType.from("online")).isEqualTo(ONLINE),
@@ -24,7 +24,7 @@ class StudyTypeTest extends ParallelTest {
     }
 
     @Test
-    @DisplayName("이상한 단어로 스터디 유형을 조회할 수 없다")
+    @DisplayName("유효하지 않은 값으로 StudyTYpe을 조회할 수 없다")
     void throwExceptionByStudyTypeIsWeird() {
         assertThatThrownBy(() -> StudyType.from("anonymous"))
                 .isInstanceOf(StudyWithMeException.class)

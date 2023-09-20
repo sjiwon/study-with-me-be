@@ -1,4 +1,4 @@
-package com.kgu.studywithme.study.domain.model.paging;
+package com.kgu.studywithme.study.utils.search;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

@@ -20,17 +20,15 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @DisplayName("Study -> CreateStudyUseCase 테스트")
 class CreateStudyUseCaseTest extends UseCaseTest {
-    private final StudyResourceValidator studyResourceValidator = mock(StudyResourceValidator.class);
     private final MemberRepository memberRepository = mock(MemberRepository.class);
     private final StudyRepository studyRepository = mock(StudyRepository.class);
+    private final StudyResourceValidator studyResourceValidator = new StudyResourceValidator(studyRepository);
     private final StudyParticipantRepository studyParticipantRepository = mock(StudyParticipantRepository.class);
     private final CreateStudyUseCase sut = new CreateStudyUseCase(studyResourceValidator, memberRepository, studyRepository, studyParticipantRepository);
 
@@ -53,9 +51,7 @@ class CreateStudyUseCaseTest extends UseCaseTest {
     @DisplayName("이미 사용하고 있는 이름이면 스터디 생성에 실패한다")
     void throwExceptionByDuplicateName() {
         // given
-        doThrow(StudyWithMeException.type(StudyErrorCode.DUPLICATE_NAME))
-                .when(studyResourceValidator)
-                .validateInCreate(command.name());
+        given(studyRepository.existsByNameValue(command.name().getValue())).willReturn(true);
 
         // when - then
         assertThatThrownBy(() -> sut.invoke(command))
@@ -63,7 +59,7 @@ class CreateStudyUseCaseTest extends UseCaseTest {
                 .hasMessage(StudyErrorCode.DUPLICATE_NAME.getMessage());
 
         assertAll(
-                () -> verify(studyResourceValidator, times(1)).validateInCreate(command.name()),
+                () -> verify(studyRepository, times(1)).existsByNameValue(command.name().getValue()),
                 () -> verify(memberRepository, times(0)).getById(command.hostId()),
                 () -> verify(studyRepository, times(0)).save(any()),
                 () -> verify(studyParticipantRepository, times(0)).save(any())
@@ -74,9 +70,7 @@ class CreateStudyUseCaseTest extends UseCaseTest {
     @DisplayName("스터디를 생성한다")
     void success() {
         // given
-        doNothing()
-                .when(studyResourceValidator)
-                .validateInCreate(command.name());
+        given(studyRepository.existsByNameValue(command.name().getValue())).willReturn(false);
         given(memberRepository.getById(command.hostId())).willReturn(host);
 
         final Study study = command.toDomain().apply(1L);
@@ -87,7 +81,7 @@ class CreateStudyUseCaseTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyResourceValidator, times(1)).validateInCreate(command.name()),
+                () -> verify(studyRepository, times(1)).existsByNameValue(command.name().getValue()),
                 () -> verify(memberRepository, times(1)).getById(command.hostId()),
                 () -> verify(studyRepository, times(1)).save(any()),
                 () -> verify(studyParticipantRepository, times(1)).save(any()),

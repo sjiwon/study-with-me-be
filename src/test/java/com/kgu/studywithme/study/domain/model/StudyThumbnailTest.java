@@ -43,11 +43,7 @@ class StudyThumbnailTest extends ParallelTest {
     @Test
     @DisplayName("제공해주지 않는 썸네일을 조회하면 예외가 발생한다")
     void throwExceptionByStudyThumbnailNotFound() {
-        // given
-        final String anonymous = "whoareyou.png";
-
-        // when - then
-        assertThatThrownBy(() -> StudyThumbnail.from(anonymous))
+        assertThatThrownBy(() -> StudyThumbnail.from("whoareyou.png"))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyErrorCode.STUDY_THUMBNAIL_NOT_FOUND.getMessage());
     }

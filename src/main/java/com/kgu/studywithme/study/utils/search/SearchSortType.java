@@ -1,4 +1,4 @@
-package com.kgu.studywithme.study.domain.model.paging;
+package com.kgu.studywithme.study.utils.search;
 
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.study.exception.StudyErrorCode;

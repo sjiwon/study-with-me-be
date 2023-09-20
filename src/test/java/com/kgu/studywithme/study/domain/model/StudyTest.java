@@ -197,7 +197,6 @@ class StudyTest extends ParallelTest {
                 final int capacity = study.getCapacity().getValue();
                 for (int i = 0; i < capacity - 1; i++) {
                     study.addParticipant();
-
                 }
 
                 // when - then
@@ -213,7 +212,7 @@ class StudyTest extends ParallelTest {
                 study.addParticipant();
 
                 // then
-                assertThat(study.getParticipants()).isEqualTo(2); // host + 1 participant
+                assertThat(study.getParticipants()).isEqualTo(2); // host + 1
             }
         }
 
@@ -244,7 +243,7 @@ class StudyTest extends ParallelTest {
         // when
         final boolean actual1 = study.isParticipantMeetGraduationPolicy(minimumAttendanceForGraduation - 1);
         final boolean actual2 = study.isParticipantMeetGraduationPolicy(minimumAttendanceForGraduation);
-        final boolean actual3 = study.isParticipantMeetGraduationPolicy(minimumAttendanceForGraduation);
+        final boolean actual3 = study.isParticipantMeetGraduationPolicy(minimumAttendanceForGraduation + 1);
 
         // then
         assertAll(

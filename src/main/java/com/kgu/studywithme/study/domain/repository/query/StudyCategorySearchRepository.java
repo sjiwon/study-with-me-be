@@ -1,8 +1,8 @@
 package com.kgu.studywithme.study.domain.repository.query;
 
-import com.kgu.studywithme.study.domain.model.paging.SearchByCategoryCondition;
-import com.kgu.studywithme.study.domain.model.paging.SearchByRecommendCondition;
 import com.kgu.studywithme.study.domain.repository.query.dto.StudyPreview;
+import com.kgu.studywithme.study.utils.search.SearchByCategoryCondition;
+import com.kgu.studywithme.study.utils.search.SearchByRecommendCondition;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 

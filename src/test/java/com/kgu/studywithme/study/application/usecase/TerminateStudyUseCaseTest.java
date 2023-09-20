@@ -31,6 +31,7 @@ class TerminateStudyUseCaseTest extends UseCaseTest {
     void success() {
         // given
         given(studyRepository.getById(command.studyId())).willReturn(study);
+        assertThat(study.isTerminated()).isFalse();
 
         // when
         sut.invoke(command);
