@@ -55,7 +55,7 @@ class ApproveParticipationUseCaseTest extends UseCaseTest {
 
     @BeforeEach
     void setUp() {
-        study = SPRING.toOnlineStudy(host.getId()).apply(1L);
+        study = SPRING.toStudy(host.getId()).apply(1L);
         previousParticipantMembers = study.getParticipants();
 
         allowEmailMemberCommand = new ApproveParticipationCommand(study.getId(), applierWithAllowEmail.getId());

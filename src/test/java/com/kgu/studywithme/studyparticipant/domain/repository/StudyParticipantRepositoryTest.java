@@ -52,7 +52,7 @@ public class StudyParticipantRepositoryTest extends RepositoryTest {
         leaveMember = memberRepository.save(DUMMY3.toMember());
         graduatedMember = memberRepository.save(DUMMY4.toMember());
 
-        study = studyRepository.save(SPRING.toOnlineStudy(host.getId()));
+        study = studyRepository.save(SPRING.toStudy(host.getId()));
         sut.saveAll(List.of(
                 StudyParticipant.applyHost(study.getId(), host.getId()),
                 StudyParticipant.applyInStudy(study.getId(), applier.getId()),
@@ -120,26 +120,6 @@ public class StudyParticipantRepositoryTest extends RepositoryTest {
                 () -> assertThat(graduateParticipantIds2).hasSize(1),
                 () -> assertThat(graduateParticipantIds2).containsExactlyInAnyOrder(graduatedMember.getId())
         );
-    }
-
-    @Test
-    @DisplayName("스터디 참여자 상태를 업데이트한다")
-    void updateParticipantStatus() {
-        // given
-        final StudyParticipant findParticipant1 = sut.findById(applier.getId()).orElseThrow();
-        assertThat(findParticipant1.getStatus()).isEqualTo(APPLY);
-
-        /* applier -> APPROVE */
-        sut.updateParticipantStatus(study.getId(), applier.getId(), APPROVE);
-
-        final StudyParticipant findParticipant2 = sut.findById(applier.getId()).orElseThrow();
-        assertThat(findParticipant2.getStatus()).isEqualTo(APPROVE);
-
-        /* applier -> GRADUATED */
-        sut.updateParticipantStatus(study.getId(), applier.getId(), GRADUATED);
-
-        final StudyParticipant findParticipant3 = sut.findById(applier.getId()).orElseThrow();
-        assertThat(findParticipant3.getStatus()).isEqualTo(GRADUATED);
     }
 
     @Test

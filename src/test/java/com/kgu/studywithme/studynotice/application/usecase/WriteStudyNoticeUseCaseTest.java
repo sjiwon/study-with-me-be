@@ -27,14 +27,14 @@ class WriteStudyNoticeUseCaseTest extends UseCaseTest {
     void success() {
         // given
         final StudyNotice notice = command.toDomain().apply(1L);
-        given(studyNoticeRepository.save(any())).willReturn(notice);
+        given(studyNoticeRepository.save(any(StudyNotice.class))).willReturn(notice);
 
         // when
         final Long noticeId = sut.invoke(command);
 
         // then
         assertAll(
-                () -> verify(studyNoticeRepository, times(1)).save(any()),
+                () -> verify(studyNoticeRepository, times(1)).save(any(StudyNotice.class)),
                 () -> assertThat(noticeId).isEqualTo(notice.getId())
         );
     }

@@ -363,10 +363,7 @@ public abstract class ControllerTest {
         return objectMapper.writeValueAsString(data);
     }
 
-    protected void mockingToken(
-            final boolean isValid,
-            final Long payloadId
-    ) {
+    protected void mockingToken(final boolean isValid, final Long payloadId) {
         given(tokenProvider.isTokenValid(anyString())).willReturn(isValid);
         given(tokenProvider.getId(anyString())).willReturn(payloadId);
     }

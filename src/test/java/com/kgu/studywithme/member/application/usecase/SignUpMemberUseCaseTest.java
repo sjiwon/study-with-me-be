@@ -53,7 +53,7 @@ class SignUpMemberUseCaseTest extends UseCaseTest {
                 () -> verify(memberRepository, times(1)).existsByEmailValue(command.email().getValue()),
                 () -> verify(memberRepository, times(0)).existsByNicknameValue(command.nickname().getValue()),
                 () -> verify(memberRepository, times(0)).existsByPhoneValue(command.phone().getValue()),
-                () -> verify(memberRepository, times(0)).save(any())
+                () -> verify(memberRepository, times(0)).save(any(Member.class))
         );
     }
 
@@ -73,7 +73,7 @@ class SignUpMemberUseCaseTest extends UseCaseTest {
                 () -> verify(memberRepository, times(1)).existsByEmailValue(command.email().getValue()),
                 () -> verify(memberRepository, times(1)).existsByNicknameValue(command.nickname().getValue()),
                 () -> verify(memberRepository, times(0)).existsByPhoneValue(command.phone().getValue()),
-                () -> verify(memberRepository, times(0)).save(any())
+                () -> verify(memberRepository, times(0)).save(any(Member.class))
         );
     }
 
@@ -94,7 +94,7 @@ class SignUpMemberUseCaseTest extends UseCaseTest {
                 () -> verify(memberRepository, times(1)).existsByEmailValue(command.email().getValue()),
                 () -> verify(memberRepository, times(1)).existsByNicknameValue(command.nickname().getValue()),
                 () -> verify(memberRepository, times(1)).existsByPhoneValue(command.phone().getValue()),
-                () -> verify(memberRepository, times(0)).save(any())
+                () -> verify(memberRepository, times(0)).save(any(Member.class))
         );
     }
 
@@ -105,7 +105,7 @@ class SignUpMemberUseCaseTest extends UseCaseTest {
         given(memberRepository.existsByEmailValue(command.email().getValue())).willReturn(false);
         given(memberRepository.existsByNicknameValue(command.nickname().getValue())).willReturn(false);
         given(memberRepository.existsByPhoneValue(command.phone().getValue())).willReturn(false);
-        given(memberRepository.save(any())).willReturn(member);
+        given(memberRepository.save(any(Member.class))).willReturn(member);
 
         // when
         final Long savedMemberId = sut.invoke(command);
@@ -115,7 +115,7 @@ class SignUpMemberUseCaseTest extends UseCaseTest {
                 () -> verify(memberRepository, times(1)).existsByEmailValue(command.email().getValue()),
                 () -> verify(memberRepository, times(1)).existsByNicknameValue(command.nickname().getValue()),
                 () -> verify(memberRepository, times(1)).existsByPhoneValue(command.phone().getValue()),
-                () -> verify(memberRepository, times(1)).save(any()),
+                () -> verify(memberRepository, times(1)).save(any(Member.class)),
                 () -> assertThat(savedMemberId).isEqualTo(member.getId())
         );
     }

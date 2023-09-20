@@ -58,11 +58,11 @@ class StudyAttendanceMetadataRepositoryTest extends RepositoryTest {
         participant = memberRepository.save(JIWON.toMember());
 
         final Member host = memberRepository.save(GHOST.toMember());
-        studies[0] = studyRepository.save(SPRING.toOnlineStudy(host.getId()));
-        studies[1] = studyRepository.save(JPA.toOnlineStudy(host.getId()));
-        studies[2] = studyRepository.save(KOTLIN.toOnlineStudy(host.getId()));
-        studies[3] = studyRepository.save(NETWORK.toOnlineStudy(host.getId()));
-        studies[4] = studyRepository.save(EFFECTIVE_JAVA.toOnlineStudy(host.getId()));
+        studies[0] = studyRepository.save(SPRING.toStudy(host.getId()));
+        studies[1] = studyRepository.save(JPA.toStudy(host.getId()));
+        studies[2] = studyRepository.save(KOTLIN.toStudy(host.getId()));
+        studies[3] = studyRepository.save(NETWORK.toStudy(host.getId()));
+        studies[4] = studyRepository.save(EFFECTIVE_JAVA.toStudy(host.getId()));
     }
 
     @Test

@@ -32,7 +32,7 @@ class WriteStudyReviewUseCaseTest extends UseCaseTest {
 
     private final Member host = JIWON.toMember().apply(1L);
     private final Member member = GHOST.toMember().apply(2L);
-    private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
     private final WriteStudyReviewCommand command = new WriteStudyReviewCommand(study.getId(), member.getId(), "졸업자 리뷰");
 
     @Test
@@ -49,7 +49,7 @@ class WriteStudyReviewUseCaseTest extends UseCaseTest {
         assertAll(
                 () -> verify(studyParticipantRepository, times(1)).isGraduatedParticipant(command.studyId(), command.memberId()),
                 () -> verify(studyReviewRepository, times(0)).existsByStudyIdAndWriterId(command.studyId(), command.memberId()),
-                () -> verify(studyReviewRepository, times(0)).save(any())
+                () -> verify(studyReviewRepository, times(0)).save(any(StudyReview.class))
         );
     }
 
@@ -68,7 +68,7 @@ class WriteStudyReviewUseCaseTest extends UseCaseTest {
         assertAll(
                 () -> verify(studyParticipantRepository, times(1)).isGraduatedParticipant(command.studyId(), command.memberId()),
                 () -> verify(studyReviewRepository, times(1)).existsByStudyIdAndWriterId(command.studyId(), command.memberId()),
-                () -> verify(studyReviewRepository, times(0)).save(any())
+                () -> verify(studyReviewRepository, times(0)).save(any(StudyReview.class))
         );
     }
 
@@ -80,7 +80,7 @@ class WriteStudyReviewUseCaseTest extends UseCaseTest {
         given(studyReviewRepository.existsByStudyIdAndWriterId(command.studyId(), command.memberId())).willReturn(false);
 
         final StudyReview review = command.toDomain().apply(1L);
-        given(studyReviewRepository.save(any())).willReturn(review);
+        given(studyReviewRepository.save(any(StudyReview.class))).willReturn(review);
 
         // when
         final Long studyReviewId = sut.invoke(command);
@@ -89,7 +89,7 @@ class WriteStudyReviewUseCaseTest extends UseCaseTest {
         assertAll(
                 () -> verify(studyParticipantRepository, times(1)).isGraduatedParticipant(command.studyId(), command.memberId()),
                 () -> verify(studyReviewRepository, times(1)).existsByStudyIdAndWriterId(command.studyId(), command.memberId()),
-                () -> verify(studyReviewRepository, times(1)).save(any()),
+                () -> verify(studyReviewRepository, times(1)).save(any(StudyReview.class)),
                 () -> assertThat(studyReviewId).isEqualTo(review.getId())
         );
     }

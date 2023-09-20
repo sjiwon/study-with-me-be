@@ -16,7 +16,7 @@ public class MemberReviewInspector {
     private final StudyAttendanceMetadataRepository studyAttendanceMetadataRepository;
     private final MemberReviewRepository memberReviewRepository;
 
-    public void checkReviewerHasEligibilityToReviewee(final Long reviewerId, final Long revieweeId) {
+    public void checkReviewerHasEligibilityToReview(final Long reviewerId, final Long revieweeId) {
         validateSelfReview(reviewerId, revieweeId);
         validateColleague(reviewerId, revieweeId);
         validateAlreadyReviewed(reviewerId, revieweeId);

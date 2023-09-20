@@ -57,7 +57,7 @@ class CreateStudyWeeklyUseCaseTest extends UseCaseTest {
     private final Member host = JIWON.toMember().apply(1L);
     private final Member participantA = GHOST.toMember().apply(2L);
     private final Member participantB = ANONYMOUS.toMember().apply(3L);
-    private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
     private CreateStudyWeeklyCommand command;
 
     @BeforeEach
@@ -85,7 +85,7 @@ class CreateStudyWeeklyUseCaseTest extends UseCaseTest {
         given(studyWeeklyRepository.getNextWeek(command.studyId())).willReturn(1);
 
         final StudyWeekly weekly = STUDY_WEEKLY_1.toWeekly(study.getId(), host.getId()).apply(1L);
-        given(studyWeeklyRepository.save(any())).willReturn(weekly);
+        given(studyWeeklyRepository.save(any(StudyWeekly.class))).willReturn(weekly);
         given(studyParticipantRepository.findParticipantIdsByStatus(weekly.getStudyId(), APPROVE))
                 .willReturn(List.of(host.getId(), participantA.getId(), participantB.getId()));
 
@@ -95,7 +95,7 @@ class CreateStudyWeeklyUseCaseTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyWeeklyRepository, times(1)).getNextWeek(command.studyId()),
-                () -> verify(studyWeeklyRepository, times(1)).save(any()),
+                () -> verify(studyWeeklyRepository, times(1)).save(any(StudyWeekly.class)),
                 () -> verify(studyParticipantRepository, times(1)).findParticipantIdsByStatus(weekly.getStudyId(), APPROVE),
                 () -> verify(studyAttendanceRepository, times(1)).saveAll(any()),
                 () -> assertThat(createdWeeklyId).isEqualTo(weekly.getId())

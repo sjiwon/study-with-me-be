@@ -43,7 +43,7 @@ class ReportMemberUseCaseTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(memberReportRepository, times(1)).isPreviousReportStillPending(memberA.getId(), memberB.getId()),
-                () -> verify(memberReportRepository, times(0)).save(any())
+                () -> verify(memberReportRepository, times(0)).save(any(MemberReport.class))
         );
     }
 
@@ -54,7 +54,7 @@ class ReportMemberUseCaseTest extends UseCaseTest {
         given(memberReportRepository.isPreviousReportStillPending(memberA.getId(), memberB.getId())).willReturn(false);
 
         final MemberReport memberReport = command.toDomain().apply(1L);
-        given(memberReportRepository.save(any())).willReturn(memberReport);
+        given(memberReportRepository.save(any(MemberReport.class))).willReturn(memberReport);
 
         // when
         final Long reportId = sut.invoke(command);
@@ -62,7 +62,7 @@ class ReportMemberUseCaseTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(memberReportRepository, times(1)).isPreviousReportStillPending(memberA.getId(), memberB.getId()),
-                () -> verify(memberReportRepository, times(1)).save(any()),
+                () -> verify(memberReportRepository, times(1)).save(any(MemberReport.class)),
                 () -> assertThat(reportId).isEqualTo(memberReport.getId())
         );
     }

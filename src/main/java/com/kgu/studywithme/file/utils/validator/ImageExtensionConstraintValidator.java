@@ -12,10 +12,6 @@ public class ImageExtensionConstraintValidator implements ConstraintValidator<Im
             return true;
         }
 
-        return isAllowedExtension(file);
-    }
-
-    private boolean isAllowedExtension(final MultipartFile file) {
         return FileExtension.isValidImageExtension(file.getOriginalFilename());
     }
 }

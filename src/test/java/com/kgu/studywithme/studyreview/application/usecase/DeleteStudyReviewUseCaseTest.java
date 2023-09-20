@@ -30,7 +30,7 @@ class DeleteStudyReviewUseCaseTest extends UseCaseTest {
     private final Member host = JIWON.toMember().apply(1L);
     private final Member member = GHOST.toMember().apply(2L);
     private final Member anonymous = ANONYMOUS.toMember().apply(3L);
-    private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
     private final StudyReview review = StudyReview.writeReview(study.getId(), member.getId(), "졸업자 리뷰").apply(1L);
     private final DeleteStudyReviewCommand anonymousCommand = new DeleteStudyReviewCommand(review.getId(), anonymous.getId());
     private final DeleteStudyReviewCommand command = new DeleteStudyReviewCommand(review.getId(), review.getWriterId());

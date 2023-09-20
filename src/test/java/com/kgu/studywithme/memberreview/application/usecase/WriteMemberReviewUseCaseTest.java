@@ -48,7 +48,7 @@ class WriteMemberReviewUseCaseTest extends UseCaseTest {
                 () -> verify(studyAttendanceMetadataRepository, times(0)).findMemberParticipateWeekly(memberA.getId()),
                 () -> verify(studyAttendanceMetadataRepository, times(0)).findMemberParticipateWeekly(memberB.getId()),
                 () -> verify(memberReviewRepository, times(0)).existsByReviewerIdAndRevieweeId(memberA.getId(), memberB.getId()),
-                () -> verify(memberReviewRepository, times(0)).save(any())
+                () -> verify(memberReviewRepository, times(0)).save(any(MemberReview.class))
         );
     }
 
@@ -78,7 +78,7 @@ class WriteMemberReviewUseCaseTest extends UseCaseTest {
                 () -> verify(studyAttendanceMetadataRepository, times(1)).findMemberParticipateWeekly(memberA.getId()),
                 () -> verify(studyAttendanceMetadataRepository, times(1)).findMemberParticipateWeekly(memberB.getId()),
                 () -> verify(memberReviewRepository, times(0)).existsByReviewerIdAndRevieweeId(memberA.getId(), memberB.getId()),
-                () -> verify(memberReviewRepository, times(0)).save(any())
+                () -> verify(memberReviewRepository, times(0)).save(any(MemberReview.class))
         );
     }
 
@@ -109,7 +109,7 @@ class WriteMemberReviewUseCaseTest extends UseCaseTest {
                 () -> verify(studyAttendanceMetadataRepository, times(1)).findMemberParticipateWeekly(memberA.getId()),
                 () -> verify(studyAttendanceMetadataRepository, times(1)).findMemberParticipateWeekly(memberB.getId()),
                 () -> verify(memberReviewRepository, times(1)).existsByReviewerIdAndRevieweeId(memberA.getId(), memberB.getId()),
-                () -> verify(memberReviewRepository, times(0)).save(any())
+                () -> verify(memberReviewRepository, times(0)).save(any(MemberReview.class))
         );
     }
 
@@ -132,7 +132,7 @@ class WriteMemberReviewUseCaseTest extends UseCaseTest {
         given(memberReviewRepository.existsByReviewerIdAndRevieweeId(memberA.getId(), memberB.getId())).willReturn(false);
 
         final MemberReview memberReview = command.toDomain().apply(1L);
-        given(memberReviewRepository.save(any())).willReturn(memberReview);
+        given(memberReviewRepository.save(any(MemberReview.class))).willReturn(memberReview);
 
         // when
         final Long memberReviewId = sut.invoke(command);
@@ -142,7 +142,7 @@ class WriteMemberReviewUseCaseTest extends UseCaseTest {
                 () -> verify(studyAttendanceMetadataRepository, times(1)).findMemberParticipateWeekly(memberA.getId()),
                 () -> verify(studyAttendanceMetadataRepository, times(1)).findMemberParticipateWeekly(memberB.getId()),
                 () -> verify(memberReviewRepository, times(1)).existsByReviewerIdAndRevieweeId(memberA.getId(), memberB.getId()),
-                () -> verify(memberReviewRepository, times(1)).save(any()),
+                () -> verify(memberReviewRepository, times(1)).save(any(MemberReview.class)),
                 () -> assertThat(memberReviewId).isEqualTo(memberReview.getId())
         );
     }

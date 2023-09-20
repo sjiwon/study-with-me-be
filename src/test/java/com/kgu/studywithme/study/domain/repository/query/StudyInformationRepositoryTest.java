@@ -91,7 +91,7 @@ class StudyInformationRepositoryTest extends RepositoryTest {
         memberB = memberRepository.save(DUMMY2.toMember());
         memberC = memberRepository.save(DUMMY3.toMember());
 
-        study = studyRepository.save(SPRING.toOnlineStudy(host.getId()));
+        study = studyRepository.save(SPRING.toStudy(host.getId()));
     }
 
     @Test

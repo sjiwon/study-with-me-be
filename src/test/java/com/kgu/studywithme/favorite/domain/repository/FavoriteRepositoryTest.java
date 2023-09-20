@@ -32,7 +32,7 @@ class FavoriteRepositoryTest extends RepositoryTest {
     @BeforeEach
     void setUp() {
         member = memberRepository.save(JIWON.toMember());
-        study = studyRepository.save(SPRING.toOnlineStudy(member.getId()));
+        study = studyRepository.save(SPRING.toStudy(member.getId()));
     }
 
     @Test

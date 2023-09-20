@@ -117,32 +117,32 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
         members[7] = memberRepository.save(DUMMY8.toMember());
         members[8] = memberRepository.save(DUMMY9.toMember());
 
-        language[0] = TOEIC.toOnlineStudy(host.getId());
-        language[1] = TOEFL.toOnlineStudy(host.getId());
-        language[2] = JAPANESE.toOnlineStudy(host.getId());
-        language[3] = CHINESE.toOnlineStudy(host.getId());
-        language[4] = FRENCH.toOnlineStudy(host.getId());
-        language[5] = GERMAN.toOnlineStudy(host.getId());
-        language[6] = ARABIC.toOnlineStudy(host.getId());
+        language[0] = TOEIC.toStudy(host.getId());
+        language[1] = TOEFL.toStudy(host.getId());
+        language[2] = JAPANESE.toStudy(host.getId());
+        language[3] = CHINESE.toStudy(host.getId());
+        language[4] = FRENCH.toStudy(host.getId());
+        language[5] = GERMAN.toStudy(host.getId());
+        language[6] = ARABIC.toStudy(host.getId());
 
-        interview[0] = TOSS_INTERVIEW.toOfflineStudy(host.getId());
-        interview[1] = KAKAO_INTERVIEW.toOfflineStudy(host.getId());
-        interview[2] = NAVER_INTERVIEW.toOfflineStudy(host.getId());
-        interview[3] = LINE_INTERVIEW.toOfflineStudy(host.getId());
-        interview[4] = GOOGLE_INTERVIEW.toOfflineStudy(host.getId());
+        interview[0] = TOSS_INTERVIEW.toStudy(host.getId());
+        interview[1] = KAKAO_INTERVIEW.toStudy(host.getId());
+        interview[2] = NAVER_INTERVIEW.toStudy(host.getId());
+        interview[3] = LINE_INTERVIEW.toStudy(host.getId());
+        interview[4] = GOOGLE_INTERVIEW.toStudy(host.getId());
 
-        programming[0] = SPRING.toOnlineStudy(host.getId());
-        programming[1] = JPA.toOnlineStudy(host.getId());
-        programming[2] = REAL_MYSQL.toOfflineStudy(host.getId());
-        programming[3] = KOTLIN.toOnlineStudy(host.getId());
-        programming[4] = NETWORK.toOnlineStudy(host.getId());
-        programming[5] = EFFECTIVE_JAVA.toOnlineStudy(host.getId());
-        programming[6] = AWS.toOfflineStudy(host.getId());
-        programming[7] = DOCKER.toOnlineStudy(host.getId());
-        programming[8] = KUBERNETES.toOnlineStudy(host.getId());
-        programming[9] = PYTHON.toOnlineStudy(host.getId());
-        programming[10] = RUST.toOnlineStudy(host.getId());
-        programming[11] = OS.toOnlineStudy(host.getId());
+        programming[0] = SPRING.toStudy(host.getId());
+        programming[1] = JPA.toStudy(host.getId());
+        programming[2] = REAL_MYSQL.toStudy(host.getId());
+        programming[3] = KOTLIN.toStudy(host.getId());
+        programming[4] = NETWORK.toStudy(host.getId());
+        programming[5] = EFFECTIVE_JAVA.toStudy(host.getId());
+        programming[6] = AWS.toStudy(host.getId());
+        programming[7] = DOCKER.toStudy(host.getId());
+        programming[8] = KUBERNETES.toStudy(host.getId());
+        programming[9] = PYTHON.toStudy(host.getId());
+        programming[10] = RUST.toStudy(host.getId());
+        programming[11] = OS.toStudy(host.getId());
     }
 
     @Nested

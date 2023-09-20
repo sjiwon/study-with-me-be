@@ -43,7 +43,7 @@ class DeleteStudyWeeklyUseCaseTest extends UseCaseTest {
     private final DeleteStudyWeeklyUseCase sut = new DeleteStudyWeeklyUseCase(studyWeeklyRepository, weeklyManager);
 
     private final Member host = JIWON.toMember().apply(1L);
-    private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
     private final StudyWeekly weekly = STUDY_WEEKLY_1.toWeekly(study.getId(), host.getId()).apply(1L);
     private final DeleteStudyWeeklyCommand command = new DeleteStudyWeeklyCommand(study.getId(), weekly.getId());
 

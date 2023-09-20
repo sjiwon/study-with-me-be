@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class StudyWeeklySubmitTest extends ParallelTest {
     private final Member host = JIWON.toMember().apply(1L);
     private final Member participant = JIWON.toMember().apply(2L);
-    private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
     private final StudyWeekly weekly = STUDY_WEEKLY_1.toWeeklyWithAssignment(study.getId(), host.getId()).apply(1L);
 
     @Test

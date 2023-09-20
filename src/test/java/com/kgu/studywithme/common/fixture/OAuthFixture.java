@@ -30,124 +30,148 @@ import static com.kgu.studywithme.common.utils.TokenUtils.REFRESH_TOKEN;
 @RequiredArgsConstructor
 public enum OAuthFixture {
     GOOGLE_JIWON(
-            JIWON.getEmail().getValue(), "JIWON",
+            JIWON.getEmail().getValue(),
+            "JIWON",
             new GoogleTokenResponse(
                     BEARER_TOKEN,
                     ID_TOKEN,
                     "JIWON_TOKEN",
                     REFRESH_TOKEN,
                     EXPIRES_IN
-            ), JIWON.toGoogleUserResponse()
+            ),
+            JIWON.toGoogleUserResponse()
     ),
     GOOGLE_GHOST(
-            GHOST.getEmail().getValue(), "GHOST",
+            GHOST.getEmail().getValue(),
+            "GHOST",
             new GoogleTokenResponse(
                     BEARER_TOKEN,
                     ID_TOKEN,
                     "GHOST_TOKEN",
                     REFRESH_TOKEN,
                     EXPIRES_IN
-            ), GHOST.toGoogleUserResponse()
+            ),
+            GHOST.toGoogleUserResponse()
     ),
     GOOGLE_ANONYMOUS(
-            ANONYMOUS.getEmail().getValue(), "ANONYMOUS",
+            ANONYMOUS.getEmail().getValue(),
+            "ANONYMOUS",
             new GoogleTokenResponse(
                     BEARER_TOKEN,
                     ID_TOKEN,
                     "ANONYMOUS_TOKEN",
                     REFRESH_TOKEN,
                     EXPIRES_IN
-            ), ANONYMOUS.toGoogleUserResponse()
+            ),
+            ANONYMOUS.toGoogleUserResponse()
     ),
     GOOGLE_DUMMY1(
-            DUMMY1.getEmail().getValue(), "DUMMY1",
+            DUMMY1.getEmail().getValue(),
+            "DUMMY1",
             new GoogleTokenResponse(
                     BEARER_TOKEN,
                     ID_TOKEN,
                     "DUMMY1_TOKEN",
                     REFRESH_TOKEN,
                     EXPIRES_IN
-            ), DUMMY1.toGoogleUserResponse()
+            ),
+            DUMMY1.toGoogleUserResponse()
     ),
     GOOGLE_DUMMY2(
-            DUMMY2.getEmail().getValue(), "DUMMY2",
+            DUMMY2.getEmail().getValue(),
+            "DUMMY2",
             new GoogleTokenResponse(
                     BEARER_TOKEN,
                     ID_TOKEN,
                     "DUMMY2_TOKEN",
                     REFRESH_TOKEN,
                     EXPIRES_IN
-            ), DUMMY2.toGoogleUserResponse()
+            ),
+            DUMMY2.toGoogleUserResponse()
     ),
     GOOGLE_DUMMY3(
-            DUMMY3.getEmail().getValue(), "DUMMY3",
+            DUMMY3.getEmail().getValue(),
+            "DUMMY3",
             new GoogleTokenResponse(
                     BEARER_TOKEN,
                     ID_TOKEN,
                     "DUMMY3_TOKEN",
                     REFRESH_TOKEN,
                     EXPIRES_IN
-            ), DUMMY3.toGoogleUserResponse()
+            ),
+            DUMMY3.toGoogleUserResponse()
     ),
     GOOGLE_DUMMY4(
-            DUMMY4.getEmail().getValue(), "DUMMY4",
+            DUMMY4.getEmail().getValue(),
+            "DUMMY4",
             new GoogleTokenResponse(
                     BEARER_TOKEN,
                     ID_TOKEN,
                     "DUMMY4_TOKEN",
                     REFRESH_TOKEN,
                     EXPIRES_IN
-            ), DUMMY4.toGoogleUserResponse()
+            ),
+            DUMMY4.toGoogleUserResponse()
     ),
     GOOGLE_DUMMY5(
-            DUMMY5.getEmail().getValue(), "DUMMY5",
+            DUMMY5.getEmail().getValue(),
+            "DUMMY5",
             new GoogleTokenResponse(
                     BEARER_TOKEN,
                     ID_TOKEN,
                     "DUMMY5_TOKEN",
                     REFRESH_TOKEN,
                     EXPIRES_IN
-            ), DUMMY5.toGoogleUserResponse()
+            ),
+            DUMMY5.toGoogleUserResponse()
     ),
     GOOGLE_DUMMY6(
-            DUMMY6.getEmail().getValue(), "ANONYMOUS",
+            DUMMY6.getEmail().getValue(),
+            "DUMMY6",
             new GoogleTokenResponse(
                     BEARER_TOKEN,
                     ID_TOKEN,
                     "DUMMY6_TOKEN",
                     REFRESH_TOKEN,
                     EXPIRES_IN
-            ), DUMMY6.toGoogleUserResponse()
+            ),
+            DUMMY6.toGoogleUserResponse()
     ),
     GOOGLE_DUMMY7(
-            DUMMY7.getEmail().getValue(), "DUMMY7",
+            DUMMY7.getEmail().getValue(),
+            "DUMMY7",
             new GoogleTokenResponse(
                     BEARER_TOKEN,
                     ID_TOKEN,
                     "DUMMY7_TOKEN",
                     REFRESH_TOKEN,
                     EXPIRES_IN
-            ), DUMMY7.toGoogleUserResponse()
+            ),
+            DUMMY7.toGoogleUserResponse()
     ),
     GOOGLE_DUMMY8(
-            DUMMY8.getEmail().getValue(), "DUMMY8",
+            DUMMY8.getEmail().getValue(),
+            "DUMMY8",
             new GoogleTokenResponse(
                     BEARER_TOKEN,
                     ID_TOKEN,
                     "DUMMY8_TOKEN",
                     REFRESH_TOKEN,
                     EXPIRES_IN
-            ), DUMMY8.toGoogleUserResponse()
+            ),
+            DUMMY8.toGoogleUserResponse()
     ),
     GOOGLE_DUMMY9(
-            DUMMY9.getEmail().getValue(), "DUMMY9",
+            DUMMY9.getEmail().getValue(),
+            "DUMMY9",
             new GoogleTokenResponse(
                     BEARER_TOKEN,
                     ID_TOKEN,
                     "DUMMY9_TOKEN",
                     REFRESH_TOKEN,
                     EXPIRES_IN
-            ), DUMMY9.toGoogleUserResponse()
+            ),
+            DUMMY9.toGoogleUserResponse()
     ),
     ;
 

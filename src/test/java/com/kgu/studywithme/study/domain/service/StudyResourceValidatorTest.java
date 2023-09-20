@@ -30,7 +30,7 @@ public class StudyResourceValidatorTest extends ParallelTest {
     @Nested
     @DisplayName("스터디 생성 시 리소스 검증 (이름)")
     class ValidateInCreate {
-        private final Study study = SPRING.toOnlineStudy(host.getId());
+        private final Study study = SPRING.toStudy(host.getId());
 
         @Test
         @DisplayName("이름이 중복되면 예외가 발생한다")
@@ -62,7 +62,7 @@ public class StudyResourceValidatorTest extends ParallelTest {
     @Nested
     @DisplayName("수정 시 리소스 검증 (이름)")
     class ValidateInUpdate {
-        private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L);
+        private final Study study = SPRING.toStudy(host.getId()).apply(1L);
         private final StudyName newName = new StudyName(study.getName().getValue() + "diff");
 
         @Test

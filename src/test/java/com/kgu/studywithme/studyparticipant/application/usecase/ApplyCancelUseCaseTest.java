@@ -29,7 +29,7 @@ class ApplyCancelUseCaseTest extends UseCaseTest {
 
     private final Member host = JIWON.toMember().apply(1L);
     private final Member applyMember = GHOST.toMember().apply(2L);
-    private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
     private final StudyParticipant applier = StudyParticipant.applyInStudy(study.getId(), applyMember.getId()).apply(1L);
     private final ApplyCancelCommand command = new ApplyCancelCommand(study.getId(), applyMember.getId());
 

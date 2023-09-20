@@ -55,7 +55,7 @@ class S3FileUploaderTest extends ParallelTest {
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(FileErrorCode.FILE_IS_NOT_UPLOAD.getMessage());
 
-        verify(s3Template, times(0)).upload(any(), any(), any(), any());
+        verify(s3Template, times(0)).upload(any(String.class), any(String.class), any(InputStream.class), any(ObjectMetadata.class));
     }
 
     @Test
@@ -76,7 +76,7 @@ class S3FileUploaderTest extends ParallelTest {
 
         // then
         assertAll(
-                () -> verify(s3Template, times(1)).upload(any(), any(), any(), any()),
+                () -> verify(s3Template, times(1)).upload(any(String.class), any(String.class), any(InputStream.class), any(ObjectMetadata.class)),
                 () -> assertThat(uploadLink).isEqualTo(CLOUD_FRONT_URL + imageUploadLinkPath)
         );
     }

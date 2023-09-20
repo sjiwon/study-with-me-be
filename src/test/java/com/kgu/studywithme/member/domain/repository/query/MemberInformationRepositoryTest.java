@@ -210,11 +210,11 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             member = memberRepository.save(JIWON.toMember());
 
             final Member host = memberRepository.save(GHOST.toMember());
-            studyA = studyRepository.save(SPRING.toOnlineStudy(host.getId()));
-            studyB = studyRepository.save(JPA.toOnlineStudy(host.getId()));
-            studyC = studyRepository.save(KOTLIN.toOnlineStudy(host.getId()));
-            studyD = studyRepository.save(NETWORK.toOnlineStudy(host.getId()));
-            studyE = studyRepository.save(EFFECTIVE_JAVA.toOnlineStudy(host.getId()));
+            studyA = studyRepository.save(SPRING.toStudy(host.getId()));
+            studyB = studyRepository.save(JPA.toStudy(host.getId()));
+            studyC = studyRepository.save(KOTLIN.toStudy(host.getId()));
+            studyD = studyRepository.save(NETWORK.toStudy(host.getId()));
+            studyE = studyRepository.save(EFFECTIVE_JAVA.toStudy(host.getId()));
         }
 
         @Test

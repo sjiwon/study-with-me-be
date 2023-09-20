@@ -37,8 +37,8 @@ public class StudyRepositoryTest extends RepositoryTest {
     @DisplayName("해당 이름을 다른 스터디가 사용하고 있는지 확인한다")
     void isNameUsedByOther() {
         // given
-        final Study studyA = sut.save(SPRING.toOnlineStudy(host.getId()));
-        final Study studyB = sut.save(JPA.toOnlineStudy(host.getId()));
+        final Study studyA = sut.save(SPRING.toStudy(host.getId()));
+        final Study studyB = sut.save(JPA.toStudy(host.getId()));
 
         // when
         final boolean actual1 = sut.isNameUsedByOther(studyA.getId(), studyA.getName().getValue());
@@ -59,7 +59,7 @@ public class StudyRepositoryTest extends RepositoryTest {
     @DisplayName("스터디 팀장인지 확인한다")
     void isHost() {
         // given
-        final Study study = sut.save(SPRING.toOnlineStudy(host.getId()));
+        final Study study = sut.save(SPRING.toStudy(host.getId()));
 
         // when
         final boolean actual1 = sut.isHost(study.getId(), host.getId());
@@ -76,7 +76,7 @@ public class StudyRepositoryTest extends RepositoryTest {
     @DisplayName("이름이 사용중인지 확인한다")
     void existsByNameValue() {
         // given
-        final Study study = sut.save(SPRING.toOnlineStudy(host.getId()));
+        final Study study = sut.save(SPRING.toStudy(host.getId()));
         final String name = study.getName().getValue();
 
         // when
@@ -94,7 +94,7 @@ public class StudyRepositoryTest extends RepositoryTest {
     @DisplayName("현재 모집중인 스터디를 조회한다 (studyId에 해당하는 Study가 현재 모집중인지)")
     void getRecruitingStudy() {
         /* 모집중 */
-        final Study study = sut.save(SPRING.toOnlineStudy(host.getId()));
+        final Study study = sut.save(SPRING.toStudy(host.getId()));
         assertThat(sut.getRecruitingStudy(study.getId())).isEqualTo(study);
 
         /* 모집 마감 */
@@ -108,7 +108,7 @@ public class StudyRepositoryTest extends RepositoryTest {
     @DisplayName("현재 진행중인 스터디를 조회한다 (studyId에 해당하는 Study가 현재 진행중인지)")
     void getInProgressStudy() {
         /* 진행중 */
-        final Study study = sut.save(SPRING.toOnlineStudy(host.getId()));
+        final Study study = sut.save(SPRING.toStudy(host.getId()));
         assertThat(sut.getInProgressStudy(study.getId())).isEqualTo(study);
 
         /* 종료 */

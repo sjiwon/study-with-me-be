@@ -9,6 +9,7 @@ import com.kgu.studywithme.study.domain.model.Study;
 import com.kgu.studywithme.study.domain.repository.StudyRepository;
 import com.kgu.studywithme.study.domain.service.StudyResourceValidator;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
+import com.kgu.studywithme.studyparticipant.domain.model.StudyParticipant;
 import com.kgu.studywithme.studyparticipant.domain.repository.StudyParticipantRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -61,8 +62,8 @@ class CreateStudyUseCaseTest extends UseCaseTest {
         assertAll(
                 () -> verify(studyRepository, times(1)).existsByNameValue(command.name().getValue()),
                 () -> verify(memberRepository, times(0)).getById(command.hostId()),
-                () -> verify(studyRepository, times(0)).save(any()),
-                () -> verify(studyParticipantRepository, times(0)).save(any())
+                () -> verify(studyRepository, times(0)).save(any(Study.class)),
+                () -> verify(studyParticipantRepository, times(0)).save(any(StudyParticipant.class))
         );
     }
 
@@ -74,7 +75,7 @@ class CreateStudyUseCaseTest extends UseCaseTest {
         given(memberRepository.getById(command.hostId())).willReturn(host);
 
         final Study study = command.toDomain().apply(1L);
-        given(studyRepository.save(any())).willReturn(study);
+        given(studyRepository.save(any(Study.class))).willReturn(study);
 
         // when
         final Long savedStudyId = sut.invoke(command);
@@ -83,8 +84,8 @@ class CreateStudyUseCaseTest extends UseCaseTest {
         assertAll(
                 () -> verify(studyRepository, times(1)).existsByNameValue(command.name().getValue()),
                 () -> verify(memberRepository, times(1)).getById(command.hostId()),
-                () -> verify(studyRepository, times(1)).save(any()),
-                () -> verify(studyParticipantRepository, times(1)).save(any()),
+                () -> verify(studyRepository, times(1)).save(any(Study.class)),
+                () -> verify(studyParticipantRepository, times(1)).save(any(StudyParticipant.class)),
                 () -> assertThat(savedStudyId).isEqualTo(study.getId())
         );
     }

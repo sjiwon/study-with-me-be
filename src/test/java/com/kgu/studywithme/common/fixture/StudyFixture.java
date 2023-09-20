@@ -227,20 +227,20 @@ public enum StudyFixture {
     private final int minimumAttendanceForGraduation;
     private final Set<String> hashtags;
 
-    public Study toOnlineStudy(final Long hostId) {
-        return Study.createOnlineStudy(
-                hostId,
-                name,
-                description,
-                category,
-                capacity,
-                thumbnail,
-                minimumAttendanceForGraduation,
-                hashtags
-        );
-    }
+    public Study toStudy(final Long hostId) {
+        if (type == ONLINE) {
+            return Study.createOnlineStudy(
+                    hostId,
+                    name,
+                    description,
+                    category,
+                    capacity,
+                    thumbnail,
+                    minimumAttendanceForGraduation,
+                    hashtags
+            );
+        }
 
-    public Study toOfflineStudy(final Long hostId) {
         return Study.createOfflineStudy(
                 hostId,
                 name,

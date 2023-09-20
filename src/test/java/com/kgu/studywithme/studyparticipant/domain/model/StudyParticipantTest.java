@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class StudyParticipantTest extends ParallelTest {
     private final Member host = JIWON.toMember().apply(1L);
     private final Member member = GHOST.toMember().apply(2L);
-    private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
 
     @Test
     @DisplayName("사용자가 스터디에 참여 신청을 한다")

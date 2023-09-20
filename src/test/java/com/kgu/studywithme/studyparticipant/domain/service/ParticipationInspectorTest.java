@@ -37,7 +37,7 @@ public class ParticipationInspectorTest extends ParallelTest {
     private final Member leaveMember = DUMMY3.toMember().apply(5L);
     private final Member graduateMember = DUMMY4.toMember().apply(6L);
     private final Member anonymous = ANONYMOUS.toMember().apply(7L);
-    private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
 
     @Test
     @DisplayName("신청자가 스터디 팀장인지 확인한다")

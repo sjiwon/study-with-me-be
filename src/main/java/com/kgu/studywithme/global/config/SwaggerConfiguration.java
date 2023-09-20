@@ -32,10 +32,6 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
                 @Server(
                         url = "http://localhost:8080",
                         description = "Local Server"
-                ),
-                @Server(
-                        url = "https://api.study-with-me.co.kr",
-                        description = "Production Server [Currently Disabled]"
                 )
         }
 )

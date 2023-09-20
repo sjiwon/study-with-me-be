@@ -21,10 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("Auth -> ReissueTokenUseCase 테스트")
 class ReissueTokenUseCaseTest extends UseCaseTest {
-    private final TokenManager tokenManager = new TokenManager(
-            new StubTokenProvider(),
-            new FakeTokenStore()
-    );
+    private final TokenManager tokenManager = new TokenManager(new StubTokenProvider(), new FakeTokenStore());
     private final ReissueTokenUseCase sut = new ReissueTokenUseCase(tokenManager);
 
     private final Member member = JIWON.toMember().apply(1L);

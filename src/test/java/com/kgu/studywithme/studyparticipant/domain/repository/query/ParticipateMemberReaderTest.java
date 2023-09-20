@@ -60,7 +60,7 @@ public class ParticipateMemberReaderTest extends RepositoryTest {
         leaveMember = memberRepository.save(DUMMY3.toMember());
         graduatedMember = memberRepository.save(DUMMY4.toMember());
 
-        study = studyRepository.save(SPRING.toOnlineStudy(host.getId()));
+        study = studyRepository.save(SPRING.toStudy(host.getId()));
         studyParticipantRepository.saveAll(List.of(
                 StudyParticipant.applyHost(study.getId(), host.getId()),
                 StudyParticipant.applyInStudy(study.getId(), applier.getId()),

@@ -50,7 +50,7 @@ class DelegateHostAuthorityUseCaseTest extends UseCaseTest {
 
     @BeforeEach
     void setUp() {
-        study = SPRING.toOnlineStudy(host.getId()).apply(1L);
+        study = SPRING.toStudy(host.getId()).apply(1L);
 
         selfCommand = new DelegateHostAuthorityCommand(study.getId(), host.getId());
         anonymousCommand = new DelegateHostAuthorityCommand(study.getId(), anonymous.getId());

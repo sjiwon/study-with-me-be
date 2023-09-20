@@ -57,7 +57,7 @@ class GraduateStudyUseCaseTest extends UseCaseTest {
 
     @BeforeEach
     void setUp() {
-        study = SPRING.toOnlineStudy(host.getId()).apply(1L);
+        study = SPRING.toStudy(host.getId()).apply(1L);
         previousParticipantMembers = study.getParticipants();
 
         hostGraduateCommand = new GraduateStudyCommand(study.getId(), host.getId());

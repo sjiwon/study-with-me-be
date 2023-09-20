@@ -35,8 +35,8 @@ class StudyReviewRepositoryTest extends RepositoryTest {
     @BeforeEach
     void setUp() {
         member = memberRepository.save(JIWON.toMember());
-        studyA = studyRepository.save(SPRING.toOnlineStudy(member.getId()));
-        studyB = studyRepository.save(JPA.toOnlineStudy(member.getId()));
+        studyA = studyRepository.save(SPRING.toStudy(member.getId()));
+        studyB = studyRepository.save(JPA.toStudy(member.getId()));
     }
 
     @Test

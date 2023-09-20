@@ -41,22 +41,14 @@ class OAuthLoginUseCaseTest extends UseCaseTest {
     private final GoogleOAuthConnector googleOAuthConnector = mock(GoogleOAuthConnector.class);
     private final List<OAuthConnector> oAuthConnectors = List.of(googleOAuthConnector);
     private final MemberRepository memberRepository = mock(MemberRepository.class);
-    private final TokenManager tokenManager = new TokenManager(
-            new StubTokenProvider(),
-            new FakeTokenStore()
-    );
+    private final TokenManager tokenManager = new TokenManager(new StubTokenProvider(), new FakeTokenStore());
     private final OAuthLoginUseCase sut = new OAuthLoginUseCase(oAuthConnectors, memberRepository, tokenManager);
 
     @Nested
     @DisplayName("Google OAuth 로그인")
     class GoogleLogin {
         private final Member member = JIWON.toMember().apply(1L);
-        private final OAuthLoginCommand command = new OAuthLoginCommand(
-                GOOGLE,
-                AUTHORIZATION_CODE,
-                REDIRECT_URI,
-                STATE
-        );
+        private final OAuthLoginCommand command = new OAuthLoginCommand(GOOGLE, AUTHORIZATION_CODE, REDIRECT_URI, STATE);
         private final GoogleTokenResponse googleTokenResponse = createGoogleTokenResponse();
         private final GoogleUserResponse googleUserResponse = JIWON.toGoogleUserResponse();
 

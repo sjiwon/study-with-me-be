@@ -47,8 +47,8 @@ class StudyWeeklyMetadataRepositoryTest extends RepositoryTest {
     @BeforeEach
     void setUp() {
         host = memberRepository.save(JIWON.toMember());
-        studyA = studyRepository.save(SPRING.toOnlineStudy(host.getId()));
-        studyB = studyRepository.save(JPA.toOnlineStudy(host.getId()));
+        studyA = studyRepository.save(SPRING.toStudy(host.getId()));
+        studyB = studyRepository.save(JPA.toStudy(host.getId()));
     }
 
     @Test

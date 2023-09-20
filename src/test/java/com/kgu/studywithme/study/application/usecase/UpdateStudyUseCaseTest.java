@@ -38,7 +38,7 @@ class UpdateStudyUseCaseTest extends UseCaseTest {
 
     @BeforeEach
     void setUp() {
-        study = SPRING.toOnlineStudy(host.getId()).apply(1L);
+        study = SPRING.toStudy(host.getId()).apply(1L);
         command = new UpdateStudyCommand(
                 study.getId(),
                 JPA.getName(),

@@ -33,7 +33,7 @@ public class StudyNoticeRepositoryTest extends RepositoryTest {
     @BeforeEach
     void setUp() {
         writer = memberRepository.save(JIWON.toMember());
-        study = studyRepository.save(SPRING.toOnlineStudy(writer.getId()));
+        study = studyRepository.save(SPRING.toStudy(writer.getId()));
     }
 
     @Test

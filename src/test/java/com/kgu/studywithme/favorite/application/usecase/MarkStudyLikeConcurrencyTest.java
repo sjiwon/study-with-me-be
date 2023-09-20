@@ -35,6 +35,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Favorite -> 스터디 찜 동시성 테스트")
 public class MarkStudyLikeConcurrencyTest {
     @Autowired
+    private MarkStudyLikeUseCase sut;
+
+    @Autowired
     private MemberRepository memberRepository;
 
     @Autowired
@@ -42,9 +45,6 @@ public class MarkStudyLikeConcurrencyTest {
 
     @PersistenceContext
     private EntityManager em;
-
-    @Autowired
-    private MarkStudyLikeUseCase sut;
 
     private Member member;
     private Study study;
@@ -54,7 +54,7 @@ public class MarkStudyLikeConcurrencyTest {
         member = memberRepository.save(JIWON.toMember());
 
         final Member host = memberRepository.save(GHOST.toMember());
-        study = studyRepository.save(SPRING.toOnlineStudy(host.getId()));
+        study = studyRepository.save(SPRING.toStudy(host.getId()));
     }
 
     @Test

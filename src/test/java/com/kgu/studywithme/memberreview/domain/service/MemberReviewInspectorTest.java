@@ -33,7 +33,7 @@ public class MemberReviewInspectorTest {
     @Test
     @DisplayName("본인에게 리뷰를 남길 수 없다")
     void throwExceptionBySelfReviewNotAllowed() {
-        assertThatThrownBy(() -> sut.checkReviewerHasEligibilityToReviewee(memberA.getId(), memberA.getId()))
+        assertThatThrownBy(() -> sut.checkReviewerHasEligibilityToReview(memberA.getId(), memberA.getId()))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberReviewErrorCode.SELF_REVIEW_NOT_ALLOWED.getMessage());
 
@@ -62,7 +62,7 @@ public class MemberReviewInspectorTest {
                 ));
 
         // when - then
-        assertThatThrownBy(() -> sut.checkReviewerHasEligibilityToReviewee(memberA.getId(), memberB.getId()))
+        assertThatThrownBy(() -> sut.checkReviewerHasEligibilityToReview(memberA.getId(), memberB.getId()))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberReviewErrorCode.COMMON_STUDY_RECORD_NOT_FOUND.getMessage());
 
@@ -92,7 +92,7 @@ public class MemberReviewInspectorTest {
         given(memberReviewRepository.existsByReviewerIdAndRevieweeId(memberA.getId(), memberB.getId())).willReturn(true);
 
         // when - then
-        assertThatThrownBy(() -> sut.checkReviewerHasEligibilityToReviewee(memberA.getId(), memberB.getId()))
+        assertThatThrownBy(() -> sut.checkReviewerHasEligibilityToReview(memberA.getId(), memberB.getId()))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberReviewErrorCode.ALREADY_REVIEW.getMessage());
 
@@ -122,7 +122,7 @@ public class MemberReviewInspectorTest {
         given(memberReviewRepository.existsByReviewerIdAndRevieweeId(memberA.getId(), memberB.getId())).willReturn(false);
 
         // when - then
-        assertDoesNotThrow(() -> sut.checkReviewerHasEligibilityToReviewee(memberA.getId(), memberB.getId()));
+        assertDoesNotThrow(() -> sut.checkReviewerHasEligibilityToReview(memberA.getId(), memberB.getId()));
 
         assertAll(
                 () -> verify(studyAttendanceMetadataRepository, times(1)).findMemberParticipateWeekly(memberA.getId()),

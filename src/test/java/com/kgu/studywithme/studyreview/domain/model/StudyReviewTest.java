@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class StudyReviewTest extends ParallelTest {
     private final Member host = JIWON.toMember().apply(1L);
     private final Member member = GHOST.toMember().apply(2L);
-    private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
 
     @Test
     @DisplayName("스터디 리뷰를 수정한다")

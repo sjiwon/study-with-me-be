@@ -60,7 +60,7 @@ public class WeeklySubmitManagerTest extends ParallelTest {
     void setUp() {
         host = JIWON.toMember().apply(1L);
         previousScore = host.getScore().getValue();
-        study = SPRING.toOnlineStudy(host.getId()).apply(1L);
+        study = SPRING.toStudy(host.getId()).apply(1L);
 
         manualAttendanceWeekly = StudyWeekly.createWeeklyWithAssignment(
                 study.getId(),

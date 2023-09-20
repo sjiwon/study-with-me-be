@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 @DisplayName("Study -> 도메인 [Hashtags VO] 테스트")
 class HashtagsTest extends ParallelTest {
     private final Member host = JIWON.toMember().apply(1L);
-    private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
 
     @Nested
     class Construct {

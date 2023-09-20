@@ -54,7 +54,7 @@ class UpdateStudyWeeklyUseCaseTest extends UseCaseTest {
     private final UpdateStudyWeeklyUseCase sut = new UpdateStudyWeeklyUseCase(attachmentUploader, weeklyManager);
 
     private final Member host = JIWON.toMember().apply(1L);
-    private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
     private final StudyWeekly weekly = STUDY_WEEKLY_1.toWeekly(study.getId(), host.getId()).apply(1L);
     private UpdateStudyWeeklyCommand command;
 

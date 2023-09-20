@@ -13,7 +13,7 @@ public class WriteMemberReviewUseCase {
     private final MemberReviewRepository memberReviewRepository;
 
     public Long invoke(final WriteMemberReviewCommand command) {
-        memberReviewInspector.checkReviewerHasEligibilityToReviewee(command.reviewerId(), command.revieweeId());
+        memberReviewInspector.checkReviewerHasEligibilityToReview(command.reviewerId(), command.revieweeId());
         return memberReviewRepository.save(command.toDomain()).getId();
     }
 }

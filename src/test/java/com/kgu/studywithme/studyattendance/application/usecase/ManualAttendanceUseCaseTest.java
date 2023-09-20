@@ -44,7 +44,7 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
         host = JIWON.toMember().apply(1L);
         participant = GHOST.toMember().apply(2L);
         previousScore = participant.getScore().getValue();
-        study = SPRING.toOnlineStudy(host.getId()).apply(1L);
+        study = SPRING.toStudy(host.getId()).apply(1L);
     }
 
     @Test

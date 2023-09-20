@@ -52,7 +52,7 @@ class EditWeeklySubmittedAssignmentUseCaseTest extends UseCaseTest {
     private final EditWeeklySubmittedAssignmentUseCase sut = new EditWeeklySubmittedAssignmentUseCase(assignmentUploader, weeklySubmitManager);
 
     private final Member host = JIWON.toMember().apply(1L);
-    private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
     private final StudyWeekly weekly = StudyWeekly.createWeeklyWithAssignment(
             study.getId(),
             host.getId(),

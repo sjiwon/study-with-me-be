@@ -31,7 +31,7 @@ class UpdateStudyReviewUseCaseTest extends UseCaseTest {
     private final Member host = JIWON.toMember().apply(1L);
     private final Member member = GHOST.toMember().apply(2L);
     private final Member anonymous = ANONYMOUS.toMember().apply(3L);
-    private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
     private final StudyReview review = StudyReview.writeReview(study.getId(), member.getId(), "졸업자 리뷰").apply(1L);
     private final UpdateStudyReviewCommand anonymousCommand = new UpdateStudyReviewCommand(review.getId(), anonymous.getId(), "수정");
     private final UpdateStudyReviewCommand command = new UpdateStudyReviewCommand(review.getId(), review.getWriterId(), "수정");

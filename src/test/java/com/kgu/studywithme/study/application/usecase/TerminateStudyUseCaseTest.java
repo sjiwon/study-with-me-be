@@ -23,7 +23,7 @@ class TerminateStudyUseCaseTest extends UseCaseTest {
     private final TerminateStudyUseCase sut = new TerminateStudyUseCase(studyRepository);
 
     private final Member host = JIWON.toMember().apply(1L);
-    private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
     private final TerminateStudyCommand command = new TerminateStudyCommand(study.getId());
 
     @Test

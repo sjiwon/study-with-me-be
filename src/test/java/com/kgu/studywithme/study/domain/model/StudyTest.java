@@ -28,8 +28,8 @@ class StudyTest extends ParallelTest {
     @Test
     @DisplayName("Study를 생성한다")
     void construct() {
-        final Study onlineStudy = SPRING.toOnlineStudy(host.getId());
-        final Study offlineStudy = TOSS_INTERVIEW.toOfflineStudy(host.getId());
+        final Study onlineStudy = SPRING.toStudy(host.getId());
+        final Study offlineStudy = TOSS_INTERVIEW.toStudy(host.getId());
 
         assertAll(
                 () -> assertThat(onlineStudy.getName()).isEqualTo(SPRING.getName()),
@@ -66,8 +66,8 @@ class StudyTest extends ParallelTest {
     @DisplayName("Study 정보를 수정한다")
     void update() {
         // given
-        final Study onlineStudy = JAPANESE.toOnlineStudy(host.getId());
-        final Study offlineStudy = TOSS_INTERVIEW.toOnlineStudy(host.getId());
+        final Study onlineStudy = JAPANESE.toStudy(host.getId());
+        final Study offlineStudy = TOSS_INTERVIEW.toStudy(host.getId());
 
         // when
         onlineStudy.update(
@@ -131,7 +131,7 @@ class StudyTest extends ParallelTest {
     @DisplayName("스터디 팀장인지 확인한다")
     void isHost() {
         // given
-        final Study study = SPRING.toOnlineStudy(host.getId());
+        final Study study = SPRING.toStudy(host.getId());
 
         // when
         final boolean actual1 = study.isHost(host.getId());
@@ -148,7 +148,7 @@ class StudyTest extends ParallelTest {
     @DisplayName("스터디 팀장 권한을 위임한다 -> 졸업 요건 수정 횟수 초기화")
     void delegateHostAuthority() {
         // given
-        final Study study = SPRING.toOnlineStudy(host.getId());
+        final Study study = SPRING.toStudy(host.getId());
 
         ReflectionTestUtils.setField(study.getGraduationPolicy(), "updateChance", 1);
         assertThat(study.getGraduationPolicy().getUpdateChance()).isEqualTo(1);
@@ -167,7 +167,7 @@ class StudyTest extends ParallelTest {
     @DisplayName("스터디를 종료한다")
     void terminate() {
         // given
-        final Study study = SPRING.toOnlineStudy(host.getId());
+        final Study study = SPRING.toStudy(host.getId());
         assertThat(study.isTerminated()).isFalse();
 
         // when
@@ -184,7 +184,7 @@ class StudyTest extends ParallelTest {
 
         @BeforeEach
         void setUp() {
-            study = JAPANESE.toOnlineStudy(host.getId());
+            study = JAPANESE.toStudy(host.getId());
         }
 
         @Nested
@@ -237,7 +237,7 @@ class StudyTest extends ParallelTest {
     @DisplayName("스터디 참여자가 졸업 요건[최소 출석 횟수]를 만족했는지 확인한다")
     void isParticipantMeetGraduationPolicy() {
         // given
-        final Study study = SPRING.toOnlineStudy(host.getId());
+        final Study study = SPRING.toStudy(host.getId());
         final int minimumAttendanceForGraduation = study.getGraduationPolicy().getMinimumAttendance();
 
         // when

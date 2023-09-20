@@ -9,8 +9,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import java.util.Optional;
-
 @Component
 @RequiredArgsConstructor
 public class TokenValidityInterceptor implements HandlerInterceptor {
@@ -26,8 +24,7 @@ public class TokenValidityInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        final Optional<String> token = AuthorizationExtractor.extractToken(request);
-        return token
+        return AuthorizationExtractor.extractToken(request)
                 .map(tokenProvider::isTokenValid)
                 .orElse(true);
     }

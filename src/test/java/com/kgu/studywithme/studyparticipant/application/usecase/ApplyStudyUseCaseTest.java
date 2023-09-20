@@ -38,7 +38,7 @@ class ApplyStudyUseCaseTest extends UseCaseTest {
 
     private final Member host = JIWON.toMember().apply(1L);
     private final Member applier = GHOST.toMember().apply(2L);
-    private final Study study = SPRING.toOnlineStudy(host.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
     private final ApplyStudyCommand hostCommand = new ApplyStudyCommand(study.getId(), host.getId());
     private final ApplyStudyCommand applierCommand = new ApplyStudyCommand(study.getId(), applier.getId());
 
@@ -61,7 +61,7 @@ class ApplyStudyUseCaseTest extends UseCaseTest {
                         .isApplierOrParticipant(hostCommand.studyId(), hostCommand.applierId()),
                 () -> verify(studyParticipantRepository, times(0))
                         .isAlreadyLeaveOrGraduatedParticipant(hostCommand.studyId(), hostCommand.applierId()),
-                () -> verify(studyParticipantRepository, times(0)).save(any())
+                () -> verify(studyParticipantRepository, times(0)).save(any(StudyParticipant.class))
         );
     }
 
@@ -82,7 +82,7 @@ class ApplyStudyUseCaseTest extends UseCaseTest {
                         .isApplierOrParticipant(hostCommand.studyId(), hostCommand.applierId()),
                 () -> verify(studyParticipantRepository, times(0))
                         .isAlreadyLeaveOrGraduatedParticipant(hostCommand.studyId(), hostCommand.applierId()),
-                () -> verify(studyParticipantRepository, times(0)).save(any())
+                () -> verify(studyParticipantRepository, times(0)).save(any(StudyParticipant.class))
         );
     }
 
@@ -104,7 +104,7 @@ class ApplyStudyUseCaseTest extends UseCaseTest {
                         .isApplierOrParticipant(applierCommand.studyId(), applierCommand.applierId()),
                 () -> verify(studyParticipantRepository, times(0))
                         .isAlreadyLeaveOrGraduatedParticipant(applierCommand.studyId(), applierCommand.applierId()),
-                () -> verify(studyParticipantRepository, times(0)).save(any())
+                () -> verify(studyParticipantRepository, times(0)).save(any(StudyParticipant.class))
         );
     }
 
@@ -127,7 +127,7 @@ class ApplyStudyUseCaseTest extends UseCaseTest {
                         .isApplierOrParticipant(applierCommand.studyId(), applierCommand.applierId()),
                 () -> verify(studyParticipantRepository, times(1))
                         .isAlreadyLeaveOrGraduatedParticipant(applierCommand.studyId(), applierCommand.applierId()),
-                () -> verify(studyParticipantRepository, times(0)).save(any())
+                () -> verify(studyParticipantRepository, times(0)).save(any(StudyParticipant.class))
         );
     }
 
@@ -140,7 +140,7 @@ class ApplyStudyUseCaseTest extends UseCaseTest {
         given(studyParticipantRepository.isAlreadyLeaveOrGraduatedParticipant(applierCommand.studyId(), applierCommand.applierId())).willReturn(false);
 
         final StudyParticipant applier = applierCommand.toDomain().apply(1L);
-        given(studyParticipantRepository.save(any())).willReturn(applier);
+        given(studyParticipantRepository.save(any(StudyParticipant.class))).willReturn(applier);
 
         // when
         final Long savedApplierId = sut.invoke(applierCommand);
@@ -152,7 +152,7 @@ class ApplyStudyUseCaseTest extends UseCaseTest {
                         .isApplierOrParticipant(applierCommand.studyId(), applierCommand.applierId()),
                 () -> verify(studyParticipantRepository, times(1))
                         .isAlreadyLeaveOrGraduatedParticipant(applierCommand.studyId(), applierCommand.applierId()),
-                () -> verify(studyParticipantRepository, times(1)).save(any()),
+                () -> verify(studyParticipantRepository, times(1)).save(any(StudyParticipant.class)),
                 () -> assertThat(savedApplierId).isEqualTo(applier.getId())
         );
     }
