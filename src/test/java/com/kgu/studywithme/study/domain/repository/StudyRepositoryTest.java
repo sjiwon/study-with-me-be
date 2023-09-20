@@ -21,10 +21,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @DisplayName("Study -> StudyRepository 테스트")
 public class StudyRepositoryTest extends RepositoryTest {
     @Autowired
-    private MemberRepository memberRepository;
+    private StudyRepository sut;
 
     @Autowired
-    private StudyRepository sut;
+    private MemberRepository memberRepository;
 
     private Member host;
 

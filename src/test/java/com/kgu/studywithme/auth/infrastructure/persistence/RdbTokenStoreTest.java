@@ -21,13 +21,13 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @DisplayName("Auth -> RdbTokenStore 테스트")
 class RdbTokenStoreTest extends RepositoryTest {
     @Autowired
+    private RdbTokenStore sut;
+
+    @Autowired
     private TokenRepository tokenRepository;
 
     @Autowired
     private MemberRepository memberRepository;
-
-    @Autowired
-    private RdbTokenStore sut;
 
     private Member member;
 

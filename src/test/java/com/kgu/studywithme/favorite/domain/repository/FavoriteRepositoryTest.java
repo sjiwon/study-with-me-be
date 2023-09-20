@@ -18,13 +18,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Favorite -> FavoriteRepository 테스트")
 class FavoriteRepositoryTest extends RepositoryTest {
     @Autowired
+    private FavoriteRepository sut;
+
+    @Autowired
     private MemberRepository memberRepository;
 
     @Autowired
     private StudyRepository studyRepository;
-
-    @Autowired
-    private FavoriteRepository sut;
 
     private Member member;
     private Study study;

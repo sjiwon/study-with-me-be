@@ -19,12 +19,12 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @DisplayName("Auth -> RedisTokenStore 테스트")
 public class RedisTokenStoreTest extends RedisTest {
     @Autowired
+    private RedisTokenStore sut;
+
+    @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
     private ValueOperations<String, String> operations;
-
-    @Autowired
-    private RedisTokenStore sut;
 
     private static final Long MEMBER_ID = 1L;
 

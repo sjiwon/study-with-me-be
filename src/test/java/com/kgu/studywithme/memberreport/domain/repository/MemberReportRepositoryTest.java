@@ -20,10 +20,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @DisplayName("MemberReport -> MemberReportRepository 테스트")
 public class MemberReportRepositoryTest extends RepositoryTest {
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberReportRepository sut;
 
     @Autowired
-    private MemberReportRepository sut;
+    private MemberRepository memberRepository;
 
     private Member memberA;
     private Member memberB;

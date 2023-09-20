@@ -37,13 +37,13 @@ import static org.mockito.BDDMockito.given;
 @DisplayName("Auth -> GoogleOAuthConnector 테스트")
 class GoogleOAuthConnectorTest {
     @Autowired
+    private GoogleOAuthConnector sut;
+
+    @Autowired
     private GoogleOAuthProperties properties;
 
     @MockBean
     private RestTemplate restTemplate;
-
-    @Autowired
-    private GoogleOAuthConnector sut;
 
     @Nested
     @DisplayName("Token 응답받기")

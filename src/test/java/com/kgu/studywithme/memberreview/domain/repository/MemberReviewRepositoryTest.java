@@ -22,10 +22,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @DisplayName("MemberReview -> MemberReviewRepository 테스트")
 public class MemberReviewRepositoryTest extends RepositoryTest {
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberReviewRepository sut;
 
     @Autowired
-    private MemberReviewRepository sut;
+    private MemberRepository memberRepository;
 
     private Member reviewee;
     private final Member[] reviewers = new Member[3];
