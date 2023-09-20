@@ -21,11 +21,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@DisplayName("MemberReview -> MemberReviewValidator 테스트")
-public class MemberReviewValidatorTest {
+@DisplayName("MemberReview -> MemberReviewInspector 테스트")
+public class MemberReviewInspectorTest {
     private final StudyAttendanceMetadataRepository studyAttendanceMetadataRepository = mock(StudyAttendanceMetadataRepository.class);
     private final MemberReviewRepository memberReviewRepository = mock(MemberReviewRepository.class);
-    private final MemberReviewValidator sut = new MemberReviewValidator(studyAttendanceMetadataRepository, memberReviewRepository);
+    private final MemberReviewInspector sut = new MemberReviewInspector(studyAttendanceMetadataRepository, memberReviewRepository);
 
     private final Member memberA = JIWON.toMember().apply(1L);
     private final Member memberB = GHOST.toMember().apply(2L);
@@ -33,21 +33,19 @@ public class MemberReviewValidatorTest {
     @Test
     @DisplayName("본인에게 리뷰를 남길 수 없다")
     void throwExceptionBySelfReviewNotAllowed() {
-        assertThatThrownBy(() -> sut.validateReviewEligibility(memberA.getId(), memberA.getId()))
+        assertThatThrownBy(() -> sut.checkReviewerHasEligibilityToReviewee(memberA.getId(), memberA.getId()))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberReviewErrorCode.SELF_REVIEW_NOT_ALLOWED.getMessage());
 
         assertAll(
-                () -> verify(studyAttendanceMetadataRepository, times(0))
-                        .findMemberParticipateWeekly(memberA.getId()),
-                () -> verify(studyAttendanceMetadataRepository, times(0))
-                        .findMemberParticipateWeekly(memberB.getId()),
+                () -> verify(studyAttendanceMetadataRepository, times(0)).findMemberParticipateWeekly(memberA.getId()),
+                () -> verify(studyAttendanceMetadataRepository, times(0)).findMemberParticipateWeekly(memberB.getId()),
                 () -> verify(memberReviewRepository, times(0)).existsByReviewerIdAndRevieweeId(memberA.getId(), memberB.getId())
         );
     }
 
     @Test
-    @DisplayName("같이 1 week이라도 스터디한 기록이 없다면 리뷰를 작성할 자격이 없다")
+    @DisplayName("같이 스터디한 기록이 없다면 Reviewer는 Reviewee에게 리뷰를 작성할 자격이 없다")
     void throwExceptionByCommonStudyRecordNotFound() {
         // given
         given(studyAttendanceMetadataRepository.findMemberParticipateWeekly(memberA.getId()))
@@ -64,15 +62,13 @@ public class MemberReviewValidatorTest {
                 ));
 
         // when - then
-        assertThatThrownBy(() -> sut.validateReviewEligibility(memberA.getId(), memberB.getId()))
+        assertThatThrownBy(() -> sut.checkReviewerHasEligibilityToReviewee(memberA.getId(), memberB.getId()))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberReviewErrorCode.COMMON_STUDY_RECORD_NOT_FOUND.getMessage());
 
         assertAll(
-                () -> verify(studyAttendanceMetadataRepository, times(1))
-                        .findMemberParticipateWeekly(memberA.getId()),
-                () -> verify(studyAttendanceMetadataRepository, times(1))
-                        .findMemberParticipateWeekly(memberB.getId()),
+                () -> verify(studyAttendanceMetadataRepository, times(1)).findMemberParticipateWeekly(memberA.getId()),
+                () -> verify(studyAttendanceMetadataRepository, times(1)).findMemberParticipateWeekly(memberB.getId()),
                 () -> verify(memberReviewRepository, times(0)).existsByReviewerIdAndRevieweeId(memberA.getId(), memberB.getId())
         );
     }
@@ -90,27 +86,25 @@ public class MemberReviewValidatorTest {
         given(studyAttendanceMetadataRepository.findMemberParticipateWeekly(memberB.getId()))
                 .willReturn(List.of(
                         new StudyAttendanceWeekly(1L, 1),
-                        new StudyAttendanceWeekly(1L, 2),
-                        new StudyAttendanceWeekly(1L, 3)
+                        new StudyAttendanceWeekly(2L, 2),
+                        new StudyAttendanceWeekly(2L, 3)
                 ));
         given(memberReviewRepository.existsByReviewerIdAndRevieweeId(memberA.getId(), memberB.getId())).willReturn(true);
 
         // when - then
-        assertThatThrownBy(() -> sut.validateReviewEligibility(memberA.getId(), memberB.getId()))
+        assertThatThrownBy(() -> sut.checkReviewerHasEligibilityToReviewee(memberA.getId(), memberB.getId()))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(MemberReviewErrorCode.ALREADY_REVIEW.getMessage());
 
         assertAll(
-                () -> verify(studyAttendanceMetadataRepository, times(1))
-                        .findMemberParticipateWeekly(memberA.getId()),
-                () -> verify(studyAttendanceMetadataRepository, times(1))
-                        .findMemberParticipateWeekly(memberB.getId()),
+                () -> verify(studyAttendanceMetadataRepository, times(1)).findMemberParticipateWeekly(memberA.getId()),
+                () -> verify(studyAttendanceMetadataRepository, times(1)).findMemberParticipateWeekly(memberB.getId()),
                 () -> verify(memberReviewRepository, times(1)).existsByReviewerIdAndRevieweeId(memberA.getId(), memberB.getId())
         );
     }
 
     @Test
-    @DisplayName("위의 모든 검증을 통과한다")
+    @DisplayName("리뷰 자격 검증을 통과한다")
     void success() {
         // given
         given(studyAttendanceMetadataRepository.findMemberParticipateWeekly(memberA.getId()))
@@ -122,19 +116,17 @@ public class MemberReviewValidatorTest {
         given(studyAttendanceMetadataRepository.findMemberParticipateWeekly(memberB.getId()))
                 .willReturn(List.of(
                         new StudyAttendanceWeekly(1L, 1),
-                        new StudyAttendanceWeekly(1L, 2),
-                        new StudyAttendanceWeekly(1L, 3)
+                        new StudyAttendanceWeekly(2L, 2),
+                        new StudyAttendanceWeekly(2L, 3)
                 ));
         given(memberReviewRepository.existsByReviewerIdAndRevieweeId(memberA.getId(), memberB.getId())).willReturn(false);
 
         // when - then
-        assertDoesNotThrow(() -> sut.validateReviewEligibility(memberA.getId(), memberB.getId()));
+        assertDoesNotThrow(() -> sut.checkReviewerHasEligibilityToReviewee(memberA.getId(), memberB.getId()));
 
         assertAll(
-                () -> verify(studyAttendanceMetadataRepository, times(1))
-                        .findMemberParticipateWeekly(memberA.getId()),
-                () -> verify(studyAttendanceMetadataRepository, times(1))
-                        .findMemberParticipateWeekly(memberB.getId()),
+                () -> verify(studyAttendanceMetadataRepository, times(1)).findMemberParticipateWeekly(memberA.getId()),
+                () -> verify(studyAttendanceMetadataRepository, times(1)).findMemberParticipateWeekly(memberB.getId()),
                 () -> verify(memberReviewRepository, times(1)).existsByReviewerIdAndRevieweeId(memberA.getId(), memberB.getId())
         );
     }

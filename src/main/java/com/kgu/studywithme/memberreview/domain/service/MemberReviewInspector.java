@@ -12,11 +12,11 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class MemberReviewValidator {
+public class MemberReviewInspector {
     private final StudyAttendanceMetadataRepository studyAttendanceMetadataRepository;
     private final MemberReviewRepository memberReviewRepository;
 
-    public void validateReviewEligibility(final Long reviewerId, final Long revieweeId) {
+    public void checkReviewerHasEligibilityToReviewee(final Long reviewerId, final Long revieweeId) {
         validateSelfReview(reviewerId, revieweeId);
         validateColleague(reviewerId, revieweeId);
         validateAlreadyReviewed(reviewerId, revieweeId);
@@ -29,14 +29,12 @@ public class MemberReviewValidator {
     }
 
     private void validateColleague(final Long reviewerId, final Long revieweeId) {
-        final List<StudyAttendanceWeekly> reviewerParticipateData
-                = studyAttendanceMetadataRepository.findMemberParticipateWeekly(reviewerId);
-        final List<StudyAttendanceWeekly> revieweeParticipateData
-                = studyAttendanceMetadataRepository.findMemberParticipateWeekly(revieweeId);
+        final List<StudyAttendanceWeekly> reviewerAttendanceData = studyAttendanceMetadataRepository.findMemberParticipateWeekly(reviewerId);
+        final List<StudyAttendanceWeekly> revieweeAttendanceData = studyAttendanceMetadataRepository.findMemberParticipateWeekly(revieweeId);
 
-        final boolean hasCommonMetadata = reviewerParticipateData.stream()
+        final boolean hasCommonMetadata = reviewerAttendanceData.stream()
                 .anyMatch(reviewerData ->
-                        revieweeParticipateData.stream()
+                        revieweeAttendanceData.stream()
                                 .anyMatch(revieweeData -> hasCommonMetadata(reviewerData, revieweeData))
                 );
 

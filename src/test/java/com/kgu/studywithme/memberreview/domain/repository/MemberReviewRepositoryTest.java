@@ -22,10 +22,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @DisplayName("MemberReview -> MemberReviewRepository 테스트")
 public class MemberReviewRepositoryTest extends RepositoryTest {
     @Autowired
-    private MemberReviewRepository memberReviewRepository;
+    private MemberRepository memberRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberReviewRepository sut;
 
     private Member reviewee;
     private final Member[] reviewers = new Member[3];
@@ -44,7 +44,7 @@ public class MemberReviewRepositoryTest extends RepositoryTest {
         doReview(reviewers[0], reviewers[1], reviewers[2]);
 
         for (Member reviewer : reviewers) {
-            final MemberReview review = memberReviewRepository.findByReviewerIdAndRevieweeId(reviewer.getId(), reviewee.getId()).orElseThrow();
+            final MemberReview review = sut.getWrittenReview(reviewer.getId(), reviewee.getId());
 
             assertAll(
                     () -> assertThat(review.getReviewerId()).isEqualTo(reviewer.getId()),
@@ -61,9 +61,9 @@ public class MemberReviewRepositoryTest extends RepositoryTest {
         doReview(reviewers[0], reviewers[2]);
 
         // when
-        final boolean actual1 = memberReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[0].getId(), reviewee.getId());
-        final boolean actual2 = memberReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[1].getId(), reviewee.getId());
-        final boolean actual3 = memberReviewRepository.existsByReviewerIdAndRevieweeId(reviewers[2].getId(), reviewee.getId());
+        final boolean actual1 = sut.existsByReviewerIdAndRevieweeId(reviewers[0].getId(), reviewee.getId());
+        final boolean actual2 = sut.existsByReviewerIdAndRevieweeId(reviewers[1].getId(), reviewee.getId());
+        final boolean actual3 = sut.existsByReviewerIdAndRevieweeId(reviewers[2].getId(), reviewee.getId());
 
         // then
         assertAll(
@@ -78,6 +78,6 @@ public class MemberReviewRepositoryTest extends RepositoryTest {
         for (Member reviewer : reviewers) {
             memberReviews.add(MemberReview.doReview(reviewer.getId(), reviewee.getId(), "BEST! - " + reviewer.getId()));
         }
-        memberReviewRepository.saveAll(memberReviews);
+        sut.saveAll(memberReviews);
     }
 }
