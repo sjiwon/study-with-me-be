@@ -1,6 +1,6 @@
 package com.kgu.studywithme.acceptance.member;
 
-import com.kgu.studywithme.category.domain.Category;
+import com.kgu.studywithme.category.domain.model.Category;
 import com.kgu.studywithme.common.fixture.MemberFixture;
 import com.kgu.studywithme.member.presentation.dto.request.SignUpMemberRequest;
 import com.kgu.studywithme.member.presentation.dto.request.UpdateMemberRequest;
@@ -19,7 +19,7 @@ import static com.kgu.studywithme.acceptance.CommonRequestFixture.postRequest;
 public class MemberAcceptanceFixture {
     public static ValidatableResponse 회원가입을_진행한다(final MemberFixture fixture) {
         final String uri = UriComponentsBuilder
-                .fromPath("/api/member")
+                .fromPath("/api/members")
                 .build()
                 .toUri()
                 .getPath();

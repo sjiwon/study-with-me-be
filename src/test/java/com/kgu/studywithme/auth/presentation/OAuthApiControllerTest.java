@@ -1,6 +1,6 @@
 package com.kgu.studywithme.auth.presentation;
 
-import com.kgu.studywithme.auth.domain.AuthMember;
+import com.kgu.studywithme.auth.domain.model.AuthMember;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleUserResponse;
 import com.kgu.studywithme.auth.presentation.dto.request.OAuthLoginRequest;
@@ -24,8 +24,7 @@ import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDoc
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getExceptionResponseFields;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
-import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
-import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
+import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessTokenToAuthorizationHeader;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
@@ -53,7 +52,7 @@ class OAuthApiControllerTest extends ControllerTest {
         void throwExceptionByInvalidOAuthProvider() throws Exception {
             // given
             doThrow(StudyWithMeException.type(AuthErrorCode.INVALID_OAUTH_PROVIDER))
-                    .when(queryOAuthLinkUseCase)
+                    .when(getOAuthLinkUseCase)
                     .invoke(any());
 
             // when
@@ -64,15 +63,8 @@ class OAuthApiControllerTest extends ControllerTest {
             // then
             final AuthErrorCode expectedError = AuthErrorCode.INVALID_OAUTH_PROVIDER;
             mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isBadRequest(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
-                    )
+                    .andExpect(status().isBadRequest())
+                    .andExpectAll(getResultMatchersViaErrorCode(expectedError))
                     .andDo(
                             document(
                                     "OAuthApi/Access/Failure",
@@ -96,7 +88,7 @@ class OAuthApiControllerTest extends ControllerTest {
         @DisplayName("Google OAuth Authorization Code 요청을 위한 URI를 생성한다")
         void successGoogle() throws Exception {
             // given
-            given(queryOAuthLinkUseCase.invoke(any())).willReturn("https://url-for-authorization-code");
+            given(getOAuthLinkUseCase.invoke(any())).willReturn("https://url-for-authorization-code");
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -263,7 +255,7 @@ class OAuthApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
 
             // then
             mockMvc.perform(requestBuilder)

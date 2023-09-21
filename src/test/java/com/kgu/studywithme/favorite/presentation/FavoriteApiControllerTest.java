@@ -13,8 +13,7 @@ import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDoc
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getExceptionResponseFields;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
-import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
-import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
+import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessTokenToAuthorizationHeader;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
@@ -23,7 +22,6 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("Favorite -> FavoriteApiController 테스트")
@@ -36,31 +34,24 @@ class FavoriteApiControllerTest extends ControllerTest {
         private static final Long MEMBER_ID = 1L;
 
         @Test
-        @DisplayName("이미 찜 등록된 스터디를 찜할 수 없다")
+        @DisplayName("이미 찜 등록된 스터디를 중복으로 찜할 수 없다")
         void throwExceptionByAlreadyLikeMarked() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
             doThrow(StudyWithMeException.type(FavoriteErrorCode.ALREADY_LIKE_MARKED))
-                    .when(studyLikeMarkingUseCase)
+                    .when(markStudyLikeUseCase)
                     .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, STUDY_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
 
             // then
             final FavoriteErrorCode expectedError = FavoriteErrorCode.ALREADY_LIKE_MARKED;
             mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isConflict(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
-                    )
+                    .andExpect(status().isConflict())
+                    .andExpectAll(getResultMatchersViaErrorCode(expectedError))
                     .andDo(
                             document(
                                     "StudyApi/Favorite/LikeMarking/Failure",
@@ -81,12 +72,12 @@ class FavoriteApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
-            given(studyLikeMarkingUseCase.invoke(any())).willReturn(1L);
+            given(markStudyLikeUseCase.invoke(any())).willReturn(1L);
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, STUDY_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
 
             // then
             mockMvc.perform(requestBuilder)
@@ -114,66 +105,25 @@ class FavoriteApiControllerTest extends ControllerTest {
         private static final Long MEMBER_ID = 1L;
 
         @Test
-        @DisplayName("찜 등록이 되지 않은 스터디를 취소할 수 없다")
-        void throwExceptionByNeverLikeMarked() throws Exception {
-            // given
-            mockingToken(true, MEMBER_ID);
-            doThrow(StudyWithMeException.type(FavoriteErrorCode.NEVER_LIKE_MARKED))
-                    .when(studyLikeCancellationUseCase)
-                    .invoke(any());
-
-            // when
-            final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
-                    .delete(BASE_URL, STUDY_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
-
-            // then
-            final FavoriteErrorCode expectedError = FavoriteErrorCode.NEVER_LIKE_MARKED;
-            mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isConflict(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
-                    )
-                    .andDo(
-                            document(
-                                    "StudyApi/Favorite/LikeCancellation/Failure",
-                                    getDocumentRequest(),
-                                    getDocumentResponse(),
-                                    getHeaderWithAccessToken(),
-                                    pathParameters(
-                                            parameterWithName("studyId")
-                                                    .description("찜 취소 할 스터디 ID(PK)")
-                                    ),
-                                    getExceptionResponseFields()
-                            )
-                    );
-        }
-
-        @Test
         @DisplayName("해당 스터디에 대해서 등록한 찜을 취소한다")
         void success() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
             doNothing()
-                    .when(studyLikeCancellationUseCase)
+                    .when(cancelStudyLikeUseCase)
                     .invoke(any());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .delete(BASE_URL, STUDY_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
 
             // then
             mockMvc.perform(requestBuilder)
                     .andExpect(status().isNoContent())
                     .andDo(
                             document(
-                                    "StudyApi/Favorite/LikeCancellation/Success",
+                                    "StudyApi/Favorite/LikeCancellation",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),

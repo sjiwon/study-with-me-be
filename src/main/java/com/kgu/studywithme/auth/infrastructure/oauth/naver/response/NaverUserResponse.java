@@ -2,7 +2,7 @@ package com.kgu.studywithme.auth.infrastructure.oauth.naver.response;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.kgu.studywithme.auth.domain.oauth.OAuthUserResponse;
+import com.kgu.studywithme.auth.domain.model.oauth.OAuthUserResponse;
 
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record NaverUserResponse(

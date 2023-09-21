@@ -2,7 +2,7 @@ package com.kgu.studywithme.auth.infrastructure.oauth.kakao.response;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.kgu.studywithme.auth.domain.oauth.OAuthUserResponse;
+import com.kgu.studywithme.auth.domain.model.oauth.OAuthUserResponse;
 
 import java.time.LocalDateTime;
 

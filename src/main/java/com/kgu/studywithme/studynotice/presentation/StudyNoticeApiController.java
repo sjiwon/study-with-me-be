@@ -1,10 +1,13 @@
 package com.kgu.studywithme.studynotice.presentation;
 
-import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.global.aop.CheckStudyHost;
-import com.kgu.studywithme.studynotice.application.usecase.command.DeleteStudyNoticeUseCase;
-import com.kgu.studywithme.studynotice.application.usecase.command.UpdateStudyNoticeUseCase;
-import com.kgu.studywithme.studynotice.application.usecase.command.WriteStudyNoticeUseCase;
+import com.kgu.studywithme.global.resolver.ExtractPayload;
+import com.kgu.studywithme.studynotice.application.usecase.DeleteStudyNoticeUseCase;
+import com.kgu.studywithme.studynotice.application.usecase.UpdateStudyNoticeUseCase;
+import com.kgu.studywithme.studynotice.application.usecase.WriteStudyNoticeUseCase;
+import com.kgu.studywithme.studynotice.application.usecase.command.DeleteStudyNoticeCommand;
+import com.kgu.studywithme.studynotice.application.usecase.command.UpdateStudyNoticeCommand;
+import com.kgu.studywithme.studynotice.application.usecase.command.WriteStudyNoticeCommand;
 import com.kgu.studywithme.studynotice.presentation.dto.request.UpdateStudyNoticeRequest;
 import com.kgu.studywithme.studynotice.presentation.dto.request.WriteStudyNoticeRequest;
 import com.kgu.studywithme.studynotice.presentation.dto.response.StudyNoticeIdResponse;
@@ -24,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "4-6. 스터디 공지사항 API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/studies/{studyId}")
+@RequestMapping("/api/studies/{studyId}/notices")
 public class StudyNoticeApiController {
     private final WriteStudyNoticeUseCase writeStudyNoticeUseCase;
     private final UpdateStudyNoticeUseCase updateStudyNoticeUseCase;
@@ -32,54 +35,43 @@ public class StudyNoticeApiController {
 
     @Operation(summary = "스터디 공지사항 작성 EndPoint")
     @CheckStudyHost
-    @PostMapping("/notice")
+    @PostMapping
     public ResponseEntity<StudyNoticeIdResponse> write(
             @ExtractPayload final Long hostId,
             @PathVariable final Long studyId,
             @RequestBody @Valid final WriteStudyNoticeRequest request
     ) {
-        final Long noticeId = writeStudyNoticeUseCase.invoke(
-                new WriteStudyNoticeUseCase.Command(
-                        hostId,
-                        studyId,
-                        request.title(),
-                        request.content()
-                )
-        );
+        final Long noticeId = writeStudyNoticeUseCase.invoke(new WriteStudyNoticeCommand(
+                hostId,
+                studyId,
+                request.title(),
+                request.content()
+        ));
         return ResponseEntity.ok(new StudyNoticeIdResponse(noticeId));
     }
 
     @Operation(summary = "스터디 공지사항 수정 EndPoint")
     @CheckStudyHost
-    @PatchMapping("/notices/{noticeId}")
+    @PatchMapping("/{noticeId}")
     public ResponseEntity<Void> update(
             @ExtractPayload final Long hostId,
             @PathVariable final Long studyId,
             @PathVariable final Long noticeId,
             @RequestBody @Valid final UpdateStudyNoticeRequest request
     ) {
-        updateStudyNoticeUseCase.invoke(
-                new UpdateStudyNoticeUseCase.Command(
-                        hostId,
-                        noticeId,
-                        request.title(),
-                        request.content()
-                )
-        );
+        updateStudyNoticeUseCase.invoke(new UpdateStudyNoticeCommand(noticeId, request.title(), request.content()));
         return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "스터디 공지사항 삭제 EndPoint")
     @CheckStudyHost
-    @DeleteMapping("/notices/{noticeId}")
+    @DeleteMapping("/{noticeId}")
     public ResponseEntity<Void> delete(
             @ExtractPayload final Long hostId,
             @PathVariable final Long studyId,
             @PathVariable final Long noticeId
     ) {
-        deleteStudyNoticeUseCase.invoke(
-                new DeleteStudyNoticeUseCase.Command(hostId, noticeId)
-        );
+        deleteStudyNoticeUseCase.invoke(new DeleteStudyNoticeCommand(noticeId));
         return ResponseEntity.noContent().build();
     }
 }

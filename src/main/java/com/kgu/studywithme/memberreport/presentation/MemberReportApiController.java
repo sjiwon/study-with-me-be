@@ -1,7 +1,8 @@
 package com.kgu.studywithme.memberreport.presentation;
 
-import com.kgu.studywithme.auth.utils.ExtractPayload;
-import com.kgu.studywithme.memberreport.application.usecase.command.ReportMemberUseCase;
+import com.kgu.studywithme.global.resolver.ExtractPayload;
+import com.kgu.studywithme.memberreport.application.usecase.ReportMemberUseCase;
+import com.kgu.studywithme.memberreport.application.usecase.command.ReportMemberCommand;
 import com.kgu.studywithme.memberreport.presentation.dto.request.ReportMemberRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,7 +29,7 @@ public class MemberReportApiController {
             @PathVariable final Long reporteeId,
             @RequestBody @Valid final ReportMemberRequest request
     ) {
-        reportMemberUseCase.invoke(new ReportMemberUseCase.Command(reporterId, reporteeId, request.reason()));
+        reportMemberUseCase.invoke(new ReportMemberCommand(reporterId, reporteeId, request.reason()));
         return ResponseEntity.noContent().build();
     }
 }

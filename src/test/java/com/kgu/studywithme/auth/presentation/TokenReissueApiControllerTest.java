@@ -13,8 +13,8 @@ import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDoc
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getExceptionResponseFields;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithRefreshToken;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
-import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.REFRESH_TOKEN;
+import static com.kgu.studywithme.common.utils.TokenUtils.applyRefreshTokenToAuthorizationHeader;
 import static com.kgu.studywithme.common.utils.TokenUtils.createTokenResponse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -41,20 +41,13 @@ class TokenReissueApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, REFRESH_TOKEN));
+                    .header(AUTHORIZATION, applyRefreshTokenToAuthorizationHeader());
 
             // then
             final AuthErrorCode expectedError = AuthErrorCode.EXPIRED_TOKEN;
             mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isUnauthorized(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
-                    )
+                    .andExpect(status().isUnauthorized())
+                    .andExpectAll(getResultMatchersViaErrorCode(expectedError))
                     .andDo(
                             document(
                                     "TokenReissueApi/Failure/Case1",
@@ -75,20 +68,13 @@ class TokenReissueApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, REFRESH_TOKEN));
+                    .header(AUTHORIZATION, applyRefreshTokenToAuthorizationHeader());
 
             // then
             final AuthErrorCode expectedError = AuthErrorCode.INVALID_TOKEN;
             mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isUnauthorized(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(expectedError.getMessage())
-                    )
+                    .andExpect(status().isUnauthorized())
+                    .andExpectAll(getResultMatchersViaErrorCode(expectedError))
                     .andDo(
                             document(
                                     "TokenReissueApi/Failure/Case2",
@@ -110,7 +96,7 @@ class TokenReissueApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, REFRESH_TOKEN));
+                    .header(AUTHORIZATION, applyRefreshTokenToAuthorizationHeader());
 
             // then
             mockMvc.perform(requestBuilder)

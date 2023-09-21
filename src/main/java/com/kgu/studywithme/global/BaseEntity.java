@@ -39,6 +39,13 @@ public abstract class BaseEntity<T> {
 
     @SuppressWarnings("unchecked")
     @VisibleForTesting
+    public T apply(final long id) {
+        this.id = id;
+        return (T) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    @VisibleForTesting
     public T apply(final long id, final LocalDateTime now) {
         this.id = id;
         this.createdAt = now;

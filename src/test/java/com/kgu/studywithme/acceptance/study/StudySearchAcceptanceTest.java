@@ -1,7 +1,7 @@
 package com.kgu.studywithme.acceptance.study;
 
-import com.kgu.studywithme.auth.domain.AuthMember;
-import com.kgu.studywithme.auth.domain.AuthToken;
+import com.kgu.studywithme.auth.domain.model.AuthMember;
+import com.kgu.studywithme.auth.domain.model.AuthToken;
 import com.kgu.studywithme.common.AcceptanceTest;
 import com.kgu.studywithme.common.config.DatabaseCleanerAllCallbackExtension;
 import com.kgu.studywithme.common.fixture.MemberFixture;
@@ -25,7 +25,7 @@ import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터
 import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디_참여_신청을_한다;
 import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.스터디를_졸업한다;
 import static com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture.카테고리로_스터디를_조회한다;
-import static com.kgu.studywithme.category.domain.Category.PROGRAMMING;
+import static com.kgu.studywithme.category.domain.model.Category.PROGRAMMING;
 import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY1;
 import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY2;
 import static com.kgu.studywithme.common.fixture.MemberFixture.DUMMY3;
@@ -38,9 +38,9 @@ import static com.kgu.studywithme.common.fixture.StudyFixture.OOP;
 import static com.kgu.studywithme.common.fixture.StudyFixture.RABBITMQ;
 import static com.kgu.studywithme.common.fixture.StudyFixture.REDIS;
 import static com.kgu.studywithme.common.fixture.StudyFixture.TOEIC;
-import static com.kgu.studywithme.study.utils.PagingConstants.SortType.DATE;
-import static com.kgu.studywithme.study.utils.PagingConstants.SortType.FAVORITE;
-import static com.kgu.studywithme.study.utils.PagingConstants.SortType.REVIEW;
+import static com.kgu.studywithme.study.utils.search.SearchSortType.DATE;
+import static com.kgu.studywithme.study.utils.search.SearchSortType.FAVORITE;
+import static com.kgu.studywithme.study.utils.search.SearchSortType.REVIEW;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;

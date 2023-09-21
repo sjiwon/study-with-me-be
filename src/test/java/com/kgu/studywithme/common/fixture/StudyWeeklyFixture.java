@@ -1,7 +1,7 @@
 package com.kgu.studywithme.common.fixture;
 
-import com.kgu.studywithme.studyweekly.domain.StudyWeekly;
-import com.kgu.studywithme.studyweekly.domain.attachment.UploadAttachment;
+import com.kgu.studywithme.studyweekly.domain.model.StudyWeekly;
+import com.kgu.studywithme.studyweekly.domain.model.UploadAttachment;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

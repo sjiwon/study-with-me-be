@@ -37,7 +37,7 @@ import static org.mockito.BDDMockito.given;
 @DisplayName("Auth -> GoogleOAuthConnector 테스트")
 class GoogleOAuthConnectorTest {
     @Autowired
-    private GoogleOAuthConnector googleOAuthConnector;
+    private GoogleOAuthConnector sut;
 
     @Autowired
     private GoogleOAuthProperties properties;
@@ -53,11 +53,13 @@ class GoogleOAuthConnectorTest {
         void failure() {
             // given
             given(restTemplate.postForEntity(
-                    eq(properties.getTokenUrl()), any(HttpEntity.class), eq(GoogleTokenResponse.class)
+                    eq(properties.getTokenUrl()),
+                    any(HttpEntity.class),
+                    eq(GoogleTokenResponse.class)
             )).willThrow(RestClientException.class);
 
             // when - then
-            assertThatThrownBy(() -> googleOAuthConnector.fetchToken(AUTHORIZATION_CODE, REDIRECT_URI, STATE))
+            assertThatThrownBy(() -> sut.fetchToken(AUTHORIZATION_CODE, REDIRECT_URI, STATE))
                     .isInstanceOf(StudyWithMeException.class)
                     .hasMessage(AuthErrorCode.GOOGLE_OAUTH_EXCEPTION.getMessage());
         }
@@ -69,12 +71,13 @@ class GoogleOAuthConnectorTest {
             final GoogleTokenResponse response = TokenUtils.createGoogleTokenResponse();
             final ResponseEntity<GoogleTokenResponse> responseEntity = ResponseEntity.ok(response);
             given(restTemplate.postForEntity(
-                    eq(properties.getTokenUrl()), any(HttpEntity.class), eq(GoogleTokenResponse.class)
+                    eq(properties.getTokenUrl()),
+                    any(HttpEntity.class),
+                    eq(GoogleTokenResponse.class)
             )).willReturn(responseEntity);
 
             // when
-            final GoogleTokenResponse result
-                    = (GoogleTokenResponse) googleOAuthConnector.fetchToken(AUTHORIZATION_CODE, REDIRECT_URI, STATE);
+            final GoogleTokenResponse result = (GoogleTokenResponse) sut.fetchToken(AUTHORIZATION_CODE, REDIRECT_URI, STATE);
 
             // then
             assertAll(
@@ -95,11 +98,14 @@ class GoogleOAuthConnectorTest {
         void failure() {
             // given
             given(restTemplate.exchange(
-                    eq(properties.getUserInfoUrl()), eq(HttpMethod.GET), any(HttpEntity.class), eq(GoogleUserResponse.class)
+                    eq(properties.getUserInfoUrl()),
+                    eq(HttpMethod.GET),
+                    any(HttpEntity.class),
+                    eq(GoogleUserResponse.class)
             )).willThrow(RestClientException.class);
 
             // when - then
-            assertThatThrownBy(() -> googleOAuthConnector.fetchUserInfo(ACCESS_TOKEN))
+            assertThatThrownBy(() -> sut.fetchUserInfo(ACCESS_TOKEN))
                     .isInstanceOf(StudyWithMeException.class)
                     .hasMessage(AuthErrorCode.GOOGLE_OAUTH_EXCEPTION.getMessage());
         }
@@ -111,11 +117,14 @@ class GoogleOAuthConnectorTest {
             final GoogleUserResponse response = JIWON.toGoogleUserResponse();
             final ResponseEntity<GoogleUserResponse> responseEntity = ResponseEntity.ok(response);
             given(restTemplate.exchange(
-                    eq(properties.getUserInfoUrl()), eq(HttpMethod.GET), any(HttpEntity.class), eq(GoogleUserResponse.class)
+                    eq(properties.getUserInfoUrl()),
+                    eq(HttpMethod.GET),
+                    any(HttpEntity.class),
+                    eq(GoogleUserResponse.class)
             )).willReturn(responseEntity);
 
             // when
-            final GoogleUserResponse result = (GoogleUserResponse) googleOAuthConnector.fetchUserInfo(ACCESS_TOKEN);
+            final GoogleUserResponse result = (GoogleUserResponse) sut.fetchUserInfo(ACCESS_TOKEN);
 
             // then
             assertAll(

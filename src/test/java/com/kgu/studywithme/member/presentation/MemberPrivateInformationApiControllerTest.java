@@ -1,18 +1,17 @@
 package com.kgu.studywithme.member.presentation;
 
-import com.kgu.studywithme.category.domain.Category;
+import com.kgu.studywithme.category.domain.model.Category;
 import com.kgu.studywithme.common.ControllerTest;
-import com.kgu.studywithme.member.domain.Member;
-import com.kgu.studywithme.member.infrastructure.query.dto.AppliedStudy;
-import com.kgu.studywithme.member.infrastructure.query.dto.LikeMarkedStudy;
-import com.kgu.studywithme.member.infrastructure.query.dto.MemberPrivateInformation;
+import com.kgu.studywithme.member.domain.model.Member;
+import com.kgu.studywithme.member.domain.repository.query.dto.AppliedStudy;
+import com.kgu.studywithme.member.domain.repository.query.dto.LikeMarkedStudy;
+import com.kgu.studywithme.member.domain.repository.query.dto.MemberPrivateInformation;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
@@ -21,8 +20,7 @@ import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentRequest;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
-import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
-import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
+import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessTokenToAuthorizationHeader;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -45,7 +43,7 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
             // given
             mockingToken(true, MEMBER_ID);
 
-            final Member member = JIWON.toMember().apply(1L, LocalDateTime.now());
+            final Member member = JIWON.toMember().apply(1L);
             final MemberPrivateInformation response = new MemberPrivateInformation(
                     member.getId(),
                     member.getName(),
@@ -62,12 +60,12 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
                             .map(Category::getName)
                             .toList()
             );
-            given(queryPrivateInformationByIdUseCase.invoke(any())).willReturn(response);
+            given(memberPrivateQueryUseCase.getPrivateInformationById(any())).willReturn(response);
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .get(BASE_URL)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
 
             // then
             mockMvc.perform(requestBuilder)
@@ -120,28 +118,26 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
-            given(queryAppliedStudyByIdUseCase.invoke(any()))
-                    .willReturn(
-                            List.of(
-                                    new AppliedStudy(
-                                            1L,
-                                            SPRING.getName(),
-                                            SPRING.getCategory(),
-                                            SPRING.getThumbnail()
-                                    ),
-                                    new AppliedStudy(
-                                            2L,
-                                            JPA.getName(),
-                                            JPA.getCategory(),
-                                            JPA.getThumbnail()
-                                    )
+            given(memberPrivateQueryUseCase.getAppliedStudyById(any()))
+                    .willReturn(List.of(
+                            new AppliedStudy(
+                                    1L,
+                                    SPRING.getName(),
+                                    SPRING.getCategory(),
+                                    SPRING.getThumbnail()
+                            ),
+                            new AppliedStudy(
+                                    2L,
+                                    JPA.getName(),
+                                    JPA.getCategory(),
+                                    JPA.getThumbnail()
                             )
-                    );
+                    ));
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .get(BASE_URL)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
 
             // then
             mockMvc.perform(requestBuilder)
@@ -180,28 +176,26 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
-            given(queryLikeMarkedStudyByIdUseCase.invoke(any()))
-                    .willReturn(
-                            List.of(
-                                    new LikeMarkedStudy(
-                                            1L,
-                                            SPRING.getName(),
-                                            SPRING.getCategory(),
-                                            SPRING.getThumbnail()
-                                    ),
-                                    new LikeMarkedStudy(
-                                            2L,
-                                            JPA.getName(),
-                                            JPA.getCategory(),
-                                            JPA.getThumbnail()
-                                    )
+            given(memberPrivateQueryUseCase.getLikeMarkedStudyById(any()))
+                    .willReturn(List.of(
+                            new LikeMarkedStudy(
+                                    1L,
+                                    SPRING.getName(),
+                                    SPRING.getCategory(),
+                                    SPRING.getThumbnail()
+                            ),
+                            new LikeMarkedStudy(
+                                    2L,
+                                    JPA.getName(),
+                                    JPA.getCategory(),
+                                    JPA.getThumbnail()
                             )
-                    );
+                    ));
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .get(BASE_URL)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
 
             // then
             mockMvc.perform(requestBuilder)

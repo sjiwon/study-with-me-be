@@ -4,7 +4,7 @@ import com.kgu.studywithme.common.fixture.StudyFixture;
 import com.kgu.studywithme.common.fixture.StudyWeeklyFixture;
 import com.kgu.studywithme.study.presentation.dto.request.CreateStudyRequest;
 import com.kgu.studywithme.study.presentation.dto.request.UpdateStudyRequest;
-import com.kgu.studywithme.studyattendance.domain.AttendanceStatus;
+import com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus;
 import com.kgu.studywithme.studyattendance.presentation.dto.request.ManualAttendanceRequest;
 import com.kgu.studywithme.studynotice.presentation.dto.request.UpdateStudyNoticeCommentRequest;
 import com.kgu.studywithme.studynotice.presentation.dto.request.UpdateStudyNoticeRequest;
@@ -35,7 +35,7 @@ public class StudyAcceptanceFixture {
             final StudyFixture fixture
     ) {
         final String uri = UriComponentsBuilder
-                .fromPath("/api/study")
+                .fromPath("/api/studies")
                 .build()
                 .toUri()
                 .getPath();
@@ -199,7 +199,7 @@ public class StudyAcceptanceFixture {
             final Long studyId
     ) {
         final String uri = UriComponentsBuilder
-                .fromPath("/api/studies/{studyId}/review")
+                .fromPath("/api/studies/{studyId}/reviews")
                 .build(studyId)
                 .getPath();
 
@@ -242,7 +242,7 @@ public class StudyAcceptanceFixture {
             final StudyWeeklyFixture fixture
     ) {
         final String uri = UriComponentsBuilder
-                .fromPath("/api/studies/{studyId}/week")
+                .fromPath("/api/studies/{studyId}/weeks")
                 .build(studyId)
                 .getPath();
 
@@ -366,7 +366,7 @@ public class StudyAcceptanceFixture {
             final Long studyId
     ) {
         final String uri = UriComponentsBuilder
-                .fromPath("/api/studies/{studyId}/notice")
+                .fromPath("/api/studies/{studyId}/notices")
                 .build(studyId)
                 .getPath();
 
@@ -408,7 +408,7 @@ public class StudyAcceptanceFixture {
             final Long noticeId
     ) {
         final String uri = UriComponentsBuilder
-                .fromPath("/api/notices/{noticeId}/comment")
+                .fromPath("/api/notices/{noticeId}/comments")
                 .build(noticeId)
                 .getPath();
 

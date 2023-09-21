@@ -1,9 +1,11 @@
 package com.kgu.studywithme.studyparticipant.presentation;
 
-import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.global.aop.CheckStudyHost;
-import com.kgu.studywithme.studyparticipant.application.usecase.command.ApproveParticipationUseCase;
-import com.kgu.studywithme.studyparticipant.application.usecase.command.RejectParticipationUseCase;
+import com.kgu.studywithme.global.resolver.ExtractPayload;
+import com.kgu.studywithme.studyparticipant.application.usecase.ApproveParticipationUseCase;
+import com.kgu.studywithme.studyparticipant.application.usecase.RejectParticipationUseCase;
+import com.kgu.studywithme.studyparticipant.application.usecase.command.ApproveParticipationCommand;
+import com.kgu.studywithme.studyparticipant.application.usecase.command.RejectParticipationCommand;
 import com.kgu.studywithme.studyparticipant.presentation.dto.request.RejectParticipationRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,12 +34,7 @@ public class StudyParticipantDecisionApiController {
             @PathVariable final Long studyId,
             @PathVariable final Long applierId
     ) {
-        approveParticipationUseCase.invoke(
-                new ApproveParticipationUseCase.Command(
-                        studyId,
-                        applierId
-                )
-        );
+        approveParticipationUseCase.invoke(new ApproveParticipationCommand(studyId, applierId));
         return ResponseEntity.noContent().build();
     }
 
@@ -50,13 +47,7 @@ public class StudyParticipantDecisionApiController {
             @PathVariable final Long applierId,
             @RequestBody @Valid final RejectParticipationRequest request
     ) {
-        rejectParticipationUseCase.invoke(
-                new RejectParticipationUseCase.Command(
-                        studyId,
-                        applierId,
-                        request.reason()
-                )
-        );
+        rejectParticipationUseCase.invoke(new RejectParticipationCommand(studyId, applierId, request.reason()));
         return ResponseEntity.noContent().build();
     }
 }

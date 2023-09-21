@@ -2,93 +2,80 @@ package com.kgu.studywithme.common;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kgu.studywithme.auth.application.usecase.command.LogoutUseCase;
-import com.kgu.studywithme.auth.application.usecase.command.OAuthLoginUseCase;
-import com.kgu.studywithme.auth.application.usecase.command.ReissueTokenUseCase;
-import com.kgu.studywithme.auth.application.usecase.query.QueryOAuthLinkUseCase;
+import com.kgu.studywithme.auth.application.usecase.GetOAuthLinkUseCase;
+import com.kgu.studywithme.auth.application.usecase.LogoutUseCase;
+import com.kgu.studywithme.auth.application.usecase.OAuthLoginUseCase;
+import com.kgu.studywithme.auth.application.usecase.ReissueTokenUseCase;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.auth.presentation.OAuthApiController;
 import com.kgu.studywithme.auth.presentation.TokenReissueApiController;
-import com.kgu.studywithme.auth.utils.JwtTokenProvider;
-import com.kgu.studywithme.category.application.usecase.query.QueryAllCategoriesUseCase;
+import com.kgu.studywithme.auth.utils.TokenProvider;
+import com.kgu.studywithme.category.application.usecase.GetAllCategoriesUseCase;
 import com.kgu.studywithme.category.presentation.CategoryApiController;
 import com.kgu.studywithme.common.config.TestAopConfiguration;
 import com.kgu.studywithme.common.config.TestWebBeanConfiguration;
-import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeCancellationUseCase;
-import com.kgu.studywithme.favorite.application.usecase.command.StudyLikeMarkingUseCase;
+import com.kgu.studywithme.favorite.application.usecase.CancelStudyLikeUseCase;
+import com.kgu.studywithme.favorite.application.usecase.MarkStudyLikeUseCase;
 import com.kgu.studywithme.favorite.presentation.FavoriteApiController;
-import com.kgu.studywithme.file.application.adapter.FileUploader;
+import com.kgu.studywithme.file.application.usecase.UploadImageUseCase;
 import com.kgu.studywithme.file.presentation.FileUploadApiController;
+import com.kgu.studywithme.global.exception.ErrorCode;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.global.exception.slack.SlackAlertManager;
-import com.kgu.studywithme.member.application.usecase.command.SignUpMemberUseCase;
-import com.kgu.studywithme.member.application.usecase.command.UpdateMemberUseCase;
-import com.kgu.studywithme.member.application.usecase.query.QueryAppliedStudyByIdUseCase;
-import com.kgu.studywithme.member.application.usecase.query.QueryAttendanceRatioByIdUseCase;
-import com.kgu.studywithme.member.application.usecase.query.QueryGraduatedStudyByIdUseCase;
-import com.kgu.studywithme.member.application.usecase.query.QueryLikeMarkedStudyByIdUseCase;
-import com.kgu.studywithme.member.application.usecase.query.QueryParticipateStudyByIdUseCase;
-import com.kgu.studywithme.member.application.usecase.query.QueryPrivateInformationByIdUseCase;
-import com.kgu.studywithme.member.application.usecase.query.QueryPublicInformationByIdUseCase;
-import com.kgu.studywithme.member.application.usecase.query.QueryReceivedReviewByIdUseCase;
+import com.kgu.studywithme.member.application.usecase.MemberPrivateQueryUseCase;
+import com.kgu.studywithme.member.application.usecase.MemberPublicQueryUseCase;
+import com.kgu.studywithme.member.application.usecase.SignUpMemberUseCase;
+import com.kgu.studywithme.member.application.usecase.UpdateMemberUseCase;
 import com.kgu.studywithme.member.presentation.MemberApiController;
 import com.kgu.studywithme.member.presentation.MemberPrivateInformationApiController;
 import com.kgu.studywithme.member.presentation.MemberPublicInformationApiController;
-import com.kgu.studywithme.memberreport.application.usecase.command.ReportMemberUseCase;
+import com.kgu.studywithme.memberreport.application.usecase.ReportMemberUseCase;
 import com.kgu.studywithme.memberreport.presentation.MemberReportApiController;
-import com.kgu.studywithme.memberreview.application.usecase.command.UpdateMemberReviewUseCase;
-import com.kgu.studywithme.memberreview.application.usecase.command.WriteMemberReviewUseCase;
+import com.kgu.studywithme.memberreview.application.usecase.UpdateMemberReviewUseCase;
+import com.kgu.studywithme.memberreview.application.usecase.WriteMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.presentation.MemberReviewApiController;
-import com.kgu.studywithme.study.application.adapter.StudyVerificationRepositoryAdapter;
-import com.kgu.studywithme.study.application.usecase.command.CreateStudyUseCase;
-import com.kgu.studywithme.study.application.usecase.command.TerminateStudyUseCase;
-import com.kgu.studywithme.study.application.usecase.command.UpdateStudyUseCase;
-import com.kgu.studywithme.study.application.usecase.query.QueryApplicantByIdUseCase;
-import com.kgu.studywithme.study.application.usecase.query.QueryAttendanceByIdUseCase;
-import com.kgu.studywithme.study.application.usecase.query.QueryBasicInformationByIdUseCase;
-import com.kgu.studywithme.study.application.usecase.query.QueryNoticeByIdUseCase;
-import com.kgu.studywithme.study.application.usecase.query.QueryParticipantByIdUseCase;
-import com.kgu.studywithme.study.application.usecase.query.QueryReviewByIdUseCase;
-import com.kgu.studywithme.study.application.usecase.query.QueryStudyByCategoryUseCase;
-import com.kgu.studywithme.study.application.usecase.query.QueryStudyByRecommendUseCase;
-import com.kgu.studywithme.study.application.usecase.query.QueryWeeklyByIdUseCase;
+import com.kgu.studywithme.study.application.usecase.CreateStudyUseCase;
+import com.kgu.studywithme.study.application.usecase.StudyQueryOnlyParticipantUseCase;
+import com.kgu.studywithme.study.application.usecase.StudyQueryUseCase;
+import com.kgu.studywithme.study.application.usecase.StudySearchUseCase;
+import com.kgu.studywithme.study.application.usecase.TerminateStudyUseCase;
+import com.kgu.studywithme.study.application.usecase.UpdateStudyUseCase;
+import com.kgu.studywithme.study.domain.repository.StudyRepository;
 import com.kgu.studywithme.study.presentation.StudyApiController;
 import com.kgu.studywithme.study.presentation.StudyInformationApiController;
 import com.kgu.studywithme.study.presentation.StudyInformationOnlyParticipantApiController;
 import com.kgu.studywithme.study.presentation.StudySearchApiController;
-import com.kgu.studywithme.studyattendance.application.usecase.command.ManualAttendanceUseCase;
+import com.kgu.studywithme.studyattendance.application.usecase.ManualAttendanceUseCase;
 import com.kgu.studywithme.studyattendance.presentation.StudyAttendanceApiController;
-import com.kgu.studywithme.studynotice.application.usecase.command.DeleteStudyNoticeCommentUseCase;
-import com.kgu.studywithme.studynotice.application.usecase.command.DeleteStudyNoticeUseCase;
-import com.kgu.studywithme.studynotice.application.usecase.command.UpdateStudyNoticeCommentUseCase;
-import com.kgu.studywithme.studynotice.application.usecase.command.UpdateStudyNoticeUseCase;
-import com.kgu.studywithme.studynotice.application.usecase.command.WriteStudyNoticeCommentUseCase;
-import com.kgu.studywithme.studynotice.application.usecase.command.WriteStudyNoticeUseCase;
+import com.kgu.studywithme.studynotice.application.usecase.DeleteStudyNoticeCommentUseCase;
+import com.kgu.studywithme.studynotice.application.usecase.DeleteStudyNoticeUseCase;
+import com.kgu.studywithme.studynotice.application.usecase.UpdateStudyNoticeCommentUseCase;
+import com.kgu.studywithme.studynotice.application.usecase.UpdateStudyNoticeUseCase;
+import com.kgu.studywithme.studynotice.application.usecase.WriteStudyNoticeCommentUseCase;
+import com.kgu.studywithme.studynotice.application.usecase.WriteStudyNoticeUseCase;
 import com.kgu.studywithme.studynotice.presentation.StudyNoticeApiController;
 import com.kgu.studywithme.studynotice.presentation.StudyNoticeCommentApiController;
-import com.kgu.studywithme.studyparticipant.application.adapter.ParticipantVerificationRepositoryAdapter;
-import com.kgu.studywithme.studyparticipant.application.usecase.command.ApplyCancellationUseCase;
-import com.kgu.studywithme.studyparticipant.application.usecase.command.ApplyStudyUseCase;
-import com.kgu.studywithme.studyparticipant.application.usecase.command.ApproveParticipationUseCase;
-import com.kgu.studywithme.studyparticipant.application.usecase.command.DelegateHostAuthorityUseCase;
-import com.kgu.studywithme.studyparticipant.application.usecase.command.GraduateStudyUseCase;
-import com.kgu.studywithme.studyparticipant.application.usecase.command.LeaveParticipationUseCase;
-import com.kgu.studywithme.studyparticipant.application.usecase.command.RejectParticipationUseCase;
+import com.kgu.studywithme.studyparticipant.application.usecase.ApplyCancelUseCase;
+import com.kgu.studywithme.studyparticipant.application.usecase.ApplyStudyUseCase;
+import com.kgu.studywithme.studyparticipant.application.usecase.ApproveParticipationUseCase;
+import com.kgu.studywithme.studyparticipant.application.usecase.DelegateHostAuthorityUseCase;
+import com.kgu.studywithme.studyparticipant.application.usecase.GraduateStudyUseCase;
+import com.kgu.studywithme.studyparticipant.application.usecase.LeaveStudyUseCase;
+import com.kgu.studywithme.studyparticipant.application.usecase.RejectParticipationUseCase;
+import com.kgu.studywithme.studyparticipant.domain.repository.StudyParticipantRepository;
 import com.kgu.studywithme.studyparticipant.presentation.DelegateHostAuthorityApiController;
 import com.kgu.studywithme.studyparticipant.presentation.StudyApplyApiController;
 import com.kgu.studywithme.studyparticipant.presentation.StudyFinalizeApiController;
 import com.kgu.studywithme.studyparticipant.presentation.StudyParticipantDecisionApiController;
-import com.kgu.studywithme.studyreview.application.usecase.command.DeleteStudyReviewUseCase;
-import com.kgu.studywithme.studyreview.application.usecase.command.UpdateStudyReviewUseCase;
-import com.kgu.studywithme.studyreview.application.usecase.command.WriteStudyReviewUseCase;
+import com.kgu.studywithme.studyreview.application.usecase.DeleteStudyReviewUseCase;
+import com.kgu.studywithme.studyreview.application.usecase.UpdateStudyReviewUseCase;
+import com.kgu.studywithme.studyreview.application.usecase.WriteStudyReviewUseCase;
 import com.kgu.studywithme.studyreview.presentation.StudyReviewApiController;
-import com.kgu.studywithme.studyweekly.application.service.AssignmentUploader;
-import com.kgu.studywithme.studyweekly.application.service.AttachmentUploader;
-import com.kgu.studywithme.studyweekly.application.usecase.command.CreateStudyWeeklyUseCase;
-import com.kgu.studywithme.studyweekly.application.usecase.command.DeleteStudyWeeklyUseCase;
-import com.kgu.studywithme.studyweekly.application.usecase.command.EditWeeklyAssignmentUseCase;
-import com.kgu.studywithme.studyweekly.application.usecase.command.SubmitWeeklyAssignmentUseCase;
-import com.kgu.studywithme.studyweekly.application.usecase.command.UpdateStudyWeeklyUseCase;
+import com.kgu.studywithme.studyweekly.application.usecase.CreateStudyWeeklyUseCase;
+import com.kgu.studywithme.studyweekly.application.usecase.DeleteStudyWeeklyUseCase;
+import com.kgu.studywithme.studyweekly.application.usecase.EditWeeklySubmittedAssignmentUseCase;
+import com.kgu.studywithme.studyweekly.application.usecase.SubmitWeeklyAssignmentUseCase;
+import com.kgu.studywithme.studyweekly.application.usecase.UpdateStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.presentation.StudyWeeklyApiController;
 import com.kgu.studywithme.studyweekly.presentation.StudyWeeklySubmitApiController;
 import org.junit.jupiter.api.BeforeEach;
@@ -103,6 +90,7 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -113,6 +101,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @Tag("Controller")
 @WebMvcTest({
@@ -183,21 +172,21 @@ public abstract class ControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private JwtTokenProvider jwtTokenProvider;
+    private TokenProvider tokenProvider;
 
     @MockBean
     private SlackAlertManager slackAlertManager;
 
     // AOP Validation
     @MockBean
-    private StudyVerificationRepositoryAdapter studyVerificationRepositoryAdapter;
+    private StudyRepository studyRepository;
 
     @MockBean
-    private ParticipantVerificationRepositoryAdapter participantVerificationRepositoryAdapter;
+    private StudyParticipantRepository studyParticipantRepository;
 
     // Auth
     @MockBean
-    protected QueryOAuthLinkUseCase queryOAuthLinkUseCase;
+    protected GetOAuthLinkUseCase getOAuthLinkUseCase;
 
     @MockBean
     protected OAuthLoginUseCase oAuthLoginUseCase;
@@ -210,13 +199,13 @@ public abstract class ControllerTest {
 
     // Category & Favorite
     @MockBean
-    protected QueryAllCategoriesUseCase queryAllCategoriesUseCase;
+    protected GetAllCategoriesUseCase getAllCategoriesUseCase;
 
     @MockBean
-    protected StudyLikeMarkingUseCase studyLikeMarkingUseCase;
+    protected MarkStudyLikeUseCase markStudyLikeUseCase;
 
     @MockBean
-    protected StudyLikeCancellationUseCase studyLikeCancellationUseCase;
+    protected CancelStudyLikeUseCase cancelStudyLikeUseCase;
 
     // Member [Command]
     @MockBean
@@ -227,29 +216,10 @@ public abstract class ControllerTest {
 
     // Member [Query]
     @MockBean
-    protected QueryPublicInformationByIdUseCase queryPublicInformationByIdUseCase;
+    protected MemberPublicQueryUseCase memberPublicQueryUseCase;
 
     @MockBean
-    protected QueryParticipateStudyByIdUseCase queryParticipateStudyByIdUseCase;
-
-    @MockBean
-    protected QueryGraduatedStudyByIdUseCase queryGraduatedStudyByIdUseCase;
-
-    @MockBean
-    protected QueryReceivedReviewByIdUseCase queryReceivedReviewByIdUseCase;
-
-    @MockBean
-    protected QueryAttendanceRatioByIdUseCase queryAttendanceRatioByIdUseCase;
-
-    @MockBean
-    protected QueryPrivateInformationByIdUseCase queryPrivateInformationByIdUseCase;
-
-    @MockBean
-    protected QueryAppliedStudyByIdUseCase queryAppliedStudyByIdUseCase;
-
-    @MockBean
-    protected QueryLikeMarkedStudyByIdUseCase queryLikeMarkedStudyByIdUseCase;
-
+    protected MemberPrivateQueryUseCase memberPrivateQueryUseCase;
 
     // MemberReview
     @MockBean
@@ -274,38 +244,20 @@ public abstract class ControllerTest {
 
     // Study [Query]
     @MockBean
-    protected QueryBasicInformationByIdUseCase queryBasicInformationByIdUseCase;
+    protected StudyQueryUseCase studyQueryUseCase;
 
     @MockBean
-    protected QueryReviewByIdUseCase queryReviewByIdUseCase;
+    protected StudyQueryOnlyParticipantUseCase studyQueryOnlyParticipantUseCase;
 
     @MockBean
-    protected QueryParticipantByIdUseCase queryParticipantByIdUseCase;
-
-    @MockBean
-    protected QueryApplicantByIdUseCase queryApplicantByIdUseCase;
-
-    @MockBean
-    protected QueryNoticeByIdUseCase queryNoticeByIdUseCase;
-
-    @MockBean
-    protected QueryAttendanceByIdUseCase queryAttendanceByIdUseCase;
-
-    @MockBean
-    protected QueryWeeklyByIdUseCase queryWeeklyByIdUseCase;
-
-    @MockBean
-    protected QueryStudyByCategoryUseCase queryStudyByCategoryUseCase;
-
-    @MockBean
-    protected QueryStudyByRecommendUseCase queryStudyByRecommendUseCase;
+    protected StudySearchUseCase studySearchUseCase;
 
     // StudyParticipant
     @MockBean
     protected ApplyStudyUseCase applyStudyUseCase;
 
     @MockBean
-    protected ApplyCancellationUseCase applyCancellationUseCase;
+    protected ApplyCancelUseCase applyCancelUseCase;
 
     @MockBean
     protected ApproveParticipationUseCase approveParticipationUseCase;
@@ -317,7 +269,7 @@ public abstract class ControllerTest {
     protected DelegateHostAuthorityUseCase delegateHostAuthorityUseCase;
 
     @MockBean
-    protected LeaveParticipationUseCase leaveParticipationUseCase;
+    protected LeaveStudyUseCase leaveStudyUseCase;
 
     @MockBean
     protected GraduateStudyUseCase graduateStudyUseCase;
@@ -347,9 +299,6 @@ public abstract class ControllerTest {
 
     // StudyWeekly
     @MockBean
-    protected AttachmentUploader attachmentUploader;
-
-    @MockBean
     protected CreateStudyWeeklyUseCase createStudyWeeklyUseCase;
 
     @MockBean
@@ -359,13 +308,10 @@ public abstract class ControllerTest {
     protected DeleteStudyWeeklyUseCase deleteStudyWeeklyUseCase;
 
     @MockBean
-    protected AssignmentUploader assignmentUploader;
-
-    @MockBean
     protected SubmitWeeklyAssignmentUseCase submitWeeklyAssignmentUseCase;
 
     @MockBean
-    protected EditWeeklyAssignmentUseCase editWeeklyAssignmentUseCase;
+    protected EditWeeklySubmittedAssignmentUseCase editWeeklySubmittedAssignmentUseCase;
 
     // StudyReview
     @MockBean
@@ -379,13 +325,10 @@ public abstract class ControllerTest {
 
     // File
     @MockBean
-    protected FileUploader fileUploader;
+    protected UploadImageUseCase uploadImageUseCase;
 
     @BeforeEach
-    void setUp(
-            final WebApplicationContext context,
-            final RestDocumentationContextProvider provider
-    ) {
+    void setUp(final WebApplicationContext context, final RestDocumentationContextProvider provider) {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(MockMvcRestDocumentation.documentationConfiguration(provider))
                 .alwaysDo(print())
@@ -394,43 +337,54 @@ public abstract class ControllerTest {
                 .build();
     }
 
+    protected ResultMatcher[] getResultMatchersViaErrorCode(final ErrorCode eror) {
+        return new ResultMatcher[]{
+                jsonPath("$.status").exists(),
+                jsonPath("$.status").value(eror.getStatus().value()),
+                jsonPath("$.errorCode").exists(),
+                jsonPath("$.errorCode").value(eror.getErrorCode()),
+                jsonPath("$.message").exists(),
+                jsonPath("$.message").value(eror.getMessage())
+        };
+    }
+
+    protected ResultMatcher[] getResultMatchersViaErrorCode(final ErrorCode eror, final String message) {
+        return new ResultMatcher[]{
+                jsonPath("$.status").exists(),
+                jsonPath("$.status").value(eror.getStatus().value()),
+                jsonPath("$.errorCode").exists(),
+                jsonPath("$.errorCode").value(eror.getErrorCode()),
+                jsonPath("$.message").exists(),
+                jsonPath("$.message").value(message)
+        };
+    }
+
     protected String convertObjectToJson(final Object data) throws JsonProcessingException {
         return objectMapper.writeValueAsString(data);
     }
 
-    protected void mockingToken(
-            final boolean isValid,
-            final Long payloadId
-    ) {
-        given(jwtTokenProvider.isTokenValid(anyString())).willReturn(isValid);
-        given(jwtTokenProvider.getId(anyString())).willReturn(payloadId);
+    protected void mockingToken(final boolean isValid, final Long payloadId) {
+        given(tokenProvider.isTokenValid(anyString())).willReturn(isValid);
+        given(tokenProvider.getId(anyString())).willReturn(payloadId);
     }
 
     protected void mockingTokenWithExpiredException() {
         doThrow(StudyWithMeException.type(AuthErrorCode.EXPIRED_TOKEN))
-                .when(jwtTokenProvider)
+                .when(tokenProvider)
                 .isTokenValid(any());
     }
 
     protected void mockingTokenWithInvalidException() {
         doThrow(StudyWithMeException.type(AuthErrorCode.INVALID_TOKEN))
-                .when(jwtTokenProvider)
+                .when(tokenProvider)
                 .isTokenValid(any());
     }
 
-    protected void mockingForStudyHost(
-            final Long studyId,
-            final Long memberId,
-            final boolean isValid
-    ) {
-        given(studyVerificationRepositoryAdapter.isHost(studyId, memberId)).willReturn(isValid);
+    protected void mockingForStudyHost(final Long studyId, final Long memberId, final boolean isValue) {
+        given(studyRepository.isHost(studyId, memberId)).willReturn(isValue);
     }
 
-    protected void mockingForStudyParticipant(
-            final Long studyId,
-            final Long memberId,
-            final boolean isValid
-    ) {
-        given(participantVerificationRepositoryAdapter.isParticipant(studyId, memberId)).willReturn(isValid);
+    protected void mockingForStudyParticipant(final Long studyId, final Long memberId, final boolean isValid) {
+        given(studyParticipantRepository.isParticipant(studyId, memberId)).willReturn(isValid);
     }
 }

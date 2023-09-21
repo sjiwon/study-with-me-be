@@ -1,9 +1,10 @@
 package com.kgu.studywithme.auth.presentation;
 
-import com.kgu.studywithme.auth.application.usecase.command.ReissueTokenUseCase;
-import com.kgu.studywithme.auth.domain.AuthToken;
-import com.kgu.studywithme.auth.utils.ExtractPayload;
-import com.kgu.studywithme.auth.utils.ExtractToken;
+import com.kgu.studywithme.auth.application.usecase.ReissueTokenUseCase;
+import com.kgu.studywithme.auth.application.usecase.command.ReissueTokenCommand;
+import com.kgu.studywithme.auth.domain.model.AuthToken;
+import com.kgu.studywithme.global.resolver.ExtractPayload;
+import com.kgu.studywithme.global.resolver.ExtractToken;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,6 @@ public class TokenReissueApiController {
             @ExtractPayload final Long memberId,
             @ExtractToken final String refreshToken
     ) {
-        return reissueTokenUseCase.invoke(new ReissueTokenUseCase.Command(memberId, refreshToken));
+        return reissueTokenUseCase.invoke(new ReissueTokenCommand(memberId, refreshToken));
     }
 }

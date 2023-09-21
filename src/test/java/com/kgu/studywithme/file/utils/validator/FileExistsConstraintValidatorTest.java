@@ -1,8 +1,7 @@
 package com.kgu.studywithme.file.utils.validator;
 
-import com.kgu.studywithme.common.ExecuteParallel;
+import com.kgu.studywithme.common.ParallelTest;
 import jakarta.validation.ConstraintValidatorContext;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
@@ -15,19 +14,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.mock;
 
-@ExecuteParallel
 @DisplayName("File -> FileExistsConstraintValidator 테스트")
-public class FileExistsConstraintValidatorTest {
-    private FileExistsConstraintValidator validator;
-    private ConstraintValidatorContext context;
-    private ConstraintValidatorContext.ConstraintViolationBuilder builder;
-
-    @BeforeEach
-    void setUp() {
-        validator = new FileExistsConstraintValidator();
-        context = mock(ConstraintValidatorContext.class);
-        builder = mock(ConstraintValidatorContext.ConstraintViolationBuilder.class);
-    }
+public class FileExistsConstraintValidatorTest extends ParallelTest {
+    private final ConstraintValidatorContext context = mock(ConstraintValidatorContext.class);
+    private final FileExistsConstraintValidator sut = new FileExistsConstraintValidator();
 
     @Test
     @DisplayName("파일이 비어있으면 validator를 통과하지 못한다")
@@ -37,8 +27,8 @@ public class FileExistsConstraintValidatorTest {
         final MultipartFile emptyFile = new MockMultipartFile("file", new byte[0]);
 
         // when
-        final boolean actual1 = validator.isValid(nullFile, null);
-        final boolean actual2 = validator.isValid(emptyFile, null);
+        final boolean actual1 = sut.isValid(nullFile, context);
+        final boolean actual2 = sut.isValid(emptyFile, context);
 
         // then
         assertAll(
@@ -54,7 +44,7 @@ public class FileExistsConstraintValidatorTest {
         final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");
 
         // when
-        final boolean actual = validator.isValid(file, null);
+        final boolean actual = sut.isValid(file, context);
 
         // then
         assertThat(actual).isTrue();

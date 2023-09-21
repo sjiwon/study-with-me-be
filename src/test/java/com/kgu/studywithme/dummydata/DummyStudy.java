@@ -1,6 +1,6 @@
 package com.kgu.studywithme.dummydata;
 
-import com.kgu.studywithme.study.domain.RecruitmentStatus;
+import com.kgu.studywithme.study.domain.model.RecruitmentStatus;
 
 public record DummyStudy(
         long hostId, String name, String description, String category,
@@ -27,7 +27,7 @@ public record DummyStudy(
                 studyType,
                 (studyType.equals("ONLINE")) ? null : "경기도",
                 (studyType.equals("ONLINE")) ? null : "안양시",
-                RecruitmentStatus.IN_PROGRESS.name(),
+                RecruitmentStatus.ON.name(),
                 0,
                 3,
                 0

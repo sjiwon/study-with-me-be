@@ -16,8 +16,7 @@ import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDoc
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getExceptionResponseFields;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
-import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
-import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
+import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessTokenToAuthorizationHeader;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -50,22 +49,15 @@ class FileUploadApiControllerTest extends ControllerTest {
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL)
                     .file((MockMultipartFile) file)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .queryParam("type", "weekly");
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .queryParam("type", "studyWeeklyContentImage");
 
             // then
             final GlobalErrorCode expectedError = GlobalErrorCode.VALIDATION_ERROR;
             final String message = "이미지는 jpg, jpeg, png, gif만 허용합니다.";
             mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isBadRequest(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(message)
-                    )
+                    .andExpect(status().isBadRequest())
+                    .andExpectAll(getResultMatchersViaErrorCode(expectedError, message))
                     .andDo(
                             document(
                                     "UploadApi/Image/Weekly/Failure",
@@ -79,7 +71,7 @@ class FileUploadApiControllerTest extends ControllerTest {
                                     queryParameters(
                                             parameterWithName("type")
                                                     .description("이미지 업로드 타입")
-                                                    .attributes(constraint("주차별 이미지 = weekly / 스터디 설명 이미지 = description"))
+                                                    .attributes(constraint("스터디 설명 이미지 = studyDescriptionImage / Weekly 설명 이미지 = studyWeeklyContentImage"))
                                     ),
                                     getExceptionResponseFields()
                             )
@@ -93,15 +85,15 @@ class FileUploadApiControllerTest extends ControllerTest {
             mockingToken(true, MEMBER_ID);
 
             final String uploadLink = "https://image-upload-link";
-            given(fileUploader.uploadWeeklyImage(any())).willReturn(uploadLink);
+            given(uploadImageUseCase.invoke(any())).willReturn(uploadLink);
 
             // when
             final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL)
                     .file((MockMultipartFile) file)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .queryParam("type", "weekly");
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .queryParam("type", "studyWeeklyContentImage");
 
             // then
             mockMvc.perform(requestBuilder)
@@ -123,7 +115,7 @@ class FileUploadApiControllerTest extends ControllerTest {
                                     queryParameters(
                                             parameterWithName("type")
                                                     .description("이미지 업로드 타입")
-                                                    .attributes(constraint("주차별 이미지 = weekly / 스터디 설명 이미지 = description"))
+                                                    .attributes(constraint("스터디 설명 이미지 = studyDescriptionImage / Weekly 설명 이미지 = studyWeeklyContentImage"))
                                     ),
                                     responseFields(
                                             fieldWithPath("result")
@@ -151,22 +143,15 @@ class FileUploadApiControllerTest extends ControllerTest {
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL)
                     .file((MockMultipartFile) file)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .queryParam("type", "description");
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .queryParam("type", "studyDescriptionImage");
 
             // then
             final GlobalErrorCode expectedError = GlobalErrorCode.VALIDATION_ERROR;
             final String message = "이미지는 jpg, jpeg, png, gif만 허용합니다.";
             mockMvc.perform(requestBuilder)
-                    .andExpectAll(
-                            status().isBadRequest(),
-                            jsonPath("$.status").exists(),
-                            jsonPath("$.status").value(expectedError.getStatus().value()),
-                            jsonPath("$.errorCode").exists(),
-                            jsonPath("$.errorCode").value(expectedError.getErrorCode()),
-                            jsonPath("$.message").exists(),
-                            jsonPath("$.message").value(message)
-                    )
+                    .andExpect(status().isBadRequest())
+                    .andExpectAll(getResultMatchersViaErrorCode(expectedError, message))
                     .andDo(
                             document(
                                     "UploadApi/Image/Description/Failure",
@@ -180,7 +165,7 @@ class FileUploadApiControllerTest extends ControllerTest {
                                     queryParameters(
                                             parameterWithName("type")
                                                     .description("이미지 업로드 타입")
-                                                    .attributes(constraint("주차별 이미지 = weekly / 스터디 설명 이미지 = description"))
+                                                    .attributes(constraint("스터디 설명 이미지 = studyDescriptionImage / Weekly 설명 이미지 = studyWeeklyContentImage"))
                                     ),
                                     getExceptionResponseFields()
                             )
@@ -194,15 +179,15 @@ class FileUploadApiControllerTest extends ControllerTest {
             mockingToken(true, MEMBER_ID);
 
             final String uploadLink = "https://image-upload-link";
-            given(fileUploader.uploadStudyDescriptionImage(any())).willReturn(uploadLink);
+            given(uploadImageUseCase.invoke(any())).willReturn(uploadLink);
 
             // when
             final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL)
                     .file((MockMultipartFile) file)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
-                    .queryParam("type", "description");
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .queryParam("type", "studyDescriptionImage");
 
             // then
             mockMvc.perform(requestBuilder)
@@ -224,7 +209,7 @@ class FileUploadApiControllerTest extends ControllerTest {
                                     queryParameters(
                                             parameterWithName("type")
                                                     .description("이미지 업로드 타입")
-                                                    .attributes(constraint("주차별 이미지 = weekly / 스터디 설명 이미지 = description"))
+                                                    .attributes(constraint("스터디 설명 이미지 = studyDescriptionImage / Weekly 설명 이미지 = studyWeeklyContentImage"))
                                     ),
                                     responseFields(
                                             fieldWithPath("result")

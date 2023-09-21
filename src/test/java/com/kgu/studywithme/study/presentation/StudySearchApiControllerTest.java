@@ -1,9 +1,9 @@
 package com.kgu.studywithme.study.presentation;
 
-import com.kgu.studywithme.category.domain.Category;
+import com.kgu.studywithme.category.domain.model.Category;
 import com.kgu.studywithme.common.ControllerTest;
-import com.kgu.studywithme.study.application.service.dto.StudyPagingResponse;
-import com.kgu.studywithme.study.infrastructure.query.dto.StudyPreview;
+import com.kgu.studywithme.study.application.usecase.dto.StudyPagingResponse;
+import com.kgu.studywithme.study.domain.repository.query.dto.StudyPreview;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -14,16 +14,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.kgu.studywithme.category.domain.Category.PROGRAMMING;
+import static com.kgu.studywithme.category.domain.model.Category.PROGRAMMING;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.constraint;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentRequest;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
-import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
-import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
-import static com.kgu.studywithme.study.domain.RecruitmentStatus.IN_PROGRESS;
-import static com.kgu.studywithme.study.domain.StudyType.ONLINE;
-import static com.kgu.studywithme.study.utils.PagingConstants.SLICE_PER_PAGE;
+import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessTokenToAuthorizationHeader;
+import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.ON;
+import static com.kgu.studywithme.study.domain.model.StudyType.ONLINE;
+import static com.kgu.studywithme.study.utils.search.PagingConstants.SLICE_PER_PAGE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -45,8 +44,7 @@ class StudySearchApiControllerTest extends ControllerTest {
         @DisplayName("카테고리로 스터디 리스트를 조회한다 [Ex) 프로그래밍]")
         void success() throws Exception {
             // given
-            given(queryStudyByCategoryUseCase.invoke(any()))
-                    .willReturn(new StudyPagingResponse(generateStudies(), true));
+            given(studySearchUseCase.getStudiesByCategory(any())).willReturn(new StudyPagingResponse(generateStudies(), true));
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .get(BASE_URL)
@@ -133,13 +131,12 @@ class StudySearchApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
-            given(queryStudyByRecommendUseCase.invoke(any()))
-                    .willReturn(new StudyPagingResponse(generateStudies(), true));
+            given(studySearchUseCase.getStudiesByRecommend(any())).willReturn(new StudyPagingResponse(generateStudies(), true));
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .get(BASE_URL)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN))
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
                     .param("sort", "date")
                     .param("page", String.valueOf(0))
                     .param("type", "online");
@@ -215,25 +212,20 @@ class StudySearchApiControllerTest extends ControllerTest {
         final LocalDateTime now = LocalDateTime.now();
 
         for (long index = 1; index <= SLICE_PER_PAGE; index++) {
-            result.add(
-                    new StudyPreview(
-                            index,
-                            "Study" + index,
-                            "Hello Study" + index,
-                            Category.from((long) (Math.random() * 6 + 1)).getName(),
-                            new StudyPreview.Thumbnail(
-                                    "스터디 썸네일.png",
-                                    "스터디 썸네일 백그라운드 RGB"
-                            ),
-                            ONLINE,
-                            IN_PROGRESS,
-                            10,
-                            8,
-                            now.minusDays(index),
-                            List.of("해시태그A", "해시태그B", "해시태그C"),
-                            generateLikeMarkingMembers()
-                    )
-            );
+            result.add(new StudyPreview(
+                    index,
+                    "Study" + index,
+                    "Hello Study" + index,
+                    Category.from((long) (Math.random() * 6 + 1)).getName(),
+                    new StudyPreview.Thumbnail("스터디 썸네일.png", "스터디 썸네일 백그라운드 RGB"),
+                    ONLINE,
+                    ON,
+                    10,
+                    8,
+                    now.minusDays(index),
+                    List.of("해시태그A", "해시태그B", "해시태그C"),
+                    generateLikeMarkingMembers()
+            ));
         }
 
         return result;

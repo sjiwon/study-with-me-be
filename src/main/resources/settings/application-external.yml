@@ -1,8 +1,0 @@
-slack:
-  webhook:
-    url: ${SLACK_WEBHOOK_URL}
-
-logging:
-  level:
-    org.springframework.core:
-      LocalVariableTableParameterNameDiscoverer: error

@@ -1,6 +1,6 @@
 package com.kgu.studywithme.category.presentation;
 
-import com.kgu.studywithme.category.domain.CategoryResponse;
+import com.kgu.studywithme.category.domain.model.CategoryResponse;
 import com.kgu.studywithme.common.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -10,12 +10,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.List;
 
-import static com.kgu.studywithme.category.domain.Category.APTITUDE_NCS;
-import static com.kgu.studywithme.category.domain.Category.CERTIFICATION;
-import static com.kgu.studywithme.category.domain.Category.ETC;
-import static com.kgu.studywithme.category.domain.Category.INTERVIEW;
-import static com.kgu.studywithme.category.domain.Category.LANGUAGE;
-import static com.kgu.studywithme.category.domain.Category.PROGRAMMING;
+import static com.kgu.studywithme.category.domain.model.Category.APTITUDE_NCS;
+import static com.kgu.studywithme.category.domain.model.Category.CERTIFICATION;
+import static com.kgu.studywithme.category.domain.model.Category.ETC;
+import static com.kgu.studywithme.category.domain.model.Category.INTERVIEW;
+import static com.kgu.studywithme.category.domain.model.Category.LANGUAGE;
+import static com.kgu.studywithme.category.domain.model.Category.PROGRAMMING;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentRequest;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static org.mockito.BDDMockito.given;
@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CategoryApiControllerTest extends ControllerTest {
     @Nested
     @DisplayName("스터디 카테고리 조회 API [GET /api/categories]")
-    class FindAllCategories {
+    class GetAllCategories {
         private static final String BASE_URL = "/api/categories";
 
         @Test
@@ -44,7 +44,7 @@ class CategoryApiControllerTest extends ControllerTest {
                     new CategoryResponse(CERTIFICATION),
                     new CategoryResponse(ETC)
             );
-            given(queryAllCategoriesUseCase.invoke()).willReturn(categories);
+            given(getAllCategoriesUseCase.invoke()).willReturn(categories);
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders

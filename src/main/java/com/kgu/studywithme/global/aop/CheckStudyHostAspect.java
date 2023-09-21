@@ -1,7 +1,7 @@
 package com.kgu.studywithme.global.aop;
 
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import com.kgu.studywithme.study.application.adapter.StudyVerificationRepositoryAdapter;
+import com.kgu.studywithme.study.domain.repository.StudyRepository;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.annotation.Aspect;
@@ -12,11 +12,11 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class CheckStudyHostAspect {
-    private final StudyVerificationRepositoryAdapter studyVerificationRepositoryAdapter;
+    private final StudyRepository studyRepository;
 
     @Before("@annotation(com.kgu.studywithme.global.aop.CheckStudyHost) && args(hostId, studyId, ..)")
-    public void checkParticipant(final Long hostId, final Long studyId) {
-        if (!studyVerificationRepositoryAdapter.isHost(studyId, hostId)) {
+    public void checkStudyHost(final Long hostId, final Long studyId) {
+        if (!studyRepository.isHost(studyId, hostId)) {
             throw StudyWithMeException.type(StudyErrorCode.MEMBER_IS_NOT_HOST);
         }
     }

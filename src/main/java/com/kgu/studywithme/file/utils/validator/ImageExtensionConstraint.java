@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ImageExtensionConstraintValidator.class)
 public @interface ImageExtensionConstraint {
-    String message() default "";
+    String message() default "이미지는 jpg, jpeg, png, gif만 허용합니다.";
 
     Class<?>[] groups() default {};
 

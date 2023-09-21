@@ -1,11 +1,12 @@
 package com.kgu.studywithme.study.presentation;
 
-import com.kgu.studywithme.study.application.usecase.query.QueryBasicInformationByIdUseCase;
-import com.kgu.studywithme.study.application.usecase.query.QueryParticipantByIdUseCase;
-import com.kgu.studywithme.study.application.usecase.query.QueryReviewByIdUseCase;
-import com.kgu.studywithme.study.infrastructure.query.dto.ReviewInformation;
-import com.kgu.studywithme.study.infrastructure.query.dto.StudyBasicInformation;
-import com.kgu.studywithme.study.infrastructure.query.dto.StudyParticipantInformation;
+import com.kgu.studywithme.study.application.usecase.StudyQueryUseCase;
+import com.kgu.studywithme.study.application.usecase.query.GetBasicInformationById;
+import com.kgu.studywithme.study.application.usecase.query.GetParticipantById;
+import com.kgu.studywithme.study.application.usecase.query.GetReviewById;
+import com.kgu.studywithme.study.domain.repository.query.dto.ReviewInformation;
+import com.kgu.studywithme.study.domain.repository.query.dto.StudyBasicInformation;
+import com.kgu.studywithme.study.domain.repository.query.dto.StudyParticipantInformation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -20,34 +21,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/studies/{studyId}")
 public class StudyInformationApiController {
-    private final QueryBasicInformationByIdUseCase queryBasicInformationByIdUseCase;
-    private final QueryReviewByIdUseCase queryReviewByIdUseCase;
-    private final QueryParticipantByIdUseCase queryParticipantByIdUseCase;
+    private final StudyQueryUseCase studyQueryUseCase;
 
     @Operation(summary = "스터디 기본 정보 조회 EndPoint")
     @GetMapping
-    public ResponseEntity<StudyBasicInformation> getInformation(@PathVariable final Long studyId) {
-        final StudyBasicInformation response = queryBasicInformationByIdUseCase.invoke(
-                new QueryBasicInformationByIdUseCase.Query(studyId)
-        );
+    public ResponseEntity<StudyBasicInformation> getBasicInformationById(@PathVariable final Long studyId) {
+        final StudyBasicInformation response = studyQueryUseCase.getBasicInformationById(new GetBasicInformationById(studyId));
         return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "스터디 리뷰 조회 EndPoint")
     @GetMapping("/reviews")
-    public ResponseEntity<ReviewInformation> getReviews(@PathVariable final Long studyId) {
-        final ReviewInformation response = queryReviewByIdUseCase.invoke(
-                new QueryReviewByIdUseCase.Query(studyId)
-        );
+    public ResponseEntity<ReviewInformation> getReviewById(@PathVariable final Long studyId) {
+        final ReviewInformation response = studyQueryUseCase.getReviewById(new GetReviewById(studyId));
         return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "스터디 참여자 조회 EndPoint")
     @GetMapping("/participants")
-    public ResponseEntity<StudyParticipantInformation> getApproveParticipants(@PathVariable final Long studyId) {
-        final StudyParticipantInformation response = queryParticipantByIdUseCase.invoke(
-                new QueryParticipantByIdUseCase.Query(studyId)
-        );
+    public ResponseEntity<StudyParticipantInformation> getParticipantById(@PathVariable final Long studyId) {
+        final StudyParticipantInformation response = studyQueryUseCase.getParticipantById(new GetParticipantById(studyId));
         return ResponseEntity.ok(response);
     }
 }

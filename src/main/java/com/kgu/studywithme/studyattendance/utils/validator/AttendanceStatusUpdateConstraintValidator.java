@@ -1,15 +1,15 @@
 package com.kgu.studywithme.studyattendance.utils.validator;
 
-import com.kgu.studywithme.studyattendance.domain.AttendanceStatus;
+import com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 import java.util.stream.Stream;
 
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ABSENCE;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.ATTENDANCE;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.LATE;
-import static com.kgu.studywithme.studyattendance.domain.AttendanceStatus.NON_ATTENDANCE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.ABSENCE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.ATTENDANCE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.LATE;
+import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.NON_ATTENDANCE;
 
 public class AttendanceStatusUpdateConstraintValidator implements ConstraintValidator<AttendanceStatusUpdateConstraint, String> {
     @Override

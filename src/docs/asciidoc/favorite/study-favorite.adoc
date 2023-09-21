@@ -6,7 +6,7 @@
 :toclevels: 2
 
 == 찜 등록 [AccessToken 필수]
-=== 1. 이미 찜 등록된 스터디를 찜할 수 없다
+=== 1. 이미 찜 등록된 스터디를 중복으로 찜할 수 없다
 HTTP Request
 include::{snippets}/StudyApi/Favorite/LikeMarking/Failure/http-request.adoc[]
 include::{snippets}/StudyApi/Favorite/LikeMarking/Failure/request-headers.adoc[]
@@ -15,7 +15,7 @@ include::{snippets}/StudyApi/Favorite/LikeMarking/Failure/path-parameters.adoc[]
 HTTP Response
 include::{snippets}/StudyApi/Favorite/LikeMarking/Failure/response-body.adoc[]
 
-=== 2. 찜 등록에 성공한다
+=== 2. 해당 스터디를 찜 등록한다
 HTTP Request
 include::{snippets}/StudyApi/Favorite/LikeMarking/Success/http-request.adoc[]
 include::{snippets}/StudyApi/Favorite/LikeMarking/Success/request-headers.adoc[]
@@ -25,20 +25,10 @@ HTTP Response
 include::{snippets}/StudyApi/Favorite/LikeMarking/Success/http-response.adoc[]
 
 == 찜 취소 [AccessToken 필수]
-=== 1. 찜 등록이 되지 않은 스터디를 취소할 수 없다
 HTTP Request
-include::{snippets}/StudyApi/Favorite/LikeCancellation/Failure/http-request.adoc[]
-include::{snippets}/StudyApi/Favorite/LikeCancellation/Failure/request-headers.adoc[]
-include::{snippets}/StudyApi/Favorite/LikeCancellation/Failure/path-parameters.adoc[]
+include::{snippets}/StudyApi/Favorite/LikeCancellation/http-request.adoc[]
+include::{snippets}/StudyApi/Favorite/LikeCancellation/request-headers.adoc[]
+include::{snippets}/StudyApi/Favorite/LikeCancellation/path-parameters.adoc[]
 
 HTTP Response
-include::{snippets}/StudyApi/Favorite/LikeCancellation/Failure/response-body.adoc[]
-
-=== 2. 찜 취소에 성공한다
-HTTP Request
-include::{snippets}/StudyApi/Favorite/LikeCancellation/Success/http-request.adoc[]
-include::{snippets}/StudyApi/Favorite/LikeCancellation/Success/request-headers.adoc[]
-include::{snippets}/StudyApi/Favorite/LikeCancellation/Success/path-parameters.adoc[]
-
-HTTP Response
-include::{snippets}/StudyApi/Favorite/LikeCancellation/Success/http-response.adoc[]
+include::{snippets}/StudyApi/Favorite/LikeCancellation/http-response.adoc[]

@@ -1,14 +1,17 @@
 package com.kgu.studywithme.auth.presentation;
 
-import com.kgu.studywithme.auth.application.usecase.command.LogoutUseCase;
-import com.kgu.studywithme.auth.application.usecase.command.OAuthLoginUseCase;
-import com.kgu.studywithme.auth.application.usecase.query.QueryOAuthLinkUseCase;
-import com.kgu.studywithme.auth.domain.AuthMember;
-import com.kgu.studywithme.auth.domain.oauth.OAuthProvider;
+import com.kgu.studywithme.auth.application.usecase.GetOAuthLinkUseCase;
+import com.kgu.studywithme.auth.application.usecase.LogoutUseCase;
+import com.kgu.studywithme.auth.application.usecase.OAuthLoginUseCase;
+import com.kgu.studywithme.auth.application.usecase.command.LogoutCommand;
+import com.kgu.studywithme.auth.application.usecase.command.OAuthLoginCommand;
+import com.kgu.studywithme.auth.application.usecase.query.GetOAuthLink;
+import com.kgu.studywithme.auth.domain.model.AuthMember;
+import com.kgu.studywithme.auth.domain.model.oauth.OAuthProvider;
 import com.kgu.studywithme.auth.presentation.dto.request.OAuthLoginRequest;
-import com.kgu.studywithme.auth.utils.ExtractPayload;
 import com.kgu.studywithme.global.aop.CheckAuthUser;
 import com.kgu.studywithme.global.dto.ResponseWrapper;
+import com.kgu.studywithme.global.resolver.ExtractPayload;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -27,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/oauth")
 public class OAuthApiController {
-    private final QueryOAuthLinkUseCase queryOAuthLinkUseCase;
+    private final GetOAuthLinkUseCase getOAuthLinkUseCase;
     private final OAuthLoginUseCase oAuthLoginUseCase;
     private final LogoutUseCase logoutUseCase;
 
@@ -37,12 +40,10 @@ public class OAuthApiController {
             @PathVariable final String provider,
             @RequestParam final String redirectUri
     ) {
-        final String oAuthLink = queryOAuthLinkUseCase.invoke(
-                new QueryOAuthLinkUseCase.Query(
-                        OAuthProvider.from(provider),
-                        redirectUri
-                )
-        );
+        final String oAuthLink = getOAuthLinkUseCase.invoke(new GetOAuthLink(
+                OAuthProvider.from(provider),
+                redirectUri
+        ));
         return ResponseWrapper.from(oAuthLink);
     }
 
@@ -52,21 +53,19 @@ public class OAuthApiController {
             @PathVariable final String provider,
             @RequestBody @Valid final OAuthLoginRequest request
     ) {
-        return oAuthLoginUseCase.invoke(
-                new OAuthLoginUseCase.Command(
-                        OAuthProvider.from(provider),
-                        request.authorizationCode(),
-                        request.redirectUri(),
-                        request.state()
-                )
-        );
+        return oAuthLoginUseCase.invoke(new OAuthLoginCommand(
+                OAuthProvider.from(provider),
+                request.authorizationCode(),
+                request.redirectUri(),
+                request.state()
+        ));
     }
 
     @Operation(summary = "로그아웃 EndPoint")
     @CheckAuthUser
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(@ExtractPayload final Long memberId) {
-        logoutUseCase.invoke(new LogoutUseCase.Command(memberId));
+        logoutUseCase.invoke(new LogoutCommand(memberId));
         return ResponseEntity.noContent().build();
     }
 }

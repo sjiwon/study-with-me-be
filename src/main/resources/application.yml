@@ -3,7 +3,6 @@ spring:
     import:
       - settings/application-logging.yml
       - settings/application-data.yml
-      - settings/application-external.yml
       - settings/application-mail.yml
       - settings/application-oauth.yml
       - settings/application-cloud.yml

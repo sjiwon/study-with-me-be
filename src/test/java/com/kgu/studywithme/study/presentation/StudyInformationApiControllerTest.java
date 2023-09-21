@@ -1,10 +1,10 @@
 package com.kgu.studywithme.study.presentation;
 
 import com.kgu.studywithme.common.ControllerTest;
-import com.kgu.studywithme.study.infrastructure.query.dto.ReviewInformation;
-import com.kgu.studywithme.study.infrastructure.query.dto.StudyBasicInformation;
-import com.kgu.studywithme.study.infrastructure.query.dto.StudyMember;
-import com.kgu.studywithme.study.infrastructure.query.dto.StudyParticipantInformation;
+import com.kgu.studywithme.study.domain.repository.query.dto.ReviewInformation;
+import com.kgu.studywithme.study.domain.repository.query.dto.StudyBasicInformation;
+import com.kgu.studywithme.study.domain.repository.query.dto.StudyMember;
+import com.kgu.studywithme.study.domain.repository.query.dto.StudyParticipantInformation;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -25,9 +25,8 @@ import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.constr
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentRequest;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
-import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
-import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
-import static com.kgu.studywithme.study.domain.RecruitmentStatus.IN_PROGRESS;
+import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessTokenToAuthorizationHeader;
+import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.ON;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -50,7 +49,7 @@ class StudyInformationApiControllerTest extends ControllerTest {
         @DisplayName("스터디 기본 정보를 조회한다")
         void success() throws Exception {
             // given
-            given(queryBasicInformationByIdUseCase.invoke(any())).willReturn(createStudyBasicInformation());
+            given(studyQueryUseCase.getBasicInformationById(any())).willReturn(createStudyBasicInformation());
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -134,26 +133,24 @@ class StudyInformationApiControllerTest extends ControllerTest {
         @DisplayName("스터디 리뷰를 조회한다")
         void success() throws Exception {
             // given
-            given(queryReviewByIdUseCase.invoke(any()))
-                    .willReturn(
-                            new ReviewInformation(
-                                    List.of(
-                                            new ReviewInformation.ReviewMetadata(
-                                                    2L,
-                                                    "팀장님이 잘 이끌어주세요",
-                                                    LocalDateTime.now().minusDays(1),
-                                                    new StudyMember(1L, JIWON.getNickname())
-                                            ),
-                                            new ReviewInformation.ReviewMetadata(
-                                                    1L,
-                                                    "스터디 자료가 좋아요",
-                                                    LocalDateTime.now().minusDays(3),
-                                                    new StudyMember(2L, GHOST.getNickname())
-                                            )
+            given(studyQueryUseCase.getReviewById(any()))
+                    .willReturn(new ReviewInformation(
+                            List.of(
+                                    new ReviewInformation.ReviewMetadata(
+                                            2L,
+                                            "팀장님이 잘 이끌어주세요",
+                                            LocalDateTime.now().minusDays(1),
+                                            new StudyMember(1L, JIWON.getNickname())
                                     ),
-                                    8
-                            )
-                    );
+                                    new ReviewInformation.ReviewMetadata(
+                                            1L,
+                                            "스터디 자료가 좋아요",
+                                            LocalDateTime.now().minusDays(3),
+                                            new StudyMember(2L, GHOST.getNickname())
+                                    )
+                            ),
+                            8
+                    ));
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -202,23 +199,21 @@ class StudyInformationApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, HOST_ID);
-            given(queryParticipantByIdUseCase.invoke(any()))
-                    .willReturn(
-                            new StudyParticipantInformation(
-                                    new StudyMember(1L, JIWON.getNickname()),
-                                    List.of(
-                                            new StudyMember(2L, GHOST.getNickname()),
-                                            new StudyMember(3L, DUMMY1.getNickname()),
-                                            new StudyMember(4L, DUMMY2.getNickname()),
-                                            new StudyMember(5L, DUMMY3.getNickname())
-                                    )
+            given(studyQueryUseCase.getParticipantById(any()))
+                    .willReturn(new StudyParticipantInformation(
+                            new StudyMember(1L, JIWON.getNickname()),
+                            List.of(
+                                    new StudyMember(2L, GHOST.getNickname()),
+                                    new StudyMember(3L, DUMMY1.getNickname()),
+                                    new StudyMember(4L, DUMMY2.getNickname()),
+                                    new StudyMember(5L, DUMMY3.getNickname())
                             )
-                    );
+                    ));
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .get(BASE_URL, STUDY_ID)
-                    .header(AUTHORIZATION, String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
+                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
 
             // then
             mockMvc.perform(requestBuilder)
@@ -260,7 +255,7 @@ class StudyInformationApiControllerTest extends ControllerTest {
                 ),
                 LINE_INTERVIEW.getType(),
                 LINE_INTERVIEW.getLocation(),
-                IN_PROGRESS,
+                ON,
                 LINE_INTERVIEW.getCapacity().getValue(),
                 LINE_INTERVIEW.getCapacity().getValue() - 2,
                 LINE_INTERVIEW.getMinimumAttendanceForGraduation(),
