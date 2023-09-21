@@ -117,7 +117,7 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
                         STUDY_WEEKLY_1.getTitle(),
                         STUDY_WEEKLY_1.getContent(),
                         1,
-                        new Period(LocalDateTime.now().minusDays(19), LocalDateTime.now().minusDays(12)),
+                        new Period(LocalDateTime.now().minusDays(7), LocalDateTime.now().minusDays(4)),
                         false,
                         List.of()
                 ),
@@ -127,7 +127,7 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
                         STUDY_WEEKLY_2.getTitle(),
                         STUDY_WEEKLY_2.getContent(),
                         2,
-                        new Period(LocalDateTime.now().minusDays(11), LocalDateTime.now().minusDays(4)),
+                        new Period(LocalDateTime.now().minusDays(3), LocalDateTime.now().minusDays(1)),
                         true,
                         List.of()
                 ),
@@ -138,7 +138,7 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
                         STUDY_WEEKLY_3.getTitle(),
                         STUDY_WEEKLY_3.getContent(),
                         1,
-                        new Period(LocalDateTime.now().minusDays(19), LocalDateTime.now().minusDays(12)),
+                        new Period(LocalDateTime.now().minusDays(3), LocalDateTime.now().minusDays(1)),
                         true,
                         List.of()
                 ),
@@ -148,7 +148,7 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
                         STUDY_WEEKLY_4.getTitle(),
                         STUDY_WEEKLY_4.getContent(),
                         2,
-                        new Period(LocalDateTime.now().minusDays(11), LocalDateTime.now().minusDays(4)),
+                        new Period(LocalDateTime.now().minusHours(10), LocalDateTime.now().plusDays(2)),
                         true,
                         List.of()
                 ),
@@ -159,7 +159,7 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
                         STUDY_WEEKLY_5.getTitle(),
                         STUDY_WEEKLY_5.getContent(),
                         1,
-                        new Period(LocalDateTime.now().minusDays(11), LocalDateTime.now().minusDays(4)),
+                        new Period(LocalDateTime.now().minusDays(2), LocalDateTime.now().minusHours(5)),
                         true,
                         List.of()
                 ),
@@ -169,7 +169,7 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
                         STUDY_WEEKLY_6.getTitle(),
                         STUDY_WEEKLY_6.getContent(),
                         2,
-                        new Period(LocalDateTime.now().minusDays(3), LocalDateTime.now().plusDays(3)),
+                        new Period(LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(4)),
                         true,
                         List.of()
                 )
@@ -179,11 +179,11 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
     /**
      * 스터디 3개 + 2 Weeklys<br>
      * -> studies[0] = Week2 처리 대상<br>
-     * -> studies[1] = Week1 & Week2 처리 대상<br>
+     * -> studies[1] = Week1 처리 대상<br>
      * -> studies[2] = Week1 처리 대상
      */
     @Test
-    @DisplayName("Weekly별 결석한 참여자에 대한 Absence Score를 적용한다")
+    @DisplayName("[Now-2..Now] 기간안에 Auto Attendance Weekly에 대한 미출석(NON_ATTENDANCE) 정보를 결석 처리한다")
     void execute() {
         // given
         studyAttendanceRepository.saveAll(List.of(
@@ -203,10 +203,10 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
                 StudyAttendance.recordAttendance(studies[1].getId(), participants[2].getId(), 1, NON_ATTENDANCE), // candidate
                 StudyAttendance.recordAttendance(studies[1].getId(), participants[3].getId(), 1, ATTENDANCE),
                 StudyAttendance.recordAttendance(studies[1].getId(), participants[4].getId(), 1, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[1].getId(), participants[0].getId(), 2, NON_ATTENDANCE), // candidate
-                StudyAttendance.recordAttendance(studies[1].getId(), participants[1].getId(), 2, LATE),
+                StudyAttendance.recordAttendance(studies[1].getId(), participants[0].getId(), 2, NON_ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[1].getId(), participants[1].getId(), 2, ATTENDANCE),
                 StudyAttendance.recordAttendance(studies[1].getId(), participants[2].getId(), 2, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[1].getId(), participants[3].getId(), 2, NON_ATTENDANCE), // candidate
+                StudyAttendance.recordAttendance(studies[1].getId(), participants[3].getId(), 2, NON_ATTENDANCE),
                 StudyAttendance.recordAttendance(studies[1].getId(), participants[4].getId(), 2, ATTENDANCE),
 
                 StudyAttendance.recordAttendance(studies[2].getId(), participants[0].getId(), 1, NON_ATTENDANCE), // candidate
@@ -239,15 +239,15 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
 
                 () -> assertThat(studyAttendanceRepository.getAttendanceStatusCount(studies[1].getId(), participants[0].getId())).isEqualTo(1),
                 () -> assertThat(studyAttendanceRepository.getLateStatusCount(studies[1].getId(), participants[0].getId())).isEqualTo(0),
-                () -> assertThat(studyAttendanceRepository.getAbsenceStatusCount(studies[1].getId(), participants[0].getId())).isEqualTo(1),
-                () -> assertThat(studyAttendanceRepository.getNonAttendanceStatusCount(studies[1].getId(), participants[0].getId())).isEqualTo(0),
+                () -> assertThat(studyAttendanceRepository.getAbsenceStatusCount(studies[1].getId(), participants[0].getId())).isEqualTo(0),
+                () -> assertThat(studyAttendanceRepository.getNonAttendanceStatusCount(studies[1].getId(), participants[0].getId())).isEqualTo(1),
 
                 () -> assertThat(studyAttendanceRepository.getAttendanceStatusCount(studies[2].getId(), participants[0].getId())).isEqualTo(1),
                 () -> assertThat(studyAttendanceRepository.getLateStatusCount(studies[2].getId(), participants[0].getId())).isEqualTo(0),
                 () -> assertThat(studyAttendanceRepository.getAbsenceStatusCount(studies[2].getId(), participants[0].getId())).isEqualTo(1),
                 () -> assertThat(studyAttendanceRepository.getNonAttendanceStatusCount(studies[2].getId(), participants[0].getId())).isEqualTo(0),
 
-                () -> assertThat(scoreOfParticipant0).isEqualTo(previousScore + Score.ABSENCE * 3)
+                () -> assertThat(scoreOfParticipant0).isEqualTo(previousScore + Score.ABSENCE * 2)
         );
 
         /**
@@ -260,8 +260,8 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
                 () -> assertThat(studyAttendanceRepository.getAbsenceStatusCount(studies[0].getId(), participants[1].getId())).isEqualTo(0),
                 () -> assertThat(studyAttendanceRepository.getNonAttendanceStatusCount(studies[0].getId(), participants[1].getId())).isEqualTo(1),
 
-                () -> assertThat(studyAttendanceRepository.getAttendanceStatusCount(studies[1].getId(), participants[1].getId())).isEqualTo(0),
-                () -> assertThat(studyAttendanceRepository.getLateStatusCount(studies[1].getId(), participants[1].getId())).isEqualTo(1),
+                () -> assertThat(studyAttendanceRepository.getAttendanceStatusCount(studies[1].getId(), participants[1].getId())).isEqualTo(1),
+                () -> assertThat(studyAttendanceRepository.getLateStatusCount(studies[1].getId(), participants[1].getId())).isEqualTo(0),
                 () -> assertThat(studyAttendanceRepository.getAbsenceStatusCount(studies[1].getId(), participants[1].getId())).isEqualTo(1),
                 () -> assertThat(studyAttendanceRepository.getNonAttendanceStatusCount(studies[1].getId(), participants[1].getId())).isEqualTo(0),
 
@@ -309,15 +309,15 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
 
                 () -> assertThat(studyAttendanceRepository.getAttendanceStatusCount(studies[1].getId(), participants[3].getId())).isEqualTo(1),
                 () -> assertThat(studyAttendanceRepository.getLateStatusCount(studies[1].getId(), participants[3].getId())).isEqualTo(0),
-                () -> assertThat(studyAttendanceRepository.getAbsenceStatusCount(studies[1].getId(), participants[3].getId())).isEqualTo(1),
-                () -> assertThat(studyAttendanceRepository.getNonAttendanceStatusCount(studies[1].getId(), participants[3].getId())).isEqualTo(0),
+                () -> assertThat(studyAttendanceRepository.getAbsenceStatusCount(studies[1].getId(), participants[3].getId())).isEqualTo(0),
+                () -> assertThat(studyAttendanceRepository.getNonAttendanceStatusCount(studies[1].getId(), participants[3].getId())).isEqualTo(1),
 
                 () -> assertThat(studyAttendanceRepository.getAttendanceStatusCount(studies[2].getId(), participants[3].getId())).isEqualTo(0),
                 () -> assertThat(studyAttendanceRepository.getLateStatusCount(studies[2].getId(), participants[3].getId())).isEqualTo(1),
                 () -> assertThat(studyAttendanceRepository.getAbsenceStatusCount(studies[2].getId(), participants[3].getId())).isEqualTo(0),
                 () -> assertThat(studyAttendanceRepository.getNonAttendanceStatusCount(studies[2].getId(), participants[3].getId())).isEqualTo(1),
 
-                () -> assertThat(scoreOfParticipant3).isEqualTo(previousScore + Score.ABSENCE)
+                () -> assertThat(scoreOfParticipant3).isEqualTo(previousScore)
         );
 
         /**

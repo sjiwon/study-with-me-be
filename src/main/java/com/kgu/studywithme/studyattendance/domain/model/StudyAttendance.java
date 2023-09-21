@@ -21,7 +21,8 @@ import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.
         indexes = {
                 @Index(name = "idx_study_attendance_participant_id_status", columnList = "participant_id, status"),
                 @Index(name = "idx_study_attendance_study_id_participant_id_status", columnList = "study_id, participant_id, status"),
-                @Index(name = "idx_study_attendance_study_id_week", columnList = "study_id, week")
+                @Index(name = "idx_study_attendance_study_id_week", columnList = "study_id, week"),
+                @Index(name = "idx_study_attendance_status_study_id_week_participant_id", columnList = "status, study_id, week, participant_id")
         }
 )
 public class StudyAttendance extends BaseEntity<StudyAttendance> {

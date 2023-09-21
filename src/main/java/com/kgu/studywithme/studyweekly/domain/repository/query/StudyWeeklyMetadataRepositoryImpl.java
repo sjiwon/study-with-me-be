@@ -19,9 +19,10 @@ public class StudyWeeklyMetadataRepositoryImpl implements StudyWeeklyMetadataRep
     private final JPAQueryFactory query;
 
     @Override
-    public List<AutoAttendanceAndFinishedWeekly> findAutoAttendanceAndFinishedWeekly() {
-        final LocalDateTime now = LocalDateTime.now();
-
+    public List<AutoAttendanceAndFinishedWeekly> findAutoAttendanceAndFinishedWeekly(
+            final LocalDateTime from,
+            final LocalDateTime to
+    ) {
         return query
                 .select(new QAutoAttendanceAndFinishedWeekly(
                         studyWeekly.studyId,
@@ -29,8 +30,8 @@ public class StudyWeeklyMetadataRepositoryImpl implements StudyWeeklyMetadataRep
                 ))
                 .from(studyWeekly)
                 .where(
-                        studyWeekly.autoAttendance.isTrue(),
-                        studyWeekly.period.endDate.before(now)
+                        studyWeekly.period.endDate.between(from, to),
+                        studyWeekly.autoAttendance.isTrue()
                 )
                 .orderBy(studyWeekly.studyId.asc(), studyWeekly.week.asc())
                 .fetch();

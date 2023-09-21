@@ -5,6 +5,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Index;
 import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -20,7 +21,12 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "study_weekly")
+@Table(
+        name = "study_weekly",
+        indexes = {
+                @Index(name = "idx_study_weekly_end_date_is_auto_attendance_study_id_week", columnList = "end_date, is_auto_attendance, study_id, week")
+        }
+)
 public class StudyWeekly extends BaseEntity<StudyWeekly> {
     @Column(name = "study_id", nullable = false)
     private Long studyId;

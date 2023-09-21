@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -25,9 +26,10 @@ public class UpdateWeeklyAttendanceBatchProcessor {
     private final MemberRepository memberRepository;
 
     public void checkAbsenceParticipantAndApplyAbsenceScore() {
+        final LocalDateTime now = LocalDateTime.now();
         final List<StudyAttendance> nonAttendances = studyAttendanceRepository.findNonAttendanceInformation();
-        final List<AutoAttendanceAndFinishedWeekly> targetWeekly = studyWeeklyMetadataRepository.findAutoAttendanceAndFinishedWeekly();
-        log.info("결석 처리 대상 Weekly -> {}", targetWeekly);
+        final List<AutoAttendanceAndFinishedWeekly> targetWeekly = studyWeeklyMetadataRepository.findAutoAttendanceAndFinishedWeekly(now.minusDays(2), now);
+        log.info("결석 처리 대상 Weekly -> {}", targetWeekly); // 처리 시간을 고려해서 [now-2..now]를 target으로 선정
 
         targetWeekly.forEach(week -> {
             final Long studyId = week.studyId();
