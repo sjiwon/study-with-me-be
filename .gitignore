@@ -39,6 +39,7 @@ grafana_data
 ### Log ###
 logs
 archive
+spy.log
 
 ### NetBeans ###
 /nbproject/private/

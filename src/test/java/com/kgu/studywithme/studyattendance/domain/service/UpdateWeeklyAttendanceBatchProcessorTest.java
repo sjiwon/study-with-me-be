@@ -227,7 +227,6 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
         // then
         /**
          * studies[0] - Week2
-         * studies[1] - Week2
          * studies[2] - Week1
          */
         final int scoreOfParticipant0 = memberRepository.getById(participants[0].getId()).getScore().getValue();
@@ -298,7 +297,7 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
         );
 
         /**
-         * studies[1] - Week2
+         * none
          */
         final int scoreOfParticipant3 = memberRepository.getById(participants[3].getId()).getScore().getValue();
         assertAll(

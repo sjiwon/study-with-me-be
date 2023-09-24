@@ -63,7 +63,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
-          source: "./docker-compose-prod.yml"
+          source: "./docker/docker-compose-prod.yml"
           target: "/home/ec2-user/Study-With-Me-Backend"
 
       - name: EC2 WAS 서버에 접속 후 Docker Image를 Pull하고 docker-compose를 실행한다
