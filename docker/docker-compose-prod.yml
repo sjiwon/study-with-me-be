@@ -1,0 +1,14 @@
+version: "3"
+services:
+  application:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: application
+    image: sjiwon/study-with-me-be:latest
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+    volumes:
+      - "./logs:/logs"
