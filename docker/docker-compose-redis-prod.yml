@@ -6,4 +6,4 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - "./docker/redis_data/data:/data"
+      - "./docker-volume-data/redis_data/data:/data"
