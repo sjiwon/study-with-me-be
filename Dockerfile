@@ -1,7 +1,7 @@
 FROM openjdk:17-oracle
 
-ARG JAR_FILE=build/libs/*.jar
+WORKDIR /app
 
-COPY ${JAR_FILE} app.jar
+COPY StudyWithMe.jar app.jar
 
-ENTRYPOINT ["java","-jar", "-Dspring.profiles.active=prod", "/app.jar"]
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=prod", "app.jar"]

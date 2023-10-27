@@ -7,7 +7,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - "./docker-additional-conf/prometheus/prometheus-prod.yml:/etc/prometheus/prometheus.yml"
+      - "./docker-configuration/prometheus-prod.yml:/etc/prometheus/prometheus.yml"
 
   grafana:
     image: grafana/grafana:latest
@@ -17,7 +17,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - "./docker-volume-data/monitoring/grafana_data:/var/lib/grafana"
+      - "./docker-data/monitoring/grafana_data:/var/lib/grafana"
     depends_on:
       - prometheus
     privileged: true

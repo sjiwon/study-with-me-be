@@ -5,7 +5,7 @@ services:
     container_name: database
     restart: always
     ports:
-      - "3306:3306"
+      - "13306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: "1234"
       MYSQL_DATABASE: "study_with_me"
@@ -16,4 +16,13 @@ services:
       - --collation-server=utf8mb4_unicode_ci
       - --skip-character-set-client-handshake
     volumes:
-      - "./docker-volume-data/mysql_data:/var/lib/mysql" # .idb = Table Data / .frm = Table Definition / ...
+      - "./mysql_data:/var/lib/mysql" # .idb = Table Data / .frm = Table Definition / ...
+      - "../src/main/resources/sql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro" # Init Script
+
+  redis: # redis-cli
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - "./redis_data/data:/data"
