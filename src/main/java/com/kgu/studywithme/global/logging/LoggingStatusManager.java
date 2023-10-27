@@ -40,4 +40,8 @@ public class LoggingStatusManager {
     public void decreaseDepth() {
         statusContainer.get().decreaseDepth();
     }
+
+    public void clearResource() {
+        statusContainer.remove();
+    }
 }
