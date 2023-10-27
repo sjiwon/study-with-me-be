@@ -1,0 +1,3 @@
+[submodule "study-with-me-secret"]
+	path = study-with-me-secret
+	url = https://github.com/sjiwon/study-with-me-secret.git

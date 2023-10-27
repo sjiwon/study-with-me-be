@@ -13,6 +13,7 @@
 <br>
 
 ## 🌙 소개
+
 #### 스터디 모집에서 진행 관리까지 케어하는 웹 애플리케이션 플랫폼
 
 ![1  설명](https://github.com/kgu-capstone/study-with-me-be/assets/51479381/dede40ea-94be-4577-9674-d3e35b7cb6c0)
@@ -20,6 +21,7 @@
 <br>
 
 ## 🖥 서비스 화면
+
 ### 스터디 찾기
 
 ![2  스터디 찾기](https://github.com/kgu-capstone/study-with-me-be/assets/51479381/11c38c25-1dda-45ae-8239-67f5cf5894f3)
@@ -51,6 +53,7 @@
 <br>
 
 ## 🛠 기술 스택 & 프로젝트 인프라 환경
+
 ### Backend
 
 ![Backend](https://github.com/sjiwon/study-with-me-be/assets/51479381/e102ebe6-6790-407b-839b-7cfa0e539fab)
@@ -70,26 +73,22 @@
 <br>
 
 ## 🚩 실행 방식
-### 1) MySQL DB & Redis
 
-- `docker-compose.yml` 실행
+### 1) Docker Persistence(MySQL, Redis) & Monitoring(Prometheus, Grafana)
+
+- `docker/docker-compose-persistence.yml` 실행
+- `docker/docker-compose-monitoring.yml` 실행
 
 <br>
 
-### 2) API Server (Local Profile)
-
-##### settings/application-mail.yml
+### 2) 프로필 환경설정 (resources/application.yml)
 
 - `GOOGLE_EMAIL` = 구글 계정 이메일
 - `GOOGLE_APP_PASSWORD` = 구글 앱 비밀번호
-
-##### settings/application-cloud.yml
 - `S3_BUCKET` = AWS S3 Bucket
 - `CLOUD_FRONT_URL` = AWS CloudFront Domain URL
 
-  - > S3 Credentials 관련 `{localUser}/.aws`에 AccessKey & SecretKey 정보 필수
-
-##### settings/application-oauth.yml
+    - > S3 Credentials 관련 `{localUser}/.aws`에 AccessKey & SecretKey 정보 필수
 
 - `OAUTH_GOOGLE_CLIENT_ID` = Google OAuth Application Client ID
 - `OAUTH_GOOGLE_CLIENT_SECRET` = Google OAuth Application Client Secret
@@ -100,11 +99,10 @@
 - `OAUTH_KAKAO_CLIENT_ID` = Kakao OAuth Application Client ID
 - `OAUTH_KAKAO_CLIENT_SECRET` = Kakao OAuth Application Client Secret
 - `OAUTH_KAKAO_REDIRECT_URI` = Kakao OAuth Application Redirect Uri
-
-##### settings/application-external.yml
 - `SLACK_WEBHOOK_URL` = Slack Webhook Url
 
 #### (실행-1) 빌드된 JAR 파일 실행
+
 ```shell
 java -jar \
     -Dfile.encoding=UTF-8 \
@@ -129,33 +127,19 @@ java -jar \
 
 <br>
 
-### 3) Prometheus & Grafana
-
-- `docker-compose-monitoring.yml` 실행
-
-<br>
-
-### [4) Swagger](http://localhost:8080/swagger-ui.html)
+### [3) Swagger](http://localhost:8080/swagger-ui.html)
 
 - API 테스트 시 필요한 `Token`은 `src/main/resources/DummyToken.txt`에서 사용
 
 > Google OAuth `Authorization Code`를 파싱한 후 `/api/oauth/login/google` 요청 시 Authorization Code에 존재하는 `%2F -> /`로 수정
 > - `%2F`는 HTTP URL Encoding으로 인한 결과로써 OAuth Provider가 인코딩된 값 인식 불가능
-> - 4%2F0Adeu5BXgIJvUdjU090jAGQEwm8WPb8VidZzvmS9OjNFLrfeTIW9B-jGB292k5PRf73w4XA -> 4/0Adeu5BXgIJvUdjU090jAGQEwm8WPb8VidZzvmS9OjNFLrfeTIW9B-jGB292k5PRf73w4XA
+> - 4%2F0Adeu5BXgIJvUdjU090jAGQEwm8WPb8VidZzvmS9OjNFLrfeTIW9B-jGB292k5PRf73w4XA ->
+    4/0Adeu5BXgIJvUdjU090jAGQEwm8WPb8VidZzvmS9OjNFLrfeTIW9B-jGB292k5PRf73w4XA
     >   - %2F -> /
 
 <br>
 
-### [5) REST Docs](http://localhost:8080/docs/index.html)
+### [4) REST Docs](http://localhost:8080/docs/index.html)
 
 - Gradle `build` Task 실행 후 접속
-
-<br>
-
-### 6) 테스트 코드
-
-- Acceptance Test -> `@Tag("Acceptance")`
-- Controller Test -> `@Tag("Controller")`
-- UseCase Test -> `@Tag("UseCase")`
-- Repository Test -> `@Tag("Repository")`
-- Redis Test -> `@Tag("Redis")`
+    - build를 진행해야 REST Docs의 빌드된 index.html이 resources/static에 존재

@@ -1,17 +1,19 @@
 spring:
-  config:
-    import:
-      - settings/application-logging.yml
-      - settings/application-data.yml
-      - settings/application-mail.yml
-      - settings/application-oauth.yml
-      - settings/application-cloud.yml
-
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:13306/study_with_me?autoReconnect=true&characterEncoding=utf8&serverTimeZone=Asia/Seoul
     username: root
     password: 1234
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: false
+        default_batch_fetch_size: 50
 
   flyway:
     enabled: false
@@ -21,8 +23,68 @@ spring:
       host: localhost
       port: 6379
 
+  cloud:
+    aws:
+      region:
+        static: ap-northeast-2
+      s3:
+        bucket: ${S3_BUCKET}
+      cloudfront:
+        url: ${CLOUD_FRONT_URL}
+
+  thymeleaf:
+    cache: false
+
+  mail:
+    default-encoding: UTF-8
+    host: smtp.gmail.com
+    port: 587
+    username: ${GOOGLE_EMAIL}
+    password: ${GOOGLE_APP_PASSWORD}
+    properties:
+      mail:
+        mime:
+          charset: UTF-8
+        transport:
+          protocol: smtp
+        debug: true
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            enable: true
+
+oauth2:
+  google:
+    grant-type: authorization_code
+    client-id: ${OAUTH_GOOGLE_CLIENT_ID}
+    client-secret: ${OAUTH_GOOGLE_CLIENT_SECRET}
+    redirect-uri: ${OAUTH_GOOGLE_REDIRECT_URI}
+    scope: openid, profile, email
+    auth-url: https://accounts.google.com/o/oauth2/v2/auth
+    token-url: https://www.googleapis.com/oauth2/v4/token
+    user-info-url: https://www.googleapis.com/oauth2/v3/userinfo
+  naver:
+    grant-type: authorization_code
+    client-id: ${OAUTH_NAVER_CLIENT_ID}
+    client-secret: ${OAUTH_NAVER_CLIENT_SECRET}
+    redirect-uri: ${OAUTH_NAVER_REDIRECT_URI}
+    auth-url: https://nid.naver.com/oauth2.0/authorize
+    token-url: https://nid.naver.com/oauth2.0/token
+    user-info-url: https://openapi.naver.com/v1/nid/me
+  kakao:
+    grant-type: authorization_code
+    client-id: ${OAUTH_KAKAO_CLIENT_ID}
+    client-secret: ${OAUTH_KAKAO_CLIENT_SECRET}
+    redirect-uri: ${OAUTH_KAKAO_REDIRECT_URI}
+    scope: profile_nickname, profile_image, account_email
+    auth-url: https://kauth.kakao.com/oauth/authorize
+    token-url: https://kauth.kakao.com/oauth/token
+    user-info-url: https://kapi.kakao.com/v2/user/me
+
 cors:
-  allowed-origin-patterns: http://localhost:8080
+  allowed-origin-patterns: http://localhost:3000
 
 server:
   tomcat:
@@ -51,3 +113,10 @@ decorator:
   datasource:
     p6spy:
       enable-logging: true
+
+slack:
+  webhook:
+    url: ${SLACK_WEBHOOK_URL}
+
+logging:
+  config: classpath:logback/logback-local.xml

@@ -1,8 +1,0 @@
-slack:
-  webhook:
-    url: ${SLACK_WEBHOOK_URL}
-
-logging.config: classpath:logback/logback-local.xml
----
-spring.config.activate.on-profile: prod
-logging.config: classpath:logback/logback-prod.xml
