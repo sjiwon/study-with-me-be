@@ -2,6 +2,8 @@ package com.kgu.studywithme.global.interceptor;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.NullNode;
+import com.kgu.studywithme.global.filter.ReadableRequestWrapper;
 import com.kgu.studywithme.global.logging.LoggingStatus;
 import com.kgu.studywithme.global.logging.LoggingStatusManager;
 import com.kgu.studywithme.global.logging.RequestMetaData;
@@ -13,7 +15,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.PatternMatchUtils;
 import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import java.io.IOException;
@@ -80,6 +81,8 @@ public class RequestLogInterceptor implements HandlerInterceptor {
                 response.getStatus(),
                 totalTime
         );
+
+        loggingStatusManager.clearResource();
     }
 
     private boolean isInfraUri(final HttpServletRequest request) {
@@ -87,18 +90,26 @@ public class RequestLogInterceptor implements HandlerInterceptor {
     }
 
     private JsonNode readRequestBodyViaCachingRequestWrapper(final HttpServletRequest request) throws IOException {
-        if (request instanceof final ContentCachingRequestWrapper requestWrapper) {
+        if (request instanceof final ReadableRequestWrapper requestWrapper) {
             final byte[] bodyContents = requestWrapper.getContentAsByteArray();
+
+            if (bodyContents.length == 0) {
+                return NullNode.getInstance();
+            }
             return objectMapper.readTree(bodyContents);
         }
-        return null;
+        return NullNode.getInstance();
     }
 
     private JsonNode readResponseBodyViaCachingRequestWrapper(final HttpServletResponse response) throws IOException {
         if (response instanceof final ContentCachingResponseWrapper responseWrapper) {
             final byte[] bodyContents = responseWrapper.getContentAsByteArray();
+
+            if (bodyContents.length == 0) {
+                return NullNode.getInstance();
+            }
             return objectMapper.readTree(bodyContents);
         }
-        return null;
+        return NullNode.getInstance();
     }
 }
