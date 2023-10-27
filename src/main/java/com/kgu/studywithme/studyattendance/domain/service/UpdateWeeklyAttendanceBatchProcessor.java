@@ -8,6 +8,7 @@ import com.kgu.studywithme.studyweekly.domain.repository.query.dto.AutoAttendanc
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
@@ -25,6 +26,7 @@ public class UpdateWeeklyAttendanceBatchProcessor {
     private final StudyAttendanceRepository studyAttendanceRepository;
     private final MemberRepository memberRepository;
 
+    @Transactional
     public void checkAbsenceParticipantAndApplyAbsenceScore() {
         final LocalDateTime now = LocalDateTime.now();
         final List<StudyAttendance> nonAttendances = studyAttendanceRepository.findNonAttendanceInformation();
