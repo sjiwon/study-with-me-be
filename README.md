@@ -75,7 +75,7 @@
 
 ## 🚩 실행 방식
 
-### 1) Docker Persistence(MySQL, Redis) & Monitoring(Prometheus, Grafana)
+### 1) Docker Persistence(MySQL, Redis) & Monitoring(Prometheus, Grafana, Promtail, Loki)
 
 - `docker/docker-compose-persistence.yml` 실행
 - `docker/docker-compose-monitoring.yml` 실행
