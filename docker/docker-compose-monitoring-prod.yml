@@ -21,3 +21,10 @@ services:
     depends_on:
       - prometheus
     privileged: true
+
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
