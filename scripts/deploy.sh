@@ -9,7 +9,7 @@ echo "> ##### START [$START_TIME] #####" >> $DEPLOY_LOG_PATH
 cd $DEPLOY_PATH
 echo "> 0. 배포 위치 = $DEPLOY_PATH" >> $DEPLOY_LOG_PATH
 
-CURRENT_RUNNING_PID=$(sudo docker container ls -aq)
+CURRENT_RUNNING_PID=$(sudo docker container ls -aq -f name=application)
 echo "> 1. 현재 실행 중인 Docker Container PID = $CURRENT_RUNNING_PID" >> $DEPLOY_LOG_PATH
 
 if [ -z $CURRENT_RUNNING_PID ]
@@ -39,7 +39,7 @@ sudo docker run \
       -v $PINPOINT_PATH:/app/pinpoint \
       $DOCKER_IMAGE:$DOCKER_IMAGE_TAG
 
-NEW_RUNNING_PID=$(sudo docker container ls -q)
+NEW_RUNNING_PID=$(sudo docker container ls -aq -f name=application)
 echo "> 4. 새로 실행된 Docker Container PID = $NEW_RUNNING_PID" >> $DEPLOY_LOG_PATH
 
 echo -e "> ##### END #####\n" >> $DEPLOY_LOG_PATH
