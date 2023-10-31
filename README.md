@@ -60,11 +60,11 @@
 
 ### Backend
 
-![Tech Stack - Backend](https://github.com/sjiwon/study-with-me-be/assets/51479381/83e6a3e6-e278-4390-99b1-c23ed564447d)
+![Tech Stack - Backend2](https://github.com/sjiwon/study-with-me-be/assets/51479381/11696f40-4c4f-4868-9060-16ecdf1169ee)
 
 ### Infra
 
-![Tech Stack - Infra](https://github.com/sjiwon/study-with-me-be/assets/51479381/7b0c8233-5e97-4912-b238-f0ced007ca0e)
+![Tech Stack - Infra2](https://github.com/sjiwon/study-with-me-be/assets/51479381/0798b8a2-5aaa-426f-9bda-8642f73d63eb)
 
 <br>
 
