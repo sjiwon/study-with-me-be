@@ -7,8 +7,11 @@
 1. [소개](#-소개)
 2. [서비스 화면](#-서비스-화면)
 3. [주요 챌린지](#-주요-챌린지)
-4. [기술 스택 & 프로젝트 인프라 환경](#-기술-스택--프로젝트-인프라-환경)
-5. [실행 방식](#-실행-방식)
+4. [기술 스택](#-기술-스택)
+5. [CI/CD Pipeline](#-cicd-pipeline)
+6. [백엔드 요청 흐름도](#-백엔드-요청-흐름도)
+7. [모니터링 구조도](#-모니터링-구조도)
+8. [실행 방식](#-실행-방식)
 
 <br>
 
@@ -53,23 +56,42 @@
 
 <br>
 
-## 🛠 기술 스택 & 프로젝트 인프라 환경
+## 🛠 기술 스택
 
 ### Backend
 
-![Backend](https://github.com/sjiwon/study-with-me-be/assets/51479381/e102ebe6-6790-407b-839b-7cfa0e539fab)
+![Tech Stack - Backend](https://github.com/sjiwon/study-with-me-be/assets/51479381/83e6a3e6-e278-4390-99b1-c23ed564447d)
+
+### Infra
+
+![Tech Stack - Infra](https://github.com/sjiwon/study-with-me-be/assets/51479381/7b0c8233-5e97-4912-b238-f0ced007ca0e)
 
 <br>
 
-### Infrastructure
+## 🚀 CI/CD Pipeline
 
-> TBU...
+![CI-CD Pipeline](https://github.com/sjiwon/study-with-me-be/assets/51479381/f61d7d35-d064-40ab-afe3-500b4463ac21)
 
 <br>
 
-### CI/CD Pipeline
+## 🛒 백엔드 요청 흐름도
 
-> TBU...
+> Frontend는 리팩토링 하지 않았기 때문에 Backend 요청 흐름만 명시
+> - 아래 흐름도에서 DNS Resolving 흐름은 생략
+
+### 파일 업로드/요청 흐름도
+
+![파일 업로드, 요청 흐름도](https://github.com/sjiwon/study-with-me-be/assets/51479381/ba19e1fb-4cbd-4a7a-9403-d4cb8bd2bb45)
+
+### 서버 API 호출 흐름도
+
+![서버 API 호출 흐름도](https://github.com/sjiwon/study-with-me-be/assets/51479381/39a9fed2-31ba-4acb-b15f-e1f3469d232b)
+
+<br>
+
+## 💻 모니터링 구조도
+
+![모니터링 구조도](https://github.com/sjiwon/study-with-me-be/assets/51479381/cbed8c22-0a37-426b-bad2-eb3892b44cc3)
 
 <br>
 
