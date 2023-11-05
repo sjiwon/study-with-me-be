@@ -12,7 +12,7 @@ public record DummyStudyAttendance(
                 studyId,
                 1,
                 participantId,
-                (participantId % 5 == 0) ? LATE.name() : ATTENDANCE.name()
+                (participantId % 3 == 0) ? LATE.name() : ATTENDANCE.name()
         );
     }
 }

@@ -18,10 +18,13 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static com.kgu.studywithme.study.domain.model.StudyThumbnail.IMAGE_PROGRAMMING_001;
 import static com.kgu.studywithme.study.domain.model.StudyType.OFFLINE;
@@ -57,18 +60,18 @@ public class DummyDataGenerator {
     private static final int MEMBER_SIZE = 1_000_000;
     private static final int STUDY_SIZE = 1_000_000;
 
-//    @Test
+    //    @Test
     @DisplayName("더미 데이터 BatchInsert")
     void batchInsert() {
-        insertMember(); // 100만건
+        insertMember();
         insertMemberInterest();
         insertMemberReview();
-        insertStudy(); // 100만건
+        insertStudy();
         insertStudyHashtag();
-        insertStudyParticipant(); // 500만건 + a
-        insertStudyNotice(); // 100만건
-        insertStudyNoticeComment(); // 100만건
-        insertStudyWeekly(); // 100만건
+        insertStudyParticipant();
+        insertStudyNotice();
+        insertStudyNoticeComment();
+        insertStudyWeekly();
         insertStudyWeeklyAttachment();
         insertStudyWeeklySubmit();
         insertStudyAttendance();
@@ -81,8 +84,8 @@ public class DummyDataGenerator {
 
         final String sql =
                 """
-                        INSERT INTO member (name, nickname, email, birth, phone, gender, province, city, score, is_email_opt_in)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+                        INSERT INTO member (name, nickname, email, birth, phone, gender, province, city, score, is_email_opt_in, created_at, last_modified_at)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
                         """;
         final List<DummyMember> dummyMembers = createDummyMembers();
         jdbcTemplate.batchUpdate(
@@ -101,6 +104,8 @@ public class DummyDataGenerator {
                         ps.setString(8, dummyMember.city());
                         ps.setInt(9, dummyMember.score());
                         ps.setInt(10, dummyMember.isEmailOptIn());
+                        ps.setTimestamp(11, Timestamp.valueOf(LocalDateTime.now()));
+                        ps.setTimestamp(12, Timestamp.valueOf(LocalDateTime.now()));
                     }
 
                     @Override
@@ -153,9 +158,9 @@ public class DummyDataGenerator {
     private List<DummyMemberInterest> createDummyMemberInterests() {
         final List<DummyMemberInterest> list = new ArrayList<>();
         for (int memberId = 1; memberId <= MEMBER_SIZE; memberId++) {
-            final int count = (int) (Math.random() * 4 + 1);
+            final int count = ThreadLocalRandom.current().nextInt(0, 4 + 1);
             for (int i = 0; i < count; i++) {
-                final String category = Category.from((long) (Math.random() * 6 + 1)).name();
+                final String category = Category.from(ThreadLocalRandom.current().nextInt(1, 6 + 1)).name();
                 list.add(new DummyMemberInterest(memberId, category));
             }
         }
@@ -167,8 +172,8 @@ public class DummyDataGenerator {
 
         final String sql =
                 """
-                        INSERT INTO member_review (reviewee_id, reviewer_id, content)
-                        VALUES (?, ?, ?);
+                        INSERT INTO member_review (reviewee_id, reviewer_id, content, created_at, last_modified_at)
+                        VALUES (?, ?, ?, ?, ?);
                         """;
         final List<DummyMemberReview> dummyMemberReviews = createDummyMemberReviews();
         jdbcTemplate.batchUpdate(
@@ -180,6 +185,8 @@ public class DummyDataGenerator {
                         ps.setLong(1, dummyMemberReview.revieweeId());
                         ps.setLong(2, dummyMemberReview.reviewerId());
                         ps.setString(3, dummyMemberReview.content());
+                        ps.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+                        ps.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
                     }
 
                     @Override
@@ -195,9 +202,9 @@ public class DummyDataGenerator {
     private List<DummyMemberReview> createDummyMemberReviews() {
         final List<DummyMemberReview> list = new ArrayList<>();
         for (int revieweeId = 1; revieweeId <= MEMBER_SIZE; revieweeId++) {
-            final int count = (int) (Math.random() * 3);
+            final int count = ThreadLocalRandom.current().nextInt(0, 3);
             for (int j = 0; j < count; j++) {
-                final int reviewerId = (int) (Math.random() * MEMBER_SIZE + 1);
+                final int reviewerId = ThreadLocalRandom.current().nextInt(1, MEMBER_SIZE + 1);
                 list.add(new DummyMemberReview(revieweeId, reviewerId, "Good!! - " + reviewerId));
             }
         }
@@ -211,8 +218,8 @@ public class DummyDataGenerator {
                 """
                         INSERT INTO study (host_id, name, description, category, capacity, participants, thumbnail, study_type,
                                province, city, recruitment_status, minimum_attendance, policy_update_chance,
-                               is_terminated)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+                               is_terminated, created_at, last_modified_at)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
                         """;
         final List<DummyStudy> dummyStudies = createDummyStudies();
         jdbcTemplate.batchUpdate(
@@ -235,6 +242,8 @@ public class DummyDataGenerator {
                         ps.setInt(12, dummyStudy.minimumAttendance());
                         ps.setInt(13, dummyStudy.policyUpdateChance());
                         ps.setInt(14, dummyStudy.isTerminated());
+                        ps.setTimestamp(15, Timestamp.valueOf(LocalDateTime.now()));
+                        ps.setTimestamp(16, Timestamp.valueOf(LocalDateTime.now()));
                     }
 
                     @Override
@@ -251,14 +260,14 @@ public class DummyDataGenerator {
         final List<DummyStudy> list = new ArrayList<>();
         for (int studyId = 1; studyId <= STUDY_SIZE / 2; studyId++) {
             final int hostId = studyId;
-            final String category = Category.from((long) (Math.random() * 6 + 1)).name();
+            final String category = Category.from(ThreadLocalRandom.current().nextInt(1, 6 + 1)).name();
             final String thumbnail = IMAGE_PROGRAMMING_001.name();
             final String studyType = ONLINE.name();
             list.add(new DummyStudy(studyId, hostId, category, thumbnail, studyType));
         }
         for (int studyId = STUDY_SIZE / 2 + 1; studyId <= STUDY_SIZE; studyId++) {
             final int hostId = studyId;
-            final String category = Category.from((long) (Math.random() * 6 + 1)).name();
+            final String category = Category.from(ThreadLocalRandom.current().nextInt(1, 6 + 1)).name();
             final String thumbnail = IMAGE_PROGRAMMING_001.name();
             final String studyType = OFFLINE.name();
             list.add(new DummyStudy(studyId, hostId, category, thumbnail, studyType));
@@ -301,9 +310,9 @@ public class DummyDataGenerator {
         for (int studyId = 1; studyId <= STUDY_SIZE; studyId++) {
             final Set<String> studyHashtags = new HashSet<>();
 
-            final int count = (int) (Math.random() * 5 + 1);
+            final int count = ThreadLocalRandom.current().nextInt(1, 5 + 1);
             for (int j = 0; j < count; j++) {
-                studyHashtags.add(hashtags.get((int) (Math.random() * 5)));
+                studyHashtags.add(hashtags.get(ThreadLocalRandom.current().nextInt(0, 5)));
             }
 
             for (String studyHashtag : studyHashtags) {
@@ -318,8 +327,8 @@ public class DummyDataGenerator {
 
         final String sql =
                 """
-                        INSERT INTO study_notice (study_id, writer_id, title, content)
-                        VALUES (?, ?, ?, ?);
+                        INSERT INTO study_notice (study_id, writer_id, title, content, created_at, last_modified_at)
+                        VALUES (?, ?, ?, ?, ?, ?);
                         """;
         final List<DummyStudyNotice> dummyStudyNotices = createDummyStudyNotices();
         jdbcTemplate.batchUpdate(
@@ -332,6 +341,8 @@ public class DummyDataGenerator {
                         ps.setLong(2, dummyStudyNotice.writerId());
                         ps.setString(3, dummyStudyNotice.title());
                         ps.setString(4, dummyStudyNotice.content());
+                        ps.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
+                        ps.setTimestamp(6, Timestamp.valueOf(LocalDateTime.now()));
                     }
 
                     @Override
@@ -357,8 +368,8 @@ public class DummyDataGenerator {
 
         final String sql =
                 """
-                        INSERT INTO study_notice_comment (notice_id, writer_id, content)
-                        VALUES (?, ?, ?);
+                        INSERT INTO study_notice_comment (notice_id, writer_id, content, created_at, last_modified_at)
+                        VALUES (?, ?, ?, ?, ?);
                         """;
         final List<DummyStudyNoticeComment> dummyStudyNoticeComments = createDummyStudyNoticeComments();
         jdbcTemplate.batchUpdate(
@@ -370,6 +381,8 @@ public class DummyDataGenerator {
                         ps.setLong(1, dummyStudyNoticeComment.noticeId());
                         ps.setLong(2, dummyStudyNoticeComment.writerId());
                         ps.setString(3, dummyStudyNoticeComment.content());
+                        ps.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+                        ps.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
                     }
 
                     @Override
@@ -395,8 +408,8 @@ public class DummyDataGenerator {
 
         final String sql =
                 """
-                        INSERT INTO study_participant (study_id, member_id, status)
-                        VALUES (?, ?, ?);
+                        INSERT INTO study_participant (study_id, member_id, status, created_at, last_modified_at)
+                        VALUES (?, ?, ?, ?, ?);
                         """;
         final List<DummyStudyParticipant> dummyStudyParticipants = createDummyStudyParticipants();
         jdbcTemplate.batchUpdate(
@@ -408,6 +421,8 @@ public class DummyDataGenerator {
                         ps.setLong(1, dummyStudyParticipant.studyId());
                         ps.setLong(2, dummyStudyParticipant.memberId());
                         ps.setString(3, dummyStudyParticipant.status());
+                        ps.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+                        ps.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
                     }
 
                     @Override
@@ -423,17 +438,17 @@ public class DummyDataGenerator {
     private List<DummyStudyParticipant> createDummyStudyParticipants() {
         final List<DummyStudyParticipant> list = new ArrayList<>();
         for (int studyId = 1; studyId <= STUDY_SIZE; studyId++) {
-            list.add(new DummyStudyParticipant(studyId, studyId, APPROVE.name()));
-            list.add(new DummyStudyParticipant(studyId, (studyId + 1) % MEMBER_SIZE, APPROVE.name()));
-            list.add(new DummyStudyParticipant(studyId, (studyId + 2) % MEMBER_SIZE, APPROVE.name()));
-            list.add(new DummyStudyParticipant(studyId, (studyId + 3) % MEMBER_SIZE, APPROVE.name()));
-            list.add(new DummyStudyParticipant(studyId, (studyId + 4) % MEMBER_SIZE, APPROVE.name()));
+            list.add(new DummyStudyParticipant(studyId, 1, APPROVE.name()));
+            list.add(new DummyStudyParticipant(studyId, 2, APPROVE.name()));
+            list.add(new DummyStudyParticipant(studyId, 3, APPROVE.name()));
+            list.add(new DummyStudyParticipant(studyId, 4, APPROVE.name()));
+            list.add(new DummyStudyParticipant(studyId, 5, APPROVE.name()));
 
-            list.add(new DummyStudyParticipant(studyId, (int) (Math.random() * MEMBER_SIZE + 1), APPLY.name()));
-            list.add(new DummyStudyParticipant(studyId, (int) (Math.random() * MEMBER_SIZE + 1), APPLY.name()));
+            list.add(new DummyStudyParticipant(studyId, ThreadLocalRandom.current().nextInt(1, MEMBER_SIZE + 1), APPLY.name()));
+            list.add(new DummyStudyParticipant(studyId, ThreadLocalRandom.current().nextInt(1, MEMBER_SIZE + 1), APPLY.name()));
 
-            list.add(new DummyStudyParticipant(studyId, (int) (Math.random() * MEMBER_SIZE + 1), LEAVE.name()));
-            list.add(new DummyStudyParticipant(studyId, (int) (Math.random() * MEMBER_SIZE + 1), GRADUATED.name()));
+            list.add(new DummyStudyParticipant(studyId, ThreadLocalRandom.current().nextInt(1, MEMBER_SIZE + 1), LEAVE.name()));
+            list.add(new DummyStudyParticipant(studyId, ThreadLocalRandom.current().nextInt(1, MEMBER_SIZE + 1), GRADUATED.name()));
         }
         return list;
     }
@@ -443,8 +458,8 @@ public class DummyDataGenerator {
 
         final String sql =
                 """
-                        INSERT INTO study_review (study_id, writer_id, content)
-                        VALUES (?, ?, ?);
+                        INSERT INTO study_review (study_id, writer_id, content, created_at, last_modified_at)
+                        VALUES (?, ?, ?, ?, ?);
                         """;
         final List<DummyStudyReview> dummyStudyReviews = createDummyStudyReviews();
         jdbcTemplate.batchUpdate(
@@ -456,6 +471,8 @@ public class DummyDataGenerator {
                         ps.setLong(1, dummyStudyReview.studyId());
                         ps.setLong(2, dummyStudyReview.writerId());
                         ps.setString(3, dummyStudyReview.content());
+                        ps.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+                        ps.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
                     }
 
                     @Override
@@ -470,10 +487,10 @@ public class DummyDataGenerator {
 
     private List<DummyStudyReview> createDummyStudyReviews() {
         final List<DummyStudyReview> list = new ArrayList<>();
-        for (int studyId = 1; studyId <= 100_0000; studyId++) {
-            final int count = (int) (Math.random() * 3);
+        for (int studyId = 1; studyId <= STUDY_SIZE; studyId++) {
+            final int count = ThreadLocalRandom.current().nextInt(0, 3);
             for (int j = 0; j < count; j++) {
-                final int writerId = (int) (Math.random() * MEMBER_SIZE + 1);
+                final int writerId = ThreadLocalRandom.current().nextInt(1, MEMBER_SIZE + 1);
                 list.add(new DummyStudyReview(studyId, writerId));
             }
         }
@@ -486,8 +503,8 @@ public class DummyDataGenerator {
         final String sql =
                 """
                         INSERT INTO study_weekly (study_id, creator_id, week, title, content, start_date, end_date,
-                                      is_assignment_exists, is_auto_attendance)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+                                      is_assignment_exists, is_auto_attendance, created_at, last_modified_at)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
                         """;
         final List<DummyStudyWeekly> dummyStudyWeeklies = createDummyStudyWeeklys();
         jdbcTemplate.batchUpdate(
@@ -505,6 +522,8 @@ public class DummyDataGenerator {
                         ps.setTimestamp(7, dummyStudyWeekly.endDate());
                         ps.setInt(8, dummyStudyWeekly.isAssignmentExists());
                         ps.setInt(9, dummyStudyWeekly.isAutoAttendance());
+                        ps.setTimestamp(10, Timestamp.valueOf(LocalDateTime.now()));
+                        ps.setTimestamp(11, Timestamp.valueOf(LocalDateTime.now()));
                     }
 
                     @Override
@@ -530,8 +549,8 @@ public class DummyDataGenerator {
 
         final String sql =
                 """
-                        INSERT INTO study_weekly_attachment (week_id, link, upload_file_name)
-                        VALUES (?, ?, ?);
+                        INSERT INTO study_weekly_attachment (week_id, link, upload_file_name, created_at, last_modified_at)
+                        VALUES (?, ?, ?, ?, ?);
                         """;
         final List<DummyStudyWeeklyAttachment> dummyStudyWeeklyAttachments = createDummyStudyWeeklyAttachments();
         jdbcTemplate.batchUpdate(
@@ -543,6 +562,8 @@ public class DummyDataGenerator {
                         ps.setLong(1, dummyStudyWeeklyAttachment.weekId());
                         ps.setString(2, dummyStudyWeeklyAttachment.link());
                         ps.setString(3, dummyStudyWeeklyAttachment.uploadFileName());
+                        ps.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+                        ps.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
                     }
 
                     @Override
@@ -568,8 +589,8 @@ public class DummyDataGenerator {
 
         final String sql =
                 """
-                        INSERT INTO study_weekly_submit (week_id, participant_id, submit_type, upload_file_name, link)
-                        VALUES (?, ?, ?, ?, ?);
+                        INSERT INTO study_weekly_submit (week_id, participant_id, submit_type, upload_file_name, link, created_at, last_modified_at)
+                        VALUES (?, ?, ?, ?, ?, ?, ?);
                         """;
         final List<DummyStudyWeeklySubmit> dummyStudyWeeklySubmits = createDummyStudyWeeklySubmits();
         jdbcTemplate.batchUpdate(
@@ -583,6 +604,8 @@ public class DummyDataGenerator {
                         ps.setString(3, dummyStudyWeeklySubmit.submitType());
                         ps.setString(4, dummyStudyWeeklySubmit.uploadFileName());
                         ps.setString(5, dummyStudyWeeklySubmit.link());
+                        ps.setTimestamp(6, Timestamp.valueOf(LocalDateTime.now()));
+                        ps.setTimestamp(7, Timestamp.valueOf(LocalDateTime.now()));
                     }
 
                     @Override
@@ -598,11 +621,11 @@ public class DummyDataGenerator {
     private List<DummyStudyWeeklySubmit> createDummyStudyWeeklySubmits() {
         final List<DummyStudyWeeklySubmit> list = new ArrayList<>();
         for (int studyId = 1; studyId <= STUDY_SIZE; studyId++) {
-            list.add(new DummyStudyWeeklySubmit(studyId, studyId));
-            list.add(new DummyStudyWeeklySubmit(studyId, (studyId + 1) % MEMBER_SIZE));
-            list.add(new DummyStudyWeeklySubmit(studyId, (studyId + 2) % MEMBER_SIZE));
-            list.add(new DummyStudyWeeklySubmit(studyId, (studyId + 3) % MEMBER_SIZE));
-            list.add(new DummyStudyWeeklySubmit(studyId, (studyId + 4) % MEMBER_SIZE));
+            list.add(new DummyStudyWeeklySubmit(studyId, ThreadLocalRandom.current().nextInt(1, MEMBER_SIZE + 1)));
+            list.add(new DummyStudyWeeklySubmit(studyId, ThreadLocalRandom.current().nextInt(1, MEMBER_SIZE + 1)));
+            list.add(new DummyStudyWeeklySubmit(studyId, ThreadLocalRandom.current().nextInt(1, MEMBER_SIZE + 1)));
+            list.add(new DummyStudyWeeklySubmit(studyId, ThreadLocalRandom.current().nextInt(1, MEMBER_SIZE + 1)));
+            list.add(new DummyStudyWeeklySubmit(studyId, ThreadLocalRandom.current().nextInt(1, MEMBER_SIZE + 1)));
         }
         return list;
     }
@@ -612,8 +635,8 @@ public class DummyDataGenerator {
 
         final String sql =
                 """
-                        INSERT INTO study_attendance (study_id, week, participant_id, status)
-                        VALUES (?, ?, ?, ?);
+                        INSERT INTO study_attendance (study_id, week, participant_id, status, created_at, last_modified_at)
+                        VALUES (?, ?, ?, ?, ?, ?);
                         """;
         final List<DummyStudyAttendance> dummyStudyAttendances = createDummyStudyAttendances();
         jdbcTemplate.batchUpdate(
@@ -626,6 +649,8 @@ public class DummyDataGenerator {
                         ps.setInt(2, dummyStudyAttendance.week());
                         ps.setLong(3, dummyStudyAttendance.participantId());
                         ps.setString(4, dummyStudyAttendance.status());
+                        ps.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
+                        ps.setTimestamp(6, Timestamp.valueOf(LocalDateTime.now()));
                     }
 
                     @Override
@@ -641,11 +666,11 @@ public class DummyDataGenerator {
     private List<DummyStudyAttendance> createDummyStudyAttendances() {
         final List<DummyStudyAttendance> list = new ArrayList<>();
         for (int studyId = 1; studyId <= STUDY_SIZE; studyId++) {
-            list.add(new DummyStudyAttendance(studyId, studyId));
-            list.add(new DummyStudyAttendance(studyId, (studyId + 1) % MEMBER_SIZE));
-            list.add(new DummyStudyAttendance(studyId, (studyId + 2) % MEMBER_SIZE));
-            list.add(new DummyStudyAttendance(studyId, (studyId + 3) % MEMBER_SIZE));
-            list.add(new DummyStudyAttendance(studyId, (studyId + 4) % MEMBER_SIZE));
+            list.add(new DummyStudyAttendance(studyId, 1));
+            list.add(new DummyStudyAttendance(studyId, 2));
+            list.add(new DummyStudyAttendance(studyId, 3));
+            list.add(new DummyStudyAttendance(studyId, 4));
+            list.add(new DummyStudyAttendance(studyId, 5));
         }
         return list;
     }
@@ -655,8 +680,8 @@ public class DummyDataGenerator {
 
         final String sql =
                 """
-                        INSERT INTO favorite (member_id, study_id)
-                        VALUES (?, ?);
+                        INSERT INTO favorite (member_id, study_id, created_at, last_modified_at)
+                        VALUES (?, ?, ?, ?);
                         """;
         final List<DummyStudyFavorite> dummyStudyFavorites = createDummyStudyFavorites();
         jdbcTemplate.batchUpdate(
@@ -667,6 +692,8 @@ public class DummyDataGenerator {
                         final DummyStudyFavorite dummyStudyFavorite = dummyStudyFavorites.get(i);
                         ps.setLong(1, dummyStudyFavorite.memberId());
                         ps.setLong(2, dummyStudyFavorite.studyId());
+                        ps.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+                        ps.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
                     }
 
                     @Override
@@ -682,9 +709,9 @@ public class DummyDataGenerator {
     private List<DummyStudyFavorite> createDummyStudyFavorites() {
         final List<DummyStudyFavorite> list = new ArrayList<>();
         for (int memberId = 1; memberId <= MEMBER_SIZE; memberId++) {
-            final int count = (int) (Math.random() * 11);
+            final int count = ThreadLocalRandom.current().nextInt(0, 5 + 1);
             for (int j = 0; j < count; j++) {
-                final int studyId = (int) (Math.random() * STUDY_SIZE + 1);
+                final int studyId = ThreadLocalRandom.current().nextInt(1, STUDY_SIZE + 1);
                 list.add(new DummyStudyFavorite(memberId, studyId));
             }
         }
