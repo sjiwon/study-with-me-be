@@ -21,7 +21,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.kgu.studywithme.common.fixture.MemberFixture.GHOST;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Favorite -> 스터디 찜 동시성 테스트")
 public class MarkStudyLikeConcurrencyTest {
     @Autowired
-    private MarkStudyLikeUseCase sut;
+    private ManageFavoriteUseCase sut;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -52,9 +51,7 @@ public class MarkStudyLikeConcurrencyTest {
     @BeforeEach
     void setUp() {
         member = memberRepository.save(JIWON.toMember());
-
-        final Member host = memberRepository.save(GHOST.toMember());
-        study = studyRepository.save(SPRING.toStudy(host.getId()));
+        study = studyRepository.save(SPRING.toStudy(member.getId()));
     }
 
     @Test
@@ -69,7 +66,7 @@ public class MarkStudyLikeConcurrencyTest {
         for (int i = 0; i < threadCount; i++) {
             executorService.submit(() -> {
                 try {
-                    sut.invoke(new MarkStudyLikeCommand(member.getId(), study.getId()));
+                    sut.markLike(new MarkStudyLikeCommand(member.getId(), study.getId()));
                 } finally {
                     countDownLatch.countDown();
                 }

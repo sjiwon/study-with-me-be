@@ -1,7 +1,6 @@
 package com.kgu.studywithme.favorite.presentation;
 
-import com.kgu.studywithme.favorite.application.usecase.CancelStudyLikeUseCase;
-import com.kgu.studywithme.favorite.application.usecase.MarkStudyLikeUseCase;
+import com.kgu.studywithme.favorite.application.usecase.ManageFavoriteUseCase;
 import com.kgu.studywithme.favorite.application.usecase.command.CancelStudyLikeCommand;
 import com.kgu.studywithme.favorite.application.usecase.command.MarkStudyLikeCommand;
 import com.kgu.studywithme.global.aop.CheckAuthUser;
@@ -21,8 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/studies/{studyId}/like")
 public class FavoriteApiController {
-    private final MarkStudyLikeUseCase markStudyLikeUseCase;
-    private final CancelStudyLikeUseCase cancelStudyLikeUseCase;
+    private final ManageFavoriteUseCase manageFavoriteUseCase;
 
     @Operation(summary = "스터디 찜 등록 EndPoint")
     @CheckAuthUser
@@ -31,7 +29,7 @@ public class FavoriteApiController {
             @ExtractPayload final Long memberId,
             @PathVariable final Long studyId
     ) {
-        markStudyLikeUseCase.invoke(new MarkStudyLikeCommand(memberId, studyId));
+        manageFavoriteUseCase.markLike(new MarkStudyLikeCommand(memberId, studyId));
         return ResponseEntity.noContent().build();
     }
 
@@ -42,7 +40,7 @@ public class FavoriteApiController {
             @ExtractPayload final Long memberId,
             @PathVariable final Long studyId
     ) {
-        cancelStudyLikeUseCase.invoke(new CancelStudyLikeCommand(memberId, studyId));
+        manageFavoriteUseCase.cancelLike(new CancelStudyLikeCommand(memberId, studyId));
         return ResponseEntity.noContent().build();
     }
 }

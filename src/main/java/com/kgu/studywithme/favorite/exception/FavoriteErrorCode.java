@@ -11,6 +11,7 @@ import static org.springframework.http.HttpStatus.CONFLICT;
 @RequiredArgsConstructor
 public enum FavoriteErrorCode implements ErrorCode {
     ALREADY_LIKE_MARKED(CONFLICT, "FAVORITE_001", "이미 찜한 스터디입니다."),
+    FAVORITE_MARKING_NOT_FOUND(HttpStatus.NOT_FOUND, "FAVORITE_002", "찜 등록을 하지 않은 작품입니다."),
     ;
 
     private final HttpStatus status;

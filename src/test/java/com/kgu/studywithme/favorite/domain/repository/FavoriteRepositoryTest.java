@@ -11,9 +11,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Optional;
+
+import static com.kgu.studywithme.common.fixture.MemberFixture.GHOST;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
+import static com.kgu.studywithme.common.fixture.StudyFixture.JPA;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("Favorite -> FavoriteRepository 테스트")
 class FavoriteRepositoryTest extends RepositoryTest {
@@ -26,26 +31,38 @@ class FavoriteRepositoryTest extends RepositoryTest {
     @Autowired
     private StudyRepository studyRepository;
 
+    private Member host;
     private Member member;
-    private Study study;
+    private Study studyA;
+    private Study studyB;
 
     @BeforeEach
     void setUp() {
-        member = memberRepository.save(JIWON.toMember());
-        study = studyRepository.save(SPRING.toStudy(member.getId()));
+        host = memberRepository.save(JIWON.toMember());
+        member = memberRepository.save(GHOST.toMember());
+        studyA = studyRepository.save(SPRING.toStudy(host.getId()));
+        studyB = studyRepository.save(JPA.toStudy(host.getId()));
     }
 
     @Test
-    @DisplayName("특정 스터디에 대한 사용자 찜 현황을 삭제한다")
-    void cancelLikeMarking() {
+    @DisplayName("특정 스터디에 대해서 사용자가 찜한 기록한 기록을 조회한다")
+    void findByStudyIdAndMemberId() {
         // given
-        final Favorite favorite = sut.save(Favorite.favoriteMarking(member.getId(), study.getId()));
-        assertThat(sut.existsById(favorite.getId())).isTrue();
+        sut.save(Favorite.favoriteMarking(studyA.getId(), host.getId()));
+        sut.save(Favorite.favoriteMarking(studyB.getId(), member.getId()));
 
         // when
-        sut.cancelLikeMarking(member.getId(), study.getId());
+        final Optional<Favorite> actual1 = sut.findByStudyIdAndMemberId(studyA.getId(), host.getId());
+        final Optional<Favorite> actual2 = sut.findByStudyIdAndMemberId(studyA.getId(), member.getId());
+        final Optional<Favorite> actual3 = sut.findByStudyIdAndMemberId(studyB.getId(), host.getId());
+        final Optional<Favorite> actual4 = sut.findByStudyIdAndMemberId(studyB.getId(), member.getId());
 
         // then
-        assertThat(sut.existsById(favorite.getId())).isFalse();
+        assertAll(
+                () -> assertThat(actual1).isPresent(),
+                () -> assertThat(actual2).isEmpty(),
+                () -> assertThat(actual3).isEmpty(),
+                () -> assertThat(actual4).isPresent()
+        );
     }
 }

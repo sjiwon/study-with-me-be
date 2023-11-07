@@ -25,10 +25,20 @@ HTTP Response
 include::{snippets}/StudyApi/Favorite/LikeMarking/Success/http-response.adoc[]
 
 == 찜 취소 [AccessToken 필수]
+=== 1. 해당 스터디에 대해서 찜한 기록이 없다면 취소할 수 없다
 HTTP Request
-include::{snippets}/StudyApi/Favorite/LikeCancellation/http-request.adoc[]
-include::{snippets}/StudyApi/Favorite/LikeCancellation/request-headers.adoc[]
-include::{snippets}/StudyApi/Favorite/LikeCancellation/path-parameters.adoc[]
+include::{snippets}/StudyApi/Favorite/LikeCancellation/Failure/http-request.adoc[]
+include::{snippets}/StudyApi/Favorite/LikeCancellation/Failure/request-headers.adoc[]
+include::{snippets}/StudyApi/Favorite/LikeCancellation/Failure/path-parameters.adoc[]
 
 HTTP Response
-include::{snippets}/StudyApi/Favorite/LikeCancellation/http-response.adoc[]
+include::{snippets}/StudyApi/Favorite/LikeCancellation/Failure/response-body.adoc[]
+
+=== 2. 해당 스터디에 대해서 등록한 찜을 취소한다
+HTTP Request
+include::{snippets}/StudyApi/Favorite/LikeCancellation/Success/http-request.adoc[]
+include::{snippets}/StudyApi/Favorite/LikeCancellation/Success/request-headers.adoc[]
+include::{snippets}/StudyApi/Favorite/LikeCancellation/Success/path-parameters.adoc[]
+
+HTTP Response
+include::{snippets}/StudyApi/Favorite/LikeCancellation/Success/http-response.adoc[]
