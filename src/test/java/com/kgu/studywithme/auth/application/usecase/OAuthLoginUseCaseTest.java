@@ -3,7 +3,7 @@ package com.kgu.studywithme.auth.application.usecase;
 import com.kgu.studywithme.auth.application.adapter.OAuthConnector;
 import com.kgu.studywithme.auth.application.usecase.command.OAuthLoginCommand;
 import com.kgu.studywithme.auth.domain.model.AuthMember;
-import com.kgu.studywithme.auth.domain.service.TokenManager;
+import com.kgu.studywithme.auth.domain.service.TokenIssuer;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.GoogleOAuthConnector;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleTokenResponse;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleUserResponse;
@@ -41,8 +41,8 @@ class OAuthLoginUseCaseTest extends UseCaseTest {
     private final GoogleOAuthConnector googleOAuthConnector = mock(GoogleOAuthConnector.class);
     private final List<OAuthConnector> oAuthConnectors = List.of(googleOAuthConnector);
     private final MemberRepository memberRepository = mock(MemberRepository.class);
-    private final TokenManager tokenManager = new TokenManager(new StubTokenProvider(), new FakeTokenStore());
-    private final OAuthLoginUseCase sut = new OAuthLoginUseCase(oAuthConnectors, memberRepository, tokenManager);
+    private final TokenIssuer tokenIssuer = new TokenIssuer(new StubTokenProvider(), new FakeTokenStore());
+    private final OAuthLoginUseCase sut = new OAuthLoginUseCase(oAuthConnectors, memberRepository, tokenIssuer);
 
     @Nested
     @DisplayName("Google OAuth 로그인")
@@ -99,7 +99,7 @@ class OAuthLoginUseCaseTest extends UseCaseTest {
                     () -> assertThat(response.member().email()).isEqualTo(member.getEmail().getValue()),
                     () -> assertThat(response.token().accessToken()).isEqualTo(ACCESS_TOKEN),
                     () -> assertThat(response.token().refreshToken()).isEqualTo(REFRESH_TOKEN),
-                    () -> assertThat(tokenManager.isMemberRefreshToken(response.member().id(), REFRESH_TOKEN)).isTrue()
+                    () -> assertThat(tokenIssuer.isMemberRefreshToken(response.member().id(), REFRESH_TOKEN)).isTrue()
             );
         }
     }

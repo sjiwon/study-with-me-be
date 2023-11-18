@@ -2,7 +2,7 @@ package com.kgu.studywithme.auth.application.usecase;
 
 import com.kgu.studywithme.auth.application.usecase.command.ReissueTokenCommand;
 import com.kgu.studywithme.auth.domain.model.AuthToken;
-import com.kgu.studywithme.auth.domain.service.TokenManager;
+import com.kgu.studywithme.auth.domain.service.TokenIssuer;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.common.mock.fake.FakeTokenStore;
@@ -21,8 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("Auth -> ReissueTokenUseCase 테스트")
 class ReissueTokenUseCaseTest extends UseCaseTest {
-    private final TokenManager tokenManager = new TokenManager(new StubTokenProvider(), new FakeTokenStore());
-    private final ReissueTokenUseCase sut = new ReissueTokenUseCase(tokenManager);
+    private final TokenIssuer tokenIssuer = new TokenIssuer(new StubTokenProvider(), new FakeTokenStore());
+    private final ReissueTokenUseCase sut = new ReissueTokenUseCase(tokenIssuer);
 
     private final Member member = JIWON.toMember().apply(1L);
 
@@ -38,7 +38,7 @@ class ReissueTokenUseCaseTest extends UseCaseTest {
     @DisplayName("사용자 소유의 RefreshToken을 통해서 AccessToken과 RefreshToken을 재발급받는다")
     void success() {
         // given
-        final AuthToken authToken = tokenManager.provideAuthorityToken(member.getId());
+        final AuthToken authToken = tokenIssuer.provideAuthorityToken(member.getId());
 
         // when
         final AuthToken response = sut.invoke(new ReissueTokenCommand(member.getId(), authToken.refreshToken()));
@@ -47,7 +47,7 @@ class ReissueTokenUseCaseTest extends UseCaseTest {
         assertAll(
                 () -> assertThat(response.accessToken()).isEqualTo(ACCESS_TOKEN),
                 () -> assertThat(response.refreshToken()).isEqualTo(REFRESH_TOKEN),
-                () -> assertThat(tokenManager.isMemberRefreshToken(member.getId(), REFRESH_TOKEN)).isTrue()
+                () -> assertThat(tokenIssuer.isMemberRefreshToken(member.getId(), REFRESH_TOKEN)).isTrue()
         );
     }
 }
