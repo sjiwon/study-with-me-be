@@ -154,9 +154,9 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             final Member reviewerB = memberRepository.save(DUMMY2.toMember());
             final Member reviewerC = memberRepository.save(DUMMY3.toMember());
             memberReviewRepository.saveAll(List.of(
-                    MemberReview.doReview(reviewerA.getId(), member.getId(), "Good - " + reviewerA.getId()),
-                    MemberReview.doReview(reviewerB.getId(), member.getId(), "Good - " + reviewerB.getId()),
-                    MemberReview.doReview(reviewerC.getId(), member.getId(), "Good - " + reviewerC.getId())
+                    MemberReview.doReview(reviewerA, member, "Good - " + reviewerA.getId()),
+                    MemberReview.doReview(reviewerB, member, "Good - " + reviewerB.getId()),
+                    MemberReview.doReview(reviewerC, member, "Good - " + reviewerC.getId())
             ));
 
             final List<ReceivedReview> result1 = sut.fetchReceivedReviewById(member.getId());
@@ -175,8 +175,8 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             final Member reviewerD = memberRepository.save(DUMMY4.toMember());
             final Member reviewerE = memberRepository.save(DUMMY5.toMember());
             memberReviewRepository.saveAll(List.of(
-                    MemberReview.doReview(reviewerD.getId(), member.getId(), "Good - " + reviewerD.getId()),
-                    MemberReview.doReview(reviewerE.getId(), member.getId(), "Good - " + reviewerE.getId())
+                    MemberReview.doReview(reviewerD, member, "Good - " + reviewerD.getId()),
+                    MemberReview.doReview(reviewerE, member, "Good - " + reviewerE.getId())
             ));
 
             final List<ReceivedReview> result2 = sut.fetchReceivedReviewById(member.getId());

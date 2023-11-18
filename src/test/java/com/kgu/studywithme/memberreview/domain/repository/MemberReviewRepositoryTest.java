@@ -47,8 +47,8 @@ public class MemberReviewRepositoryTest extends RepositoryTest {
             final MemberReview review = sut.getWrittenReview(reviewer.getId(), reviewee.getId());
 
             assertAll(
-                    () -> assertThat(review.getReviewerId()).isEqualTo(reviewer.getId()),
-                    () -> assertThat(review.getRevieweeId()).isEqualTo(reviewee.getId()),
+                    () -> assertThat(review.getReviewer()).isEqualTo(reviewer),
+                    () -> assertThat(review.getReviewee()).isEqualTo(reviewee),
                     () -> assertThat(review.getContent()).isEqualTo("BEST! - " + reviewer.getId())
             );
         }
@@ -76,7 +76,7 @@ public class MemberReviewRepositoryTest extends RepositoryTest {
     private void doReview(final Member... reviewers) {
         final List<MemberReview> memberReviews = new ArrayList<>();
         for (Member reviewer : reviewers) {
-            memberReviews.add(MemberReview.doReview(reviewer.getId(), reviewee.getId(), "BEST! - " + reviewer.getId()));
+            memberReviews.add(MemberReview.doReview(reviewer, reviewee, "BEST! - " + reviewer.getId()));
         }
         sut.saveAll(memberReviews);
     }

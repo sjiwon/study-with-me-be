@@ -27,7 +27,7 @@ class UpdateMemberReviewUseCaseTest extends UseCaseTest {
 
     private final Member memberA = JIWON.toMember().apply(1L);
     private final Member memberB = JIWON.toMember().apply(2L);
-    private final MemberReview review = MemberReview.doReview(memberA.getId(), memberB.getId(), "Good!!").apply(1L);
+    private final MemberReview review = MemberReview.doReview(memberA, memberB, "Good!!").apply(1L);
 
     @Test
     @DisplayName("해당 사용자에게 작성한 리뷰가 없다면 수정할 수 없다")
