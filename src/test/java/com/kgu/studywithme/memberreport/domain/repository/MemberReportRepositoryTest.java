@@ -45,7 +45,7 @@ public class MemberReportRepositoryTest extends RepositoryTest {
         );
 
         /* 신고 O */
-        final MemberReport report = sut.save(MemberReport.createReport(memberA.getId(), memberB.getId(), "스터디를 대충합니다."));
+        final MemberReport report = sut.save(MemberReport.createReport(memberA, memberB, "스터디를 대충합니다."));
         assertAll(
                 () -> assertThat(sut.existsByReporterIdAndReporteeIdAndStatus(memberA.getId(), memberB.getId(), RECEIVE)).isTrue(),
                 () -> assertThat(sut.existsByReporterIdAndReporteeIdAndStatus(memberA.getId(), memberB.getId(), APPROVE)).isFalse(),
