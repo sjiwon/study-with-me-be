@@ -61,11 +61,11 @@
 
 ### Backend
 
-![Tech Stack - Backend2](https://github.com/sjiwon/study-with-me-be/assets/51479381/11696f40-4c4f-4868-9060-16ecdf1169ee)
+![Tech Stack - Backend](https://github.com/sjiwon/study-with-me-be/assets/51479381/89c2a9c9-cc02-485e-bd8d-b315dacd2b03)
 
 ### Infra
 
-![Tech Stack - Infra2](https://github.com/sjiwon/study-with-me-be/assets/51479381/0798b8a2-5aaa-426f-9bda-8642f73d63eb)
+![Tech Stack - Infra](https://github.com/sjiwon/study-with-me-be/assets/51479381/6dd74c8a-ba74-4b7c-9234-4290fa00becd)
 
 <br>
 
@@ -86,7 +86,7 @@
 
 ### 서버 API 호출 흐름도
 
-![서버 API 호출 흐름도](https://github.com/sjiwon/study-with-me-be/assets/51479381/39a9fed2-31ba-4acb-b15f-e1f3469d232b)
+![서버 API 호출 흐름도](https://github.com/sjiwon/study-with-me-be/assets/51479381/8bb49877-2945-464b-9fbb-39530ddd465a)
 
 <br>
 
