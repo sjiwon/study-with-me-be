@@ -100,7 +100,7 @@ class StudyParticipantDecisionApiControllerTest extends ControllerTest {
                     .andExpectAll(getResultMatchersViaErrorCode(expectedError))
                     .andDo(
                             document(
-                                    "StudyApi/Participation/Approve/Failure/Case3",
+                                    "StudyApi/Participation/Approve/Failure/Case2",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
                                     getHeaderWithAccessToken(),
