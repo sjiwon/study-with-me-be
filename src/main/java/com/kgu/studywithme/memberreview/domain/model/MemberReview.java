@@ -19,6 +19,9 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "member_review")
 public class MemberReview extends BaseEntity<MemberReview> {
+    @Column(name = "content", nullable = false)
+    private String content;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "reviewer_id", referencedColumnName = "id", nullable = false)
     private Member reviewer;
@@ -26,9 +29,6 @@ public class MemberReview extends BaseEntity<MemberReview> {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "reviewee_id", referencedColumnName = "id", nullable = false)
     private Member reviewee;
-
-    @Column(name = "content", nullable = false)
-    private String content;
 
     private MemberReview(final Member reviewer, final Member reviewee, final String content) {
         this.reviewer = reviewer;

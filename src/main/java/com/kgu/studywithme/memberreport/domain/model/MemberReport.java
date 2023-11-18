@@ -24,14 +24,6 @@ import static com.kgu.studywithme.memberreport.domain.model.MemberReportStatus.R
 @Entity
 @Table(name = "member_report")
 public class MemberReport extends BaseEntity<MemberReport> {
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "reporter_id", referencedColumnName = "id", nullable = false)
-    private Member reporter;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "reportee_id", referencedColumnName = "id", nullable = false)
-    private Member reportee;
-
     @Lob
     @Column(name = "reason", nullable = false, columnDefinition = "TEXT")
     private String reason;
@@ -39,6 +31,14 @@ public class MemberReport extends BaseEntity<MemberReport> {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private MemberReportStatus status;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "reporter_id", referencedColumnName = "id", nullable = false)
+    private Member reporter;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "reportee_id", referencedColumnName = "id", nullable = false)
+    private Member reportee;
 
     private MemberReport(final Member reporter, final Member reportee, final String reason) {
         this.reporter = reporter;
