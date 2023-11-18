@@ -8,7 +8,6 @@ import com.kgu.studywithme.auth.infrastructure.oauth.naver.NaverOAuthConnector;
 import com.kgu.studywithme.auth.infrastructure.oauth.naver.NaverOAuthUriGenerator;
 import com.kgu.studywithme.common.config.ExternalApiConfiguration;
 import com.kgu.studywithme.common.config.MySqlTestContainersExtension;
-import com.kgu.studywithme.common.config.RedisTestContainersExtension;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -20,10 +19,7 @@ import org.springframework.context.annotation.Import;
 
 @Tag("Acceptance")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ExtendWith({
-        MySqlTestContainersExtension.class,
-        RedisTestContainersExtension.class
-})
+@ExtendWith(MySqlTestContainersExtension.class)
 @Import(ExternalApiConfiguration.class)
 public abstract class AcceptanceTest {
     @LocalServerPort

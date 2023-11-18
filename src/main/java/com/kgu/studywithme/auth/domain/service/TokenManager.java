@@ -1,38 +1,34 @@
 package com.kgu.studywithme.auth.domain.service;
 
-import com.kgu.studywithme.auth.application.adapter.TokenStoreAdapter;
-import com.kgu.studywithme.auth.domain.model.AuthToken;
-import com.kgu.studywithme.auth.utils.TokenProvider;
+import com.kgu.studywithme.auth.domain.model.Token;
+import com.kgu.studywithme.auth.domain.repository.TokenRepository;
+import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class TokenManager {
-    private final TokenProvider tokenProvider;
-    private final TokenStoreAdapter tokenStoreAdapter;
+    private final TokenRepository tokenRepository;
 
-    public AuthToken provideAuthorityToken(final Long memberId) {
-        final String accessToken = tokenProvider.createAccessToken(memberId);
-        final String refreshToken = tokenProvider.createRefreshToken(memberId);
-        tokenStoreAdapter.synchronizeRefreshToken(memberId, refreshToken);
-
-        return new AuthToken(accessToken, refreshToken);
+    @StudyWithMeWritableTransactional
+    public void synchronizeRefreshToken(final Long memberId, final String refreshToken) {
+        tokenRepository.findByMemberId(memberId)
+                .ifPresentOrElse(
+                        token -> token.updateRefreshToken(refreshToken),
+                        () -> tokenRepository.save(Token.issueRefreshToken(memberId, refreshToken))
+                );
     }
 
-    public AuthToken reissueAuthorityToken(final Long memberId) {
-        final String newAccessToken = tokenProvider.createAccessToken(memberId);
-        final String newRefreshToken = tokenProvider.createRefreshToken(memberId);
-        tokenStoreAdapter.updateRefreshToken(memberId, newRefreshToken);
-
-        return new AuthToken(newAccessToken, newRefreshToken);
-    }
-
-    public boolean isMemberRefreshToken(final Long memberId, final String refreshToken) {
-        return tokenStoreAdapter.isMemberRefreshToken(memberId, refreshToken);
+    public void updateRefreshToken(final Long memberId, final String newRefreshToken) {
+        tokenRepository.updateRefreshToken(memberId, newRefreshToken);
     }
 
     public void deleteRefreshToken(final Long memberId) {
-        tokenStoreAdapter.deleteRefreshToken(memberId);
+        tokenRepository.deleteRefreshToken(memberId);
+    }
+
+    public boolean isMemberRefreshToken(final Long memberId, final String refreshToken) {
+        return tokenRepository.existsByMemberIdAndRefreshToken(memberId, refreshToken);
     }
 }

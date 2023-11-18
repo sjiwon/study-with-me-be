@@ -7,7 +7,7 @@ import com.kgu.studywithme.auth.domain.model.AuthToken;
 import com.kgu.studywithme.auth.domain.model.oauth.OAuthProvider;
 import com.kgu.studywithme.auth.domain.model.oauth.OAuthTokenResponse;
 import com.kgu.studywithme.auth.domain.model.oauth.OAuthUserResponse;
-import com.kgu.studywithme.auth.domain.service.TokenManager;
+import com.kgu.studywithme.auth.domain.service.TokenIssuer;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.global.exception.StudyWithMeOAuthException;
@@ -23,12 +23,12 @@ import java.util.List;
 public class OAuthLoginUseCase {
     private final List<OAuthConnector> oAuthConnectors;
     private final MemberRepository memberRepository;
-    private final TokenManager tokenManager;
+    private final TokenIssuer tokenIssuer;
 
     public AuthMember invoke(final OAuthLoginCommand command) {
         final OAuthUserResponse oAuthUser = getOAuthUser(command);
         final Member member = findMemberByOAuthEmail(oAuthUser);
-        final AuthToken authToken = tokenManager.provideAuthorityToken(member.getId());
+        final AuthToken authToken = tokenIssuer.provideAuthorityToken(member.getId());
 
         return new AuthMember(
                 new AuthMember.MemberInfo(member),

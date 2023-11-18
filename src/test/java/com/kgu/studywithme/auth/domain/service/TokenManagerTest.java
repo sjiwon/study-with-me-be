@@ -1,87 +1,82 @@
 package com.kgu.studywithme.auth.domain.service;
 
-import com.kgu.studywithme.auth.application.adapter.TokenStoreAdapter;
-import com.kgu.studywithme.auth.domain.model.AuthToken;
-import com.kgu.studywithme.auth.utils.TokenProvider;
-import com.kgu.studywithme.common.ParallelTest;
-import com.kgu.studywithme.common.mock.fake.FakeTokenStore;
-import com.kgu.studywithme.common.mock.stub.StubTokenProvider;
+import com.kgu.studywithme.auth.domain.model.Token;
+import com.kgu.studywithme.auth.domain.repository.TokenRepository;
+import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.member.domain.model.Member;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
-import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
-import static com.kgu.studywithme.common.utils.TokenUtils.REFRESH_TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
-@DisplayName("Auth -> TokenManager 테스트")
-public class TokenManagerTest extends ParallelTest {
-    private final TokenProvider tokenProvider = new StubTokenProvider();
-    private final TokenStoreAdapter tokenStoreAdapter = new FakeTokenStore();
-    private final TokenManager sut = new TokenManager(tokenProvider, tokenStoreAdapter);
+@DisplayName("Token -> TokenManager 테스트")
+class TokenManagerTest extends UseCaseTest {
+    private final TokenRepository tokenRepository = mock(TokenRepository.class);
+    private final TokenManager sut = new TokenManager(tokenRepository);
 
     private final Member member = JIWON.toMember().apply(1L);
+    private final String previousToken = "previous";
+    private final String newToken = "new";
 
-    @Test
-    @DisplayName("AuthToken[Access + Refresh]을 제공한다")
-    void provideAuthorityToken() {
-        // when
-        final AuthToken authToken = sut.provideAuthorityToken(member.getId());
+    @Nested
+    @DisplayName("RefreshToken 동기화")
+    class SynchronizeRefreshToken {
+        @Test
+        @DisplayName("RefreshToken을 보유한 상태면 새로운 RefreshToken으로 대체한다")
+        void update() {
+            // given
+            final Token token = Token.issueRefreshToken(member.getId(), previousToken).apply(1L);
+            given(tokenRepository.findByMemberId(member.getId())).willReturn(Optional.of(token));
 
-        // then
-        assertAll(
-                () -> assertThat(authToken.accessToken()).isEqualTo(ACCESS_TOKEN),
-                () -> assertThat(authToken.refreshToken()).isEqualTo(REFRESH_TOKEN),
-                () -> assertThat(tokenStoreAdapter.isMemberRefreshToken(member.getId(), REFRESH_TOKEN)).isTrue()
-        );
+            // when
+            sut.synchronizeRefreshToken(member.getId(), newToken);
+
+            // then
+            assertAll(
+                    () -> verify(tokenRepository, times(0)).save(any(Token.class)),
+                    () -> assertThat(token.getRefreshToken()).isEqualTo(newToken)
+            );
+        }
+
+        @Test
+        @DisplayName("보유한 RefreshToken이 없다면 새로 발급한다")
+        void reissue() {
+            // given
+            given(tokenRepository.findByMemberId(member.getId())).willReturn(Optional.empty());
+
+            // when
+            sut.synchronizeRefreshToken(member.getId(), newToken);
+
+            // then
+            verify(tokenRepository, times(1)).save(any(Token.class));
+        }
     }
 
     @Test
-    @DisplayName("AuthToken[Access + Refresh]을 재발급한다")
-    void reissueAuthorityToken() {
-        // given
-        tokenStoreAdapter.synchronizeRefreshToken(member.getId(), REFRESH_TOKEN);
-
-        // when
-        final AuthToken authToken = sut.reissueAuthorityToken(member.getId());
-
-        // then
-        assertAll(
-                () -> assertThat(authToken.accessToken()).isEqualTo(ACCESS_TOKEN),
-                () -> assertThat(authToken.refreshToken()).isEqualTo(REFRESH_TOKEN),
-                () -> assertThat(tokenStoreAdapter.isMemberRefreshToken(member.getId(), REFRESH_TOKEN)).isTrue()
-        );
-    }
-
-    @Test
-    @DisplayName("사용자의 RefreshToken인지 확인한다")
+    @DisplayName("사용자 소유의 RefreshToken인지 확인한다")
     void isMemberRefreshToken() {
         // given
-        tokenStoreAdapter.synchronizeRefreshToken(member.getId(), REFRESH_TOKEN);
+        given(tokenRepository.existsByMemberIdAndRefreshToken(member.getId(), previousToken)).willReturn(false);
+        given(tokenRepository.existsByMemberIdAndRefreshToken(member.getId(), newToken)).willReturn(true);
 
         // when
-        final boolean actual1 = sut.isMemberRefreshToken(member.getId(), REFRESH_TOKEN);
-        final boolean actual2 = sut.isMemberRefreshToken(member.getId(), REFRESH_TOKEN + "X");
+        final boolean actual1 = sut.isMemberRefreshToken(member.getId(), previousToken);
+        final boolean actual2 = sut.isMemberRefreshToken(member.getId(), newToken);
 
         // then
         assertAll(
-                () -> assertThat(actual1).isTrue(),
-                () -> assertThat(actual2).isFalse()
+                () -> assertThat(actual1).isFalse(),
+                () -> assertThat(actual2).isTrue()
         );
-    }
-
-    @Test
-    @DisplayName("사용자의 RefreshToken을 제거한다")
-    void deleteRefreshToken() {
-        // given
-        tokenStoreAdapter.synchronizeRefreshToken(member.getId(), REFRESH_TOKEN);
-
-        // when
-        sut.deleteRefreshToken(member.getId());
-
-        // then
-        assertThat(tokenStoreAdapter.isMemberRefreshToken(member.getId(), REFRESH_TOKEN)).isFalse();
     }
 }
