@@ -377,9 +377,9 @@ class MemberInformationRepositoryTest extends RepositoryTest {
         void fetchLikeMarkedStudyById() {
             /* studyA, studyB, studyC 찜 */
             favoriteRepository.saveAll(List.of(
-                    Favorite.favoriteMarking(member.getId(), studyA.getId()),
-                    Favorite.favoriteMarking(member.getId(), studyB.getId()),
-                    Favorite.favoriteMarking(member.getId(), studyC.getId())
+                    Favorite.favoriteMarking(member, studyA),
+                    Favorite.favoriteMarking(member, studyB),
+                    Favorite.favoriteMarking(member, studyC)
             ));
 
             final List<LikeMarkedStudy> result1 = sut.fetchLikeMarkedStudyById(member.getId());
@@ -389,8 +389,8 @@ class MemberInformationRepositoryTest extends RepositoryTest {
 
             /* studyD, studyE 추가 찜 */
             favoriteRepository.saveAll(List.of(
-                    Favorite.favoriteMarking(member.getId(), studyD.getId()),
-                    Favorite.favoriteMarking(member.getId(), studyE.getId())
+                    Favorite.favoriteMarking(member, studyD),
+                    Favorite.favoriteMarking(member, studyE)
             ));
 
             final List<LikeMarkedStudy> result2 = sut.fetchLikeMarkedStudyById(member.getId());

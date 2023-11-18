@@ -48,8 +48,8 @@ class FavoriteRepositoryTest extends RepositoryTest {
     @DisplayName("특정 스터디에 대해서 사용자가 찜한 기록한 기록을 조회한다")
     void findByStudyIdAndMemberId() {
         // given
-        sut.save(Favorite.favoriteMarking(studyA.getId(), host.getId()));
-        sut.save(Favorite.favoriteMarking(studyB.getId(), member.getId()));
+        sut.save(Favorite.favoriteMarking(host, studyA));
+        sut.save(Favorite.favoriteMarking(member, studyB));
 
         // when
         final Optional<Favorite> actual1 = sut.findByStudyIdAndMemberId(studyA.getId(), host.getId());

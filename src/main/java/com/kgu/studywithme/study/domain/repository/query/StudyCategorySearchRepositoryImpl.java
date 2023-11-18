@@ -1,10 +1,10 @@
 package com.kgu.studywithme.study.domain.repository.query;
 
 import com.kgu.studywithme.category.domain.model.Category;
-import com.kgu.studywithme.favorite.domain.model.Favorite;
 import com.kgu.studywithme.global.annotation.StudyWithMeReadOnlyTransactional;
 import com.kgu.studywithme.study.domain.model.StudyType;
 import com.kgu.studywithme.study.domain.repository.query.dto.QStudyPreview;
+import com.kgu.studywithme.study.domain.repository.query.dto.QStudyPreview_FavoriteSummary;
 import com.kgu.studywithme.study.domain.repository.query.dto.QStudyPreview_HashtagSummary;
 import com.kgu.studywithme.study.domain.repository.query.dto.StudyPreview;
 import com.kgu.studywithme.study.utils.search.SearchByCategoryCondition;
@@ -157,7 +157,7 @@ public class StudyCategorySearchRepositoryImpl implements StudyCategorySearchRep
         final List<Long> studyIds = query
                 .select(study.id)
                 .from(study)
-                .leftJoin(favorite).on(favorite.studyId.eq(study.id))
+                .leftJoin(favorite).on(favorite.study.id.eq(study.id))
                 .where(whereConditions.toArray(Predicate[]::new))
                 .groupBy(study.id)
                 .orderBy(favorite.count().desc(), study.id.desc())
@@ -270,10 +270,13 @@ public class StudyCategorySearchRepositoryImpl implements StudyCategorySearchRep
             final List<StudyPreview> result,
             final List<Long> studyIds
     ) {
-        final List<Favorite> favorites = query
-                .select(favorite)
+        final List<StudyPreview.FavoriteSummary> favorites = query
+                .select(new QStudyPreview_FavoriteSummary(
+                        favorite.study.id,
+                        favorite.member.id
+                ))
                 .from(favorite)
-                .where(favorite.studyId.in(studyIds))
+                .where(favorite.study.id.in(studyIds))
                 .fetch();
 
         result.forEach(study -> study.applyLikeMarkingMembers(collectLikeMarkingMembers(study, favorites)));
@@ -281,12 +284,12 @@ public class StudyCategorySearchRepositoryImpl implements StudyCategorySearchRep
 
     private List<Long> collectLikeMarkingMembers(
             final StudyPreview study,
-            final List<Favorite> favorites
+            final List<StudyPreview.FavoriteSummary> favorites
     ) {
         return favorites
                 .stream()
-                .filter(favorite -> favorite.getStudyId().equals(study.getId()))
-                .map(Favorite::getMemberId)
+                .filter(favorite -> favorite.studyId().equals(study.getId()))
+                .map(StudyPreview.FavoriteSummary::memberId)
                 .toList();
     }
 

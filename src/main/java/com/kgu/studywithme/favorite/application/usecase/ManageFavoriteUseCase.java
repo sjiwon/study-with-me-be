@@ -26,7 +26,7 @@ public class ManageFavoriteUseCase {
         final Member member = memberRepository.getById(command.memberId());
 
         try {
-            return favoriteRepository.save(Favorite.favoriteMarking(member.getId(), study.getId())).getId();
+            return favoriteRepository.save(Favorite.favoriteMarking(member, study)).getId();
         } catch (final DataIntegrityViolationException e) {
             throw StudyWithMeException.type(FavoriteErrorCode.ALREADY_LIKE_MARKED);
         }

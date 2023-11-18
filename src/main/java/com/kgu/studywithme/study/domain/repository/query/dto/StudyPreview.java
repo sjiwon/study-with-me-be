@@ -47,6 +47,15 @@ public class StudyPreview {
         }
     }
 
+    public record FavoriteSummary(
+            Long studyId,
+            Long memberId
+    ) {
+        @QueryProjection
+        public FavoriteSummary {
+        }
+    }
+
     @QueryProjection
     public StudyPreview(
             final Long id,

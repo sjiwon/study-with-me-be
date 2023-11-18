@@ -82,7 +82,7 @@ public class MarkStudyLikeConcurrencyTest {
         return em.createQuery(
                         "SELECT COUNT(f)" +
                                 " FROM Favorite f" +
-                                " WHERE f.memberId = :memberId AND f.studyId = :studyId",
+                                " WHERE f.member.id = :memberId AND f.study.id = :studyId",
                         Long.class
                 ).setParameter("memberId", member.getId())
                 .setParameter("studyId", study.getId())
