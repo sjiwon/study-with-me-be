@@ -197,8 +197,8 @@ public class StudyInformationRepositoryImpl implements StudyInformationRepositor
                         member.nickname
                 ))
                 .from(studyNotice)
-                .innerJoin(member).on(member.id.eq(studyNotice.writerId))
-                .where(studyNotice.studyId.eq(studyId))
+                .innerJoin(member).on(member.id.eq(studyNotice.writer.id))
+                .where(studyNotice.study.id.eq(studyId))
                 .orderBy(studyNotice.id.desc())
                 .fetch();
 
@@ -219,7 +219,7 @@ public class StudyInformationRepositoryImpl implements StudyInformationRepositor
                             )
                     )
                     .from(studyNoticeComment)
-                    .innerJoin(member).on(member.id.eq(studyNoticeComment.writerId))
+                    .innerJoin(member).on(member.id.eq(studyNoticeComment.writer.id))
                     .where(studyNoticeComment.notice.id.in(noticeIds))
                     .fetch();
 

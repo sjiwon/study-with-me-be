@@ -270,24 +270,14 @@ class StudyInformationRepositoryTest extends RepositoryTest {
     @DisplayName("스터디 공지사항을 조회한다")
     void fetchNoticeById() {
         /* 공지사항 2건 */
-        final StudyNotice notice1 = studyNoticeRepository.save(StudyNotice.writeNotice(
-                study.getId(),
-                host.getId(),
-                "Notice 1",
-                "Notice 1 Content"
-        ));
-        notice1.addComment(memberA.getId(), "OK");
-        notice1.addComment(memberB.getId(), "OK");
-        notice1.addComment(memberC.getId(), "OK");
+        final StudyNotice notice1 = studyNoticeRepository.save(StudyNotice.writeNotice(study, host, "Notice 1", "Notice 1 Content"));
+        notice1.addComment(memberA, "OK");
+        notice1.addComment(memberB, "OK");
+        notice1.addComment(memberC, "OK");
 
-        final StudyNotice notice2 = studyNoticeRepository.save(StudyNotice.writeNotice(
-                study.getId(),
-                host.getId(),
-                "Notice 2",
-                "Notice 2 Content"
-        ));
-        notice2.addComment(memberA.getId(), "OK");
-        notice2.addComment(memberC.getId(), "OK");
+        final StudyNotice notice2 = studyNoticeRepository.save(StudyNotice.writeNotice(study, host, "Notice 2", "Notice 2 Content"));
+        notice2.addComment(memberA, "OK");
+        notice2.addComment(memberC, "OK");
 
         final List<NoticeInformation> result = sut.fetchNoticeById(study.getId());
         assertAll(
