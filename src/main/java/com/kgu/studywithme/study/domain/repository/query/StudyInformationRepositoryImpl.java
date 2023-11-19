@@ -116,8 +116,8 @@ public class StudyInformationRepositoryImpl implements StudyInformationRepositor
                         member.nickname
                 ))
                 .from(studyReview)
-                .innerJoin(member).on(member.id.eq(studyReview.writerId))
-                .where(studyReview.studyId.eq(studyId))
+                .innerJoin(member).on(member.id.eq(studyReview.writer.id))
+                .where(studyReview.study.id.eq(studyId))
                 .orderBy(studyReview.id.desc())
                 .fetch();
 

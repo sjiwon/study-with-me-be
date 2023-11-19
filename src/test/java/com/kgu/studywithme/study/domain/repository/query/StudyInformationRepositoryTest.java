@@ -143,8 +143,8 @@ class StudyInformationRepositoryTest extends RepositoryTest {
 
         /* 리뷰 2건 */
         studyReviewRepository.saveAll(List.of(
-                StudyReview.writeReview(study.getId(), memberA.getId(), "Good Study"),
-                StudyReview.writeReview(study.getId(), memberB.getId(), "Good Study")
+                StudyReview.writeReview(study, memberA, "Good Study"),
+                StudyReview.writeReview(study, memberB, "Good Study")
         ));
 
         final ReviewInformation result1 = sut.fetchReviewById(study.getId());
@@ -158,7 +158,7 @@ class StudyInformationRepositoryTest extends RepositoryTest {
         );
 
         /* 리뷰 추가 1건 */
-        studyReviewRepository.save(StudyReview.writeReview(study.getId(), memberC.getId(), "Good Study"));
+        studyReviewRepository.save(StudyReview.writeReview(study, memberC, "Good Study"));
 
         final ReviewInformation result2 = sut.fetchReviewById(study.getId());
         assertAll(

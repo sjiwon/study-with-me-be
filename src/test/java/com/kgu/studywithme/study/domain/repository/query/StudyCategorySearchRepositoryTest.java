@@ -1151,7 +1151,7 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
         }
 
         for (Member member : members) {
-            reviews.add(StudyReview.writeReview(study.getId(), member.getId(), "Good Study"));
+            reviews.add(StudyReview.writeReview(study, member, "Good Study"));
         }
     }
 

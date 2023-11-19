@@ -118,13 +118,14 @@ public class MemberInformationRepositoryImpl implements MemberInformationReposit
         if (!result.isEmpty()) {
             final List<StudyReview> writtenReviews = query
                     .selectFrom(studyReview)
-                    .where(studyReview.writerId.eq(memberId))
+                    .innerJoin(studyReview.study).fetchJoin()
+                    .where(studyReview.writer.id.eq(memberId))
                     .fetch();
 
             result.forEach(
                     graduatedStudy -> graduatedStudy.applyWrittenReview(
                             writtenReviews.stream()
-                                    .filter(writtenReview -> writtenReview.getStudyId().equals(graduatedStudy.getId()))
+                                    .filter(writtenReview -> writtenReview.getStudy().getId().equals(graduatedStudy.getId()))
                                     .map(writtenReview -> new GraduatedStudy.WrittenReview(
                                             writtenReview.getId(),
                                             writtenReview.getContent(),
@@ -161,7 +162,7 @@ public class MemberInformationRepositoryImpl implements MemberInformationReposit
                         studyAttendance.count()
                 ))
                 .from(studyAttendance)
-                .where(studyAttendance.participantId.eq(memberId))
+                .where(studyAttendance.participant.id.eq(memberId))
                 .groupBy(studyAttendance.status)
                 .fetch();
 

@@ -303,7 +303,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             );
 
             /* member -> studyA 리뷰 작성 */
-            studyReviewRepository.save(StudyReview.writeReview(studyA.getId(), member.getId(), "Good!"));
+            studyReviewRepository.save(StudyReview.writeReview(studyA, member, "Good!"));
 
             final List<GraduatedStudy> result3 = sut.fetchGraduatedStudyById(member.getId());
             assertAll(

@@ -194,7 +194,7 @@ public class StudyCategorySearchRepositoryImpl implements StudyCategorySearchRep
         final List<Long> studyIds = query
                 .select(study.id)
                 .from(study)
-                .leftJoin(studyReview).on(studyReview.studyId.eq(study.id))
+                .leftJoin(studyReview).on(studyReview.study.id.eq(study.id))
                 .where(whereConditions.toArray(Predicate[]::new))
                 .groupBy(study.id)
                 .orderBy(studyReview.count().desc(), study.id.desc())
