@@ -37,7 +37,7 @@ public class WeeklySubmitManager {
     ) {
         final StudyWeekly weekly = studyWeeklyRepository.getById(weeklyId);
         final Member participant = participateMemberReader.getParticipant(studyId, memberId);
-        weekly.submitAssignment(participant.getId(), assignment);
+        weekly.submitAssignment(participant, assignment);
 
         applyAttendanceStatusAndMemberScoreViaSubmit(weekly, participant);
     }
@@ -45,7 +45,7 @@ public class WeeklySubmitManager {
     private void applyAttendanceStatusAndMemberScoreViaSubmit(final StudyWeekly weekly, final Member participant) {
         if (weekly.isAutoAttendance()) {
             final StudyAttendance attendance
-                    = studyAttendanceRepository.getParticipantAttendanceByWeek(weekly.getStudyId(), participant.getId(), weekly.getWeek());
+                    = studyAttendanceRepository.getParticipantAttendanceByWeek(weekly.getStudy().getId(), participant.getId(), weekly.getWeek());
             final LocalDateTime now = LocalDateTime.now();
 
             if (weekly.isSubmissionPeriodInRange(now)) {
@@ -91,7 +91,7 @@ public class WeeklySubmitManager {
 
         if (weekly.isAutoAttendance() && weekly.isSubmissionPeriodPassed(now)) { // 수정 시간을 기준으로 제출 시간 업데이트
             final StudyAttendance attendance
-                    = studyAttendanceRepository.getParticipantAttendanceByWeek(weekly.getId(), participant.getId(), weekly.getWeek());
+                    = studyAttendanceRepository.getParticipantAttendanceByWeek(weekly.getStudy().getId(), participant.getId(), weekly.getWeek());
 
             if (attendance.isAttendanceStatus()) {
                 participant.applyScoreByAttendanceStatus(ATTENDANCE, LATE);

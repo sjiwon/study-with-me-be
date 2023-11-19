@@ -52,7 +52,7 @@ public interface StudyAttendanceRepository extends JpaRepository<StudyAttendance
             " JOIN FETCH sa.study" +
             " JOIN FETCH sa.participant" +
             " WHERE sa.status = :status" +
-            " ORDER BY sa.study.id ASC, sa.participant.id ASC")
+            " ORDER BY sa.study.id ASC, sa.week ASC, sa.participant.id ASC")
     List<StudyAttendance> findByStatusOrderByStudyIdAscWeekAscParticipantIdAsc(@Param("status") final AttendanceStatus status);
 
     default List<StudyAttendance> findNonAttendanceInformation() {

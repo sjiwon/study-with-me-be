@@ -36,7 +36,7 @@ class WriteStudyNoticeUseCaseTest extends UseCaseTest {
     private final Study study = SPRING.toStudy(host).apply(1L);
     private final WriteStudyNoticeCommand command = new WriteStudyNoticeCommand(host.getId(), study.getId(), "제목", "내용");
 
-    @Test
+    @Test 
     @DisplayName("스터디 공지사항을 작성한다")
     void success() {
         // given
@@ -51,7 +51,7 @@ class WriteStudyNoticeUseCaseTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyRepository, times(1)).getById(command.studyId()),
+                () -> verify(studyRepository, times(1)).getInProgressStudy(command.studyId()),
                 () -> verify(memberRepository, times(1)).getById(command.hostId()),
                 () -> verify(studyNoticeRepository, times(1)).save(any(StudyNotice.class)),
                 () -> assertThat(savedNoticeId).isEqualTo(notice.getId())

@@ -5,13 +5,12 @@ import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.study.domain.model.Study;
 import com.kgu.studywithme.studyattendance.domain.repository.StudyAttendanceRepository;
-import com.kgu.studywithme.studyparticipant.domain.repository.StudyParticipantRepository;
 import com.kgu.studywithme.studyweekly.application.usecase.command.DeleteStudyWeeklyCommand;
 import com.kgu.studywithme.studyweekly.domain.model.StudyWeekly;
 import com.kgu.studywithme.studyweekly.domain.repository.StudyWeeklyAttachmentRepository;
 import com.kgu.studywithme.studyweekly.domain.repository.StudyWeeklyRepository;
 import com.kgu.studywithme.studyweekly.domain.repository.StudyWeeklySubmitRepository;
-import com.kgu.studywithme.studyweekly.domain.service.WeeklyManager;
+import com.kgu.studywithme.studyweekly.domain.service.WeeklyDeleter;
 import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,11 +30,9 @@ class DeleteStudyWeeklyUseCaseTest extends UseCaseTest {
     private final StudyWeeklyRepository studyWeeklyRepository = mock(StudyWeeklyRepository.class);
     private final StudyWeeklyAttachmentRepository studyWeeklyAttachmentRepository = mock(StudyWeeklyAttachmentRepository.class);
     private final StudyWeeklySubmitRepository studyWeeklySubmitRepository = mock(StudyWeeklySubmitRepository.class);
-    private final StudyParticipantRepository studyParticipantRepository = mock(StudyParticipantRepository.class);
     private final StudyAttendanceRepository studyAttendanceRepository = mock(StudyAttendanceRepository.class);
-    private final WeeklyManager weeklyManager = new WeeklyManager(
+    private final WeeklyDeleter weeklyManager = new WeeklyDeleter(
             studyWeeklyRepository,
-            studyParticipantRepository,
             studyAttendanceRepository,
             studyWeeklyAttachmentRepository,
             studyWeeklySubmitRepository
@@ -44,7 +41,7 @@ class DeleteStudyWeeklyUseCaseTest extends UseCaseTest {
 
     private final Member host = JIWON.toMember().apply(1L);
     private final Study study = SPRING.toStudy(host).apply(1L);
-    private final StudyWeekly weekly = STUDY_WEEKLY_1.toWeekly(study.getId(), host.getId()).apply(1L);
+    private final StudyWeekly weekly = STUDY_WEEKLY_1.toWeekly(study, host).apply(1L);
     private final DeleteStudyWeeklyCommand command = new DeleteStudyWeeklyCommand(study.getId(), weekly.getId());
 
     @Test
@@ -61,7 +58,7 @@ class DeleteStudyWeeklyUseCaseTest extends UseCaseTest {
         assertAll(
                 () -> verify(studyWeeklyRepository, times(1)).isLatestWeek(command.studyId(), command.weeklyId()),
                 () -> verify(studyWeeklyRepository, times(0)).getById(command.weeklyId()),
-                () -> verify(studyAttendanceRepository, times(0)).deleteFromSpecificWeekly(weekly.getStudyId(), weekly.getWeek()),
+                () -> verify(studyAttendanceRepository, times(0)).deleteFromSpecificWeekly(weekly.getStudy().getId(), weekly.getWeek()),
                 () -> verify(studyWeeklySubmitRepository, times(0)).deleteFromSpecificWeekly(weekly.getId()),
                 () -> verify(studyWeeklyAttachmentRepository, times(0)).deleteFromSpecificWeekly(weekly.getId()),
                 () -> verify(studyWeeklyRepository, times(0)).deleteById(weekly.getId())
@@ -82,7 +79,7 @@ class DeleteStudyWeeklyUseCaseTest extends UseCaseTest {
         assertAll(
                 () -> verify(studyWeeklyRepository, times(1)).isLatestWeek(command.studyId(), command.weeklyId()),
                 () -> verify(studyWeeklyRepository, times(1)).getById(command.weeklyId()),
-                () -> verify(studyAttendanceRepository, times(1)).deleteFromSpecificWeekly(weekly.getStudyId(), weekly.getWeek()),
+                () -> verify(studyAttendanceRepository, times(1)).deleteFromSpecificWeekly(weekly.getStudy().getId(), weekly.getWeek()),
                 () -> verify(studyWeeklySubmitRepository, times(1)).deleteFromSpecificWeekly(weekly.getId()),
                 () -> verify(studyWeeklyAttachmentRepository, times(1)).deleteFromSpecificWeekly(weekly.getId()),
                 () -> verify(studyWeeklyRepository, times(1)).deleteById(weekly.getId())

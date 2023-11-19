@@ -18,7 +18,7 @@ public interface StudyWeeklyRepository extends JpaRepository<StudyWeekly, Long> 
     // @Query
     @Query("SELECT sw.week" +
             " FROM StudyWeekly sw" +
-            " WHERE sw.studyId = :studyId" +
+            " WHERE sw.study.id = :studyId" +
             " ORDER BY sw.week DESC")
     List<Integer> findWeekByStudyId(@Param("studyId") final Long studyId);
 
@@ -33,7 +33,7 @@ public interface StudyWeeklyRepository extends JpaRepository<StudyWeekly, Long> 
 
     @Query("SELECT sw.id" +
             " FROM StudyWeekly sw" +
-            " WHERE sw.studyId = :studyId" +
+            " WHERE sw.study.id = :studyId" +
             " ORDER BY sw.id DESC")
     List<Long> findIdByStudyId(@Param("studyId") final Long studyId);
 

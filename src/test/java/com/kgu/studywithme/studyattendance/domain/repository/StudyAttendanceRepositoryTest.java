@@ -99,12 +99,13 @@ public class StudyAttendanceRepositoryTest extends RepositoryTest {
         assertAll(
                 () -> assertThat(attendances)
                         .map(StudyAttendance::getParticipant)
+                        .map(Member::getId)
                         .containsExactly(
-                                members[0],
-                                members[1],
-                                members[2],
-                                members[3],
-                                members[4]
+                                members[0].getId(),
+                                members[1].getId(),
+                                members[2].getId(),
+                                members[3].getId(),
+                                members[4].getId()
                         ),
                 () -> assertThat(attendances)
                         .map(StudyAttendance::getStatus)
@@ -211,9 +212,9 @@ public class StudyAttendanceRepositoryTest extends RepositoryTest {
     void deleteFromSpecificWeekly() {
         /* 3 Weekly & Attendance Information */
         studyWeeklyRepository.saveAll(List.of(
-                STUDY_WEEKLY_1.toWeekly(study.getId(), members[0].getId()),
-                STUDY_WEEKLY_2.toWeekly(study.getId(), members[0].getId()),
-                STUDY_WEEKLY_3.toWeekly(study.getId(), members[0].getId())
+                STUDY_WEEKLY_1.toWeekly(study, members[0]),
+                STUDY_WEEKLY_2.toWeekly(study, members[0]),
+                STUDY_WEEKLY_3.toWeekly(study, members[0])
         ));
 
         sut.saveAll(List.of(

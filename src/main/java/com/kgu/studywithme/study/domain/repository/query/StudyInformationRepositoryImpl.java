@@ -288,8 +288,8 @@ public class StudyInformationRepositoryImpl implements StudyInformationRepositor
                         member.nickname
                 ))
                 .from(studyWeekly)
-                .innerJoin(member).on(member.id.eq(studyWeekly.creatorId))
-                .where(studyWeekly.studyId.eq(studyId))
+                .innerJoin(member).on(member.id.eq(studyWeekly.creator.id))
+                .where(studyWeekly.study.id.eq(studyId))
                 .orderBy(studyWeekly.id.desc())
                 .fetch();
 
@@ -321,7 +321,7 @@ public class StudyInformationRepositoryImpl implements StudyInformationRepositor
                             studyWeeklySubmit.uploadAssignment
                     ))
                     .from(studyWeeklySubmit)
-                    .innerJoin(member).on(member.id.eq(studyWeeklySubmit.participantId))
+                    .innerJoin(member).on(member.id.eq(studyWeeklySubmit.participant.id))
                     .where(studyWeeklySubmit.weekly.id.in(weeklyIds))
                     .fetch();
             weeklyInformations.forEach(weekly -> weekly.applySubmits(

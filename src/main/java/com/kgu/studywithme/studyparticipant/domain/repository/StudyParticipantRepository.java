@@ -2,6 +2,7 @@ package com.kgu.studywithme.studyparticipant.domain.repository;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
+import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus;
 import com.kgu.studywithme.studyparticipant.domain.model.StudyParticipant;
 import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
@@ -34,10 +35,10 @@ public interface StudyParticipantRepository extends JpaRepository<StudyParticipa
                 .orElseThrow(() -> StudyWithMeException.type(StudyParticipantErrorCode.APPLIER_NOT_FOUND));
     }
 
-    @Query("SELECT sp.member.id" +
+    @Query("SELECT sp.member" +
             " FROM StudyParticipant sp" +
             " WHERE sp.study.id = :studyId AND sp.status = :status")
-    List<Long> findParticipantIdsByStatus(
+    List<Member> findParticipantsByStatus(
             @Param("studyId") final Long studyId,
             @Param("status") final ParticipantStatus status
     );

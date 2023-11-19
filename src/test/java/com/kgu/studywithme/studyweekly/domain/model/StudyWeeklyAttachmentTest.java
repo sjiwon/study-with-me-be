@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class StudyWeeklyAttachmentTest extends ParallelTest {
     private final Member host = JIWON.toMember().apply(1L);
     private final Study study = SPRING.toStudy(host).apply(1L);
-    private final StudyWeekly weekly = STUDY_WEEKLY_1.toWeeklyWithAssignment(study.getId(), host.getId()).apply(1L);
+    private final StudyWeekly weekly = STUDY_WEEKLY_1.toWeeklyWithAssignment(study, host).apply(1L);
 
     @Test
     @DisplayName("StudyWeeklyAttachment를 생성한다")

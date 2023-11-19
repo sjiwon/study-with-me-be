@@ -46,15 +46,15 @@ public class StudyWeeklyRepositoryTest extends RepositoryTest {
         assertThat(sut.getNextWeek(study.getId())).isEqualTo(1);
 
         /* 1주차 -> 2 */
-        sut.save(STUDY_WEEKLY_1.toWeeklyWithAssignment(study.getId(), host.getId()));
+        sut.save(STUDY_WEEKLY_1.toWeeklyWithAssignment(study, host));
         assertThat(sut.getNextWeek(study.getId())).isEqualTo(2);
 
         /* 2주차 -> 3 */
-        sut.save(STUDY_WEEKLY_2.toWeeklyWithAssignment(study.getId(), host.getId()));
+        sut.save(STUDY_WEEKLY_2.toWeeklyWithAssignment(study, host));
         assertThat(sut.getNextWeek(study.getId())).isEqualTo(3);
 
         /* 3주차 -> 4 */
-        sut.save(STUDY_WEEKLY_3.toWeeklyWithAssignment(study.getId(), host.getId()));
+        sut.save(STUDY_WEEKLY_3.toWeeklyWithAssignment(study, host));
         assertThat(sut.getNextWeek(study.getId())).isEqualTo(4);
     }
 
@@ -62,18 +62,18 @@ public class StudyWeeklyRepositoryTest extends RepositoryTest {
     @DisplayName("해당 주차가 가장 최신 주차인지 확인한다")
     void isLatestWeek() {
         /* 1주차 */
-        final StudyWeekly weekly1 = sut.save(STUDY_WEEKLY_1.toWeeklyWithAssignment(study.getId(), host.getId()));
+        final StudyWeekly weekly1 = sut.save(STUDY_WEEKLY_1.toWeeklyWithAssignment(study, host));
         assertThat(sut.isLatestWeek(study.getId(), weekly1.getId())).isTrue();
 
         /* 2주차 */
-        final StudyWeekly weekly2 = sut.save(STUDY_WEEKLY_2.toWeeklyWithAssignment(study.getId(), host.getId()));
+        final StudyWeekly weekly2 = sut.save(STUDY_WEEKLY_2.toWeeklyWithAssignment(study, host));
         assertAll(
                 () -> assertThat(sut.isLatestWeek(study.getId(), weekly1.getId())).isFalse(),
                 () -> assertThat(sut.isLatestWeek(study.getId(), weekly2.getId())).isTrue()
         );
 
         /* 3주차 */
-        final StudyWeekly weekly3 = sut.save(STUDY_WEEKLY_3.toWeeklyWithAssignment(study.getId(), host.getId()));
+        final StudyWeekly weekly3 = sut.save(STUDY_WEEKLY_3.toWeeklyWithAssignment(study, host));
         assertAll(
                 () -> assertThat(sut.isLatestWeek(study.getId(), weekly1.getId())).isFalse(),
                 () -> assertThat(sut.isLatestWeek(study.getId(), weekly2.getId())).isFalse(),

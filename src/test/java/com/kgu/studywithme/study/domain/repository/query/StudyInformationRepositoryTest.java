@@ -406,16 +406,16 @@ class StudyInformationRepositoryTest extends RepositoryTest {
     @DisplayName("스터디 주차별 정보를 조회한다")
     void fetchWeeklyById() {
         /* WeeklyA, WeeklyB = 과제 O / WeeklyC = 과제 X */
-        final StudyWeekly weeklyA = studyWeeklyRepository.save(STUDY_WEEKLY_1.toWeeklyWithAssignment(study.getId(), host.getId()));
-        weeklyA.submitAssignment(memberA.getId(), UploadAssignment.withLink("https://notion.so/weeklyA/memberA"));
-        weeklyA.submitAssignment(memberB.getId(), UploadAssignment.withLink("https://notion.so/weeklyA/memberB"));
-        weeklyA.submitAssignment(memberC.getId(), UploadAssignment.withLink("https://notion.so/weeklyA/memberC"));
+        final StudyWeekly weeklyA = studyWeeklyRepository.save(STUDY_WEEKLY_1.toWeeklyWithAssignment(study, host));
+        weeklyA.submitAssignment(memberA, UploadAssignment.withLink("https://notion.so/weeklyA/memberA"));
+        weeklyA.submitAssignment(memberB, UploadAssignment.withLink("https://notion.so/weeklyA/memberB"));
+        weeklyA.submitAssignment(memberC, UploadAssignment.withLink("https://notion.so/weeklyA/memberC"));
 
-        final StudyWeekly weeklyB = studyWeeklyRepository.save(STUDY_WEEKLY_2.toWeeklyWithAssignment(study.getId(), host.getId()));
-        weeklyB.submitAssignment(host.getId(), UploadAssignment.withLink("https://notion.so/weeklyB/host"));
-        weeklyB.submitAssignment(memberC.getId(), UploadAssignment.withLink("https://notion.so/weeklyB/memberC"));
+        final StudyWeekly weeklyB = studyWeeklyRepository.save(STUDY_WEEKLY_2.toWeeklyWithAssignment(study, host));
+        weeklyB.submitAssignment(host, UploadAssignment.withLink("https://notion.so/weeklyB/host"));
+        weeklyB.submitAssignment(memberC, UploadAssignment.withLink("https://notion.so/weeklyB/memberC"));
 
-        final StudyWeekly weeklyC = studyWeeklyRepository.save(STUDY_WEEKLY_5.toWeekly(study.getId(), host.getId()));
+        final StudyWeekly weeklyC = studyWeeklyRepository.save(STUDY_WEEKLY_5.toWeekly(study, host));
 
         final List<WeeklyInformation> result = sut.fetchWeeklyById(study.getId());
         assertThat(result).hasSize(3);

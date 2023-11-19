@@ -59,8 +59,8 @@ class StudyWeeklyMetadataRepositoryTest extends RepositoryTest {
 
         studyWeeklyRepository.saveAll(List.of(
                 StudyWeekly.createWeeklyWithAssignment(
-                        studyA.getId(),
-                        host.getId(),
+                        studyA,
+                        host,
                         STUDY_WEEKLY_1.getTitle(),
                         STUDY_WEEKLY_1.getContent(),
                         STUDY_WEEKLY_1.getWeek(),
@@ -69,8 +69,8 @@ class StudyWeeklyMetadataRepositoryTest extends RepositoryTest {
                         List.of()
                 ),
                 StudyWeekly.createWeeklyWithAssignment(
-                        studyB.getId(),
-                        host.getId(),
+                        studyB,
+                        host,
                         STUDY_WEEKLY_1.getTitle(),
                         STUDY_WEEKLY_1.getContent(),
                         STUDY_WEEKLY_1.getWeek(),
@@ -79,8 +79,8 @@ class StudyWeeklyMetadataRepositoryTest extends RepositoryTest {
                         List.of()
                 ),
                 StudyWeekly.createWeeklyWithAssignment(
-                        studyA.getId(),
-                        host.getId(),
+                        studyA,
+                        host,
                         STUDY_WEEKLY_2.getTitle(),
                         STUDY_WEEKLY_2.getContent(),
                         STUDY_WEEKLY_2.getWeek(),
@@ -89,8 +89,8 @@ class StudyWeeklyMetadataRepositoryTest extends RepositoryTest {
                         List.of()
                 ),
                 StudyWeekly.createWeeklyWithAssignment(
-                        studyB.getId(),
-                        host.getId(),
+                        studyB,
+                        host,
                         STUDY_WEEKLY_2.getTitle(),
                         STUDY_WEEKLY_2.getContent(),
                         STUDY_WEEKLY_2.getWeek(),

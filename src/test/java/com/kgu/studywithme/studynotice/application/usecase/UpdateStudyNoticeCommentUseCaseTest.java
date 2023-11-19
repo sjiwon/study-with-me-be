@@ -61,7 +61,7 @@ class UpdateStudyNoticeCommentUseCaseTest extends UseCaseTest {
         // given
         final UpdateStudyNoticeCommentCommand command = new UpdateStudyNoticeCommentCommand(comment.getId(), host.getId(), "댓글 수정");
         given(studyNoticeCommentRepository.getById(command.commentId())).willReturn(comment);
-        given(memberRepository.getById(command.memberId())).willReturn(anonymous);
+        given(memberRepository.getById(command.memberId())).willReturn(host);
 
         // when
         sut.invoke(command);

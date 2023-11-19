@@ -61,11 +61,11 @@ public class StudyWeeklySubmitRepositoryTest extends RepositoryTest {
     @DisplayName("해당 주차에 제출한 과제를 조회한다")
     void findSubmittedAssignment() {
         /* 1주차 X */
-        final StudyWeekly weekly1 = studyWeeklyRepository.save(STUDY_WEEKLY_1.toWeeklyWithAssignment(study.getId(), host.getId()));
+        final StudyWeekly weekly1 = studyWeeklyRepository.save(STUDY_WEEKLY_1.toWeeklyWithAssignment(study, host));
         assertThat(sut.findSubmittedAssignment(host.getId(), weekly1.getId())).isEmpty();
 
         /* 1주차 O */
-        weekly1.submitAssignment(host.getId(), UploadAssignment.withLink("https://notion.so/weekly1"));
+        weekly1.submitAssignment(host, UploadAssignment.withLink("https://notion.so/weekly1"));
         assertAll(
                 () -> assertThat(sut.findSubmittedAssignment(weekly1.getId(), host.getId())).isPresent(),
                 () -> assertThat(sut.getSubmittedAssignment(weekly1.getId(), host.getId()).getUploadAssignment().getLink())
@@ -73,7 +73,7 @@ public class StudyWeeklySubmitRepositoryTest extends RepositoryTest {
         );
 
         /* 2주차 X */
-        final StudyWeekly weekly2 = studyWeeklyRepository.save(STUDY_WEEKLY_2.toWeeklyWithAssignment(study.getId(), host.getId()));
+        final StudyWeekly weekly2 = studyWeeklyRepository.save(STUDY_WEEKLY_2.toWeeklyWithAssignment(study, host));
         assertAll(
                 () -> assertThat(sut.findSubmittedAssignment(weekly1.getId(), host.getId())).isPresent(),
                 () -> assertThat(sut.getSubmittedAssignment(weekly1.getId(), host.getId()).getUploadAssignment().getLink())
@@ -82,7 +82,7 @@ public class StudyWeeklySubmitRepositoryTest extends RepositoryTest {
         );
 
         /* 2주차 O */
-        weekly2.submitAssignment(host.getId(), UploadAssignment.withLink("https://notion.so/weekly2"));
+        weekly2.submitAssignment(host, UploadAssignment.withLink("https://notion.so/weekly2"));
         assertAll(
                 () -> assertThat(sut.findSubmittedAssignment(weekly1.getId(), host.getId())).isPresent(),
                 () -> assertThat(sut.getSubmittedAssignment(weekly1.getId(), host.getId()).getUploadAssignment().getLink())
@@ -93,7 +93,7 @@ public class StudyWeeklySubmitRepositoryTest extends RepositoryTest {
         );
 
         /* 3주차 X */
-        final StudyWeekly weekly3 = studyWeeklyRepository.save(STUDY_WEEKLY_3.toWeeklyWithAssignment(study.getId(), host.getId()));
+        final StudyWeekly weekly3 = studyWeeklyRepository.save(STUDY_WEEKLY_3.toWeeklyWithAssignment(study, host));
         assertAll(
                 () -> assertThat(sut.findSubmittedAssignment(weekly1.getId(), host.getId())).isPresent(),
                 () -> assertThat(sut.getSubmittedAssignment(weekly1.getId(), host.getId()).getUploadAssignment().getLink())
@@ -105,7 +105,7 @@ public class StudyWeeklySubmitRepositoryTest extends RepositoryTest {
         );
 
         /* 3주차 O */
-        weekly3.submitAssignment(host.getId(), UploadAssignment.withFile("weekly3.pdf", "https://notion.so/weekly3"));
+        weekly3.submitAssignment(host, UploadAssignment.withFile("weekly3.pdf", "https://notion.so/weekly3"));
         assertAll(
                 () -> assertThat(sut.findSubmittedAssignment(weekly1.getId(), host.getId())).isPresent(),
                 () -> assertThat(sut.getSubmittedAssignment(weekly1.getId(), host.getId()).getUploadAssignment().getLink())
@@ -123,28 +123,28 @@ public class StudyWeeklySubmitRepositoryTest extends RepositoryTest {
     @DisplayName("특정 Weekly에 제출한 과제 제출물을 삭제한다")
     void deleteFromSpecificWeekly() {
         /* 3 Weekly & Assignment Information */
-        final StudyWeekly weekly1 = studyWeeklyRepository.save(STUDY_WEEKLY_1.toWeekly(study.getId(), host.getId()));
-        final StudyWeekly weekly2 = studyWeeklyRepository.save(STUDY_WEEKLY_2.toWeekly(study.getId(), host.getId()));
-        final StudyWeekly weekly3 = studyWeeklyRepository.save(STUDY_WEEKLY_3.toWeekly(study.getId(), host.getId()));
+        final StudyWeekly weekly1 = studyWeeklyRepository.save(STUDY_WEEKLY_1.toWeekly(study, host));
+        final StudyWeekly weekly2 = studyWeeklyRepository.save(STUDY_WEEKLY_2.toWeekly(study, host));
+        final StudyWeekly weekly3 = studyWeeklyRepository.save(STUDY_WEEKLY_3.toWeekly(study, host));
 
         sut.saveAll(List.of(
                 // Weekly 1
-                StudyWeeklySubmit.submitAssignment(weekly1, members[0].getId(), UploadAssignment.withLink("https://notion.so/weekly1/member0")),
-                StudyWeeklySubmit.submitAssignment(weekly1, members[1].getId(), UploadAssignment.withLink("https://notion.so/weekly1/member1")),
-                StudyWeeklySubmit.submitAssignment(weekly1, members[2].getId(), UploadAssignment.withLink("https://notion.so/weekly1/member2")),
-                StudyWeeklySubmit.submitAssignment(weekly1, members[3].getId(), UploadAssignment.withLink("https://notion.so/weekly1/member3")),
+                StudyWeeklySubmit.submitAssignment(weekly1, members[0], UploadAssignment.withLink("https://notion.so/weekly1/member0")),
+                StudyWeeklySubmit.submitAssignment(weekly1, members[1], UploadAssignment.withLink("https://notion.so/weekly1/member1")),
+                StudyWeeklySubmit.submitAssignment(weekly1, members[2], UploadAssignment.withLink("https://notion.so/weekly1/member2")),
+                StudyWeeklySubmit.submitAssignment(weekly1, members[3], UploadAssignment.withLink("https://notion.so/weekly1/member3")),
 
                 // Weekly 2
-                StudyWeeklySubmit.submitAssignment(weekly2, members[0].getId(), UploadAssignment.withLink("https://notion.so/weekly2/member0")),
-                StudyWeeklySubmit.submitAssignment(weekly2, members[1].getId(), UploadAssignment.withLink("https://notion.so/weekly2/member1")),
-                StudyWeeklySubmit.submitAssignment(weekly2, members[2].getId(), UploadAssignment.withLink("https://notion.so/weekly2/member2")),
-                StudyWeeklySubmit.submitAssignment(weekly2, members[3].getId(), UploadAssignment.withLink("https://notion.so/weekly2/member3")),
-                StudyWeeklySubmit.submitAssignment(weekly2, members[4].getId(), UploadAssignment.withLink("https://notion.so/weekly2/member4")),
+                StudyWeeklySubmit.submitAssignment(weekly2, members[0], UploadAssignment.withLink("https://notion.so/weekly2/member0")),
+                StudyWeeklySubmit.submitAssignment(weekly2, members[1], UploadAssignment.withLink("https://notion.so/weekly2/member1")),
+                StudyWeeklySubmit.submitAssignment(weekly2, members[2], UploadAssignment.withLink("https://notion.so/weekly2/member2")),
+                StudyWeeklySubmit.submitAssignment(weekly2, members[3], UploadAssignment.withLink("https://notion.so/weekly2/member3")),
+                StudyWeeklySubmit.submitAssignment(weekly2, members[4], UploadAssignment.withLink("https://notion.so/weekly2/member4")),
 
                 // Weekly 3
-                StudyWeeklySubmit.submitAssignment(weekly3, members[0].getId(), UploadAssignment.withLink("https://notion.so/weekly3/member0")),
-                StudyWeeklySubmit.submitAssignment(weekly3, members[1].getId(), UploadAssignment.withLink("https://notion.so/weekly3/member1")),
-                StudyWeeklySubmit.submitAssignment(weekly3, members[2].getId(), UploadAssignment.withLink("https://notion.so/weekly3/member2"))
+                StudyWeeklySubmit.submitAssignment(weekly3, members[0], UploadAssignment.withLink("https://notion.so/weekly3/member0")),
+                StudyWeeklySubmit.submitAssignment(weekly3, members[1], UploadAssignment.withLink("https://notion.so/weekly3/member1")),
+                StudyWeeklySubmit.submitAssignment(weekly3, members[2], UploadAssignment.withLink("https://notion.so/weekly3/member2"))
         ));
 
         assertAll(

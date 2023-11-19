@@ -112,8 +112,8 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
 
         studyWeeklyRepository.saveAll(List.of(
                 StudyWeekly.createWeeklyWithAssignment(
-                        studies[0].getId(),
-                        participants[0].getId(),
+                        studies[0],
+                        participants[0],
                         STUDY_WEEKLY_1.getTitle(),
                         STUDY_WEEKLY_1.getContent(),
                         1,
@@ -122,8 +122,8 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
                         List.of()
                 ),
                 StudyWeekly.createWeeklyWithAssignment(
-                        studies[0].getId(),
-                        participants[0].getId(),
+                        studies[0],
+                        participants[0],
                         STUDY_WEEKLY_2.getTitle(),
                         STUDY_WEEKLY_2.getContent(),
                         2,
@@ -133,8 +133,8 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
                 ),
 
                 StudyWeekly.createWeeklyWithAssignment(
-                        studies[1].getId(),
-                        participants[0].getId(),
+                        studies[1],
+                        participants[0],
                         STUDY_WEEKLY_3.getTitle(),
                         STUDY_WEEKLY_3.getContent(),
                         1,
@@ -143,8 +143,8 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
                         List.of()
                 ),
                 StudyWeekly.createWeeklyWithAssignment(
-                        studies[1].getId(),
-                        participants[0].getId(),
+                        studies[1],
+                        participants[0],
                         STUDY_WEEKLY_4.getTitle(),
                         STUDY_WEEKLY_4.getContent(),
                         2,
@@ -154,8 +154,8 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
                 ),
 
                 StudyWeekly.createWeeklyWithAssignment(
-                        studies[2].getId(),
-                        participants[0].getId(),
+                        studies[2],
+                        participants[0],
                         STUDY_WEEKLY_5.getTitle(),
                         STUDY_WEEKLY_5.getContent(),
                         1,
@@ -164,8 +164,8 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
                         List.of()
                 ),
                 StudyWeekly.createWeeklyWithAssignment(
-                        studies[2].getId(),
-                        participants[0].getId(),
+                        studies[2],
+                        participants[0],
                         STUDY_WEEKLY_6.getTitle(),
                         STUDY_WEEKLY_6.getContent(),
                         2,
