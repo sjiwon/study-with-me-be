@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.NON_ATTENDANCE;
 import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.APPROVE;
 
 @Slf4j
@@ -40,14 +39,15 @@ public class WeeklyManager {
     private void applyParticipantAttendanceStatusFromGeneratedWeekly(final Long studyId, final int week) {
         final List<StudyAttendance> participantsAttendance = new ArrayList<>();
         final List<Long> approveParticipantsIds = studyParticipantRepository.findParticipantIdsByStatus(studyId, APPROVE);
-        approveParticipantsIds.forEach(studyParticipantId ->
-                participantsAttendance.add(StudyAttendance.recordAttendance(
-                        studyId,
-                        studyParticipantId,
-                        week,
-                        NON_ATTENDANCE
-                ))
-        );
+        // TODO directly ref refactoring
+//        approveParticipantsIds.forEach(studyParticipantId ->
+//                participantsAttendance.add(StudyAttendance.recordAttendance(
+//                        studyId,
+//                        studyParticipantId,
+//                        week,
+//                        NON_ATTENDANCE
+//                ))
+//        );
 
         log.info("Study[{} - {}] Weekly 생성 -> {} NON_ATTENDANCE", studyId, week, participantsAttendance);
         studyAttendanceRepository.saveAll(participantsAttendance);

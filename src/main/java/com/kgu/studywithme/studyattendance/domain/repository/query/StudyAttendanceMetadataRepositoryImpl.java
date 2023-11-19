@@ -21,12 +21,12 @@ public class StudyAttendanceMetadataRepositoryImpl implements StudyAttendanceMet
     public List<StudyAttendanceWeekly> findMemberParticipateWeekly(final Long memberId) {
         return query
                 .select(new QStudyAttendanceWeekly(
-                        studyAttendance.studyId,
+                        studyAttendance.study.id,
                         studyAttendance.week
                 ))
                 .from(studyAttendance)
-                .where(studyAttendance.participantId.eq(memberId))
-                .orderBy(studyAttendance.studyId.asc(), studyAttendance.week.asc())
+                .where(studyAttendance.participant.id.eq(memberId))
+                .orderBy(studyAttendance.study.id.asc(), studyAttendance.week.asc())
                 .fetch();
     }
 }

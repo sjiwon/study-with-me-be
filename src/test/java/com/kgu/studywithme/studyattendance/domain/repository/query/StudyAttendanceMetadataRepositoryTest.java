@@ -79,11 +79,11 @@ class StudyAttendanceMetadataRepositoryTest extends RepositoryTest {
 
         /* Week 1 */
         studyAttendanceRepository.saveAll(List.of(
-                StudyAttendance.recordAttendance(studies[0].getId(), participant.getId(), 1, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[1].getId(), participant.getId(), 1, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[2].getId(), participant.getId(), 1, LATE),
-                StudyAttendance.recordAttendance(studies[3].getId(), participant.getId(), 1, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[4].getId(), participant.getId(), 1, ABSENCE)
+                StudyAttendance.recordAttendance(studies[0], participant, 1, ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[1], participant, 1, ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[2], participant, 1, LATE),
+                StudyAttendance.recordAttendance(studies[3], participant, 1, ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[4], participant, 1, ABSENCE)
         ));
 
         final List<StudyAttendanceWeekly> participateWeeks1 = sut.findMemberParticipateWeekly(participant.getId());
@@ -97,9 +97,9 @@ class StudyAttendanceMetadataRepositoryTest extends RepositoryTest {
 
         /* Week 2 */
         studyAttendanceRepository.saveAll(List.of(
-                StudyAttendance.recordAttendance(studies[0].getId(), participant.getId(), 2, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[3].getId(), participant.getId(), 2, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[4].getId(), participant.getId(), 2, ABSENCE)
+                StudyAttendance.recordAttendance(studies[0], participant, 2, ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[3], participant, 2, ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[4], participant, 2, ABSENCE)
         ));
 
         final List<StudyAttendanceWeekly> participateWeeks2 = sut.findMemberParticipateWeekly(participant.getId());
@@ -112,7 +112,7 @@ class StudyAttendanceMetadataRepositoryTest extends RepositoryTest {
         );
 
         /* Week 3 */
-        studyAttendanceRepository.save(StudyAttendance.recordAttendance(studies[0].getId(), participant.getId(), 3, ATTENDANCE));
+        studyAttendanceRepository.save(StudyAttendance.recordAttendance(studies[0], participant, 3, ATTENDANCE));
 
         final List<StudyAttendanceWeekly> participateWeeks3 = sut.findMemberParticipateWeekly(participant.getId());
         assertAll(

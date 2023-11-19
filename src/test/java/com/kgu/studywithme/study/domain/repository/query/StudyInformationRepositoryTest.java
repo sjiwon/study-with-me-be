@@ -329,19 +329,19 @@ class StudyInformationRepositoryTest extends RepositoryTest {
         IntStream.range(0, 2).forEach(i -> study.addParticipant());
 
         studyAttendanceRepository.saveAll(List.of(
-                StudyAttendance.recordAttendance(study.getId(), host.getId(), 1, ATTENDANCE),
-                StudyAttendance.recordAttendance(study.getId(), host.getId(), 2, ATTENDANCE),
-                StudyAttendance.recordAttendance(study.getId(), host.getId(), 3, ATTENDANCE),
-                StudyAttendance.recordAttendance(study.getId(), host.getId(), 4, ATTENDANCE),
+                StudyAttendance.recordAttendance(study, host, 1, ATTENDANCE),
+                StudyAttendance.recordAttendance(study, host, 2, ATTENDANCE),
+                StudyAttendance.recordAttendance(study, host, 3, ATTENDANCE),
+                StudyAttendance.recordAttendance(study, host, 4, ATTENDANCE),
 
-                StudyAttendance.recordAttendance(study.getId(), memberA.getId(), 1, ATTENDANCE),
-                StudyAttendance.recordAttendance(study.getId(), memberA.getId(), 2, LATE),
-                StudyAttendance.recordAttendance(study.getId(), memberA.getId(), 3, ATTENDANCE),
-                StudyAttendance.recordAttendance(study.getId(), memberA.getId(), 4, NON_ATTENDANCE),
+                StudyAttendance.recordAttendance(study, memberA, 1, ATTENDANCE),
+                StudyAttendance.recordAttendance(study, memberA, 2, LATE),
+                StudyAttendance.recordAttendance(study, memberA, 3, ATTENDANCE),
+                StudyAttendance.recordAttendance(study, memberA, 4, NON_ATTENDANCE),
 
-                StudyAttendance.recordAttendance(study.getId(), memberC.getId(), 1, ATTENDANCE),
-                StudyAttendance.recordAttendance(study.getId(), memberC.getId(), 2, ATTENDANCE),
-                StudyAttendance.recordAttendance(study.getId(), memberC.getId(), 3, LATE)
+                StudyAttendance.recordAttendance(study, memberC, 1, ATTENDANCE),
+                StudyAttendance.recordAttendance(study, memberC, 2, ATTENDANCE),
+                StudyAttendance.recordAttendance(study, memberC, 3, LATE)
         ));
 
         final List<AttendanceInformation> result = sut.fetchAttendanceById(study.getId());

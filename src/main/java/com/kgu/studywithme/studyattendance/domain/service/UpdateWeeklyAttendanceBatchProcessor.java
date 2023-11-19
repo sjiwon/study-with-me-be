@@ -1,5 +1,6 @@
 package com.kgu.studywithme.studyattendance.domain.service;
 
+import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.member.domain.repository.MemberRepository;
 import com.kgu.studywithme.studyattendance.domain.model.StudyAttendance;
 import com.kgu.studywithme.studyattendance.domain.repository.StudyAttendanceRepository;
@@ -8,7 +9,6 @@ import com.kgu.studywithme.studyweekly.domain.repository.query.dto.AutoAttendanc
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
@@ -26,7 +26,7 @@ public class UpdateWeeklyAttendanceBatchProcessor {
     private final StudyAttendanceRepository studyAttendanceRepository;
     private final MemberRepository memberRepository;
 
-    @Transactional
+    @StudyWithMeWritableTransactional
     public void checkAbsenceParticipantAndApplyAbsenceScore() {
         final LocalDateTime now = LocalDateTime.now();
         final List<StudyAttendance> nonAttendances = studyAttendanceRepository.findNonAttendanceInformation();
@@ -52,8 +52,8 @@ public class UpdateWeeklyAttendanceBatchProcessor {
             final int week
     ) {
         return nonAttendances.stream()
-                .filter(nonAttendance -> nonAttendance.getStudyId().equals(studyId) && nonAttendance.getWeek() == week)
-                .map(StudyAttendance::getParticipantId)
+                .filter(nonAttendance -> nonAttendance.getStudy().getId().equals(studyId) && nonAttendance.getWeek() == week)
+                .map(studyAttendance -> studyAttendance.getParticipant().getId())
                 .collect(Collectors.toSet());
     }
 

@@ -1,11 +1,16 @@
 package com.kgu.studywithme.studyattendance.domain.model;
 
 import com.kgu.studywithme.global.BaseEntity;
+import com.kgu.studywithme.member.domain.model.Member;
+import com.kgu.studywithme.study.domain.model.Study;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -26,12 +31,6 @@ import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.
         }
 )
 public class StudyAttendance extends BaseEntity<StudyAttendance> {
-    @Column(name = "study_id", nullable = false)
-    private Long studyId;
-
-    @Column(name = "participant_id", nullable = false)
-    private Long participantId;
-
     @Column(name = "week", nullable = false)
     private int week;
 
@@ -39,25 +38,33 @@ public class StudyAttendance extends BaseEntity<StudyAttendance> {
     @Column(name = "status", nullable = false)
     private AttendanceStatus status;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false)
+    private Study study;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "participant_id", referencedColumnName = "id", nullable = false)
+    private Member participant;
+
     private StudyAttendance(
-            final Long studyId,
-            final Long participantId,
+            final Study study,
+            final Member participant,
             final int week,
             final AttendanceStatus status
     ) {
-        this.studyId = studyId;
-        this.participantId = participantId;
+        this.study = study;
+        this.participant = participant;
         this.week = week;
         this.status = status;
     }
 
     public static StudyAttendance recordAttendance(
-            final Long studyId,
-            final Long participantId,
+            final Study study,
+            final Member participant,
             final int week,
             final AttendanceStatus status
     ) {
-        return new StudyAttendance(studyId, participantId, week, status);
+        return new StudyAttendance(study, participant, week, status);
     }
 
     public void updateAttendanceStatus(final AttendanceStatus status) {

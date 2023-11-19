@@ -243,10 +243,10 @@ public class StudyInformationRepositoryImpl implements StudyInformationRepositor
                         studyAttendance.status
                 ))
                 .from(studyAttendance)
-                .innerJoin(studyParticipant).on(studyParticipant.memberId.eq(studyAttendance.participantId))
+                .innerJoin(studyParticipant).on(studyParticipant.memberId.eq(studyAttendance.participant.id))
                 .innerJoin(member).on(member.id.eq(studyParticipant.memberId))
                 .where(
-                        studyAttendance.studyId.eq(studyId),
+                        studyAttendance.study.id.eq(studyId),
                         studyParticipant.status.eq(APPROVE)
                 )
                 .orderBy(studyAttendance.week.asc())

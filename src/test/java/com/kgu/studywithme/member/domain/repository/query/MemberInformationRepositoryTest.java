@@ -328,11 +328,11 @@ class MemberInformationRepositoryTest extends RepositoryTest {
 
             /* Week 1 */
             studyAttendanceRepository.saveAll(List.of(
-                    StudyAttendance.recordAttendance(studyA.getId(), member.getId(), 1, ATTENDANCE),
-                    StudyAttendance.recordAttendance(studyB.getId(), member.getId(), 1, ATTENDANCE),
-                    StudyAttendance.recordAttendance(studyC.getId(), member.getId(), 1, LATE),
-                    StudyAttendance.recordAttendance(studyD.getId(), member.getId(), 1, ATTENDANCE),
-                    StudyAttendance.recordAttendance(studyE.getId(), member.getId(), 1, ABSENCE)
+                    StudyAttendance.recordAttendance(studyA, member, 1, ATTENDANCE),
+                    StudyAttendance.recordAttendance(studyB, member, 1, ATTENDANCE),
+                    StudyAttendance.recordAttendance(studyC, member, 1, LATE),
+                    StudyAttendance.recordAttendance(studyD, member, 1, ATTENDANCE),
+                    StudyAttendance.recordAttendance(studyE, member, 1, ABSENCE)
             ));
 
             final List<AttendanceRatio> result1 = sut.fetchAttendanceRatioById(member.getId());
@@ -345,11 +345,11 @@ class MemberInformationRepositoryTest extends RepositoryTest {
 
             /* Week 2 */
             studyAttendanceRepository.saveAll(List.of(
-                    StudyAttendance.recordAttendance(studyA.getId(), member.getId(), 2, NON_ATTENDANCE),
-                    StudyAttendance.recordAttendance(studyB.getId(), member.getId(), 2, ATTENDANCE),
-                    StudyAttendance.recordAttendance(studyC.getId(), member.getId(), 2, NON_ATTENDANCE),
-                    StudyAttendance.recordAttendance(studyD.getId(), member.getId(), 2, ATTENDANCE),
-                    StudyAttendance.recordAttendance(studyE.getId(), member.getId(), 2, NON_ATTENDANCE)
+                    StudyAttendance.recordAttendance(studyA, member, 2, NON_ATTENDANCE),
+                    StudyAttendance.recordAttendance(studyB, member, 2, ATTENDANCE),
+                    StudyAttendance.recordAttendance(studyC, member, 2, NON_ATTENDANCE),
+                    StudyAttendance.recordAttendance(studyD, member, 2, ATTENDANCE),
+                    StudyAttendance.recordAttendance(studyE, member, 2, NON_ATTENDANCE)
             ));
 
             final List<AttendanceRatio> result2 = sut.fetchAttendanceRatioById(member.getId());
