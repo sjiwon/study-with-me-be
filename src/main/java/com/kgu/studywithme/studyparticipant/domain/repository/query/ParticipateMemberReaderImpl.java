@@ -28,7 +28,7 @@ public class ParticipateMemberReaderImpl implements ParticipateMemberReader {
         return Optional.ofNullable(
                 query
                         .selectFrom(member)
-                        .innerJoin(studyParticipant).on(studyParticipant.memberId.eq(member.id))
+                        .innerJoin(studyParticipant).on(studyParticipant.member.id.eq(member.id))
                         .where(
                                 memberIdEq(memberId),
                                 studyIdEq(studyId),
@@ -43,7 +43,7 @@ public class ParticipateMemberReaderImpl implements ParticipateMemberReader {
         return Optional.ofNullable(
                 query
                         .selectFrom(member)
-                        .innerJoin(studyParticipant).on(studyParticipant.memberId.eq(member.id))
+                        .innerJoin(studyParticipant).on(studyParticipant.member.id.eq(member.id))
                         .where(
                                 memberIdEq(memberId),
                                 studyIdEq(studyId),
@@ -54,11 +54,11 @@ public class ParticipateMemberReaderImpl implements ParticipateMemberReader {
     }
 
     private BooleanExpression memberIdEq(final Long memberId) {
-        return studyParticipant.memberId.eq(memberId);
+        return studyParticipant.member.id.eq(memberId);
     }
 
     private BooleanExpression studyIdEq(final Long studyId) {
-        return studyParticipant.studyId.eq(studyId);
+        return studyParticipant.study.id.eq(studyId);
     }
 
     private BooleanExpression participantStatusEq(final ParticipantStatus status) {

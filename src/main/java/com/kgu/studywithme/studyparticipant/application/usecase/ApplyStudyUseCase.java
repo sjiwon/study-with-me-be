@@ -6,6 +6,7 @@ import com.kgu.studywithme.member.domain.repository.MemberRepository;
 import com.kgu.studywithme.study.domain.model.Study;
 import com.kgu.studywithme.study.domain.repository.StudyRepository;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.ApplyStudyCommand;
+import com.kgu.studywithme.studyparticipant.domain.model.StudyParticipant;
 import com.kgu.studywithme.studyparticipant.domain.repository.StudyParticipantRepository;
 import com.kgu.studywithme.studyparticipant.domain.service.ParticipationInspector;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,6 @@ public class ApplyStudyUseCase {
 
         participationInspector.checkApplierIsHost(study, applier);
         participationInspector.checkApplierIsAlreadyRelatedToStudy(study, applier);
-        return studyParticipantRepository.save(command.toDomain()).getId();
+        return studyParticipantRepository.save(StudyParticipant.applyInStudy(study, applier)).getId();
     }
 }

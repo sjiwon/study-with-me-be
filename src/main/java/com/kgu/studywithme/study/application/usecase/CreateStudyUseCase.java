@@ -62,7 +62,7 @@ public class CreateStudyUseCase {
     }
 
     private void applyHostToParticipant(final Study study, final Member host) {
-        final StudyParticipant participant = StudyParticipant.applyHost(study.getId(), host.getId());
+        final StudyParticipant participant = StudyParticipant.applyHost(study, host);
         studyParticipantRepository.save(participant);
     }
 }

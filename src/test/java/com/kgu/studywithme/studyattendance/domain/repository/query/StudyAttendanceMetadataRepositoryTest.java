@@ -70,11 +70,11 @@ class StudyAttendanceMetadataRepositoryTest extends RepositoryTest {
     void findParticipateWeeksInStudyByMemberId() {
         /* 모든 스터디 참여 */
         studyParticipantRepository.saveAll(List.of(
-                StudyParticipant.applyParticipant(studies[0].getId(), participant.getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[1].getId(), participant.getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[2].getId(), participant.getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[3].getId(), participant.getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[4].getId(), participant.getId(), APPROVE)
+                StudyParticipant.applyParticipant(studies[0], participant, APPROVE),
+                StudyParticipant.applyParticipant(studies[1], participant, APPROVE),
+                StudyParticipant.applyParticipant(studies[2], participant, APPROVE),
+                StudyParticipant.applyParticipant(studies[3], participant, APPROVE),
+                StudyParticipant.applyParticipant(studies[4], participant, APPROVE)
         ));
 
         /* Week 1 */

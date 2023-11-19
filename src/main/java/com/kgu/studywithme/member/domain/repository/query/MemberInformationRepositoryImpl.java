@@ -88,9 +88,9 @@ public class MemberInformationRepositoryImpl implements MemberInformationReposit
                         study.thumbnail
                 ))
                 .from(study)
-                .innerJoin(studyParticipant).on(studyParticipant.studyId.eq(study.id))
+                .innerJoin(studyParticipant).on(studyParticipant.study.id.eq(study.id))
                 .where(
-                        studyParticipant.memberId.eq(memberId),
+                        studyParticipant.member.id.eq(memberId),
                         studyParticipant.status.eq(APPROVE)
                 )
                 .orderBy(studyParticipant.id.desc())
@@ -107,9 +107,9 @@ public class MemberInformationRepositoryImpl implements MemberInformationReposit
                         study.thumbnail
                 ))
                 .from(study)
-                .innerJoin(studyParticipant).on(studyParticipant.studyId.eq(study.id))
+                .innerJoin(studyParticipant).on(studyParticipant.study.id.eq(study.id))
                 .where(
-                        studyParticipant.memberId.eq(memberId),
+                        studyParticipant.member.id.eq(memberId),
                         studyParticipant.status.eq(GRADUATED)
                 )
                 .orderBy(studyParticipant.id.desc())
@@ -224,9 +224,9 @@ public class MemberInformationRepositoryImpl implements MemberInformationReposit
                         study.thumbnail
                 ))
                 .from(study)
-                .innerJoin(studyParticipant).on(studyParticipant.studyId.eq(study.id))
+                .innerJoin(studyParticipant).on(studyParticipant.study.id.eq(study.id))
                 .where(
-                        studyParticipant.memberId.eq(memberId),
+                        studyParticipant.member.id.eq(memberId),
                         studyParticipant.status.eq(APPLY)
                 )
                 .orderBy(studyParticipant.id.desc())

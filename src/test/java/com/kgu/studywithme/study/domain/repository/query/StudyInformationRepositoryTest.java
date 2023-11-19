@@ -99,10 +99,10 @@ class StudyInformationRepositoryTest extends RepositoryTest {
     void fetchBasicInformationById() {
         /* host, memberA, memberB 참여 승인 & memberC 신청 대기 */
         studyParticipantRepository.saveAll(List.of(
-                StudyParticipant.applyHost(study.getId(), host.getId()),
-                StudyParticipant.applyParticipant(study.getId(), memberA.getId(), APPROVE),
-                StudyParticipant.applyParticipant(study.getId(), memberB.getId(), APPROVE),
-                StudyParticipant.applyInStudy(study.getId(), memberC.getId())
+                StudyParticipant.applyHost(study, host),
+                StudyParticipant.applyParticipant(study, memberA, APPROVE),
+                StudyParticipant.applyParticipant(study, memberB, APPROVE),
+                StudyParticipant.applyInStudy(study, memberC)
         ));
         IntStream.range(0, 2).forEach(i -> study.addParticipant());
 
@@ -135,10 +135,10 @@ class StudyInformationRepositoryTest extends RepositoryTest {
     void fetchReviewById() {
         /* 졸업자 3명 */
         studyParticipantRepository.saveAll(List.of(
-                StudyParticipant.applyHost(study.getId(), host.getId()),
-                StudyParticipant.applyParticipant(study.getId(), memberA.getId(), GRADUATED),
-                StudyParticipant.applyParticipant(study.getId(), memberB.getId(), GRADUATED),
-                StudyParticipant.applyParticipant(study.getId(), memberC.getId(), GRADUATED)
+                StudyParticipant.applyHost(study, host),
+                StudyParticipant.applyParticipant(study, memberA, GRADUATED),
+                StudyParticipant.applyParticipant(study, memberB, GRADUATED),
+                StudyParticipant.applyParticipant(study, memberC, GRADUATED)
         ));
 
         /* 리뷰 2건 */
@@ -176,10 +176,10 @@ class StudyInformationRepositoryTest extends RepositoryTest {
     void fetchParticipantById() {
         /* 신청자 3명 */
         studyParticipantRepository.saveAll(List.of(
-                StudyParticipant.applyHost(study.getId(), host.getId()),
-                StudyParticipant.applyInStudy(study.getId(), memberA.getId()),
-                StudyParticipant.applyInStudy(study.getId(), memberB.getId()),
-                StudyParticipant.applyInStudy(study.getId(), memberC.getId())
+                StudyParticipant.applyHost(study, host),
+                StudyParticipant.applyInStudy(study, memberA),
+                StudyParticipant.applyInStudy(study, memberB),
+                StudyParticipant.applyInStudy(study, memberC)
         ));
 
         final StudyParticipantInformation result1 = sut.fetchParticipantById(study.getId());
@@ -231,10 +231,10 @@ class StudyInformationRepositoryTest extends RepositoryTest {
     void fetchApplicantById() {
         /* 신청자 3명 */
         studyParticipantRepository.saveAll(List.of(
-                StudyParticipant.applyHost(study.getId(), host.getId()),
-                StudyParticipant.applyInStudy(study.getId(), memberA.getId()),
-                StudyParticipant.applyInStudy(study.getId(), memberB.getId()),
-                StudyParticipant.applyInStudy(study.getId(), memberC.getId())
+                StudyParticipant.applyHost(study, host),
+                StudyParticipant.applyInStudy(study, memberA),
+                StudyParticipant.applyInStudy(study, memberB),
+                StudyParticipant.applyInStudy(study, memberC)
         ));
 
         final List<StudyApplicantInformation> result1 = sut.fetchApplicantById(study.getId());
@@ -311,10 +311,10 @@ class StudyInformationRepositoryTest extends RepositoryTest {
     void fetchAttendanceById() {
         /* host, memberA, memberC 참여 승인 & memberB 신청 대기 */
         studyParticipantRepository.saveAll(List.of(
-                StudyParticipant.applyHost(study.getId(), host.getId()).apply(1L, LocalDateTime.now().minusDays(4)),
-                StudyParticipant.applyParticipant(study.getId(), memberA.getId(), APPROVE).apply(2L, LocalDateTime.now().minusDays(3)),
-                StudyParticipant.applyInStudy(study.getId(), memberB.getId()).apply(3L, LocalDateTime.now().minusDays(2)),
-                StudyParticipant.applyParticipant(study.getId(), memberC.getId(), APPROVE).apply(4L, LocalDateTime.now().minusDays(1))
+                StudyParticipant.applyHost(study, host).apply(1L, LocalDateTime.now().minusDays(4)),
+                StudyParticipant.applyParticipant(study, memberA, APPROVE).apply(2L, LocalDateTime.now().minusDays(3)),
+                StudyParticipant.applyInStudy(study, memberB).apply(3L, LocalDateTime.now().minusDays(2)),
+                StudyParticipant.applyParticipant(study, memberC, APPROVE).apply(4L, LocalDateTime.now().minusDays(1))
         ));
         IntStream.range(0, 2).forEach(i -> study.addParticipant());
 

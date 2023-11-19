@@ -62,11 +62,11 @@ public class ParticipateMemberReaderTest extends RepositoryTest {
 
         study = studyRepository.save(SPRING.toStudy(host));
         studyParticipantRepository.saveAll(List.of(
-                StudyParticipant.applyHost(study.getId(), host.getId()),
-                StudyParticipant.applyInStudy(study.getId(), applier.getId()),
-                StudyParticipant.applyParticipant(study.getId(), participant.getId(), APPROVE),
-                StudyParticipant.applyParticipant(study.getId(), leaveMember.getId(), LEAVE),
-                StudyParticipant.applyParticipant(study.getId(), graduatedMember.getId(), GRADUATED)
+                StudyParticipant.applyHost(study, host),
+                StudyParticipant.applyInStudy(study, applier),
+                StudyParticipant.applyParticipant(study, participant, APPROVE),
+                StudyParticipant.applyParticipant(study, leaveMember, LEAVE),
+                StudyParticipant.applyParticipant(study, graduatedMember, GRADUATED)
         ));
     }
 

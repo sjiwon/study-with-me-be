@@ -93,9 +93,9 @@ public class StudyInformationRepositoryImpl implements StudyInformationRepositor
                             member.birth
                     ))
                     .from(member)
-                    .innerJoin(studyParticipant).on(studyParticipant.memberId.eq(member.id))
+                    .innerJoin(studyParticipant).on(studyParticipant.member.id.eq(member.id))
                     .where(
-                            studyParticipant.studyId.eq(studyId),
+                            studyParticipant.study.id.eq(studyId),
                             studyParticipant.status.eq(APPROVE)
                     )
                     .fetch();
@@ -125,7 +125,7 @@ public class StudyInformationRepositoryImpl implements StudyInformationRepositor
                 .select(studyParticipant.count())
                 .from(studyParticipant)
                 .where(
-                        studyParticipant.studyId.eq(studyId),
+                        studyParticipant.study.id.eq(studyId),
                         studyParticipant.status.eq(GRADUATED)
                 )
                 .fetchOne()
@@ -152,9 +152,9 @@ public class StudyInformationRepositoryImpl implements StudyInformationRepositor
                         member.nickname
                 ))
                 .from(member)
-                .innerJoin(studyParticipant).on(studyParticipant.memberId.eq(member.id))
+                .innerJoin(studyParticipant).on(studyParticipant.member.id.eq(member.id))
                 .where(
-                        studyParticipant.studyId.eq(studyId),
+                        studyParticipant.study.id.eq(studyId),
                         studyParticipant.status.eq(APPROVE)
                 )
                 .fetch()
@@ -175,9 +175,9 @@ public class StudyInformationRepositoryImpl implements StudyInformationRepositor
                         studyParticipant.createdAt
                 ))
                 .from(member)
-                .innerJoin(studyParticipant).on(studyParticipant.memberId.eq(member.id))
+                .innerJoin(studyParticipant).on(studyParticipant.member.id.eq(member.id))
                 .where(
-                        studyParticipant.studyId.eq(studyId),
+                        studyParticipant.study.id.eq(studyId),
                         studyParticipant.status.eq(APPLY)
                 )
                 .orderBy(studyParticipant.id.desc())
@@ -243,8 +243,8 @@ public class StudyInformationRepositoryImpl implements StudyInformationRepositor
                         studyAttendance.status
                 ))
                 .from(studyAttendance)
-                .innerJoin(studyParticipant).on(studyParticipant.memberId.eq(studyAttendance.participant.id))
-                .innerJoin(member).on(member.id.eq(studyParticipant.memberId))
+                .innerJoin(studyParticipant).on(studyParticipant.member.id.eq(studyAttendance.participant.id))
+                .innerJoin(member).on(member.id.eq(studyParticipant.member.id))
                 .where(
                         studyAttendance.study.id.eq(studyId),
                         studyParticipant.status.eq(APPROVE)

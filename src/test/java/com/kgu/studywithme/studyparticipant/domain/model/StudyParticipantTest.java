@@ -23,7 +23,7 @@ class StudyParticipantTest extends ParallelTest {
     @DisplayName("사용자가 스터디에 참여 신청을 한다")
     void applyInStudy() {
         // when
-        final StudyParticipant participant = StudyParticipant.applyInStudy(study.getId(), member.getId());
+        final StudyParticipant participant = StudyParticipant.applyInStudy(study, member);
 
         // then
         assertThat(participant.getStatus()).isEqualTo(APPLY);
@@ -33,7 +33,7 @@ class StudyParticipantTest extends ParallelTest {
     @DisplayName("스터디를 생성하면 스터디 팀장은 자동으로 APPROVE상태로 참여한다")
     void applyHost() {
         // when
-        final StudyParticipant participant = StudyParticipant.applyHost(study.getId(), host.getId());
+        final StudyParticipant participant = StudyParticipant.applyHost(study, host);
 
         // then
         assertThat(participant.getStatus()).isEqualTo(APPROVE);

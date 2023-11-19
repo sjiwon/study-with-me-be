@@ -91,23 +91,23 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
         previousScore = Score.INIT_SCORE;
 
         studyParticipantRepository.saveAll(List.of(
-                StudyParticipant.applyParticipant(studies[0].getId(), participants[0].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[0].getId(), participants[1].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[0].getId(), participants[2].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[0].getId(), participants[3].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[0].getId(), participants[4].getId(), APPROVE),
+                StudyParticipant.applyParticipant(studies[0], participants[0], APPROVE),
+                StudyParticipant.applyParticipant(studies[0], participants[1], APPROVE),
+                StudyParticipant.applyParticipant(studies[0], participants[2], APPROVE),
+                StudyParticipant.applyParticipant(studies[0], participants[3], APPROVE),
+                StudyParticipant.applyParticipant(studies[0], participants[4], APPROVE),
 
-                StudyParticipant.applyParticipant(studies[1].getId(), participants[0].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[1].getId(), participants[1].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[1].getId(), participants[2].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[1].getId(), participants[3].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[1].getId(), participants[4].getId(), APPROVE),
+                StudyParticipant.applyParticipant(studies[1], participants[0], APPROVE),
+                StudyParticipant.applyParticipant(studies[1], participants[1], APPROVE),
+                StudyParticipant.applyParticipant(studies[1], participants[2], APPROVE),
+                StudyParticipant.applyParticipant(studies[1], participants[3], APPROVE),
+                StudyParticipant.applyParticipant(studies[1], participants[4], APPROVE),
 
-                StudyParticipant.applyParticipant(studies[2].getId(), participants[0].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[2].getId(), participants[1].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[2].getId(), participants[2].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[2].getId(), participants[3].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[2].getId(), participants[4].getId(), APPROVE)
+                StudyParticipant.applyParticipant(studies[2], participants[0], APPROVE),
+                StudyParticipant.applyParticipant(studies[2], participants[1], APPROVE),
+                StudyParticipant.applyParticipant(studies[2], participants[2], APPROVE),
+                StudyParticipant.applyParticipant(studies[2], participants[3], APPROVE),
+                StudyParticipant.applyParticipant(studies[2], participants[4], APPROVE)
         ));
 
         studyWeeklyRepository.saveAll(List.of(

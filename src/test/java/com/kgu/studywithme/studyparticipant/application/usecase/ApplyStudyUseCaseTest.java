@@ -146,7 +146,7 @@ class ApplyStudyUseCaseTest extends UseCaseTest {
         given(studyParticipantRepository.isApplierOrParticipant(applierCommand.studyId(), applierCommand.applierId())).willReturn(false);
         given(studyParticipantRepository.isAlreadyLeaveOrGraduatedParticipant(applierCommand.studyId(), applierCommand.applierId())).willReturn(false);
 
-        final StudyParticipant participant = applierCommand.toDomain().apply(1L);
+        final StudyParticipant participant = StudyParticipant.applyInStudy(study, applier).apply(1L);
         given(studyParticipantRepository.save(any(StudyParticipant.class))).willReturn(participant);
 
         // when
