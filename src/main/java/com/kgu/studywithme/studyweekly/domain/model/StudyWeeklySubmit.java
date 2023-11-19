@@ -1,7 +1,7 @@
 package com.kgu.studywithme.studyweekly.domain.model;
 
 import com.kgu.studywithme.global.BaseEntity;
-import jakarta.persistence.Column;
+import com.kgu.studywithme.member.domain.model.Member;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -17,9 +17,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "study_weekly_submit")
 public class StudyWeeklySubmit extends BaseEntity<StudyWeeklySubmit> {
-    @Column(name = "participant_id", nullable = false)
-    private Long participantId;
-
     @Embedded
     private UploadAssignment uploadAssignment;
 
@@ -27,22 +24,26 @@ public class StudyWeeklySubmit extends BaseEntity<StudyWeeklySubmit> {
     @JoinColumn(name = "week_id", referencedColumnName = "id", nullable = false)
     private StudyWeekly weekly;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "participant_id", referencedColumnName = "id", nullable = false)
+    private Member participant;
+
     private StudyWeeklySubmit(
             final StudyWeekly weekly,
-            final Long participantId,
+            final Member participant,
             final UploadAssignment uploadAssignment
     ) {
         this.weekly = weekly;
-        this.participantId = participantId;
+        this.participant = participant;
         this.uploadAssignment = uploadAssignment;
     }
 
     public static StudyWeeklySubmit submitAssignment(
             final StudyWeekly weekly,
-            final Long participantId,
+            final Member participant,
             final UploadAssignment uploadAssignment
     ) {
-        return new StudyWeeklySubmit(weekly, participantId, uploadAssignment);
+        return new StudyWeeklySubmit(weekly, participant, uploadAssignment);
     }
 
     public void editUpload(final UploadAssignment uploadAssignment) {

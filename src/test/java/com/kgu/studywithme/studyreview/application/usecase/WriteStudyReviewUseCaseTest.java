@@ -3,7 +3,9 @@ package com.kgu.studywithme.studyreview.application.usecase;
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.model.Member;
+import com.kgu.studywithme.member.domain.repository.MemberRepository;
 import com.kgu.studywithme.study.domain.model.Study;
+import com.kgu.studywithme.study.domain.repository.StudyRepository;
 import com.kgu.studywithme.studyparticipant.domain.repository.StudyParticipantRepository;
 import com.kgu.studywithme.studyreview.application.usecase.command.WriteStudyReviewCommand;
 import com.kgu.studywithme.studyreview.domain.model.StudyReview;
@@ -26,20 +28,29 @@ import static org.mockito.Mockito.verify;
 
 @DisplayName("StudyReview -> WriteStudyReviewUseCase 테스트")
 class WriteStudyReviewUseCaseTest extends UseCaseTest {
+    private final StudyRepository studyRepository = mock(StudyRepository.class);
+    private final MemberRepository memberRepository = mock(MemberRepository.class);
     private final StudyParticipantRepository studyParticipantRepository = mock(StudyParticipantRepository.class);
     private final StudyReviewRepository studyReviewRepository = mock(StudyReviewRepository.class);
-    private final WriteStudyReviewUseCase sut = new WriteStudyReviewUseCase(studyParticipantRepository, studyReviewRepository);
+    private final WriteStudyReviewUseCase sut = new WriteStudyReviewUseCase(
+            studyRepository,
+            memberRepository,
+            studyParticipantRepository,
+            studyReviewRepository
+    );
 
     private final Member host = JIWON.toMember().apply(1L);
     private final Member member = GHOST.toMember().apply(2L);
-    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(host).apply(1L);
     private final WriteStudyReviewCommand command = new WriteStudyReviewCommand(study.getId(), member.getId(), "졸업자 리뷰");
 
     @Test
     @DisplayName("스터디 졸업자가 아니면 리뷰를 작성할 수 없다")
     void throwExceptionByMemberIsNotGraduated() {
         // given
-        given(studyParticipantRepository.isGraduatedParticipant(command.studyId(), command.memberId())).willReturn(false);
+        given(studyRepository.getById(command.studyId())).willReturn(study);
+        given(memberRepository.getById(command.memberId())).willReturn(member);
+        given(studyParticipantRepository.isGraduatedParticipant(study.getId(), member.getId())).willReturn(false);
 
         // when - then
         assertThatThrownBy(() -> sut.invoke(command))
@@ -47,8 +58,10 @@ class WriteStudyReviewUseCaseTest extends UseCaseTest {
                 .hasMessage(StudyReviewErrorCode.ONLY_GRADUATED_PARTICIPANT_CAN_WRITE_REVIEW.getMessage());
 
         assertAll(
-                () -> verify(studyParticipantRepository, times(1)).isGraduatedParticipant(command.studyId(), command.memberId()),
-                () -> verify(studyReviewRepository, times(0)).existsByStudyIdAndWriterId(command.studyId(), command.memberId()),
+                () -> verify(studyRepository, times(1)).getById(command.studyId()),
+                () -> verify(memberRepository, times(1)).getById(command.memberId()),
+                () -> verify(studyParticipantRepository, times(1)).isGraduatedParticipant(study.getId(), member.getId()),
+                () -> verify(studyReviewRepository, times(0)).existsByStudyIdAndWriterId(study.getId(), member.getId()),
                 () -> verify(studyReviewRepository, times(0)).save(any(StudyReview.class))
         );
     }
@@ -57,8 +70,10 @@ class WriteStudyReviewUseCaseTest extends UseCaseTest {
     @DisplayName("이미 리뷰를 작성했다면 추가 작성할 수 없다")
     void throwExceptionByMemberIsAlreadyWrittenReview() {
         // given
-        given(studyParticipantRepository.isGraduatedParticipant(command.studyId(), command.memberId())).willReturn(true);
-        given(studyReviewRepository.existsByStudyIdAndWriterId(command.studyId(), command.memberId())).willReturn(true);
+        given(studyRepository.getById(command.studyId())).willReturn(study);
+        given(memberRepository.getById(command.memberId())).willReturn(member);
+        given(studyParticipantRepository.isGraduatedParticipant(study.getId(), member.getId())).willReturn(true);
+        given(studyReviewRepository.existsByStudyIdAndWriterId(study.getId(), member.getId())).willReturn(true);
 
         // when - then
         assertThatThrownBy(() -> sut.invoke(command))
@@ -66,8 +81,10 @@ class WriteStudyReviewUseCaseTest extends UseCaseTest {
                 .hasMessage(StudyReviewErrorCode.ALREADY_WRITTEN.getMessage());
 
         assertAll(
-                () -> verify(studyParticipantRepository, times(1)).isGraduatedParticipant(command.studyId(), command.memberId()),
-                () -> verify(studyReviewRepository, times(1)).existsByStudyIdAndWriterId(command.studyId(), command.memberId()),
+                () -> verify(studyRepository, times(1)).getById(command.studyId()),
+                () -> verify(memberRepository, times(1)).getById(command.memberId()),
+                () -> verify(studyParticipantRepository, times(1)).isGraduatedParticipant(study.getId(), member.getId()),
+                () -> verify(studyReviewRepository, times(1)).existsByStudyIdAndWriterId(study.getId(), member.getId()),
                 () -> verify(studyReviewRepository, times(0)).save(any(StudyReview.class))
         );
     }
@@ -76,10 +93,12 @@ class WriteStudyReviewUseCaseTest extends UseCaseTest {
     @DisplayName("스터디 리뷰를 작성한다")
     void success() {
         // given
-        given(studyParticipantRepository.isGraduatedParticipant(command.studyId(), command.memberId())).willReturn(true);
-        given(studyReviewRepository.existsByStudyIdAndWriterId(command.studyId(), command.memberId())).willReturn(false);
+        given(studyRepository.getById(command.studyId())).willReturn(study);
+        given(memberRepository.getById(command.memberId())).willReturn(member);
+        given(studyParticipantRepository.isGraduatedParticipant(study.getId(), member.getId())).willReturn(true);
+        given(studyReviewRepository.existsByStudyIdAndWriterId(study.getId(), member.getId())).willReturn(false);
 
-        final StudyReview review = command.toDomain().apply(1L);
+        final StudyReview review = StudyReview.writeReview(study, member, command.content()).apply(1L);
         given(studyReviewRepository.save(any(StudyReview.class))).willReturn(review);
 
         // when
@@ -87,8 +106,10 @@ class WriteStudyReviewUseCaseTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyParticipantRepository, times(1)).isGraduatedParticipant(command.studyId(), command.memberId()),
-                () -> verify(studyReviewRepository, times(1)).existsByStudyIdAndWriterId(command.studyId(), command.memberId()),
+                () -> verify(studyRepository, times(1)).getById(command.studyId()),
+                () -> verify(memberRepository, times(1)).getById(command.memberId()),
+                () -> verify(studyParticipantRepository, times(1)).isGraduatedParticipant(study.getId(), member.getId()),
+                () -> verify(studyReviewRepository, times(1)).existsByStudyIdAndWriterId(study.getId(), member.getId()),
                 () -> verify(studyReviewRepository, times(1)).save(any(StudyReview.class)),
                 () -> assertThat(studyReviewId).isEqualTo(review.getId())
         );

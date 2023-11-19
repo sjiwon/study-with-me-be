@@ -52,7 +52,7 @@ class RejectParticipationUseCaseTest extends UseCaseTest {
 
     @BeforeEach
     void setUp() {
-        study = SPRING.toStudy(host.getId()).apply(1L);
+        study = SPRING.toStudy(host).apply(1L);
 
         allowEmailMemberCommand = new RejectParticipationCommand(study.getId(), applierWithAllowEmail.getId(), "sorry");
         notAllowEmailMemberCommand = new RejectParticipationCommand(study.getId(), applierWithNotAllowEmail.getId(), "sorry");

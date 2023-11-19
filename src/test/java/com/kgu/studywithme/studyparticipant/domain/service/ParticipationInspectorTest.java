@@ -37,15 +37,15 @@ public class ParticipationInspectorTest extends ParallelTest {
     private final Member leaveMember = DUMMY3.toMember().apply(5L);
     private final Member graduateMember = DUMMY4.toMember().apply(6L);
     private final Member anonymous = ANONYMOUS.toMember().apply(7L);
-    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(host).apply(1L);
 
     @Test
     @DisplayName("신청자가 스터디 팀장인지 확인한다")
     void checkApplierIsHost() {
         assertAll(
-                () -> assertDoesNotThrow(() -> sut.checkApplierIsHost(study, applier.getId())),
-                () -> assertDoesNotThrow(() -> sut.checkApplierIsHost(study, anonymous.getId())),
-                () -> assertThatThrownBy(() -> sut.checkApplierIsHost(study, host.getId()))
+                () -> assertDoesNotThrow(() -> sut.checkApplierIsHost(study, applier)),
+                () -> assertDoesNotThrow(() -> sut.checkApplierIsHost(study, anonymous)),
+                () -> assertThatThrownBy(() -> sut.checkApplierIsHost(study, host))
                         .isInstanceOf(StudyWithMeException.class)
                         .hasMessage(StudyParticipantErrorCode.STUDY_HOST_CANNOT_APPLY.getMessage())
         );
@@ -56,43 +56,43 @@ public class ParticipationInspectorTest extends ParallelTest {
     void checkApplierIsAlreadyRelatedToStudy() {
         given(studyParticipantRepository.isApplierOrParticipant(study.getId(), host.getId())).willReturn(true);
         given(studyParticipantRepository.isAlreadyLeaveOrGraduatedParticipant(study.getId(), host.getId())).willReturn(false);
-        assertThatThrownBy(() -> sut.checkApplierIsAlreadyRelatedToStudy(study, host.getId()))
+        assertThatThrownBy(() -> sut.checkApplierIsAlreadyRelatedToStudy(study, host))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.ALREADY_APPLY_OR_PARTICIPATE.getMessage());
 
         given(studyParticipantRepository.isApplierOrParticipant(study.getId(), applier.getId())).willReturn(true);
         given(studyParticipantRepository.isAlreadyLeaveOrGraduatedParticipant(study.getId(), applier.getId())).willReturn(false);
-        assertThatThrownBy(() -> sut.checkApplierIsAlreadyRelatedToStudy(study, applier.getId()))
+        assertThatThrownBy(() -> sut.checkApplierIsAlreadyRelatedToStudy(study, applier))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.ALREADY_APPLY_OR_PARTICIPATE.getMessage());
 
         given(studyParticipantRepository.isApplierOrParticipant(study.getId(), participantA.getId())).willReturn(true);
         given(studyParticipantRepository.isAlreadyLeaveOrGraduatedParticipant(study.getId(), participantA.getId())).willReturn(false);
-        assertThatThrownBy(() -> sut.checkApplierIsAlreadyRelatedToStudy(study, participantA.getId()))
+        assertThatThrownBy(() -> sut.checkApplierIsAlreadyRelatedToStudy(study, participantA))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.ALREADY_APPLY_OR_PARTICIPATE.getMessage());
 
         given(studyParticipantRepository.isApplierOrParticipant(study.getId(), participantB.getId())).willReturn(true);
         given(studyParticipantRepository.isAlreadyLeaveOrGraduatedParticipant(study.getId(), participantB.getId())).willReturn(false);
-        assertThatThrownBy(() -> sut.checkApplierIsAlreadyRelatedToStudy(study, participantB.getId()))
+        assertThatThrownBy(() -> sut.checkApplierIsAlreadyRelatedToStudy(study, participantB))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.ALREADY_APPLY_OR_PARTICIPATE.getMessage());
 
         given(studyParticipantRepository.isApplierOrParticipant(study.getId(), leaveMember.getId())).willReturn(false);
         given(studyParticipantRepository.isAlreadyLeaveOrGraduatedParticipant(study.getId(), leaveMember.getId())).willReturn(true);
-        assertThatThrownBy(() -> sut.checkApplierIsAlreadyRelatedToStudy(study, leaveMember.getId()))
+        assertThatThrownBy(() -> sut.checkApplierIsAlreadyRelatedToStudy(study, leaveMember))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.ALREADY_LEAVE_OR_GRADUATED.getMessage());
 
         given(studyParticipantRepository.isApplierOrParticipant(study.getId(), graduateMember.getId())).willReturn(false);
         given(studyParticipantRepository.isAlreadyLeaveOrGraduatedParticipant(study.getId(), graduateMember.getId())).willReturn(true);
-        assertThatThrownBy(() -> sut.checkApplierIsAlreadyRelatedToStudy(study, graduateMember.getId()))
+        assertThatThrownBy(() -> sut.checkApplierIsAlreadyRelatedToStudy(study, graduateMember))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyParticipantErrorCode.ALREADY_LEAVE_OR_GRADUATED.getMessage());
 
         given(studyParticipantRepository.isApplierOrParticipant(study.getId(), anonymous.getId())).willReturn(false);
         given(studyParticipantRepository.isAlreadyLeaveOrGraduatedParticipant(study.getId(), anonymous.getId())).willReturn(false);
-        assertDoesNotThrow(() -> sut.checkApplierIsAlreadyRelatedToStudy(study, anonymous.getId()));
+        assertDoesNotThrow(() -> sut.checkApplierIsAlreadyRelatedToStudy(study, anonymous));
     }
 
     @Test

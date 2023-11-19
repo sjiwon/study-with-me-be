@@ -135,6 +135,10 @@ public class Member extends BaseEntity<Member> {
         }
     }
 
+    public boolean isSameMember(final Member other) {
+        return getId().equals(other.getId());
+    }
+
     public boolean isEmailOptIn() {
         return email.isEmailOptIn();
     }

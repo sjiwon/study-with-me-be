@@ -1,20 +1,17 @@
-package com.kgu.studywithme.studyweekly.application.usecase;
+package com.kgu.studywithme.studyweekly.domain.service;
 
-import com.kgu.studywithme.common.UseCaseTest;
-import com.kgu.studywithme.common.mock.stub.StubFileUploader;
 import com.kgu.studywithme.file.domain.model.RawFileData;
 import com.kgu.studywithme.file.utils.converter.FileConverter;
 import com.kgu.studywithme.member.domain.model.Member;
+import com.kgu.studywithme.member.domain.repository.MemberRepository;
 import com.kgu.studywithme.study.domain.model.Study;
+import com.kgu.studywithme.study.domain.repository.StudyRepository;
 import com.kgu.studywithme.studyattendance.domain.repository.StudyAttendanceRepository;
 import com.kgu.studywithme.studyparticipant.domain.repository.StudyParticipantRepository;
 import com.kgu.studywithme.studyweekly.application.usecase.command.CreateStudyWeeklyCommand;
 import com.kgu.studywithme.studyweekly.domain.model.StudyWeekly;
-import com.kgu.studywithme.studyweekly.domain.repository.StudyWeeklyAttachmentRepository;
+import com.kgu.studywithme.studyweekly.domain.model.UploadAttachment;
 import com.kgu.studywithme.studyweekly.domain.repository.StudyWeeklyRepository;
-import com.kgu.studywithme.studyweekly.domain.repository.StudyWeeklySubmitRepository;
-import com.kgu.studywithme.studyweekly.domain.service.AttachmentUploader;
-import com.kgu.studywithme.studyweekly.domain.service.WeeklyManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,28 +34,27 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@DisplayName("StudyWeekly -> CreateStudyWeeklyUseCase 테스트")
-class CreateStudyWeeklyUseCaseTest extends UseCaseTest {
-    private final AttachmentUploader attachmentUploader = new AttachmentUploader(new StubFileUploader());
+@DisplayName("StudyWeekly -> WeeklyCreator 테스트")
+class WeeklyCreatorTest {
+    private final StudyRepository studyRepository = mock(StudyRepository.class);
+    private final MemberRepository memberRepository = mock(MemberRepository.class);
     private final StudyWeeklyRepository studyWeeklyRepository = mock(StudyWeeklyRepository.class);
-    private final StudyWeeklyAttachmentRepository studyWeeklyAttachmentRepository = mock(StudyWeeklyAttachmentRepository.class);
-    private final StudyWeeklySubmitRepository studyWeeklySubmitRepository = mock(StudyWeeklySubmitRepository.class);
     private final StudyParticipantRepository studyParticipantRepository = mock(StudyParticipantRepository.class);
     private final StudyAttendanceRepository studyAttendanceRepository = mock(StudyAttendanceRepository.class);
-    private final WeeklyManager weeklyManager = new WeeklyManager(
+    private final WeeklyCreator sut = new WeeklyCreator(
+            studyRepository,
+            memberRepository,
             studyWeeklyRepository,
             studyParticipantRepository,
-            studyAttendanceRepository,
-            studyWeeklyAttachmentRepository,
-            studyWeeklySubmitRepository
+            studyAttendanceRepository
     );
-    private final CreateStudyWeeklyUseCase sut = new CreateStudyWeeklyUseCase(attachmentUploader, studyWeeklyRepository, weeklyManager);
 
     private final Member host = JIWON.toMember().apply(1L);
     private final Member participantA = GHOST.toMember().apply(2L);
     private final Member participantB = ANONYMOUS.toMember().apply(3L);
-    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(host).apply(1L);
     private CreateStudyWeeklyCommand command;
+    private List<UploadAttachment> attachments;
 
     @BeforeEach
     void setUp() throws IOException {
@@ -76,29 +72,38 @@ class CreateStudyWeeklyUseCaseTest extends UseCaseTest {
                 STUDY_WEEKLY_1.isAutoAttendance(),
                 files
         );
+        attachments = List.of(
+                new UploadAttachment("hello1.txt", "S3/hello1.txt"),
+                new UploadAttachment("hello3.pdf", "S3/hello3.pdf")
+        );
     }
 
     @Test
-    @DisplayName("스터디 주차를 생성한다")
-    void createStudyWeekly() {
+    @DisplayName("특정 주차를 생성한다")
+    void success() {
         // given
-        given(studyWeeklyRepository.getNextWeek(command.studyId())).willReturn(1);
+        given(studyRepository.getInProgressStudy(command.studyId())).willReturn(study);
+        given(memberRepository.getById(command.creatorId())).willReturn(host);
 
-        final StudyWeekly weekly = STUDY_WEEKLY_1.toWeekly(study.getId(), host.getId()).apply(1L);
+        final StudyWeekly weekly = STUDY_WEEKLY_1.toWeekly(study, host).apply(1L);
         given(studyWeeklyRepository.save(any(StudyWeekly.class))).willReturn(weekly);
-        given(studyParticipantRepository.findParticipantIdsByStatus(weekly.getStudyId(), APPROVE))
-                .willReturn(List.of(host.getId(), participantA.getId(), participantB.getId()));
+        given(studyParticipantRepository.findParticipantsByStatus(study.getId(), APPROVE)).willReturn(List.of(host, participantA, participantB));
 
         // when
-        final Long createdWeeklyId = sut.invoke(command);
+        final StudyWeekly savedWeekly = sut.invoke(command, attachments, STUDY_WEEKLY_1.getWeek());
 
         // then
         assertAll(
-                () -> verify(studyWeeklyRepository, times(1)).getNextWeek(command.studyId()),
+                () -> verify(studyRepository, times(1)).getInProgressStudy(command.studyId()),
+                () -> verify(memberRepository, times(1)).getById(command.creatorId()),
                 () -> verify(studyWeeklyRepository, times(1)).save(any(StudyWeekly.class)),
-                () -> verify(studyParticipantRepository, times(1)).findParticipantIdsByStatus(weekly.getStudyId(), APPROVE),
+                () -> verify(studyParticipantRepository, times(1)).findParticipantsByStatus(study.getId(), APPROVE),
                 () -> verify(studyAttendanceRepository, times(1)).saveAll(any()),
-                () -> assertThat(createdWeeklyId).isEqualTo(weekly.getId())
+                () -> assertThat(savedWeekly.getId()).isEqualTo(weekly.getId()),
+                () -> assertThat(savedWeekly.getStudy()).isEqualTo(study),
+                () -> assertThat(savedWeekly.getCreator()).isEqualTo(host),
+                () -> assertThat(savedWeekly.getWeek()).isEqualTo(STUDY_WEEKLY_1.getWeek()),
+                () -> assertThat(savedWeekly.getAttachments()).hasSize(attachments.size())
         );
     }
 }

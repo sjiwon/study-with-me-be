@@ -25,7 +25,7 @@ public class StudyWeeklyMetadataRepositoryImpl implements StudyWeeklyMetadataRep
     ) {
         return query
                 .select(new QAutoAttendanceAndFinishedWeekly(
-                        studyWeekly.studyId,
+                        studyWeekly.study.id,
                         studyWeekly.week
                 ))
                 .from(studyWeekly)
@@ -33,7 +33,7 @@ public class StudyWeeklyMetadataRepositoryImpl implements StudyWeeklyMetadataRep
                         studyWeekly.period.endDate.between(from, to),
                         studyWeekly.autoAttendance.isTrue()
                 )
-                .orderBy(studyWeekly.studyId.asc(), studyWeekly.week.asc())
+                .orderBy(studyWeekly.study.id.asc(), studyWeekly.week.asc())
                 .fetch();
     }
 }

@@ -40,7 +40,7 @@ class ManageFavoriteUseCaseTest extends UseCaseTest {
     );
 
     private final Member host = JIWON.toMember().apply(1L);
-    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(host).apply(1L);
 
     @Nested
     @DisplayName("스터디 찜 등록")
@@ -54,7 +54,7 @@ class ManageFavoriteUseCaseTest extends UseCaseTest {
             given(studyRepository.getById(command.studyId())).willReturn(study);
             given(memberRepository.getById(command.memberId())).willReturn(host);
 
-            final Favorite favorite = Favorite.favoriteMarking(host.getId(), study.getId());
+            final Favorite favorite = Favorite.favoriteMarking(host, study);
             given(favoriteRepository.save(any(Favorite.class))).willReturn(favorite);
 
             // when
@@ -96,7 +96,7 @@ class ManageFavoriteUseCaseTest extends UseCaseTest {
         @DisplayName("찜 등록을 취소한다")
         void success() {
             // given
-            final Favorite favorite = Favorite.favoriteMarking(host.getId(), study.getId());
+            final Favorite favorite = Favorite.favoriteMarking(host, study);
             given(favoriteRepository.findByStudyIdAndMemberId(command.studyId(), command.memberId())).willReturn(Optional.of(favorite));
 
             // when

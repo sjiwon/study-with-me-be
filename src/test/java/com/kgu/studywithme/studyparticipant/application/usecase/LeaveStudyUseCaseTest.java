@@ -52,7 +52,7 @@ class LeaveStudyUseCaseTest extends UseCaseTest {
 
     @BeforeEach
     void setUp() {
-        study = SPRING.toStudy(host.getId()).apply(1L);
+        study = SPRING.toStudy(host).apply(1L);
         previousParticipantMembers = study.getParticipants();
 
         hostLeaveCommand = new LeaveStudyCommand(study.getId(), host.getId());

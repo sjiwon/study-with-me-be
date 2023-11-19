@@ -117,32 +117,32 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
         members[7] = memberRepository.save(DUMMY8.toMember());
         members[8] = memberRepository.save(DUMMY9.toMember());
 
-        language[0] = TOEIC.toStudy(host.getId());
-        language[1] = TOEFL.toStudy(host.getId());
-        language[2] = JAPANESE.toStudy(host.getId());
-        language[3] = CHINESE.toStudy(host.getId());
-        language[4] = FRENCH.toStudy(host.getId());
-        language[5] = GERMAN.toStudy(host.getId());
-        language[6] = ARABIC.toStudy(host.getId());
+        language[0] = TOEIC.toStudy(host);
+        language[1] = TOEFL.toStudy(host);
+        language[2] = JAPANESE.toStudy(host);
+        language[3] = CHINESE.toStudy(host);
+        language[4] = FRENCH.toStudy(host);
+        language[5] = GERMAN.toStudy(host);
+        language[6] = ARABIC.toStudy(host);
 
-        interview[0] = TOSS_INTERVIEW.toStudy(host.getId());
-        interview[1] = KAKAO_INTERVIEW.toStudy(host.getId());
-        interview[2] = NAVER_INTERVIEW.toStudy(host.getId());
-        interview[3] = LINE_INTERVIEW.toStudy(host.getId());
-        interview[4] = GOOGLE_INTERVIEW.toStudy(host.getId());
+        interview[0] = TOSS_INTERVIEW.toStudy(host);
+        interview[1] = KAKAO_INTERVIEW.toStudy(host);
+        interview[2] = NAVER_INTERVIEW.toStudy(host);
+        interview[3] = LINE_INTERVIEW.toStudy(host);
+        interview[4] = GOOGLE_INTERVIEW.toStudy(host);
 
-        programming[0] = SPRING.toStudy(host.getId());
-        programming[1] = JPA.toStudy(host.getId());
-        programming[2] = REAL_MYSQL.toStudy(host.getId());
-        programming[3] = KOTLIN.toStudy(host.getId());
-        programming[4] = NETWORK.toStudy(host.getId());
-        programming[5] = EFFECTIVE_JAVA.toStudy(host.getId());
-        programming[6] = AWS.toStudy(host.getId());
-        programming[7] = DOCKER.toStudy(host.getId());
-        programming[8] = KUBERNETES.toStudy(host.getId());
-        programming[9] = PYTHON.toStudy(host.getId());
-        programming[10] = RUST.toStudy(host.getId());
-        programming[11] = OS.toStudy(host.getId());
+        programming[0] = SPRING.toStudy(host);
+        programming[1] = JPA.toStudy(host);
+        programming[2] = REAL_MYSQL.toStudy(host);
+        programming[3] = KOTLIN.toStudy(host);
+        programming[4] = NETWORK.toStudy(host);
+        programming[5] = EFFECTIVE_JAVA.toStudy(host);
+        programming[6] = AWS.toStudy(host);
+        programming[7] = DOCKER.toStudy(host);
+        programming[8] = KUBERNETES.toStudy(host);
+        programming[9] = PYTHON.toStudy(host);
+        programming[10] = RUST.toStudy(host);
+        programming[11] = OS.toStudy(host);
     }
 
     @Nested
@@ -1141,7 +1141,7 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
         }
 
         for (Member member : members) {
-            favorites.add(Favorite.favoriteMarking(member.getId(), study.getId()));
+            favorites.add(Favorite.favoriteMarking(member, study));
         }
     }
 
@@ -1151,7 +1151,7 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
         }
 
         for (Member member : members) {
-            reviews.add(StudyReview.writeReview(study.getId(), member.getId(), "Good Study"));
+            reviews.add(StudyReview.writeReview(study, member, "Good Study"));
         }
     }
 

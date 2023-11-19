@@ -29,7 +29,7 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
         return nameUsedId != null && !nameUsedId.equals(studyId);
     }
 
-    @Query("SELECT s.hostId" +
+    @Query("SELECT s.host.id" +
             " FROM Study s" +
             " WHERE s.id = :studyId")
     Long getHostId(@Param("studyId") final Long studyId);

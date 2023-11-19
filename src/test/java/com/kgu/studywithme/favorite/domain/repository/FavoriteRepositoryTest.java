@@ -40,16 +40,16 @@ class FavoriteRepositoryTest extends RepositoryTest {
     void setUp() {
         host = memberRepository.save(JIWON.toMember());
         member = memberRepository.save(GHOST.toMember());
-        studyA = studyRepository.save(SPRING.toStudy(host.getId()));
-        studyB = studyRepository.save(JPA.toStudy(host.getId()));
+        studyA = studyRepository.save(SPRING.toStudy(host));
+        studyB = studyRepository.save(JPA.toStudy(host));
     }
 
     @Test
     @DisplayName("특정 스터디에 대해서 사용자가 찜한 기록한 기록을 조회한다")
     void findByStudyIdAndMemberId() {
         // given
-        sut.save(Favorite.favoriteMarking(studyA.getId(), host.getId()));
-        sut.save(Favorite.favoriteMarking(studyB.getId(), member.getId()));
+        sut.save(Favorite.favoriteMarking(host, studyA));
+        sut.save(Favorite.favoriteMarking(member, studyB));
 
         // when
         final Optional<Favorite> actual1 = sut.findByStudyIdAndMemberId(studyA.getId(), host.getId());

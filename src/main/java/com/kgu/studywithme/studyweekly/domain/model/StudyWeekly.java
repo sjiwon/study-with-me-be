@@ -1,12 +1,17 @@
 package com.kgu.studywithme.studyweekly.domain.model;
 
 import com.kgu.studywithme.global.BaseEntity;
+import com.kgu.studywithme.member.domain.model.Member;
+import com.kgu.studywithme.study.domain.model.Study;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -28,12 +33,6 @@ import java.util.List;
         }
 )
 public class StudyWeekly extends BaseEntity<StudyWeekly> {
-    @Column(name = "study_id", nullable = false)
-    private Long studyId;
-
-    @Column(name = "creator_id", nullable = false)
-    private Long creatorId;
-
     @Column(name = "title", nullable = false)
     private String title;
 
@@ -53,6 +52,14 @@ public class StudyWeekly extends BaseEntity<StudyWeekly> {
     @Column(name = "is_auto_attendance", nullable = false)
     private boolean autoAttendance;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false)
+    private Study study;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "creator_id", referencedColumnName = "id", nullable = false)
+    private Member creator;
+
     @OneToMany(mappedBy = "weekly", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private final List<StudyWeeklyAttachment> attachments = new ArrayList<>();
 
@@ -60,8 +67,8 @@ public class StudyWeekly extends BaseEntity<StudyWeekly> {
     private final List<StudyWeeklySubmit> submits = new ArrayList<>();
 
     private StudyWeekly(
-            final Long studyId,
-            final Long creatorId,
+            final Study study,
+            final Member creator,
             final String title,
             final String content,
             final int week,
@@ -70,8 +77,8 @@ public class StudyWeekly extends BaseEntity<StudyWeekly> {
             final boolean autoAttendance,
             final List<UploadAttachment> attachments
     ) {
-        this.studyId = studyId;
-        this.creatorId = creatorId;
+        this.study = study;
+        this.creator = creator;
         this.title = title;
         this.content = content;
         this.week = week;
@@ -82,8 +89,8 @@ public class StudyWeekly extends BaseEntity<StudyWeekly> {
     }
 
     public static StudyWeekly createWeekly(
-            final Long studyId,
-            final Long creatorId,
+            final Study study,
+            final Member creator,
             final String title,
             final String content,
             final int week,
@@ -91,8 +98,8 @@ public class StudyWeekly extends BaseEntity<StudyWeekly> {
             final List<UploadAttachment> attachments
     ) {
         return new StudyWeekly(
-                studyId,
-                creatorId,
+                study,
+                creator,
                 title,
                 content,
                 week,
@@ -104,8 +111,8 @@ public class StudyWeekly extends BaseEntity<StudyWeekly> {
     }
 
     public static StudyWeekly createWeeklyWithAssignment(
-            final Long studyId,
-            final Long creatorId,
+            final Study study,
+            final Member creator,
             final String title,
             final String content,
             final int week,
@@ -114,8 +121,8 @@ public class StudyWeekly extends BaseEntity<StudyWeekly> {
             final List<UploadAttachment> attachments
     ) {
         return new StudyWeekly(
-                studyId,
-                creatorId,
+                study,
+                creator,
                 title,
                 content,
                 week,
@@ -153,8 +160,8 @@ public class StudyWeekly extends BaseEntity<StudyWeekly> {
         }
     }
 
-    public void submitAssignment(final Long participantId, final UploadAssignment uploadAssignment) {
-        submits.add(StudyWeeklySubmit.submitAssignment(this, participantId, uploadAssignment));
+    public void submitAssignment(final Member participant, final UploadAssignment uploadAssignment) {
+        submits.add(StudyWeeklySubmit.submitAssignment(this, participant, uploadAssignment));
     }
 
     public boolean isSubmissionPeriodInRange(final LocalDateTime time) {

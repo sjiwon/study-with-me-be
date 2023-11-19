@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import static com.kgu.studywithme.common.fixture.MemberFixture.GHOST;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.StudyFixture.CHINESE;
 import static com.kgu.studywithme.common.fixture.StudyFixture.JAPANESE;
@@ -24,12 +25,13 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @DisplayName("Study -> 도메인 [Study] 테스트")
 class StudyTest extends ParallelTest {
     private final Member host = JIWON.toMember().apply(1L);
+    private final Member other = GHOST.toMember().apply(2L);
 
     @Test
     @DisplayName("Study를 생성한다")
     void construct() {
-        final Study onlineStudy = SPRING.toStudy(host.getId());
-        final Study offlineStudy = TOSS_INTERVIEW.toStudy(host.getId());
+        final Study onlineStudy = SPRING.toStudy(host);
+        final Study offlineStudy = TOSS_INTERVIEW.toStudy(host);
 
         assertAll(
                 () -> assertThat(onlineStudy.getName()).isEqualTo(SPRING.getName()),
@@ -66,8 +68,8 @@ class StudyTest extends ParallelTest {
     @DisplayName("Study 정보를 수정한다")
     void update() {
         // given
-        final Study onlineStudy = JAPANESE.toStudy(host.getId());
-        final Study offlineStudy = TOSS_INTERVIEW.toStudy(host.getId());
+        final Study onlineStudy = JAPANESE.toStudy(host);
+        final Study offlineStudy = TOSS_INTERVIEW.toStudy(host);
 
         // when
         onlineStudy.update(
@@ -131,11 +133,11 @@ class StudyTest extends ParallelTest {
     @DisplayName("스터디 팀장인지 확인한다")
     void isHost() {
         // given
-        final Study study = SPRING.toStudy(host.getId());
+        final Study study = SPRING.toStudy(host);
 
         // when
-        final boolean actual1 = study.isHost(host.getId());
-        final boolean actual2 = study.isHost(host.getId() + 100L);
+        final boolean actual1 = study.isHost(host);
+        final boolean actual2 = study.isHost(other);
 
         // then
         assertAll(
@@ -148,17 +150,22 @@ class StudyTest extends ParallelTest {
     @DisplayName("스터디 팀장 권한을 위임한다 -> 졸업 요건 수정 횟수 초기화")
     void delegateHostAuthority() {
         // given
-        final Study study = SPRING.toStudy(host.getId());
-
+        final Study study = SPRING.toStudy(host);
         ReflectionTestUtils.setField(study.getGraduationPolicy(), "updateChance", 1);
-        assertThat(study.getGraduationPolicy().getUpdateChance()).isEqualTo(1);
+
+        assertAll(
+                () -> assertThat(study.isHost(host)).isTrue(),
+                () -> assertThat(study.isHost(other)).isFalse(),
+                () -> assertThat(study.getGraduationPolicy().getUpdateChance()).isEqualTo(1)
+        );
 
         // when
-        study.delegateHostAuthority(12345L);
+        study.delegateHostAuthority(other);
 
         // then
         assertAll(
-                () -> assertThat(study.getHostId()).isEqualTo(12345L),
+                () -> assertThat(study.isHost(host)).isFalse(),
+                () -> assertThat(study.isHost(other)).isTrue(),
                 () -> assertThat(study.getGraduationPolicy().getUpdateChance()).isEqualTo(GraduationPolicy.DEFAULT_UPDATE_CHANCE)
         );
     }
@@ -167,7 +174,7 @@ class StudyTest extends ParallelTest {
     @DisplayName("스터디를 종료한다")
     void terminate() {
         // given
-        final Study study = SPRING.toStudy(host.getId());
+        final Study study = SPRING.toStudy(host);
         assertThat(study.isTerminated()).isFalse();
 
         // when
@@ -184,7 +191,7 @@ class StudyTest extends ParallelTest {
 
         @BeforeEach
         void setUp() {
-            study = JAPANESE.toStudy(host.getId());
+            study = JAPANESE.toStudy(host);
         }
 
         @Nested
@@ -237,7 +244,7 @@ class StudyTest extends ParallelTest {
     @DisplayName("스터디 참여자가 졸업 요건[최소 출석 횟수]를 만족했는지 확인한다")
     void isParticipantMeetGraduationPolicy() {
         // given
-        final Study study = SPRING.toStudy(host.getId());
+        final Study study = SPRING.toStudy(host);
         final int minimumAttendanceForGraduation = study.getGraduationPolicy().getMinimumAttendance();
 
         // when

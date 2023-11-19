@@ -16,14 +16,14 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class StudyNoticeCommentTest extends ParallelTest {
     private final Member host = JIWON.toMember().apply(1L);
     private final Member anonymous = GHOST.toMember().apply(2L);
-    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
-    private final StudyNotice notice = StudyNotice.writeNotice(study.getId(), host.getId(), "Hello", "Hello World").apply(1L);
+    private final Study study = SPRING.toStudy(host).apply(1L);
+    private final StudyNotice notice = StudyNotice.writeNotice(study, host, "Hello", "Hello World").apply(1L);
 
     @Test
     @DisplayName("스터디 공지사항에 작성한 댓글을 수정한다")
     void updateComment() {
         // given
-        final StudyNoticeComment comment = StudyNoticeComment.writeComment(notice, host.getId(), "Yes!!").apply(1L);
+        final StudyNoticeComment comment = StudyNoticeComment.writeComment(notice, host, "Yes!!").apply(1L);
 
         // when
         comment.updateComment("No...");
@@ -36,11 +36,11 @@ class StudyNoticeCommentTest extends ParallelTest {
     @DisplayName("공지사항 댓글 작성자인지 확인한다")
     void isWriter() {
         // given
-        final StudyNoticeComment comment = StudyNoticeComment.writeComment(notice, host.getId(), "Yes!!").apply(1L);
+        final StudyNoticeComment comment = StudyNoticeComment.writeComment(notice, host, "Yes!!").apply(1L);
 
         // when
-        final boolean actual1 = comment.isWriter(host.getId());
-        final boolean actual2 = comment.isWriter(anonymous.getId());
+        final boolean actual1 = comment.isWriter(host);
+        final boolean actual2 = comment.isWriter(anonymous);
 
         // then
         assertAll(

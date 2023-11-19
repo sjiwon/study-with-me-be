@@ -91,7 +91,7 @@ class StudyInformationRepositoryTest extends RepositoryTest {
         memberB = memberRepository.save(DUMMY2.toMember());
         memberC = memberRepository.save(DUMMY3.toMember());
 
-        study = studyRepository.save(SPRING.toStudy(host.getId()));
+        study = studyRepository.save(SPRING.toStudy(host));
     }
 
     @Test
@@ -99,10 +99,10 @@ class StudyInformationRepositoryTest extends RepositoryTest {
     void fetchBasicInformationById() {
         /* host, memberA, memberB 참여 승인 & memberC 신청 대기 */
         studyParticipantRepository.saveAll(List.of(
-                StudyParticipant.applyHost(study.getId(), host.getId()),
-                StudyParticipant.applyParticipant(study.getId(), memberA.getId(), APPROVE),
-                StudyParticipant.applyParticipant(study.getId(), memberB.getId(), APPROVE),
-                StudyParticipant.applyInStudy(study.getId(), memberC.getId())
+                StudyParticipant.applyHost(study, host),
+                StudyParticipant.applyParticipant(study, memberA, APPROVE),
+                StudyParticipant.applyParticipant(study, memberB, APPROVE),
+                StudyParticipant.applyInStudy(study, memberC)
         ));
         IntStream.range(0, 2).forEach(i -> study.addParticipant());
 
@@ -135,16 +135,16 @@ class StudyInformationRepositoryTest extends RepositoryTest {
     void fetchReviewById() {
         /* 졸업자 3명 */
         studyParticipantRepository.saveAll(List.of(
-                StudyParticipant.applyHost(study.getId(), host.getId()),
-                StudyParticipant.applyParticipant(study.getId(), memberA.getId(), GRADUATED),
-                StudyParticipant.applyParticipant(study.getId(), memberB.getId(), GRADUATED),
-                StudyParticipant.applyParticipant(study.getId(), memberC.getId(), GRADUATED)
+                StudyParticipant.applyHost(study, host),
+                StudyParticipant.applyParticipant(study, memberA, GRADUATED),
+                StudyParticipant.applyParticipant(study, memberB, GRADUATED),
+                StudyParticipant.applyParticipant(study, memberC, GRADUATED)
         ));
 
         /* 리뷰 2건 */
         studyReviewRepository.saveAll(List.of(
-                StudyReview.writeReview(study.getId(), memberA.getId(), "Good Study"),
-                StudyReview.writeReview(study.getId(), memberB.getId(), "Good Study")
+                StudyReview.writeReview(study, memberA, "Good Study"),
+                StudyReview.writeReview(study, memberB, "Good Study")
         ));
 
         final ReviewInformation result1 = sut.fetchReviewById(study.getId());
@@ -158,7 +158,7 @@ class StudyInformationRepositoryTest extends RepositoryTest {
         );
 
         /* 리뷰 추가 1건 */
-        studyReviewRepository.save(StudyReview.writeReview(study.getId(), memberC.getId(), "Good Study"));
+        studyReviewRepository.save(StudyReview.writeReview(study, memberC, "Good Study"));
 
         final ReviewInformation result2 = sut.fetchReviewById(study.getId());
         assertAll(
@@ -176,10 +176,10 @@ class StudyInformationRepositoryTest extends RepositoryTest {
     void fetchParticipantById() {
         /* 신청자 3명 */
         studyParticipantRepository.saveAll(List.of(
-                StudyParticipant.applyHost(study.getId(), host.getId()),
-                StudyParticipant.applyInStudy(study.getId(), memberA.getId()),
-                StudyParticipant.applyInStudy(study.getId(), memberB.getId()),
-                StudyParticipant.applyInStudy(study.getId(), memberC.getId())
+                StudyParticipant.applyHost(study, host),
+                StudyParticipant.applyInStudy(study, memberA),
+                StudyParticipant.applyInStudy(study, memberB),
+                StudyParticipant.applyInStudy(study, memberC)
         ));
 
         final StudyParticipantInformation result1 = sut.fetchParticipantById(study.getId());
@@ -231,10 +231,10 @@ class StudyInformationRepositoryTest extends RepositoryTest {
     void fetchApplicantById() {
         /* 신청자 3명 */
         studyParticipantRepository.saveAll(List.of(
-                StudyParticipant.applyHost(study.getId(), host.getId()),
-                StudyParticipant.applyInStudy(study.getId(), memberA.getId()),
-                StudyParticipant.applyInStudy(study.getId(), memberB.getId()),
-                StudyParticipant.applyInStudy(study.getId(), memberC.getId())
+                StudyParticipant.applyHost(study, host),
+                StudyParticipant.applyInStudy(study, memberA),
+                StudyParticipant.applyInStudy(study, memberB),
+                StudyParticipant.applyInStudy(study, memberC)
         ));
 
         final List<StudyApplicantInformation> result1 = sut.fetchApplicantById(study.getId());
@@ -270,24 +270,14 @@ class StudyInformationRepositoryTest extends RepositoryTest {
     @DisplayName("스터디 공지사항을 조회한다")
     void fetchNoticeById() {
         /* 공지사항 2건 */
-        final StudyNotice notice1 = studyNoticeRepository.save(StudyNotice.writeNotice(
-                study.getId(),
-                host.getId(),
-                "Notice 1",
-                "Notice 1 Content"
-        ));
-        notice1.addComment(memberA.getId(), "OK");
-        notice1.addComment(memberB.getId(), "OK");
-        notice1.addComment(memberC.getId(), "OK");
+        final StudyNotice notice1 = studyNoticeRepository.save(StudyNotice.writeNotice(study, host, "Notice 1", "Notice 1 Content"));
+        notice1.addComment(memberA, "OK");
+        notice1.addComment(memberB, "OK");
+        notice1.addComment(memberC, "OK");
 
-        final StudyNotice notice2 = studyNoticeRepository.save(StudyNotice.writeNotice(
-                study.getId(),
-                host.getId(),
-                "Notice 2",
-                "Notice 2 Content"
-        ));
-        notice2.addComment(memberA.getId(), "OK");
-        notice2.addComment(memberC.getId(), "OK");
+        final StudyNotice notice2 = studyNoticeRepository.save(StudyNotice.writeNotice(study, host, "Notice 2", "Notice 2 Content"));
+        notice2.addComment(memberA, "OK");
+        notice2.addComment(memberC, "OK");
 
         final List<NoticeInformation> result = sut.fetchNoticeById(study.getId());
         assertAll(
@@ -321,27 +311,27 @@ class StudyInformationRepositoryTest extends RepositoryTest {
     void fetchAttendanceById() {
         /* host, memberA, memberC 참여 승인 & memberB 신청 대기 */
         studyParticipantRepository.saveAll(List.of(
-                StudyParticipant.applyHost(study.getId(), host.getId()).apply(1L, LocalDateTime.now().minusDays(4)),
-                StudyParticipant.applyParticipant(study.getId(), memberA.getId(), APPROVE).apply(2L, LocalDateTime.now().minusDays(3)),
-                StudyParticipant.applyInStudy(study.getId(), memberB.getId()).apply(3L, LocalDateTime.now().minusDays(2)),
-                StudyParticipant.applyParticipant(study.getId(), memberC.getId(), APPROVE).apply(4L, LocalDateTime.now().minusDays(1))
+                StudyParticipant.applyHost(study, host).apply(1L, LocalDateTime.now().minusDays(4)),
+                StudyParticipant.applyParticipant(study, memberA, APPROVE).apply(2L, LocalDateTime.now().minusDays(3)),
+                StudyParticipant.applyInStudy(study, memberB).apply(3L, LocalDateTime.now().minusDays(2)),
+                StudyParticipant.applyParticipant(study, memberC, APPROVE).apply(4L, LocalDateTime.now().minusDays(1))
         ));
         IntStream.range(0, 2).forEach(i -> study.addParticipant());
 
         studyAttendanceRepository.saveAll(List.of(
-                StudyAttendance.recordAttendance(study.getId(), host.getId(), 1, ATTENDANCE),
-                StudyAttendance.recordAttendance(study.getId(), host.getId(), 2, ATTENDANCE),
-                StudyAttendance.recordAttendance(study.getId(), host.getId(), 3, ATTENDANCE),
-                StudyAttendance.recordAttendance(study.getId(), host.getId(), 4, ATTENDANCE),
+                StudyAttendance.recordAttendance(study, host, 1, ATTENDANCE),
+                StudyAttendance.recordAttendance(study, host, 2, ATTENDANCE),
+                StudyAttendance.recordAttendance(study, host, 3, ATTENDANCE),
+                StudyAttendance.recordAttendance(study, host, 4, ATTENDANCE),
 
-                StudyAttendance.recordAttendance(study.getId(), memberA.getId(), 1, ATTENDANCE),
-                StudyAttendance.recordAttendance(study.getId(), memberA.getId(), 2, LATE),
-                StudyAttendance.recordAttendance(study.getId(), memberA.getId(), 3, ATTENDANCE),
-                StudyAttendance.recordAttendance(study.getId(), memberA.getId(), 4, NON_ATTENDANCE),
+                StudyAttendance.recordAttendance(study, memberA, 1, ATTENDANCE),
+                StudyAttendance.recordAttendance(study, memberA, 2, LATE),
+                StudyAttendance.recordAttendance(study, memberA, 3, ATTENDANCE),
+                StudyAttendance.recordAttendance(study, memberA, 4, NON_ATTENDANCE),
 
-                StudyAttendance.recordAttendance(study.getId(), memberC.getId(), 1, ATTENDANCE),
-                StudyAttendance.recordAttendance(study.getId(), memberC.getId(), 2, ATTENDANCE),
-                StudyAttendance.recordAttendance(study.getId(), memberC.getId(), 3, LATE)
+                StudyAttendance.recordAttendance(study, memberC, 1, ATTENDANCE),
+                StudyAttendance.recordAttendance(study, memberC, 2, ATTENDANCE),
+                StudyAttendance.recordAttendance(study, memberC, 3, LATE)
         ));
 
         final List<AttendanceInformation> result = sut.fetchAttendanceById(study.getId());
@@ -416,16 +406,16 @@ class StudyInformationRepositoryTest extends RepositoryTest {
     @DisplayName("스터디 주차별 정보를 조회한다")
     void fetchWeeklyById() {
         /* WeeklyA, WeeklyB = 과제 O / WeeklyC = 과제 X */
-        final StudyWeekly weeklyA = studyWeeklyRepository.save(STUDY_WEEKLY_1.toWeeklyWithAssignment(study.getId(), host.getId()));
-        weeklyA.submitAssignment(memberA.getId(), UploadAssignment.withLink("https://notion.so/weeklyA/memberA"));
-        weeklyA.submitAssignment(memberB.getId(), UploadAssignment.withLink("https://notion.so/weeklyA/memberB"));
-        weeklyA.submitAssignment(memberC.getId(), UploadAssignment.withLink("https://notion.so/weeklyA/memberC"));
+        final StudyWeekly weeklyA = studyWeeklyRepository.save(STUDY_WEEKLY_1.toWeeklyWithAssignment(study, host));
+        weeklyA.submitAssignment(memberA, UploadAssignment.withLink("https://notion.so/weeklyA/memberA"));
+        weeklyA.submitAssignment(memberB, UploadAssignment.withLink("https://notion.so/weeklyA/memberB"));
+        weeklyA.submitAssignment(memberC, UploadAssignment.withLink("https://notion.so/weeklyA/memberC"));
 
-        final StudyWeekly weeklyB = studyWeeklyRepository.save(STUDY_WEEKLY_2.toWeeklyWithAssignment(study.getId(), host.getId()));
-        weeklyB.submitAssignment(host.getId(), UploadAssignment.withLink("https://notion.so/weeklyB/host"));
-        weeklyB.submitAssignment(memberC.getId(), UploadAssignment.withLink("https://notion.so/weeklyB/memberC"));
+        final StudyWeekly weeklyB = studyWeeklyRepository.save(STUDY_WEEKLY_2.toWeeklyWithAssignment(study, host));
+        weeklyB.submitAssignment(host, UploadAssignment.withLink("https://notion.so/weeklyB/host"));
+        weeklyB.submitAssignment(memberC, UploadAssignment.withLink("https://notion.so/weeklyB/memberC"));
 
-        final StudyWeekly weeklyC = studyWeeklyRepository.save(STUDY_WEEKLY_5.toWeekly(study.getId(), host.getId()));
+        final StudyWeekly weeklyC = studyWeeklyRepository.save(STUDY_WEEKLY_5.toWeekly(study, host));
 
         final List<WeeklyInformation> result = sut.fetchWeeklyById(study.getId());
         assertThat(result).hasSize(3);

@@ -175,4 +175,22 @@ class MemberTest extends ParallelTest {
             }
         }
     }
+
+    @Test
+    @DisplayName("동일 사용자인지 확인한다")
+    void isSameMember() {
+        // given
+        final Member member = JIWON.toMember().apply(1L);
+        final Member other = JIWON.toMember().apply(2L);
+
+        // when
+        final boolean actual1 = member.isSameMember(member);
+        final boolean actual2 = member.isSameMember(other);
+
+        // then
+        assertAll(
+                () -> assertThat(actual1).isTrue(),
+                () -> assertThat(actual2).isFalse()
+        );
+    }
 }

@@ -8,11 +8,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class UpdateMemberReviewUseCase {
     private final MemberReviewRepository memberReviewRepository;
 
+    @StudyWithMeWritableTransactional
     public void invoke(final UpdateMemberReviewCommand command) {
         final MemberReview memberReview = memberReviewRepository.getWrittenReview(command.reviewerId(), command.revieweeId());
         memberReview.updateReview(command.content());

@@ -84,36 +84,36 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
         participants[3] = memberRepository.save(DUMMY4.toMember());
         participants[4] = memberRepository.save(DUMMY5.toMember());
 
-        studies[0] = studyRepository.save(SPRING.toStudy(participants[0].getId()));
-        studies[1] = studyRepository.save(JPA.toStudy(participants[0].getId()));
-        studies[2] = studyRepository.save(KOTLIN.toStudy(participants[0].getId()));
+        studies[0] = studyRepository.save(SPRING.toStudy(participants[0]));
+        studies[1] = studyRepository.save(JPA.toStudy(participants[0]));
+        studies[2] = studyRepository.save(KOTLIN.toStudy(participants[0]));
 
         previousScore = Score.INIT_SCORE;
 
         studyParticipantRepository.saveAll(List.of(
-                StudyParticipant.applyParticipant(studies[0].getId(), participants[0].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[0].getId(), participants[1].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[0].getId(), participants[2].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[0].getId(), participants[3].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[0].getId(), participants[4].getId(), APPROVE),
+                StudyParticipant.applyParticipant(studies[0], participants[0], APPROVE),
+                StudyParticipant.applyParticipant(studies[0], participants[1], APPROVE),
+                StudyParticipant.applyParticipant(studies[0], participants[2], APPROVE),
+                StudyParticipant.applyParticipant(studies[0], participants[3], APPROVE),
+                StudyParticipant.applyParticipant(studies[0], participants[4], APPROVE),
 
-                StudyParticipant.applyParticipant(studies[1].getId(), participants[0].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[1].getId(), participants[1].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[1].getId(), participants[2].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[1].getId(), participants[3].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[1].getId(), participants[4].getId(), APPROVE),
+                StudyParticipant.applyParticipant(studies[1], participants[0], APPROVE),
+                StudyParticipant.applyParticipant(studies[1], participants[1], APPROVE),
+                StudyParticipant.applyParticipant(studies[1], participants[2], APPROVE),
+                StudyParticipant.applyParticipant(studies[1], participants[3], APPROVE),
+                StudyParticipant.applyParticipant(studies[1], participants[4], APPROVE),
 
-                StudyParticipant.applyParticipant(studies[2].getId(), participants[0].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[2].getId(), participants[1].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[2].getId(), participants[2].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[2].getId(), participants[3].getId(), APPROVE),
-                StudyParticipant.applyParticipant(studies[2].getId(), participants[4].getId(), APPROVE)
+                StudyParticipant.applyParticipant(studies[2], participants[0], APPROVE),
+                StudyParticipant.applyParticipant(studies[2], participants[1], APPROVE),
+                StudyParticipant.applyParticipant(studies[2], participants[2], APPROVE),
+                StudyParticipant.applyParticipant(studies[2], participants[3], APPROVE),
+                StudyParticipant.applyParticipant(studies[2], participants[4], APPROVE)
         ));
 
         studyWeeklyRepository.saveAll(List.of(
                 StudyWeekly.createWeeklyWithAssignment(
-                        studies[0].getId(),
-                        participants[0].getId(),
+                        studies[0],
+                        participants[0],
                         STUDY_WEEKLY_1.getTitle(),
                         STUDY_WEEKLY_1.getContent(),
                         1,
@@ -122,8 +122,8 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
                         List.of()
                 ),
                 StudyWeekly.createWeeklyWithAssignment(
-                        studies[0].getId(),
-                        participants[0].getId(),
+                        studies[0],
+                        participants[0],
                         STUDY_WEEKLY_2.getTitle(),
                         STUDY_WEEKLY_2.getContent(),
                         2,
@@ -133,8 +133,8 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
                 ),
 
                 StudyWeekly.createWeeklyWithAssignment(
-                        studies[1].getId(),
-                        participants[0].getId(),
+                        studies[1],
+                        participants[0],
                         STUDY_WEEKLY_3.getTitle(),
                         STUDY_WEEKLY_3.getContent(),
                         1,
@@ -143,8 +143,8 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
                         List.of()
                 ),
                 StudyWeekly.createWeeklyWithAssignment(
-                        studies[1].getId(),
-                        participants[0].getId(),
+                        studies[1],
+                        participants[0],
                         STUDY_WEEKLY_4.getTitle(),
                         STUDY_WEEKLY_4.getContent(),
                         2,
@@ -154,8 +154,8 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
                 ),
 
                 StudyWeekly.createWeeklyWithAssignment(
-                        studies[2].getId(),
-                        participants[0].getId(),
+                        studies[2],
+                        participants[0],
                         STUDY_WEEKLY_5.getTitle(),
                         STUDY_WEEKLY_5.getContent(),
                         1,
@@ -164,8 +164,8 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
                         List.of()
                 ),
                 StudyWeekly.createWeeklyWithAssignment(
-                        studies[2].getId(),
-                        participants[0].getId(),
+                        studies[2],
+                        participants[0],
                         STUDY_WEEKLY_6.getTitle(),
                         STUDY_WEEKLY_6.getContent(),
                         2,
@@ -187,38 +187,38 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
     void execute() {
         // given
         studyAttendanceRepository.saveAll(List.of(
-                StudyAttendance.recordAttendance(studies[0].getId(), participants[0].getId(), 1, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[0].getId(), participants[1].getId(), 1, NON_ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[0].getId(), participants[2].getId(), 1, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[0].getId(), participants[3].getId(), 1, LATE),
-                StudyAttendance.recordAttendance(studies[0].getId(), participants[4].getId(), 1, NON_ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[0].getId(), participants[0].getId(), 2, NON_ATTENDANCE), // candidate
-                StudyAttendance.recordAttendance(studies[0].getId(), participants[1].getId(), 2, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[0].getId(), participants[2].getId(), 2, NON_ATTENDANCE), // candidate
-                StudyAttendance.recordAttendance(studies[0].getId(), participants[3].getId(), 2, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[0].getId(), participants[4].getId(), 2, NON_ATTENDANCE), // candidate
+                StudyAttendance.recordAttendance(studies[0], participants[0], 1, ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[0], participants[1], 1, NON_ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[0], participants[2], 1, ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[0], participants[3], 1, LATE),
+                StudyAttendance.recordAttendance(studies[0], participants[4], 1, NON_ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[0], participants[0], 2, NON_ATTENDANCE), // candidate
+                StudyAttendance.recordAttendance(studies[0], participants[1], 2, ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[0], participants[2], 2, NON_ATTENDANCE), // candidate
+                StudyAttendance.recordAttendance(studies[0], participants[3], 2, ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[0], participants[4], 2, NON_ATTENDANCE), // candidate
 
-                StudyAttendance.recordAttendance(studies[1].getId(), participants[0].getId(), 1, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[1].getId(), participants[1].getId(), 1, NON_ATTENDANCE), // candidate
-                StudyAttendance.recordAttendance(studies[1].getId(), participants[2].getId(), 1, NON_ATTENDANCE), // candidate
-                StudyAttendance.recordAttendance(studies[1].getId(), participants[3].getId(), 1, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[1].getId(), participants[4].getId(), 1, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[1].getId(), participants[0].getId(), 2, NON_ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[1].getId(), participants[1].getId(), 2, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[1].getId(), participants[2].getId(), 2, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[1].getId(), participants[3].getId(), 2, NON_ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[1].getId(), participants[4].getId(), 2, ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[1], participants[0], 1, ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[1], participants[1], 1, NON_ATTENDANCE), // candidate
+                StudyAttendance.recordAttendance(studies[1], participants[2], 1, NON_ATTENDANCE), // candidate
+                StudyAttendance.recordAttendance(studies[1], participants[3], 1, ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[1], participants[4], 1, ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[1], participants[0], 2, NON_ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[1], participants[1], 2, ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[1], participants[2], 2, ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[1], participants[3], 2, NON_ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[1], participants[4], 2, ATTENDANCE),
 
-                StudyAttendance.recordAttendance(studies[2].getId(), participants[0].getId(), 1, NON_ATTENDANCE), // candidate
-                StudyAttendance.recordAttendance(studies[2].getId(), participants[1].getId(), 1, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[2].getId(), participants[2].getId(), 1, LATE),
-                StudyAttendance.recordAttendance(studies[2].getId(), participants[3].getId(), 1, LATE),
-                StudyAttendance.recordAttendance(studies[2].getId(), participants[4].getId(), 1, NON_ATTENDANCE), // candidate
-                StudyAttendance.recordAttendance(studies[2].getId(), participants[0].getId(), 2, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[2].getId(), participants[1].getId(), 2, NON_ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[2].getId(), participants[2].getId(), 2, ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[2].getId(), participants[3].getId(), 2, NON_ATTENDANCE),
-                StudyAttendance.recordAttendance(studies[2].getId(), participants[4].getId(), 2, NON_ATTENDANCE)
+                StudyAttendance.recordAttendance(studies[2], participants[0], 1, NON_ATTENDANCE), // candidate
+                StudyAttendance.recordAttendance(studies[2], participants[1], 1, ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[2], participants[2], 1, LATE),
+                StudyAttendance.recordAttendance(studies[2], participants[3], 1, LATE),
+                StudyAttendance.recordAttendance(studies[2], participants[4], 1, NON_ATTENDANCE), // candidate
+                StudyAttendance.recordAttendance(studies[2], participants[0], 2, ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[2], participants[1], 2, NON_ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[2], participants[2], 2, ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[2], participants[3], 2, NON_ATTENDANCE),
+                StudyAttendance.recordAttendance(studies[2], participants[4], 2, NON_ATTENDANCE)
         ));
 
         // when

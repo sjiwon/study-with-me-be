@@ -154,9 +154,9 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             final Member reviewerB = memberRepository.save(DUMMY2.toMember());
             final Member reviewerC = memberRepository.save(DUMMY3.toMember());
             memberReviewRepository.saveAll(List.of(
-                    MemberReview.doReview(reviewerA.getId(), member.getId(), "Good - " + reviewerA.getId()),
-                    MemberReview.doReview(reviewerB.getId(), member.getId(), "Good - " + reviewerB.getId()),
-                    MemberReview.doReview(reviewerC.getId(), member.getId(), "Good - " + reviewerC.getId())
+                    MemberReview.doReview(reviewerA, member, "Good - " + reviewerA.getId()),
+                    MemberReview.doReview(reviewerB, member, "Good - " + reviewerB.getId()),
+                    MemberReview.doReview(reviewerC, member, "Good - " + reviewerC.getId())
             ));
 
             final List<ReceivedReview> result1 = sut.fetchReceivedReviewById(member.getId());
@@ -175,8 +175,8 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             final Member reviewerD = memberRepository.save(DUMMY4.toMember());
             final Member reviewerE = memberRepository.save(DUMMY5.toMember());
             memberReviewRepository.saveAll(List.of(
-                    MemberReview.doReview(reviewerD.getId(), member.getId(), "Good - " + reviewerD.getId()),
-                    MemberReview.doReview(reviewerE.getId(), member.getId(), "Good - " + reviewerE.getId())
+                    MemberReview.doReview(reviewerD, member, "Good - " + reviewerD.getId()),
+                    MemberReview.doReview(reviewerE, member, "Good - " + reviewerE.getId())
             ));
 
             final List<ReceivedReview> result2 = sut.fetchReceivedReviewById(member.getId());
@@ -210,11 +210,11 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             member = memberRepository.save(JIWON.toMember());
 
             final Member host = memberRepository.save(GHOST.toMember());
-            studyA = studyRepository.save(SPRING.toStudy(host.getId()));
-            studyB = studyRepository.save(JPA.toStudy(host.getId()));
-            studyC = studyRepository.save(KOTLIN.toStudy(host.getId()));
-            studyD = studyRepository.save(NETWORK.toStudy(host.getId()));
-            studyE = studyRepository.save(EFFECTIVE_JAVA.toStudy(host.getId()));
+            studyA = studyRepository.save(SPRING.toStudy(host));
+            studyB = studyRepository.save(JPA.toStudy(host));
+            studyC = studyRepository.save(KOTLIN.toStudy(host));
+            studyD = studyRepository.save(NETWORK.toStudy(host));
+            studyE = studyRepository.save(EFFECTIVE_JAVA.toStudy(host));
         }
 
         @Test
@@ -222,9 +222,9 @@ class MemberInformationRepositoryTest extends RepositoryTest {
         void fetchAppliedStudyById() {
             /* studyA, studyB, studyC 신청 */
             studyParticipantRepository.saveAll(List.of(
-                    StudyParticipant.applyInStudy(studyA.getId(), member.getId()),
-                    StudyParticipant.applyInStudy(studyB.getId(), member.getId()),
-                    StudyParticipant.applyInStudy(studyC.getId(), member.getId())
+                    StudyParticipant.applyInStudy(studyA, member),
+                    StudyParticipant.applyInStudy(studyB, member),
+                    StudyParticipant.applyInStudy(studyC, member)
             ));
 
             final List<AppliedStudy> result1 = sut.fetchAppliedStudyById(member.getId());
@@ -234,8 +234,8 @@ class MemberInformationRepositoryTest extends RepositoryTest {
 
             /* studyD, studyE 추가 신청 -> studyB 승인 */
             studyParticipantRepository.saveAll(List.of(
-                    StudyParticipant.applyInStudy(studyD.getId(), member.getId()),
-                    StudyParticipant.applyInStudy(studyE.getId(), member.getId())
+                    StudyParticipant.applyInStudy(studyD, member),
+                    StudyParticipant.applyInStudy(studyE, member)
             ));
             studyParticipantRepository.updateParticipantStatus(studyB.getId(), member.getId(), APPROVE);
 
@@ -250,9 +250,9 @@ class MemberInformationRepositoryTest extends RepositoryTest {
         void fetchParticipateStudyById() {
             /* studyA, studyB, studyC 참여 */
             studyParticipantRepository.saveAll(List.of(
-                    StudyParticipant.applyParticipant(studyA.getId(), member.getId(), APPROVE),
-                    StudyParticipant.applyParticipant(studyB.getId(), member.getId(), APPROVE),
-                    StudyParticipant.applyParticipant(studyC.getId(), member.getId(), APPROVE)
+                    StudyParticipant.applyParticipant(studyA, member, APPROVE),
+                    StudyParticipant.applyParticipant(studyB, member, APPROVE),
+                    StudyParticipant.applyParticipant(studyC, member, APPROVE)
             ));
 
             final List<ParticipateStudy> result1 = sut.fetchParticipateStudyById(member.getId());
@@ -262,8 +262,8 @@ class MemberInformationRepositoryTest extends RepositoryTest {
 
             /* studyD, studyE 추가 참여 -> studyC 졸업 */
             studyParticipantRepository.saveAll(List.of(
-                    StudyParticipant.applyParticipant(studyD.getId(), member.getId(), APPROVE),
-                    StudyParticipant.applyParticipant(studyE.getId(), member.getId(), APPROVE)
+                    StudyParticipant.applyParticipant(studyD, member, APPROVE),
+                    StudyParticipant.applyParticipant(studyE, member, APPROVE)
             ));
             studyParticipantRepository.updateParticipantStatus(studyC.getId(), member.getId(), GRADUATED);
 
@@ -278,9 +278,9 @@ class MemberInformationRepositoryTest extends RepositoryTest {
         void fetchGraduatedStudyById() {
             /* studyA, studyB, studyC 참여 */
             studyParticipantRepository.saveAll(List.of(
-                    StudyParticipant.applyParticipant(studyA.getId(), member.getId(), APPROVE),
-                    StudyParticipant.applyParticipant(studyB.getId(), member.getId(), APPROVE),
-                    StudyParticipant.applyParticipant(studyC.getId(), member.getId(), APPROVE)
+                    StudyParticipant.applyParticipant(studyA, member, APPROVE),
+                    StudyParticipant.applyParticipant(studyB, member, APPROVE),
+                    StudyParticipant.applyParticipant(studyC, member, APPROVE)
             ));
 
             final List<GraduatedStudy> result1 = sut.fetchGraduatedStudyById(member.getId());
@@ -288,8 +288,8 @@ class MemberInformationRepositoryTest extends RepositoryTest {
 
             /* studyD, studyE 추가 참여 -> studyA, studyC 졸업 */
             studyParticipantRepository.saveAll(List.of(
-                    StudyParticipant.applyParticipant(studyD.getId(), member.getId(), APPROVE),
-                    StudyParticipant.applyParticipant(studyE.getId(), member.getId(), APPROVE)
+                    StudyParticipant.applyParticipant(studyD, member, APPROVE),
+                    StudyParticipant.applyParticipant(studyE, member, APPROVE)
             ));
             studyParticipantRepository.updateParticipantStatus(studyA.getId(), member.getId(), GRADUATED);
             studyParticipantRepository.updateParticipantStatus(studyC.getId(), member.getId(), GRADUATED);
@@ -303,7 +303,7 @@ class MemberInformationRepositoryTest extends RepositoryTest {
             );
 
             /* member -> studyA 리뷰 작성 */
-            studyReviewRepository.save(StudyReview.writeReview(studyA.getId(), member.getId(), "Good!"));
+            studyReviewRepository.save(StudyReview.writeReview(studyA, member, "Good!"));
 
             final List<GraduatedStudy> result3 = sut.fetchGraduatedStudyById(member.getId());
             assertAll(
@@ -319,20 +319,20 @@ class MemberInformationRepositoryTest extends RepositoryTest {
         void fetchAttendanceRatioById() {
             /* 모든 스터디 참여 */
             studyParticipantRepository.saveAll(List.of(
-                    StudyParticipant.applyParticipant(studyA.getId(), member.getId(), APPROVE),
-                    StudyParticipant.applyParticipant(studyB.getId(), member.getId(), APPROVE),
-                    StudyParticipant.applyParticipant(studyC.getId(), member.getId(), APPROVE),
-                    StudyParticipant.applyParticipant(studyD.getId(), member.getId(), APPROVE),
-                    StudyParticipant.applyParticipant(studyE.getId(), member.getId(), APPROVE)
+                    StudyParticipant.applyParticipant(studyA, member, APPROVE),
+                    StudyParticipant.applyParticipant(studyB, member, APPROVE),
+                    StudyParticipant.applyParticipant(studyC, member, APPROVE),
+                    StudyParticipant.applyParticipant(studyD, member, APPROVE),
+                    StudyParticipant.applyParticipant(studyE, member, APPROVE)
             ));
 
             /* Week 1 */
             studyAttendanceRepository.saveAll(List.of(
-                    StudyAttendance.recordAttendance(studyA.getId(), member.getId(), 1, ATTENDANCE),
-                    StudyAttendance.recordAttendance(studyB.getId(), member.getId(), 1, ATTENDANCE),
-                    StudyAttendance.recordAttendance(studyC.getId(), member.getId(), 1, LATE),
-                    StudyAttendance.recordAttendance(studyD.getId(), member.getId(), 1, ATTENDANCE),
-                    StudyAttendance.recordAttendance(studyE.getId(), member.getId(), 1, ABSENCE)
+                    StudyAttendance.recordAttendance(studyA, member, 1, ATTENDANCE),
+                    StudyAttendance.recordAttendance(studyB, member, 1, ATTENDANCE),
+                    StudyAttendance.recordAttendance(studyC, member, 1, LATE),
+                    StudyAttendance.recordAttendance(studyD, member, 1, ATTENDANCE),
+                    StudyAttendance.recordAttendance(studyE, member, 1, ABSENCE)
             ));
 
             final List<AttendanceRatio> result1 = sut.fetchAttendanceRatioById(member.getId());
@@ -345,11 +345,11 @@ class MemberInformationRepositoryTest extends RepositoryTest {
 
             /* Week 2 */
             studyAttendanceRepository.saveAll(List.of(
-                    StudyAttendance.recordAttendance(studyA.getId(), member.getId(), 2, NON_ATTENDANCE),
-                    StudyAttendance.recordAttendance(studyB.getId(), member.getId(), 2, ATTENDANCE),
-                    StudyAttendance.recordAttendance(studyC.getId(), member.getId(), 2, NON_ATTENDANCE),
-                    StudyAttendance.recordAttendance(studyD.getId(), member.getId(), 2, ATTENDANCE),
-                    StudyAttendance.recordAttendance(studyE.getId(), member.getId(), 2, NON_ATTENDANCE)
+                    StudyAttendance.recordAttendance(studyA, member, 2, NON_ATTENDANCE),
+                    StudyAttendance.recordAttendance(studyB, member, 2, ATTENDANCE),
+                    StudyAttendance.recordAttendance(studyC, member, 2, NON_ATTENDANCE),
+                    StudyAttendance.recordAttendance(studyD, member, 2, ATTENDANCE),
+                    StudyAttendance.recordAttendance(studyE, member, 2, NON_ATTENDANCE)
             ));
 
             final List<AttendanceRatio> result2 = sut.fetchAttendanceRatioById(member.getId());
@@ -377,9 +377,9 @@ class MemberInformationRepositoryTest extends RepositoryTest {
         void fetchLikeMarkedStudyById() {
             /* studyA, studyB, studyC 찜 */
             favoriteRepository.saveAll(List.of(
-                    Favorite.favoriteMarking(member.getId(), studyA.getId()),
-                    Favorite.favoriteMarking(member.getId(), studyB.getId()),
-                    Favorite.favoriteMarking(member.getId(), studyC.getId())
+                    Favorite.favoriteMarking(member, studyA),
+                    Favorite.favoriteMarking(member, studyB),
+                    Favorite.favoriteMarking(member, studyC)
             ));
 
             final List<LikeMarkedStudy> result1 = sut.fetchLikeMarkedStudyById(member.getId());
@@ -389,8 +389,8 @@ class MemberInformationRepositoryTest extends RepositoryTest {
 
             /* studyD, studyE 추가 찜 */
             favoriteRepository.saveAll(List.of(
-                    Favorite.favoriteMarking(member.getId(), studyD.getId()),
-                    Favorite.favoriteMarking(member.getId(), studyE.getId())
+                    Favorite.favoriteMarking(member, studyD),
+                    Favorite.favoriteMarking(member, studyE)
             ));
 
             final List<LikeMarkedStudy> result2 = sut.fetchLikeMarkedStudyById(member.getId());

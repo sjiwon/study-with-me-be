@@ -1,5 +1,7 @@
 package com.kgu.studywithme.common.fixture;
 
+import com.kgu.studywithme.member.domain.model.Member;
+import com.kgu.studywithme.study.domain.model.Study;
 import com.kgu.studywithme.studyweekly.domain.model.StudyWeekly;
 import com.kgu.studywithme.studyweekly.domain.model.UploadAttachment;
 import lombok.Getter;
@@ -76,10 +78,10 @@ public enum StudyWeeklyFixture {
     private final boolean autoAttendance;
     private final List<UploadAttachment> attachments;
 
-    public StudyWeekly toWeekly(final Long studyId, final Long creatorId) {
+    public StudyWeekly toWeekly(final Study study, final Member creator) {
         return StudyWeekly.createWeekly(
-                studyId,
-                creatorId,
+                study,
+                creator,
                 title,
                 content,
                 week,
@@ -88,10 +90,10 @@ public enum StudyWeeklyFixture {
         );
     }
 
-    public StudyWeekly toWeeklyWithAssignment(final Long studyId, final Long creatorId) {
+    public StudyWeekly toWeeklyWithAssignment(final Study study, final Member creator) {
         return StudyWeekly.createWeeklyWithAssignment(
-                studyId,
-                creatorId,
+                study,
+                creator,
                 title,
                 content,
                 week,

@@ -18,14 +18,14 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class StudyWeeklySubmitTest extends ParallelTest {
     private final Member host = JIWON.toMember().apply(1L);
     private final Member participant = JIWON.toMember().apply(2L);
-    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
-    private final StudyWeekly weekly = STUDY_WEEKLY_1.toWeeklyWithAssignment(study.getId(), host.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(host).apply(1L);
+    private final StudyWeekly weekly = STUDY_WEEKLY_1.toWeeklyWithAssignment(study, host).apply(1L);
 
     @Test
     @DisplayName("StudyWeeklySubmit[With Link]을 생성한다")
     void constructWithLink() {
         final UploadAssignment uploadAssignment = UploadAssignment.withLink("https://notion.com");
-        final StudyWeeklySubmit submit = StudyWeeklySubmit.submitAssignment(weekly, participant.getId(), uploadAssignment);
+        final StudyWeeklySubmit submit = StudyWeeklySubmit.submitAssignment(weekly, participant, uploadAssignment);
 
         assertAll(
                 () -> assertThat(submit.getWeekly()).isEqualTo(weekly),
@@ -39,7 +39,7 @@ class StudyWeeklySubmitTest extends ParallelTest {
     @DisplayName("StudyWeeklySubmit[With File]을 생성한다")
     void constructWithFile() {
         final UploadAssignment uploadAssignment = UploadAssignment.withFile("hello.pdf", "uuid.pdf");
-        final StudyWeeklySubmit submit = StudyWeeklySubmit.submitAssignment(weekly, participant.getId(), uploadAssignment);
+        final StudyWeeklySubmit submit = StudyWeeklySubmit.submitAssignment(weekly, participant, uploadAssignment);
 
         assertAll(
                 () -> assertThat(submit.getWeekly()).isEqualTo(weekly),
@@ -54,7 +54,7 @@ class StudyWeeklySubmitTest extends ParallelTest {
     void editUpload() {
         // given
         final UploadAssignment uploadAssignment = UploadAssignment.withFile("hello.pdf", "uuid.pdf");
-        final StudyWeeklySubmit submit = StudyWeeklySubmit.submitAssignment(weekly, participant.getId(), uploadAssignment);
+        final StudyWeeklySubmit submit = StudyWeeklySubmit.submitAssignment(weekly, participant, uploadAssignment);
 
         // when
         final UploadAssignment newUploadAssignment = UploadAssignment.withLink("https://notion.so");

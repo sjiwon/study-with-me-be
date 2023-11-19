@@ -44,14 +44,14 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
         host = JIWON.toMember().apply(1L);
         participant = GHOST.toMember().apply(2L);
         previousScore = participant.getScore().getValue();
-        study = SPRING.toStudy(host.getId()).apply(1L);
+        study = SPRING.toStudy(host).apply(1L);
     }
 
     @Test
     @DisplayName("수동 출석 체크를 진행한다 [미출석 -> 출석]")
     void nonAttendanceToAttendance() {
         // given
-        final StudyAttendance attendance = StudyAttendance.recordAttendance(study.getId(), participant.getId(), 1, NON_ATTENDANCE);
+        final StudyAttendance attendance = StudyAttendance.recordAttendance(study, participant, 1, NON_ATTENDANCE);
         final ManualAttendanceCommand command = new ManualAttendanceCommand(study.getId(), participant.getId(), 1, ATTENDANCE);
         given(studyAttendanceRepository.getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week())).willReturn(attendance);
 
@@ -71,7 +71,7 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
     @DisplayName("수동 출석 체크를 진행한다 [미출석 -> 지각]")
     void nonAttendanceToLate() {
         // given
-        final StudyAttendance attendance = StudyAttendance.recordAttendance(study.getId(), participant.getId(), 1, NON_ATTENDANCE);
+        final StudyAttendance attendance = StudyAttendance.recordAttendance(study, participant, 1, NON_ATTENDANCE);
         final ManualAttendanceCommand command = new ManualAttendanceCommand(study.getId(), participant.getId(), 1, LATE);
         given(studyAttendanceRepository.getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week())).willReturn(attendance);
 
@@ -91,7 +91,7 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
     @DisplayName("수동 출석 체크를 진행한다 [미출석 -> 결석]")
     void nonAttendanceToAbsence() {
         // given
-        final StudyAttendance attendance = StudyAttendance.recordAttendance(study.getId(), participant.getId(), 1, NON_ATTENDANCE);
+        final StudyAttendance attendance = StudyAttendance.recordAttendance(study, participant, 1, NON_ATTENDANCE);
         final ManualAttendanceCommand command = new ManualAttendanceCommand(study.getId(), participant.getId(), 1, ABSENCE);
         given(studyAttendanceRepository.getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week())).willReturn(attendance);
 
@@ -111,7 +111,7 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
     @DisplayName("수동 출석 체크를 진행한다 [출석 -> 지각]")
     void attendanceToLate() {
         // given
-        final StudyAttendance attendance = StudyAttendance.recordAttendance(study.getId(), participant.getId(), 1, ATTENDANCE);
+        final StudyAttendance attendance = StudyAttendance.recordAttendance(study, participant, 1, ATTENDANCE);
         final ManualAttendanceCommand command = new ManualAttendanceCommand(study.getId(), participant.getId(), 1, LATE);
         given(studyAttendanceRepository.getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week())).willReturn(attendance);
 
@@ -131,7 +131,7 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
     @DisplayName("수동 출석 체크를 진행한다 [출석 -> 결석]")
     void attendanceToAbsence() {
         // given
-        final StudyAttendance attendance = StudyAttendance.recordAttendance(study.getId(), participant.getId(), 1, ATTENDANCE);
+        final StudyAttendance attendance = StudyAttendance.recordAttendance(study, participant, 1, ATTENDANCE);
         final ManualAttendanceCommand command = new ManualAttendanceCommand(study.getId(), participant.getId(), 1, ABSENCE);
         given(studyAttendanceRepository.getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week())).willReturn(attendance);
 
@@ -151,7 +151,7 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
     @DisplayName("수동 출석 체크를 진행한다 [지각 -> 출석]")
     void lateToAttendance() {
         // given
-        final StudyAttendance attendance = StudyAttendance.recordAttendance(study.getId(), participant.getId(), 1, LATE);
+        final StudyAttendance attendance = StudyAttendance.recordAttendance(study, participant, 1, LATE);
         final ManualAttendanceCommand command = new ManualAttendanceCommand(study.getId(), participant.getId(), 1, ATTENDANCE);
         given(studyAttendanceRepository.getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week())).willReturn(attendance);
 
@@ -171,7 +171,7 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
     @DisplayName("수동 출석 체크를 진행한다 [지각 -> 결석]")
     void lateToAbsence() {
         // given
-        final StudyAttendance attendance = StudyAttendance.recordAttendance(study.getId(), participant.getId(), 1, LATE);
+        final StudyAttendance attendance = StudyAttendance.recordAttendance(study, participant, 1, LATE);
         final ManualAttendanceCommand command = new ManualAttendanceCommand(study.getId(), participant.getId(), 1, ABSENCE);
         given(studyAttendanceRepository.getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week())).willReturn(attendance);
 
@@ -191,7 +191,7 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
     @DisplayName("수동 출석 체크를 진행한다 [결석 -> 출석]")
     void absenceToAttendance() {
         // given
-        final StudyAttendance attendance = StudyAttendance.recordAttendance(study.getId(), participant.getId(), 1, ABSENCE);
+        final StudyAttendance attendance = StudyAttendance.recordAttendance(study, participant, 1, ABSENCE);
         final ManualAttendanceCommand command = new ManualAttendanceCommand(study.getId(), participant.getId(), 1, ATTENDANCE);
         given(studyAttendanceRepository.getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week())).willReturn(attendance);
 
@@ -211,7 +211,7 @@ class ManualAttendanceUseCaseTest extends UseCaseTest {
     @DisplayName("수동 출석 체크를 진행한다 [결석 -> 지각]")
     void absenceToLate() {
         // given
-        final StudyAttendance attendance = StudyAttendance.recordAttendance(study.getId(), participant.getId(), 1, ABSENCE);
+        final StudyAttendance attendance = StudyAttendance.recordAttendance(study, participant, 1, ABSENCE);
         final ManualAttendanceCommand command = new ManualAttendanceCommand(study.getId(), participant.getId(), 1, LATE);
         given(studyAttendanceRepository.getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week())).willReturn(attendance);
 

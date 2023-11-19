@@ -16,13 +16,13 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class StudyReviewTest extends ParallelTest {
     private final Member host = JIWON.toMember().apply(1L);
     private final Member member = GHOST.toMember().apply(2L);
-    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(host).apply(1L);
 
     @Test
     @DisplayName("스터디 리뷰를 수정한다")
     void updateReview() {
         // given
-        final StudyReview review = StudyReview.writeReview(study.getId(), member.getId(), "좋은 스터디");
+        final StudyReview review = StudyReview.writeReview(study, member, "좋은 스터디");
 
         // when
         review.updateReview("별로에요");
@@ -35,11 +35,11 @@ class StudyReviewTest extends ParallelTest {
     @DisplayName("스터디 리뷰 작성자인지 확인한다")
     void isWriter() {
         // given
-        final StudyReview review = StudyReview.writeReview(study.getId(), member.getId(), "좋은 스터디");
+        final StudyReview review = StudyReview.writeReview(study, member, "좋은 스터디");
 
         // when
-        final boolean actual1 = review.isWriter(host.getId());
-        final boolean actual2 = review.isWriter(member.getId());
+        final boolean actual1 = review.isWriter(host);
+        final boolean actual2 = review.isWriter(member);
 
         // then
         assertAll(

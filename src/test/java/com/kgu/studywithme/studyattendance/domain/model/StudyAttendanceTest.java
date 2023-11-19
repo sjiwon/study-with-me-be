@@ -18,13 +18,13 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @DisplayName("StudyAttendance -> 도메인 [StudyAttendance] 테스트")
 class StudyAttendanceTest extends ParallelTest {
     private final Member member = JIWON.toMember().apply(1L);
-    private final Study study = SPRING.toStudy(member.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(member).apply(1L);
 
     @Test
     @DisplayName("StudyAttendance의 status를 변경한다")
     void updateAttendanceStatus() {
         // given
-        final StudyAttendance attendance = StudyAttendance.recordAttendance(study.getId(), member.getId(), 1, ATTENDANCE);
+        final StudyAttendance attendance = StudyAttendance.recordAttendance(study, member, 1, ATTENDANCE);
 
         // when
         attendance.updateAttendanceStatus(LATE);
@@ -37,10 +37,10 @@ class StudyAttendanceTest extends ParallelTest {
     @DisplayName("StudyAttendance의 status가 출석 상태(ATTENDANCE)인지 확인한다")
     void isAttendanceStatus() {
         // given
-        final StudyAttendance attendance1 = StudyAttendance.recordAttendance(study.getId(), member.getId(), 1, ATTENDANCE);
-        final StudyAttendance attendance2 = StudyAttendance.recordAttendance(study.getId(), member.getId(), 1, LATE);
-        final StudyAttendance attendance3 = StudyAttendance.recordAttendance(study.getId(), member.getId(), 1, ABSENCE);
-        final StudyAttendance attendance4 = StudyAttendance.recordAttendance(study.getId(), member.getId(), 1, NON_ATTENDANCE);
+        final StudyAttendance attendance1 = StudyAttendance.recordAttendance(study, member, 1, ATTENDANCE);
+        final StudyAttendance attendance2 = StudyAttendance.recordAttendance(study, member, 1, LATE);
+        final StudyAttendance attendance3 = StudyAttendance.recordAttendance(study, member, 1, ABSENCE);
+        final StudyAttendance attendance4 = StudyAttendance.recordAttendance(study, member, 1, NON_ATTENDANCE);
 
         // when
         final boolean actual1 = attendance1.isAttendanceStatus();

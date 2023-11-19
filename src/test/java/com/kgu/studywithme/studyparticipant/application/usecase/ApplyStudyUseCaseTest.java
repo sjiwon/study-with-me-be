@@ -3,6 +3,7 @@ package com.kgu.studywithme.studyparticipant.application.usecase;
 import com.kgu.studywithme.common.UseCaseTest;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.model.Member;
+import com.kgu.studywithme.member.domain.repository.MemberRepository;
 import com.kgu.studywithme.study.domain.model.Study;
 import com.kgu.studywithme.study.domain.repository.StudyRepository;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
@@ -31,14 +32,20 @@ import static org.mockito.Mockito.verify;
 @DisplayName("StudyParticipant -> ApplyStudyUseCase 테스트")
 class ApplyStudyUseCaseTest extends UseCaseTest {
     private final StudyRepository studyRepository = mock(StudyRepository.class);
+    private final MemberRepository memberRepository = mock(MemberRepository.class);
     private final StudyParticipantRepository studyParticipantRepository = mock(StudyParticipantRepository.class);
     private final StudyAttendanceRepository studyAttendanceRepository = mock(StudyAttendanceRepository.class);
     private final ParticipationInspector participationInspector = new ParticipationInspector(studyParticipantRepository, studyAttendanceRepository);
-    private final ApplyStudyUseCase sut = new ApplyStudyUseCase(studyRepository, participationInspector, studyParticipantRepository);
+    private final ApplyStudyUseCase sut = new ApplyStudyUseCase(
+            studyRepository,
+            memberRepository,
+            participationInspector,
+            studyParticipantRepository
+    );
 
     private final Member host = JIWON.toMember().apply(1L);
     private final Member applier = GHOST.toMember().apply(2L);
-    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(host).apply(1L);
     private final ApplyStudyCommand hostCommand = new ApplyStudyCommand(study.getId(), host.getId());
     private final ApplyStudyCommand applierCommand = new ApplyStudyCommand(study.getId(), applier.getId());
 
@@ -48,19 +55,18 @@ class ApplyStudyUseCaseTest extends UseCaseTest {
         // given
         doThrow(StudyWithMeException.type(StudyErrorCode.STUDY_IS_NOT_RECRUITING_NOW))
                 .when(studyRepository)
-                .getRecruitingStudy(hostCommand.studyId());
+                .getRecruitingStudy(applierCommand.studyId());
 
         // when - then
-        assertThatThrownBy(() -> sut.invoke(hostCommand))
+        assertThatThrownBy(() -> sut.invoke(applierCommand))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(StudyErrorCode.STUDY_IS_NOT_RECRUITING_NOW.getMessage());
 
         assertAll(
-                () -> verify(studyRepository, times(1)).getRecruitingStudy(hostCommand.studyId()),
-                () -> verify(studyParticipantRepository, times(0))
-                        .isApplierOrParticipant(hostCommand.studyId(), hostCommand.applierId()),
-                () -> verify(studyParticipantRepository, times(0))
-                        .isAlreadyLeaveOrGraduatedParticipant(hostCommand.studyId(), hostCommand.applierId()),
+                () -> verify(studyRepository, times(1)).getRecruitingStudy(applierCommand.studyId()),
+                () -> verify(memberRepository, times(0)).getById(applierCommand.applierId()),
+                () -> verify(studyParticipantRepository, times(0)).isApplierOrParticipant(study.getId(), applier.getId()),
+                () -> verify(studyParticipantRepository, times(0)).isAlreadyLeaveOrGraduatedParticipant(study.getId(), applier.getId()),
                 () -> verify(studyParticipantRepository, times(0)).save(any(StudyParticipant.class))
         );
     }
@@ -70,6 +76,7 @@ class ApplyStudyUseCaseTest extends UseCaseTest {
     void throwExceptionByStudyHostCannotApplyOwnStudy() {
         // given
         given(studyRepository.getRecruitingStudy(hostCommand.studyId())).willReturn(study);
+        given(memberRepository.getById(hostCommand.applierId())).willReturn(host);
 
         // when - then
         assertThatThrownBy(() -> sut.invoke(hostCommand))
@@ -78,10 +85,9 @@ class ApplyStudyUseCaseTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(studyRepository, times(1)).getRecruitingStudy(hostCommand.studyId()),
-                () -> verify(studyParticipantRepository, times(0))
-                        .isApplierOrParticipant(hostCommand.studyId(), hostCommand.applierId()),
-                () -> verify(studyParticipantRepository, times(0))
-                        .isAlreadyLeaveOrGraduatedParticipant(hostCommand.studyId(), hostCommand.applierId()),
+                () -> verify(memberRepository, times(1)).getById(hostCommand.applierId()),
+                () -> verify(studyParticipantRepository, times(0)).isApplierOrParticipant(study.getId(), host.getId()),
+                () -> verify(studyParticipantRepository, times(0)).isAlreadyLeaveOrGraduatedParticipant(study.getId(), host.getId()),
                 () -> verify(studyParticipantRepository, times(0)).save(any(StudyParticipant.class))
         );
     }
@@ -91,6 +97,7 @@ class ApplyStudyUseCaseTest extends UseCaseTest {
     void throwExceptionByAlreadyApplyOrParticipate() {
         // given
         given(studyRepository.getRecruitingStudy(applierCommand.studyId())).willReturn(study);
+        given(memberRepository.getById(applierCommand.applierId())).willReturn(applier);
         given(studyParticipantRepository.isApplierOrParticipant(applierCommand.studyId(), applierCommand.applierId())).willReturn(true);
 
         // when - then
@@ -100,10 +107,9 @@ class ApplyStudyUseCaseTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(studyRepository, times(1)).getRecruitingStudy(applierCommand.studyId()),
-                () -> verify(studyParticipantRepository, times(1))
-                        .isApplierOrParticipant(applierCommand.studyId(), applierCommand.applierId()),
-                () -> verify(studyParticipantRepository, times(0))
-                        .isAlreadyLeaveOrGraduatedParticipant(applierCommand.studyId(), applierCommand.applierId()),
+                () -> verify(memberRepository, times(1)).getById(applierCommand.applierId()),
+                () -> verify(studyParticipantRepository, times(1)).isApplierOrParticipant(study.getId(), applier.getId()),
+                () -> verify(studyParticipantRepository, times(0)).isAlreadyLeaveOrGraduatedParticipant(study.getId(), applier.getId()),
                 () -> verify(studyParticipantRepository, times(0)).save(any(StudyParticipant.class))
         );
     }
@@ -113,6 +119,7 @@ class ApplyStudyUseCaseTest extends UseCaseTest {
     void throwExceptionByAlreadyLeaveOrGraduated() {
         // given
         given(studyRepository.getRecruitingStudy(applierCommand.studyId())).willReturn(study);
+        given(memberRepository.getById(applierCommand.applierId())).willReturn(applier);
         given(studyParticipantRepository.isApplierOrParticipant(applierCommand.studyId(), applierCommand.applierId())).willReturn(false);
         given(studyParticipantRepository.isAlreadyLeaveOrGraduatedParticipant(applierCommand.studyId(), applierCommand.applierId())).willReturn(true);
 
@@ -123,10 +130,9 @@ class ApplyStudyUseCaseTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(studyRepository, times(1)).getRecruitingStudy(applierCommand.studyId()),
-                () -> verify(studyParticipantRepository, times(1))
-                        .isApplierOrParticipant(applierCommand.studyId(), applierCommand.applierId()),
-                () -> verify(studyParticipantRepository, times(1))
-                        .isAlreadyLeaveOrGraduatedParticipant(applierCommand.studyId(), applierCommand.applierId()),
+                () -> verify(memberRepository, times(1)).getById(applierCommand.applierId()),
+                () -> verify(studyParticipantRepository, times(1)).isApplierOrParticipant(study.getId(), applier.getId()),
+                () -> verify(studyParticipantRepository, times(1)).isAlreadyLeaveOrGraduatedParticipant(study.getId(), applier.getId()),
                 () -> verify(studyParticipantRepository, times(0)).save(any(StudyParticipant.class))
         );
     }
@@ -136,11 +142,12 @@ class ApplyStudyUseCaseTest extends UseCaseTest {
     void success() {
         // given
         given(studyRepository.getRecruitingStudy(applierCommand.studyId())).willReturn(study);
+        given(memberRepository.getById(applierCommand.applierId())).willReturn(applier);
         given(studyParticipantRepository.isApplierOrParticipant(applierCommand.studyId(), applierCommand.applierId())).willReturn(false);
         given(studyParticipantRepository.isAlreadyLeaveOrGraduatedParticipant(applierCommand.studyId(), applierCommand.applierId())).willReturn(false);
 
-        final StudyParticipant applier = applierCommand.toDomain().apply(1L);
-        given(studyParticipantRepository.save(any(StudyParticipant.class))).willReturn(applier);
+        final StudyParticipant participant = StudyParticipant.applyInStudy(study, applier).apply(1L);
+        given(studyParticipantRepository.save(any(StudyParticipant.class))).willReturn(participant);
 
         // when
         final Long savedApplierId = sut.invoke(applierCommand);
@@ -148,12 +155,11 @@ class ApplyStudyUseCaseTest extends UseCaseTest {
         // then
         assertAll(
                 () -> verify(studyRepository, times(1)).getRecruitingStudy(applierCommand.studyId()),
-                () -> verify(studyParticipantRepository, times(1))
-                        .isApplierOrParticipant(applierCommand.studyId(), applierCommand.applierId()),
-                () -> verify(studyParticipantRepository, times(1))
-                        .isAlreadyLeaveOrGraduatedParticipant(applierCommand.studyId(), applierCommand.applierId()),
+                () -> verify(memberRepository, times(1)).getById(applierCommand.applierId()),
+                () -> verify(studyParticipantRepository, times(1)).isApplierOrParticipant(study.getId(), applier.getId()),
+                () -> verify(studyParticipantRepository, times(1)).isAlreadyLeaveOrGraduatedParticipant(study.getId(), applier.getId()),
                 () -> verify(studyParticipantRepository, times(1)).save(any(StudyParticipant.class)),
-                () -> assertThat(savedApplierId).isEqualTo(applier.getId())
+                () -> assertThat(savedApplierId).isEqualTo(participant.getId())
         );
     }
 }

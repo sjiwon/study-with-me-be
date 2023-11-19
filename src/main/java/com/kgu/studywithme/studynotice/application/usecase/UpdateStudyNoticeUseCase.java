@@ -1,6 +1,8 @@
 package com.kgu.studywithme.studynotice.application.usecase;
 
+import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.studynotice.application.usecase.command.UpdateStudyNoticeCommand;
+import com.kgu.studywithme.studynotice.domain.model.StudyNotice;
 import com.kgu.studywithme.studynotice.domain.repository.StudyNoticeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,7 +12,9 @@ import org.springframework.stereotype.Service;
 public class UpdateStudyNoticeUseCase {
     private final StudyNoticeRepository studyNoticeRepository;
 
+    @StudyWithMeWritableTransactional
     public void invoke(final UpdateStudyNoticeCommand command) {
-        studyNoticeRepository.update(command.noticeId(), command.title(), command.content());
+        final StudyNotice studyNotice = studyNoticeRepository.getById(command.noticeId());
+        studyNotice.updateNoticeInformation(command.title(), command.content());
     }
 }

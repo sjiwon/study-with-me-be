@@ -1,6 +1,7 @@
 package com.kgu.studywithme.studynotice.domain.model;
 
 import com.kgu.studywithme.global.BaseEntity;
+import com.kgu.studywithme.member.domain.model.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -17,9 +18,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "study_notice_comment")
 public class StudyNoticeComment extends BaseEntity<StudyNoticeComment> {
-    @Column(name = "writer_id", nullable = false)
-    private Long writerId;
-
     @Lob
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
@@ -28,21 +26,25 @@ public class StudyNoticeComment extends BaseEntity<StudyNoticeComment> {
     @JoinColumn(name = "notice_id", referencedColumnName = "id", nullable = false)
     private StudyNotice notice;
 
-    private StudyNoticeComment(final StudyNotice notice, final Long writerId, final String content) {
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "writer_id", referencedColumnName = "id", nullable = false)
+    private Member writer;
+
+    private StudyNoticeComment(final StudyNotice notice, final Member writer, final String content) {
         this.notice = notice;
-        this.writerId = writerId;
+        this.writer = writer;
         this.content = content;
     }
 
-    public static StudyNoticeComment writeComment(final StudyNotice notice, final Long writerId, final String content) {
-        return new StudyNoticeComment(notice, writerId, content);
+    public static StudyNoticeComment writeComment(final StudyNotice notice, final Member writer, final String content) {
+        return new StudyNoticeComment(notice, writer, content);
     }
 
     public void updateComment(final String content) {
         this.content = content;
     }
 
-    public boolean isWriter(final Long memberId) {
-        return this.writerId.equals(memberId);
+    public boolean isWriter(final Member other) {
+        return writer.isSameMember(other);
     }
 }

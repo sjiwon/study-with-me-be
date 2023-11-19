@@ -39,16 +39,16 @@ public class StudyWeeklyAttachmentRepositoryTest extends RepositoryTest {
     @BeforeEach
     void setUp() {
         host = memberRepository.save(JIWON.toMember());
-        study = studyRepository.save(SPRING.toStudy(host.getId()));
+        study = studyRepository.save(SPRING.toStudy(host));
     }
 
     @Test
     @DisplayName("특정 Weekly의 Attachment를 삭제한다")
     void deleteFromSpecificWeekly() {
         /* 3 Weekly */
-        final StudyWeekly weekly1 = studyWeeklyRepository.save(STUDY_WEEKLY_1.toWeekly(study.getId(), host.getId()));
-        final StudyWeekly weekly2 = studyWeeklyRepository.save(STUDY_WEEKLY_2.toWeekly(study.getId(), host.getId()));
-        final StudyWeekly weekly3 = studyWeeklyRepository.save(STUDY_WEEKLY_3.toWeekly(study.getId(), host.getId()));
+        final StudyWeekly weekly1 = studyWeeklyRepository.save(STUDY_WEEKLY_1.toWeekly(study, host));
+        final StudyWeekly weekly2 = studyWeeklyRepository.save(STUDY_WEEKLY_2.toWeekly(study, host));
+        final StudyWeekly weekly3 = studyWeeklyRepository.save(STUDY_WEEKLY_3.toWeekly(study, host));
 
         assertAll(
                 () -> assertThat(sut.existsByWeeklyId(weekly1.getId())).isTrue(),

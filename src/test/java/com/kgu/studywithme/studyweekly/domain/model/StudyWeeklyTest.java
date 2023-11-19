@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static com.kgu.studywithme.common.fixture.MemberFixture.GHOST;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.PeriodFixture.WEEK_6;
 import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
@@ -24,18 +25,18 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @DisplayName("StudyWeekly -> 도메인 [StudyWeekly] 테스트")
 class StudyWeeklyTest extends ParallelTest {
     private final Member host = JIWON.toMember().apply(1L);
-    private final Member participant = JIWON.toMember().apply(2L);
-    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
+    private final Member participant = GHOST.toMember().apply(2L);
+    private final Study study = SPRING.toStudy(host).apply(1L);
 
     @Test
     @DisplayName("StudyWeekly를 생성한다")
     void construct() {
-        final StudyWeekly weekly = STUDY_WEEKLY_5.toWeekly(study.getId(), host.getId());
-        final StudyWeekly weeklyWithAssignment = STUDY_WEEKLY_1.toWeeklyWithAssignment(study.getId(), host.getId());
+        final StudyWeekly weekly = STUDY_WEEKLY_5.toWeekly(study, host);
+        final StudyWeekly weeklyWithAssignment = STUDY_WEEKLY_1.toWeeklyWithAssignment(study, host);
 
         assertAll(
-                () -> assertThat(weekly.getStudyId()).isEqualTo(study.getId()),
-                () -> assertThat(weekly.getCreatorId()).isEqualTo(host.getId()),
+                () -> assertThat(weekly.getStudy()).isEqualTo(study),
+                () -> assertThat(weekly.getCreator()).isEqualTo(host),
                 () -> assertThat(weekly.getTitle()).isEqualTo(STUDY_WEEKLY_5.getTitle()),
                 () -> assertThat(weekly.getContent()).isEqualTo(STUDY_WEEKLY_5.getContent()),
                 () -> assertThat(weekly.getWeek()).isEqualTo(STUDY_WEEKLY_5.getWeek()),
@@ -47,8 +48,8 @@ class StudyWeeklyTest extends ParallelTest {
                         .map(StudyWeeklyAttachment::getUploadAttachment)
                         .containsExactlyInAnyOrderElementsOf(STUDY_WEEKLY_5.getAttachments()),
 
-                () -> assertThat(weeklyWithAssignment.getStudyId()).isEqualTo(study.getId()),
-                () -> assertThat(weeklyWithAssignment.getCreatorId()).isEqualTo(host.getId()),
+                () -> assertThat(weeklyWithAssignment.getStudy()).isEqualTo(study),
+                () -> assertThat(weeklyWithAssignment.getCreator()).isEqualTo(host),
                 () -> assertThat(weeklyWithAssignment.getTitle()).isEqualTo(STUDY_WEEKLY_1.getTitle()),
                 () -> assertThat(weeklyWithAssignment.getContent()).isEqualTo(STUDY_WEEKLY_1.getContent()),
                 () -> assertThat(weeklyWithAssignment.getWeek()).isEqualTo(STUDY_WEEKLY_1.getWeek()),
@@ -66,7 +67,7 @@ class StudyWeeklyTest extends ParallelTest {
     @DisplayName("StudyWeekly를 수정한다")
     void update() {
         // given
-        final StudyWeekly weekly = STUDY_WEEKLY_5.toWeekly(study.getId(), host.getId());
+        final StudyWeekly weekly = STUDY_WEEKLY_5.toWeekly(study, host);
 
         // when
         final List<UploadAttachment> attachments = List.of(
@@ -103,20 +104,20 @@ class StudyWeeklyTest extends ParallelTest {
     @DisplayName("과제가 존재하는 Weekly에 과제를 제출한다")
     void submitAssignment() {
         // given
-        final StudyWeekly weekly = STUDY_WEEKLY_1.toWeeklyWithAssignment(study.getId(), host.getId());
+        final StudyWeekly weekly = STUDY_WEEKLY_1.toWeeklyWithAssignment(study, host);
 
         // when
         final UploadAssignment hostUploadAssignment = UploadAssignment.withLink("https://google.com");
         final UploadAssignment participantUploadAssignment = UploadAssignment.withLink("https://naver.com");
-        weekly.submitAssignment(host.getId(), hostUploadAssignment);
-        weekly.submitAssignment(participant.getId(), participantUploadAssignment);
+        weekly.submitAssignment(host, hostUploadAssignment);
+        weekly.submitAssignment(participant, participantUploadAssignment);
 
         // then
         assertAll(
                 () -> assertThat(weekly.getSubmits()).hasSize(2),
                 () -> assertThat(weekly.getSubmits())
-                        .map(StudyWeeklySubmit::getParticipantId)
-                        .containsExactlyInAnyOrder(host.getId(), participant.getId()),
+                        .map(StudyWeeklySubmit::getParticipant)
+                        .containsExactlyInAnyOrder(host, participant),
                 () -> assertThat(weekly.getSubmits())
                         .map(StudyWeeklySubmit::getUploadAssignment)
                         .containsExactlyInAnyOrder(hostUploadAssignment, participantUploadAssignment)
@@ -127,7 +128,7 @@ class StudyWeeklyTest extends ParallelTest {
     @DisplayName("과제 제출 날짜가 Weekly Period StartDate ~ EndDate 사이에 포함되는지 확인한다")
     void isSubmissionPeriodInRange() {
         // given
-        final StudyWeekly weekly = STUDY_WEEKLY_1.toWeeklyWithAssignment(study.getId(), host.getId());
+        final StudyWeekly weekly = STUDY_WEEKLY_1.toWeeklyWithAssignment(study, host);
 
         // when
         final boolean actual1 = weekly.isSubmissionPeriodInRange(PeriodFixture.WEEK_1.getEndDate().minusDays(1));
@@ -144,7 +145,7 @@ class StudyWeeklyTest extends ParallelTest {
     @DisplayName("과제 제출 날짜가 Weekly Period을 지났는지 확인한다")
     void isSubmissionPeriodPassed() {
         // given
-        final StudyWeekly weekly = STUDY_WEEKLY_1.toWeeklyWithAssignment(study.getId(), host.getId());
+        final StudyWeekly weekly = STUDY_WEEKLY_1.toWeeklyWithAssignment(study, host);
 
         // when
         final boolean actual1 = weekly.isSubmissionPeriodPassed(PeriodFixture.WEEK_1.getEndDate().minusDays(1));

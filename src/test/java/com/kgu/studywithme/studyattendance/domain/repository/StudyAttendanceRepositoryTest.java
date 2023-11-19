@@ -56,14 +56,14 @@ public class StudyAttendanceRepositoryTest extends RepositoryTest {
         members[2] = memberRepository.save(DUMMY3.toMember());
         members[3] = memberRepository.save(DUMMY4.toMember());
         members[4] = memberRepository.save(DUMMY5.toMember());
-        study = studyRepository.save(SPRING.toStudy(members[0].getId()));
+        study = studyRepository.save(SPRING.toStudy(members[0]));
     }
 
     @Test
     @DisplayName("특정 스터디에서 사용자의 특정 주차 출석 정보를 조회한다")
     void getParticipantAttendanceByWeek() {
         // given
-        final StudyAttendance attendance = sut.save(StudyAttendance.recordAttendance(study.getId(), members[0].getId(), 1, ATTENDANCE));
+        final StudyAttendance attendance = sut.save(StudyAttendance.recordAttendance(study, members[0], 1, ATTENDANCE));
 
         // when
         final Optional<StudyAttendance> findStudyAttendance = sut.findParticipantAttendanceByWeek(study.getId(), members[0].getId(), attendance.getWeek());
@@ -82,11 +82,11 @@ public class StudyAttendanceRepositoryTest extends RepositoryTest {
     void updateParticipantStatus() {
         // given
         sut.saveAll(List.of(
-                StudyAttendance.recordAttendance(study.getId(), members[0].getId(), 1, NON_ATTENDANCE),
-                StudyAttendance.recordAttendance(study.getId(), members[1].getId(), 1, NON_ATTENDANCE),
-                StudyAttendance.recordAttendance(study.getId(), members[2].getId(), 1, NON_ATTENDANCE),
-                StudyAttendance.recordAttendance(study.getId(), members[3].getId(), 1, NON_ATTENDANCE),
-                StudyAttendance.recordAttendance(study.getId(), members[4].getId(), 1, NON_ATTENDANCE)
+                StudyAttendance.recordAttendance(study, members[0], 1, NON_ATTENDANCE),
+                StudyAttendance.recordAttendance(study, members[1], 1, NON_ATTENDANCE),
+                StudyAttendance.recordAttendance(study, members[2], 1, NON_ATTENDANCE),
+                StudyAttendance.recordAttendance(study, members[3], 1, NON_ATTENDANCE),
+                StudyAttendance.recordAttendance(study, members[4], 1, NON_ATTENDANCE)
         ));
 
         // when
@@ -98,7 +98,8 @@ public class StudyAttendanceRepositoryTest extends RepositoryTest {
 
         assertAll(
                 () -> assertThat(attendances)
-                        .map(StudyAttendance::getParticipantId)
+                        .map(StudyAttendance::getParticipant)
+                        .map(Member::getId)
                         .containsExactly(
                                 members[0].getId(),
                                 members[1].getId(),
@@ -122,11 +123,11 @@ public class StudyAttendanceRepositoryTest extends RepositoryTest {
     @DisplayName("AttendanceStatus별 StudyAttendance 정보를 조회한다")
     void findByStatusOrderByStudyIdAscWeekAscParticipantIdAsc() {
         /* 1주차 */
-        final StudyAttendance week1FromMember0 = sut.save(StudyAttendance.recordAttendance(study.getId(), members[0].getId(), 1, LATE));
-        final StudyAttendance week1FromMember1 = sut.save(StudyAttendance.recordAttendance(study.getId(), members[1].getId(), 1, LATE));
-        final StudyAttendance week1FromMember2 = sut.save(StudyAttendance.recordAttendance(study.getId(), members[2].getId(), 1, ATTENDANCE));
-        final StudyAttendance week1FromMember3 = sut.save(StudyAttendance.recordAttendance(study.getId(), members[3].getId(), 1, ATTENDANCE));
-        final StudyAttendance week1FromMember4 = sut.save(StudyAttendance.recordAttendance(study.getId(), members[4].getId(), 1, ABSENCE));
+        final StudyAttendance week1FromMember0 = sut.save(StudyAttendance.recordAttendance(study, members[0], 1, LATE));
+        final StudyAttendance week1FromMember1 = sut.save(StudyAttendance.recordAttendance(study, members[1], 1, LATE));
+        final StudyAttendance week1FromMember2 = sut.save(StudyAttendance.recordAttendance(study, members[2], 1, ATTENDANCE));
+        final StudyAttendance week1FromMember3 = sut.save(StudyAttendance.recordAttendance(study, members[3], 1, ATTENDANCE));
+        final StudyAttendance week1FromMember4 = sut.save(StudyAttendance.recordAttendance(study, members[4], 1, ABSENCE));
 
         final List<StudyAttendance> attendance1 = sut.findByStatusOrderByStudyIdAscWeekAscParticipantIdAsc(ATTENDANCE);
         final List<StudyAttendance> late1 = sut.findByStatusOrderByStudyIdAscWeekAscParticipantIdAsc(LATE);
@@ -144,11 +145,11 @@ public class StudyAttendanceRepositoryTest extends RepositoryTest {
         );
 
         /* 2주차 */
-        final StudyAttendance week2FromMember0 = sut.save(StudyAttendance.recordAttendance(study.getId(), members[0].getId(), 2, ATTENDANCE));
-        final StudyAttendance week2FromMember1 = sut.save(StudyAttendance.recordAttendance(study.getId(), members[1].getId(), 2, NON_ATTENDANCE));
-        final StudyAttendance week2FromMember2 = sut.save(StudyAttendance.recordAttendance(study.getId(), members[2].getId(), 2, ATTENDANCE));
-        final StudyAttendance week2FromMember3 = sut.save(StudyAttendance.recordAttendance(study.getId(), members[3].getId(), 2, NON_ATTENDANCE));
-        final StudyAttendance week2FromMember4 = sut.save(StudyAttendance.recordAttendance(study.getId(), members[4].getId(), 2, ATTENDANCE));
+        final StudyAttendance week2FromMember0 = sut.save(StudyAttendance.recordAttendance(study, members[0], 2, ATTENDANCE));
+        final StudyAttendance week2FromMember1 = sut.save(StudyAttendance.recordAttendance(study, members[1], 2, NON_ATTENDANCE));
+        final StudyAttendance week2FromMember2 = sut.save(StudyAttendance.recordAttendance(study, members[2], 2, ATTENDANCE));
+        final StudyAttendance week2FromMember3 = sut.save(StudyAttendance.recordAttendance(study, members[3], 2, NON_ATTENDANCE));
+        final StudyAttendance week2FromMember4 = sut.save(StudyAttendance.recordAttendance(study, members[4], 2, ATTENDANCE));
 
         final List<StudyAttendance> attendance2 = sut.findByStatusOrderByStudyIdAscWeekAscParticipantIdAsc(ATTENDANCE);
         final List<StudyAttendance> late2 = sut.findByStatusOrderByStudyIdAscWeekAscParticipantIdAsc(LATE);
@@ -170,7 +171,7 @@ public class StudyAttendanceRepositoryTest extends RepositoryTest {
     @DisplayName("사용자의 AttendanceStatus별 Count를 조회한다")
     void countByStudyIdAndParticipantIdAndStatus() {
         /* 출석 1회 */
-        sut.save(StudyAttendance.recordAttendance(study.getId(), members[0].getId(), 1, ATTENDANCE));
+        sut.save(StudyAttendance.recordAttendance(study, members[0], 1, ATTENDANCE));
         assertAll(
                 () -> assertThat(sut.getAttendanceStatusCount(study.getId(), members[0].getId())).isEqualTo(1),
                 () -> assertThat(sut.getLateStatusCount(study.getId(), members[0].getId())).isEqualTo(0),
@@ -179,7 +180,7 @@ public class StudyAttendanceRepositoryTest extends RepositoryTest {
         );
 
         /* 출석 1회 + 지각 1회 */
-        sut.save(StudyAttendance.recordAttendance(study.getId(), members[0].getId(), 2, LATE));
+        sut.save(StudyAttendance.recordAttendance(study, members[0], 2, LATE));
         assertAll(
                 () -> assertThat(sut.getAttendanceStatusCount(study.getId(), members[0].getId())).isEqualTo(1),
                 () -> assertThat(sut.getLateStatusCount(study.getId(), members[0].getId())).isEqualTo(1),
@@ -188,7 +189,7 @@ public class StudyAttendanceRepositoryTest extends RepositoryTest {
         );
 
         /* 출석 2회 + 지각 1회 */
-        sut.save(StudyAttendance.recordAttendance(study.getId(), members[0].getId(), 3, ATTENDANCE));
+        sut.save(StudyAttendance.recordAttendance(study, members[0], 3, ATTENDANCE));
         assertAll(
                 () -> assertThat(sut.getAttendanceStatusCount(study.getId(), members[0].getId())).isEqualTo(2),
                 () -> assertThat(sut.getLateStatusCount(study.getId(), members[0].getId())).isEqualTo(1),
@@ -197,7 +198,7 @@ public class StudyAttendanceRepositoryTest extends RepositoryTest {
         );
 
         /* 출석 2회 + 지각 1회 + 미출석 1회 */
-        sut.save(StudyAttendance.recordAttendance(study.getId(), members[0].getId(), 4, NON_ATTENDANCE));
+        sut.save(StudyAttendance.recordAttendance(study, members[0], 4, NON_ATTENDANCE));
         assertAll(
                 () -> assertThat(sut.getAttendanceStatusCount(study.getId(), members[0].getId())).isEqualTo(2),
                 () -> assertThat(sut.getLateStatusCount(study.getId(), members[0].getId())).isEqualTo(1),
@@ -211,29 +212,29 @@ public class StudyAttendanceRepositoryTest extends RepositoryTest {
     void deleteFromSpecificWeekly() {
         /* 3 Weekly & Attendance Information */
         studyWeeklyRepository.saveAll(List.of(
-                STUDY_WEEKLY_1.toWeekly(study.getId(), members[0].getId()),
-                STUDY_WEEKLY_2.toWeekly(study.getId(), members[0].getId()),
-                STUDY_WEEKLY_3.toWeekly(study.getId(), members[0].getId())
+                STUDY_WEEKLY_1.toWeekly(study, members[0]),
+                STUDY_WEEKLY_2.toWeekly(study, members[0]),
+                STUDY_WEEKLY_3.toWeekly(study, members[0])
         ));
 
         sut.saveAll(List.of(
                 // Weekly 1
-                StudyAttendance.recordAttendance(study.getId(), members[0].getId(), STUDY_WEEKLY_1.getWeek(), ATTENDANCE),
-                StudyAttendance.recordAttendance(study.getId(), members[1].getId(), STUDY_WEEKLY_1.getWeek(), ATTENDANCE),
-                StudyAttendance.recordAttendance(study.getId(), members[2].getId(), STUDY_WEEKLY_1.getWeek(), ATTENDANCE),
-                StudyAttendance.recordAttendance(study.getId(), members[3].getId(), STUDY_WEEKLY_1.getWeek(), ATTENDANCE),
+                StudyAttendance.recordAttendance(study, members[0], STUDY_WEEKLY_1.getWeek(), ATTENDANCE),
+                StudyAttendance.recordAttendance(study, members[1], STUDY_WEEKLY_1.getWeek(), ATTENDANCE),
+                StudyAttendance.recordAttendance(study, members[2], STUDY_WEEKLY_1.getWeek(), ATTENDANCE),
+                StudyAttendance.recordAttendance(study, members[3], STUDY_WEEKLY_1.getWeek(), ATTENDANCE),
 
                 // Weekly 2
-                StudyAttendance.recordAttendance(study.getId(), members[0].getId(), STUDY_WEEKLY_2.getWeek(), ATTENDANCE),
-                StudyAttendance.recordAttendance(study.getId(), members[1].getId(), STUDY_WEEKLY_2.getWeek(), ATTENDANCE),
-                StudyAttendance.recordAttendance(study.getId(), members[2].getId(), STUDY_WEEKLY_2.getWeek(), ATTENDANCE),
-                StudyAttendance.recordAttendance(study.getId(), members[3].getId(), STUDY_WEEKLY_2.getWeek(), ATTENDANCE),
-                StudyAttendance.recordAttendance(study.getId(), members[4].getId(), STUDY_WEEKLY_2.getWeek(), ATTENDANCE),
+                StudyAttendance.recordAttendance(study, members[0], STUDY_WEEKLY_2.getWeek(), ATTENDANCE),
+                StudyAttendance.recordAttendance(study, members[1], STUDY_WEEKLY_2.getWeek(), ATTENDANCE),
+                StudyAttendance.recordAttendance(study, members[2], STUDY_WEEKLY_2.getWeek(), ATTENDANCE),
+                StudyAttendance.recordAttendance(study, members[3], STUDY_WEEKLY_2.getWeek(), ATTENDANCE),
+                StudyAttendance.recordAttendance(study, members[4], STUDY_WEEKLY_2.getWeek(), ATTENDANCE),
 
                 // Weekly 3
-                StudyAttendance.recordAttendance(study.getId(), members[0].getId(), STUDY_WEEKLY_3.getWeek(), ATTENDANCE),
-                StudyAttendance.recordAttendance(study.getId(), members[1].getId(), STUDY_WEEKLY_3.getWeek(), ATTENDANCE),
-                StudyAttendance.recordAttendance(study.getId(), members[2].getId(), STUDY_WEEKLY_3.getWeek(), ATTENDANCE)
+                StudyAttendance.recordAttendance(study, members[0], STUDY_WEEKLY_3.getWeek(), ATTENDANCE),
+                StudyAttendance.recordAttendance(study, members[1], STUDY_WEEKLY_3.getWeek(), ATTENDANCE),
+                StudyAttendance.recordAttendance(study, members[2], STUDY_WEEKLY_3.getWeek(), ATTENDANCE)
         ));
 
         assertAll(

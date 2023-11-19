@@ -35,15 +35,15 @@ class StudyReviewRepositoryTest extends RepositoryTest {
     @BeforeEach
     void setUp() {
         member = memberRepository.save(JIWON.toMember());
-        studyA = studyRepository.save(SPRING.toStudy(member.getId()));
-        studyB = studyRepository.save(JPA.toStudy(member.getId()));
+        studyA = studyRepository.save(SPRING.toStudy(member));
+        studyB = studyRepository.save(JPA.toStudy(member));
     }
 
     @Test
     @DisplayName("사용자가 해당 스터디에 대해서 작성한 리뷰가 존재하는지 확인한다")
     void existsByStudyIdAndWriterId() {
         /* studyA 리뷰 */
-        sut.save(StudyReview.writeReview(studyA.getId(), member.getId(), "studyA 리뷰"));
+        sut.save(StudyReview.writeReview(studyA, member, "studyA 리뷰"));
 
         assertAll(
                 () -> assertThat(sut.existsByStudyIdAndWriterId(studyA.getId(), member.getId())).isTrue(),
@@ -51,7 +51,7 @@ class StudyReviewRepositoryTest extends RepositoryTest {
         );
 
         /* studyA + studyB 리뷰 */
-        sut.save(StudyReview.writeReview(studyB.getId(), member.getId(), "studyB 리뷰"));
+        sut.save(StudyReview.writeReview(studyB, member, "studyB 리뷰"));
 
         assertAll(
                 () -> assertThat(sut.existsByStudyIdAndWriterId(studyA.getId(), member.getId())).isTrue(),

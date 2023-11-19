@@ -52,13 +52,13 @@ public class StudyParticipantRepositoryTest extends RepositoryTest {
         leaveMember = memberRepository.save(DUMMY3.toMember());
         graduatedMember = memberRepository.save(DUMMY4.toMember());
 
-        study = studyRepository.save(SPRING.toStudy(host.getId()));
+        study = studyRepository.save(SPRING.toStudy(host));
         sut.saveAll(List.of(
-                StudyParticipant.applyHost(study.getId(), host.getId()),
-                StudyParticipant.applyInStudy(study.getId(), applier.getId()),
-                StudyParticipant.applyParticipant(study.getId(), participant.getId(), APPROVE),
-                StudyParticipant.applyParticipant(study.getId(), leaveMember.getId(), LEAVE),
-                StudyParticipant.applyParticipant(study.getId(), graduatedMember.getId(), GRADUATED)
+                StudyParticipant.applyHost(study, host),
+                StudyParticipant.applyInStudy(study, applier),
+                StudyParticipant.applyParticipant(study, participant, APPROVE),
+                StudyParticipant.applyParticipant(study, leaveMember, LEAVE),
+                StudyParticipant.applyParticipant(study, graduatedMember, GRADUATED)
         ));
     }
 
@@ -87,38 +87,52 @@ public class StudyParticipantRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    @DisplayName("스터디 참여자들의 ID(PK)를 ParticipantStatus에 따라 조회한다")
-    void findParticipantIdsByStatus() {
-        final List<Long> applyParticipantIds1 = sut.findParticipantIdsByStatus(study.getId(), APPLY);
-        final List<Long> approveParticipantIds1 = sut.findParticipantIdsByStatus(study.getId(), APPROVE);
-        final List<Long> leaveParticipantIds1 = sut.findParticipantIdsByStatus(study.getId(), LEAVE);
-        final List<Long> graduateParticipantIds1 = sut.findParticipantIdsByStatus(study.getId(), GRADUATED);
+    @DisplayName("스터디 참여자들을 ParticipantStatus에 따라 조회한다")
+    void findParticipantsByStatus() {
+        final List<Member> applyParticipants1 = sut.findParticipantsByStatus(study.getId(), APPLY);
+        final List<Member> approveParticipants1 = sut.findParticipantsByStatus(study.getId(), APPROVE);
+        final List<Member> leaveParticipants1 = sut.findParticipantsByStatus(study.getId(), LEAVE);
+        final List<Member> graduateParticipants1 = sut.findParticipantsByStatus(study.getId(), GRADUATED);
         assertAll(
-                () -> assertThat(applyParticipantIds1).hasSize(1),
-                () -> assertThat(applyParticipantIds1).containsExactlyInAnyOrder(applier.getId()),
-                () -> assertThat(approveParticipantIds1).hasSize(2),
-                () -> assertThat(approveParticipantIds1).containsExactlyInAnyOrder(host.getId(), participant.getId()),
-                () -> assertThat(leaveParticipantIds1).hasSize(1),
-                () -> assertThat(leaveParticipantIds1).containsExactlyInAnyOrder(leaveMember.getId()),
-                () -> assertThat(graduateParticipantIds1).hasSize(1),
-                () -> assertThat(graduateParticipantIds1).containsExactlyInAnyOrder(graduatedMember.getId())
+                () -> assertThat(applyParticipants1).hasSize(1),
+                () -> assertThat(applyParticipants1)
+                        .map(Member::getId)
+                        .containsExactlyInAnyOrder(applier.getId()),
+                () -> assertThat(approveParticipants1).hasSize(2),
+                () -> assertThat(approveParticipants1)
+                        .map(Member::getId)
+                        .containsExactlyInAnyOrder(host.getId(), participant.getId()),
+                () -> assertThat(leaveParticipants1).hasSize(1),
+                () -> assertThat(leaveParticipants1)
+                        .map(Member::getId)
+                        .containsExactlyInAnyOrder(leaveMember.getId()),
+                () -> assertThat(graduateParticipants1).hasSize(1),
+                () -> assertThat(graduateParticipants1)
+                        .map(Member::getId)
+                        .containsExactlyInAnyOrder(graduatedMember.getId())
         );
 
         /* applier -> participant */
         sut.updateParticipantStatus(study.getId(), applier.getId(), APPROVE);
 
-        final List<Long> applyParticipantIds2 = sut.findParticipantIdsByStatus(study.getId(), APPLY);
-        final List<Long> approveParticipantIds2 = sut.findParticipantIdsByStatus(study.getId(), APPROVE);
-        final List<Long> leaveParticipantIds2 = sut.findParticipantIdsByStatus(study.getId(), LEAVE);
-        final List<Long> graduateParticipantIds2 = sut.findParticipantIdsByStatus(study.getId(), GRADUATED);
+        final List<Member> applyParticipants2 = sut.findParticipantsByStatus(study.getId(), APPLY);
+        final List<Member> approveParticipants2 = sut.findParticipantsByStatus(study.getId(), APPROVE);
+        final List<Member> leaveParticipants2 = sut.findParticipantsByStatus(study.getId(), LEAVE);
+        final List<Member> graduateParticipants2 = sut.findParticipantsByStatus(study.getId(), GRADUATED);
         assertAll(
-                () -> assertThat(applyParticipantIds2).isEmpty(),
-                () -> assertThat(approveParticipantIds2).hasSize(3),
-                () -> assertThat(approveParticipantIds2).containsExactlyInAnyOrder(host.getId(), participant.getId(), applier.getId()),
-                () -> assertThat(leaveParticipantIds2).hasSize(1),
-                () -> assertThat(leaveParticipantIds2).containsExactlyInAnyOrder(leaveMember.getId()),
-                () -> assertThat(graduateParticipantIds2).hasSize(1),
-                () -> assertThat(graduateParticipantIds2).containsExactlyInAnyOrder(graduatedMember.getId())
+                () -> assertThat(applyParticipants2).isEmpty(),
+                () -> assertThat(approveParticipants2).hasSize(3),
+                () -> assertThat(approveParticipants2)
+                        .map(Member::getId)
+                        .containsExactlyInAnyOrder(host.getId(), participant.getId(), applier.getId()),
+                () -> assertThat(leaveParticipants2).hasSize(1),
+                () -> assertThat(leaveParticipants2)
+                        .map(Member::getId)
+                        .containsExactlyInAnyOrder(leaveMember.getId()),
+                () -> assertThat(graduateParticipants2).hasSize(1),
+                () -> assertThat(graduateParticipants2)
+                        .map(Member::getId)
+                        .containsExactlyInAnyOrder(graduatedMember.getId())
         );
     }
 

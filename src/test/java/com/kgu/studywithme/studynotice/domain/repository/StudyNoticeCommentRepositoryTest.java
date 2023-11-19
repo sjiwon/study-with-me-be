@@ -39,23 +39,23 @@ public class StudyNoticeCommentRepositoryTest extends RepositoryTest {
     @BeforeEach
     void setUp() {
         host = memberRepository.save(JIWON.toMember());
-        study = studyRepository.save(SPRING.toStudy(host.getId()));
+        study = studyRepository.save(SPRING.toStudy(host));
     }
 
     @Test
     @DisplayName("공지사항에 작성한 댓글을 삭제한다")
     void deleteByNoticeId() {
         // given
-        final StudyNotice noticeA = StudyNotice.writeNotice(study.getId(), host.getId(), "Week 1", "Content Week 1");
-        noticeA.addComment(host.getId(), "NoticeA Comment 1");
-        noticeA.addComment(host.getId(), "NoticeA Comment 2");
-        noticeA.addComment(host.getId(), "NoticeA Comment 3");
+        final StudyNotice noticeA = StudyNotice.writeNotice(study, host, "Week 1", "Content Week 1");
+        noticeA.addComment(host, "NoticeA Comment 1");
+        noticeA.addComment(host, "NoticeA Comment 2");
+        noticeA.addComment(host, "NoticeA Comment 3");
         studyNoticeRepository.save(noticeA);
 
-        final StudyNotice noticeB = StudyNotice.writeNotice(study.getId(), host.getId(), "Week 2", "Content Week 2");
-        noticeB.addComment(host.getId(), "NoticeB Comment 1");
-        noticeB.addComment(host.getId(), "NoticeB Comment 2");
-        noticeB.addComment(host.getId(), "NoticeB Comment 3");
+        final StudyNotice noticeB = StudyNotice.writeNotice(study, host, "Week 2", "Content Week 2");
+        noticeB.addComment(host, "NoticeB Comment 1");
+        noticeB.addComment(host, "NoticeB Comment 2");
+        noticeB.addComment(host, "NoticeB Comment 3");
         studyNoticeRepository.save(noticeB);
 
         final List<Long> commentIdsFromNoticeA = extractCommentIds(noticeA);
