@@ -9,12 +9,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class UpdateMemberUseCase {
     private final MemberResourceValidator memberResourceValidator;
     private final MemberRepository memberRepository;
 
+    @StudyWithMeWritableTransactional
     public void invoke(final UpdateMemberCommand command) {
         memberResourceValidator.validateInUpdate(command.memberId(), command.nickname(), command.phone());
 

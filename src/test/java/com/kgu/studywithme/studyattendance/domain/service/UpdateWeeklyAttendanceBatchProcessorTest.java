@@ -84,9 +84,9 @@ public class UpdateWeeklyAttendanceBatchProcessorTest {
         participants[3] = memberRepository.save(DUMMY4.toMember());
         participants[4] = memberRepository.save(DUMMY5.toMember());
 
-        studies[0] = studyRepository.save(SPRING.toStudy(participants[0].getId()));
-        studies[1] = studyRepository.save(JPA.toStudy(participants[0].getId()));
-        studies[2] = studyRepository.save(KOTLIN.toStudy(participants[0].getId()));
+        studies[0] = studyRepository.save(SPRING.toStudy(participants[0]));
+        studies[1] = studyRepository.save(JPA.toStudy(participants[0]));
+        studies[2] = studyRepository.save(KOTLIN.toStudy(participants[0]));
 
         previousScore = Score.INIT_SCORE;
 

@@ -30,7 +30,7 @@ class WriteStudyNoticeCommentUseCaseTest extends UseCaseTest {
     private final WriteStudyNoticeCommentUseCase sut = new WriteStudyNoticeCommentUseCase(studyNoticeRepository, studyParticipantRepository);
 
     private final Member host = JIWON.toMember().apply(1L);
-    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(host).apply(1L);
     private final StudyNotice notice = StudyNotice.writeNotice(study.getId(), host.getId(), "제목", "내용").apply(1L);
     private final WriteStudyNoticeCommentCommand command = new WriteStudyNoticeCommentCommand(notice.getId(), host.getId(), "댓글!!");
 

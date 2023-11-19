@@ -39,7 +39,7 @@ public class StudyNoticeCommentRepositoryTest extends RepositoryTest {
     @BeforeEach
     void setUp() {
         host = memberRepository.save(JIWON.toMember());
-        study = studyRepository.save(SPRING.toStudy(host.getId()));
+        study = studyRepository.save(SPRING.toStudy(host));
     }
 
     @Test

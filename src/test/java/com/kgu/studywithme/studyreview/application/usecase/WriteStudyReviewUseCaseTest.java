@@ -32,7 +32,7 @@ class WriteStudyReviewUseCaseTest extends UseCaseTest {
 
     private final Member host = JIWON.toMember().apply(1L);
     private final Member member = GHOST.toMember().apply(2L);
-    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(host).apply(1L);
     private final WriteStudyReviewCommand command = new WriteStudyReviewCommand(study.getId(), member.getId(), "졸업자 리뷰");
 
     @Test

@@ -40,7 +40,7 @@ class ManageFavoriteUseCaseTest extends UseCaseTest {
     );
 
     private final Member host = JIWON.toMember().apply(1L);
-    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(host).apply(1L);
 
     @Nested
     @DisplayName("스터디 찜 등록")

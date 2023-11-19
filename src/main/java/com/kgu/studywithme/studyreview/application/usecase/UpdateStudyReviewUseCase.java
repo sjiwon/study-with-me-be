@@ -10,11 +10,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class UpdateStudyReviewUseCase {
     private final StudyReviewRepository studyReviewRepository;
 
+    @StudyWithMeWritableTransactional
     public void invoke(final UpdateStudyReviewCommand command) {
         final StudyReview review = studyReviewRepository.getById(command.reviewId());
         validateMemberIsReviewWriter(review, command.memberId());

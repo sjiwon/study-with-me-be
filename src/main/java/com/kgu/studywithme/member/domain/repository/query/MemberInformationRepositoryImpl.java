@@ -148,7 +148,7 @@ public class MemberInformationRepositoryImpl implements MemberInformationReposit
                         memberReview.lastModifiedAt
                 ))
                 .from(memberReview)
-                .where(memberReview.revieweeId.eq(memberId))
+                .where(memberReview.reviewee.id.eq(memberId))
                 .orderBy(memberReview.id.desc())
                 .fetch();
     }
@@ -242,8 +242,8 @@ public class MemberInformationRepositoryImpl implements MemberInformationReposit
                         study.thumbnail
                 ))
                 .from(study)
-                .innerJoin(favorite).on(favorite.studyId.eq(study.id))
-                .where(favorite.memberId.eq(memberId))
+                .innerJoin(favorite).on(favorite.study.id.eq(study.id))
+                .where(favorite.member.id.eq(memberId))
                 .orderBy(favorite.id.desc())
                 .fetch();
     }

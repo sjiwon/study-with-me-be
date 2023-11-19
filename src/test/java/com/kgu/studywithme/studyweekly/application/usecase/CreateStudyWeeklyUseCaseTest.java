@@ -57,7 +57,7 @@ class CreateStudyWeeklyUseCaseTest extends UseCaseTest {
     private final Member host = JIWON.toMember().apply(1L);
     private final Member participantA = GHOST.toMember().apply(2L);
     private final Member participantB = ANONYMOUS.toMember().apply(3L);
-    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(host).apply(1L);
     private CreateStudyWeeklyCommand command;
 
     @BeforeEach

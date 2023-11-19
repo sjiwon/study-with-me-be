@@ -50,7 +50,7 @@ class DelegateHostAuthorityUseCaseTest extends UseCaseTest {
 
     @BeforeEach
     void setUp() {
-        study = SPRING.toStudy(host.getId()).apply(1L);
+        study = SPRING.toStudy(host).apply(1L);
 
         selfCommand = new DelegateHostAuthorityCommand(study.getId(), host.getId());
         anonymousCommand = new DelegateHostAuthorityCommand(study.getId(), anonymous.getId());
@@ -115,7 +115,7 @@ class DelegateHostAuthorityUseCaseTest extends UseCaseTest {
 
         assertAll(
                 () -> verify(studyRepository, times(1)).getInProgressStudy(command.studyId()),
-                () -> assertThat(study.getHostId()).isEqualTo(command.newHostId()),
+                () -> assertThat(study.getHost()).isEqualTo(newHost),
                 () -> assertThat(study.getGraduationPolicy().getUpdateChance()).isEqualTo(GraduationPolicy.DEFAULT_UPDATE_CHANCE)
         );
     }

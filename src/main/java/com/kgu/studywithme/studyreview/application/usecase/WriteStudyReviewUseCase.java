@@ -1,5 +1,6 @@
 package com.kgu.studywithme.studyreview.application.usecase;
 
+import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.studyparticipant.domain.repository.StudyParticipantRepository;
 import com.kgu.studywithme.studyreview.application.usecase.command.WriteStudyReviewCommand;
@@ -14,6 +15,7 @@ public class WriteStudyReviewUseCase {
     private final StudyParticipantRepository studyParticipantRepository;
     private final StudyReviewRepository studyReviewRepository;
 
+    @StudyWithMeWritableTransactional
     public Long invoke(final WriteStudyReviewCommand command) {
         validateMemberIsGraduatedStudy(command.studyId(), command.memberId());
         validateAlreadyWritten(command.studyId(), command.memberId());

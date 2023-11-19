@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class StudyNoticeCommentTest extends ParallelTest {
     private final Member host = JIWON.toMember().apply(1L);
     private final Member anonymous = GHOST.toMember().apply(2L);
-    private final Study study = SPRING.toStudy(host.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(host).apply(1L);
     private final StudyNotice notice = StudyNotice.writeNotice(study.getId(), host.getId(), "Hello", "Hello World").apply(1L);
 
     @Test

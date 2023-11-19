@@ -1,5 +1,6 @@
 package com.kgu.studywithme.studynotice.application.usecase;
 
+import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.studynotice.application.usecase.command.DeleteStudyNoticeCommentCommand;
 import com.kgu.studywithme.studynotice.domain.model.StudyNoticeComment;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class DeleteStudyNoticeCommentUseCase {
     private final StudyNoticeCommentRepository studyNoticeCommentRepository;
 
+    @StudyWithMeWritableTransactional
     public void invoke(final DeleteStudyNoticeCommentCommand command) {
         final StudyNoticeComment comment = studyNoticeCommentRepository.getById(command.commentId());
         validateCommentWriter(comment, command.memberId());

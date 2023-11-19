@@ -1,5 +1,6 @@
 package com.kgu.studywithme.studyweekly.application.usecase;
 
+import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.studyweekly.application.usecase.command.DeleteStudyWeeklyCommand;
 import com.kgu.studywithme.studyweekly.domain.model.StudyWeekly;
@@ -15,6 +16,7 @@ public class DeleteStudyWeeklyUseCase {
     private final StudyWeeklyRepository studyWeeklyRepository;
     private final WeeklyManager weeklyManager;
 
+    @StudyWithMeWritableTransactional
     public void invoke(final DeleteStudyWeeklyCommand command) {
         validateDeleteTargetWeeklyIsLatestWeek(command.studyId(), command.weeklyId());
 

@@ -11,12 +11,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class WriteStudyNoticeCommentUseCase {
     private final StudyNoticeRepository studyNoticeRepository;
     private final StudyParticipantRepository studyParticipantRepository;
 
+    @StudyWithMeWritableTransactional
     public void invoke(final WriteStudyNoticeCommentCommand command) {
         final StudyNotice notice = studyNoticeRepository.getById(command.noticeId());
         validateWriterIsStudyParticipant(notice.getStudyId(), command.writerId());

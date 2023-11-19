@@ -56,7 +56,7 @@ public class StudyAttendanceRepositoryTest extends RepositoryTest {
         members[2] = memberRepository.save(DUMMY3.toMember());
         members[3] = memberRepository.save(DUMMY4.toMember());
         members[4] = memberRepository.save(DUMMY5.toMember());
-        study = studyRepository.save(SPRING.toStudy(members[0].getId()));
+        study = studyRepository.save(SPRING.toStudy(members[0]));
     }
 
     @Test

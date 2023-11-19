@@ -37,7 +37,7 @@ public class WeeklyManager {
         return weekly;
     }
 
-    public void applyParticipantAttendanceStatusFromGeneratedWeekly(final Long studyId, final int week) {
+    private void applyParticipantAttendanceStatusFromGeneratedWeekly(final Long studyId, final int week) {
         final List<StudyAttendance> participantsAttendance = new ArrayList<>();
         final List<Long> approveParticipantsIds = studyParticipantRepository.findParticipantIdsByStatus(studyId, APPROVE);
         approveParticipantsIds.forEach(studyParticipantId ->

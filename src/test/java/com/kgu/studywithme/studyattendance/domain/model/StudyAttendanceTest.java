@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @DisplayName("StudyAttendance -> 도메인 [StudyAttendance] 테스트")
 class StudyAttendanceTest extends ParallelTest {
     private final Member member = JIWON.toMember().apply(1L);
-    private final Study study = SPRING.toStudy(member.getId()).apply(1L);
+    private final Study study = SPRING.toStudy(member).apply(1L);
 
     @Test
     @DisplayName("StudyAttendance의 status를 변경한다")

@@ -3,13 +3,17 @@ package com.kgu.studywithme.study.domain.model;
 import com.kgu.studywithme.category.domain.model.Category;
 import com.kgu.studywithme.global.BaseEntity;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
+import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -36,9 +40,6 @@ import static com.kgu.studywithme.study.domain.model.StudyType.ONLINE;
         }
 )
 public class Study extends BaseEntity<Study> {
-    @Column(name = "host_id", nullable = false)
-    private Long hostId;
-
     @Embedded
     private StudyName name;
 
@@ -79,8 +80,12 @@ public class Study extends BaseEntity<Study> {
     @Embedded
     private Hashtags hashtags;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "host_id", referencedColumnName = "id", nullable = false)
+    private Member host;
+
     private Study(
-            final Long hostId,
+            final Member host,
             final StudyName name,
             final Description description,
             final Category category,
@@ -91,7 +96,7 @@ public class Study extends BaseEntity<Study> {
             final int minimumAttendanceForGraduation,
             final Set<String> hashtags
     ) {
-        this.hostId = hostId;
+        this.host = host;
         this.name = name;
         this.description = description;
         this.category = category;
@@ -107,7 +112,7 @@ public class Study extends BaseEntity<Study> {
     }
 
     public static Study createOnlineStudy(
-            final Long hostId,
+            final Member host,
             final StudyName name,
             final Description description,
             final Category category,
@@ -117,7 +122,7 @@ public class Study extends BaseEntity<Study> {
             final Set<String> hashtags
     ) {
         return new Study(
-                hostId,
+                host,
                 name,
                 description,
                 category,
@@ -131,7 +136,7 @@ public class Study extends BaseEntity<Study> {
     }
 
     public static Study createOfflineStudy(
-            final Long hostId,
+            final Member host,
             final StudyName name,
             final Description description,
             final Category category,
@@ -142,7 +147,7 @@ public class Study extends BaseEntity<Study> {
             final Set<String> hashtags
     ) {
         return new Study(
-                hostId,
+                host,
                 name,
                 description,
                 category,
@@ -180,12 +185,12 @@ public class Study extends BaseEntity<Study> {
         this.hashtags.update(this, hashtags);
     }
 
-    public boolean isHost(final Long memberId) {
-        return hostId.equals(memberId);
+    public boolean isHost(final Member other) {
+        return host.isSameMember(other);
     }
 
-    public void delegateHostAuthority(final Long newHostId) {
-        hostId = newHostId;
+    public void delegateHostAuthority(final Member newHost) {
+        host = newHost;
         graduationPolicy = graduationPolicy.resetUpdateChance();
     }
 

@@ -70,7 +70,7 @@ public class StudyInformationRepositoryImpl implements StudyInformationRepositor
                         member.nickname
                 ))
                 .from(study)
-                .innerJoin(member).on(member.id.eq(study.hostId))
+                .innerJoin(member).on(member.id.eq(study.host.id))
                 .where(study.id.eq(studyId))
                 .fetchOne();
 
@@ -142,7 +142,7 @@ public class StudyInformationRepositoryImpl implements StudyInformationRepositor
                         member.nickname
                 ))
                 .from(member)
-                .innerJoin(study).on(study.hostId.eq(member.id))
+                .innerJoin(study).on(study.host.id.eq(member.id))
                 .where(study.id.eq(studyId))
                 .fetchOne();
 

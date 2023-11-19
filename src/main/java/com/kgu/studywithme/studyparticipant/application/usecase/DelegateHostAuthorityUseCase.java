@@ -23,6 +23,6 @@ public class DelegateHostAuthorityUseCase {
         final Member participant = participateMemberReader.getParticipant(command.studyId(), command.newHostId());
 
         participationInspector.checkNewHostIsCurrentHost(study, participant);
-        study.delegateHostAuthority(command.newHostId());
+        study.delegateHostAuthority(participant);
     }
 }

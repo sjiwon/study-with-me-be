@@ -2,6 +2,7 @@ package com.kgu.studywithme.common.fixture;
 
 import com.kgu.studywithme.acceptance.study.StudyAcceptanceFixture;
 import com.kgu.studywithme.category.domain.model.Category;
+import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.study.domain.model.Capacity;
 import com.kgu.studywithme.study.domain.model.Description;
 import com.kgu.studywithme.study.domain.model.Study;
@@ -227,10 +228,10 @@ public enum StudyFixture {
     private final int minimumAttendanceForGraduation;
     private final Set<String> hashtags;
 
-    public Study toStudy(final Long hostId) {
+    public Study toStudy(final Member host) {
         if (type == ONLINE) {
             return Study.createOnlineStudy(
-                    hostId,
+                    host,
                     name,
                     description,
                     category,
@@ -242,7 +243,7 @@ public enum StudyFixture {
         }
 
         return Study.createOfflineStudy(
-                hostId,
+                host,
                 name,
                 description,
                 category,

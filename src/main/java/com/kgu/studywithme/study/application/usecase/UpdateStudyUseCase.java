@@ -12,12 +12,12 @@ import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.OFF;
 import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.ON;
 
 @Service
-@StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class UpdateStudyUseCase {
     private final StudyResourceValidator studyResourceValidator;
     private final StudyRepository studyRepository;
 
+    @StudyWithMeWritableTransactional
     public void invoke(final UpdateStudyCommand command) {
         studyResourceValidator.validateInUpdate(command.studyId(), command.name());
 

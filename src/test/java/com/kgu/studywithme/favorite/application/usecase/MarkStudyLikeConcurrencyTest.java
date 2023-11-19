@@ -51,7 +51,7 @@ public class MarkStudyLikeConcurrencyTest {
     @BeforeEach
     void setUp() {
         member = memberRepository.save(JIWON.toMember());
-        study = studyRepository.save(SPRING.toStudy(member.getId()));
+        study = studyRepository.save(SPRING.toStudy(member));
     }
 
     @Test

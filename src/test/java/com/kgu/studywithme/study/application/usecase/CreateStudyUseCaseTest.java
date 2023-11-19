@@ -31,7 +31,12 @@ class CreateStudyUseCaseTest extends UseCaseTest {
     private final StudyRepository studyRepository = mock(StudyRepository.class);
     private final StudyResourceValidator studyResourceValidator = new StudyResourceValidator(studyRepository);
     private final StudyParticipantRepository studyParticipantRepository = mock(StudyParticipantRepository.class);
-    private final CreateStudyUseCase sut = new CreateStudyUseCase(studyResourceValidator, memberRepository, studyRepository, studyParticipantRepository);
+    private final CreateStudyUseCase sut = new CreateStudyUseCase(
+            studyResourceValidator,
+            memberRepository,
+            studyRepository,
+            studyParticipantRepository
+    );
 
     private final Member host = JIWON.toMember().apply(1L);
     private final CreateStudyCommand command = new CreateStudyCommand(
@@ -74,7 +79,7 @@ class CreateStudyUseCaseTest extends UseCaseTest {
         given(studyRepository.existsByNameValue(command.name().getValue())).willReturn(false);
         given(memberRepository.getById(command.hostId())).willReturn(host);
 
-        final Study study = command.toDomain().apply(1L);
+        final Study study = OS.toStudy(host).apply(1L);
         given(studyRepository.save(any(Study.class))).willReturn(study);
 
         // when

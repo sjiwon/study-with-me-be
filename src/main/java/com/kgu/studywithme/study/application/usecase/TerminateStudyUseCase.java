@@ -8,11 +8,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class TerminateStudyUseCase {
     private final StudyRepository studyRepository;
 
+    @StudyWithMeWritableTransactional
     public void invoke(final TerminateStudyCommand command) {
         final Study study = studyRepository.getById(command.studyId());
         study.terminate();

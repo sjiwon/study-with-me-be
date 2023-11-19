@@ -1,5 +1,6 @@
 package com.kgu.studywithme.studyreview.application.usecase;
 
+import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.studyreview.application.usecase.command.DeleteStudyReviewCommand;
 import com.kgu.studywithme.studyreview.domain.model.StudyReview;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class DeleteStudyReviewUseCase {
     private final StudyReviewRepository studyReviewRepository;
 
+    @StudyWithMeWritableTransactional
     public void invoke(final DeleteStudyReviewCommand command) {
         final StudyReview review = studyReviewRepository.getById(command.reviewId());
         validateMemberIsReviewWriter(review, command.memberId());

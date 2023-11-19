@@ -13,12 +13,12 @@ import org.springframework.stereotype.Service;
 import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.NON_ATTENDANCE;
 
 @Service
-@StudyWithMeWritableTransactional
 @RequiredArgsConstructor
 public class ManualAttendanceUseCase {
     private final StudyAttendanceRepository studyAttendanceRepository;
     private final ParticipateMemberReader participateMemberReader;
 
+    @StudyWithMeWritableTransactional
     public void invoke(final ManualAttendanceCommand command) {
         final Member participant = participateMemberReader.getParticipant(command.studyId(), command.participantId());
         final StudyAttendance attendance = studyAttendanceRepository.getParticipantAttendanceByWeek(command.studyId(), command.participantId(), command.week());
