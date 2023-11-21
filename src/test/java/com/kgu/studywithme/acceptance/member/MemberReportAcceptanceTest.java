@@ -21,7 +21,7 @@ public class MemberReportAcceptanceTest extends AcceptanceTest {
 
     @BeforeEach
     void setUp() {
-        reporterAccessToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행한다().token().accessToken();
+        reporterAccessToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행하고_AccessToken을_추출한다();
         reporteeId = GHOST.회원가입을_진행한다();
     }
 

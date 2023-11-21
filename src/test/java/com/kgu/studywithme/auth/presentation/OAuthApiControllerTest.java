@@ -14,6 +14,7 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static com.kgu.studywithme.auth.utils.TokenResponseWriter.REFRESH_TOKEN_COOKIE;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.utils.OAuthUtils.AUTHORIZATION_CODE;
 import static com.kgu.studywithme.common.utils.OAuthUtils.GOOGLE_PROVIDER;
@@ -24,12 +25,17 @@ import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDoc
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getExceptionResponseFields;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
-import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessTokenToAuthorizationHeader;
+import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessToken;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.SET_COOKIE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
+import static org.springframework.restdocs.cookies.CookieDocumentation.responseCookies;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
@@ -164,8 +170,8 @@ class OAuthApiControllerTest extends ControllerTest {
                                     requestFields(
                                             fieldWithPath("authorizationCode")
                                                     .description("Authorization Code"),
-                                            fieldWithPath("redirectUri").
-                                                    description("Redirect Uri")
+                                            fieldWithPath("redirectUri")
+                                                    .description("Redirect Uri")
                                                     .attributes(constraint("Authorization Code 요청 시 redirectUri와 반드시 동일한 값")),
                                             fieldWithPath("state")
                                                     .description("State 값 (CSRF 공격 방지용)")
@@ -198,16 +204,12 @@ class OAuthApiControllerTest extends ControllerTest {
             mockMvc.perform(requestBuilder)
                     .andExpectAll(
                             status().isOk(),
-                            jsonPath("$.member.id").exists(),
-                            jsonPath("$.member.id").value(loginResponse.member().id()),
-                            jsonPath("$.member.nickname").exists(),
-                            jsonPath("$.member.nickname").value(loginResponse.member().nickname()),
-                            jsonPath("$.member.email").exists(),
-                            jsonPath("$.member.email").value(loginResponse.member().email()),
-                            jsonPath("$.token.accessToken").exists(),
-                            jsonPath("$.token.accessToken").value(loginResponse.token().accessToken()),
-                            jsonPath("$.token.refreshToken").exists(),
-                            jsonPath("$.token.refreshToken").value(loginResponse.token().refreshToken())
+                            jsonPath("$.id").exists(),
+                            jsonPath("$.id").value(loginResponse.member().id()),
+                            jsonPath("$.nickname").exists(),
+                            jsonPath("$.nickname").value(loginResponse.member().nickname()),
+                            jsonPath("$.email").exists(),
+                            jsonPath("$.email").value(loginResponse.member().email())
                     )
                     .andDo(
                             document(
@@ -217,24 +219,30 @@ class OAuthApiControllerTest extends ControllerTest {
                                     requestFields(
                                             fieldWithPath("authorizationCode")
                                                     .description("Authorization Code"),
-                                            fieldWithPath("redirectUri").
-                                                    description("Redirect Uri")
+                                            fieldWithPath("redirectUri")
+                                                    .description("Redirect Uri")
                                                     .attributes(constraint("Authorization Code 요청 시 redirectUri와 반드시 동일한 값")),
                                             fieldWithPath("state")
                                                     .description("State 값 (CSRF 공격 방지용)")
                                                     .attributes(constraint("Authorization Code 요청 시 state와 반드시 동일한 값"))
                                     ),
+                                    responseHeaders(
+                                            headerWithName(AUTHORIZATION)
+                                                    .description("Access Token"),
+                                            headerWithName(SET_COOKIE)
+                                                    .description("Set Refresh Token")
+                                    ),
+                                    responseCookies(
+                                            cookieWithName(REFRESH_TOKEN_COOKIE)
+                                                    .description("Refresh Token")
+                                    ),
                                     responseFields(
-                                            fieldWithPath("member.id")
+                                            fieldWithPath("id")
                                                     .description("사용자 ID(PK)"),
-                                            fieldWithPath("member.nickname")
+                                            fieldWithPath("nickname")
                                                     .description("사용자 닉네임"),
-                                            fieldWithPath("member.email")
-                                                    .description("사용자 이메일"),
-                                            fieldWithPath("token.accessToken")
-                                                    .description("발급된 Access Token (Expire - 2시간)"),
-                                            fieldWithPath("token.refreshToken")
-                                                    .description("발급된 Refresh Token (Expire - 2주)")
+                                            fieldWithPath("email")
+                                                    .description("사용자 이메일")
                                     )
                             )
                     );
@@ -255,7 +263,7 @@ class OAuthApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
+                    .header(AUTHORIZATION, applyAccessToken());
 
             // then
             mockMvc.perform(requestBuilder)

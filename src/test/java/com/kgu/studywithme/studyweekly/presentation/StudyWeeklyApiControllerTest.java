@@ -23,7 +23,7 @@ import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDoc
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getExceptionResponseFields;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
-import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessTokenToAuthorizationHeader;
+import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessToken;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
@@ -81,7 +81,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                     .file((MockMultipartFile) files2)
                     .file((MockMultipartFile) files3)
                     .file((MockMultipartFile) files4)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .queryParam("title", STUDY_WEEKLY_1.getTitle())
                     .queryParam("content", STUDY_WEEKLY_1.getContent())
                     .queryParam("startDate", STUDY_WEEKLY_1.getPeriod().getStartDate().format(DATE_TIME_FORMATTER))
@@ -143,7 +143,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                     .file((MockMultipartFile) files2)
                     .file((MockMultipartFile) files3)
                     .file((MockMultipartFile) files4)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .queryParam("title", STUDY_WEEKLY_1.getTitle())
                     .queryParam("content", STUDY_WEEKLY_1.getContent())
                     .queryParam("startDate", STUDY_WEEKLY_1.getPeriod().getStartDate().format(DATE_TIME_FORMATTER))
@@ -233,7 +233,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                     .file((MockMultipartFile) files2)
                     .file((MockMultipartFile) files3)
                     .file((MockMultipartFile) files4)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .queryParam("title", STUDY_WEEKLY_1.getTitle())
                     .queryParam("content", STUDY_WEEKLY_1.getContent())
                     .queryParam("startDate", STUDY_WEEKLY_1.getPeriod().getStartDate().format(DATE_TIME_FORMATTER))
@@ -299,7 +299,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                     .file((MockMultipartFile) files2)
                     .file((MockMultipartFile) files3)
                     .file((MockMultipartFile) files4)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .queryParam("title", STUDY_WEEKLY_1.getTitle())
                     .queryParam("content", STUDY_WEEKLY_1.getContent())
                     .queryParam("startDate", STUDY_WEEKLY_1.getPeriod().getStartDate().format(DATE_TIME_FORMATTER))
@@ -365,7 +365,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                     .file((MockMultipartFile) files2)
                     .file((MockMultipartFile) files3)
                     .file((MockMultipartFile) files4)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .queryParam("title", STUDY_WEEKLY_1.getTitle())
                     .queryParam("content", STUDY_WEEKLY_1.getContent())
                     .queryParam("startDate", STUDY_WEEKLY_1.getPeriod().getStartDate().format(DATE_TIME_FORMATTER))
@@ -437,7 +437,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .delete(BASE_URL, STUDY_ID, WEEKLY_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
+                    .header(AUTHORIZATION, applyAccessToken());
 
             // then
             final StudyErrorCode expectedError = StudyErrorCode.MEMBER_IS_NOT_HOST;
@@ -473,7 +473,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .delete(BASE_URL, STUDY_ID, WEEKLY_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
+                    .header(AUTHORIZATION, applyAccessToken());
 
             // then
             final StudyWeeklyErrorCode expectedError = StudyWeeklyErrorCode.ONLY_LATEST_WEEKLY_CAN_DELETE;
@@ -506,7 +506,7 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .delete(BASE_URL, STUDY_ID, WEEKLY_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
+                    .header(AUTHORIZATION, applyAccessToken());
 
             // then
             mockMvc.perform(requestBuilder)

@@ -20,7 +20,7 @@ import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDoc
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getExceptionResponseFields;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
-import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessTokenToAuthorizationHeader;
+import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessToken;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
@@ -80,7 +80,7 @@ class StudyApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(ONLINE_STUDY_REQUEST));
 
@@ -138,7 +138,7 @@ class StudyApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(ONLINE_STUDY_REQUEST));
 
@@ -200,7 +200,7 @@ class StudyApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(OFFLINE_STUDY_REQUEST));
 
@@ -302,7 +302,7 @@ class StudyApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(ONLINE_STUDY_REQUEST));
 
@@ -369,7 +369,7 @@ class StudyApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(ONLINE_STUDY_REQUEST));
 
@@ -436,7 +436,7 @@ class StudyApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(ONLINE_STUDY_REQUEST));
 
@@ -503,7 +503,7 @@ class StudyApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(ONLINE_STUDY_REQUEST));
 
@@ -583,7 +583,7 @@ class StudyApiControllerTest extends ControllerTest {
             );
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(request));
 
@@ -647,7 +647,7 @@ class StudyApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, STUDY_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(OFFLINE_STUDY_REQUEST));
 
@@ -723,7 +723,7 @@ class StudyApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .delete(BASE_URL, STUDY_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
+                    .header(AUTHORIZATION, applyAccessToken());
 
             // then
             final StudyErrorCode expectedError = StudyErrorCode.MEMBER_IS_NOT_HOST;
@@ -754,7 +754,7 @@ class StudyApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .delete(BASE_URL, STUDY_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
+                    .header(AUTHORIZATION, applyAccessToken());
 
             // then
             mockMvc.perform(requestBuilder)

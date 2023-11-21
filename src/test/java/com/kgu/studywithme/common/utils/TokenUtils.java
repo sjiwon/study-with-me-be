@@ -10,12 +10,12 @@ public class TokenUtils {
     public static final String REFRESH_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjc3OTM3MjI0LCJleHAiOjE2Nzg1NDIwMjR9.doqGa5Hcq6chjER1y5brJEv81z0njcJqeYxJb159ZX4";
     public static final long EXPIRES_IN = 3000;
 
-    public static String applyAccessTokenToAuthorizationHeader() {
+    public static String applyAccessToken() {
         return String.join(" ", BEARER_TOKEN, ACCESS_TOKEN);
     }
 
-    public static String applyRefreshTokenToAuthorizationHeader() {
-        return String.join(" ", BEARER_TOKEN, REFRESH_TOKEN);
+    public static String applyRefreshToken() {
+        return REFRESH_TOKEN;
     }
 
     public static AuthToken createTokenResponse() {

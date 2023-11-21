@@ -5,7 +5,10 @@ import org.springframework.restdocs.operation.preprocess.OperationResponsePrepro
 import org.springframework.restdocs.snippet.Attributes;
 import org.springframework.restdocs.snippet.Snippet;
 
+import static com.kgu.studywithme.auth.utils.TokenResponseWriter.REFRESH_TOKEN_COOKIE;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
+import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
@@ -30,8 +33,8 @@ public class RestDocsSpecificationUtils {
     }
 
     public static Snippet getHeaderWithRefreshToken() {
-        return requestHeaders(
-                headerWithName(AUTHORIZATION).description("Refresh Token")
+        return requestCookies(
+                cookieWithName(REFRESH_TOKEN_COOKIE).description("Refresh Token")
         );
     }
 

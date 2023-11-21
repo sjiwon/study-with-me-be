@@ -10,6 +10,7 @@
 HTTP Request
 include::{snippets}/TokenReissueApi/Failure/Case1/http-request.adoc[]
 include::{snippets}/TokenReissueApi/Failure/Case1/request-headers.adoc[]
+include::{snippets}/TokenReissueApi/Failure/Case1/request-cookies.adoc[]
 
 HTTP Response
 include::{snippets}/TokenReissueApi/Failure/Case1/response-body.adoc[]
@@ -18,6 +19,7 @@ include::{snippets}/TokenReissueApi/Failure/Case1/response-body.adoc[]
 HTTP Request
 include::{snippets}/TokenReissueApi/Failure/Case2/http-request.adoc[]
 include::{snippets}/TokenReissueApi/Failure/Case2/request-headers.adoc[]
+include::{snippets}/TokenReissueApi/Failure/Case2/request-cookies.adoc[]
 
 HTTP Response
 include::{snippets}/TokenReissueApi/Failure/Case2/response-body.adoc[]
@@ -26,7 +28,9 @@ include::{snippets}/TokenReissueApi/Failure/Case2/response-body.adoc[]
 HTTP Request
 include::{snippets}/TokenReissueApi/Success/http-request.adoc[]
 include::{snippets}/TokenReissueApi/Success/request-headers.adoc[]
+include::{snippets}/TokenReissueApi/Success/request-cookies.adoc[]
 
 HTTP Response
-include::{snippets}/TokenReissueApi/Success/response-body.adoc[]
-include::{snippets}/TokenReissueApi/Success/response-fields.adoc[]
+include::{snippets}/TokenReissueApi/Success/http-response.adoc[]
+include::{snippets}/TokenReissueApi/Success/response-headers.adoc[]
+include::{snippets}/TokenReissueApi/Success/response-cookies.adoc[]

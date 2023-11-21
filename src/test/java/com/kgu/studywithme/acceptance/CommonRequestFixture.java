@@ -1,6 +1,7 @@
 package com.kgu.studywithme.acceptance;
 
 import io.restassured.RestAssured;
+import io.restassured.http.Cookie;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import static com.kgu.studywithme.auth.utils.TokenResponseWriter.REFRESH_TOKEN_COOKIE;
 import static io.restassured.http.ContentType.JSON;
 import static io.restassured.http.ContentType.MULTIPART;
 
@@ -63,6 +65,20 @@ public class CommonRequestFixture {
         return request(given -> given
                 .contentType(JSON)
                 .auth().oauth2(accessToken)
+                .when()
+                .post(path)
+        );
+    }
+
+    public static ValidatableResponse postRequest(
+            final String accessToken,
+            final String refreshToken,
+            final String path
+    ) {
+        return request(given -> given
+                .contentType(JSON)
+                .auth().oauth2(accessToken)
+                .cookie(new Cookie.Builder(REFRESH_TOKEN_COOKIE, refreshToken).build())
                 .when()
                 .post(path)
         );

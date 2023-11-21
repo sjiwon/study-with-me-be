@@ -1,7 +1,5 @@
 package com.kgu.studywithme.acceptance.study;
 
-import com.kgu.studywithme.auth.domain.model.AuthMember;
-import com.kgu.studywithme.auth.domain.model.AuthToken;
 import com.kgu.studywithme.common.AcceptanceTest;
 import com.kgu.studywithme.common.config.DatabaseCleanerAllCallbackExtension;
 import com.kgu.studywithme.common.fixture.MemberFixture;
@@ -55,7 +53,7 @@ public class StudySearchAcceptanceTest extends AcceptanceTest {
 
     @BeforeAll
     static void setUp() {
-        hostAccessToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행한다().token().accessToken();
+        hostAccessToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행하고_AccessToken을_추출한다();
         studies = Stream.of(RABBITMQ, OOP, REDIS, JSP, TOEIC, LINE_INTERVIEW)
                 .collect(Collectors.toMap(
                         study -> study,
@@ -66,9 +64,7 @@ public class StudySearchAcceptanceTest extends AcceptanceTest {
                 .toList();
 
         final List<String> participantAccessTokens = Stream.of(DUMMY1, DUMMY2, DUMMY3, DUMMY4, DUMMY5)
-                .map(MemberFixture::로그인을_진행한다)
-                .map(AuthMember::token)
-                .map(AuthToken::accessToken)
+                .map(MemberFixture::로그인을_진행하고_AccessToken을_추출한다)
                 .toList();
 
         for (StudyFixture fixture : studies.keySet()) {

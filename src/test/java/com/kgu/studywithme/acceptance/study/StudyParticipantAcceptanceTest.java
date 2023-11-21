@@ -43,13 +43,13 @@ public class StudyParticipantAcceptanceTest extends AcceptanceTest {
 
     @BeforeEach
     void setUp() {
-        hostAccessToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행한다().token().accessToken();
+        hostAccessToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행하고_AccessToken을_추출한다();
 
         idOfMemberA = GHOST.회원가입을_진행한다();
-        accessTokenOfMemberA = GHOST.로그인을_진행한다().token().accessToken();
+        accessTokenOfMemberA = GHOST.로그인을_진행하고_AccessToken을_추출한다();
 
         idOfMemberB = ANONYMOUS.회원가입을_진행한다();
-        accessTokenOfMemberB = ANONYMOUS.로그인을_진행한다().token().accessToken();
+        accessTokenOfMemberB = ANONYMOUS.로그인을_진행하고_AccessToken을_추출한다();
 
         studyId = SPRING.스터디를_생성한다(hostAccessToken);
         twoCapacityAndZeroPolicyStudyId = KAFKA.스터디를_생성한다(hostAccessToken);

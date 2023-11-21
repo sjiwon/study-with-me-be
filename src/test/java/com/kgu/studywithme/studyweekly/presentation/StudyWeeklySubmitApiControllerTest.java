@@ -21,7 +21,7 @@ import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDoc
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getExceptionResponseFields;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
-import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessTokenToAuthorizationHeader;
+import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessToken;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -63,7 +63,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL, STUDY_ID, WEEKLY_ID)
                     .file((MockMultipartFile) file)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .queryParam("type", "file");
 
             // then
@@ -113,7 +113,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL, STUDY_ID, WEEKLY_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .queryParam("type", "file");
 
             // then
@@ -164,7 +164,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL, STUDY_ID, WEEKLY_ID)
                     .file((MockMultipartFile) file)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .queryParam("type", "file")
                     .queryParam("link", "https://notion.so");
 
@@ -216,7 +216,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL, STUDY_ID, WEEKLY_ID)
                     .file((MockMultipartFile) file)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .queryParam("type", "link");
 
             // then
@@ -264,7 +264,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL, STUDY_ID, WEEKLY_ID)
                     .file((MockMultipartFile) file)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .queryParam("type", "file");
 
             // then
@@ -308,7 +308,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL, STUDY_ID, WEEKLY_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .queryParam("type", "link")
                     .queryParam("link", "https://notion.so");
 
@@ -372,7 +372,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL, STUDY_ID, WEEKLY_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .queryParam("type", "link")
                     .queryParam("link", "https://notion.so");
 
@@ -423,7 +423,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL, STUDY_ID, WEEKLY_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .queryParam("type", "file");
 
             // then
@@ -474,7 +474,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL, STUDY_ID, WEEKLY_ID)
                     .file((MockMultipartFile) file)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .queryParam("type", "file")
                     .queryParam("link", "https://notion.so");
 
@@ -526,7 +526,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL, STUDY_ID, WEEKLY_ID)
                     .file((MockMultipartFile) file)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .queryParam("type", "link");
 
             // then
@@ -577,7 +577,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL, STUDY_ID, WEEKLY_ID)
                     .file((MockMultipartFile) file)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .queryParam("type", "file")
                     .queryParam("link", "https://notion.so");
 
@@ -625,7 +625,7 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL, STUDY_ID, WEEKLY_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .queryParam("type", "link")
                     .queryParam("link", "https://notion.so");
 

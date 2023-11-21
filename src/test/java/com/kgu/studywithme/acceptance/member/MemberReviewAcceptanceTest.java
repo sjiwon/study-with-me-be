@@ -36,9 +36,9 @@ public class MemberReviewAcceptanceTest extends AcceptanceTest {
     @BeforeEach
     void setUp() {
         hostId = JIWON.회원가입을_진행한다();
-        hostAccessToken = JIWON.로그인을_진행한다().token().accessToken();
+        hostAccessToken = JIWON.로그인을_진행하고_AccessToken을_추출한다();
         memberId = GHOST.회원가입을_진행한다();
-        final String memberAccessToken = GHOST.로그인을_진행한다().token().accessToken();
+        final String memberAccessToken = GHOST.로그인을_진행하고_AccessToken을_추출한다();
 
         studyId = 스터디를_생성하고_PK를_얻는다(hostAccessToken, SPRING);
         스터디_참여_신청을_한다(memberAccessToken, studyId);
