@@ -42,6 +42,9 @@ include::{snippets}/OAuthApi/Login/Success/http-request.adoc[]
 include::{snippets}/OAuthApi/Login/Success/request-fields.adoc[]
 
 HTTP Response
+include::{snippets}/OAuthApi/Login/Success/http-response.adoc[]
+include::{snippets}/OAuthApi/Login/Success/response-headers.adoc[]
+include::{snippets}/OAuthApi/Login/Success/response-cookies.adoc[]
 include::{snippets}/OAuthApi/Login/Success/response-body.adoc[]
 include::{snippets}/OAuthApi/Login/Success/response-fields.adoc[]
 

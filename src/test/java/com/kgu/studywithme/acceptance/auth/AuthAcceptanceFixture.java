@@ -46,13 +46,13 @@ public class AuthAcceptanceFixture {
         return postRequest(accessToken, uri);
     }
 
-    public static ValidatableResponse 토큰을_재발급받는다(final String refreshToken) {
+    public static ValidatableResponse 토큰을_재발급받는다(final String accessToken, final String refreshToken) {
         final String uri = UriComponentsBuilder
                 .fromPath("/api/token/reissue")
                 .build()
                 .toUri()
                 .getPath();
 
-        return postRequest(refreshToken, uri);
+        return postRequest(accessToken, refreshToken, uri);
     }
 }

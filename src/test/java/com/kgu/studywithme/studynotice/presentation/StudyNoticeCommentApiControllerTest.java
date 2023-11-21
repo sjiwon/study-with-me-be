@@ -15,7 +15,7 @@ import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDoc
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getExceptionResponseFields;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
-import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessTokenToAuthorizationHeader;
+import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessToken;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
@@ -51,7 +51,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, NOTICE_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(REQUEST));
 
@@ -91,7 +91,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, NOTICE_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(REQUEST));
 
@@ -139,7 +139,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, NOTICE_ID, COMMENT_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(REQUEST));
 
@@ -181,7 +181,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, NOTICE_ID, COMMENT_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(REQUEST));
 
@@ -230,7 +230,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .delete(BASE_URL, NOTICE_ID, COMMENT_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
+                    .header(AUTHORIZATION, applyAccessToken());
 
             // then
             final StudyNoticeErrorCode expectedError = StudyNoticeErrorCode.ONLY_WRITER_CAN_DELETE_NOTICE_COMMENT;
@@ -266,7 +266,7 @@ class StudyNoticeCommentApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .delete(BASE_URL, NOTICE_ID, COMMENT_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
+                    .header(AUTHORIZATION, applyAccessToken());
 
             // then
             mockMvc.perform(requestBuilder)

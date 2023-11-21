@@ -9,11 +9,14 @@ import com.kgu.studywithme.auth.application.usecase.query.GetOAuthLink;
 import com.kgu.studywithme.auth.domain.model.AuthMember;
 import com.kgu.studywithme.auth.domain.model.oauth.OAuthProvider;
 import com.kgu.studywithme.auth.presentation.dto.request.OAuthLoginRequest;
+import com.kgu.studywithme.auth.presentation.dto.response.LoginResponse;
+import com.kgu.studywithme.auth.utils.TokenResponseWriter;
 import com.kgu.studywithme.global.aop.CheckAuthUser;
 import com.kgu.studywithme.global.dto.ResponseWrapper;
 import com.kgu.studywithme.global.resolver.ExtractPayload;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class OAuthApiController {
     private final GetOAuthLinkUseCase getOAuthLinkUseCase;
     private final OAuthLoginUseCase oAuthLoginUseCase;
+    private final TokenResponseWriter tokenResponseWriter;
     private final LogoutUseCase logoutUseCase;
 
     @Operation(summary = "Provider별 OAuth 인증을 위한 URL을 받는 EndPoint")
@@ -49,15 +53,24 @@ public class OAuthApiController {
 
     @Operation(summary = "Authorization Code를 통해서 Provider별 인증을 위한 EndPoint")
     @PostMapping("/login/{provider}")
-    public AuthMember login(
+    public ResponseEntity<LoginResponse> login(
             @PathVariable final String provider,
-            @RequestBody @Valid final OAuthLoginRequest request
+            @RequestBody @Valid final OAuthLoginRequest request,
+            final HttpServletResponse response
     ) {
-        return oAuthLoginUseCase.invoke(new OAuthLoginCommand(
+        final AuthMember authMember = oAuthLoginUseCase.invoke(new OAuthLoginCommand(
                 OAuthProvider.from(provider),
                 request.authorizationCode(),
                 request.redirectUri(),
                 request.state()
+        ));
+        tokenResponseWriter.applyAccessToken(response, authMember.token().accessToken());
+        tokenResponseWriter.applyRefreshToken(response, authMember.token().refreshToken());
+
+        return ResponseEntity.ok(new LoginResponse(
+                authMember.member().id(),
+                authMember.member().nickname(),
+                authMember.member().email()
         ));
     }
 

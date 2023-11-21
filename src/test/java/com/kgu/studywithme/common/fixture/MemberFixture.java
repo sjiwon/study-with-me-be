@@ -18,10 +18,12 @@ import lombok.RequiredArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 import static com.kgu.studywithme.acceptance.auth.AuthAcceptanceFixture.Google_OAuth_로그인을_진행한다;
+import static com.kgu.studywithme.auth.utils.TokenResponseWriter.REFRESH_TOKEN_COOKIE;
 import static com.kgu.studywithme.category.domain.model.Category.APTITUDE_NCS;
 import static com.kgu.studywithme.category.domain.model.Category.CERTIFICATION;
 import static com.kgu.studywithme.category.domain.model.Category.ETC;
@@ -34,6 +36,7 @@ import static com.kgu.studywithme.common.utils.OAuthUtils.REDIRECT_URI;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.REFRESH_TOKEN;
 import static com.kgu.studywithme.member.domain.model.Gender.MALE;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Getter
 @RequiredArgsConstructor
@@ -156,7 +159,79 @@ public enum MemberFixture {
         );
     }
 
-    public AuthMember 회원가입_후_Google_OAuth_로그인을_진행한다() {
+    public Long 회원가입을_진행한다() {
+        return MemberAcceptanceFixture.회원가입을_진행한다(this)
+                .extract()
+                .jsonPath()
+                .getLong("memberId");
+    }
+
+    public String 로그인을_진행하고_AccessToken을_추출한다() {
+        final ValidatableResponse response = Google_OAuth_로그인을_진행한다(
+                GOOGLE_PROVIDER,
+                getAuthorizationCodeByIdentifier(this.getEmail().getValue()),
+                REDIRECT_URI,
+                UUID.randomUUID().toString()
+        );
+
+        final String token = response
+                .extract()
+                .header(AUTHORIZATION);
+
+        return token.split(" ")[1];
+    }
+
+    public String 로그인을_진행하고_RefreshToken을_추출한다() {
+        final ValidatableResponse response = Google_OAuth_로그인을_진행한다(
+                GOOGLE_PROVIDER,
+                getAuthorizationCodeByIdentifier(this.getEmail().getValue()),
+                REDIRECT_URI,
+                UUID.randomUUID().toString()
+        );
+
+        return response
+                .extract()
+                .cookie(REFRESH_TOKEN_COOKIE);
+    }
+
+    public List<String> 회원가입_후_Google_OAuth_로그인을_진행하고_Token을_추출한다() {
+        MemberAcceptanceFixture.회원가입을_진행한다(this);
+
+        final ValidatableResponse response = Google_OAuth_로그인을_진행한다(
+                GOOGLE_PROVIDER,
+                getAuthorizationCodeByIdentifier(this.getEmail().getValue()),
+                REDIRECT_URI,
+                UUID.randomUUID().toString()
+        );
+
+        final String accessToken = response
+                .extract()
+                .header(AUTHORIZATION)
+                .split(" ")[1];
+        final String refreshToken = response
+                .extract()
+                .cookie(REFRESH_TOKEN_COOKIE);
+        return List.of(accessToken, refreshToken);
+    }
+
+    public String 회원가입_후_Google_OAuth_로그인을_진행하고_AccessToken을_추출한다() {
+        MemberAcceptanceFixture.회원가입을_진행한다(this);
+
+        final ValidatableResponse response = Google_OAuth_로그인을_진행한다(
+                GOOGLE_PROVIDER,
+                getAuthorizationCodeByIdentifier(this.getEmail().getValue()),
+                REDIRECT_URI,
+                UUID.randomUUID().toString()
+        );
+
+        final String token = response
+                .extract()
+                .header(AUTHORIZATION);
+
+        return token.split(" ")[1];
+    }
+
+    public String 회원가입_후_Google_OAuth_로그인을_진행하고_RefreshToken을_추출한다() {
         MemberAcceptanceFixture.회원가입을_진행한다(this);
 
         final ValidatableResponse response = Google_OAuth_로그인을_진행한다(
@@ -168,26 +243,6 @@ public enum MemberFixture {
 
         return response
                 .extract()
-                .as(AuthMember.class);
-    }
-
-    public Long 회원가입을_진행한다() {
-        return MemberAcceptanceFixture.회원가입을_진행한다(this)
-                .extract()
-                .jsonPath()
-                .getLong("memberId");
-    }
-
-    public AuthMember 로그인을_진행한다() {
-        final ValidatableResponse response = Google_OAuth_로그인을_진행한다(
-                GOOGLE_PROVIDER,
-                getAuthorizationCodeByIdentifier(this.getEmail().getValue()),
-                REDIRECT_URI,
-                UUID.randomUUID().toString()
-        );
-
-        return response
-                .extract()
-                .as(AuthMember.class);
+                .cookie(REFRESH_TOKEN_COOKIE);
     }
 }

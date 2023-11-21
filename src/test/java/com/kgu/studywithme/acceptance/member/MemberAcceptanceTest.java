@@ -34,7 +34,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         @Test
         @DisplayName("사용자 정보를 수정한다")
         void signUpApi() {
-            final String accessToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행한다().token().accessToken();
+            final String accessToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행하고_AccessToken을_추출한다();
             사용자_정보를_수정한다(accessToken, GHOST)
                     .statusCode(NO_CONTENT.value());
         }

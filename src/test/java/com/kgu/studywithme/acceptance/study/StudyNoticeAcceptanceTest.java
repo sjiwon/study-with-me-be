@@ -37,9 +37,9 @@ public class StudyNoticeAcceptanceTest extends AcceptanceTest {
 
     @BeforeEach
     void setUp() {
-        hostAccessToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행한다().token().accessToken();
+        hostAccessToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행하고_AccessToken을_추출한다();
         final Long memberId = GHOST.회원가입을_진행한다();
-        memberAccessToken = GHOST.로그인을_진행한다().token().accessToken();
+        memberAccessToken = GHOST.로그인을_진행하고_AccessToken을_추출한다();
 
         studyId = SPRING.스터디를_생성한다(hostAccessToken);
         스터디_참여_신청을_한다(memberAccessToken, studyId);
@@ -132,7 +132,7 @@ public class StudyNoticeAcceptanceTest extends AcceptanceTest {
             @Test
             @DisplayName("참여자가 아니면 공지사항에 댓글을 작성할 수 없다")
             void memberIsNotParticipant() {
-                final String anonymousAccessToken = DUMMY9.회원가입_후_Google_OAuth_로그인을_진행한다().token().accessToken();
+                final String anonymousAccessToken = DUMMY9.회원가입_후_Google_OAuth_로그인을_진행하고_AccessToken을_추출한다();
                 스터디_공지사항에_댓글을_작성한다(anonymousAccessToken, noticeId)
                         .statusCode(ONLY_PARTICIPANT_CAN_WRITE_COMMENT.getStatus().value())
                         .body("errorCode", is(ONLY_PARTICIPANT_CAN_WRITE_COMMENT.getErrorCode()))

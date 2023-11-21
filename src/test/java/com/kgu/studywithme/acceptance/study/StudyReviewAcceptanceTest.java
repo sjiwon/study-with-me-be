@@ -30,9 +30,9 @@ public class StudyReviewAcceptanceTest extends AcceptanceTest {
 
     @BeforeEach
     void setUp() {
-        final String hostAccessToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행한다().token().accessToken();
+        final String hostAccessToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행하고_AccessToken을_추출한다();
         final Long participantId = GHOST.회원가입을_진행한다();
-        participantAccessToken = GHOST.로그인을_진행한다().token().accessToken();
+        participantAccessToken = GHOST.로그인을_진행하고_AccessToken을_추출한다();
         studyId = KAFKA.스터디를_생성한다(hostAccessToken);
         스터디_참여_신청을_한다(participantAccessToken, studyId);
         스터디_신청자에_대한_참여를_승인한다(hostAccessToken, studyId, participantId);

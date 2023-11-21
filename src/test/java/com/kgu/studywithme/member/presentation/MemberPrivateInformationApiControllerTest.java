@@ -20,7 +20,7 @@ import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentRequest;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
-import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessTokenToAuthorizationHeader;
+import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessToken;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -65,7 +65,7 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .get(BASE_URL)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
+                    .header(AUTHORIZATION, applyAccessToken());
 
             // then
             mockMvc.perform(requestBuilder)
@@ -137,7 +137,7 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .get(BASE_URL)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
+                    .header(AUTHORIZATION, applyAccessToken());
 
             // then
             mockMvc.perform(requestBuilder)
@@ -195,7 +195,7 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .get(BASE_URL)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader());
+                    .header(AUTHORIZATION, applyAccessToken());
 
             // then
             mockMvc.perform(requestBuilder)

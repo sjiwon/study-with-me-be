@@ -19,7 +19,7 @@ import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.constr
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentRequest;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
-import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessTokenToAuthorizationHeader;
+import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessToken;
 import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.ON;
 import static com.kgu.studywithme.study.domain.model.StudyType.ONLINE;
 import static com.kgu.studywithme.study.utils.search.PagingConstants.SLICE_PER_PAGE;
@@ -136,7 +136,7 @@ class StudySearchApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .get(BASE_URL)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .param("sort", "date")
                     .param("page", String.valueOf(0))
                     .param("type", "online");

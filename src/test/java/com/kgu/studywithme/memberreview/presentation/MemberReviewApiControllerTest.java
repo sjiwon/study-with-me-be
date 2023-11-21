@@ -15,7 +15,7 @@ import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDoc
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getExceptionResponseFields;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
-import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessTokenToAuthorizationHeader;
+import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessToken;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
@@ -53,7 +53,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, REVIEWEE_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(REQUEST));
 
@@ -93,7 +93,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, REVIEWEE_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(REQUEST));
 
@@ -133,7 +133,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, REVIEWEE_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(REQUEST));
 
@@ -171,7 +171,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .post(BASE_URL, REVIEWEE_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(REQUEST));
 
@@ -224,7 +224,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, REVIEWEE_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(REQUEST));
 
@@ -264,7 +264,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, REVIEWEE_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(REQUEST));
 
@@ -304,7 +304,7 @@ class MemberReviewApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .patch(BASE_URL, REVIEWEE_ID)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .contentType(APPLICATION_JSON)
                     .content(convertObjectToJson(REQUEST));
 

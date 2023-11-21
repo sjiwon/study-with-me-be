@@ -7,11 +7,14 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.util.List;
+
 import static com.kgu.studywithme.acceptance.auth.AuthAcceptanceFixture.Google_OAuth_로그인을_진행한다;
 import static com.kgu.studywithme.acceptance.auth.AuthAcceptanceFixture.Google_OAuth_인증_URL를_생성한다;
 import static com.kgu.studywithme.acceptance.auth.AuthAcceptanceFixture.로그아웃을_진행한다;
 import static com.kgu.studywithme.acceptance.auth.AuthAcceptanceFixture.토큰을_재발급받는다;
 import static com.kgu.studywithme.acceptance.member.MemberAcceptanceFixture.회원가입을_진행한다;
+import static com.kgu.studywithme.auth.utils.TokenResponseWriter.REFRESH_TOKEN_COOKIE;
 import static com.kgu.studywithme.common.fixture.MemberFixture.JIWON;
 import static com.kgu.studywithme.common.fixture.OAuthFixture.GOOGLE_JIWON;
 import static com.kgu.studywithme.common.utils.OAuthUtils.GOOGLE_PROVIDER;
@@ -19,6 +22,8 @@ import static com.kgu.studywithme.common.utils.OAuthUtils.REDIRECT_URI;
 import static com.kgu.studywithme.common.utils.OAuthUtils.STATE;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.SET_COOKIE;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
@@ -57,11 +62,12 @@ public class AuthAcceptanceTest extends AcceptanceTest {
 
             Google_OAuth_로그인을_진행한다(GOOGLE_PROVIDER, GOOGLE_JIWON.getAuthorizationCode(), REDIRECT_URI, STATE)
                     .statusCode(OK.value())
-                    .body("member.id", notNullValue(Long.class))
-                    .body("member.nickname", is(JIWON.getNickname().getValue()))
-                    .body("member.email", is(JIWON.getEmail().getValue()))
-                    .body("token.accessToken", notNullValue(String.class))
-                    .body("token.refreshToken", notNullValue(String.class));
+                    .header(AUTHORIZATION, notNullValue(String.class))
+                    .header(SET_COOKIE, notNullValue(String.class))
+                    .cookie(REFRESH_TOKEN_COOKIE, notNullValue(String.class))
+                    .body("id", notNullValue(Long.class))
+                    .body("nickname", is(JIWON.getNickname().getValue()))
+                    .body("email", is(JIWON.getEmail().getValue()));
         }
     }
 
@@ -71,7 +77,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         @Test
         @DisplayName("로그아웃을 진행한다")
         void success() {
-            final String accessToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행한다().token().accessToken();
+            final String accessToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행하고_AccessToken을_추출한다();
             로그아웃을_진행한다(accessToken)
                     .statusCode(NO_CONTENT.value());
         }
@@ -83,11 +89,12 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         @Test
         @DisplayName("RefreshToken을 통해서 AccessToken + RefreshToken을 재발급받는다")
         void tokenReissueApi() {
-            final String refreshToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행한다().token().refreshToken();
-            토큰을_재발급받는다(refreshToken)
-                    .statusCode(OK.value())
-                    .body("accessToken", notNullValue(String.class))
-                    .body("refreshToken", notNullValue(String.class));
+            final List<String> token = JIWON.회원가입_후_Google_OAuth_로그인을_진행하고_Token을_추출한다();
+            토큰을_재발급받는다(token.get(0), token.get(1))
+                    .statusCode(NO_CONTENT.value())
+                    .header(AUTHORIZATION, notNullValue(String.class))
+                    .header(SET_COOKIE, notNullValue(String.class))
+                    .cookie(REFRESH_TOKEN_COOKIE, notNullValue(String.class));
         }
     }
 }

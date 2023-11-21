@@ -16,7 +16,7 @@ import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDoc
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getExceptionResponseFields;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
-import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessTokenToAuthorizationHeader;
+import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessToken;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -49,7 +49,7 @@ class FileUploadApiControllerTest extends ControllerTest {
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL)
                     .file((MockMultipartFile) file)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .queryParam("type", "studyWeeklyContentImage");
 
             // then
@@ -92,7 +92,7 @@ class FileUploadApiControllerTest extends ControllerTest {
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL)
                     .file((MockMultipartFile) file)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .queryParam("type", "studyWeeklyContentImage");
 
             // then
@@ -143,7 +143,7 @@ class FileUploadApiControllerTest extends ControllerTest {
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL)
                     .file((MockMultipartFile) file)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .queryParam("type", "studyDescriptionImage");
 
             // then
@@ -186,7 +186,7 @@ class FileUploadApiControllerTest extends ControllerTest {
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .multipart(BASE_URL)
                     .file((MockMultipartFile) file)
-                    .header(AUTHORIZATION, applyAccessTokenToAuthorizationHeader())
+                    .header(AUTHORIZATION, applyAccessToken())
                     .queryParam("type", "studyDescriptionImage");
 
             // then
