@@ -16,11 +16,14 @@ public class ReissueTokenUseCase {
 
     @StudyWithMeWritableTransactional
     public AuthToken invoke(final ReissueTokenCommand command) {
-        if (isAnonymousRefreshToken(command.memberId(), command.refreshToken())) {
+        validateMemberToken(command.memberId(), command.refreshToken());
+        return tokenIssuer.reissueAuthorityToken(command.memberId());
+    }
+
+    private void validateMemberToken(final Long memberId, final String refreshToken) {
+        if (isAnonymousRefreshToken(memberId, refreshToken)) {
             throw StudyWithMeException.type(AuthErrorCode.INVALID_TOKEN);
         }
-
-        return tokenIssuer.reissueAuthorityToken(command.memberId());
     }
 
     private boolean isAnonymousRefreshToken(final Long memberId, final String refreshToken) {
