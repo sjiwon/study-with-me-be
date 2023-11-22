@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 @RequiredArgsConstructor
-public class CheckStudyParticipantAspect {
+public class CheckStudyParticipantAop {
     private final StudyParticipantRepository studyParticipantRepository;
 
     @Before("@annotation(com.kgu.studywithme.global.aop.CheckStudyParticipant) && args(memberId, studyId, ..)")
