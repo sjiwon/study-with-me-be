@@ -29,6 +29,7 @@ public class WriteStudyReviewUseCase {
 
         validateMemberIsGraduatedStudy(study, member);
         validateAlreadyWritten(study, member);
+        studyRepository.increaseReviewCount(study.getId());
         return studyReviewRepository.save(StudyReview.writeReview(study, member, command.content())).getId();
     }
 

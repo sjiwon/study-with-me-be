@@ -15,7 +15,6 @@ import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Version;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -91,9 +90,6 @@ public class Study extends BaseEntity<Study> {
 
     @Column(name = "review_count", nullable = false)
     private int reviewCount;
-
-    @Version
-    private Long version;
 
     private Study(
             final Member host,
@@ -232,22 +228,6 @@ public class Study extends BaseEntity<Study> {
 
     public boolean isParticipantMeetGraduationPolicy(final int attendanceCount) {
         return graduationPolicy.isGraduationRequirementsFulfilled(attendanceCount);
-    }
-
-    public void increaseFavoriteCount() {
-        favoriteCount++;
-    }
-
-    public void decreaseFavoriteCount() {
-        favoriteCount--;
-    }
-
-    public void increaseReviewCount() {
-        reviewCount++;
-    }
-
-    public void decreaseReviewCount() {
-        reviewCount--;
     }
 
     public List<String> getHashtags() {
