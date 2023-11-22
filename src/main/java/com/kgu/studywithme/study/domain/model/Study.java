@@ -15,6 +15,7 @@ import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -84,6 +85,16 @@ public class Study extends BaseEntity<Study> {
     @JoinColumn(name = "host_id", referencedColumnName = "id", nullable = false)
     private Member host;
 
+    // Denormalization
+    @Column(name = "favorite_count", nullable = false)
+    private int favoriteCount;
+
+    @Column(name = "review_count", nullable = false)
+    private int reviewCount;
+
+    @Version
+    private Long version;
+
     private Study(
             final Member host,
             final StudyName name,
@@ -109,6 +120,8 @@ public class Study extends BaseEntity<Study> {
         this.graduationPolicy = GraduationPolicy.initPolicy(minimumAttendanceForGraduation);
         this.terminated = false;
         this.hashtags = new Hashtags(this, hashtags);
+        this.favoriteCount = 0;
+        this.reviewCount = 0;
     }
 
     public static Study createOnlineStudy(
@@ -219,6 +232,22 @@ public class Study extends BaseEntity<Study> {
 
     public boolean isParticipantMeetGraduationPolicy(final int attendanceCount) {
         return graduationPolicy.isGraduationRequirementsFulfilled(attendanceCount);
+    }
+
+    public void increaseFavoriteCount() {
+        favoriteCount++;
+    }
+
+    public void decreaseFavoriteCount() {
+        favoriteCount--;
+    }
+
+    public void increaseReviewCount() {
+        reviewCount++;
+    }
+
+    public void decreaseReviewCount() {
+        reviewCount--;
     }
 
     public List<String> getHashtags() {

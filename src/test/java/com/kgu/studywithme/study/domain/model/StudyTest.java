@@ -47,6 +47,8 @@ class StudyTest extends ParallelTest {
                 () -> assertThat(onlineStudy.getGraduationPolicy().getUpdateChance()).isEqualTo(GraduationPolicy.DEFAULT_UPDATE_CHANCE),
                 () -> assertThat(onlineStudy.isTerminated()).isFalse(),
                 () -> assertThat(onlineStudy.getHashtags()).containsExactlyInAnyOrderElementsOf(SPRING.getHashtags()),
+                () -> assertThat(onlineStudy.getFavoriteCount()).isEqualTo(0),
+                () -> assertThat(onlineStudy.getReviewCount()).isEqualTo(0),
 
                 () -> assertThat(offlineStudy.getName()).isEqualTo(TOSS_INTERVIEW.getName()),
                 () -> assertThat(offlineStudy.getDescription()).isEqualTo(TOSS_INTERVIEW.getDescription()),
@@ -60,7 +62,9 @@ class StudyTest extends ParallelTest {
                 () -> assertThat(offlineStudy.getGraduationPolicy().getMinimumAttendance()).isEqualTo(TOSS_INTERVIEW.getMinimumAttendanceForGraduation()),
                 () -> assertThat(offlineStudy.getGraduationPolicy().getUpdateChance()).isEqualTo(GraduationPolicy.DEFAULT_UPDATE_CHANCE),
                 () -> assertThat(offlineStudy.isTerminated()).isFalse(),
-                () -> assertThat(offlineStudy.getHashtags()).containsExactlyInAnyOrderElementsOf(TOSS_INTERVIEW.getHashtags())
+                () -> assertThat(offlineStudy.getHashtags()).containsExactlyInAnyOrderElementsOf(TOSS_INTERVIEW.getHashtags()),
+                () -> assertThat(offlineStudy.getFavoriteCount()).isEqualTo(0),
+                () -> assertThat(offlineStudy.getReviewCount()).isEqualTo(0)
         );
     }
 
