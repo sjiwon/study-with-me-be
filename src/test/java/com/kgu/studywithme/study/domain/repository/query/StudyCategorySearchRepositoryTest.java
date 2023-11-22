@@ -1142,6 +1142,7 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
 
         for (Member member : members) {
             favorites.add(Favorite.favoriteMarking(member, study));
+            study.increaseFavoriteCount();
         }
     }
 
@@ -1152,6 +1153,7 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
 
         for (Member member : members) {
             reviews.add(StudyReview.writeReview(study, member, "Good Study"));
+            study.increaseReviewCount();
         }
     }
 

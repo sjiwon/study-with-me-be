@@ -19,9 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,7 +27,6 @@ import static com.kgu.studywithme.favorite.domain.model.QFavorite.favorite;
 import static com.kgu.studywithme.member.domain.model.QInterest.interest;
 import static com.kgu.studywithme.study.domain.model.QHashtag.hashtag;
 import static com.kgu.studywithme.study.domain.model.QStudy.study;
-import static com.kgu.studywithme.studyreview.domain.model.QStudyReview.studyReview;
 
 @Repository
 @StudyWithMeReadOnlyTransactional
@@ -141,6 +138,10 @@ public class StudyCategorySearchRepositoryImpl implements StudyCategorySearchRep
                 .limit(pageable.getPageSize())
                 .fetch();
 
+        if (result.isEmpty()) {
+            return List.of();
+        }
+
         final List<Long> studyIds = result.stream()
                 .map(StudyPreview::getId)
                 .toList();
@@ -154,33 +155,23 @@ public class StudyCategorySearchRepositoryImpl implements StudyCategorySearchRep
             final Pageable pageable,
             final List<BooleanExpression> whereConditions
     ) {
-        final List<Long> studyIds = query
-                .select(study.id)
+        final List<StudyPreview> result = query
+                .select(studyPreviewProjection())
                 .from(study)
-                .leftJoin(favorite).on(favorite.study.id.eq(study.id))
                 .where(whereConditions.toArray(Predicate[]::new))
                 .groupBy(study.id)
-                .orderBy(favorite.count().desc(), study.id.desc())
+                .orderBy(study.favoriteCount.desc(), study.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        if (CollectionUtils.isEmpty(studyIds)) {
+        if (result.isEmpty()) {
             return List.of();
         }
 
-        final List<StudyPreview> preResult = query
-                .select(studyPreviewProjection())
-                .from(study)
-                .where(study.id.in(studyIds))
-                .fetch();
-
-        final List<StudyPreview> result = new ArrayList<>();
-        studyIds.forEach(
-                studyId -> preResult.stream()
-                        .filter(studyPreview -> studyPreview.getId().equals(studyId))
-                        .forEach(result::add)
-        );
+        final List<Long> studyIds = result.stream()
+                .map(StudyPreview::getId)
+                .toList();
 
         applyStudyHashtags(result, studyIds);
         applyLikeMarkingMembers(result, studyIds);
@@ -191,33 +182,23 @@ public class StudyCategorySearchRepositoryImpl implements StudyCategorySearchRep
             final Pageable pageable,
             final List<BooleanExpression> whereConditions
     ) {
-        final List<Long> studyIds = query
-                .select(study.id)
+        final List<StudyPreview> result = query
+                .select(studyPreviewProjection())
                 .from(study)
-                .leftJoin(studyReview).on(studyReview.study.id.eq(study.id))
                 .where(whereConditions.toArray(Predicate[]::new))
                 .groupBy(study.id)
-                .orderBy(studyReview.count().desc(), study.id.desc())
+                .orderBy(study.reviewCount.desc(), study.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        if (CollectionUtils.isEmpty(studyIds)) {
+        if (result.isEmpty()) {
             return List.of();
         }
 
-        final List<StudyPreview> preResult = query
-                .select(studyPreviewProjection())
-                .from(study)
-                .where(study.id.in(studyIds))
-                .fetch();
-
-        final List<StudyPreview> result = new ArrayList<>();
-        studyIds.forEach(
-                studyId -> preResult.stream()
-                        .filter(studyPreview -> studyPreview.getId().equals(studyId))
-                        .forEach(result::add)
-        );
+        final List<Long> studyIds = result.stream()
+                .map(StudyPreview::getId)
+                .toList();
 
         applyStudyHashtags(result, studyIds);
         applyLikeMarkingMembers(result, studyIds);

@@ -230,6 +230,22 @@ public class Study extends BaseEntity<Study> {
         return graduationPolicy.isGraduationRequirementsFulfilled(attendanceCount);
     }
 
+    public void increaseFavoriteCount() {
+        favoriteCount++;
+    }
+
+    public void decreaseFavoriteCount() {
+        favoriteCount--;
+    }
+
+    public void increaseReviewCount() {
+        reviewCount++;
+    }
+
+    public void decreaseReviewCount() {
+        reviewCount--;
+    }
+
     public List<String> getHashtags() {
         return hashtags.getHashtags()
                 .stream()
