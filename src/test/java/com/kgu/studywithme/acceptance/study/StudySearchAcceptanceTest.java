@@ -135,8 +135,7 @@ public class StudySearchAcceptanceTest extends AcceptanceTest {
                                 List.of(members.get(1), members.get(3)),
                                 List.of(),
                                 List.of(members.get(0), members.get(2), members.get(4))
-                        ),
-                        false
+                        )
                 );
             }
         }
@@ -158,8 +157,7 @@ public class StudySearchAcceptanceTest extends AcceptanceTest {
                                 List.of(members.get(1), members.get(3)),
                                 List.of(),
                                 List.of()
-                        ),
-                        false
+                        )
                 );
             }
         }
@@ -181,8 +179,7 @@ public class StudySearchAcceptanceTest extends AcceptanceTest {
                                 List.of(members.get(1), members.get(3)),
                                 List.of(),
                                 List.of()
-                        ),
-                        false
+                        )
                 );
             }
         }
@@ -210,8 +207,7 @@ public class StudySearchAcceptanceTest extends AcceptanceTest {
                                 List.of(members.get(1), members.get(3)),
                                 List.of(),
                                 List.of(members.get(0), members.get(2), members.get(4))
-                        ),
-                        false
+                        )
                 );
             }
         }
@@ -235,8 +231,7 @@ public class StudySearchAcceptanceTest extends AcceptanceTest {
                                 List.of(members.get(1), members.get(3)),
                                 List.of(),
                                 List.of()
-                        ),
-                        false
+                        )
                 );
             }
         }
@@ -260,8 +255,7 @@ public class StudySearchAcceptanceTest extends AcceptanceTest {
                                 List.of(members.get(1), members.get(3)),
                                 List.of(),
                                 List.of()
-                        ),
-                        false
+                        )
                 );
             }
         }
@@ -271,13 +265,11 @@ public class StudySearchAcceptanceTest extends AcceptanceTest {
             final ValidatableResponse response,
             final List<StudyFixture> studyFixtures,
             final List<Integer> participantMembers,
-            final List<List<Long>> likeMarkingMemberIds,
-            final boolean hasNext
+            final List<List<Long>> likeMarkingMemberIds
     ) {
         final int totalCount = studyFixtures.size();
         response
-                .body("studies", hasSize(totalCount))
-                .body("hasNext", is(hasNext));
+                .body("studies", hasSize(totalCount));
 
         for (int i = 0; i < totalCount; i++) {
             final String index = String.format("studies[%d]", i);

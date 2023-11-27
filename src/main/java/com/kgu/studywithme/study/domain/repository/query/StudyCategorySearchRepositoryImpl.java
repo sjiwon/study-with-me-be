@@ -16,8 +16,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
 
 import java.util.Arrays;
@@ -35,11 +33,11 @@ public class StudyCategorySearchRepositoryImpl implements StudyCategorySearchRep
     private final JPAQueryFactory query;
 
     @Override
-    public Slice<StudyPreview> fetchStudyByCategory(
+    public List<StudyPreview> fetchStudyByCategory(
             final SearchByCategoryCondition condition,
             final Pageable pageable
     ) {
-        final List<StudyPreview> result = projectionStudyPreview(
+        return projectionStudyPreview(
                 condition.sort(),
                 pageable,
                 Arrays.asList(
@@ -50,28 +48,10 @@ public class StudyCategorySearchRepositoryImpl implements StudyCategorySearchRep
                         studyIsNotTerminated()
                 )
         );
-
-        final Long totalCount = query
-                .select(study.id.count())
-                .from(study)
-                .where(
-                        studyLocationProvinceEq(condition.province()),
-                        studyLocationCityEq(condition.city()),
-                        studyTypeEq(condition.type()),
-                        studyCategoryEq(condition.category()),
-                        studyIsNotTerminated()
-                )
-                .fetchOne();
-
-        return new SliceImpl<>(
-                result,
-                pageable,
-                hasNext(pageable, result.size(), totalCount)
-        );
     }
 
     @Override
-    public Slice<StudyPreview> fetchStudyByRecommend(
+    public List<StudyPreview> fetchStudyByRecommend(
             final SearchByRecommendCondition condition,
             final Pageable pageable
     ) {
@@ -81,7 +61,7 @@ public class StudyCategorySearchRepositoryImpl implements StudyCategorySearchRep
                 .where(interest.member.id.eq(condition.memberId()))
                 .fetch();
 
-        final List<StudyPreview> result = projectionStudyPreview(
+        return projectionStudyPreview(
                 condition.sort(),
                 pageable,
                 Arrays.asList(
@@ -91,24 +71,6 @@ public class StudyCategorySearchRepositoryImpl implements StudyCategorySearchRep
                         studyCategoryIn(memberInterests),
                         studyIsNotTerminated()
                 )
-        );
-
-        final Long totalCount = query
-                .select(study.id.count())
-                .from(study)
-                .where(
-                        studyLocationProvinceEq(condition.province()),
-                        studyLocationCityEq(condition.city()),
-                        studyTypeEq(condition.type()),
-                        studyCategoryIn(memberInterests),
-                        studyIsNotTerminated()
-                )
-                .fetchOne();
-
-        return new SliceImpl<>(
-                result,
-                pageable,
-                hasNext(pageable, result.size(), totalCount)
         );
     }
 
@@ -271,17 +233,6 @@ public class StudyCategorySearchRepositoryImpl implements StudyCategorySearchRep
                 .toList();
     }
 
-    private boolean hasNext(
-            final Pageable pageable,
-            final int contentSize,
-            final Long totalCount
-    ) {
-        if (contentSize == pageable.getPageSize()) {
-            return (long) contentSize * (pageable.getPageNumber() + 1) != totalCount;
-        }
-        return false;
-    }
-
     private BooleanExpression studyLocationProvinceEq(final String province) {
         return (province != null) ? study.location.province.eq(province) : null;
     }
@@ -304,5 +255,16 @@ public class StudyCategorySearchRepositoryImpl implements StudyCategorySearchRep
 
     private BooleanExpression studyIsNotTerminated() {
         return study.terminated.isFalse();
+    }
+
+    private boolean hasNext(
+            final Pageable pageable,
+            final int contentSize,
+            final Long totalCount
+    ) {
+        if (contentSize == pageable.getPageSize()) {
+            return (long) contentSize * (pageable.getPageNumber() + 1) != totalCount;
+        }
+        return false;
     }
 }
