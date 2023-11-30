@@ -34,9 +34,11 @@ import static com.kgu.studywithme.study.domain.model.StudyType.ONLINE;
         name = "study",
         indexes = {
                 @Index(name = "idx_study_category_is_terminated", columnList = "category, is_terminated"),
+                @Index(name = "idx_study_category_is_terminated_favorite_count", columnList = "category, is_terminated, favorite_count"),
+                @Index(name = "idx_study_category_is_terminated_review_count", columnList = "category, is_terminated, review_count"),
                 @Index(name = "idx_study_study_type_category_is_terminated", columnList = "study_type, category, is_terminated"),
-                @Index(name = "idx_study_province_city_category_is_terminated", columnList = "province, city, category, is_terminated"),
-                @Index(name = "idx_study_province_city_study_type_category_is_terminated", columnList = "province, city, study_type, category, is_terminated")
+                @Index(name = "idx_study_study_type_category_is_terminated_favorite_count", columnList = "study_type, category, is_terminated, favorite_count"),
+                @Index(name = "idx_study_study_type_category_is_terminated_review_count", columnList = "study_type, category, is_terminated, review_count"),
         }
 )
 public class Study extends BaseEntity<Study> {
