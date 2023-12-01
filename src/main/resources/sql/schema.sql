@@ -74,6 +74,8 @@ CREATE TABLE IF NOT EXISTS study
     minimum_attendance   INT          NOT NULL,
     policy_update_chance INT          NOT NULL,
     is_terminated        TINYINT(1)   NOT NULL,
+    favorite_count       INT          NOT NULL DEFAULT 0,
+    review_count         INT          NOT NULL DEFAULT 0,
     created_at           DATETIME     NOT NULL,
     last_modified_at     DATETIME     NOT NULL
 ) ENGINE = InnoDB

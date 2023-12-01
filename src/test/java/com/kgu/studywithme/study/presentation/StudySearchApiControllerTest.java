@@ -44,7 +44,7 @@ class StudySearchApiControllerTest extends ControllerTest {
         @DisplayName("카테고리로 스터디 리스트를 조회한다 [Ex) 프로그래밍]")
         void success() throws Exception {
             // given
-            given(studySearchUseCase.getStudiesByCategory(any())).willReturn(new StudyPagingResponse(generateStudies(), true));
+            given(studySearchUseCase.getStudiesByCategory(any())).willReturn(new StudyPagingResponse(generateStudies()));
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .get(BASE_URL)
@@ -110,10 +110,7 @@ class StudySearchApiControllerTest extends ControllerTest {
                                             fieldWithPath("studies[].hashtags[]")
                                                     .description("스터디 해시태그"),
                                             fieldWithPath("studies[].likeMarkingMembers[]")
-                                                    .description("스터디 찜 사용자 ID(PK) 리스트"),
-                                            fieldWithPath("hasNext")
-                                                    .description("다음 스크롤 존재 여부")
-                                                    .attributes(constraint("false면 무한 스크롤 종료"))
+                                                    .description("스터디 찜 사용자 ID(PK) 리스트")
                                     )
                             )
                     );
@@ -131,7 +128,7 @@ class StudySearchApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
-            given(studySearchUseCase.getStudiesByRecommend(any())).willReturn(new StudyPagingResponse(generateStudies(), true));
+            given(studySearchUseCase.getStudiesByRecommend(any())).willReturn(new StudyPagingResponse(generateStudies()));
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -197,10 +194,7 @@ class StudySearchApiControllerTest extends ControllerTest {
                                             fieldWithPath("studies[].hashtags[]")
                                                     .description("스터디 해시태그"),
                                             fieldWithPath("studies[].likeMarkingMembers[]")
-                                                    .description("스터디 찜 사용자 ID(PK) 리스트"),
-                                            fieldWithPath("hasNext")
-                                                    .description("다음 스크롤 존재 여부")
-                                                    .attributes(constraint("false면 무한 스크롤 종료"))
+                                                    .description("스터디 찜 사용자 ID(PK) 리스트")
                                     )
                             )
                     );

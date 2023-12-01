@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Aspect
 @Component
-public class CheckAuthUserAspect {
+public class CheckAuthUserAop {
     @Before("@annotation(com.kgu.studywithme.global.aop.CheckAuthUser)")
     public void checkAuthUser() {
         final HttpServletRequest request = getHttpServletRequest();

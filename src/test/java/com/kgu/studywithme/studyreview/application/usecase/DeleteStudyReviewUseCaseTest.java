@@ -5,6 +5,7 @@ import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.member.domain.repository.MemberRepository;
 import com.kgu.studywithme.study.domain.model.Study;
+import com.kgu.studywithme.study.domain.repository.StudyRepository;
 import com.kgu.studywithme.studyreview.application.usecase.command.DeleteStudyReviewCommand;
 import com.kgu.studywithme.studyreview.domain.model.StudyReview;
 import com.kgu.studywithme.studyreview.domain.repository.StudyReviewRepository;
@@ -27,7 +28,8 @@ import static org.mockito.Mockito.verify;
 class DeleteStudyReviewUseCaseTest extends UseCaseTest {
     private final StudyReviewRepository studyReviewRepository = mock(StudyReviewRepository.class);
     private final MemberRepository memberRepository = mock(MemberRepository.class);
-    private final DeleteStudyReviewUseCase sut = new DeleteStudyReviewUseCase(studyReviewRepository, memberRepository);
+    private final StudyRepository studyRepository = mock(StudyRepository.class);
+    private final DeleteStudyReviewUseCase sut = new DeleteStudyReviewUseCase(studyReviewRepository, memberRepository, studyRepository);
 
     private final Member host = JIWON.toMember().apply(1L);
     private final Member member = GHOST.toMember().apply(2L);
@@ -51,6 +53,7 @@ class DeleteStudyReviewUseCaseTest extends UseCaseTest {
         assertAll(
                 () -> verify(studyReviewRepository, times(1)).getById(command.reviewId()),
                 () -> verify(memberRepository, times(1)).getById(command.memberId()),
+                () -> verify(studyRepository, times(0)).decreaseReviewCount(review.getStudy().getId()),
                 () -> verify(studyReviewRepository, times(0)).delete(review)
         );
     }
@@ -70,6 +73,7 @@ class DeleteStudyReviewUseCaseTest extends UseCaseTest {
         assertAll(
                 () -> verify(studyReviewRepository, times(1)).getById(command.reviewId()),
                 () -> verify(memberRepository, times(1)).getById(command.memberId()),
+                () -> verify(studyRepository, times(1)).decreaseReviewCount(review.getStudy().getId()),
                 () -> verify(studyReviewRepository, times(1)).delete(review)
         );
     }

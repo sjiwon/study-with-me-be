@@ -1,7 +1,6 @@
 package com.kgu.studywithme.studyattendance.domain.service;
 
-import com.kgu.studywithme.common.config.DatabaseCleanerEachCallbackExtension;
-import com.kgu.studywithme.common.config.MySqlTestContainersExtension;
+import com.kgu.studywithme.common.IntegrateTest;
 import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.member.domain.model.Score;
 import com.kgu.studywithme.member.domain.repository.MemberRepository;
@@ -17,10 +16,7 @@ import com.kgu.studywithme.studyweekly.domain.repository.StudyWeeklyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,14 +42,8 @@ import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatu
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@SpringBootTest
-@ExtendWith({
-        DatabaseCleanerEachCallbackExtension.class,
-        MySqlTestContainersExtension.class
-})
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DisplayName("StudyAttendance -> 매일 자정에 실행되는 Weekly별 결석한 참여자 Absence Score 적용 스케줄링 로직")
-public class UpdateWeeklyAttendanceBatchProcessorTest {
+public class UpdateWeeklyAttendanceBatchProcessorTest extends IntegrateTest {
     @Autowired
     private UpdateWeeklyAttendanceBatchProcessor sut;
 

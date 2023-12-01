@@ -34,9 +34,11 @@ import static com.kgu.studywithme.study.domain.model.StudyType.ONLINE;
         name = "study",
         indexes = {
                 @Index(name = "idx_study_category_is_terminated", columnList = "category, is_terminated"),
+                @Index(name = "idx_study_category_is_terminated_favorite_count", columnList = "category, is_terminated, favorite_count"),
+                @Index(name = "idx_study_category_is_terminated_review_count", columnList = "category, is_terminated, review_count"),
                 @Index(name = "idx_study_study_type_category_is_terminated", columnList = "study_type, category, is_terminated"),
-                @Index(name = "idx_study_province_city_category_is_terminated", columnList = "province, city, category, is_terminated"),
-                @Index(name = "idx_study_province_city_study_type_category_is_terminated", columnList = "province, city, study_type, category, is_terminated")
+                @Index(name = "idx_study_study_type_category_is_terminated_favorite_count", columnList = "study_type, category, is_terminated, favorite_count"),
+                @Index(name = "idx_study_study_type_category_is_terminated_review_count", columnList = "study_type, category, is_terminated, review_count"),
         }
 )
 public class Study extends BaseEntity<Study> {
@@ -84,6 +86,13 @@ public class Study extends BaseEntity<Study> {
     @JoinColumn(name = "host_id", referencedColumnName = "id", nullable = false)
     private Member host;
 
+    // Denormalization
+    @Column(name = "favorite_count", nullable = false)
+    private int favoriteCount;
+
+    @Column(name = "review_count", nullable = false)
+    private int reviewCount;
+
     private Study(
             final Member host,
             final StudyName name,
@@ -109,6 +118,8 @@ public class Study extends BaseEntity<Study> {
         this.graduationPolicy = GraduationPolicy.initPolicy(minimumAttendanceForGraduation);
         this.terminated = false;
         this.hashtags = new Hashtags(this, hashtags);
+        this.favoriteCount = 0;
+        this.reviewCount = 0;
     }
 
     public static Study createOnlineStudy(
@@ -219,6 +230,22 @@ public class Study extends BaseEntity<Study> {
 
     public boolean isParticipantMeetGraduationPolicy(final int attendanceCount) {
         return graduationPolicy.isGraduationRequirementsFulfilled(attendanceCount);
+    }
+
+    public void increaseFavoriteCount() {
+        favoriteCount++;
+    }
+
+    public void decreaseFavoriteCount() {
+        favoriteCount--;
+    }
+
+    public void increaseReviewCount() {
+        reviewCount++;
+    }
+
+    public void decreaseReviewCount() {
+        reviewCount--;
     }
 
     public List<String> getHashtags() {

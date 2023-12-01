@@ -28,7 +28,9 @@ public class ManageFavoriteUseCase {
         final Member member = memberRepository.getById(command.memberId());
 
         try {
-            return favoriteRepository.save(Favorite.favoriteMarking(member, study)).getId();
+            studyRepository.increaseFavoriteCount(study.getId());
+            final Favorite favorite = favoriteRepository.save(Favorite.favoriteMarking(member, study));
+            return favorite.getId();
         } catch (final DataIntegrityViolationException e) {
             throw StudyWithMeException.type(FavoriteErrorCode.ALREADY_LIKE_MARKED);
         }
@@ -36,8 +38,9 @@ public class ManageFavoriteUseCase {
 
     @StudyWithMeWritableTransactional
     public void cancelLike(final CancelStudyLikeCommand command) {
-        final Favorite favorite = favoriteRepository.findByStudyIdAndMemberId(command.studyId(), command.memberId())
-                .orElseThrow(() -> StudyWithMeException.type(FavoriteErrorCode.FAVORITE_MARKING_NOT_FOUND));
+        final Study study = studyRepository.getById(command.studyId());
+        final Favorite favorite = favoriteRepository.getFavoriteRecord(study.getId(), command.memberId());
+        studyRepository.decreaseFavoriteCount(study.getId());
         favoriteRepository.delete(favorite);
     }
 }

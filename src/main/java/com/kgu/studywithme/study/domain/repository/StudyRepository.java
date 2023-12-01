@@ -1,10 +1,12 @@
 package com.kgu.studywithme.study.domain.repository;
 
+import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.study.domain.model.RecruitmentStatus;
 import com.kgu.studywithme.study.domain.model.Study;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -37,6 +39,26 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
     default boolean isHost(final Long studyId, final Long memberId) {
         return getHostId(studyId).equals(memberId);
     }
+
+    @StudyWithMeWritableTransactional
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query("UPDATE Study s SET s.favoriteCount = s.favoriteCount + 1 WHERE s.id = :id")
+    void increaseFavoriteCount(@Param("id") Long id);
+
+    @StudyWithMeWritableTransactional
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query("UPDATE Study s SET s.favoriteCount = s.favoriteCount - 1 WHERE s.id = :id")
+    void decreaseFavoriteCount(@Param("id") Long id);
+
+    @StudyWithMeWritableTransactional
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query("UPDATE Study s SET s.reviewCount = s.reviewCount + 1 WHERE s.id = :id")
+    void increaseReviewCount(@Param("id") Long id);
+
+    @StudyWithMeWritableTransactional
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query("UPDATE Study s SET s.reviewCount = s.reviewCount - 1 WHERE s.id = :id")
+    void decreaseReviewCount(@Param("id") Long id);
 
     // Query Method
     boolean existsByNameValue(final String name);

@@ -62,6 +62,7 @@ class WriteStudyReviewUseCaseTest extends UseCaseTest {
                 () -> verify(memberRepository, times(1)).getById(command.memberId()),
                 () -> verify(studyParticipantRepository, times(1)).isGraduatedParticipant(study.getId(), member.getId()),
                 () -> verify(studyReviewRepository, times(0)).existsByStudyIdAndWriterId(study.getId(), member.getId()),
+                () -> verify(studyRepository, times(0)).increaseReviewCount(study.getId()),
                 () -> verify(studyReviewRepository, times(0)).save(any(StudyReview.class))
         );
     }
@@ -85,6 +86,7 @@ class WriteStudyReviewUseCaseTest extends UseCaseTest {
                 () -> verify(memberRepository, times(1)).getById(command.memberId()),
                 () -> verify(studyParticipantRepository, times(1)).isGraduatedParticipant(study.getId(), member.getId()),
                 () -> verify(studyReviewRepository, times(1)).existsByStudyIdAndWriterId(study.getId(), member.getId()),
+                () -> verify(studyRepository, times(0)).increaseReviewCount(study.getId()),
                 () -> verify(studyReviewRepository, times(0)).save(any(StudyReview.class))
         );
     }
@@ -110,6 +112,7 @@ class WriteStudyReviewUseCaseTest extends UseCaseTest {
                 () -> verify(memberRepository, times(1)).getById(command.memberId()),
                 () -> verify(studyParticipantRepository, times(1)).isGraduatedParticipant(study.getId(), member.getId()),
                 () -> verify(studyReviewRepository, times(1)).existsByStudyIdAndWriterId(study.getId(), member.getId()),
+                () -> verify(studyRepository, times(1)).increaseReviewCount(study.getId()),
                 () -> verify(studyReviewRepository, times(1)).save(any(StudyReview.class)),
                 () -> assertThat(studyReviewId).isEqualTo(review.getId())
         );

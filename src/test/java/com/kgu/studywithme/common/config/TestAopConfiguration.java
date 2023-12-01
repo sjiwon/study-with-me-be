@@ -1,8 +1,8 @@
 package com.kgu.studywithme.common.config;
 
-import com.kgu.studywithme.global.aop.CheckAuthUserAspect;
-import com.kgu.studywithme.global.aop.CheckStudyHostAspect;
-import com.kgu.studywithme.global.aop.CheckStudyParticipantAspect;
+import com.kgu.studywithme.global.aop.CheckAuthUserAop;
+import com.kgu.studywithme.global.aop.CheckStudyHostAop;
+import com.kgu.studywithme.global.aop.CheckStudyParticipantAop;
 import com.kgu.studywithme.global.logging.LoggingStatusManager;
 import com.kgu.studywithme.global.logging.LoggingTracer;
 import com.kgu.studywithme.study.domain.repository.StudyRepository;
@@ -20,18 +20,18 @@ public class TestAopConfiguration {
     private final StudyParticipantRepository studyParticipantRepository;
 
     @Bean
-    public CheckAuthUserAspect checkAuthUserAspect() {
-        return new CheckAuthUserAspect();
+    public CheckAuthUserAop checkAuthUserAspect() {
+        return new CheckAuthUserAop();
     }
 
     @Bean
-    public CheckStudyHostAspect checkStudyHostAspect() {
-        return new CheckStudyHostAspect(studyRepository);
+    public CheckStudyHostAop checkStudyHostAspect() {
+        return new CheckStudyHostAop(studyRepository);
     }
 
     @Bean
-    public CheckStudyParticipantAspect checkStudyParticipantAspect() {
-        return new CheckStudyParticipantAspect(studyParticipantRepository);
+    public CheckStudyParticipantAop checkStudyParticipantAspect() {
+        return new CheckStudyParticipantAop(studyParticipantRepository);
     }
 
     @Bean
