@@ -54,6 +54,8 @@
 - [잦은 API Call이 예상되는 쿼리를 위한 Index 적용 성능 개선기](https://sjiwon.notion.site/Study-With-Me-b4e2f768c067433b9f2f84553af83067?pvs=4)
 - [ContentCachingRequestWrapper가 Request 정보를 캐싱하지 못하는 문제 해결](https://sjiwon-dev.tistory.com/27)
 - [스터디 조회 인수테스트 더미 데이터 관리 최적화 (with AfterAllCallback)](https://sjiwon-dev.tistory.com/29)
+- [집계성 컬럼(favorite, review) 반정규화 진행 및 쿼리 튜닝을 통한 성능 개선](https://sjiwon-dev.tistory.com/38)
+- [ThreadPool & HikariCP 최적화](https://sjiwon-dev.tistory.com/41)
 
 <br>
 
