@@ -33,7 +33,7 @@ public class OptimisticLockAop {
                     throw new RuntimeException("Retry Exception...");
                 }
 
-                if (optimisticLockRetry.withInTranction()) {
+                if (optimisticLockRetry.withInTransaction()) {
                     return aopWithTransactional.proceed(joinPoint);
                 }
                 return joinPoint.proceed();
@@ -42,7 +42,7 @@ public class OptimisticLockAop {
                         "Optimistic Lock Version Miss... -> retry = {}, maxRetry = {}, withInTransaction = {}",
                         currentRetry,
                         optimisticLockRetry.maxRetry(),
-                        optimisticLockRetry.withInTranction()
+                        optimisticLockRetry.withInTransaction()
                 );
                 try {
                     Thread.sleep(50);

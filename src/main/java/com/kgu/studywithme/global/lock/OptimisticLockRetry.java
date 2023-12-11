@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 public @interface OptimisticLockRetry {
     int maxRetry() default -1; // infinite
 
-    boolean withInTranction() default false;
+    boolean withInTransaction() default false;
 }
