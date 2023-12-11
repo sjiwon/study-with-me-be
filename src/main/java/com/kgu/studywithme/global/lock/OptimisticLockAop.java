@@ -2,13 +2,13 @@ package com.kgu.studywithme.global.lock;
 
 import com.kgu.studywithme.global.aop.AopWithTransactional;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
-import jakarta.persistence.OptimisticLockException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -37,9 +37,10 @@ public class OptimisticLockAop {
                     return aopWithTransactional.proceed(joinPoint);
                 }
                 return joinPoint.proceed();
-            } catch (final OptimisticLockException e) {
+            } catch (final ObjectOptimisticLockingFailureException e) {
                 log.info(
-                        "Optimistic Lock Version Miss... -> retry = {}, maxRetry = {}, withInTransaction = {}",
+                        "[{}] Optimistic Lock Version Miss... -> retry = {}, maxRetry = {}, withInTransaction = {}",
+                        Thread.currentThread().getName(),
                         currentRetry,
                         optimisticLockRetry.maxRetry(),
                         optimisticLockRetry.withInTransaction()
