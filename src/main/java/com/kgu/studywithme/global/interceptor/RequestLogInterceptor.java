@@ -1,6 +1,5 @@
 package com.kgu.studywithme.global.interceptor;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.NullNode;
 import com.kgu.studywithme.global.filter.ReadableRequestWrapper;
@@ -89,26 +88,26 @@ public class RequestLogInterceptor implements HandlerInterceptor {
         return PatternMatchUtils.simpleMatch(INFRA_URI, request.getRequestURI());
     }
 
-    private JsonNode readRequestBodyViaCachingRequestWrapper(final HttpServletRequest request) throws IOException {
+    private Object readRequestBodyViaCachingRequestWrapper(final HttpServletRequest request) throws IOException {
         if (request instanceof final ReadableRequestWrapper requestWrapper) {
             final byte[] bodyContents = requestWrapper.getContentAsByteArray();
 
             if (bodyContents.length == 0) {
                 return NullNode.getInstance();
             }
-            return objectMapper.readTree(bodyContents);
+            return objectMapper.readValue(bodyContents, Object.class);
         }
         return NullNode.getInstance();
     }
 
-    private JsonNode readResponseBodyViaCachingRequestWrapper(final HttpServletResponse response) throws IOException {
+    private Object readResponseBodyViaCachingRequestWrapper(final HttpServletResponse response) throws IOException {
         if (response instanceof final ContentCachingResponseWrapper responseWrapper) {
             final byte[] bodyContents = responseWrapper.getContentAsByteArray();
 
             if (bodyContents.length == 0) {
                 return NullNode.getInstance();
             }
-            return objectMapper.readTree(bodyContents);
+            return objectMapper.readValue(bodyContents, Object.class);
         }
         return NullNode.getInstance();
     }
