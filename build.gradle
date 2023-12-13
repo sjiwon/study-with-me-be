@@ -53,6 +53,10 @@ dependencies {
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
+    // Caching
+    implementation "org.springframework.boot:spring-boot-starter-cache"
+    implementation "org.springframework.boot:spring-boot-starter-data-redis"
+
     // Mail
     implementation "org.springframework.boot:spring-boot-starter-mail"
 
@@ -146,16 +150,16 @@ tasks.register("copyDocument", Copy) {
     into file("src/main/resources/static/docs")
 }
 
-tasks.named('compileJava') {
-    inputs.files(tasks.named('processResources'))
+tasks.named("compileJava") {
+    inputs.files(tasks.named("processResources"))
 }
 
-processResources.dependsOn('copySecret')
+processResources.dependsOn("copySecret")
 
-tasks.register('copySecret', Copy) {
-    from './study-with-me-secret'
-    include 'application*.yml'
-    into './src/main/resources'
+tasks.register("copySecret", Copy) {
+    from "./study-with-me-secret"
+    include "application*.yml"
+    into "./src/main/resources"
 }
 
 build {
