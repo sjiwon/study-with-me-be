@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.kgu.studywithme.study.utils.search.PagingConstants.getDefaultPageRequest;
-
 @Tag(name = "4-2. 메인페이지 스터디 조회 API")
 @RestController
 @RequiredArgsConstructor
@@ -40,9 +38,7 @@ public class StudySearchApiController {
                 request.province(),
                 request.city()
         );
-        final StudyPagingResponse response = studySearchUseCase.getStudiesByCategory(
-                new GetStudiesByCategory(condition, getDefaultPageRequest(request.page()))
-        );
+        final StudyPagingResponse response = studySearchUseCase.getStudiesByCategory(new GetStudiesByCategory(condition, request.page()));
         return ResponseEntity.ok(response);
     }
 
@@ -59,9 +55,7 @@ public class StudySearchApiController {
                 request.province(),
                 request.city()
         );
-        final StudyPagingResponse response = studySearchUseCase.getStudiesByRecommend(
-                new GetStudiesByRecommend(condition, getDefaultPageRequest(request.page()))
-        );
+        final StudyPagingResponse response = studySearchUseCase.getStudiesByRecommend(new GetStudiesByRecommend(condition, request.page()));
         return ResponseEntity.ok(response);
     }
 }

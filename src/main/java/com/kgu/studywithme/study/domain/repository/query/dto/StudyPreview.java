@@ -10,25 +10,27 @@ import com.kgu.studywithme.study.domain.model.StudyType;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 @ToString
 public class StudyPreview {
-    private final Long id;
-    private final String name;
-    private final String description;
-    private final String category;
-    private final Thumbnail thumbnail;
-    private final StudyType type;
-    private final RecruitmentStatus recruitmentStatus;
-    private final int maxMember;
-    private final int participantMembers;
-    private final LocalDateTime creationDate;
+    private Long id;
+    private String name;
+    private String description;
+    private String category;
+    private Thumbnail thumbnail;
+    private StudyType type;
+    private RecruitmentStatus recruitmentStatus;
+    private int maxMember;
+    private int participantMembers;
+    private LocalDateTime creationDate;
     private List<String> hashtags;
     private List<Long> likeMarkingMembers;
 
