@@ -26,3 +26,5 @@ services:
       - "6379:6379"
     volumes:
       - "./redis_data/data:/data"
+    command:
+      - "redis-server --requirepass studywithme --port 6379"
