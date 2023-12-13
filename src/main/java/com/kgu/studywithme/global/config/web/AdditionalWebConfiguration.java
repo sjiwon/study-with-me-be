@@ -1,4 +1,4 @@
-package com.kgu.studywithme.global.config;
+package com.kgu.studywithme.global.config.web;
 
 import com.kgu.studywithme.auth.utils.TokenProvider;
 import com.kgu.studywithme.global.interceptor.RequestLogInterceptor;

@@ -1,8 +1,8 @@
 package com.kgu.studywithme.common;
 
 import com.kgu.studywithme.common.config.MySqlTestContainersExtension;
-import com.kgu.studywithme.global.config.P6SpyConfiguration;
-import com.kgu.studywithme.global.config.QueryDslConfiguration;
+import com.kgu.studywithme.global.config.etc.P6SpyConfiguration;
+import com.kgu.studywithme.global.config.infra.QueryDslConfiguration;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

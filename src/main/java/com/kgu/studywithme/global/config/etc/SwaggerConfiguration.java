@@ -1,4 +1,4 @@
-package com.kgu.studywithme.global.config;
+package com.kgu.studywithme.global.config.etc;
 
 import com.kgu.studywithme.global.resolver.ExtractPayload;
 import com.kgu.studywithme.global.resolver.ExtractToken;

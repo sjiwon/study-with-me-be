@@ -1,4 +1,4 @@
-package com.kgu.studywithme.global.config;
+package com.kgu.studywithme.global.config.infra;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;

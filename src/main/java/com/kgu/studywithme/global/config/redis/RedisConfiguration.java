@@ -1,4 +1,4 @@
-package com.kgu.studywithme.global.config;
+package com.kgu.studywithme.global.config.redis;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

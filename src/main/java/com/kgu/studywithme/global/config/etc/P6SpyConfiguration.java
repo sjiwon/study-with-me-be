@@ -1,4 +1,4 @@
-package com.kgu.studywithme.global.config;
+package com.kgu.studywithme.global.config.etc;
 
 import com.p6spy.engine.spy.P6SpyOptions;
 import jakarta.annotation.PostConstruct;
