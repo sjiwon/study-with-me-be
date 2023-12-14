@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.util.List;
-
 import static com.kgu.studywithme.acceptance.auth.AuthAcceptanceFixture.Google_OAuth_로그인을_진행한다;
 import static com.kgu.studywithme.acceptance.auth.AuthAcceptanceFixture.Google_OAuth_인증_URL를_생성한다;
 import static com.kgu.studywithme.acceptance.auth.AuthAcceptanceFixture.로그아웃을_진행한다;
@@ -89,8 +87,8 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         @Test
         @DisplayName("RefreshToken을 통해서 AccessToken + RefreshToken을 재발급받는다")
         void tokenReissueApi() {
-            final List<String> token = JIWON.회원가입_후_Google_OAuth_로그인을_진행하고_Token을_추출한다();
-            토큰을_재발급받는다(token.get(0), token.get(1))
+            final String refreshToken = JIWON.회원가입_후_Google_OAuth_로그인을_진행하고_RefreshToken을_추출한다();
+            토큰을_재발급받는다(refreshToken)
                     .statusCode(NO_CONTENT.value())
                     .header(AUTHORIZATION, notNullValue(String.class))
                     .header(SET_COOKIE, notNullValue(String.class))

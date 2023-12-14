@@ -26,6 +26,7 @@ import static com.kgu.studywithme.acceptance.CommonRequestFixture.getRequest;
 import static com.kgu.studywithme.acceptance.CommonRequestFixture.multipartRequest;
 import static com.kgu.studywithme.acceptance.CommonRequestFixture.patchRequest;
 import static com.kgu.studywithme.acceptance.CommonRequestFixture.postRequest;
+import static com.kgu.studywithme.acceptance.CommonRequestFixture.postRequestWithAccessToken;
 
 public class StudyAcceptanceFixture {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
@@ -114,7 +115,7 @@ public class StudyAcceptanceFixture {
                 .build(studyId)
                 .getPath();
 
-        return postRequest(accessToken, uri);
+        return postRequestWithAccessToken(accessToken, uri);
     }
 
     public static ValidatableResponse 스터디_참여_신청을_취소한다(

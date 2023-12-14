@@ -4,7 +4,7 @@ import io.restassured.response.ValidatableResponse;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static com.kgu.studywithme.acceptance.CommonRequestFixture.deleteRequest;
-import static com.kgu.studywithme.acceptance.CommonRequestFixture.postRequest;
+import static com.kgu.studywithme.acceptance.CommonRequestFixture.postRequestWithAccessToken;
 
 public class FavoriteAcceptanceFixture {
     public static ValidatableResponse 스터디를_찜_등록한다(final String accessToken, final Long studyId) {
@@ -13,7 +13,7 @@ public class FavoriteAcceptanceFixture {
                 .build(studyId)
                 .getPath();
 
-        return postRequest(accessToken, uri);
+        return postRequestWithAccessToken(accessToken, uri);
     }
 
     public static ValidatableResponse 찜_등록한_스터디를_취소한다(final String accessToken, final Long studyId) {

@@ -6,6 +6,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import static com.kgu.studywithme.acceptance.CommonRequestFixture.getRequest;
 import static com.kgu.studywithme.acceptance.CommonRequestFixture.postRequest;
+import static com.kgu.studywithme.acceptance.CommonRequestFixture.postRequestWithAccessToken;
+import static com.kgu.studywithme.acceptance.CommonRequestFixture.postRequestWithRefreshToken;
 
 public class AuthAcceptanceFixture {
     public static ValidatableResponse Google_OAuth_인증_URL를_생성한다(
@@ -43,16 +45,16 @@ public class AuthAcceptanceFixture {
                 .toUri()
                 .getPath();
 
-        return postRequest(accessToken, uri);
+        return postRequestWithAccessToken(accessToken, uri);
     }
 
-    public static ValidatableResponse 토큰을_재발급받는다(final String accessToken, final String refreshToken) {
+    public static ValidatableResponse 토큰을_재발급받는다(final String refreshToken) {
         final String uri = UriComponentsBuilder
                 .fromPath("/api/token/reissue")
                 .build()
                 .toUri()
                 .getPath();
 
-        return postRequest(accessToken, refreshToken, uri);
+        return postRequestWithRefreshToken(refreshToken, uri);
     }
 }

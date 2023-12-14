@@ -3,8 +3,8 @@ package com.kgu.studywithme.auth.presentation;
 import com.kgu.studywithme.auth.application.usecase.ReissueTokenUseCase;
 import com.kgu.studywithme.auth.application.usecase.command.ReissueTokenCommand;
 import com.kgu.studywithme.auth.domain.model.AuthToken;
+import com.kgu.studywithme.auth.utils.TokenProvider;
 import com.kgu.studywithme.auth.utils.TokenResponseWriter;
-import com.kgu.studywithme.global.resolver.ExtractPayload;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,16 +22,17 @@ import static com.kgu.studywithme.auth.utils.TokenResponseWriter.REFRESH_TOKEN_C
 @RequiredArgsConstructor
 @RequestMapping("/api/token/reissue")
 public class TokenReissueApiController {
+    private final TokenProvider tokenProvider;
     private final ReissueTokenUseCase reissueTokenUseCase;
     private final TokenResponseWriter tokenResponseWriter;
 
     @Operation(summary = "RefreshToken을 통한 토큰 재발급 EndPoint")
     @PostMapping
     public ResponseEntity<Void> reissueToken(
-            @ExtractPayload final Long memberId,
             @CookieValue(REFRESH_TOKEN_COOKIE) final String refreshToken,
             final HttpServletResponse response
     ) {
+        final Long memberId = tokenProvider.getId(refreshToken);
         final AuthToken authToken = reissueTokenUseCase.invoke(new ReissueTokenCommand(memberId, refreshToken));
         tokenResponseWriter.applyAccessToken(response, authToken.accessToken());
         tokenResponseWriter.applyRefreshToken(response, authToken.refreshToken());
