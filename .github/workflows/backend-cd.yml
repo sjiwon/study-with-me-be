@@ -16,10 +16,13 @@ env:
   AWS_DEPLOY_APP_NAME: ${{ secrets.AWS_DEPLOY_APP_NAME }}
   AWS_DEPLOY_GROUP: ${{ secrets.AWS_DEPLOY_GROUP }}
   AWS_DEPLOY_CONFIG: ${{ secrets.AWS_DEPLOY_CONFIG }}
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+  DOCKER_IMAGE_NAME: sjiwon/study-with-me-be
+  DOCKER_IMAGE_TAG: ${{ github.run_number }}
 
 jobs:
   build-and-deploy:
-    name: Build & Deploy
     runs-on: ubuntu-latest
 
     steps:
@@ -56,14 +59,27 @@ jobs:
       - name: Gradle build를 수행한다
         run: ./gradlew bootJar
 
+      - name: Docker에 로그인한다
+        uses: docker/login-action@v3
+        with:
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ env.DOCKER_PASSWORD }}
+
+      - name: Docker Image를 빌드하고 DockerHub에 Push한다
+        run: |
+          docker build -t ${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }} .
+          docker push ${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }}
+          echo "${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_IMAGE_TAG }}" > DockerImage.txt
+
       - name: S3에 보낼 Resource Zip File을 생성한다
         run: |
           mkdir -p deploy
+          cp ./DockerImage.txt ./deploy/
           cp ./appspec.yml ./deploy/
           cp ./Dockerfile ./deploy/
           cp ./scripts/*.sh ./deploy/
           cp ./build/libs/*.jar ./deploy/
-          zip -r -qq -j ./spring-build-${{ github.run_number }}.zip ./deploy
+          zip -r -qq -j ./${{ env.ZIP_FILE }} ./deploy
 
       - name: AWS 인증을 진행한다
         uses: aws-actions/configure-aws-credentials@v4
