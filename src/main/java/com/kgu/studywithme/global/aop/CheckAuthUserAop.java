@@ -18,7 +18,7 @@ public class CheckAuthUserAop {
     @Before("@annotation(com.kgu.studywithme.global.aop.CheckAuthUser)")
     public void checkAuthUser() {
         final HttpServletRequest request = getHttpServletRequest();
-        final Optional<String> token = AuthorizationExtractor.extractToken(request);
+        final Optional<String> token = AuthorizationExtractor.extractAccessToken(request);
 
         if (token.isEmpty()) {
             throw StudyWithMeException.type(AuthErrorCode.INVALID_PERMISSION);

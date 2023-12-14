@@ -106,7 +106,8 @@ class MemberInformationRepositoryTest extends RepositoryTest {
                     () -> assertThat(result.getEmail()).isEqualTo(member.getEmail().getValue()),
                     () -> assertThat(result.getBirth()).isEqualTo(member.getBirth()),
                     () -> assertThat(result.getGender()).isEqualTo(member.getGender().getValue()),
-                    () -> assertThat(result.getAddress()).isEqualTo(member.getAddress()),
+                    () -> assertThat(result.getAddress().province()).isEqualTo(member.getAddress().getProvince()),
+                    () -> assertThat(result.getAddress().city()).isEqualTo(member.getAddress().getCity()),
                     () -> assertThat(result.getScore()).isEqualTo(member.getScore().getValue()),
                     () -> assertThat(result.getInterests())
                             .containsExactlyInAnyOrderElementsOf(
@@ -134,7 +135,8 @@ class MemberInformationRepositoryTest extends RepositoryTest {
                     () -> assertThat(result.getBirth()).isEqualTo(member.getBirth()),
                     () -> assertThat(result.getPhone()).isEqualTo(member.getPhone().getValue()),
                     () -> assertThat(result.getGender()).isEqualTo(member.getGender().getValue()),
-                    () -> assertThat(result.getAddress()).isEqualTo(member.getAddress()),
+                    () -> assertThat(result.getAddress().province()).isEqualTo(member.getAddress().getProvince()),
+                    () -> assertThat(result.getAddress().city()).isEqualTo(member.getAddress().getCity()),
                     () -> assertThat(result.getScore()).isEqualTo(member.getScore().getValue()),
                     () -> assertThat(result.getInterests())
                             .containsExactlyInAnyOrderElementsOf(

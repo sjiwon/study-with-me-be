@@ -1,6 +1,6 @@
-package com.kgu.studywithme.global.config;
+package com.kgu.studywithme.global.config.etc;
 
-import com.kgu.studywithme.global.resolver.ExtractPayload;
+import com.kgu.studywithme.global.resolver.Auth;
 import com.kgu.studywithme.global.resolver.ExtractToken;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
@@ -40,8 +40,8 @@ public class SwaggerConfiguration {
         SpringDocUtils
                 .getConfig()
                 .addAnnotationsToIgnore(
-                        ExtractToken.class,
-                        ExtractPayload.class
+                        Auth.class,
+                        ExtractToken.class
                 );
     }
 

@@ -5,24 +5,27 @@ import com.kgu.studywithme.studyweekly.domain.model.AssignmentSubmitType;
 import com.kgu.studywithme.studyweekly.domain.model.Period;
 import com.kgu.studywithme.studyweekly.domain.model.UploadAssignment;
 import com.querydsl.core.annotations.QueryProjection;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.List;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @ToString
 public class WeeklyInformation {
-    private final Long id;
-    private final String title;
-    private final String content;
-    private final int week;
-    private final Period period;
-    private final boolean assignmentExists;
-    private final boolean autoAttendance;
-    private final StudyMember creator;
+    private Long id;
+    private String title;
+    private String content;
+    private int week;
+    private Period period;
+    private boolean assignmentExists;
+    private boolean autoAttendance;
+    private StudyMember creator;
     private List<WeeklyAttachment> attachments;
     private List<WeeklySubmit> submits;
 

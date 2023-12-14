@@ -1,4 +1,4 @@
-package com.kgu.studywithme.global.config;
+package com.kgu.studywithme.global.config.web;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;

@@ -58,13 +58,25 @@ public class CommonRequestFixture {
         );
     }
 
-    public static ValidatableResponse postRequest(
+    public static ValidatableResponse postRequestWithAccessToken(
             final String accessToken,
             final String path
     ) {
         return request(given -> given
                 .contentType(JSON)
                 .auth().oauth2(accessToken)
+                .when()
+                .post(path)
+        );
+    }
+
+    public static ValidatableResponse postRequestWithRefreshToken(
+            final String refreshToken,
+            final String path
+    ) {
+        return request(given -> given
+                .contentType(JSON)
+                .cookie(new Cookie.Builder(REFRESH_TOKEN_COOKIE, refreshToken).build())
                 .when()
                 .post(path)
         );

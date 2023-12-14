@@ -1,7 +1,8 @@
 package com.kgu.studywithme.memberreview.presentation;
 
+import com.kgu.studywithme.global.Authenticated;
 import com.kgu.studywithme.global.aop.CheckAuthUser;
-import com.kgu.studywithme.global.resolver.ExtractPayload;
+import com.kgu.studywithme.global.resolver.Auth;
 import com.kgu.studywithme.memberreview.application.usecase.UpdateMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.application.usecase.WriteMemberReviewUseCase;
 import com.kgu.studywithme.memberreview.application.usecase.command.UpdateMemberReviewCommand;
@@ -33,11 +34,11 @@ public class MemberReviewApiController {
     @CheckAuthUser
     @PostMapping
     public ResponseEntity<MemberReviewIdResponse> writeMemberReview(
-            @ExtractPayload final Long reviewerId,
+            @Auth final Authenticated authenticated,
             @PathVariable final Long revieweeId,
             @RequestBody @Valid final WriteMemberReviewRequest request
     ) {
-        final Long reviewId = writeMemberReviewUseCase.invoke(new WriteMemberReviewCommand(reviewerId, revieweeId, request.content()));
+        final Long reviewId = writeMemberReviewUseCase.invoke(new WriteMemberReviewCommand(authenticated.id(), revieweeId, request.content()));
         return ResponseEntity.ok(new MemberReviewIdResponse(reviewId));
     }
 
@@ -45,11 +46,11 @@ public class MemberReviewApiController {
     @CheckAuthUser
     @PatchMapping
     public ResponseEntity<Void> updateMemberReview(
-            @ExtractPayload final Long reviewerId,
+            @Auth final Authenticated authenticated,
             @PathVariable final Long revieweeId,
             @RequestBody @Valid final UpdateMemberReviewRequest request
     ) {
-        updateMemberReviewUseCase.invoke(new UpdateMemberReviewCommand(reviewerId, revieweeId, request.content()));
+        updateMemberReviewUseCase.invoke(new UpdateMemberReviewCommand(authenticated.id(), revieweeId, request.content()));
         return ResponseEntity.noContent().build();
     }
 }

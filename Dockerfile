@@ -1,7 +1,9 @@
-FROM openjdk:17-oracle
+FROM amazoncorretto:17-alpine-jdk
 
 WORKDIR /app
 
-COPY StudyWithMe.jar app.jar
+COPY ./build/libs/StudyWithMe.jar /app/StudyWithMe.jar
 
-ENTRYPOINT ["java", "-javaagent:pinpoint/pinpoint-bootstrap-2.5.2.jar", "-Dpinpoint.applicationName=StudyWithMe", "-Dpinpoint.agentId=sjiwon", "-Dpinpoint.config=pinpoint/pinpoint-root.config", "-Dspring.profiles.active=prod", "-jar", "app.jar"]
+ENV TZ=Asia/Seoul
+
+ENTRYPOINT ["java", "-javaagent:pinpoint/pinpoint-bootstrap-2.5.2.jar", "-Dpinpoint.applicationName=StudyWithMe", "-Dpinpoint.agentId=sjiwon", "-Dpinpoint.config=pinpoint/pinpoint-root.config", "-Dspring.profiles.active=prod", "-jar", "StudyWithMe.jar"]

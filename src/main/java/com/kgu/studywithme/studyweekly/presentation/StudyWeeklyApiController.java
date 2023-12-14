@@ -1,8 +1,9 @@
 package com.kgu.studywithme.studyweekly.presentation;
 
 import com.kgu.studywithme.file.utils.converter.FileConverter;
+import com.kgu.studywithme.global.Authenticated;
 import com.kgu.studywithme.global.aop.CheckStudyHost;
-import com.kgu.studywithme.global.resolver.ExtractPayload;
+import com.kgu.studywithme.global.resolver.Auth;
 import com.kgu.studywithme.studyweekly.application.usecase.CreateStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.application.usecase.DeleteStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.application.usecase.UpdateStudyWeeklyUseCase;
@@ -40,13 +41,13 @@ public class StudyWeeklyApiController {
     @CheckStudyHost
     @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<StudyWeeklyIdResponse> createWeekly(
-            @ExtractPayload final Long hostId,
+            @Auth final Authenticated authenticated,
             @PathVariable final Long studyId,
             @ModelAttribute @Valid final CreateStudyWeeklyRequest request
     ) {
         final Long weeklyId = createStudyWeeklyUseCase.invoke(new CreateStudyWeeklyCommand(
                 studyId,
-                hostId,
+                authenticated.id(),
                 request.title(),
                 request.content(),
                 new Period(request.startDate(), request.endDate()),
@@ -61,7 +62,7 @@ public class StudyWeeklyApiController {
     @CheckStudyHost
     @PostMapping(value = "/{weeklyId}", consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> updateWeekly(
-            @ExtractPayload final Long hostId,
+            @Auth final Authenticated authenticated,
             @PathVariable final Long studyId,
             @PathVariable final Long weeklyId,
             @ModelAttribute @Valid final UpdateStudyWeeklyRequest request
@@ -82,7 +83,7 @@ public class StudyWeeklyApiController {
     @CheckStudyHost
     @DeleteMapping("/{weeklyId}")
     public ResponseEntity<Void> deleteWeekly(
-            @ExtractPayload final Long hostId,
+            @Auth final Authenticated authenticated,
             @PathVariable final Long studyId,
             @PathVariable final Long weeklyId
     ) {

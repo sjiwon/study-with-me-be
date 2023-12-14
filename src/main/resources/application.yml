@@ -29,6 +29,15 @@ spring:
   flyway:
     enabled: false
 
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: studywithme
+
+  cache:
+    type: redis
+
   cloud:
     aws:
       region:
@@ -113,3 +122,6 @@ slack:
 
 logging:
   config: classpath:logback/logback-local.xml
+  level:
+    org.springframework.core:
+      LocalVariableTableParameterNameDiscoverer: error

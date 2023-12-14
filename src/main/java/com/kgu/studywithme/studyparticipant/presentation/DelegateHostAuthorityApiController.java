@@ -1,7 +1,8 @@
 package com.kgu.studywithme.studyparticipant.presentation;
 
+import com.kgu.studywithme.global.Authenticated;
 import com.kgu.studywithme.global.aop.CheckStudyHost;
-import com.kgu.studywithme.global.resolver.ExtractPayload;
+import com.kgu.studywithme.global.resolver.Auth;
 import com.kgu.studywithme.studyparticipant.application.usecase.DelegateHostAuthorityUseCase;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.DelegateHostAuthorityCommand;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,7 +25,7 @@ public class DelegateHostAuthorityApiController {
     @CheckStudyHost
     @PatchMapping
     public ResponseEntity<Void> delegateAuthority(
-            @ExtractPayload final Long hostId,
+            @Auth final Authenticated authenticated,
             @PathVariable final Long studyId,
             @PathVariable final Long participantId
     ) {

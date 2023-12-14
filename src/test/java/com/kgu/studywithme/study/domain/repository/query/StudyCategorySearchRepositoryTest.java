@@ -64,7 +64,7 @@ import static com.kgu.studywithme.common.fixture.StudyFixture.TOEIC;
 import static com.kgu.studywithme.common.fixture.StudyFixture.TOSS_INTERVIEW;
 import static com.kgu.studywithme.study.domain.model.StudyType.OFFLINE;
 import static com.kgu.studywithme.study.domain.model.StudyType.ONLINE;
-import static com.kgu.studywithme.study.utils.search.PagingConstants.getDefaultPageRequest;
+import static com.kgu.studywithme.study.utils.search.PagingConstants.createPageRequest;
 import static com.kgu.studywithme.study.utils.search.SearchSortType.DATE;
 import static com.kgu.studywithme.study.utils.search.SearchSortType.FAVORITE;
 import static com.kgu.studywithme.study.utils.search.SearchSortType.REVIEW;
@@ -89,9 +89,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
     @Autowired
     private FavoriteRepository favoriteRepository;
 
-    private static final Pageable PAGE_REQUEST_1 = getDefaultPageRequest(0);
-    private static final Pageable PAGE_REQUEST_2 = getDefaultPageRequest(1);
-    private static final Pageable PAGE_REQUEST_3 = getDefaultPageRequest(2);
+    private static final Pageable PAGE_REQUEST_1 = createPageRequest(0);
+    private static final Pageable PAGE_REQUEST_2 = createPageRequest(1);
+    private static final Pageable PAGE_REQUEST_3 = createPageRequest(2);
     private static final LocalDateTime NOW = LocalDateTime.now();
 
     private Member host;

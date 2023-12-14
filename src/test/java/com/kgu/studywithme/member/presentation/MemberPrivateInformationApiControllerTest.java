@@ -3,6 +3,7 @@ package com.kgu.studywithme.member.presentation;
 import com.kgu.studywithme.category.domain.model.Category;
 import com.kgu.studywithme.common.ControllerTest;
 import com.kgu.studywithme.member.domain.model.Member;
+import com.kgu.studywithme.member.domain.repository.query.dto.AddressInfo;
 import com.kgu.studywithme.member.domain.repository.query.dto.AppliedStudy;
 import com.kgu.studywithme.member.domain.repository.query.dto.LikeMarkedStudy;
 import com.kgu.studywithme.member.domain.repository.query.dto.MemberPrivateInformation;
@@ -53,7 +54,7 @@ class MemberPrivateInformationApiControllerTest extends ControllerTest {
                     member.getBirth(),
                     member.getPhone().getValue(),
                     member.getGender().getValue(),
-                    member.getAddress(),
+                    new AddressInfo(member.getAddress()),
                     member.getScore().getValue(),
                     member.getInterests()
                             .stream()

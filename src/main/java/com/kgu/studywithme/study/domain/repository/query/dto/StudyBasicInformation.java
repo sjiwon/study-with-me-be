@@ -12,8 +12,10 @@ import com.kgu.studywithme.study.domain.model.StudyName;
 import com.kgu.studywithme.study.domain.model.StudyThumbnail;
 import com.kgu.studywithme.study.domain.model.StudyType;
 import com.querydsl.core.annotations.QueryProjection;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
@@ -21,22 +23,23 @@ import java.time.Period;
 import java.util.List;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @ToString
 public class StudyBasicInformation {
-    private final Long id;
-    private final String name;
-    private final String description;
-    private final String category;
-    private final Thumbnail thumbnail;
-    private final StudyType type;
-    private final StudyLocation location;
-    private final RecruitmentStatus recruitmentStatus;
-    private final int maxMember;
-    private final int participantMembers;
-    private final int minimumAttendanceForGraduation;
-    private final int remainingOpportunityToUpdateGraduationPolicy;
-    private final StudyMember host;
+    private Long id;
+    private String name;
+    private String description;
+    private String category;
+    private Thumbnail thumbnail;
+    private StudyType type;
+    private StudyLocationInfo location;
+    private RecruitmentStatus recruitmentStatus;
+    private int maxMember;
+    private int participantMembers;
+    private int minimumAttendanceForGraduation;
+    private int remainingOpportunityToUpdateGraduationPolicy;
+    private StudyMember host;
     private List<String> hashtags;
     private List<ParticipantInformation> participants;
 
@@ -44,6 +47,15 @@ public class StudyBasicInformation {
             String name,
             String background
     ) {
+    }
+
+    public record StudyLocationInfo(
+            String province,
+            String city
+    ) {
+        public StudyLocationInfo(final StudyLocation studyLocation) {
+            this(studyLocation.getProvince(), studyLocation.getCity());
+        }
     }
 
     public record ParticipantInformation(
@@ -94,7 +106,9 @@ public class StudyBasicInformation {
         this.category = category.getName();
         this.thumbnail = new Thumbnail(thumbnail.getImageName(), thumbnail.getBackground());
         this.type = type;
-        this.location = location;
+        if (location != null) {
+            this.location = new StudyLocationInfo(location);
+        }
         this.recruitmentStatus = recruitmentStatus;
         this.maxMember = capacity.getValue();
         this.participantMembers = currentParticipants;

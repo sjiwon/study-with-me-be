@@ -18,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -179,39 +178,6 @@ public enum MemberFixture {
                 .header(AUTHORIZATION);
 
         return token.split(" ")[1];
-    }
-
-    public String 로그인을_진행하고_RefreshToken을_추출한다() {
-        final ValidatableResponse response = Google_OAuth_로그인을_진행한다(
-                GOOGLE_PROVIDER,
-                getAuthorizationCodeByIdentifier(this.getEmail().getValue()),
-                REDIRECT_URI,
-                UUID.randomUUID().toString()
-        );
-
-        return response
-                .extract()
-                .cookie(REFRESH_TOKEN_COOKIE);
-    }
-
-    public List<String> 회원가입_후_Google_OAuth_로그인을_진행하고_Token을_추출한다() {
-        MemberAcceptanceFixture.회원가입을_진행한다(this);
-
-        final ValidatableResponse response = Google_OAuth_로그인을_진행한다(
-                GOOGLE_PROVIDER,
-                getAuthorizationCodeByIdentifier(this.getEmail().getValue()),
-                REDIRECT_URI,
-                UUID.randomUUID().toString()
-        );
-
-        final String accessToken = response
-                .extract()
-                .header(AUTHORIZATION)
-                .split(" ")[1];
-        final String refreshToken = response
-                .extract()
-                .cookie(REFRESH_TOKEN_COOKIE);
-        return List.of(accessToken, refreshToken);
     }
 
     public String 회원가입_후_Google_OAuth_로그인을_진행하고_AccessToken을_추출한다() {

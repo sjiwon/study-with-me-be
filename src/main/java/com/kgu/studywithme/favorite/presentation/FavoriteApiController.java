@@ -3,8 +3,9 @@ package com.kgu.studywithme.favorite.presentation;
 import com.kgu.studywithme.favorite.application.usecase.ManageFavoriteUseCase;
 import com.kgu.studywithme.favorite.application.usecase.command.CancelStudyLikeCommand;
 import com.kgu.studywithme.favorite.application.usecase.command.MarkStudyLikeCommand;
+import com.kgu.studywithme.global.Authenticated;
 import com.kgu.studywithme.global.aop.CheckAuthUser;
-import com.kgu.studywithme.global.resolver.ExtractPayload;
+import com.kgu.studywithme.global.resolver.Auth;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -26,10 +27,10 @@ public class FavoriteApiController {
     @CheckAuthUser
     @PostMapping
     public ResponseEntity<Void> likeMarking(
-            @ExtractPayload final Long memberId,
+            @Auth final Authenticated authenticated,
             @PathVariable final Long studyId
     ) {
-        manageFavoriteUseCase.markLike(new MarkStudyLikeCommand(memberId, studyId));
+        manageFavoriteUseCase.markLike(new MarkStudyLikeCommand(authenticated.id(), studyId));
         return ResponseEntity.noContent().build();
     }
 
@@ -37,10 +38,10 @@ public class FavoriteApiController {
     @CheckAuthUser
     @DeleteMapping
     public ResponseEntity<Void> likeCancellation(
-            @ExtractPayload final Long memberId,
+            @Auth final Authenticated authenticated,
             @PathVariable final Long studyId
     ) {
-        manageFavoriteUseCase.cancelLike(new CancelStudyLikeCommand(memberId, studyId));
+        manageFavoriteUseCase.cancelLike(new CancelStudyLikeCommand(authenticated.id(), studyId));
         return ResponseEntity.noContent().build();
     }
 }

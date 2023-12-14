@@ -24,7 +24,7 @@ public class TokenValidityInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        return AuthorizationExtractor.extractToken(request)
+        return AuthorizationExtractor.extractAccessToken(request)
                 .map(tokenProvider::isTokenValid)
                 .orElse(true);
     }

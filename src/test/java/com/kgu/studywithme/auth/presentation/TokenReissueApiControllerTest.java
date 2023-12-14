@@ -13,9 +13,7 @@ import static com.kgu.studywithme.auth.utils.TokenResponseWriter.REFRESH_TOKEN_C
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentRequest;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getExceptionResponseFields;
-import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithRefreshToken;
-import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessToken;
 import static com.kgu.studywithme.common.utils.TokenUtils.applyRefreshToken;
 import static com.kgu.studywithme.common.utils.TokenUtils.createTokenResponse;
 import static org.mockito.ArgumentMatchers.any;
@@ -45,7 +43,6 @@ class TokenReissueApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
-                    .header(AUTHORIZATION, applyAccessToken())
                     .cookie(new Cookie(REFRESH_TOKEN_COOKIE, applyRefreshToken()));
 
             // then
@@ -58,7 +55,6 @@ class TokenReissueApiControllerTest extends ControllerTest {
                                     "TokenReissueApi/Failure/Case1",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
-                                    getHeaderWithAccessToken(),
                                     getHeaderWithRefreshToken(),
                                     getExceptionResponseFields()
                             )
@@ -74,7 +70,6 @@ class TokenReissueApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
-                    .header(AUTHORIZATION, applyAccessToken())
                     .cookie(new Cookie(REFRESH_TOKEN_COOKIE, applyRefreshToken()));
 
             // then
@@ -87,7 +82,6 @@ class TokenReissueApiControllerTest extends ControllerTest {
                                     "TokenReissueApi/Failure/Case2",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
-                                    getHeaderWithAccessToken(),
                                     getHeaderWithRefreshToken(),
                                     getExceptionResponseFields()
                             )
@@ -104,7 +98,6 @@ class TokenReissueApiControllerTest extends ControllerTest {
             // when
             final MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                     .post(BASE_URL)
-                    .header(AUTHORIZATION, applyAccessToken())
                     .cookie(new Cookie(REFRESH_TOKEN_COOKIE, applyRefreshToken()));
 
             // then
@@ -115,7 +108,6 @@ class TokenReissueApiControllerTest extends ControllerTest {
                                     "TokenReissueApi/Success",
                                     getDocumentRequest(),
                                     getDocumentResponse(),
-                                    getHeaderWithAccessToken(),
                                     getHeaderWithRefreshToken(),
                                     responseHeaders(
                                             headerWithName(AUTHORIZATION)

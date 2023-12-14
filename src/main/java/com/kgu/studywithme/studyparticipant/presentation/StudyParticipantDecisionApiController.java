@@ -1,7 +1,8 @@
 package com.kgu.studywithme.studyparticipant.presentation;
 
+import com.kgu.studywithme.global.Authenticated;
 import com.kgu.studywithme.global.aop.CheckStudyHost;
-import com.kgu.studywithme.global.resolver.ExtractPayload;
+import com.kgu.studywithme.global.resolver.Auth;
 import com.kgu.studywithme.studyparticipant.application.usecase.ApproveParticipationUseCase;
 import com.kgu.studywithme.studyparticipant.application.usecase.RejectParticipationUseCase;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.ApproveParticipationCommand;
@@ -30,7 +31,7 @@ public class StudyParticipantDecisionApiController {
     @CheckStudyHost
     @PatchMapping("/approve")
     public ResponseEntity<Void> approve(
-            @ExtractPayload final Long hostId,
+            @Auth final Authenticated authenticated,
             @PathVariable final Long studyId,
             @PathVariable final Long applierId
     ) {
@@ -42,7 +43,7 @@ public class StudyParticipantDecisionApiController {
     @CheckStudyHost
     @PatchMapping("/reject")
     public ResponseEntity<Void> reject(
-            @ExtractPayload final Long hostId,
+            @Auth final Authenticated authenticated,
             @PathVariable final Long studyId,
             @PathVariable final Long applierId,
             @RequestBody @Valid final RejectParticipationRequest request
