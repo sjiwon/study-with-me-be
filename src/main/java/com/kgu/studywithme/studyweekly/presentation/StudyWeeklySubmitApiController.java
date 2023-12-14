@@ -1,8 +1,9 @@
 package com.kgu.studywithme.studyweekly.presentation;
 
 import com.kgu.studywithme.file.utils.converter.FileConverter;
+import com.kgu.studywithme.global.Authenticated;
 import com.kgu.studywithme.global.aop.CheckStudyParticipant;
-import com.kgu.studywithme.global.resolver.ExtractPayload;
+import com.kgu.studywithme.global.resolver.Auth;
 import com.kgu.studywithme.studyweekly.application.usecase.EditWeeklySubmittedAssignmentUseCase;
 import com.kgu.studywithme.studyweekly.application.usecase.SubmitWeeklyAssignmentUseCase;
 import com.kgu.studywithme.studyweekly.application.usecase.command.EditWeeklySubmittedAssignmentCommand;
@@ -35,13 +36,13 @@ public class StudyWeeklySubmitApiController {
     @CheckStudyParticipant
     @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> submitWeeklyAssignment(
-            @ExtractPayload final Long memberId,
+            @Auth final Authenticated authenticated,
             @PathVariable final Long studyId,
             @PathVariable final Long weeklyId,
             @ModelAttribute @Valid final SubmitWeeklyAssignmentRequest request
     ) {
         submitWeeklyAssignmentUseCase.invoke(new SubmitWeeklyAssignmentCommand(
-                memberId,
+                authenticated.id(),
                 studyId,
                 weeklyId,
                 AssignmentSubmitType.from(request.type()),
@@ -55,13 +56,13 @@ public class StudyWeeklySubmitApiController {
     @CheckStudyParticipant
     @PostMapping(value = "/edit", consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> editSubmittedWeeklyAssignment(
-            @ExtractPayload final Long memberId,
+            @Auth final Authenticated authenticated,
             @PathVariable final Long studyId,
             @PathVariable final Long weeklyId,
             @ModelAttribute @Valid final EditSubmittedWeeklyAssignmentRequest request
     ) {
         editWeeklySubmittedAssignmentUseCase.invoke(new EditWeeklySubmittedAssignmentCommand(
-                memberId,
+                authenticated.id(),
                 studyId,
                 weeklyId,
                 AssignmentSubmitType.from(request.type()),

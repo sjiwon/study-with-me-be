@@ -3,7 +3,7 @@ package com.kgu.studywithme.global.config.web;
 import com.kgu.studywithme.auth.utils.TokenProvider;
 import com.kgu.studywithme.global.interceptor.RequestLogInterceptor;
 import com.kgu.studywithme.global.interceptor.TokenValidityInterceptor;
-import com.kgu.studywithme.global.resolver.ExtractPayloadArgumentResolver;
+import com.kgu.studywithme.global.resolver.AuthArgumentResolver;
 import com.kgu.studywithme.global.resolver.ExtractTokenArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -42,7 +42,7 @@ public class AdditionalWebConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addArgumentResolvers(final List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new ExtractTokenArgumentResolver());
-        resolvers.add(new ExtractPayloadArgumentResolver(tokenProvider));
+        resolvers.add(new AuthArgumentResolver(tokenProvider));
+        resolvers.add(new ExtractTokenArgumentResolver(tokenProvider));
     }
 }

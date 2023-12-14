@@ -5,17 +5,16 @@ import com.kgu.studywithme.auth.application.usecase.command.ReissueTokenCommand;
 import com.kgu.studywithme.auth.domain.model.AuthToken;
 import com.kgu.studywithme.auth.utils.TokenProvider;
 import com.kgu.studywithme.auth.utils.TokenResponseWriter;
+import com.kgu.studywithme.global.resolver.ExtractToken;
+import com.kgu.studywithme.global.resolver.TokenType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import static com.kgu.studywithme.auth.utils.TokenResponseWriter.REFRESH_TOKEN_COOKIE;
 
 @Tag(name = "1-2. 토큰 재발급 API")
 @RestController
@@ -29,7 +28,7 @@ public class TokenReissueApiController {
     @Operation(summary = "RefreshToken을 통한 토큰 재발급 EndPoint")
     @PostMapping
     public ResponseEntity<Void> reissueToken(
-            @CookieValue(REFRESH_TOKEN_COOKIE) final String refreshToken,
+            @ExtractToken(tokenType = TokenType.REFRESH) final String refreshToken,
             final HttpServletResponse response
     ) {
         final Long memberId = tokenProvider.getId(refreshToken);

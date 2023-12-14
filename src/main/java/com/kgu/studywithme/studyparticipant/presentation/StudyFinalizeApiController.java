@@ -1,7 +1,8 @@
 package com.kgu.studywithme.studyparticipant.presentation;
 
+import com.kgu.studywithme.global.Authenticated;
 import com.kgu.studywithme.global.aop.CheckStudyParticipant;
-import com.kgu.studywithme.global.resolver.ExtractPayload;
+import com.kgu.studywithme.global.resolver.Auth;
 import com.kgu.studywithme.studyparticipant.application.usecase.GraduateStudyUseCase;
 import com.kgu.studywithme.studyparticipant.application.usecase.LeaveStudyUseCase;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.GraduateStudyCommand;
@@ -27,10 +28,10 @@ public class StudyFinalizeApiController {
     @CheckStudyParticipant
     @PatchMapping("/participants/leave")
     public ResponseEntity<Void> leave(
-            @ExtractPayload final Long memberId,
+            @Auth final Authenticated authenticated,
             @PathVariable final Long studyId
     ) {
-        leaveStudyUseCase.invoke(new LeaveStudyCommand(studyId, memberId));
+        leaveStudyUseCase.invoke(new LeaveStudyCommand(studyId, authenticated.id()));
         return ResponseEntity.noContent().build();
     }
 
@@ -38,10 +39,10 @@ public class StudyFinalizeApiController {
     @CheckStudyParticipant
     @PatchMapping("/graduate")
     public ResponseEntity<Void> graduate(
-            @ExtractPayload final Long memberId,
+            @Auth final Authenticated authenticated,
             @PathVariable final Long studyId
     ) {
-        graduateStudyUseCase.invoke(new GraduateStudyCommand(studyId, memberId));
+        graduateStudyUseCase.invoke(new GraduateStudyCommand(studyId, authenticated.id()));
         return ResponseEntity.noContent().build();
     }
 }

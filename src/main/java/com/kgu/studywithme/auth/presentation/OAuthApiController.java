@@ -11,9 +11,10 @@ import com.kgu.studywithme.auth.domain.model.oauth.OAuthProvider;
 import com.kgu.studywithme.auth.presentation.dto.request.OAuthLoginRequest;
 import com.kgu.studywithme.auth.presentation.dto.response.LoginResponse;
 import com.kgu.studywithme.auth.utils.TokenResponseWriter;
+import com.kgu.studywithme.global.Authenticated;
 import com.kgu.studywithme.global.aop.CheckAuthUser;
 import com.kgu.studywithme.global.dto.ResponseWrapper;
-import com.kgu.studywithme.global.resolver.ExtractPayload;
+import com.kgu.studywithme.global.resolver.Auth;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
@@ -77,8 +78,8 @@ public class OAuthApiController {
     @Operation(summary = "로그아웃 EndPoint")
     @CheckAuthUser
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(@ExtractPayload final Long memberId) {
-        logoutUseCase.invoke(new LogoutCommand(memberId));
+    public ResponseEntity<Void> logout(@Auth final Authenticated authenticated) {
+        logoutUseCase.invoke(new LogoutCommand(authenticated.id()));
         return ResponseEntity.noContent().build();
     }
 }

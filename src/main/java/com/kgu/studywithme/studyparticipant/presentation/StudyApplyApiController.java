@@ -1,6 +1,7 @@
 package com.kgu.studywithme.studyparticipant.presentation;
 
-import com.kgu.studywithme.global.resolver.ExtractPayload;
+import com.kgu.studywithme.global.Authenticated;
+import com.kgu.studywithme.global.resolver.Auth;
 import com.kgu.studywithme.studyparticipant.application.usecase.ApplyCancelUseCase;
 import com.kgu.studywithme.studyparticipant.application.usecase.ApplyStudyUseCase;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.ApplyCancelCommand;
@@ -26,20 +27,20 @@ public class StudyApplyApiController {
     @Operation(summary = "스터디 참여 신청 EndPoint")
     @PostMapping
     public ResponseEntity<Void> apply(
-            @ExtractPayload final Long memberId,
+            @Auth final Authenticated authenticated,
             @PathVariable final Long studyId
     ) {
-        applyStudyUseCase.invoke(new ApplyStudyCommand(studyId, memberId));
+        applyStudyUseCase.invoke(new ApplyStudyCommand(studyId, authenticated.id()));
         return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "스터디 참여 신청 취소 EndPoint")
     @DeleteMapping
     public ResponseEntity<Void> applyCancellation(
-            @ExtractPayload final Long applierId,
+            @Auth final Authenticated authenticated,
             @PathVariable final Long studyId
     ) {
-        applyCancelUseCase.invoke(new ApplyCancelCommand(studyId, applierId));
+        applyCancelUseCase.invoke(new ApplyCancelCommand(studyId, authenticated.id()));
         return ResponseEntity.noContent().build();
     }
 }

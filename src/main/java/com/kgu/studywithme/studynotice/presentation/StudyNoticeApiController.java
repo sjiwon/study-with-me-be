@@ -1,7 +1,8 @@
 package com.kgu.studywithme.studynotice.presentation;
 
+import com.kgu.studywithme.global.Authenticated;
 import com.kgu.studywithme.global.aop.CheckStudyHost;
-import com.kgu.studywithme.global.resolver.ExtractPayload;
+import com.kgu.studywithme.global.resolver.Auth;
 import com.kgu.studywithme.studynotice.application.usecase.DeleteStudyNoticeUseCase;
 import com.kgu.studywithme.studynotice.application.usecase.UpdateStudyNoticeUseCase;
 import com.kgu.studywithme.studynotice.application.usecase.WriteStudyNoticeUseCase;
@@ -37,12 +38,12 @@ public class StudyNoticeApiController {
     @CheckStudyHost
     @PostMapping
     public ResponseEntity<StudyNoticeIdResponse> write(
-            @ExtractPayload final Long hostId,
+            @Auth final Authenticated authenticated,
             @PathVariable final Long studyId,
             @RequestBody @Valid final WriteStudyNoticeRequest request
     ) {
         final Long noticeId = writeStudyNoticeUseCase.invoke(new WriteStudyNoticeCommand(
-                hostId,
+                authenticated.id(),
                 studyId,
                 request.title(),
                 request.content()
@@ -54,7 +55,7 @@ public class StudyNoticeApiController {
     @CheckStudyHost
     @PatchMapping("/{noticeId}")
     public ResponseEntity<Void> update(
-            @ExtractPayload final Long hostId,
+            @Auth final Authenticated authenticated,
             @PathVariable final Long studyId,
             @PathVariable final Long noticeId,
             @RequestBody @Valid final UpdateStudyNoticeRequest request
@@ -67,7 +68,7 @@ public class StudyNoticeApiController {
     @CheckStudyHost
     @DeleteMapping("/{noticeId}")
     public ResponseEntity<Void> delete(
-            @ExtractPayload final Long hostId,
+            @Auth final Authenticated authenticated,
             @PathVariable final Long studyId,
             @PathVariable final Long noticeId
     ) {

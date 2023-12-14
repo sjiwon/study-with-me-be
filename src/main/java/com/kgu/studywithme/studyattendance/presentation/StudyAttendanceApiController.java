@@ -1,7 +1,8 @@
 package com.kgu.studywithme.studyattendance.presentation;
 
+import com.kgu.studywithme.global.Authenticated;
 import com.kgu.studywithme.global.aop.CheckStudyHost;
-import com.kgu.studywithme.global.resolver.ExtractPayload;
+import com.kgu.studywithme.global.resolver.Auth;
 import com.kgu.studywithme.studyattendance.application.usecase.ManualAttendanceUseCase;
 import com.kgu.studywithme.studyattendance.application.usecase.command.ManualAttendanceCommand;
 import com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus;
@@ -28,7 +29,7 @@ public class StudyAttendanceApiController {
     @CheckStudyHost
     @PatchMapping
     public ResponseEntity<Void> manualAttendance(
-            @ExtractPayload final Long hostId,
+            @Auth final Authenticated authenticated,
             @PathVariable final Long studyId,
             @PathVariable final Long memberId,
             @RequestBody @Valid final ManualAttendanceRequest request

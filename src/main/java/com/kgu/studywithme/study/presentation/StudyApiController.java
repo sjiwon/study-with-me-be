@@ -1,9 +1,10 @@
 package com.kgu.studywithme.study.presentation;
 
 import com.kgu.studywithme.category.domain.model.Category;
+import com.kgu.studywithme.global.Authenticated;
 import com.kgu.studywithme.global.aop.CheckAuthUser;
 import com.kgu.studywithme.global.aop.CheckStudyHost;
-import com.kgu.studywithme.global.resolver.ExtractPayload;
+import com.kgu.studywithme.global.resolver.Auth;
 import com.kgu.studywithme.study.application.usecase.CreateStudyUseCase;
 import com.kgu.studywithme.study.application.usecase.TerminateStudyUseCase;
 import com.kgu.studywithme.study.application.usecase.UpdateStudyUseCase;
@@ -45,11 +46,11 @@ public class StudyApiController {
     @CheckAuthUser
     @PostMapping
     public ResponseEntity<StudyIdResponse> create(
-            @ExtractPayload final Long hostId,
+            @Auth final Authenticated authenticated,
             @RequestBody @Valid final CreateStudyRequest request
     ) {
         final Long savedStudyId = createStudyUseCase.invoke(new CreateStudyCommand(
-                hostId,
+                authenticated.id(),
                 new StudyName(request.name()),
                 new Description(request.description()),
                 Category.from(request.category()),
@@ -71,7 +72,7 @@ public class StudyApiController {
     @CheckStudyHost
     @PatchMapping("/{studyId}")
     public ResponseEntity<Void> update(
-            @ExtractPayload final Long hostId,
+            @Auth final Authenticated authenticated,
             @PathVariable final Long studyId,
             @RequestBody @Valid final UpdateStudyRequest request
     ) {
@@ -96,7 +97,7 @@ public class StudyApiController {
     @CheckStudyHost
     @DeleteMapping("/{studyId}")
     public ResponseEntity<Void> terminate(
-            @ExtractPayload final Long hostId,
+            @Auth final Authenticated authenticated,
             @PathVariable final Long studyId
     ) {
         terminateStudyUseCase.invoke(new TerminateStudyCommand(studyId));

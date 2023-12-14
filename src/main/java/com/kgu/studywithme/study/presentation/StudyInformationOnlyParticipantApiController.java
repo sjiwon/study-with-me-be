@@ -1,9 +1,10 @@
 package com.kgu.studywithme.study.presentation;
 
+import com.kgu.studywithme.global.Authenticated;
 import com.kgu.studywithme.global.aop.CheckStudyHost;
 import com.kgu.studywithme.global.aop.CheckStudyParticipant;
 import com.kgu.studywithme.global.dto.ResponseWrapper;
-import com.kgu.studywithme.global.resolver.ExtractPayload;
+import com.kgu.studywithme.global.resolver.Auth;
 import com.kgu.studywithme.study.application.usecase.StudyQueryOnlyParticipantUseCase;
 import com.kgu.studywithme.study.application.usecase.query.GetApplicantById;
 import com.kgu.studywithme.study.application.usecase.query.GetAttendanceById;
@@ -35,7 +36,7 @@ public class StudyInformationOnlyParticipantApiController {
     @CheckStudyHost
     @GetMapping("/applicants")
     public ResponseEntity<ResponseWrapper<List<StudyApplicantInformation>>> getApplicants(
-            @ExtractPayload final Long hostId,
+            @Auth final Authenticated authenticated,
             @PathVariable final Long studyId
     ) {
         final List<StudyApplicantInformation> response = studyQueryOnlyParticipantUseCase.getApplicantById(new GetApplicantById(studyId));
@@ -46,7 +47,7 @@ public class StudyInformationOnlyParticipantApiController {
     @CheckStudyParticipant
     @GetMapping("/notices")
     public ResponseEntity<ResponseWrapper<List<NoticeInformation>>> getNotices(
-            @ExtractPayload final Long memberId,
+            @Auth final Authenticated authenticated,
             @PathVariable final Long studyId
     ) {
         final List<NoticeInformation> response = studyQueryOnlyParticipantUseCase.getNoticeById(new GetNoticeById(studyId));
@@ -57,7 +58,7 @@ public class StudyInformationOnlyParticipantApiController {
     @CheckStudyParticipant
     @GetMapping("/attendances")
     public ResponseEntity<ResponseWrapper<List<AttendanceInformation>>> getAttendances(
-            @ExtractPayload final Long memberId,
+            @Auth final Authenticated authenticated,
             @PathVariable final Long studyId
     ) {
         final List<AttendanceInformation> response = studyQueryOnlyParticipantUseCase.getAttendanceById(new GetAttendanceById(studyId));
@@ -68,7 +69,7 @@ public class StudyInformationOnlyParticipantApiController {
     @CheckStudyParticipant
     @GetMapping("/weeks")
     public ResponseEntity<ResponseWrapper<List<WeeklyInformation>>> getWeeks(
-            @ExtractPayload final Long memberId,
+            @Auth final Authenticated authenticated,
             @PathVariable final Long studyId
     ) {
         final List<WeeklyInformation> response = studyQueryOnlyParticipantUseCase.getWeeklyById(new GetWeeklyById(studyId));

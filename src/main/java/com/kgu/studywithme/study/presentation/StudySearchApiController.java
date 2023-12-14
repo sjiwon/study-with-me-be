@@ -1,6 +1,7 @@
 package com.kgu.studywithme.study.presentation;
 
-import com.kgu.studywithme.global.resolver.ExtractPayload;
+import com.kgu.studywithme.global.Authenticated;
+import com.kgu.studywithme.global.resolver.Auth;
 import com.kgu.studywithme.study.application.usecase.StudySearchUseCase;
 import com.kgu.studywithme.study.application.usecase.dto.StudyPagingResponse;
 import com.kgu.studywithme.study.application.usecase.query.GetStudiesByCategory;
@@ -45,11 +46,11 @@ public class StudySearchApiController {
     @Operation(summary = "사용자 관심사 기반 스터디 조회 EndPoint")
     @GetMapping("/recommend")
     public ResponseEntity<StudyPagingResponse> getStudiesByRecommend(
-            @ExtractPayload final Long memberId,
+            @Auth final Authenticated authenticated,
             @ModelAttribute @Valid final GetStudiesByRecommendRequest request
     ) {
         final SearchByRecommendCondition condition = new SearchByRecommendCondition(
-                memberId,
+                authenticated.id(),
                 request.sort(),
                 request.type(),
                 request.province(),
