@@ -5,10 +5,12 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
+@ToString
 public class ErrorResponse {
     private int status;
     private String errorCode;
@@ -24,10 +26,7 @@ public class ErrorResponse {
         return new ErrorResponse(errorCode);
     }
 
-    public static ErrorResponse of(
-            final ErrorCode errorCode,
-            final String message
-    ) {
+    public static ErrorResponse of(final ErrorCode errorCode, final String message) {
         return new ErrorResponse(errorCode.getStatus().value(), errorCode.getErrorCode(), message);
     }
 }

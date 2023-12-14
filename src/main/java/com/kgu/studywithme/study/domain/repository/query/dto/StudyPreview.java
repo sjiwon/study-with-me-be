@@ -8,6 +8,7 @@ import com.kgu.studywithme.study.domain.model.StudyName;
 import com.kgu.studywithme.study.domain.model.StudyThumbnail;
 import com.kgu.studywithme.study.domain.model.StudyType;
 import com.querydsl.core.annotations.QueryProjection;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @ToString
 public class StudyPreview {

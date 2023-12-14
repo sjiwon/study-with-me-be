@@ -6,23 +6,28 @@ import com.kgu.studywithme.member.domain.model.Gender;
 import com.kgu.studywithme.member.domain.model.Nickname;
 import com.kgu.studywithme.member.domain.model.Score;
 import com.querydsl.core.annotations.QueryProjection;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@ToString
 public class MemberPublicInformation {
-    private final Long id;
-    private final String name;
-    private final String nickname;
-    private final String email;
-    private final LocalDate birth;
-    private final String gender;
-    private final Address address;
-    private final int score;
+    private Long id;
+    private String name;
+    private String nickname;
+    private String email;
+    private LocalDate birth;
+    private String gender;
+    private AddressInfo address;
+    private int score;
     private List<String> interests;
 
     @QueryProjection
@@ -42,7 +47,7 @@ public class MemberPublicInformation {
         this.email = email.getValue();
         this.birth = birth;
         this.gender = gender.getValue();
-        this.address = address;
+        this.address = new AddressInfo(address);
         this.score = score.getValue();
     }
 

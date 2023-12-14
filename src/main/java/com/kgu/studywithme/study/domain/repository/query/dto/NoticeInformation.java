@@ -2,23 +2,26 @@ package com.kgu.studywithme.study.domain.repository.query.dto;
 
 import com.kgu.studywithme.member.domain.model.Nickname;
 import com.querydsl.core.annotations.QueryProjection;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @ToString
 public class NoticeInformation {
-    private final Long id;
-    private final String title;
-    private final String content;
-    private final LocalDateTime createdAt;
-    private final LocalDateTime lastModifiedAt;
-    private final StudyMember writer;
+    private Long id;
+    private String title;
+    private String content;
+    private LocalDateTime createdAt;
+    private LocalDateTime lastModifiedAt;
+    private StudyMember writer;
     private List<CommentInformation> comments;
 
     public record CommentInformation(

@@ -1,6 +1,5 @@
 package com.kgu.studywithme.global.config.redis;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,18 +12,15 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 public class RedisConfiguration {
-    private final ObjectMapper objectMapper;
     private final String host;
     private final int port;
     private final String password;
 
     public RedisConfiguration(
-            final ObjectMapper objectMapper,
             @Value("${spring.data.redis.host}") final String host,
             @Value("${spring.data.redis.port}") final int port,
             @Value("${spring.data.redis.password}") final String password
     ) {
-        this.objectMapper = objectMapper;
         this.host = host;
         this.port = port;
         this.password = password;
@@ -32,7 +28,9 @@ public class RedisConfiguration {
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        final RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration(host, port);
+        final RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
+        configuration.setHostName(host);
+        configuration.setPort(port);
         configuration.setPassword(password);
         return new LettuceConnectionFactory(configuration);
     }
@@ -42,7 +40,7 @@ public class RedisConfiguration {
         final RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer(objectMapper));
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
         return redisTemplate;
     }
 }

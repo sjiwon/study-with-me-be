@@ -1,6 +1,13 @@
 package com.kgu.studywithme.global.config.redis;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
+import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
@@ -21,8 +28,6 @@ import java.time.Duration;
 @EnableCaching
 @RequiredArgsConstructor
 public class RedisWithCacheConfiguration {
-    private final ObjectMapper objectMapper;
-
     @Bean
     @Primary
     public CacheManager cacheManager(final RedisConnectionFactory redisConnectionFactory) {
@@ -50,6 +55,17 @@ public class RedisWithCacheConfiguration {
     }
 
     private RedisCacheConfiguration generateCacheConfiguration() {
+        final PolymorphicTypeValidator typeValidator = BasicPolymorphicTypeValidator.builder()
+                .allowIfBaseType(Object.class)
+                .build();
+
+        final ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModules(new JavaTimeModule(), new Jdk8Module());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        objectMapper.activateDefaultTyping(typeValidator, ObjectMapper.DefaultTyping.EVERYTHING, JsonTypeInfo.As.PROPERTY);
+
         return RedisCacheConfiguration.defaultCacheConfig()
                 .disableCachingNullValues()
                 .computePrefixWith(CacheKeyPrefix.simple())

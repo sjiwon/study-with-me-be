@@ -122,3 +122,6 @@ slack:
 
 logging:
   config: classpath:logback/logback-local.xml
+  level:
+    org.springframework.core:
+      LocalVariableTableParameterNameDiscoverer: error

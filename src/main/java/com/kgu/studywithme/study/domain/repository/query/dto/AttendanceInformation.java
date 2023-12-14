@@ -10,6 +10,12 @@ public record AttendanceInformation(
         StudyMember member,
         List<AttendanceSummary> summaries
 ) {
+    public record AttendanceSummary(
+            int week,
+            String attendanceStatus
+    ) {
+    }
+
     public record AttendanceParticipant(
             StudyMember participant,
             int week,
@@ -28,11 +34,5 @@ public record AttendanceInformation(
                     attendanceStatus.getValue()
             );
         }
-    }
-
-    public record AttendanceSummary(
-            int week,
-            String attendanceStatus
-    ) {
     }
 }

@@ -254,7 +254,7 @@ class StudyInformationApiControllerTest extends ControllerTest {
                         LINE_INTERVIEW.getThumbnail().getBackground()
                 ),
                 LINE_INTERVIEW.getType(),
-                LINE_INTERVIEW.getLocation(),
+                new StudyBasicInformation.StudyLocationInfo(LINE_INTERVIEW.getLocation()),
                 ON,
                 LINE_INTERVIEW.getCapacity().getValue(),
                 LINE_INTERVIEW.getCapacity().getValue() - 2,

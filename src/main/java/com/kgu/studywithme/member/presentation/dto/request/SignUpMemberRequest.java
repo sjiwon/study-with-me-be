@@ -3,7 +3,6 @@ package com.kgu.studywithme.member.presentation.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -19,7 +18,6 @@ public record SignUpMemberRequest(
         String email,
 
         @NotNull(message = "생년월일은 필수입니다.")
-        @DateTimeFormat(pattern = "yyyy-MM-dd")
         LocalDate birth,
 
         @NotBlank(message = "전화번호는 필수입니다.")
