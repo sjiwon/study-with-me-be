@@ -24,7 +24,13 @@ public class ExtractTokenArgumentResolver implements HandlerMethodArgumentResolv
             final WebDataBinderFactory binderFactory
     ) {
         final HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-        return AuthorizationExtractor.extractToken(request)
+        final ExtractToken extractToken = parameter.getParameterAnnotation(ExtractToken.class);
+
+        if (extractToken.tokenType() == TokenType.ACCESS) {
+            return AuthorizationExtractor.extractAccessToken(request)
+                    .orElseThrow(() -> StudyWithMeException.type(AuthErrorCode.INVALID_PERMISSION));
+        }
+        return AuthorizationExtractor.extractRefreshToken(request)
                 .orElseThrow(() -> StudyWithMeException.type(AuthErrorCode.INVALID_PERMISSION));
     }
 }

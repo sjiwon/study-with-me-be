@@ -1,14 +1,18 @@
 package com.kgu.studywithme.auth.utils;
 
 import com.kgu.studywithme.common.ParallelTest;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
+import static com.kgu.studywithme.auth.utils.TokenResponseWriter.REFRESH_TOKEN_COOKIE;
 import static com.kgu.studywithme.common.utils.TokenUtils.ACCESS_TOKEN;
 import static com.kgu.studywithme.common.utils.TokenUtils.BEARER_TOKEN;
+import static com.kgu.studywithme.common.utils.TokenUtils.REFRESH_TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.given;
@@ -19,45 +23,82 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 class AuthorizationExtractorTest extends ParallelTest {
     private final HttpServletRequest request = mock(HttpServletRequest.class);
 
-    @Test
-    @DisplayName("HTTP Request Message의 Authorization Header에 토큰이 없다면 Optional 빈 값을 응답한다")
-    void emptyToken() {
-        // given
-        given(request.getHeader(AUTHORIZATION)).willReturn(null);
+    @Nested
+    @DisplayName("AccessToken 추출")
+    class AccessToken {
+        @Test
+        @DisplayName("HTTP Request Message의 Authorization Header에 AccessToken이 없다면 Optional 빈 값을 응답한다")
+        void emptyToken() {
+            // given
+            given(request.getHeader(AUTHORIZATION)).willReturn(null);
 
-        // when
-        final Optional<String> token = AuthorizationExtractor.extractToken(request);
+            // when
+            final Optional<String> token = AuthorizationExtractor.extractAccessToken(request);
 
-        // then
-        assertThat(token).isEmpty();
+            // then
+            assertThat(token).isEmpty();
+        }
+
+        @Test
+        @DisplayName("HTTP Request Message의 Authorization Header에 토큰 타입만 명시되었다면 Optional 빈 값을 응답한다")
+        void emptyTokenWithType() {
+            // given
+            given(request.getHeader(AUTHORIZATION)).willReturn(BEARER_TOKEN);
+
+            // when
+            final Optional<String> token = AuthorizationExtractor.extractAccessToken(request);
+
+            // then
+            assertThat(token).isEmpty();
+        }
+
+        @Test
+        @DisplayName("HTTP Request Message의 Authorization Header에 AccessToken이 있다면 Optional로 감싸서 응답한다")
+        void extractToken() {
+            // given
+            given(request.getHeader(AUTHORIZATION)).willReturn(String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
+
+            // when
+            final Optional<String> token = AuthorizationExtractor.extractAccessToken(request);
+
+            // then
+            assertAll(
+                    () -> assertThat(token).isPresent(),
+                    () -> assertThat(token.get()).isEqualTo(ACCESS_TOKEN)
+            );
+        }
     }
 
-    @Test
-    @DisplayName("HTTP Request Message의 Authorization Header에 토큰 타입만 명시되었다면 Optional 빈 값을 응답한다")
-    void emptyTokenWithType() {
-        // given
-        given(request.getHeader(AUTHORIZATION)).willReturn(BEARER_TOKEN);
+    @Nested
+    @DisplayName("RefreshToken 추출")
+    class RefreshToken {
+        @Test
+        @DisplayName("HTTP Request Message의 Cookie에 RefreshToken이 없다면 Optional 빈 값을 응답한다")
+        void emptyToken() {
+            // given
+            given(request.getCookies()).willReturn(new Cookie[0]);
 
-        // when
-        final Optional<String> token = AuthorizationExtractor.extractToken(request);
+            // when
+            final Optional<String> token = AuthorizationExtractor.extractRefreshToken(request);
 
-        // then
-        assertThat(token).isEmpty();
-    }
+            // then
+            assertThat(token).isEmpty();
+        }
 
-    @Test
-    @DisplayName("HTTP Request Message의 Authorization Header에 토큰이 있다면 Optional로 감싸서 응답한다")
-    void extractToken() {
-        // given
-        given(request.getHeader(AUTHORIZATION)).willReturn(String.join(" ", BEARER_TOKEN, ACCESS_TOKEN));
+        @Test
+        @DisplayName("HTTP Request Message의 Cookie에 RefreshToken이 있다면 Optional로 감싸서 응답한다")
+        void extractToken() {
+            // given
+            given(request.getCookies()).willReturn(new Cookie[]{new Cookie(REFRESH_TOKEN_COOKIE, REFRESH_TOKEN)});
 
-        // when
-        final Optional<String> token = AuthorizationExtractor.extractToken(request);
+            // when
+            final Optional<String> token = AuthorizationExtractor.extractRefreshToken(request);
 
-        // then
-        assertAll(
-                () -> assertThat(token).isPresent(),
-                () -> assertThat(token.get()).isEqualTo(ACCESS_TOKEN)
-        );
+            // then
+            assertAll(
+                    () -> assertThat(token).isPresent(),
+                    () -> assertThat(token.get()).isEqualTo(REFRESH_TOKEN)
+            );
+        }
     }
 }

@@ -29,7 +29,7 @@ public class ExtractPayloadArgumentResolver implements HandlerMethodArgumentReso
             final WebDataBinderFactory binderFactory
     ) {
         final HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-        final String token = AuthorizationExtractor.extractToken(request)
+        final String token = AuthorizationExtractor.extractAccessToken(request)
                 .orElseThrow(() -> StudyWithMeException.type(AuthErrorCode.INVALID_PERMISSION));
         return tokenProvider.getId(token);
     }
