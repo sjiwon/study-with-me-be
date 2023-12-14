@@ -31,7 +31,7 @@ public class StudySearchUseCase {
                         #query.page()
                     )
                     """,
-            cacheManager = "studyCacheManager",
+            cacheManager = "studySearchCacheManager",
             unless = "#result.studies().isEmpty()"
     )
     public StudyPagingResponse getStudiesByCategory(final GetStudiesByCategory query) {
@@ -51,7 +51,7 @@ public class StudySearchUseCase {
                         #query.page()
                     )
                     """,
-            cacheManager = "studyCacheManager",
+            cacheManager = "studySearchCacheManager",
             unless = "#result.studies().isEmpty()"
     )
     public StudyPagingResponse getStudiesByRecommend(final GetStudiesByRecommend query) {

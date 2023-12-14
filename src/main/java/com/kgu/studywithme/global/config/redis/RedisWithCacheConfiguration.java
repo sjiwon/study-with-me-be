@@ -35,7 +35,7 @@ public class RedisWithCacheConfiguration {
     }
 
     @Bean
-    public CacheManager studyCacheManager(final RedisConnectionFactory redisConnectionFactory) {
+    public CacheManager studySearchCacheManager(final RedisConnectionFactory redisConnectionFactory) {
         return generateCacheManager(redisConnectionFactory, Duration.ofMinutes(10));
     }
 
