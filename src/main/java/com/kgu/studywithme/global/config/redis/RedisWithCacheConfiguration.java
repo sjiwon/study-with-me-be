@@ -26,17 +26,17 @@ public class RedisWithCacheConfiguration {
     @Bean
     @Primary
     public CacheManager cacheManager(final RedisConnectionFactory redisConnectionFactory) {
-        return generateCacheManager(redisConnectionFactory, Duration.ofMinutes(10L));
+        return generateCacheManager(redisConnectionFactory, Duration.ofMinutes(1));
     }
 
     @Bean
     public CacheManager studyCacheManager(final RedisConnectionFactory redisConnectionFactory) {
-        return generateCacheManager(redisConnectionFactory, Duration.ofHours(1L));
+        return generateCacheManager(redisConnectionFactory, Duration.ofMinutes(10));
     }
 
     @Bean
     public CacheManager memberInfoCacheManager(final RedisConnectionFactory redisConnectionFactory) {
-        return generateCacheManager(redisConnectionFactory, Duration.ofDays(1L));
+        return generateCacheManager(redisConnectionFactory, Duration.ofDays(1));
     }
 
     private CacheManager generateCacheManager(final RedisConnectionFactory redisConnectionFactory, final Duration ttl) {
