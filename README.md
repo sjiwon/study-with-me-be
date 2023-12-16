@@ -56,6 +56,7 @@
 - [스터디 조회 인수테스트 더미 데이터 관리 최적화 (with AfterAllCallback)](https://sjiwon-dev.tistory.com/29)
 - [집계성 컬럼(favorite, review) 반정규화 진행 및 쿼리 튜닝을 통한 성능 개선](https://sjiwon-dev.tistory.com/38)
 - [ThreadPool & HikariCP 최적화](https://sjiwon-dev.tistory.com/41)
+- [WAS 서버 Scale Out 후 스케줄링 로직이 중복 실행되는 문제 해결](https://sjiwon-dev.tistory.com/46)
 
 <br>
 
@@ -63,11 +64,11 @@
 
 ### Backend
 
-![Tech Stack - Backend](https://github.com/sjiwon/study-with-me-be/assets/51479381/89c2a9c9-cc02-485e-bd8d-b315dacd2b03)
+![Tech Stack - Backend](https://github.com/sjiwon/study-with-me-be/assets/51479381/70dc9df1-517c-45c2-b816-86edf2dc5c6b)
 
 ### Infra
 
-![Tech Stack - Infra](https://github.com/sjiwon/study-with-me-be/assets/51479381/6dd74c8a-ba74-4b7c-9234-4290fa00becd)
+![Tech Stack - Infra](https://github.com/sjiwon/study-with-me-be/assets/51479381/844a1bb9-1c0e-49d6-a34d-f9d036c0c8d7)
 
 <br>
 
@@ -88,7 +89,7 @@
 
 ### 서버 API 호출 흐름도
 
-![서버 API 호출 흐름도](https://github.com/sjiwon/study-with-me-be/assets/51479381/8bb49877-2945-464b-9fbb-39530ddd465a)
+![서버 API 호출 흐름도](https://github.com/sjiwon/study-with-me-be/assets/51479381/38a9c4e2-46d9-47ed-955b-2cf48f8bef1c)
 
 <br>
 
