@@ -57,6 +57,7 @@
 - [집계성 컬럼(favorite, review) 반정규화 진행 및 쿼리 튜닝을 통한 성능 개선](https://sjiwon-dev.tistory.com/38)
 - [ThreadPool & HikariCP 최적화](https://sjiwon-dev.tistory.com/41)
 - [WAS 서버 Scale Out 후 스케줄링 로직이 중복 실행되는 문제 해결](https://sjiwon-dev.tistory.com/46)
+- [CompletableFuture를 활용한 N건 이미지 업로드 병렬 처리](https://sjiwon-dev.tistory.com/48)
 
 <br>
 
