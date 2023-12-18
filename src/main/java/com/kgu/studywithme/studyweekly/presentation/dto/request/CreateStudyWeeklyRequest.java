@@ -2,6 +2,7 @@ package com.kgu.studywithme.studyweekly.presentation.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,6 +30,7 @@ public record CreateStudyWeeklyRequest(
         @NotNull(message = "자동 출석 여부는 필수입니다.")
         Boolean autoAttendance,
 
+        @Size(max = 10, message = "첨부파일은 최대 10개까지 등록할 수 있습니다.")
         List<MultipartFile> files
 ) {
 }
