@@ -68,6 +68,11 @@ spring:
           starttls:
             enable: true
 
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 30MB
+
 oauth2:
   google:
     grant-type: authorization_code
