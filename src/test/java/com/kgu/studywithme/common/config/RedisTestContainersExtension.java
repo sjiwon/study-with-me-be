@@ -8,14 +8,14 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public class RedisTestContainersExtension implements Extension {
     private static final String REDIS_IMAGE = "redis:latest";
     private static final int REDIS_PORT = 6379;
-    private static final GenericContainer<?> CONTAINER;
+    private static final GenericContainer<?> container;
 
     static {
-        CONTAINER = new GenericContainer(REDIS_IMAGE)
+        container = new GenericContainer(REDIS_IMAGE)
                 .withExposedPorts(REDIS_PORT);
-        CONTAINER.start();
+        container.start();
 
-        System.setProperty("spring.data.redis.host", CONTAINER.getHost());
-        System.setProperty("spring.data.redis.port", String.valueOf(CONTAINER.getMappedPort(REDIS_PORT)));
+        System.setProperty("spring.data.redis.host", container.getHost());
+        System.setProperty("spring.data.redis.port", String.valueOf(container.getMappedPort(REDIS_PORT)));
     }
 }

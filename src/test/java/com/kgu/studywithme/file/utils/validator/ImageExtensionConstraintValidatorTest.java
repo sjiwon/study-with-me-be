@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-
 import static com.kgu.studywithme.common.utils.FileMockingUtils.createSingleMockMultipartFile;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -33,7 +31,7 @@ class ImageExtensionConstraintValidatorTest extends ParallelTest {
 
     @Test
     @DisplayName("허용하지 않는 파일 확장자면 validator를 통과하지 못한다")
-    void notAllowedExtension() throws IOException {
+    void notAllowedExtension() {
         // given
         final MultipartFile file = createSingleMockMultipartFile("hello5.webp", "image/webp");
 
@@ -46,7 +44,7 @@ class ImageExtensionConstraintValidatorTest extends ParallelTest {
 
     @Test
     @DisplayName("허용하는 확장자면 validator를 통과한다")
-    void allowedExtension() throws IOException {
+    void allowedExtension() {
         // given
         final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");
 

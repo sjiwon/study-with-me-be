@@ -46,7 +46,7 @@ class TokenReissueApiControllerTest extends ControllerTest {
                     .cookie(new Cookie(REFRESH_TOKEN_COOKIE, applyRefreshToken()));
 
             // then
-            final AuthErrorCode expectedError = AuthErrorCode.EXPIRED_TOKEN;
+            final AuthErrorCode expectedError = AuthErrorCode.INVALID_TOKEN;
             mockMvc.perform(requestBuilder)
                     .andExpect(status().isUnauthorized())
                     .andExpectAll(getResultMatchersViaErrorCode(expectedError))

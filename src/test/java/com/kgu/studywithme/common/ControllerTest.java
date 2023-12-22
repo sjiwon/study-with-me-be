@@ -94,9 +94,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -360,20 +360,28 @@ public abstract class ControllerTest {
     }
 
     protected void mockingToken(final boolean isValid, final Long payloadId) {
-        given(tokenProvider.isTokenValid(anyString())).willReturn(isValid);
+        if (isValid) {
+            doNothing()
+                    .when(tokenProvider)
+                    .validateToken(anyString());
+        } else {
+            doThrow(StudyWithMeException.type(AuthErrorCode.INVALID_TOKEN))
+                    .when(tokenProvider)
+                    .validateToken(anyString());
+        }
         given(tokenProvider.getId(anyString())).willReturn(payloadId);
     }
 
     protected void mockingTokenWithExpiredException() {
-        doThrow(StudyWithMeException.type(AuthErrorCode.EXPIRED_TOKEN))
+        doThrow(StudyWithMeException.type(AuthErrorCode.INVALID_TOKEN))
                 .when(tokenProvider)
-                .isTokenValid(any());
+                .validateToken(anyString());
     }
 
     protected void mockingTokenWithInvalidException() {
         doThrow(StudyWithMeException.type(AuthErrorCode.INVALID_TOKEN))
                 .when(tokenProvider)
-                .isTokenValid(any());
+                .validateToken(anyString());
     }
 
     protected void mockingForStudyHost(final Long studyId, final Long memberId, final boolean isValue) {

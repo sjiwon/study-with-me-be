@@ -1,8 +1,8 @@
 package com.kgu.studywithme.studyparticipant.presentation;
 
-import com.kgu.studywithme.global.Authenticated;
+import com.kgu.studywithme.auth.domain.model.Authenticated;
+import com.kgu.studywithme.global.annotation.Auth;
 import com.kgu.studywithme.global.aop.CheckStudyHost;
-import com.kgu.studywithme.global.resolver.Auth;
 import com.kgu.studywithme.studyparticipant.application.usecase.ApproveParticipationUseCase;
 import com.kgu.studywithme.studyparticipant.application.usecase.RejectParticipationUseCase;
 import com.kgu.studywithme.studyparticipant.application.usecase.command.ApproveParticipationCommand;

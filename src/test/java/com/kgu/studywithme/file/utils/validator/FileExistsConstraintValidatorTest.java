@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-
 import static com.kgu.studywithme.common.utils.FileMockingUtils.createSingleMockMultipartFile;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -39,7 +37,7 @@ public class FileExistsConstraintValidatorTest extends ParallelTest {
 
     @Test
     @DisplayName("파일이 존재하면 validator를 통과한다")
-    void fileExists() throws IOException {
+    void fileExists() {
         // given
         final MultipartFile file = createSingleMockMultipartFile("hello4.png", "image/png");
 

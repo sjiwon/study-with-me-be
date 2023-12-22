@@ -1,8 +1,8 @@
 package com.kgu.studywithme.studyattendance.presentation;
 
-import com.kgu.studywithme.global.Authenticated;
+import com.kgu.studywithme.auth.domain.model.Authenticated;
+import com.kgu.studywithme.global.annotation.Auth;
 import com.kgu.studywithme.global.aop.CheckStudyHost;
-import com.kgu.studywithme.global.resolver.Auth;
 import com.kgu.studywithme.studyattendance.application.usecase.ManualAttendanceUseCase;
 import com.kgu.studywithme.studyattendance.application.usecase.command.ManualAttendanceCommand;
 import com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus;

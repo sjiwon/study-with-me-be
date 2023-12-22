@@ -1,6 +1,5 @@
 package com.kgu.studywithme.studyweekly.domain.service;
 
-import com.kgu.studywithme.file.domain.model.RawFileData;
 import com.kgu.studywithme.file.utils.converter.FileConverter;
 import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.member.domain.repository.MemberRepository;
@@ -12,11 +11,9 @@ import com.kgu.studywithme.studyweekly.application.usecase.command.CreateStudyWe
 import com.kgu.studywithme.studyweekly.domain.model.StudyWeekly;
 import com.kgu.studywithme.studyweekly.domain.model.UploadAttachment;
 import com.kgu.studywithme.studyweekly.domain.repository.StudyWeeklyRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.List;
 
 import static com.kgu.studywithme.common.fixture.MemberFixture.ANONYMOUS;
@@ -53,30 +50,23 @@ class WeeklyCreatorTest {
     private final Member participantA = GHOST.toMember().apply(2L);
     private final Member participantB = ANONYMOUS.toMember().apply(3L);
     private final Study study = SPRING.toStudy(host).apply(1L);
-    private CreateStudyWeeklyCommand command;
-    private List<UploadAttachment> attachments;
-
-    @BeforeEach
-    void setUp() throws IOException {
-        final List<RawFileData> files = FileConverter.convertAttachmentFiles(List.of(
-                createMultipleMockMultipartFile("hello1.txt", "text/plain"),
-                createMultipleMockMultipartFile("hello3.pdf", "application/pdf")
-        ));
-        command = new CreateStudyWeeklyCommand(
-                study.getId(),
-                host.getId(),
-                STUDY_WEEKLY_1.getTitle(),
-                STUDY_WEEKLY_1.getContent(),
-                STUDY_WEEKLY_1.getPeriod().toPeriod(),
-                STUDY_WEEKLY_1.isAssignmentExists(),
-                STUDY_WEEKLY_1.isAutoAttendance(),
-                files
-        );
-        attachments = List.of(
-                new UploadAttachment("hello1.txt", "S3/hello1.txt"),
-                new UploadAttachment("hello3.pdf", "S3/hello3.pdf")
-        );
-    }
+    private final CreateStudyWeeklyCommand command = new CreateStudyWeeklyCommand(
+            study.getId(),
+            host.getId(),
+            STUDY_WEEKLY_1.getTitle(),
+            STUDY_WEEKLY_1.getContent(),
+            STUDY_WEEKLY_1.getPeriod().toPeriod(),
+            STUDY_WEEKLY_1.isAssignmentExists(),
+            STUDY_WEEKLY_1.isAutoAttendance(),
+            FileConverter.convertAttachmentFiles(List.of(
+                    createMultipleMockMultipartFile("hello1.txt", "text/plain"),
+                    createMultipleMockMultipartFile("hello3.pdf", "application/pdf")
+            ))
+    );
+    private final List<UploadAttachment> attachments = List.of(
+            new UploadAttachment("hello1.txt", "S3/hello1.txt"),
+            new UploadAttachment("hello3.pdf", "S3/hello3.pdf")
+    );
 
     @Test
     @DisplayName("특정 주차를 생성한다")

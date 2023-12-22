@@ -5,7 +5,6 @@ import com.kgu.studywithme.file.application.adapter.FileUploader;
 import com.kgu.studywithme.file.domain.model.RawFileData;
 import com.kgu.studywithme.file.utils.converter.FileConverter;
 import com.kgu.studywithme.studyweekly.domain.model.UploadAttachment;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -47,15 +45,10 @@ public class AttachmentUploaderTest {
     @Autowired
     private AttachmentUploader sut;
 
-    private List<RawFileData> files;
-
-    @BeforeEach
-    void setUp() throws IOException {
-        files = FileConverter.convertAttachmentFiles(List.of(
-                createMultipleMockMultipartFile("hello1.txt", "text/plain"),
-                createMultipleMockMultipartFile("hello3.pdf", "application/pdf")
-        ));
-    }
+    private final List<RawFileData> files = FileConverter.convertAttachmentFiles(List.of(
+            createMultipleMockMultipartFile("hello1.txt", "text/plain"),
+            createMultipleMockMultipartFile("hello3.pdf", "application/pdf")
+    ));
 
     @Test
     @DisplayName("첨부파일을 업로드 하지 않으면 EmptyList가 반환된다")

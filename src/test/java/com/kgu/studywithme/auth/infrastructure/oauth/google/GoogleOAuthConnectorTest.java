@@ -1,9 +1,9 @@
 package com.kgu.studywithme.auth.infrastructure.oauth.google;
 
-import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleTokenResponse;
 import com.kgu.studywithme.auth.infrastructure.oauth.google.response.GoogleUserResponse;
 import com.kgu.studywithme.common.utils.TokenUtils;
+import com.kgu.studywithme.global.exception.GlobalErrorCode;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -61,7 +61,7 @@ class GoogleOAuthConnectorTest {
             // when - then
             assertThatThrownBy(() -> sut.fetchToken(AUTHORIZATION_CODE, REDIRECT_URI, STATE))
                     .isInstanceOf(StudyWithMeException.class)
-                    .hasMessage(AuthErrorCode.GOOGLE_OAUTH_EXCEPTION.getMessage());
+                    .hasMessage(GlobalErrorCode.INTERNAL_SERVER_ERROR.getMessage());
         }
 
         @Test
@@ -107,7 +107,7 @@ class GoogleOAuthConnectorTest {
             // when - then
             assertThatThrownBy(() -> sut.fetchUserInfo(ACCESS_TOKEN))
                     .isInstanceOf(StudyWithMeException.class)
-                    .hasMessage(AuthErrorCode.GOOGLE_OAUTH_EXCEPTION.getMessage());
+                    .hasMessage(GlobalErrorCode.INTERNAL_SERVER_ERROR.getMessage());
         }
 
         @Test

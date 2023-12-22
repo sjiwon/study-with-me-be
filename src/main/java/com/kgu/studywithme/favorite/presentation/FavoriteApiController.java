@@ -1,11 +1,11 @@
 package com.kgu.studywithme.favorite.presentation;
 
+import com.kgu.studywithme.auth.domain.model.Authenticated;
 import com.kgu.studywithme.favorite.application.usecase.ManageFavoriteUseCase;
 import com.kgu.studywithme.favorite.application.usecase.command.CancelStudyLikeCommand;
 import com.kgu.studywithme.favorite.application.usecase.command.MarkStudyLikeCommand;
-import com.kgu.studywithme.global.Authenticated;
+import com.kgu.studywithme.global.annotation.Auth;
 import com.kgu.studywithme.global.aop.CheckAuthUser;
-import com.kgu.studywithme.global.resolver.Auth;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

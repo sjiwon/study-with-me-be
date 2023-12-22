@@ -12,20 +12,20 @@ public class MySqlTestContainersExtension implements Extension {
     private static final String DATABASE_NAME = "study_with_me";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "1234";
-    private static final MySQLContainer<?> CONTAINER;
+    private static final MySQLContainer<?> container;
 
     static {
-        CONTAINER = new MySQLContainer(MYSQL_IMAGE)
+        container = new MySQLContainer(MYSQL_IMAGE)
                 .withDatabaseName(DATABASE_NAME)
                 .withUsername(USERNAME)
                 .withPassword(PASSWORD);
-        CONTAINER.start();
+        container.start();
 
-        System.setProperty("spring.datasource.url", CONTAINER.getJdbcUrl());
-        System.setProperty("spring.datasource.username", CONTAINER.getUsername());
-        System.setProperty("spring.datasource.password", CONTAINER.getPassword());
-        System.setProperty("spring.flyway.url", CONTAINER.getJdbcUrl());
-        System.setProperty("spring.flyway.user", CONTAINER.getUsername());
-        System.setProperty("spring.flyway.password", CONTAINER.getPassword());
+        System.setProperty("spring.datasource.url", container.getJdbcUrl());
+        System.setProperty("spring.datasource.username", container.getUsername());
+        System.setProperty("spring.datasource.password", container.getPassword());
+        System.setProperty("spring.flyway.url", container.getJdbcUrl());
+        System.setProperty("spring.flyway.user", container.getUsername());
+        System.setProperty("spring.flyway.password", container.getPassword());
     }
 }

@@ -4,11 +4,12 @@ import com.kgu.studywithme.auth.application.adapter.OAuthConnector;
 import com.kgu.studywithme.auth.domain.model.oauth.OAuthProvider;
 import com.kgu.studywithme.auth.domain.model.oauth.OAuthTokenResponse;
 import com.kgu.studywithme.auth.domain.model.oauth.OAuthUserResponse;
-import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.auth.infrastructure.oauth.naver.response.NaverTokenResponse;
 import com.kgu.studywithme.auth.infrastructure.oauth.naver.response.NaverUserResponse;
+import com.kgu.studywithme.global.exception.GlobalErrorCode;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.HttpMethod.GET;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class NaverOAuthConnector implements OAuthConnector {
@@ -65,7 +67,8 @@ public class NaverOAuthConnector implements OAuthConnector {
         try {
             return restTemplate.postForEntity(properties.getTokenUrl(), request, NaverTokenResponse.class);
         } catch (final RestClientException e) {
-            throw StudyWithMeException.type(AuthErrorCode.GOOGLE_OAUTH_EXCEPTION);
+            log.error("OAuth Error... {}", e, e);
+            throw StudyWithMeException.type(GlobalErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -86,7 +89,8 @@ public class NaverOAuthConnector implements OAuthConnector {
         try {
             return restTemplate.exchange(properties.getUserInfoUrl(), GET, request, NaverUserResponse.class);
         } catch (final RestClientException e) {
-            throw StudyWithMeException.type(AuthErrorCode.GOOGLE_OAUTH_EXCEPTION);
+            log.error("OAuth Error... {}", e, e);
+            throw StudyWithMeException.type(GlobalErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 }

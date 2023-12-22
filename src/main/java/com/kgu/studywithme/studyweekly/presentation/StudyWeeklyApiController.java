@@ -1,9 +1,9 @@
 package com.kgu.studywithme.studyweekly.presentation;
 
+import com.kgu.studywithme.auth.domain.model.Authenticated;
 import com.kgu.studywithme.file.utils.converter.FileConverter;
-import com.kgu.studywithme.global.Authenticated;
+import com.kgu.studywithme.global.annotation.Auth;
 import com.kgu.studywithme.global.aop.CheckStudyHost;
-import com.kgu.studywithme.global.resolver.Auth;
 import com.kgu.studywithme.studyweekly.application.usecase.CreateStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.application.usecase.DeleteStudyWeeklyUseCase;
 import com.kgu.studywithme.studyweekly.application.usecase.UpdateStudyWeeklyUseCase;

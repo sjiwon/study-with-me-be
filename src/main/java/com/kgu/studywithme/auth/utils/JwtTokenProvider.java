@@ -69,15 +69,20 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
     @Override
-    public boolean isTokenValid(final String token) {
+    public void validateToken(final String token) {
         try {
             final Jws<Claims> claims = getClaims(token);
             final Date expiredDate = claims.getBody().getExpiration();
             final Date now = new Date();
-            return expiredDate.after(now);
-        } catch (final ExpiredJwtException e) {
-            throw StudyWithMeException.type(AuthErrorCode.EXPIRED_TOKEN);
-        } catch (final SecurityException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
+
+            if (expiredDate.before(now)) {
+                throw StudyWithMeException.type(AuthErrorCode.INVALID_TOKEN);
+            }
+        } catch (final ExpiredJwtException |
+                       SecurityException |
+                       MalformedJwtException |
+                       UnsupportedJwtException |
+                       IllegalArgumentException e) {
             throw StudyWithMeException.type(AuthErrorCode.INVALID_TOKEN);
         }
     }

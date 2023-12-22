@@ -1,6 +1,6 @@
 package com.kgu.studywithme.global.aop;
 
-import com.kgu.studywithme.global.Authenticated;
+import com.kgu.studywithme.auth.domain.model.Authenticated;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.study.domain.repository.StudyRepository;
 import com.kgu.studywithme.study.exception.StudyErrorCode;

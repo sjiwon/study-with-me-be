@@ -8,7 +8,6 @@ import com.kgu.studywithme.global.exception.StudyWithMeException;
 import io.awspring.cloud.s3.ObjectMetadata;
 import io.awspring.cloud.s3.S3Resource;
 import io.awspring.cloud.s3.S3Template;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -36,17 +35,11 @@ class S3FileUploaderTest extends ParallelTest {
     private final S3Resource s3Resource = mock(S3Resource.class);
     private final S3FileUploader sut = new S3FileUploader(s3Template, BUCKET, CLOUD_FRONT_URL);
 
-    private RawFileData rawFileData;
-    private String imageUploadLinkPath;
-
-    @BeforeEach
-    void setUp() throws IOException {
-        rawFileData = FileConverter.convertImageFile(
-                createSingleMockMultipartFile("hello4.png", "image/png"),
-                STUDY_DESCRIPTION_IMAGE
-        );
-        imageUploadLinkPath = "/" + rawFileData.fileName();
-    }
+    private final RawFileData rawFileData = FileConverter.convertImageFile(
+            createSingleMockMultipartFile("hello4.png", "image/png"),
+            STUDY_DESCRIPTION_IMAGE
+    );
+    private final String imageUploadLinkPath = "/" + rawFileData.fileName();
 
     @Test
     @DisplayName("Client가 파일을 전송하지 않았으면 예외가 발생한다")

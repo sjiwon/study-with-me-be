@@ -13,8 +13,6 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-
 import static com.kgu.studywithme.common.utils.FileMockingUtils.createSingleMockMultipartFile;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.constraint;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentRequest;
@@ -43,14 +41,12 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
         private static final Long WEEKLY_ID = 1L;
         private static final Long HOST_ID = 1L;
         private static final Long ANONYMOUS_ID = 2L;
-        private MultipartFile file;
+        private final MultipartFile file = createSingleMockMultipartFile("hello3.pdf", "application/pdf");
 
         @BeforeEach
-        void setUp() throws IOException {
+        void setUp() {
             mockingForStudyParticipant(STUDY_ID, HOST_ID, true);
             mockingForStudyParticipant(STUDY_ID, ANONYMOUS_ID, false);
-
-            file = createSingleMockMultipartFile("hello3.pdf", "application/pdf");
         }
 
         @Test
@@ -353,14 +349,12 @@ class StudyWeeklySubmitApiControllerTest extends ControllerTest {
         private static final Long WEEKLY_ID = 1L;
         private static final Long HOST_ID = 1L;
         private static final Long ANONYMOUS_ID = 2L;
-        private MultipartFile file;
+        private final MultipartFile file = createSingleMockMultipartFile("hello3.pdf", "application/pdf");
 
         @BeforeEach
-        void setUp() throws IOException {
+        void setUp() {
             mockingForStudyParticipant(STUDY_ID, HOST_ID, true);
             mockingForStudyParticipant(STUDY_ID, ANONYMOUS_ID, false);
-
-            file = createSingleMockMultipartFile("hello3.pdf", "application/pdf");
         }
 
         @Test

@@ -52,12 +52,10 @@ class JwtTokenProviderTest extends ParallelTest {
         final String invalidToken = invalidProvider.createAccessToken(memberId);
 
         // then
-        assertAll(
-                () -> assertDoesNotThrow(() -> validProvider.isTokenValid(validToken)),
-                () -> assertThatThrownBy(() -> invalidProvider.isTokenValid(invalidToken))
-                        .isInstanceOf(StudyWithMeException.class)
-                        .hasMessage(AuthErrorCode.EXPIRED_TOKEN.getMessage())
-        );
+        assertDoesNotThrow(() -> validProvider.validateToken(validToken));
+        assertThatThrownBy(() -> invalidProvider.validateToken(invalidToken))
+                .isInstanceOf(StudyWithMeException.class)
+                .hasMessage(AuthErrorCode.INVALID_TOKEN.getMessage());
     }
 
     @Test
@@ -67,7 +65,7 @@ class JwtTokenProviderTest extends ParallelTest {
         final String forgedToken = validProvider.createAccessToken(memberId) + "hacked";
 
         // then
-        assertThatThrownBy(() -> validProvider.isTokenValid(forgedToken))
+        assertThatThrownBy(() -> validProvider.validateToken(forgedToken))
                 .isInstanceOf(StudyWithMeException.class)
                 .hasMessage(AuthErrorCode.INVALID_TOKEN.getMessage());
     }

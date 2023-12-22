@@ -1,10 +1,9 @@
 package com.kgu.studywithme.global.config.web;
 
 import com.kgu.studywithme.auth.utils.TokenProvider;
+import com.kgu.studywithme.global.annotation.AuthArgumentResolver;
+import com.kgu.studywithme.global.annotation.ExtractTokenArgumentResolver;
 import com.kgu.studywithme.global.interceptor.RequestLogInterceptor;
-import com.kgu.studywithme.global.interceptor.TokenValidityInterceptor;
-import com.kgu.studywithme.global.resolver.AuthArgumentResolver;
-import com.kgu.studywithme.global.resolver.ExtractTokenArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -18,23 +17,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdditionalWebConfiguration implements WebMvcConfigurer {
     private final CorsProperties corsProperties;
-    private final TokenValidityInterceptor tokenValidityInterceptor;
     private final RequestLogInterceptor requestLogInterceptor;
     private final TokenProvider tokenProvider;
 
     @Override
     public void addCorsMappings(final CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins(corsProperties.getAllowedOriginPatterns().toArray(String[]::new))
-                .allowCredentials(true)
+                .allowedOriginPatterns(corsProperties.getAllowedOriginPatterns().toArray(String[]::new))
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
+                .allowCredentials(true)
                 .maxAge(3600);
     }
 
     @Override
     public void addInterceptors(final InterceptorRegistry registry) {
-        registry.addInterceptor(tokenValidityInterceptor);
         registry.addInterceptor(requestLogInterceptor)
                 .addPathPatterns("/**")
                 .order(1);

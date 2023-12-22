@@ -1,7 +1,7 @@
 package com.kgu.studywithme.studyreview.presentation;
 
-import com.kgu.studywithme.global.Authenticated;
-import com.kgu.studywithme.global.resolver.Auth;
+import com.kgu.studywithme.auth.domain.model.Authenticated;
+import com.kgu.studywithme.global.annotation.Auth;
 import com.kgu.studywithme.studyreview.application.usecase.DeleteStudyReviewUseCase;
 import com.kgu.studywithme.studyreview.application.usecase.UpdateStudyReviewUseCase;
 import com.kgu.studywithme.studyreview.application.usecase.WriteStudyReviewUseCase;

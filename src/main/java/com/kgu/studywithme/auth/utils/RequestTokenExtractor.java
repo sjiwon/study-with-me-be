@@ -9,12 +9,12 @@ import org.springframework.util.StringUtils;
 import java.util.Arrays;
 import java.util.Optional;
 
+import static com.kgu.studywithme.auth.utils.TokenResponseWriter.AUTHORIZATION_HEADER_TOKEN_PREFIX;
+import static com.kgu.studywithme.auth.utils.TokenResponseWriter.REFRESH_TOKEN_COOKIE;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class AuthorizationExtractor {
-    private static final String BEARER_TYPE = "Bearer";
-
+public class RequestTokenExtractor {
     public static Optional<String> extractAccessToken(final HttpServletRequest request) {
         final String token = request.getHeader(AUTHORIZATION);
         if (isEmptyToken(token)) {
@@ -24,8 +24,13 @@ public class AuthorizationExtractor {
     }
 
     public static Optional<String> extractRefreshToken(final HttpServletRequest request) {
-        final String token = Arrays.stream(request.getCookies())
-                .filter(cookie -> cookie.getName().equals(TokenResponseWriter.REFRESH_TOKEN_COOKIE))
+        final Cookie[] cookies = request.getCookies();
+        if (cookies == null || cookies.length == 0) {
+            return Optional.empty();
+        }
+
+        final String token = Arrays.stream(cookies)
+                .filter(cookie -> cookie.getName().equals(REFRESH_TOKEN_COOKIE))
                 .map(Cookie::getValue)
                 .findFirst()
                 .orElse(null);
@@ -41,7 +46,7 @@ public class AuthorizationExtractor {
     }
 
     private static Optional<String> checkToken(final String[] parts) {
-        if (parts.length == 2 && parts[0].equals(BEARER_TYPE)) {
+        if (parts.length == 2 && parts[0].equals(AUTHORIZATION_HEADER_TOKEN_PREFIX)) {
             return Optional.ofNullable(parts[1]);
         }
         return Optional.empty();

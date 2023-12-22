@@ -1,8 +1,8 @@
 package com.kgu.studywithme.member.presentation;
 
-import com.kgu.studywithme.global.Authenticated;
+import com.kgu.studywithme.auth.domain.model.Authenticated;
+import com.kgu.studywithme.global.annotation.Auth;
 import com.kgu.studywithme.global.dto.ResponseWrapper;
-import com.kgu.studywithme.global.resolver.Auth;
 import com.kgu.studywithme.member.application.usecase.MemberPrivateQueryUseCase;
 import com.kgu.studywithme.member.application.usecase.query.GetAppliedStudyById;
 import com.kgu.studywithme.member.application.usecase.query.GetLikeMarkedStudyById;

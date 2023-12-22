@@ -1,10 +1,10 @@
 package com.kgu.studywithme.study.presentation;
 
-import com.kgu.studywithme.global.Authenticated;
+import com.kgu.studywithme.auth.domain.model.Authenticated;
+import com.kgu.studywithme.global.annotation.Auth;
 import com.kgu.studywithme.global.aop.CheckStudyHost;
 import com.kgu.studywithme.global.aop.CheckStudyParticipant;
 import com.kgu.studywithme.global.dto.ResponseWrapper;
-import com.kgu.studywithme.global.resolver.Auth;
 import com.kgu.studywithme.study.application.usecase.StudyQueryOnlyParticipantUseCase;
 import com.kgu.studywithme.study.application.usecase.query.GetApplicantById;
 import com.kgu.studywithme.study.application.usecase.query.GetAttendanceById;

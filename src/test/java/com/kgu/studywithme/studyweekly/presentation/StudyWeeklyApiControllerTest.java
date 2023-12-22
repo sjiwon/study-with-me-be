@@ -13,7 +13,6 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
 import static com.kgu.studywithme.common.fixture.StudyWeeklyFixture.STUDY_WEEKLY_1;
@@ -42,7 +41,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @DisplayName("StudyWeekly -> StudyWeeklyApiController 테스트")
 class StudyWeeklyApiControllerTest extends ControllerTest {
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+    private final MultipartFile files1 = createMultipleMockMultipartFile("hello1.txt", "text/plain");
+    private final MultipartFile files2 = createMultipleMockMultipartFile("hello2.hwpx", "application/x-hwpml");
+    private final MultipartFile files3 = createMultipleMockMultipartFile("hello3.pdf", "application/pdf");
+    private final MultipartFile files4 = createMultipleMockMultipartFile("hello4.png", "image/png");
 
     @Nested
     @DisplayName("스터디 주차 생성 API [POST /api/studies/{studyId}/weeks] - AccessToken 필수")
@@ -52,20 +55,10 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
         private static final Long HOST_ID = 1L;
         private static final Long ANONYMOUS_ID = 2L;
 
-        private MultipartFile files1;
-        private MultipartFile files2;
-        private MultipartFile files3;
-        private MultipartFile files4;
-
         @BeforeEach
-        void setUp() throws IOException {
+        void setUp() {
             mockingForStudyHost(STUDY_ID, HOST_ID, true);
             mockingForStudyHost(STUDY_ID, ANONYMOUS_ID, false);
-
-            files1 = createMultipleMockMultipartFile("hello1.txt", "text/plain");
-            files2 = createMultipleMockMultipartFile("hello2.hwpx", "application/x-hwpml");
-            files3 = createMultipleMockMultipartFile("hello3.pdf", "application/pdf");
-            files4 = createMultipleMockMultipartFile("hello4.png", "image/png");
         }
 
         @Test
@@ -84,8 +77,8 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                     .header(AUTHORIZATION, applyAccessToken())
                     .queryParam("title", STUDY_WEEKLY_1.getTitle())
                     .queryParam("content", STUDY_WEEKLY_1.getContent())
-                    .queryParam("startDate", STUDY_WEEKLY_1.getPeriod().getStartDate().format(DATE_TIME_FORMATTER))
-                    .queryParam("endDate", STUDY_WEEKLY_1.getPeriod().getEndDate().format(DATE_TIME_FORMATTER))
+                    .queryParam("startDate", STUDY_WEEKLY_1.getPeriod().getStartDate().format(dateTimeFormatter))
+                    .queryParam("endDate", STUDY_WEEKLY_1.getPeriod().getEndDate().format(dateTimeFormatter))
                     .queryParam("assignmentExists", String.valueOf(STUDY_WEEKLY_1.isAssignmentExists()))
                     .queryParam("autoAttendance", String.valueOf(STUDY_WEEKLY_1.isAutoAttendance()));
 
@@ -146,8 +139,8 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                     .header(AUTHORIZATION, applyAccessToken())
                     .queryParam("title", STUDY_WEEKLY_1.getTitle())
                     .queryParam("content", STUDY_WEEKLY_1.getContent())
-                    .queryParam("startDate", STUDY_WEEKLY_1.getPeriod().getStartDate().format(DATE_TIME_FORMATTER))
-                    .queryParam("endDate", STUDY_WEEKLY_1.getPeriod().getEndDate().format(DATE_TIME_FORMATTER))
+                    .queryParam("startDate", STUDY_WEEKLY_1.getPeriod().getStartDate().format(dateTimeFormatter))
+                    .queryParam("endDate", STUDY_WEEKLY_1.getPeriod().getEndDate().format(dateTimeFormatter))
                     .queryParam("assignmentExists", String.valueOf(STUDY_WEEKLY_1.isAssignmentExists()))
                     .queryParam("autoAttendance", String.valueOf(STUDY_WEEKLY_1.isAutoAttendance()));
 
@@ -204,20 +197,10 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
         private static final Long HOST_ID = 1L;
         private static final Long ANONYMOUS_ID = 2L;
 
-        private MultipartFile files1;
-        private MultipartFile files2;
-        private MultipartFile files3;
-        private MultipartFile files4;
-
         @BeforeEach
-        void setUp() throws IOException {
+        void setUp() {
             mockingForStudyHost(STUDY_ID, HOST_ID, true);
             mockingForStudyHost(STUDY_ID, ANONYMOUS_ID, false);
-
-            files1 = createMultipleMockMultipartFile("hello1.txt", "text/plain");
-            files2 = createMultipleMockMultipartFile("hello2.hwpx", "application/x-hwpml");
-            files3 = createMultipleMockMultipartFile("hello3.pdf", "application/pdf");
-            files4 = createMultipleMockMultipartFile("hello4.png", "image/png");
         }
 
         @Test
@@ -236,8 +219,8 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                     .header(AUTHORIZATION, applyAccessToken())
                     .queryParam("title", STUDY_WEEKLY_1.getTitle())
                     .queryParam("content", STUDY_WEEKLY_1.getContent())
-                    .queryParam("startDate", STUDY_WEEKLY_1.getPeriod().getStartDate().format(DATE_TIME_FORMATTER))
-                    .queryParam("endDate", STUDY_WEEKLY_1.getPeriod().getEndDate().format(DATE_TIME_FORMATTER))
+                    .queryParam("startDate", STUDY_WEEKLY_1.getPeriod().getStartDate().format(dateTimeFormatter))
+                    .queryParam("endDate", STUDY_WEEKLY_1.getPeriod().getEndDate().format(dateTimeFormatter))
                     .queryParam("assignmentExists", String.valueOf(STUDY_WEEKLY_1.isAssignmentExists()))
                     .queryParam("autoAttendance", String.valueOf(STUDY_WEEKLY_1.isAutoAttendance()));
 
@@ -302,8 +285,8 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                     .header(AUTHORIZATION, applyAccessToken())
                     .queryParam("title", STUDY_WEEKLY_1.getTitle())
                     .queryParam("content", STUDY_WEEKLY_1.getContent())
-                    .queryParam("startDate", STUDY_WEEKLY_1.getPeriod().getStartDate().format(DATE_TIME_FORMATTER))
-                    .queryParam("endDate", STUDY_WEEKLY_1.getPeriod().getEndDate().format(DATE_TIME_FORMATTER))
+                    .queryParam("startDate", STUDY_WEEKLY_1.getPeriod().getStartDate().format(dateTimeFormatter))
+                    .queryParam("endDate", STUDY_WEEKLY_1.getPeriod().getEndDate().format(dateTimeFormatter))
                     .queryParam("assignmentExists", String.valueOf(STUDY_WEEKLY_1.isAssignmentExists()))
                     .queryParam("autoAttendance", String.valueOf(STUDY_WEEKLY_1.isAutoAttendance()));
 
@@ -368,8 +351,8 @@ class StudyWeeklyApiControllerTest extends ControllerTest {
                     .header(AUTHORIZATION, applyAccessToken())
                     .queryParam("title", STUDY_WEEKLY_1.getTitle())
                     .queryParam("content", STUDY_WEEKLY_1.getContent())
-                    .queryParam("startDate", STUDY_WEEKLY_1.getPeriod().getStartDate().format(DATE_TIME_FORMATTER))
-                    .queryParam("endDate", STUDY_WEEKLY_1.getPeriod().getEndDate().format(DATE_TIME_FORMATTER))
+                    .queryParam("startDate", STUDY_WEEKLY_1.getPeriod().getStartDate().format(dateTimeFormatter))
+                    .queryParam("endDate", STUDY_WEEKLY_1.getPeriod().getEndDate().format(dateTimeFormatter))
                     .queryParam("assignmentExists", String.valueOf(STUDY_WEEKLY_1.isAssignmentExists()))
                     .queryParam("autoAttendance", String.valueOf(STUDY_WEEKLY_1.isAutoAttendance()));
 

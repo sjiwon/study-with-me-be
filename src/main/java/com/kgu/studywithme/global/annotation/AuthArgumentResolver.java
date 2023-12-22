@@ -1,5 +1,6 @@
-package com.kgu.studywithme.global.resolver;
+package com.kgu.studywithme.global.annotation;
 
+import com.kgu.studywithme.auth.domain.model.Authenticated;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
 import com.kgu.studywithme.auth.utils.TokenProvider;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
@@ -11,18 +12,15 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import java.util.Optional;
-
-import static com.kgu.studywithme.auth.utils.AuthorizationExtractor.extractAccessToken;
-import static com.kgu.studywithme.auth.utils.AuthorizationExtractor.extractRefreshToken;
+import static com.kgu.studywithme.auth.utils.RequestTokenExtractor.extractAccessToken;
 
 @RequiredArgsConstructor
-public class ExtractTokenArgumentResolver implements HandlerMethodArgumentResolver {
+public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
     private final TokenProvider tokenProvider;
 
     @Override
     public boolean supportsParameter(final MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(ExtractToken.class);
+        return parameter.hasParameterAnnotation(Auth.class);
     }
 
     @Override
@@ -33,15 +31,14 @@ public class ExtractTokenArgumentResolver implements HandlerMethodArgumentResolv
             final WebDataBinderFactory binderFactory
     ) {
         final HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-        final ExtractToken extractToken = parameter.getParameterAnnotation(ExtractToken.class);
-
-        final String token = getToken(request, extractToken.tokenType())
-                .orElseThrow(() -> StudyWithMeException.type(AuthErrorCode.INVALID_PERMISSION));
-        tokenProvider.isTokenValid(token);
-        return token;
+        final String accessToken = getAccessToken(request);
+        tokenProvider.validateToken(accessToken);
+        final Long memberId = tokenProvider.getId(accessToken);
+        return new Authenticated(memberId, accessToken);
     }
 
-    private Optional<String> getToken(final HttpServletRequest request, final TokenType type) {
-        return (type == TokenType.ACCESS) ? extractAccessToken(request) : extractRefreshToken(request);
+    private String getAccessToken(final HttpServletRequest request) {
+        return extractAccessToken(request)
+                .orElseThrow(() -> StudyWithMeException.type(AuthErrorCode.INVALID_PERMISSION));
     }
 }

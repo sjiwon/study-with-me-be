@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 import static com.kgu.studywithme.common.utils.FileMockingUtils.createMultipleMockMultipartFile;
@@ -45,7 +44,7 @@ public class FileConverterTest extends ParallelTest {
 
         @Test
         @DisplayName("MultipartFile -> RawFileData로 Converting한다")
-        void success() throws IOException {
+        void success() {
             // given
             final MultipartFile file = createSingleMockMultipartFile("hello3.pdf", "application/pdf");
 
@@ -80,7 +79,7 @@ public class FileConverterTest extends ParallelTest {
 
         @Test
         @DisplayName("MultipartFile -> RawFileData로 Converting한다")
-        void success() throws IOException {
+        void success() {
             // given
             final MultipartFile file = createSingleMockMultipartFile("hello3.pdf", "application/pdf");
 
@@ -115,7 +114,7 @@ public class FileConverterTest extends ParallelTest {
 
         @Test
         @DisplayName("List<MultipartFile> -> List<RawFileData>로 Converting한다")
-        void success() throws IOException {
+        void success() {
             // given
             final List<MultipartFile> files = List.of(
                     createMultipleMockMultipartFile("hello1.txt", "text/plain"),

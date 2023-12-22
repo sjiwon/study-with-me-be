@@ -7,14 +7,14 @@ import com.kgu.studywithme.auth.application.usecase.command.LogoutCommand;
 import com.kgu.studywithme.auth.application.usecase.command.OAuthLoginCommand;
 import com.kgu.studywithme.auth.application.usecase.query.GetOAuthLink;
 import com.kgu.studywithme.auth.domain.model.AuthMember;
+import com.kgu.studywithme.auth.domain.model.Authenticated;
 import com.kgu.studywithme.auth.domain.model.oauth.OAuthProvider;
 import com.kgu.studywithme.auth.presentation.dto.request.OAuthLoginRequest;
 import com.kgu.studywithme.auth.presentation.dto.response.LoginResponse;
 import com.kgu.studywithme.auth.utils.TokenResponseWriter;
-import com.kgu.studywithme.global.Authenticated;
+import com.kgu.studywithme.global.annotation.Auth;
 import com.kgu.studywithme.global.aop.CheckAuthUser;
 import com.kgu.studywithme.global.dto.ResponseWrapper;
-import com.kgu.studywithme.global.resolver.Auth;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
@@ -65,8 +65,7 @@ public class OAuthApiController {
                 request.redirectUri(),
                 request.state()
         ));
-        tokenResponseWriter.applyAccessToken(response, authMember.token().accessToken());
-        tokenResponseWriter.applyRefreshToken(response, authMember.token().refreshToken());
+        tokenResponseWriter.applyToken(response, authMember.token());
 
         return ResponseEntity.ok(new LoginResponse(
                 authMember.member().id(),

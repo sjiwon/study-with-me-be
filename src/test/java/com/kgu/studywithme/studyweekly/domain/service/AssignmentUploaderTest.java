@@ -8,11 +8,8 @@ import com.kgu.studywithme.file.utils.converter.FileConverter;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.studyweekly.domain.model.UploadAssignment;
 import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
 
 import static com.kgu.studywithme.common.utils.FileMockingUtils.createSingleMockMultipartFile;
 import static com.kgu.studywithme.studyweekly.domain.model.AssignmentSubmitType.FILE;
@@ -26,14 +23,8 @@ public class AssignmentUploaderTest extends ParallelTest {
     private final FileUploader fileUploader = new StubFileUploader();
     private final AssignmentUploader sut = new AssignmentUploader(fileUploader);
 
-    private RawFileData file;
-    private String link;
-
-    @BeforeEach
-    void setUp() throws IOException {
-        file = FileConverter.convertAssignmentFile(createSingleMockMultipartFile("hello3.pdf", "application/pdf"));
-        link = "https://notion.so/assignment";
-    }
+    private final RawFileData file = FileConverter.convertAssignmentFile(createSingleMockMultipartFile("hello3.pdf", "application/pdf"));
+    private final String link = "https://notion.so/assignment";
 
     @Test
     @DisplayName("과제 제출물은 링크 또는 파일 중 하나를 반드시 업로드해야 하고 그러지 않으면 제출이 불가능하다")
