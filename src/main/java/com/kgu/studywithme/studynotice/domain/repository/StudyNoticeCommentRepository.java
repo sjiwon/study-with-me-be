@@ -9,13 +9,22 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface StudyNoticeCommentRepository extends JpaRepository<StudyNoticeComment, Long> {
-    default StudyNoticeComment getById(final Long id) {
-        return findById(id)
+    @Query("""
+            SELECT snc
+            FROM StudyNoticeComment snc
+            JOIN FETCH snc.writer
+            WHERE snc.id = :id
+            """)
+    Optional<StudyNoticeComment> findByIdWithWriter(@Param("id") final Long id);
+
+    default StudyNoticeComment getByIdWithWriter(final Long id) {
+        return findByIdWithWriter(id)
                 .orElseThrow(() -> StudyWithMeException.type(StudyNoticeErrorCode.NOTICE_COMMENT_NOT_FOUND));
     }
 
-    // @Query
     @StudyWithMeWritableTransactional
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("DELETE FROM StudyNoticeComment snc WHERE snc.notice.id = :noticeId")

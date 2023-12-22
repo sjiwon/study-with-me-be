@@ -3,9 +3,9 @@ package com.kgu.studywithme.auth.domain.service;
 import com.kgu.studywithme.auth.domain.model.AuthToken;
 import com.kgu.studywithme.auth.utils.TokenProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class TokenIssuer {
     private final TokenProvider tokenProvider;

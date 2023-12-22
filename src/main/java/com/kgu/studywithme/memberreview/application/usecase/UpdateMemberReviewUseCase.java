@@ -1,13 +1,13 @@
 package com.kgu.studywithme.memberreview.application.usecase;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
+import com.kgu.studywithme.global.annotation.UseCase;
 import com.kgu.studywithme.memberreview.application.usecase.command.UpdateMemberReviewCommand;
 import com.kgu.studywithme.memberreview.domain.model.MemberReview;
 import com.kgu.studywithme.memberreview.domain.repository.MemberReviewRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
+@UseCase
 @RequiredArgsConstructor
 public class UpdateMemberReviewUseCase {
     private final MemberReviewRepository memberReviewRepository;

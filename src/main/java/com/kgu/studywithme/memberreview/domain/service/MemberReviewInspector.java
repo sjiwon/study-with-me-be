@@ -7,11 +7,11 @@ import com.kgu.studywithme.memberreview.exception.MemberReviewErrorCode;
 import com.kgu.studywithme.studyattendance.domain.repository.query.StudyAttendanceMetadataRepository;
 import com.kgu.studywithme.studyattendance.domain.repository.query.dto.StudyAttendanceWeekly;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class MemberReviewInspector {
     private final StudyAttendanceMetadataRepository studyAttendanceMetadataRepository;

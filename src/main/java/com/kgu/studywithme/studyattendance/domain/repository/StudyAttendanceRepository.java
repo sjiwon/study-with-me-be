@@ -21,9 +21,11 @@ import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.
 
 public interface StudyAttendanceRepository extends JpaRepository<StudyAttendance, Long> {
     // @Query
-    @Query("SELECT sa" +
-            " FROM StudyAttendance sa" +
-            " WHERE sa.study.id = :studyId AND sa.participant.id = :participantId AND sa.week = :week")
+    @Query("""
+            SELECT sa
+            FROM StudyAttendance sa
+            WHERE sa.study.id = :studyId AND sa.participant.id = :participantId AND sa.week = :week
+            """)
     Optional<StudyAttendance> findParticipantAttendanceByWeek(
             @Param("studyId") final Long studyId,
             @Param("participantId") final Long participantId,
@@ -37,9 +39,11 @@ public interface StudyAttendanceRepository extends JpaRepository<StudyAttendance
 
     @StudyWithMeWritableTransactional
     @Modifying(flushAutomatically = true, clearAutomatically = true)
-    @Query("UPDATE StudyAttendance st" +
-            " SET st.status = :status" +
-            " WHERE st.study.id = :studyId AND st.participant.id IN :participantIds AND st.week = :week")
+    @Query("""
+            UPDATE StudyAttendance st
+            SET st.status = :status
+            WHERE st.study.id = :studyId AND st.participant.id IN :participantIds AND st.week = :week
+            """)
     void updateParticipantStatus(
             @Param("studyId") final Long studyId,
             @Param("week") final int week,
@@ -47,12 +51,14 @@ public interface StudyAttendanceRepository extends JpaRepository<StudyAttendance
             @Param("status") final AttendanceStatus status
     );
 
-    @Query("SELECT sa" +
-            " FROM StudyAttendance sa" +
-            " JOIN FETCH sa.study" +
-            " JOIN FETCH sa.participant" +
-            " WHERE sa.status = :status" +
-            " ORDER BY sa.study.id ASC, sa.week ASC, sa.participant.id ASC")
+    @Query("""
+            SELECT sa
+            FROM StudyAttendance sa
+            JOIN FETCH sa.study
+            JOIN FETCH sa.participant
+            WHERE sa.status = :status
+            ORDER BY sa.study.id ASC, sa.week ASC, sa.participant.id ASC
+            """)
     List<StudyAttendance> findByStatusOrderByStudyIdAscWeekAscParticipantIdAsc(@Param("status") final AttendanceStatus status);
 
     default List<StudyAttendance> findNonAttendanceInformation() {

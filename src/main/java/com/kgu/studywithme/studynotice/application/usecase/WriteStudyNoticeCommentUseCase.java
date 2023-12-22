@@ -1,6 +1,7 @@
 package com.kgu.studywithme.studynotice.application.usecase;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
+import com.kgu.studywithme.global.annotation.UseCase;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.member.domain.repository.MemberRepository;
@@ -11,9 +12,8 @@ import com.kgu.studywithme.studynotice.domain.repository.StudyNoticeRepository;
 import com.kgu.studywithme.studynotice.exception.StudyNoticeErrorCode;
 import com.kgu.studywithme.studyparticipant.domain.repository.StudyParticipantRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
+@UseCase
 @RequiredArgsConstructor
 public class WriteStudyNoticeCommentUseCase {
     private final StudyNoticeRepository studyNoticeRepository;

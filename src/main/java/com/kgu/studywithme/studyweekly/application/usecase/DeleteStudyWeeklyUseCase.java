@@ -1,6 +1,6 @@
 package com.kgu.studywithme.studyweekly.application.usecase;
 
-import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
+import com.kgu.studywithme.global.annotation.UseCase;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.studyweekly.application.usecase.command.DeleteStudyWeeklyCommand;
 import com.kgu.studywithme.studyweekly.domain.model.StudyWeekly;
@@ -8,15 +8,13 @@ import com.kgu.studywithme.studyweekly.domain.repository.StudyWeeklyRepository;
 import com.kgu.studywithme.studyweekly.domain.service.WeeklyDeleter;
 import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
+@UseCase
 @RequiredArgsConstructor
 public class DeleteStudyWeeklyUseCase {
     private final StudyWeeklyRepository studyWeeklyRepository;
     private final WeeklyDeleter weeklyDeleter;
 
-    @StudyWithMeWritableTransactional
     public void invoke(final DeleteStudyWeeklyCommand command) {
         validateDeleteTargetWeeklyIsLatestWeek(command.studyId(), command.weeklyId());
 

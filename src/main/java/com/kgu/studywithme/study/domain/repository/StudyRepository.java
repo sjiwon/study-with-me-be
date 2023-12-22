@@ -21,9 +21,50 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
     }
 
     // @Query
-    @Query("SELECT s.id" +
-            " FROM Study s" +
-            " WHERE s.name.value = :name")
+    @Query("""
+            SELECT s
+            FROM Study s
+            JOIN FETCH s.host
+            WHERE s.id = :id
+            """)
+    Optional<Study> findByIdWithHost(@Param("id") final Long id);
+
+    default Study getByIdWithHost(final Long id) {
+        return findByIdWithHost(id)
+                .orElseThrow(() -> StudyWithMeException.type(StudyErrorCode.STUDY_NOT_FOUND));
+    }
+
+    @Query("""
+            SELECT s
+            FROM Study s
+            JOIN FETCH s.host
+            WHERE s.id = :id AND s.recruitmentStatus = :status
+            """)
+    Optional<Study> findByIdAndRecruitmentStatusIs(@Param("id") final Long id, @Param("status") final RecruitmentStatus status);
+
+    default Study getRecruitingStudy(final Long id) {
+        return findByIdAndRecruitmentStatusIs(id, ON)
+                .orElseThrow(() -> StudyWithMeException.type(StudyErrorCode.STUDY_IS_NOT_RECRUITING_NOW));
+    }
+
+    @Query("""
+            SELECT s
+            FROM Study s
+            JOIN FETCH s.host
+            WHERE s.id = :id AND s.terminated = FALSE
+            """)
+    Optional<Study> findByIdAndTerminatedFalse(@Param("id") final Long id);
+
+    default Study getInProgressStudy(final Long id) {
+        return findByIdAndTerminatedFalse(id)
+                .orElseThrow(() -> StudyWithMeException.type(StudyErrorCode.STUDY_IS_TERMINATED));
+    }
+
+    @Query("""
+            SELECT s.id
+            FROM Study s
+            WHERE s.name.value = :name
+            """)
     Long findIdByNameUsed(@Param("name") final String name);
 
     default boolean isNameUsedByOther(final Long studyId, final String name) {
@@ -31,9 +72,11 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
         return nameUsedId != null && !nameUsedId.equals(studyId);
     }
 
-    @Query("SELECT s.host.id" +
-            " FROM Study s" +
-            " WHERE s.id = :studyId")
+    @Query("""
+            SELECT s.host.id
+            FROM Study s
+            WHERE s.id = :studyId
+            """)
     Long getHostId(@Param("studyId") final Long studyId);
 
     default boolean isHost(final Long studyId, final Long memberId) {
@@ -62,18 +105,4 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
 
     // Query Method
     boolean existsByNameValue(final String name);
-
-    Optional<Study> findByIdAndRecruitmentStatusIs(final Long id, final RecruitmentStatus status);
-
-    default Study getRecruitingStudy(final Long id) {
-        return findByIdAndRecruitmentStatusIs(id, ON)
-                .orElseThrow(() -> StudyWithMeException.type(StudyErrorCode.STUDY_IS_NOT_RECRUITING_NOW));
-    }
-
-    Optional<Study> findByIdAndTerminatedFalse(final Long id);
-
-    default Study getInProgressStudy(final Long id) {
-        return findByIdAndTerminatedFalse(id)
-                .orElseThrow(() -> StudyWithMeException.type(StudyErrorCode.STUDY_IS_TERMINATED));
-    }
 }

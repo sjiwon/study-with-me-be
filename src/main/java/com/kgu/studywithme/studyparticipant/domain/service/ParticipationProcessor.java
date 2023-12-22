@@ -9,14 +9,14 @@ import com.kgu.studywithme.studyparticipant.domain.event.StudyRejectedEvent;
 import com.kgu.studywithme.studyparticipant.domain.repository.StudyParticipantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.APPROVE;
 import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.GRADUATED;
 import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.LEAVE;
 import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.REJECT;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class ParticipationProcessor {
     private final StudyParticipantRepository studyParticipantRepository;

@@ -77,7 +77,7 @@ class WeeklyCreatorTest {
 
         final StudyWeekly weekly = STUDY_WEEKLY_1.toWeekly(study, host).apply(1L);
         given(studyWeeklyRepository.save(any(StudyWeekly.class))).willReturn(weekly);
-        given(studyParticipantRepository.findParticipantsByStatus(study.getId(), APPROVE)).willReturn(List.of(host, participantA, participantB));
+        given(studyParticipantRepository.findParticipateMembersByStatus(study.getId(), APPROVE)).willReturn(List.of(host, participantA, participantB));
 
         // when
         final StudyWeekly savedWeekly = sut.invoke(command, attachments, STUDY_WEEKLY_1.getWeek());
@@ -87,7 +87,7 @@ class WeeklyCreatorTest {
                 () -> verify(studyRepository, times(1)).getInProgressStudy(command.studyId()),
                 () -> verify(memberRepository, times(1)).getById(command.creatorId()),
                 () -> verify(studyWeeklyRepository, times(1)).save(any(StudyWeekly.class)),
-                () -> verify(studyParticipantRepository, times(1)).findParticipantsByStatus(study.getId(), APPROVE),
+                () -> verify(studyParticipantRepository, times(1)).findParticipateMembersByStatus(study.getId(), APPROVE),
                 () -> verify(studyAttendanceRepository, times(1)).saveAll(any()),
                 () -> assertThat(savedWeekly.getId()).isEqualTo(weekly.getId()),
                 () -> assertThat(savedWeekly.getStudy()).isEqualTo(study),

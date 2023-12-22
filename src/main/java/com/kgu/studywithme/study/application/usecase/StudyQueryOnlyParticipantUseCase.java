@@ -1,5 +1,6 @@
 package com.kgu.studywithme.study.application.usecase;
 
+import com.kgu.studywithme.global.annotation.UseCase;
 import com.kgu.studywithme.study.application.usecase.query.GetApplicantById;
 import com.kgu.studywithme.study.application.usecase.query.GetAttendanceById;
 import com.kgu.studywithme.study.application.usecase.query.GetNoticeById;
@@ -10,11 +11,10 @@ import com.kgu.studywithme.study.domain.repository.query.dto.NoticeInformation;
 import com.kgu.studywithme.study.domain.repository.query.dto.StudyApplicantInformation;
 import com.kgu.studywithme.study.domain.repository.query.dto.WeeklyInformation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+@UseCase
 @RequiredArgsConstructor
 public class StudyQueryOnlyParticipantUseCase {
     private final StudyInformationRepository studyInformationRepository;

@@ -7,9 +7,9 @@ import com.kgu.studywithme.studyattendance.domain.repository.StudyAttendanceRepo
 import com.kgu.studywithme.studyparticipant.domain.repository.StudyParticipantRepository;
 import com.kgu.studywithme.studyparticipant.exception.StudyParticipantErrorCode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class ParticipationInspector {
     private final StudyParticipantRepository studyParticipantRepository;

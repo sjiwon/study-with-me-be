@@ -5,9 +5,9 @@ import com.kgu.studywithme.study.domain.model.StudyName;
 import com.kgu.studywithme.study.domain.repository.StudyRepository;
 import com.kgu.studywithme.study.exception.StudyErrorCode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class StudyResourceValidator {
     private final StudyRepository studyRepository;

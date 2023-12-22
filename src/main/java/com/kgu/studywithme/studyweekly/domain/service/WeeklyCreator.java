@@ -14,7 +14,7 @@ import com.kgu.studywithme.studyweekly.domain.model.UploadAttachment;
 import com.kgu.studywithme.studyweekly.domain.repository.StudyWeeklyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.
 import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatus.APPROVE;
 
 @Slf4j
-@Component
+@Service
 @RequiredArgsConstructor
 public class WeeklyCreator {
     private final StudyRepository studyRepository;
@@ -80,7 +80,7 @@ public class WeeklyCreator {
     private void applyParticipantAttendanceStatusFromGeneratedWeekly(final Study study, final int week) {
         final List<StudyAttendance> participantsAttendance = new ArrayList<>();
 
-        final List<Member> approveParticipants = studyParticipantRepository.findParticipantsByStatus(study.getId(), APPROVE);
+        final List<Member> approveParticipants = studyParticipantRepository.findParticipateMembersByStatus(study.getId(), APPROVE);
         approveParticipants.forEach(participant ->
                 participantsAttendance.add(StudyAttendance.recordAttendance(
                         study,
@@ -90,7 +90,15 @@ public class WeeklyCreator {
                 ))
         );
 
-        log.info("Study[{} - {}] Weekly 생성 -> {} NON_ATTENDANCE", study.getId(), week, participantsAttendance);
+        log.info(
+                "Study[{} - {}] Weekly 생성 -> {} NON_ATTENDANCE",
+                study.getId(),
+                week,
+                participantsAttendance.stream()
+                        .map(StudyAttendance::getParticipant)
+                        .map(Member::getId)
+                        .toList()
+        );
         studyAttendanceRepository.saveAll(participantsAttendance);
     }
 }

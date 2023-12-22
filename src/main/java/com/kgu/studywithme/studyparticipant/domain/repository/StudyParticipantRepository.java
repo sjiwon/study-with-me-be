@@ -21,9 +21,11 @@ import static com.kgu.studywithme.studyparticipant.domain.model.ParticipantStatu
 
 public interface StudyParticipantRepository extends JpaRepository<StudyParticipant, Long> {
     // @Query
-    @Query("SELECT sp" +
-            " FROM StudyParticipant sp" +
-            " WHERE sp.study.id = :studyId AND sp.member.id = :memberId AND sp.status = :status")
+    @Query("""
+            SELECT sp
+            FROM StudyParticipant sp
+            WHERE sp.study.id = :studyId AND sp.member.id = :memberId AND sp.status = :status
+            """)
     Optional<StudyParticipant> findParticipantByStatus(
             @Param("studyId") final Long studyId,
             @Param("memberId") final Long memberId,
@@ -35,28 +37,34 @@ public interface StudyParticipantRepository extends JpaRepository<StudyParticipa
                 .orElseThrow(() -> StudyWithMeException.type(StudyParticipantErrorCode.APPLIER_NOT_FOUND));
     }
 
-    @Query("SELECT sp.member" +
-            " FROM StudyParticipant sp" +
-            " WHERE sp.study.id = :studyId AND sp.status = :status")
-    List<Member> findParticipantsByStatus(
+    @Query("""
+            SELECT sp.member
+            FROM StudyParticipant sp
+            WHERE sp.study.id = :studyId AND sp.status = :status
+            """)
+    List<Member> findParticipateMembersByStatus(
             @Param("studyId") final Long studyId,
             @Param("status") final ParticipantStatus status
     );
 
     @StudyWithMeWritableTransactional
     @Modifying(flushAutomatically = true, clearAutomatically = true)
-    @Query("UPDATE StudyParticipant sp" +
-            " SET sp.status = :status" +
-            " WHERE sp.study.id = :studyId AND sp.member.id = :memberId")
+    @Query("""
+            UPDATE StudyParticipant sp
+            SET sp.status = :status
+            WHERE sp.study.id = :studyId AND sp.member.id = :memberId
+            """)
     void updateParticipantStatus(
             @Param("studyId") final Long studyId,
             @Param("memberId") final Long memberId,
             @Param("status") final ParticipantStatus status
     );
 
-    @Query("SELECT sp.member.id" +
-            " FROM StudyParticipant sp" +
-            " WHERE sp.study.id = :studyId AND sp.status = :status")
+    @Query("""
+            SELECT sp.member.id
+            FROM StudyParticipant sp
+            WHERE sp.study.id = :studyId AND sp.status = :status
+            """)
     List<Long> findMemberIdByStudyIdAndParticipantStatus(
             @Param("studyId") final Long studyId,
             @Param("status") final ParticipantStatus status
@@ -70,9 +78,11 @@ public interface StudyParticipantRepository extends JpaRepository<StudyParticipa
         return findMemberIdByStudyIdAndParticipantStatus(studyId, GRADUATED).contains(memberId);
     }
 
-    @Query("SELECT sp.member.id" +
-            " FROM StudyParticipant sp" +
-            " WHERE sp.study.id = :studyId AND sp.status IN :statuses")
+    @Query("""
+            SELECT sp.member.id
+            FROM StudyParticipant sp
+            WHERE sp.study.id = :studyId AND sp.status IN :statuses
+            """)
     List<Long> findMemberIdByStudyIdAndParticipantStatusIn(
             @Param("studyId") final Long studyId,
             @Param("statuses") final List<ParticipantStatus> statuses

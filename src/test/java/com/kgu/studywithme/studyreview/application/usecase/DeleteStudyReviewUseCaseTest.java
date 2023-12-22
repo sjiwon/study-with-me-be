@@ -42,7 +42,7 @@ class DeleteStudyReviewUseCaseTest extends UseCaseTest {
     void throwExceptionByMemberIsNotWriter() {
         // given
         final DeleteStudyReviewCommand command = new DeleteStudyReviewCommand(review.getId(), anonymous.getId());
-        given(studyReviewRepository.getById(command.reviewId())).willReturn(review);
+        given(studyReviewRepository.getByIdWithWriter(command.reviewId())).willReturn(review);
         given(memberRepository.getById(command.memberId())).willReturn(anonymous);
 
         // when - then
@@ -51,7 +51,7 @@ class DeleteStudyReviewUseCaseTest extends UseCaseTest {
                 .hasMessage(StudyReviewErrorCode.ONLY_WRITER_CAN_DELETE.getMessage());
 
         assertAll(
-                () -> verify(studyReviewRepository, times(1)).getById(command.reviewId()),
+                () -> verify(studyReviewRepository, times(1)).getByIdWithWriter(command.reviewId()),
                 () -> verify(memberRepository, times(1)).getById(command.memberId()),
                 () -> verify(studyRepository, times(0)).decreaseReviewCount(review.getStudy().getId()),
                 () -> verify(studyReviewRepository, times(0)).delete(review)
@@ -63,7 +63,7 @@ class DeleteStudyReviewUseCaseTest extends UseCaseTest {
     void success() {
         // given
         final DeleteStudyReviewCommand command = new DeleteStudyReviewCommand(review.getId(), member.getId());
-        given(studyReviewRepository.getById(command.reviewId())).willReturn(review);
+        given(studyReviewRepository.getByIdWithWriter(command.reviewId())).willReturn(review);
         given(memberRepository.getById(command.memberId())).willReturn(member);
 
         // when
@@ -71,7 +71,7 @@ class DeleteStudyReviewUseCaseTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyReviewRepository, times(1)).getById(command.reviewId()),
+                () -> verify(studyReviewRepository, times(1)).getByIdWithWriter(command.reviewId()),
                 () -> verify(memberRepository, times(1)).getById(command.memberId()),
                 () -> verify(studyRepository, times(1)).decreaseReviewCount(review.getStudy().getId()),
                 () -> verify(studyReviewRepository, times(1)).delete(review)

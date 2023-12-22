@@ -1,16 +1,16 @@
 package com.kgu.studywithme.studyweekly.application.usecase;
 
+import com.kgu.studywithme.global.annotation.UseCase;
 import com.kgu.studywithme.studyweekly.application.usecase.command.CreateStudyWeeklyCommand;
 import com.kgu.studywithme.studyweekly.domain.model.UploadAttachment;
 import com.kgu.studywithme.studyweekly.domain.repository.StudyWeeklyRepository;
 import com.kgu.studywithme.studyweekly.domain.service.AttachmentUploader;
 import com.kgu.studywithme.studyweekly.domain.service.WeeklyCreator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+@UseCase
 @RequiredArgsConstructor
 public class CreateStudyWeeklyUseCase {
     private final AttachmentUploader attachmentUploader;

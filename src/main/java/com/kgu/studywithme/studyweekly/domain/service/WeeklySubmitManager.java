@@ -12,7 +12,7 @@ import com.kgu.studywithme.studyweekly.domain.model.UploadAssignment;
 import com.kgu.studywithme.studyweekly.domain.repository.StudyWeeklyRepository;
 import com.kgu.studywithme.studyweekly.domain.repository.StudyWeeklySubmitRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
@@ -20,7 +20,7 @@ import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.
 import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.ATTENDANCE;
 import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.LATE;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class WeeklySubmitManager {
     private final StudyWeeklyRepository studyWeeklyRepository;
@@ -44,8 +44,7 @@ public class WeeklySubmitManager {
 
     private void applyAttendanceStatusAndMemberScoreViaSubmit(final StudyWeekly weekly, final Member participant) {
         if (weekly.isAutoAttendance()) {
-            final StudyAttendance attendance
-                    = studyAttendanceRepository.getParticipantAttendanceByWeek(weekly.getStudy().getId(), participant.getId(), weekly.getWeek());
+            final StudyAttendance attendance = studyAttendanceRepository.getParticipantAttendanceByWeek(weekly.getStudy().getId(), participant.getId(), weekly.getWeek());
             final LocalDateTime now = LocalDateTime.now();
 
             if (weekly.isSubmissionPeriodInRange(now)) {
@@ -90,8 +89,7 @@ public class WeeklySubmitManager {
         final LocalDateTime now = LocalDateTime.now();
 
         if (weekly.isAutoAttendance() && weekly.isSubmissionPeriodPassed(now)) { // 수정 시간을 기준으로 제출 시간 업데이트
-            final StudyAttendance attendance
-                    = studyAttendanceRepository.getParticipantAttendanceByWeek(weekly.getStudy().getId(), participant.getId(), weekly.getWeek());
+            final StudyAttendance attendance = studyAttendanceRepository.getParticipantAttendanceByWeek(weekly.getStudy().getId(), participant.getId(), weekly.getWeek());
 
             if (attendance.isAttendanceStatus()) {
                 participant.applyScoreByAttendanceStatus(ATTENDANCE, LATE);

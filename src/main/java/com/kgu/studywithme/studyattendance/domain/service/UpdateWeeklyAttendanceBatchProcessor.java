@@ -8,7 +8,7 @@ import com.kgu.studywithme.studyweekly.domain.repository.query.StudyWeeklyMetada
 import com.kgu.studywithme.studyweekly.domain.repository.query.dto.AutoAttendanceAndFinishedWeekly;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.ABSENCE;
 
 @Slf4j
-@Component
+@Service
 @RequiredArgsConstructor
 public class UpdateWeeklyAttendanceBatchProcessor {
     private final StudyWeeklyMetadataRepository studyWeeklyMetadataRepository;
@@ -31,7 +31,7 @@ public class UpdateWeeklyAttendanceBatchProcessor {
         final LocalDateTime now = LocalDateTime.now();
         final List<StudyAttendance> nonAttendances = studyAttendanceRepository.findNonAttendanceInformation();
         final List<AutoAttendanceAndFinishedWeekly> targetWeekly = studyWeeklyMetadataRepository.findAutoAttendanceAndFinishedWeekly(now.minusDays(2), now);
-        log.info("결석 처리 대상 Weekly -> {}", targetWeekly); // 처리 시간을 고려해서 [now-2..now]를 target으로 선정
+        log.info("결석 처리 대상 {}개 :: Weekly -> {}", targetWeekly.size(), targetWeekly); // 처리 시간을 고려해서 [now-2..now]를 target으로 선정
 
         targetWeekly.forEach(week -> {
             final Long studyId = week.studyId();
@@ -39,7 +39,7 @@ public class UpdateWeeklyAttendanceBatchProcessor {
             final Set<Long> participantIds = extractNonAttendanceParticipantIds(nonAttendances, studyId, specificWeek);
 
             if (hasCandidates(participantIds)) {
-                log.info("결석 처리 정보 -> studyId = {}, weekly = {}, candidates = {}", studyId, specificWeek, participantIds);
+                log.info("결석 처리 정보 -> studyId = {}, weekly = {}, candidates = {}명 {}", studyId, specificWeek, participantIds.size(), participantIds);
                 studyAttendanceRepository.updateParticipantStatus(studyId, specificWeek, participantIds, ABSENCE);
                 memberRepository.applyScoreToAbsenceParticipant(participantIds);
             }

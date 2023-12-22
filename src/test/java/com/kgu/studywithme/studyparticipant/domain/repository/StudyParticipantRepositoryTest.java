@@ -89,10 +89,10 @@ public class StudyParticipantRepositoryTest extends RepositoryTest {
     @Test
     @DisplayName("스터디 참여자들을 ParticipantStatus에 따라 조회한다")
     void findParticipantsByStatus() {
-        final List<Member> applyParticipants1 = sut.findParticipantsByStatus(study.getId(), APPLY);
-        final List<Member> approveParticipants1 = sut.findParticipantsByStatus(study.getId(), APPROVE);
-        final List<Member> leaveParticipants1 = sut.findParticipantsByStatus(study.getId(), LEAVE);
-        final List<Member> graduateParticipants1 = sut.findParticipantsByStatus(study.getId(), GRADUATED);
+        final List<Member> applyParticipants1 = sut.findParticipateMembersByStatus(study.getId(), APPLY);
+        final List<Member> approveParticipants1 = sut.findParticipateMembersByStatus(study.getId(), APPROVE);
+        final List<Member> leaveParticipants1 = sut.findParticipateMembersByStatus(study.getId(), LEAVE);
+        final List<Member> graduateParticipants1 = sut.findParticipateMembersByStatus(study.getId(), GRADUATED);
         assertAll(
                 () -> assertThat(applyParticipants1).hasSize(1),
                 () -> assertThat(applyParticipants1)
@@ -115,10 +115,10 @@ public class StudyParticipantRepositoryTest extends RepositoryTest {
         /* applier -> participant */
         sut.updateParticipantStatus(study.getId(), applier.getId(), APPROVE);
 
-        final List<Member> applyParticipants2 = sut.findParticipantsByStatus(study.getId(), APPLY);
-        final List<Member> approveParticipants2 = sut.findParticipantsByStatus(study.getId(), APPROVE);
-        final List<Member> leaveParticipants2 = sut.findParticipantsByStatus(study.getId(), LEAVE);
-        final List<Member> graduateParticipants2 = sut.findParticipantsByStatus(study.getId(), GRADUATED);
+        final List<Member> applyParticipants2 = sut.findParticipateMembersByStatus(study.getId(), APPLY);
+        final List<Member> approveParticipants2 = sut.findParticipateMembersByStatus(study.getId(), APPROVE);
+        final List<Member> leaveParticipants2 = sut.findParticipateMembersByStatus(study.getId(), LEAVE);
+        final List<Member> graduateParticipants2 = sut.findParticipateMembersByStatus(study.getId(), GRADUATED);
         assertAll(
                 () -> assertThat(applyParticipants2).isEmpty(),
                 () -> assertThat(approveParticipants2).hasSize(3),

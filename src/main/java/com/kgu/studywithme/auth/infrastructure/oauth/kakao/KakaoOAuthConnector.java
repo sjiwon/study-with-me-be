@@ -72,7 +72,7 @@ public class KakaoOAuthConnector implements OAuthConnector {
         try {
             return restTemplate.postForEntity(properties.getTokenUrl(), request, KakaoTokenResponse.class);
         } catch (final RestClientException e) {
-            log.error("OAuth Error... {}", e, e);
+            log.error("OAuth Error... {}", e.getMessage(), e);
             throw StudyWithMeException.type(GlobalErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
@@ -95,7 +95,7 @@ public class KakaoOAuthConnector implements OAuthConnector {
         try {
             return restTemplate.exchange(properties.getUserInfoUrl(), GET, request, KakaoUserResponse.class);
         } catch (final RestClientException e) {
-            log.error("OAuth Error... {}", e, e);
+            log.error("OAuth Error... {}", e.getMessage(), e);
             throw StudyWithMeException.type(GlobalErrorCode.INTERNAL_SERVER_ERROR);
         }
     }

@@ -41,7 +41,7 @@ class UpdateStudyNoticeCommentUseCaseTest extends UseCaseTest {
     void throwExceptionByMemberIsNotWriter() {
         // given
         final UpdateStudyNoticeCommentCommand command = new UpdateStudyNoticeCommentCommand(comment.getId(), anonymous.getId(), "댓글 수정");
-        given(studyNoticeCommentRepository.getById(command.commentId())).willReturn(comment);
+        given(studyNoticeCommentRepository.getByIdWithWriter(command.commentId())).willReturn(comment);
         given(memberRepository.getById(command.memberId())).willReturn(anonymous);
 
         // when - then
@@ -50,7 +50,7 @@ class UpdateStudyNoticeCommentUseCaseTest extends UseCaseTest {
                 .hasMessage(StudyNoticeErrorCode.ONLY_WRITER_CAN_UPDATE_NOTICE_COMMENT.getMessage());
 
         assertAll(
-                () -> verify(studyNoticeCommentRepository, times(1)).getById(command.commentId()),
+                () -> verify(studyNoticeCommentRepository, times(1)).getByIdWithWriter(command.commentId()),
                 () -> verify(memberRepository, times(1)).getById(command.memberId())
         );
     }
@@ -60,7 +60,7 @@ class UpdateStudyNoticeCommentUseCaseTest extends UseCaseTest {
     void success() {
         // given
         final UpdateStudyNoticeCommentCommand command = new UpdateStudyNoticeCommentCommand(comment.getId(), host.getId(), "댓글 수정");
-        given(studyNoticeCommentRepository.getById(command.commentId())).willReturn(comment);
+        given(studyNoticeCommentRepository.getByIdWithWriter(command.commentId())).willReturn(comment);
         given(memberRepository.getById(command.memberId())).willReturn(host);
 
         // when
@@ -68,7 +68,7 @@ class UpdateStudyNoticeCommentUseCaseTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyNoticeCommentRepository, times(1)).getById(command.commentId()),
+                () -> verify(studyNoticeCommentRepository, times(1)).getByIdWithWriter(command.commentId()),
                 () -> verify(memberRepository, times(1)).getById(command.memberId()),
                 () -> assertThat(comment.getContent()).isEqualTo(command.content())
         );

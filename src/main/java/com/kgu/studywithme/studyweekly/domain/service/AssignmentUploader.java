@@ -7,12 +7,12 @@ import com.kgu.studywithme.studyweekly.domain.model.AssignmentSubmitType;
 import com.kgu.studywithme.studyweekly.domain.model.UploadAssignment;
 import com.kgu.studywithme.studyweekly.exception.StudyWeeklyErrorCode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import static com.kgu.studywithme.studyweekly.domain.model.AssignmentSubmitType.FILE;
 import static com.kgu.studywithme.studyweekly.domain.model.AssignmentSubmitType.LINK;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class AssignmentUploader {
     private final FileUploader fileUploader;

@@ -21,19 +21,25 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     // @Query
     @StudyWithMeWritableTransactional
     @Modifying(flushAutomatically = true, clearAutomatically = true)
-    @Query("UPDATE Member m" +
-            " SET m.score.value = m.score.value - 5" +
-            " WHERE m.id IN :absenceParticipantIds")
+    @Query("""
+            Update Member m
+            SET m.score.value = m.score.value - 5
+            WHERE m.id IN :absenceParticipantIds
+            """)
     void applyScoreToAbsenceParticipant(@Param("absenceParticipantIds") Set<Long> absenceParticipantIds);
 
-    @Query("SELECT m" +
-            " FROM Member m" +
-            " WHERE m.email.value = :email")
+    @Query("""
+            SELECT m
+            FROM Member m
+            WHERE m.email.value = :email
+            """)
     Optional<Member> findByEmail(@Param("email") String email);
 
-    @Query("SELECT m.id" +
-            " FROM Member m" +
-            " WHERE m.nickname.value = :nickname")
+    @Query("""
+            SELECT m.id
+            FROM Member m
+            WHERE m.nickname.value = :nickname
+            """)
     Long findIdByNicknameUsed(@Param("nickname") final String nickname);
 
     default boolean isNicknameUsedByOther(final Long memberId, final String nickname) {
@@ -41,9 +47,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
         return nicknameUsedId != null && !nicknameUsedId.equals(memberId);
     }
 
-    @Query("SELECT m.id" +
-            " FROM Member m" +
-            " WHERE m.phone.value = :phone")
+    @Query("""
+            SELECT m.id
+            FROM Member m
+            WHERE m.phone.value = :phone
+            """)
     Long findIdByPhoneUsed(@Param("phone") final String phone);
 
     default boolean isPhoneUsedByOther(final Long memberId, final String phone) {

@@ -1,6 +1,7 @@
 package com.kgu.studywithme.studyparticipant.application.usecase;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
+import com.kgu.studywithme.global.annotation.UseCase;
 import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.study.domain.model.Study;
 import com.kgu.studywithme.study.domain.repository.StudyRepository;
@@ -9,9 +10,8 @@ import com.kgu.studywithme.studyparticipant.domain.repository.query.ParticipateM
 import com.kgu.studywithme.studyparticipant.domain.service.ParticipationInspector;
 import com.kgu.studywithme.studyparticipant.domain.service.ParticipationProcessor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
+@UseCase
 @RequiredArgsConstructor
 public class GraduateStudyUseCase {
     private final StudyRepository studyRepository;
@@ -21,7 +21,7 @@ public class GraduateStudyUseCase {
 
     @StudyWithMeWritableTransactional
     public void invoke(final GraduateStudyCommand command) {
-        final Study study = studyRepository.getById(command.studyId());
+        final Study study = studyRepository.getByIdWithHost(command.studyId());
         final Member participant = participateMemberReader.getParticipant(command.studyId(), command.participantId());
 
         participationInspector.checkGraduationCandidateIsHost(study, participant);

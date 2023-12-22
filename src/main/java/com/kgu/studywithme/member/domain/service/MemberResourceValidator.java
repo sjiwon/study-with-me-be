@@ -7,9 +7,9 @@ import com.kgu.studywithme.member.domain.model.Phone;
 import com.kgu.studywithme.member.domain.repository.MemberRepository;
 import com.kgu.studywithme.member.exception.MemberErrorCode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class MemberResourceValidator {
     private final MemberRepository memberRepository;

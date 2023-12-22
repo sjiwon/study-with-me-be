@@ -9,16 +9,16 @@ import com.kgu.studywithme.auth.domain.model.oauth.OAuthTokenResponse;
 import com.kgu.studywithme.auth.domain.model.oauth.OAuthUserResponse;
 import com.kgu.studywithme.auth.domain.service.TokenIssuer;
 import com.kgu.studywithme.auth.exception.AuthErrorCode;
+import com.kgu.studywithme.global.annotation.UseCase;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.global.exception.StudyWithMeOAuthException;
 import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.member.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+@UseCase
 @RequiredArgsConstructor
 public class OAuthLoginUseCase {
     private final List<OAuthConnector> oAuthConnectors;
@@ -27,7 +27,7 @@ public class OAuthLoginUseCase {
 
     public AuthMember invoke(final OAuthLoginCommand command) {
         final OAuthUserResponse oAuthUser = getOAuthUser(command);
-        final Member member = findMemberByOAuthEmail(oAuthUser);
+        final Member member = getMemberByOAuthEmail(oAuthUser);
         final AuthToken authToken = tokenIssuer.provideAuthorityToken(member.getId());
 
         return new AuthMember(
@@ -50,7 +50,7 @@ public class OAuthLoginUseCase {
                 .orElseThrow(() -> StudyWithMeException.type(AuthErrorCode.INVALID_OAUTH_PROVIDER));
     }
 
-    private Member findMemberByOAuthEmail(final OAuthUserResponse oAuthUser) {
+    private Member getMemberByOAuthEmail(final OAuthUserResponse oAuthUser) {
         return memberRepository.findByEmail(oAuthUser.email())
                 .orElseThrow(() -> new StudyWithMeOAuthException(oAuthUser));
     }

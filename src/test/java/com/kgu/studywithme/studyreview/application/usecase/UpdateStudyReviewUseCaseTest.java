@@ -41,7 +41,7 @@ class UpdateStudyReviewUseCaseTest extends UseCaseTest {
     void throwExceptionByMemberIsNotWriter() {
         // given
         final UpdateStudyReviewCommand command = new UpdateStudyReviewCommand(review.getId(), anonymous.getId(), "수정");
-        given(studyReviewRepository.getById(command.reviewId())).willReturn(review);
+        given(studyReviewRepository.getByIdWithWriter(command.reviewId())).willReturn(review);
         given(memberRepository.getById(command.memberId())).willReturn(anonymous);
 
         // when - then
@@ -50,7 +50,7 @@ class UpdateStudyReviewUseCaseTest extends UseCaseTest {
                 .hasMessage(StudyReviewErrorCode.ONLY_WRITER_CAN_UPDATE.getMessage());
 
         assertAll(
-                () -> verify(studyReviewRepository, times(1)).getById(command.reviewId()),
+                () -> verify(studyReviewRepository, times(1)).getByIdWithWriter(command.reviewId()),
                 () -> verify(memberRepository, times(1)).getById(command.memberId())
         );
     }
@@ -60,7 +60,7 @@ class UpdateStudyReviewUseCaseTest extends UseCaseTest {
     void success() {
         // given
         final UpdateStudyReviewCommand command = new UpdateStudyReviewCommand(review.getId(), member.getId(), "수정");
-        given(studyReviewRepository.getById(command.reviewId())).willReturn(review);
+        given(studyReviewRepository.getByIdWithWriter(command.reviewId())).willReturn(review);
         given(memberRepository.getById(command.memberId())).willReturn(member);
 
         // when
@@ -68,7 +68,7 @@ class UpdateStudyReviewUseCaseTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyReviewRepository, times(1)).getById(command.reviewId()),
+                () -> verify(studyReviewRepository, times(1)).getByIdWithWriter(command.reviewId()),
                 () -> verify(memberRepository, times(1)).getById(command.memberId()),
                 () -> assertThat(review.getContent()).isEqualTo(command.content())
         );

@@ -4,14 +4,14 @@ import com.kgu.studywithme.file.application.adapter.FileUploader;
 import com.kgu.studywithme.file.domain.model.RawFileData;
 import com.kgu.studywithme.studyweekly.domain.model.UploadAttachment;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
-@Component
+@Service
 public class AttachmentUploader {
     private final FileUploader fileUploader;
     private final Executor executor;

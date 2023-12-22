@@ -6,6 +6,7 @@ import com.kgu.studywithme.favorite.domain.model.Favorite;
 import com.kgu.studywithme.favorite.domain.repository.FavoriteRepository;
 import com.kgu.studywithme.favorite.exception.FavoriteErrorCode;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
+import com.kgu.studywithme.global.annotation.UseCase;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.member.domain.repository.MemberRepository;
@@ -13,9 +14,8 @@ import com.kgu.studywithme.study.domain.model.Study;
 import com.kgu.studywithme.study.domain.repository.StudyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Service;
 
-@Service
+@UseCase
 @RequiredArgsConstructor
 public class ManageFavoriteUseCase {
     private final StudyRepository studyRepository;

@@ -1,13 +1,13 @@
 package com.kgu.studywithme.studyweekly.application.usecase;
 
+import com.kgu.studywithme.global.annotation.UseCase;
 import com.kgu.studywithme.studyweekly.application.usecase.command.EditWeeklySubmittedAssignmentCommand;
 import com.kgu.studywithme.studyweekly.domain.model.UploadAssignment;
 import com.kgu.studywithme.studyweekly.domain.service.AssignmentUploader;
 import com.kgu.studywithme.studyweekly.domain.service.WeeklySubmitManager;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
+@UseCase
 @RequiredArgsConstructor
 public class EditWeeklySubmittedAssignmentUseCase {
     private final AssignmentUploader assignmentUploader;

@@ -1,6 +1,7 @@
 package com.kgu.studywithme.studyattendance.application.usecase;
 
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
+import com.kgu.studywithme.global.annotation.UseCase;
 import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.studyattendance.application.usecase.command.ManualAttendanceCommand;
 import com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus;
@@ -8,11 +9,10 @@ import com.kgu.studywithme.studyattendance.domain.model.StudyAttendance;
 import com.kgu.studywithme.studyattendance.domain.repository.StudyAttendanceRepository;
 import com.kgu.studywithme.studyparticipant.domain.repository.query.ParticipateMemberReader;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import static com.kgu.studywithme.studyattendance.domain.model.AttendanceStatus.NON_ATTENDANCE;
 
-@Service
+@UseCase
 @RequiredArgsConstructor
 public class ManualAttendanceUseCase {
     private final StudyAttendanceRepository studyAttendanceRepository;

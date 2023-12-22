@@ -13,10 +13,12 @@ import java.util.Optional;
 
 public interface StudyWeeklySubmitRepository extends JpaRepository<StudyWeeklySubmit, Long> {
     // @Query
-    @Query("SELECT sws" +
-            " FROM StudyWeeklySubmit sws" +
-            " INNER JOIN sws.weekly sw" +
-            " WHERE sw.id = :weeklyId AND sws.participant.id = :participantId")
+    @Query("""
+            SELECT sws
+            FROM StudyWeeklySubmit sws
+            JOIN FETCH sws.weekly sw
+            WHERE sw.id = :weeklyId AND sws.participant.id = :participantId
+            """)
     Optional<StudyWeeklySubmit> findSubmittedAssignment(
             @Param("weeklyId") final Long weeklyId,
             @Param("participantId") final Long participantId

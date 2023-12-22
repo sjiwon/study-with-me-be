@@ -1,6 +1,6 @@
 package com.kgu.studywithme.memberreport.application.usecase;
 
-import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
+import com.kgu.studywithme.global.annotation.UseCase;
 import com.kgu.studywithme.global.exception.StudyWithMeException;
 import com.kgu.studywithme.member.domain.model.Member;
 import com.kgu.studywithme.member.domain.repository.MemberRepository;
@@ -9,15 +9,13 @@ import com.kgu.studywithme.memberreport.domain.model.MemberReport;
 import com.kgu.studywithme.memberreport.domain.repository.MemberReportRepository;
 import com.kgu.studywithme.memberreport.exception.MemberReportErrorCode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
+@UseCase
 @RequiredArgsConstructor
 public class ReportMemberUseCase {
     private final MemberRepository memberRepository;
     private final MemberReportRepository memberReportRepository;
 
-    @StudyWithMeWritableTransactional
     public Long invoke(final ReportMemberCommand command) {
         final Member reporter = memberRepository.getById(command.reporterId());
         final Member reportee = memberRepository.getById(command.reporteeId());

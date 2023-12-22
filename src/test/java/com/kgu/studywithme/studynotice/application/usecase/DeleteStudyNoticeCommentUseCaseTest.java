@@ -40,7 +40,7 @@ class DeleteStudyNoticeCommentUseCaseTest extends UseCaseTest {
     void throwExceptionByMemberIsNotWriter() {
         // given
         final DeleteStudyNoticeCommentCommand command = new DeleteStudyNoticeCommentCommand(comment.getId(), anonymous.getId());
-        given(studyNoticeCommentRepository.getById(command.commentId())).willReturn(comment);
+        given(studyNoticeCommentRepository.getByIdWithWriter(command.commentId())).willReturn(comment);
         given(memberRepository.getById(command.memberId())).willReturn(anonymous);
 
         // when - then
@@ -49,7 +49,7 @@ class DeleteStudyNoticeCommentUseCaseTest extends UseCaseTest {
                 .hasMessage(StudyNoticeErrorCode.ONLY_WRITER_CAN_DELETE_NOTICE_COMMENT.getMessage());
 
         assertAll(
-                () -> verify(studyNoticeCommentRepository, times(1)).getById(command.commentId()),
+                () -> verify(studyNoticeCommentRepository, times(1)).getByIdWithWriter(command.commentId()),
                 () -> verify(memberRepository, times(1)).getById(command.memberId()),
                 () -> verify(studyNoticeCommentRepository, times(0)).delete(comment)
         );
@@ -60,7 +60,7 @@ class DeleteStudyNoticeCommentUseCaseTest extends UseCaseTest {
     void success() {
         // given
         final DeleteStudyNoticeCommentCommand command = new DeleteStudyNoticeCommentCommand(comment.getId(), host.getId());
-        given(studyNoticeCommentRepository.getById(command.commentId())).willReturn(comment);
+        given(studyNoticeCommentRepository.getByIdWithWriter(command.commentId())).willReturn(comment);
         given(memberRepository.getById(command.memberId())).willReturn(host);
 
         // when
@@ -68,7 +68,7 @@ class DeleteStudyNoticeCommentUseCaseTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyNoticeCommentRepository, times(1)).getById(command.commentId()),
+                () -> verify(studyNoticeCommentRepository, times(1)).getByIdWithWriter(command.commentId()),
                 () -> verify(memberRepository, times(1)).getById(command.memberId()),
                 () -> verify(studyNoticeCommentRepository, times(1)).delete(comment)
         );

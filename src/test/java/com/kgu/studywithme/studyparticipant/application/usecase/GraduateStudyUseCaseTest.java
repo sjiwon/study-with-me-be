@@ -70,7 +70,7 @@ class GraduateStudyUseCaseTest extends UseCaseTest {
     @DisplayName("스터디 참여자가 아니면 스터디를 졸업할 수 없다")
     void throwExceptionByMemberIsNotParticipant() {
         // given
-        given(studyRepository.getById(anonymousGraduateCommand.studyId())).willReturn(study);
+        given(studyRepository.getByIdWithHost(anonymousGraduateCommand.studyId())).willReturn(study);
 
         // when - then
         assertThatThrownBy(() -> sut.invoke(anonymousGraduateCommand))
@@ -78,7 +78,7 @@ class GraduateStudyUseCaseTest extends UseCaseTest {
                 .hasMessage(StudyParticipantErrorCode.PARTICIPANT_NOT_FOUND.getMessage());
 
         assertAll(
-                () -> verify(studyRepository, times(1)).getById(anonymousGraduateCommand.studyId()),
+                () -> verify(studyRepository, times(1)).getByIdWithHost(anonymousGraduateCommand.studyId()),
                 () -> verify(studyAttendanceRepository, times(0))
                         .getAttendanceStatusCount(anonymousGraduateCommand.studyId(), anonymousGraduateCommand.participantId()),
                 () -> verify(studyParticipantRepository, times(0))
@@ -91,7 +91,7 @@ class GraduateStudyUseCaseTest extends UseCaseTest {
     @DisplayName("스터디 팀장은 팀장 권한을 위임하지 않으면 스터디를 졸업할 수 없다")
     void throwExceptionByHostCannotGraduateStudy() {
         // given
-        given(studyRepository.getById(hostGraduateCommand.studyId())).willReturn(study);
+        given(studyRepository.getByIdWithHost(hostGraduateCommand.studyId())).willReturn(study);
 
         // when - then
         assertThatThrownBy(() -> sut.invoke(hostGraduateCommand))
@@ -99,7 +99,7 @@ class GraduateStudyUseCaseTest extends UseCaseTest {
                 .hasMessage(StudyParticipantErrorCode.HOST_CANNOT_GRADUATE_STUDY.getMessage());
 
         assertAll(
-                () -> verify(studyRepository, times(1)).getById(hostGraduateCommand.studyId()),
+                () -> verify(studyRepository, times(1)).getByIdWithHost(hostGraduateCommand.studyId()),
                 () -> verify(studyAttendanceRepository, times(0))
                         .getAttendanceStatusCount(hostGraduateCommand.studyId(), hostGraduateCommand.participantId()),
                 () -> verify(studyParticipantRepository, times(0))
@@ -112,7 +112,7 @@ class GraduateStudyUseCaseTest extends UseCaseTest {
     @DisplayName("졸업 요건을 만족하지 못한 참여자는 스터디를 졸업할 수 없다")
     void throwExceptionByParticipantNotMeetGraduationPolicy() {
         // given
-        given(studyRepository.getById(allowEmailParticipantCommand.studyId())).willReturn(study);
+        given(studyRepository.getByIdWithHost(allowEmailParticipantCommand.studyId())).willReturn(study);
         given(studyAttendanceRepository.getAttendanceStatusCount(allowEmailParticipantCommand.studyId(), allowEmailParticipantCommand.participantId()))
                 .willReturn(study.getGraduationPolicy().getMinimumAttendance() - 1);
 
@@ -122,7 +122,7 @@ class GraduateStudyUseCaseTest extends UseCaseTest {
                 .hasMessage(StudyParticipantErrorCode.PARTICIPANT_NOT_MEET_GRADUATION_POLICY.getMessage());
 
         assertAll(
-                () -> verify(studyRepository, times(1)).getById(allowEmailParticipantCommand.studyId()),
+                () -> verify(studyRepository, times(1)).getByIdWithHost(allowEmailParticipantCommand.studyId()),
                 () -> verify(studyAttendanceRepository, times(1))
                         .getAttendanceStatusCount(allowEmailParticipantCommand.studyId(), allowEmailParticipantCommand.participantId()),
                 () -> verify(studyParticipantRepository, times(0))
@@ -135,7 +135,7 @@ class GraduateStudyUseCaseTest extends UseCaseTest {
     @DisplayName("스터디를 졸업한다 [이메일 수신 동의에 의한 이메일 발송 이벤트 O]")
     void successA() {
         // given
-        given(studyRepository.getById(allowEmailParticipantCommand.studyId())).willReturn(study);
+        given(studyRepository.getByIdWithHost(allowEmailParticipantCommand.studyId())).willReturn(study);
         given(studyAttendanceRepository.getAttendanceStatusCount(allowEmailParticipantCommand.studyId(), allowEmailParticipantCommand.participantId()))
                 .willReturn(study.getGraduationPolicy().getMinimumAttendance());
 
@@ -144,7 +144,7 @@ class GraduateStudyUseCaseTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyRepository, times(1)).getById(allowEmailParticipantCommand.studyId()),
+                () -> verify(studyRepository, times(1)).getByIdWithHost(allowEmailParticipantCommand.studyId()),
                 () -> verify(studyAttendanceRepository, times(1))
                         .getAttendanceStatusCount(allowEmailParticipantCommand.studyId(), allowEmailParticipantCommand.participantId()),
                 () -> verify(studyParticipantRepository, times(1))
@@ -158,7 +158,7 @@ class GraduateStudyUseCaseTest extends UseCaseTest {
     @DisplayName("스터디를 졸업한다 [이메일 수신 비동의에 의한 이메일 발송 이벤트 X]")
     void successB() {
         // given
-        given(studyRepository.getById(notAllowEmailParticipantCommand.studyId())).willReturn(study);
+        given(studyRepository.getByIdWithHost(notAllowEmailParticipantCommand.studyId())).willReturn(study);
         given(studyAttendanceRepository.getAttendanceStatusCount(notAllowEmailParticipantCommand.studyId(), notAllowEmailParticipantCommand.participantId()))
                 .willReturn(study.getGraduationPolicy().getMinimumAttendance());
 
@@ -167,7 +167,7 @@ class GraduateStudyUseCaseTest extends UseCaseTest {
 
         // then
         assertAll(
-                () -> verify(studyRepository, times(1)).getById(notAllowEmailParticipantCommand.studyId()),
+                () -> verify(studyRepository, times(1)).getByIdWithHost(notAllowEmailParticipantCommand.studyId()),
                 () -> verify(studyAttendanceRepository, times(1))
                         .getAttendanceStatusCount(notAllowEmailParticipantCommand.studyId(), notAllowEmailParticipantCommand.participantId()),
                 () -> verify(studyParticipantRepository, times(1))

@@ -1,5 +1,6 @@
 package com.kgu.studywithme.member.application.usecase;
 
+import com.kgu.studywithme.global.annotation.UseCase;
 import com.kgu.studywithme.member.application.usecase.query.GetAttendanceRatioById;
 import com.kgu.studywithme.member.application.usecase.query.GetGraduatedStudyById;
 import com.kgu.studywithme.member.application.usecase.query.GetParticipateStudyById;
@@ -12,11 +13,10 @@ import com.kgu.studywithme.member.domain.repository.query.dto.MemberPublicInform
 import com.kgu.studywithme.member.domain.repository.query.dto.ParticipateStudy;
 import com.kgu.studywithme.member.domain.repository.query.dto.ReceivedReview;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+@UseCase
 @RequiredArgsConstructor
 public class MemberPublicQueryUseCase {
     private final MemberInformationRepository memberInformationRepository;

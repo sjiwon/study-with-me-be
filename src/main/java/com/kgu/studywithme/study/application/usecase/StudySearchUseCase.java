@@ -1,5 +1,6 @@
 package com.kgu.studywithme.study.application.usecase;
 
+import com.kgu.studywithme.global.annotation.UseCase;
 import com.kgu.studywithme.global.cache.CacheKeyName;
 import com.kgu.studywithme.study.application.usecase.dto.StudyPagingResponse;
 import com.kgu.studywithme.study.application.usecase.query.GetStudiesByCategory;
@@ -8,13 +9,12 @@ import com.kgu.studywithme.study.domain.repository.query.StudyCategorySearchRepo
 import com.kgu.studywithme.study.domain.repository.query.dto.StudyPreview;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 import static com.kgu.studywithme.study.utils.search.PagingConstants.createPageRequest;
 
-@Service
+@UseCase
 @RequiredArgsConstructor
 public class StudySearchUseCase {
     private final StudyCategorySearchRepository studyCategorySearchRepository;

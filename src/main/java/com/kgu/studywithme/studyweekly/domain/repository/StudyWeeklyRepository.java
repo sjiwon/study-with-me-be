@@ -16,10 +16,12 @@ public interface StudyWeeklyRepository extends JpaRepository<StudyWeekly, Long> 
     }
 
     // @Query
-    @Query("SELECT sw.week" +
-            " FROM StudyWeekly sw" +
-            " WHERE sw.study.id = :studyId" +
-            " ORDER BY sw.week DESC")
+    @Query("""
+            SELECT sw.week
+            FROM StudyWeekly sw
+            WHERE sw.study.id = :studyId
+            ORDER BY sw.week DESC
+            """)
     List<Integer> findWeekByStudyId(@Param("studyId") final Long studyId);
 
     default int getNextWeek(final Long studyId) {
@@ -31,10 +33,12 @@ public interface StudyWeeklyRepository extends JpaRepository<StudyWeekly, Long> 
         return weeks.get(0) + 1;
     }
 
-    @Query("SELECT sw.id" +
-            " FROM StudyWeekly sw" +
-            " WHERE sw.study.id = :studyId" +
-            " ORDER BY sw.id DESC")
+    @Query("""
+            SELECT sw.id
+            FROM StudyWeekly sw
+            WHERE sw.study.id = :studyId
+            ORDER BY sw.id DESC
+            """)
     List<Long> findIdByStudyId(@Param("studyId") final Long studyId);
 
     default boolean isLatestWeek(final Long studyId, final Long weeklyId) {

@@ -7,9 +7,9 @@ import com.kgu.studywithme.studyweekly.domain.repository.StudyWeeklyAttachmentRe
 import com.kgu.studywithme.studyweekly.domain.repository.StudyWeeklyRepository;
 import com.kgu.studywithme.studyweekly.domain.repository.StudyWeeklySubmitRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class WeeklyDeleter {
     private final StudyWeeklyRepository studyWeeklyRepository;

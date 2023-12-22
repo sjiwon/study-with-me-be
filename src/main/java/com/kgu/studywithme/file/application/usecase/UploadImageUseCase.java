@@ -2,10 +2,10 @@ package com.kgu.studywithme.file.application.usecase;
 
 import com.kgu.studywithme.file.application.adapter.FileUploader;
 import com.kgu.studywithme.file.application.usecase.command.UploadImageCommand;
+import com.kgu.studywithme.global.annotation.UseCase;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
+@UseCase
 @RequiredArgsConstructor
 public class UploadImageUseCase {
     private final FileUploader fileUploader;

@@ -4,9 +4,9 @@ import com.kgu.studywithme.auth.domain.model.Token;
 import com.kgu.studywithme.auth.domain.repository.TokenRepository;
 import com.kgu.studywithme.global.annotation.StudyWithMeWritableTransactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class TokenManager {
     private final TokenRepository tokenRepository;

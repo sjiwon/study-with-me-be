@@ -72,7 +72,7 @@ public class GoogleOAuthConnector implements OAuthConnector {
         try {
             return restTemplate.postForEntity(properties.getTokenUrl(), request, GoogleTokenResponse.class);
         } catch (final RestClientException e) {
-            log.error("OAuth Error... {}", e, e);
+            log.error("OAuth Error... {}", e.getMessage(), e);
             throw StudyWithMeException.type(GlobalErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
@@ -94,7 +94,7 @@ public class GoogleOAuthConnector implements OAuthConnector {
         try {
             return restTemplate.exchange(properties.getUserInfoUrl(), GET, request, GoogleUserResponse.class);
         } catch (final RestClientException e) {
-            log.error("OAuth Error... {}", e, e);
+            log.error("OAuth Error... {}", e.getMessage(), e);
             throw StudyWithMeException.type(GlobalErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
