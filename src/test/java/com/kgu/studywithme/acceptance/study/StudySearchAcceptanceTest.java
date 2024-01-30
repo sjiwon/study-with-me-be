@@ -269,10 +269,10 @@ public class StudySearchAcceptanceTest extends AcceptanceTest {
     ) {
         final int totalCount = studyFixtures.size();
         response
-                .body("studies", hasSize(totalCount));
+                .body("result", hasSize(totalCount));
 
         for (int i = 0; i < totalCount; i++) {
-            final String index = String.format("studies[%d]", i);
+            final String index = String.format("result[%d]", i);
             final StudyFixture study = studyFixtures.get(i);
             final List<Long> indexOfLikeMarkingMemberIds = likeMarkingMemberIds.get(i);
 

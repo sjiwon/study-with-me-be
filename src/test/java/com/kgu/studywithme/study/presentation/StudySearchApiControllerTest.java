@@ -2,7 +2,7 @@ package com.kgu.studywithme.study.presentation;
 
 import com.kgu.studywithme.category.domain.model.Category;
 import com.kgu.studywithme.common.ControllerTest;
-import com.kgu.studywithme.study.application.usecase.dto.StudyPagingResponse;
+import com.kgu.studywithme.global.query.SliceResponse;
 import com.kgu.studywithme.study.domain.repository.query.dto.StudyPreview;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -20,9 +20,9 @@ import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDoc
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getDocumentResponse;
 import static com.kgu.studywithme.common.utils.RestDocsSpecificationUtils.getHeaderWithAccessToken;
 import static com.kgu.studywithme.common.utils.TokenUtils.applyAccessToken;
+import static com.kgu.studywithme.global.query.PageCreator.SLICE_PER_PAGE;
 import static com.kgu.studywithme.study.domain.model.RecruitmentStatus.ON;
 import static com.kgu.studywithme.study.domain.model.StudyType.ONLINE;
-import static com.kgu.studywithme.study.utils.search.PagingConstants.SLICE_PER_PAGE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -44,7 +44,10 @@ class StudySearchApiControllerTest extends ControllerTest {
         @DisplayName("카테고리로 스터디 리스트를 조회한다 [Ex) 프로그래밍]")
         void success() throws Exception {
             // given
-            given(studySearchUseCase.getStudiesByCategory(any())).willReturn(new StudyPagingResponse(generateStudies()));
+            given(studySearchUseCase.getStudiesByCategory(any())).willReturn(new SliceResponse<>(
+                    generateStudies(),
+                    true
+            ));
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
                     .get(BASE_URL)
@@ -84,33 +87,35 @@ class StudySearchApiControllerTest extends ControllerTest {
                                                     .attributes(constraint("type이 오프라인일 경우 활성화"))
                                     ),
                                     responseFields(
-                                            fieldWithPath("studies[].id")
+                                            fieldWithPath("result[].id")
                                                     .description("스터디 ID(PK)"),
-                                            fieldWithPath("studies[].name")
+                                            fieldWithPath("result[].name")
                                                     .description("스터디명"),
-                                            fieldWithPath("studies[].description")
+                                            fieldWithPath("result[].description")
                                                     .description("스터디 설명"),
-                                            fieldWithPath("studies[].category")
+                                            fieldWithPath("result[].category")
                                                     .description("스터디 카테고리"),
-                                            fieldWithPath("studies[].thumbnail.name")
+                                            fieldWithPath("result[].thumbnail.name")
                                                     .description("스터디 썸네일 이미지"),
-                                            fieldWithPath("studies[].thumbnail.background")
+                                            fieldWithPath("result[].thumbnail.background")
                                                     .description("스터디 썸네일 배경색"),
-                                            fieldWithPath("studies[].type")
+                                            fieldWithPath("result[].type")
                                                     .description("스터디 타입")
                                                     .attributes(constraint("온라인 / 오프라인")),
-                                            fieldWithPath("studies[].recruitmentStatus")
+                                            fieldWithPath("result[].recruitmentStatus")
                                                     .description("스터디 모집 여부"),
-                                            fieldWithPath("studies[].maxMember")
+                                            fieldWithPath("result[].maxMember")
                                                     .description("스터디 최대 인원"),
-                                            fieldWithPath("studies[].participantMembers")
+                                            fieldWithPath("result[].participantMembers")
                                                     .description("현재 스터디 참여자 수"),
-                                            fieldWithPath("studies[].creationDate")
+                                            fieldWithPath("result[].creationDate")
                                                     .description("스터디 생성 날짜"),
-                                            fieldWithPath("studies[].hashtags[]")
+                                            fieldWithPath("result[].hashtags[]")
                                                     .description("스터디 해시태그"),
-                                            fieldWithPath("studies[].likeMarkingMembers[]")
-                                                    .description("스터디 찜 사용자 ID(PK) 리스트")
+                                            fieldWithPath("result[].likeMarkingMembers[]")
+                                                    .description("스터디 찜 사용자 ID(PK) 리스트"),
+                                            fieldWithPath("hasNext")
+                                                    .description("다음 슬라이스 존재 여부")
                                     )
                             )
                     );
@@ -128,7 +133,10 @@ class StudySearchApiControllerTest extends ControllerTest {
         void success() throws Exception {
             // given
             mockingToken(true, MEMBER_ID);
-            given(studySearchUseCase.getStudiesByRecommend(any())).willReturn(new StudyPagingResponse(generateStudies()));
+            given(studySearchUseCase.getStudiesByRecommend(any())).willReturn(new SliceResponse<>(
+                    generateStudies(),
+                    true
+            ));
 
             // when
             final MockHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders
@@ -168,33 +176,35 @@ class StudySearchApiControllerTest extends ControllerTest {
                                                     .attributes(constraint("type이 오프라인일 경우 활성화"))
                                     ),
                                     responseFields(
-                                            fieldWithPath("studies[].id")
+                                            fieldWithPath("result[].id")
                                                     .description("스터디 ID(PK)"),
-                                            fieldWithPath("studies[].name")
+                                            fieldWithPath("result[].name")
                                                     .description("스터디명"),
-                                            fieldWithPath("studies[].description")
+                                            fieldWithPath("result[].description")
                                                     .description("스터디 설명"),
-                                            fieldWithPath("studies[].category")
+                                            fieldWithPath("result[].category")
                                                     .description("스터디 카테고리"),
-                                            fieldWithPath("studies[].thumbnail.name")
+                                            fieldWithPath("result[].thumbnail.name")
                                                     .description("스터디 썸네일"),
-                                            fieldWithPath("studies[].thumbnail.background")
+                                            fieldWithPath("result[].thumbnail.background")
                                                     .description("스터디 썸네일 배경색"),
-                                            fieldWithPath("studies[].type")
+                                            fieldWithPath("result[].type")
                                                     .description("스터디 타입")
                                                     .attributes(constraint("온라인 / 오프라인")),
-                                            fieldWithPath("studies[].recruitmentStatus")
+                                            fieldWithPath("result[].recruitmentStatus")
                                                     .description("스터디 모집 여부"),
-                                            fieldWithPath("studies[].maxMember")
+                                            fieldWithPath("result[].maxMember")
                                                     .description("스터디 최대 인원"),
-                                            fieldWithPath("studies[].participantMembers")
+                                            fieldWithPath("result[].participantMembers")
                                                     .description("현재 스터디 참여자 수"),
-                                            fieldWithPath("studies[].creationDate")
+                                            fieldWithPath("result[].creationDate")
                                                     .description("스터디 생성 날짜"),
-                                            fieldWithPath("studies[].hashtags[]")
+                                            fieldWithPath("result[].hashtags[]")
                                                     .description("스터디 해시태그"),
-                                            fieldWithPath("studies[].likeMarkingMembers[]")
-                                                    .description("스터디 찜 사용자 ID(PK) 리스트")
+                                            fieldWithPath("result[].likeMarkingMembers[]")
+                                                    .description("스터디 찜 사용자 ID(PK) 리스트"),
+                                            fieldWithPath("hasNext")
+                                                    .description("다음 슬라이스 존재 여부")
                                     )
                             )
                     );

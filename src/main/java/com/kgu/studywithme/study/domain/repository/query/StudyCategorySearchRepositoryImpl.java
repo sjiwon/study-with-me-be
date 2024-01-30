@@ -16,6 +16,8 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
 
 import java.util.Arrays;
@@ -33,11 +35,11 @@ public class StudyCategorySearchRepositoryImpl implements StudyCategorySearchRep
     private final JPAQueryFactory query;
 
     @Override
-    public List<StudyPreview> fetchStudyByCategory(
+    public Slice<StudyPreview> fetchStudyByCategory(
             final SearchByCategoryCondition condition,
             final Pageable pageable
     ) {
-        return projectionStudyPreview(
+        final List<StudyPreview> result = projectionStudyPreview(
                 condition.sort(),
                 pageable,
                 Arrays.asList(
@@ -48,10 +50,16 @@ public class StudyCategorySearchRepositoryImpl implements StudyCategorySearchRep
                         studyIsNotTerminated()
                 )
         );
+
+        return new SliceImpl<>(
+                result.stream().limit(pageable.getPageSize()).toList(),
+                pageable,
+                result.size() > pageable.getPageSize()
+        );
     }
 
     @Override
-    public List<StudyPreview> fetchStudyByRecommend(
+    public Slice<StudyPreview> fetchStudyByRecommend(
             final SearchByRecommendCondition condition,
             final Pageable pageable
     ) {
@@ -61,7 +69,7 @@ public class StudyCategorySearchRepositoryImpl implements StudyCategorySearchRep
                 .where(interest.member.id.eq(condition.memberId()))
                 .fetch();
 
-        return projectionStudyPreview(
+        final List<StudyPreview> result = projectionStudyPreview(
                 condition.sort(),
                 pageable,
                 Arrays.asList(
@@ -71,6 +79,12 @@ public class StudyCategorySearchRepositoryImpl implements StudyCategorySearchRep
                         studyCategoryIn(memberInterests),
                         studyIsNotTerminated()
                 )
+        );
+
+        return new SliceImpl<>(
+                result.stream().limit(pageable.getPageSize()).toList(),
+                pageable,
+                result.size() > pageable.getPageSize()
         );
     }
 
@@ -96,7 +110,7 @@ public class StudyCategorySearchRepositoryImpl implements StudyCategorySearchRep
                 .where(whereConditions.toArray(Predicate[]::new))
                 .orderBy(study.id.desc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+                .limit(pageable.getPageSize() + 1)
                 .fetch();
 
         if (result.isEmpty()) {
@@ -122,7 +136,7 @@ public class StudyCategorySearchRepositoryImpl implements StudyCategorySearchRep
                 .where(whereConditions.toArray(Predicate[]::new))
                 .orderBy(study.favoriteCount.desc(), study.id.desc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+                .limit(pageable.getPageSize() + 1)
                 .fetch();
 
         if (result.isEmpty()) {
@@ -148,7 +162,7 @@ public class StudyCategorySearchRepositoryImpl implements StudyCategorySearchRep
                 .where(whereConditions.toArray(Predicate[]::new))
                 .orderBy(study.reviewCount.desc(), study.id.desc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+                .limit(pageable.getPageSize() + 1)
                 .fetch();
 
         if (result.isEmpty()) {
@@ -255,16 +269,5 @@ public class StudyCategorySearchRepositoryImpl implements StudyCategorySearchRep
 
     private BooleanExpression studyIsNotTerminated() {
         return study.terminated.isFalse();
-    }
-
-    private boolean hasNext(
-            final Pageable pageable,
-            final int contentSize,
-            final Long totalCount
-    ) {
-        if (contentSize == pageable.getPageSize()) {
-            return (long) contentSize * (pageable.getPageNumber() + 1) != totalCount;
-        }
-        return false;
     }
 }

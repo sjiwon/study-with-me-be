@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
@@ -62,9 +63,9 @@ import static com.kgu.studywithme.common.fixture.StudyFixture.SPRING;
 import static com.kgu.studywithme.common.fixture.StudyFixture.TOEFL;
 import static com.kgu.studywithme.common.fixture.StudyFixture.TOEIC;
 import static com.kgu.studywithme.common.fixture.StudyFixture.TOSS_INTERVIEW;
+import static com.kgu.studywithme.global.query.PageCreator.query;
 import static com.kgu.studywithme.study.domain.model.StudyType.OFFLINE;
 import static com.kgu.studywithme.study.domain.model.StudyType.ONLINE;
-import static com.kgu.studywithme.study.utils.search.PagingConstants.createPageRequest;
 import static com.kgu.studywithme.study.utils.search.SearchSortType.DATE;
 import static com.kgu.studywithme.study.utils.search.SearchSortType.FAVORITE;
 import static com.kgu.studywithme.study.utils.search.SearchSortType.REVIEW;
@@ -89,9 +90,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
     @Autowired
     private FavoriteRepository favoriteRepository;
 
-    private static final Pageable PAGE_REQUEST_1 = createPageRequest(0);
-    private static final Pageable PAGE_REQUEST_2 = createPageRequest(1);
-    private static final Pageable PAGE_REQUEST_3 = createPageRequest(2);
+    private static final Pageable PAGE_REQUEST_1 = query(0);
+    private static final Pageable PAGE_REQUEST_2 = query(1);
+    private static final Pageable PAGE_REQUEST_3 = query(2);
     private static final LocalDateTime NOW = LocalDateTime.now();
 
     private Member host;
@@ -161,9 +162,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final List<StudyPreview> result1 = sut.fetchStudyByCategory(onlineCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result1 = sut.fetchStudyByCategory(onlineCondition, PAGE_REQUEST_1);
             assertThatStudiesMatch(
-                    result1,
+                    result1.getContent(),
                     List.of(
                             programming[11], programming[10], programming[9], programming[8],
                             programming[7], programming[5], programming[4], programming[3]
@@ -174,9 +175,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final List<StudyPreview> result2 = sut.fetchStudyByCategory(onlineCondition, PAGE_REQUEST_2);
+            final Slice<StudyPreview> result2 = sut.fetchStudyByCategory(onlineCondition, PAGE_REQUEST_2);
             assertThatStudiesMatch(
-                    result2,
+                    result2.getContent(),
                     List.of(programming[1], programming[0]),
                     List.of(List.of(), List.of())
             );
@@ -189,9 +190,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final List<StudyPreview> result3 = sut.fetchStudyByCategory(offlineCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result3 = sut.fetchStudyByCategory(offlineCondition, PAGE_REQUEST_1);
             assertThatStudiesMatch(
-                    result3,
+                    result3.getContent(),
                     List.of(programming[6], programming[2]),
                     List.of(List.of(), List.of())
             );
@@ -204,9 +205,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final List<StudyPreview> result4 = sut.fetchStudyByCategory(totalCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result4 = sut.fetchStudyByCategory(totalCondition, PAGE_REQUEST_1);
             assertThatStudiesMatch(
-                    result4,
+                    result4.getContent(),
                     List.of(
                             programming[11], programming[10], programming[9], programming[8],
                             programming[7], programming[6], programming[5], programming[4]
@@ -217,9 +218,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final List<StudyPreview> result5 = sut.fetchStudyByCategory(totalCondition, PAGE_REQUEST_2);
+            final Slice<StudyPreview> result5 = sut.fetchStudyByCategory(totalCondition, PAGE_REQUEST_2);
             assertThatStudiesMatch(
-                    result5,
+                    result5.getContent(),
                     List.of(programming[3], programming[2], programming[1], programming[0]),
                     List.of(List.of(), List.of(), List.of(), List.of())
             );
@@ -253,22 +254,22 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
             );
 
             // 서울 특별시 & 강남구
-            final List<StudyPreview> result1 = sut.fetchStudyByCategory(condition1, PAGE_REQUEST_1);
-            final List<StudyPreview> result2 = sut.fetchStudyByCategory(condition2, PAGE_REQUEST_1);
-            final List<StudyPreview> result3 = sut.fetchStudyByCategory(condition3, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result1 = sut.fetchStudyByCategory(condition1, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result2 = sut.fetchStudyByCategory(condition2, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result3 = sut.fetchStudyByCategory(condition3, PAGE_REQUEST_1);
 
             assertThatStudiesMatch(
-                    result1,
+                    result1.getContent(),
                     List.of(interview[3], interview[2], interview[1]),
                     List.of(List.of(), List.of(), List.of())
             );
             assertThatStudiesMatch(
-                    result2,
+                    result2.getContent(),
                     List.of(interview[3], interview[2], interview[1]),
                     List.of(List.of(), List.of(), List.of())
             );
             assertThatStudiesMatch(
-                    result3,
+                    result3.getContent(),
                     List.of(interview[3], interview[2], interview[1]),
                     List.of(List.of(), List.of(), List.of())
             );
@@ -288,9 +289,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final List<StudyPreview> result1 = sut.fetchStudyByCategory(onlineCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result1 = sut.fetchStudyByCategory(onlineCondition, PAGE_REQUEST_1);
             assertThatStudiesMatch(
-                    result1,
+                    result1.getContent(),
                     List.of(
                             programming[9], programming[3], programming[5], programming[8],
                             programming[7], programming[0], programming[11], programming[10]
@@ -326,9 +327,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final List<StudyPreview> result2 = sut.fetchStudyByCategory(onlineCondition, PAGE_REQUEST_2);
+            final Slice<StudyPreview> result2 = sut.fetchStudyByCategory(onlineCondition, PAGE_REQUEST_2);
             assertThatStudiesMatch(
-                    result2,
+                    result2.getContent(),
                     List.of(programming[1], programming[4]),
                     List.of(
                             List.of(members[0], members[1], members[2]),
@@ -344,9 +345,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final List<StudyPreview> result3 = sut.fetchStudyByCategory(offlineCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result3 = sut.fetchStudyByCategory(offlineCondition, PAGE_REQUEST_1);
             assertThatStudiesMatch(
-                    result3,
+                    result3.getContent(),
                     List.of(programming[2], programming[6]),
                     List.of(
                             List.of(
@@ -368,9 +369,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final List<StudyPreview> result4 = sut.fetchStudyByCategory(totalCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result4 = sut.fetchStudyByCategory(totalCondition, PAGE_REQUEST_1);
             assertThatStudiesMatch(
-                    result4,
+                    result4.getContent(),
                     List.of(
                             programming[9], programming[3], programming[2], programming[6],
                             programming[5], programming[8], programming[7], programming[0]
@@ -412,9 +413,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final List<StudyPreview> result5 = sut.fetchStudyByCategory(totalCondition, PAGE_REQUEST_2);
+            final Slice<StudyPreview> result5 = sut.fetchStudyByCategory(totalCondition, PAGE_REQUEST_2);
             assertThatStudiesMatch(
-                    result5,
+                    result5.getContent(),
                     List.of(programming[11], programming[10], programming[1], programming[4]),
                     List.of(
                             List.of(members[0], members[1], members[2], members[3]),
@@ -439,9 +440,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final List<StudyPreview> result1 = sut.fetchStudyByCategory(onlineCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result1 = sut.fetchStudyByCategory(onlineCondition, PAGE_REQUEST_1);
             assertThatStudiesMatch(
-                    result1,
+                    result1.getContent(),
                     List.of(
                             programming[9], programming[3], programming[5], programming[8],
                             programming[7], programming[0], programming[11], programming[10]
@@ -452,9 +453,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final List<StudyPreview> result2 = sut.fetchStudyByCategory(onlineCondition, PAGE_REQUEST_2);
+            final Slice<StudyPreview> result2 = sut.fetchStudyByCategory(onlineCondition, PAGE_REQUEST_2);
             assertThatStudiesMatch(
-                    result2,
+                    result2.getContent(),
                     List.of(programming[1], programming[4]),
                     List.of(List.of(), List.of())
             );
@@ -467,9 +468,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final List<StudyPreview> result3 = sut.fetchStudyByCategory(offlineCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result3 = sut.fetchStudyByCategory(offlineCondition, PAGE_REQUEST_1);
             assertThatStudiesMatch(
-                    result3,
+                    result3.getContent(),
                     List.of(programming[2], programming[6]),
                     List.of(List.of(), List.of())
             );
@@ -482,9 +483,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final List<StudyPreview> result4 = sut.fetchStudyByCategory(totalCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result4 = sut.fetchStudyByCategory(totalCondition, PAGE_REQUEST_1);
             assertThatStudiesMatch(
-                    result4,
+                    result4.getContent(),
                     List.of(
                             programming[9], programming[3], programming[2], programming[6],
                             programming[5], programming[8], programming[7], programming[0]
@@ -495,9 +496,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final List<StudyPreview> result5 = sut.fetchStudyByCategory(totalCondition, PAGE_REQUEST_2);
+            final Slice<StudyPreview> result5 = sut.fetchStudyByCategory(totalCondition, PAGE_REQUEST_2);
             assertThatStudiesMatch(
-                    result5,
+                    result5.getContent(),
                     List.of(programming[11], programming[10], programming[1], programming[4]),
                     List.of(List.of(), List.of(), List.of(), List.of())
             );
@@ -521,9 +522,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final List<StudyPreview> result1 = sut.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result1 = sut.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_1);
             assertThatStudiesMatch(
-                    result1,
+                    result1.getContent(),
                     List.of(
                             programming[11], programming[10], programming[9], programming[8],
                             programming[7], programming[5], programming[4], programming[3]
@@ -534,9 +535,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final List<StudyPreview> result2 = sut.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_2);
+            final Slice<StudyPreview> result2 = sut.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_2);
             assertThatStudiesMatch(
-                    result2,
+                    result2.getContent(),
                     List.of(
                             programming[1], programming[0], language[6], language[5],
                             language[4], language[3], language[2], language[1]
@@ -547,9 +548,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final List<StudyPreview> result3 = sut.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_3);
+            final Slice<StudyPreview> result3 = sut.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_3);
             assertThatStudiesMatch(
-                    result3,
+                    result3.getContent(),
                     List.of(language[0]),
                     List.of(List.of())
             );
@@ -562,9 +563,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final List<StudyPreview> result4 = sut.fetchStudyByRecommend(offlineCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result4 = sut.fetchStudyByRecommend(offlineCondition, PAGE_REQUEST_1);
             assertThatStudiesMatch(
-                    result4,
+                    result4.getContent(),
                     List.of(
                             programming[6], programming[2], interview[4], interview[3],
                             interview[2], interview[1], interview[0]
@@ -583,9 +584,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final List<StudyPreview> result5 = sut.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result5 = sut.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_1);
             assertThatStudiesMatch(
-                    result5,
+                    result5.getContent(),
                     List.of(
                             programming[11], programming[10], programming[9], programming[8],
                             programming[7], programming[6], programming[5], programming[4]
@@ -596,9 +597,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final List<StudyPreview> result6 = sut.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_2);
+            final Slice<StudyPreview> result6 = sut.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_2);
             assertThatStudiesMatch(
-                    result6,
+                    result6.getContent(),
                     List.of(
                             programming[3], programming[2], programming[1], programming[0],
                             interview[4], interview[3], interview[2], interview[1]
@@ -609,9 +610,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final List<StudyPreview> result7 = sut.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_3);
+            final Slice<StudyPreview> result7 = sut.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_3);
             assertThatStudiesMatch(
-                    result7,
+                    result7.getContent(),
                     List.of(
                             interview[0], language[6], language[5], language[4],
                             language[3], language[2], language[1], language[0]
@@ -651,22 +652,22 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
             );
 
             // 서울 특별시 & 강남구
-            final List<StudyPreview> result1 = sut.fetchStudyByRecommend(condition1, PAGE_REQUEST_1);
-            final List<StudyPreview> result2 = sut.fetchStudyByRecommend(condition2, PAGE_REQUEST_1);
-            final List<StudyPreview> result3 = sut.fetchStudyByRecommend(condition3, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result1 = sut.fetchStudyByRecommend(condition1, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result2 = sut.fetchStudyByRecommend(condition2, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result3 = sut.fetchStudyByRecommend(condition3, PAGE_REQUEST_1);
 
             assertThatStudiesMatch(
-                    result1,
+                    result1.getContent(),
                     List.of(programming[6], programming[2], interview[4], interview[0]),
                     List.of(List.of(), List.of(), List.of(), List.of())
             );
             assertThatStudiesMatch(
-                    result2,
+                    result2.getContent(),
                     List.of(programming[6], programming[2], interview[4], interview[0]),
                     List.of(List.of(), List.of(), List.of(), List.of())
             );
             assertThatStudiesMatch(
-                    result3,
+                    result3.getContent(),
                     List.of(programming[6], programming[2], interview[4], interview[0]),
                     List.of(List.of(), List.of(), List.of(), List.of())
             );
@@ -686,9 +687,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final List<StudyPreview> result1 = sut.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result1 = sut.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_1);
             assertThatStudiesMatch(
-                    result1,
+                    result1.getContent(),
                     List.of(
                             programming[9], programming[3], programming[5], language[0],
                             programming[8], programming[7], programming[0], language[5]
@@ -729,9 +730,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final List<StudyPreview> result2 = sut.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_2);
+            final Slice<StudyPreview> result2 = sut.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_2);
             assertThatStudiesMatch(
-                    result2,
+                    result2.getContent(),
                     List.of(
                             programming[11], programming[10], language[3], programming[1],
                             language[6], language[2], language[1], programming[4]
@@ -748,9 +749,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final List<StudyPreview> result3 = sut.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_3);
+            final Slice<StudyPreview> result3 = sut.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_3);
             assertThatStudiesMatch(
-                    result3,
+                    result3.getContent(),
                     List.of(language[4]),
                     List.of(List.of())
             );
@@ -763,9 +764,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final List<StudyPreview> result4 = sut.fetchStudyByRecommend(offlineCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result4 = sut.fetchStudyByRecommend(offlineCondition, PAGE_REQUEST_1);
             assertThatStudiesMatch(
-                    result4,
+                    result4.getContent(),
                     List.of(
                             programming[2], programming[6], interview[3], interview[4],
                             interview[1], interview[2], interview[0]
@@ -798,9 +799,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final List<StudyPreview> result5 = sut.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result5 = sut.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_1);
             assertThatStudiesMatch(
-                    result5,
+                    result5.getContent(),
                     List.of(
                             programming[9], programming[3], programming[2], programming[6],
                             programming[5], interview[3], language[0], programming[8]
@@ -841,9 +842,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final List<StudyPreview> result6 = sut.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_2);
+            final Slice<StudyPreview> result6 = sut.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_2);
             assertThatStudiesMatch(
-                    result6,
+                    result6.getContent(),
                     List.of(
                             programming[7], programming[0], language[5], programming[11],
                             programming[10], interview[4], interview[1], language[3]
@@ -869,9 +870,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final List<StudyPreview> result7 = sut.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_3);
+            final Slice<StudyPreview> result7 = sut.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_3);
             assertThatStudiesMatch(
-                    result7,
+                    result7.getContent(),
                     List.of(
                             programming[1], language[6], language[2], language[1],
                             interview[2], programming[4], interview[0], language[4]
@@ -903,9 +904,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final List<StudyPreview> result1 = sut.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result1 = sut.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_1);
             assertThatStudiesMatch(
-                    result1,
+                    result1.getContent(),
                     List.of(
                             programming[9], programming[3], programming[5], language[0],
                             programming[8], programming[7], programming[0], language[5]
@@ -916,9 +917,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final List<StudyPreview> result2 = sut.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_2);
+            final Slice<StudyPreview> result2 = sut.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_2);
             assertThatStudiesMatch(
-                    result2,
+                    result2.getContent(),
                     List.of(
                             programming[11], programming[10], language[3], programming[1],
                             language[6], language[2], language[1], programming[4]
@@ -929,9 +930,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final List<StudyPreview> result3 = sut.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_3);
+            final Slice<StudyPreview> result3 = sut.fetchStudyByRecommend(onlineCondition, PAGE_REQUEST_3);
             assertThatStudiesMatch(
-                    result3,
+                    result3.getContent(),
                     List.of(language[4]),
                     List.of(List.of())
             );
@@ -944,9 +945,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final List<StudyPreview> result4 = sut.fetchStudyByRecommend(offlineCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result4 = sut.fetchStudyByRecommend(offlineCondition, PAGE_REQUEST_1);
             assertThatStudiesMatch(
-                    result4,
+                    result4.getContent(),
                     List.of(
                             programming[2], programming[6], interview[3], interview[4],
                             interview[1], interview[2], interview[0]
@@ -965,9 +966,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     null,
                     null
             );
-            final List<StudyPreview> result5 = sut.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_1);
+            final Slice<StudyPreview> result5 = sut.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_1);
             assertThatStudiesMatch(
-                    result5,
+                    result5.getContent(),
                     List.of(
                             programming[9], programming[3], programming[2], programming[6],
                             programming[5], interview[3], language[0], programming[8]
@@ -978,9 +979,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final List<StudyPreview> result6 = sut.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_2);
+            final Slice<StudyPreview> result6 = sut.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_2);
             assertThatStudiesMatch(
-                    result6,
+                    result6.getContent(),
                     List.of(
                             programming[7], programming[0], language[5], programming[11],
                             programming[10], interview[4], interview[1], language[3]
@@ -991,9 +992,9 @@ class StudyCategorySearchRepositoryTest extends RepositoryTest {
                     )
             );
 
-            final List<StudyPreview> result7 = sut.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_3);
+            final Slice<StudyPreview> result7 = sut.fetchStudyByRecommend(totalCondition, PAGE_REQUEST_3);
             assertThatStudiesMatch(
-                    result7,
+                    result7.getContent(),
                     List.of(
                             programming[1], language[6], language[2], language[1],
                             interview[2], programming[4], interview[0], language[4]
