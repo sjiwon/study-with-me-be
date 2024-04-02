@@ -1,4 +1,4 @@
-package com.kgu.studywithme.global.logging;
+package com.kgu.studywithme.global.log;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,11 +21,11 @@ public class LoggingTracer {
         loggingStatusManager.syncStatus();
 
         final LoggingStatus loggingStatus = loggingStatusManager.getExistLoggingStatus();
-        loggingStatusManager.increaseDepth();
+        loggingStatus.increaseDepth();
+
         if (log.isInfoEnabled()) {
             log.info(
-                    "[{}] {} args={}",
-                    loggingStatus.getTaskId(),
+                    "{} args={}",
                     loggingStatus.depthPrefix(REQUEST_PREFIX) + methodSignature,
                     args
             );
@@ -36,26 +36,24 @@ public class LoggingTracer {
         final LoggingStatus loggingStatus = loggingStatusManager.getExistLoggingStatus();
         if (log.isInfoEnabled()) {
             log.info(
-                    "[{}] {} time={}ms",
-                    loggingStatus.getTaskId(),
+                    "{} time={}ms",
                     loggingStatus.depthPrefix(RESPONSE_PREFIX) + methodSignature,
-                    loggingStatus.totalTakenTime()
+                    loggingStatus.calculateTakenTime()
             );
         }
-        loggingStatusManager.decreaseDepth();
+        loggingStatus.decreaseDepth();
     }
 
     public void throwException(final String methodSignature, final Throwable exception) {
         final LoggingStatus loggingStatus = loggingStatusManager.getExistLoggingStatus();
         if (log.isInfoEnabled()) {
             log.info(
-                    "[{}] {} time={}ms ex={}",
-                    loggingStatus.getTaskId(),
+                    "{} time={}ms ex={}",
                     loggingStatus.depthPrefix(EXCEPTION_PREFIX) + methodSignature,
-                    loggingStatus.totalTakenTime(),
+                    loggingStatus.calculateTakenTime(),
                     exception.toString()
             );
         }
-        loggingStatusManager.decreaseDepth();
+        loggingStatus.decreaseDepth();
     }
 }

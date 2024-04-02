@@ -18,8 +18,8 @@ import static com.kgu.studywithme.global.exception.slack.SlackMetadata.LOG_COLOR
 import static com.kgu.studywithme.global.exception.slack.SlackMetadata.TITLE_ERROR_MESSAGE;
 import static com.kgu.studywithme.global.exception.slack.SlackMetadata.TITLE_REQUEST_IP;
 import static com.kgu.studywithme.global.exception.slack.SlackMetadata.TITLE_REQUEST_URL;
-import static com.kgu.studywithme.global.logging.RequestMetadataExtractor.getClientIP;
-import static com.kgu.studywithme.global.logging.RequestMetadataExtractor.getRequestUriWithQueryString;
+import static com.kgu.studywithme.global.log.RequestMetadataExtractor.getClientIP;
+import static com.kgu.studywithme.global.log.RequestMetadataExtractor.getRequestUriWithQueryString;
 import static com.slack.api.webhook.WebhookPayloads.payload;
 
 @Slf4j

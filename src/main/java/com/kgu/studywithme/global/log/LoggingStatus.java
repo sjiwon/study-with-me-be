@@ -1,16 +1,13 @@
-package com.kgu.studywithme.global.logging;
+package com.kgu.studywithme.global.log;
 
 import lombok.Getter;
 
 @Getter
 public class LoggingStatus {
-    private final String taskId;
     private final long startTimeMillis;
-
     private int depthLevel = 0;
 
-    public LoggingStatus(final String taskId) {
-        this.taskId = taskId;
+    public LoggingStatus() {
         this.startTimeMillis = System.currentTimeMillis();
     }
 
@@ -30,7 +27,7 @@ public class LoggingStatus {
         return bar.repeat(depthLevel - 1) + "|" + prefixString;
     }
 
-    public long totalTakenTime() {
+    public long calculateTakenTime() {
         return System.currentTimeMillis() - startTimeMillis;
     }
 }

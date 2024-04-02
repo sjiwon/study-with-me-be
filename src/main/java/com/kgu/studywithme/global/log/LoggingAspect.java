@@ -1,4 +1,4 @@
-package com.kgu.studywithme.global.logging;
+package com.kgu.studywithme.global.log;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,19 +19,20 @@ public class LoggingAspect {
     private void includeComponent() {
     }
 
-    @Pointcut("!execution(public * com.kgu.studywithme.global.interceptor..*(..))")
-    private void globalInterceptorPath() {
-    }
-
-    @Pointcut("!execution(public * com.kgu.studywithme.global.logging..*(..))")
-    private void globalLoggingPath() {
-    }
-
-    @Pointcut("!execution(public * com.kgu.studywithme.global.config..*(..))")
-    private void globalConfigPath() {
-    }
-
-    @Pointcut("globalInterceptorPath() && globalLoggingPath() && globalConfigPath()")
+    @Pointcut("""
+                !execution(* com.kgu.studywithme.global.annotation..*(..))
+                && !execution(* com.kgu.studywithme.global.aop..*(..))
+                && !execution(* com.kgu.studywithme.global.config..*(..))
+                && !execution(* com.kgu.studywithme.global.decorator..*(..))
+                && !execution(* com.kgu.studywithme.global.filter..*(..))
+                && !execution(* com.kgu.studywithme.global.log..*(..))
+                && !execution(* com.kgu.studywithme..*Config.*(..))
+                && !execution(* com.kgu.studywithme..*Formatter.*(..))
+                && !execution(* com.kgu.studywithme..*Properties.*(..))
+                && !execution(* com.kgu.studywithme..*TokenProvider.*(..))
+                && !execution(* com.kgu.studywithme..*TokenResponseWriter.*(..))
+                && !execution(* com.kgu.studywithme..*TokenExtractor.*(..))
+            """)
     private void excludeComponent() {
     }
 

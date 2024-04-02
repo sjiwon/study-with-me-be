@@ -1,5 +1,6 @@
 package com.kgu.studywithme.global.config;
 
+import com.kgu.studywithme.global.decorator.MdcTaskDecorator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +24,7 @@ public class AsyncConfiguration implements AsyncConfigurer {
         executor.setQueueCapacity(50);
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         executor.setAwaitTerminationSeconds(60);
+        executor.setTaskDecorator(new MdcTaskDecorator());
         executor.setThreadNamePrefix("Asynchronous Mail Sender Thread-");
         return executor;
     }
@@ -35,6 +37,7 @@ public class AsyncConfiguration implements AsyncConfigurer {
         executor.setQueueCapacity(50);
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         executor.setAwaitTerminationSeconds(60);
+        executor.setTaskDecorator(new MdcTaskDecorator());
         executor.setThreadNamePrefix("Asynchronous File Upload Thread-");
         return executor;
     }
